@@ -1,3 +1,4 @@
+var request = require( 'superagent' );
 module.exports = wpQuery;
 
 function wpQuery( options ) {
@@ -25,36 +26,40 @@ wpQuery.prototype.generateRequestUri = function () {
 
 wpQuery.prototype.get = function( callback ) {
 	this._isSupportedMethod( 'get' );
-	var path = this.generateRequestUri();
+	var url = this.generateRequestUri();
 	callback = ( typeof callback === 'function' ) ? callback : ( function() {} );
+
+	request.get( url ).end( function( result ) {
+		callback( result.body );
+	} );
 };
 
 wpQuery.prototype.post = function( data, callback ) {
 	this._isSupportedMethod( 'post' );
-	var path = this.generateRequestUri();
+	var url = this.generateRequestUri();
 	callback = ( typeof callback === 'function' ) ? callback : ( function() {} );
 };
 
 wpQuery.prototype.put = function( callback ) {
 	this._isSupportedMethod( 'put' );
-	var path = this.generateRequestUri();
+	var url = this.generateRequestUri();
 	callback = ( typeof callback === 'function' ) ? callback : ( function() {} );
 };
 
 wpQuery.prototype.patch = function( callback ) {
 	this._isSupportedMethod( 'patch' );
-	var path = this.generateRequestUri();
+	var url = this.generateRequestUri();
 	callback = ( typeof callback === 'function' ) ? callback : ( function() {} );
 };
 
 wpQuery.prototype.delete = function( callback ) {
 	this._isSupportedMethod( 'delete' );
-	var path = this.generateRequestUri();
+	var url = this.generateRequestUri();
 	callback = ( typeof callback === 'function' ) ? callback : ( function() {} );
 };
 
 wpQuery.prototype.head = function( callback ) {
 	this._isSupportedMethod( 'head' );
-	var path = this.generateRequestUri();
+	var url = this.generateRequestUri();
 	callback = ( typeof callback === 'function' ) ? callback : ( function() {} );
 };
