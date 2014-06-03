@@ -29,8 +29,8 @@ wpQuery.prototype.get = function( callback ) {
 	var url = this.generateRequestUri();
 	callback = ( typeof callback === 'function' ) ? callback : ( function() {} );
 
-	request.get( url ).end( function( result ) {
-		callback( result.body );
+	request.get( url ).end( function( err, result ) {
+		callback( err, result.body );
 	} );
 };
 
@@ -41,8 +41,8 @@ wpQuery.prototype.post = function( data, callback ) {
 	callback = ( typeof callback === 'function' ) ? callback : ( function() {} );
 	data = data || {};
 
-	request.post( url ).set( 'Authorization', auth ).send( data ).end( function( result ) {
-		callback( result.body );
+	request.post( url ).set( 'Authorization', auth ).send( data ).end( function( err, result ) {
+		callback( err, result.body );
 	} );
 };
 
@@ -53,8 +53,8 @@ wpQuery.prototype.put = function( data, callback ) {
 	callback = ( typeof callback === 'function' ) ? callback : ( function() {} );
 	data = data || {};
 
-	request.put( url ).set( 'Authorization', auth ).send( data ).end( function( result ) {
-		callback( result.body );
+	request.put( url ).set( 'Authorization', auth ).send( data ).end( function( err, result ) {
+		callback( err, result.body );
 	} );
 };
 
@@ -62,6 +62,7 @@ wpQuery.prototype.patch = function( callback ) {
 	this._isSupportedMethod( 'patch' );
 	var url = this.generateRequestUri();
 	callback = ( typeof callback === 'function' ) ? callback : ( function() {} );
+	// todo: no idea what this method is supposed to do but it's documented in the WP-API docs.
 };
 
 wpQuery.prototype.delete = function( callback ) {
@@ -70,8 +71,8 @@ wpQuery.prototype.delete = function( callback ) {
 	var auth = this._options.username + ':' + this._options.password;
 	callback = ( typeof callback === 'function' ) ? callback : ( function() {} );
 
-	request.del( url ).set( 'Authorization', auth ).end( function( result ) {
-		callback( result.body );
+	request.del( url ).set( 'Authorization', auth ).end( function( err, result ) {
+		callback( err, result.body );
 	} );
 };
 
@@ -80,7 +81,7 @@ wpQuery.prototype.head = function( callback ) {
 	var url = this.generateRequestUri();
 	callback = ( typeof callback === 'function' ) ? callback : ( function() {} );
 
-	request.head( url ).end( function( result ) {
-		callback( result.headers );
+	request.head( url ).end( function( err, result ) {
+		callback( err, result.headers );
 	} );
 };
