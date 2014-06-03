@@ -10,7 +10,7 @@ function wp( options ) {
 
 wp.fn = wp.prototype = {
 
-	/** INTERNAL OBJECTS **/
+	/** INTERNAL PROPS **/
 
 	_options : {},
 	_namespace : null,
