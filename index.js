@@ -1,4 +1,5 @@
 var http = require( 'http' );
+var wpQuery = require( './libs/wpQuery.js' );
 
 module.exports = wp;
 
