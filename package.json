@@ -1,0 +1,20 @@
+{
+  "name": "node-wp-api",
+  "version": "0.0.2",
+  "description": "A client that consumes the WP JSON API.",
+  "main": "index.js",
+  "repository": {
+  "type": "git",
+    "url": "https://github.com/kadamwhite/node-wp-api.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/kadamwhite/node-wp-api/issues"
+  },
+  "homepage": "https://github.com/kadamwhite/node-wp-api",
+  "dependencies": {
+    "node.extend" : ">= 1.0.10",
+    "superagent" : ">= 0.18.0"
+  }
+}
