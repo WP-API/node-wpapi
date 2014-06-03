@@ -15,7 +15,9 @@ wp.fn = wp.prototype = {
 	_options : {
 		host: '',
 		port: 80,
-		basePath: '/wp-json'
+		basePath: '/wp-json',
+		username: '',
+		password: ''
 	},
 
 	init: function( options ) {

@@ -37,13 +37,25 @@ wpQuery.prototype.get = function( callback ) {
 wpQuery.prototype.post = function( data, callback ) {
 	this._isSupportedMethod( 'post' );
 	var url = this.generateRequestUri();
+	var auth = this._options.username + ':' + this._options.password;
 	callback = ( typeof callback === 'function' ) ? callback : ( function() {} );
+	data = data || {};
+
+	request.post( url ).set( 'Authorization', auth ).send( data ).end( function( result ) {
+		callback( result.body );
+	} );
 };
 
-wpQuery.prototype.put = function( callback ) {
+wpQuery.prototype.put = function( data, callback ) {
 	this._isSupportedMethod( 'put' );
 	var url = this.generateRequestUri();
+	var auth = this._options.username + ':' + this._options.password;
 	callback = ( typeof callback === 'function' ) ? callback : ( function() {} );
+	data = data || {};
+
+	request.put( url ).set( 'Authorization', auth ).send( data ).end( function( result ) {
+		callback( result.body );
+	} );
 };
 
 wpQuery.prototype.patch = function( callback ) {
@@ -55,11 +67,20 @@ wpQuery.prototype.patch = function( callback ) {
 wpQuery.prototype.delete = function( callback ) {
 	this._isSupportedMethod( 'delete' );
 	var url = this.generateRequestUri();
+	var auth = this._options.username + ':' + this._options.password;
 	callback = ( typeof callback === 'function' ) ? callback : ( function() {} );
+
+	request.del( url ).set( 'Authorization', auth ).end( function( result ) {
+		callback( result.body );
+	} );
 };
 
 wpQuery.prototype.head = function( callback ) {
 	this._isSupportedMethod( 'head' );
 	var url = this.generateRequestUri();
 	callback = ( typeof callback === 'function' ) ? callback : ( function() {} );
+
+	request.head( url ).end( function( result ) {
+		callback( result.headers );
+	} );
 };
