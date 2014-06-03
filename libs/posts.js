@@ -13,7 +13,41 @@ function posts( options ) {
 }
 
 posts.prototype.id = function( id ) {
-	this._id = parseInt( id, 10 );
+	if( this._action === null ) {
+		this._id = parseInt( id, 10 );
+		this._supportedMethods = [ 'head', 'get', 'put', 'post', 'patch', 'delete' ];
+	} else if( this._action === 'comments' ) {
+		this._actionId = parseInt( id, 10 );
+		this._supportedMethods = [ 'head', 'get', 'put', 'post', 'patch', 'delete' ];
+	} else if( this._action === 'types' ) {
+		this._actionId = id;
+		this._supportedMethods = [ 'head', 'get' ];
+	}
+
+	return this;
+};
+
+posts.prototype.comments = function() {
+	this._action = 'comments';
+	this._supportedMethods = [ 'head', 'get', 'post' ];
+	return this;
+};
+
+posts.prototype.types = function() {
+	this._action = 'types';
+	this._supportedMethods = [ 'head', 'get' ];
+	return this;
+};
+
+posts.prototype.revisions = function() {
+	this._action = 'revisions';
+	this._supportedMethods = [ 'head', 'get' ];
+	return this;
+};
+
+posts.prototype.statuses = function() {
+	this._action = 'statuses';
+	this._supportedMethods = [ 'head', 'get' ];
 	return this;
 };
 
