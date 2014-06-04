@@ -1,4 +1,4 @@
-var request = require( 'superagent' );
+const request = require( 'superagent' );
 module.exports = wpQuery;
 
 function wpQuery( options ) {

@@ -1,5 +1,5 @@
-var wpQuery = require( './wpQuery' );
-var util = require( 'util' );
+const wpQuery = require( './wpQuery' );
+const util = require( 'util' );
 
 module.exports = posts;
 util.inherits( posts, wpQuery );
