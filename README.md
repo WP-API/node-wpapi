@@ -11,8 +11,3 @@ This Wiki page contains a summary of how we envision the functionality of this c
 ## Issues
 
 https://github.com/kadamwhite/node-wp-api/issues
-
-## Todo
-
-1. Get Auth working correctly
-1. Fix `/posts/types/<type>`
