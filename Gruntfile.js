@@ -1,11 +1,16 @@
+const extend = require( 'node.extend' );
 module.exports = function( grunt ) {
 	'use strict';
 
 	// Reusable file globbing
-	var sourceFiles = [
-		'index.js',
-		'lib/**/*.js'
-	];
+	var files = {
+		grunt: [ 'Gruntfile.js' ],
+		src: [ 'index.js', 'lib/**/*.js' ],
+		test: [ 'test/**/*.js' ]
+	};
+
+	// Reusable JSHintRC options
+	var jshintrc = grunt.file.readJSON( '.jshintrc' );
 
 	// Load tasks.
 	grunt.loadNpmTasks( 'grunt-jscs-checker' );
@@ -13,7 +18,7 @@ module.exports = function( grunt ) {
 	grunt.loadNpmTasks( 'grunt-contrib-watch' );
 	grunt.loadNpmTasks( 'grunt-simple-mocha' );
 
-	grunt.initConfig({
+	grunt.initConfig( {
 
 		pkg: grunt.file.readJSON( 'package.json' ),
 
@@ -22,7 +27,7 @@ module.exports = function( grunt ) {
 				options: {
 					config: '.jscsrc'
 				},
-				src: sourceFiles
+				src: files.src.concat( files.test ).concat( files.grunt )
 			}
 		},
 
@@ -31,24 +36,27 @@ module.exports = function( grunt ) {
 				reporter: require( 'jshint-stylish' )
 			},
 			grunt: {
-				options: grunt.file.readJSON( '.jshintrc' ),
-				src: [ 'Gruntfile.js' ]
+				options: jshintrc,
+				src: files.grunt
 			},
-			// tests: {
-			// 	src: [
-			// 		'tests/**/*.js'
-			// 	],
-			// 	options: grunt.file.readJSON( 'tests/.jshintrc' )
-			// },
-			src: {
-				options: grunt.file.readJSON( '.jshintrc' ),
-				src: sourceFiles
+			lib: {
+				options: jshintrc,
+				src: files.src
+			},
+			tests: {
+				options: extend( {
+					globals: {
+						'describe': false,
+						'it': false
+					}
+				}, jshintrc ),
+				src: files.test
 			}
 		},
 
 		simplemocha: {
 			test: {
-				src: [ 'test/**/*.js' ],
+				src: files.test,
 				options: {
 					reporter: 'Nyan',
 					ui: 'bdd',
@@ -61,16 +69,16 @@ module.exports = function( grunt ) {
 
 		watch: {
 			test: {
-				files: sourceFiles,
+				files: files.src,
 				tasks: [ 'jscs', 'jshint', 'simplemocha' ]
 			},
 			build: {
-				files: sourceFiles,
+				files: files.src,
 				tasks: [ 'jscs', 'jshint' ]
 			}
 		}
 
-	});
+	} );
 
 	grunt.registerTask( 'default', [ 'jshint', 'simplemocha' ] );
 	grunt.registerTask( 'test', [ 'jshint', 'simplemocha' ] );
