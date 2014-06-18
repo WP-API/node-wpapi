@@ -1,7 +1,6 @@
 const wpQuery = require( './wpQuery' );
 const util = require( 'util' );
 
-module.exports = taxonomies;
 util.inherits( taxonomies, wpQuery );
 
 function taxonomies( options ) {
@@ -13,10 +12,10 @@ function taxonomies( options ) {
 }
 
 taxonomies.prototype.id = function( id ) {
-	if( this._action === null ) {
+	if ( this._action === null ) {
 		this._id = id;
 		this._supportedMethods = [ 'head', 'get', 'put', 'post', 'patch', 'delete' ];
-	} else if( this._action === 'terms' ) {
+	} else if ( this._action === 'terms' ) {
 		this._actionId = id;
 		this._supportedMethods = [ 'head', 'get', 'put', 'post', 'patch', 'delete' ];
 	}
@@ -27,20 +26,26 @@ taxonomies.prototype.id = function( id ) {
 taxonomies.prototype.terms = function() {
 	this._action = 'terms';
 	this._supportedMethods = [ 'head', 'get', 'post' ];
+
 	return this;
 };
 
-taxonomies.prototype.generateRequestUri = function () {
+taxonomies.prototype.generateRequestUri = function() {
 	var path = [ this._options.host, this._options.basePath, 'taxonomies' ];
-	if( this._id !== null ) {
+
+	if ( this._id !== null ) {
 		path.push( this._id );
 	}
-	if( this._action !== null ) {
+
+	if ( this._action !== null ) {
 		path.push( this._action );
 	}
-	if( this._actionId !== null ) {
+
+	if ( this._actionId !== null ) {
 		path.push( this._actionId );
 	}
 
 	return path.join( '/' ).replace( '//', '/' );
 };
+
+module.exports = taxonomies;

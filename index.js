@@ -1,5 +1,3 @@
-var http = require( 'http' );
-var wpQuery = require( './libs/wpQuery.js' );
 var extend = require( 'node.extend' );
 
 module.exports = wp;
@@ -12,7 +10,7 @@ function wp( options ) {
 
 wp.fn = wp.prototype = {
 
-	_options : {
+	_options: {
 		host: '',
 		port: 80,
 		basePath: '/wp-json',
@@ -32,12 +30,14 @@ wp.fn = wp.prototype = {
 		options = extend( options, this._options );
 		return new posts( options );
 	},
+
 	taxonomies: function( options ) {
 		var taxonomies = require( './libs/taxonomies' );
 		options = options || {};
 		options = extend( options, this._options );
 		return new taxonomies( options );
 	},
+
 	users: function( options ) {
 		var users = require( './libs/users' );
 		options = options || {};

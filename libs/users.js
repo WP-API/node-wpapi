@@ -1,7 +1,6 @@
 const wpQuery = require( './wpQuery' );
 const util = require( 'util' );
 
-module.exports = users;
 util.inherits( users, wpQuery );
 
 function users( options ) {
@@ -23,11 +22,13 @@ users.prototype.id = function( id ) {
 	return this;
 };
 
-users.prototype.generateRequestUri = function () {
+users.prototype.generateRequestUri = function() {
 	var path = [ this._options.host, this._options.basePath, 'users' ];
-	if( this._id !== null ) {
+	if ( this._id !== null ) {
 		path.push( this._id );
 	}
 
 	return path.join( '/' ).replace( '//', '/' );
 };
+
+module.exports = users;

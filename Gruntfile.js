@@ -14,7 +14,9 @@ module.exports = function( grunt ) {
 	grunt.loadNpmTasks( 'grunt-simple-mocha' );
 
 	grunt.initConfig({
+
 		pkg: grunt.file.readJSON( 'package.json' ),
+
 		jscs: {
 			all: {
 				options: {
@@ -23,6 +25,7 @@ module.exports = function( grunt ) {
 				src: sourceFiles
 			}
 		},
+
 		jshint: {
 			options: {
 				reporter: require( 'jshint-stylish' )
@@ -42,6 +45,7 @@ module.exports = function( grunt ) {
 				src: sourceFiles
 			}
 		},
+
 		simplemocha: {
 			test: {
 				src: [ 'test/**/*.js' ],
@@ -54,6 +58,7 @@ module.exports = function( grunt ) {
 				}
 			}
 		},
+
 		watch: {
 			test: {
 				files: sourceFiles,
@@ -64,6 +69,7 @@ module.exports = function( grunt ) {
 				tasks: [ 'jscs', 'jshint' ]
 			}
 		}
+
 	});
 
 	grunt.registerTask( 'default', [ 'jshint', 'simplemocha' ] );

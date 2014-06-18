@@ -1,7 +1,6 @@
 const wpQuery = require( './wpQuery' );
 const util = require( 'util' );
 
-module.exports = posts;
 util.inherits( posts, wpQuery );
 
 function posts( options ) {
@@ -13,13 +12,13 @@ function posts( options ) {
 }
 
 posts.prototype.id = function( id ) {
-	if( this._action === null ) {
+	if ( this._action === null ) {
 		this._id = parseInt( id, 10 );
 		this._supportedMethods = [ 'head', 'get', 'put', 'post', 'patch', 'delete' ];
-	} else if( this._action === 'comments' ) {
+	} else if ( this._action === 'comments' ) {
 		this._actionId = parseInt( id, 10 );
 		this._supportedMethods = [ 'head', 'get', 'put', 'post', 'patch', 'delete' ];
-	} else if( this._action === 'types' ) {
+	} else if ( this._action === 'types' ) {
 		this._actionId = id;
 		this._supportedMethods = [ 'head', 'get' ];
 	}
@@ -51,17 +50,19 @@ posts.prototype.statuses = function() {
 	return this;
 };
 
-posts.prototype.generateRequestUri = function () {
+posts.prototype.generateRequestUri = function() {
 	var path = [ this._options.host, this._options.basePath, 'posts' ];
-	if( this._id !== null ) {
+	if ( this._id !== null ) {
 		path.push( this._id );
 	}
-	if( this._action !== null ) {
+	if ( this._action !== null ) {
 		path.push( this._action );
 	}
-	if( this._actionId !== null ) {
+	if ( this._actionId !== null ) {
 		path.push( this._actionId );
 	}
 
 	return path.join( '/' ).replace( '//', '/' );
 };
+
+module.exports = posts;
