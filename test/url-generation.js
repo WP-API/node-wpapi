@@ -13,7 +13,7 @@ describe( 'API URL generation:', function() {
 		it( 'should have the correct URL for retrieving a specific post', function() {
 			assert.strictEqual( posts.id( 1337 ).generateRequestUri(), '/wp-json/posts/1337' );
 		} );
-		
+
 		it( 'should have the correct URL for retrieving all comments for a specific post', function() {
 			assert.strictEqual( posts.id( 1337 ).comments().generateRequestUri(), '/wp-json/posts/1337/comments' );
 		} );
