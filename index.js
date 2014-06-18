@@ -25,21 +25,21 @@ wp.fn = wp.prototype = {
 	},
 
 	posts: function( options ) {
-		var posts = require( './libs/posts' );
+		var posts = require( './lib/posts' );
 		options = options || {};
 		options = extend( options, this._options );
 		return new posts( options );
 	},
 
 	taxonomies: function( options ) {
-		var taxonomies = require( './libs/taxonomies' );
+		var taxonomies = require( './lib/taxonomies' );
 		options = options || {};
 		options = extend( options, this._options );
 		return new taxonomies( options );
 	},
 
 	users: function( options ) {
-		var users = require( './libs/users' );
+		var users = require( './lib/users' );
 		options = options || {};
 		options = extend( options, this._options );
 		return new users( options );

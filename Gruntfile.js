@@ -4,7 +4,7 @@ module.exports = function( grunt ) {
 	// Reusable file globbing
 	var sourceFiles = [
 		'index.js',
-		'libs/**/*.js'
+		'lib/**/*.js'
 	];
 
 	// Load tasks.
