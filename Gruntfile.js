@@ -5,7 +5,7 @@ module.exports = function( grunt ) {
 	// Reusable file globbing
 	var files = {
 		grunt: [ 'Gruntfile.js' ],
-		src: [ 'index.js', 'lib/**/*.js' ],
+		lib: [ 'index.js', 'lib/**/*.js' ],
 		test: [ 'test/**/*.js' ]
 	};
 
@@ -13,21 +13,25 @@ module.exports = function( grunt ) {
 	var jshintrc = grunt.file.readJSON( '.jshintrc' );
 
 	// Load tasks.
-	grunt.loadNpmTasks( 'grunt-jscs-checker' );
-	grunt.loadNpmTasks( 'grunt-contrib-jshint' );
-	grunt.loadNpmTasks( 'grunt-contrib-watch' );
-	grunt.loadNpmTasks( 'grunt-simple-mocha' );
+	require( 'load-grunt-tasks' )( grunt );
 
 	grunt.initConfig( {
 
 		pkg: grunt.file.readJSON( 'package.json' ),
 
 		jscs: {
-			all: {
-				options: {
-					config: '.jscsrc'
-				},
-				src: files.src.concat( files.test ).concat( files.grunt )
+			options: {
+				config: '.jscsrc',
+				reporter: require( 'jscs-stylish' ).path
+			},
+			grunt: {
+				src: files.grunt
+			},
+			lib: {
+				src: files.lib
+			},
+			tests: {
+				src: files.test
 			}
 		},
 
@@ -41,7 +45,7 @@ module.exports = function( grunt ) {
 			},
 			lib: {
 				options: jshintrc,
-				src: files.src
+				src: files.lib
 			},
 			tests: {
 				options: extend( {
@@ -68,18 +72,19 @@ module.exports = function( grunt ) {
 		},
 
 		watch: {
-			test: {
-				files: files.src,
-				tasks: [ 'jscs', 'jshint', 'simplemocha' ]
+			lib: {
+				files: files.lib,
+				tasks: [ 'jscs:lib', 'jshint:lib', 'simplemocha' ]
 			},
-			build: {
-				files: files.src,
-				tasks: [ 'jscs', 'jshint' ]
+			tests: {
+				files: files.test,
+				tasks: [ 'jscs:tests', 'jshint:tests', 'simplemocha' ]
 			}
 		}
 
 	} );
 
-	grunt.registerTask( 'default', [ 'jshint', 'simplemocha' ] );
-	grunt.registerTask( 'test', [ 'jshint', 'simplemocha' ] );
+	grunt.registerTask( 'lint', [ 'jscs', 'jshint' ] );
+	grunt.registerTask( 'test', [ 'simplemocha' ] );
+	grunt.registerTask( 'default', [ 'lint', 'test' ] );
 };
