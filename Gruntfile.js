@@ -62,11 +62,7 @@ module.exports = function( grunt ) {
 			test: {
 				src: files.test,
 				options: {
-					reporter: 'Nyan',
-					ui: 'bdd',
-					globals: [ 'describe', 'it' ],
-					log: true,
-					logErrors: true
+					reporter: 'Nyan'
 				}
 			}
 		},
