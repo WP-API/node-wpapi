@@ -49,6 +49,7 @@
 	"requireSpacesInsideParentheses": "allButNested",
 	"requireSpaceAfterBinaryOperators": true,
 	"requireLineFeedAtFileEnd": true,
+	"requireSpaceAfterPrefixUnaryOperators": [ "!" ],
 	"requireSpaceBeforeBinaryOperators": [
 		"=", "+=", "-=", "*=", "/=", "%=", "<<=", ">>=", ">>>=",
 		"&=", "|=", "^=", "+=",
@@ -65,7 +66,7 @@
 		"beforeOpeningRoundBrace": true
 	},
 	"disallowSpaceAfterObjectKeys": true,
-	"disallowSpaceAfterPrefixUnaryOperators": true,
+	"disallowSpaceAfterPrefixUnaryOperators": [ "++", "--", "+", "-", "~" ],
 	"disallowSpaceBeforePostfixUnaryOperators": true,
 	"disallowSpaceBeforeBinaryOperators": [ ",", ":" ],
 	"disallowMultipleLineBreaks": true
