@@ -2,7 +2,7 @@
   "name": "node-wp-api",
   "version": "0.0.2",
   "description": "A client that consumes the WP JSON API.",
-  "main": "index.js",
+  "main": "wp.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/kadamwhite/node-wp-api.git"
@@ -21,6 +21,8 @@
     "node.extend": "^1.0.10"
   },
   "devDependencies": {
+    "chai": "^1.9.1",
+    "chai-as-promised": "^4.1.1",
     "grunt": "^0.4.5",
     "grunt-cli": "^0.1.13",
     "grunt-contrib-jshint": "^0.10.0",
@@ -31,6 +33,7 @@
     "jscs-stylish": "^0.3.0",
     "jshint-stylish": "^0.2.0",
     "mocha": "^1.20.1",
-    "sinon": "^1.10.2"
+    "sinon": "^1.10.2",
+    "sinon-chai": "^2.5.0"
   }
 }
