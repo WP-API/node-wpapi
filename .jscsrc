@@ -46,7 +46,6 @@
 	"requireSpacesInsideObjectBrackets": "all",
 	"requireSpacesInsideArrayBrackets": "allButNested",
 	"requireSpacesInConditionalExpression": true,
-	"requireSpacesInsideParentheses": "allButNested",
 	"requireSpaceAfterBinaryOperators": true,
 	"requireLineFeedAtFileEnd": true,
 	"requireSpaceAfterPrefixUnaryOperators": [ "!" ],
