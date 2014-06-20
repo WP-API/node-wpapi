@@ -7,7 +7,7 @@ var extend = require( 'node.extend' );
 function WP( options ) {
 
 	// Enforce `new`
-	if ( ! this instanceof WP ) {
+	if ( this instanceof WP === false ) {
 		return new WP( options );
 	}
 
@@ -28,24 +28,24 @@ const defaults = {
 /** SETUP FUNCTIONS **/
 
 WP.prototype.posts = function( options ) {
-		var posts = require( './lib/posts' );
+		var PostRequest = require( './lib/posts' );
 		options = options || {};
 		options = extend( options, this._options );
-		return new posts( options );
+		return new PostRequest( options );
 };
 
 WP.prototype.taxonomies = function( options ) {
-		var taxonomies = require( './lib/taxonomies' );
+		var TaxonomyRequest = require( './lib/taxonomies' );
 		options = options || {};
 		options = extend( options, this._options );
-		return new taxonomies( options );
+		return new TaxonomyRequest( options );
 };
 
 WP.prototype.users = function( options ) {
-		var users = require( './lib/users' );
+		var UserRequest = require( './lib/users' );
 		options = options || {};
 		options = extend( options, this._options );
-		return new users( options );
+		return new UserRequest( options );
 };
 
 module.exports = WP;
