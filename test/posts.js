@@ -5,7 +5,8 @@ const WP = require( '../' );
 
 describe( 'wp.posts', function() {
 
-	var posts = WP().posts();
+	var wp = new WP( { endpoint: '/wp-json' } );
+	var posts = wp.posts();
 
 	it( 'should create the URL for retrieving all posts', function() {
 		expect( posts.generateRequestUri() ).to.equal( '/wp-json/posts' );

@@ -5,7 +5,8 @@ const WP = require( '../' );
 
 describe( 'wp.users', function() {
 
-	var users = WP().users();
+	var wp = new WP( { endpoint: '/wp-json' } );
+	var users = wp.users();
 
 	it( 'should create the URL for retrieving all users', function() {
 		var url = users.generateRequestUri();

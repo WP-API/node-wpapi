@@ -46,7 +46,7 @@ describe( 'wpQuery', function() {
 
 			expect( function() {
 				return query._isSupportedMethod( 'post' );
-			} ).to.throws();
+			} ).to.throw();
 		} );
 
 	} );

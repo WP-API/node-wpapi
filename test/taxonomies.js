@@ -5,7 +5,8 @@ const WP = require( '../' );
 
 describe( 'wp.taxonomies', function() {
 
-	var taxonomies = WP().taxonomies();
+	var wp = new WP( { endpoint: '/wp-json' } );
+	var taxonomies = wp.taxonomies();
 
 	it( 'should create the URL for retrieving all taxonomies', function() {
 		var url = taxonomies.generateRequestUri();
