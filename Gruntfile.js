@@ -15,7 +15,7 @@ module.exports = function( grunt ) {
 	// Load tasks.
 	require( 'load-grunt-tasks' )( grunt );
 
-	grunt.initConfig( {
+	grunt.initConfig({
 
 		pkg: grunt.file.readJSON( 'package.json' ),
 
@@ -48,7 +48,7 @@ module.exports = function( grunt ) {
 				src: files.lib
 			},
 			tests: {
-				options: extend( {
+				options: extend({
 					globals: {
 						'describe': false,
 						'it': false
@@ -78,7 +78,7 @@ module.exports = function( grunt ) {
 			}
 		}
 
-	} );
+	});
 
 	grunt.registerTask( 'lint', [ 'jscs', 'jshint' ] );
 	grunt.registerTask( 'test', [ 'simplemocha' ] );
