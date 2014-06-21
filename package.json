@@ -18,7 +18,8 @@
     "test": "grunt test"
   },
   "dependencies": {
-    "node.extend": "^1.0.10"
+    "node.extend": "^1.0.10",
+    "superagent": "^0.18.0"
   },
   "devDependencies": {
     "chai": "^1.9.1",
