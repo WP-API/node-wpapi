@@ -33,11 +33,11 @@ describe( 'WPRequest', function() {
 
 	});
 
-	describe( '_isSupportedMethod', function() {
+	describe( '_checkMethodSupport', function() {
 
 		it( 'should return true when called with a supported method', function() {
 			var query = new WPRequest();
-			expect( query._isSupportedMethod( 'get' ) ).to.equal( true );
+			expect( query._checkMethodSupport( 'get' ) ).to.equal( true );
 		});
 
 		it( 'should throw an error when called with an unsupported method', function() {
@@ -45,7 +45,7 @@ describe( 'WPRequest', function() {
 			query._supportedMethods = [ 'get' ];
 
 			expect(function() {
-				return query._isSupportedMethod( 'post' );
+				return query._checkMethodSupport( 'post' );
 			}).to.throw();
 		});
 
