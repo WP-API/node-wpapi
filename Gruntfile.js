@@ -77,11 +77,29 @@ module.exports = function( grunt ) {
 				files: files.tests,
 				tasks: [ 'jscs:tests', 'jshint:tests', 'simplemocha' ]
 			}
+		},
+
+		yuidoc: {
+			compile: {
+				name: '<%= pkg.name %>',
+				description: '<%= pkg.description %>',
+				version: '<%= pkg.version %>',
+				url: '<%= pkg.homepage %>',
+				options: {
+					ignorePaths: [ 'node_modules', 'tests' ],
+					paths: '.',
+					themedir: './docs-theme',
+					// theme: 'simple',
+					outdir: 'docs/',
+					tabtospace: 2
+				}
+			}
 		}
 
 	});
 
 	grunt.registerTask( 'lint', [ 'jscs', 'jshint' ] );
 	grunt.registerTask( 'test', [ 'simplemocha' ] );
+	grunt.registerTask( 'docs', [ 'yuidoc' ] );
 	grunt.registerTask( 'default', [ 'lint', 'test' ] );
 };

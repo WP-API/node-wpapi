@@ -1,7 +1,7 @@
 {
   "name": "node-wp-api",
   "version": "0.0.2",
-  "description": "A client that consumes the WP JSON API.",
+  "description": "A Node.js client for interacting with the WordPress REST API",
   "main": "wp.js",
   "repository": {
     "type": "git",
@@ -29,6 +29,7 @@
     "grunt-cli": "^0.1.13",
     "grunt-contrib-jshint": "^0.10.0",
     "grunt-contrib-watch": "^0.6.1",
+    "grunt-contrib-yuidoc": "^0.5.2",
     "grunt-jscs-checker": "^0.5.1",
     "grunt-newer": "^0.7.0",
     "grunt-simple-mocha": "^0.4.0",

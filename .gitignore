@@ -25,3 +25,8 @@ build/Release
 node_modules
 
 test.js
+
+# Docs directory should not be committed into master:
+# The rendered API docs files will live in the gh-pages branch
+docs/
+index.html
