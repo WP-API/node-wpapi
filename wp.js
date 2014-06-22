@@ -14,7 +14,7 @@
  * @beta
  })
  */
-var extend = require( 'node.extend' );
+const extend = require( 'node.extend' );
 
 /**
  * The constructor for the WP API service
