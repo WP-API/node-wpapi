@@ -5,7 +5,7 @@ module.exports = function( grunt ) {
 	// Reusable file globbing
 	var files = {
 		grunt: [ 'Gruntfile.js' ],
-		lib: [ 'index.js', 'lib/**/*.js' ],
+		lib: [ 'wp.js', 'lib/**/*.js' ],
 		tests: [ 'tests/**/*.js' ]
 	};
 
