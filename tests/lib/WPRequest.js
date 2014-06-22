@@ -51,4 +51,36 @@ describe( 'WPRequest', function() {
 
 	});
 
+	describe( 'WPRequest.prototype.filter', function() {
+		var request;
+
+		beforeEach(function() {
+			request = new WPRequest();
+		});
+
+		it( 'should set the internal _filters hash', function() {
+			request.filter({
+				someFilterProp: 'filter-value',
+				postsPerPage: 7
+			});
+			expect( request._filters ).to.deep.equal({
+				someFilterProp: 'filter-value',
+				postsPerPage: 7
+			});
+		});
+
+		it( 'should support chaining filters', function() {
+			request.filter({
+				someFilterProp: 'filter-value'
+			}).filter({
+				postsPerPage: 7
+			});
+			expect( request._filters ).to.deep.equal({
+				someFilterProp: 'filter-value',
+				postsPerPage: 7
+			});
+		});
+
+	});
+
 });
