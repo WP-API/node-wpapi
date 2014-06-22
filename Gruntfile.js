@@ -63,7 +63,7 @@ module.exports = function( grunt ) {
 			tests: {
 				src: files.tests,
 				options: {
-					reporter: 'Nyan'
+					reporter: 'nyan'
 				}
 			}
 		},
