@@ -69,15 +69,29 @@ describe( 'WPRequest', function() {
 			});
 		});
 
+		it( 'should support passing a single filter property as key & value arguments', function() {
+			request.filter( 'postType', 'page' );
+			expect( request._filters ).to.deep.equal({
+				postType: 'page'
+			});
+		});
+
+		it( 'should support redefining filter values', function() {
+			request.filter( 'postStatus', 'draft' );
+			request.filter( 'postStatus', 'publish' );
+			expect( request._filters.postStatus ).to.equal( 'publish' );
+		});
+
 		it( 'should support chaining filters', function() {
 			request.filter({
 				someFilterProp: 'filter-value'
 			}).filter({
 				postsPerPage: 7
-			});
+			}).filter( 'postStatus', 'draft' );
 			expect( request._filters ).to.deep.equal({
 				someFilterProp: 'filter-value',
-				postsPerPage: 7
+				postsPerPage: 7,
+				postStatus: 'draft'
 			});
 		});
 
