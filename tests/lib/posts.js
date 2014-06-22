@@ -4,31 +4,35 @@ const PostsRequest = require( '../../lib/posts' );
 
 describe( 'wp.posts', function() {
 
-	var posts;
+	describe( 'prototype.generateRequestUri', function() {
 
-	beforeEach(function() {
-		posts = new PostsRequest();
-		posts._options = {
-			endpoint: '/wp-json'
-		};
-	});
+		var posts;
 
-	it( 'should create the URL for retrieving all posts', function() {
-		expect( posts.generateRequestUri() ).to.equal( '/wp-json/posts' );
-	});
+		beforeEach(function() {
+			posts = new PostsRequest();
+			posts._options = {
+				endpoint: '/wp-json'
+			};
+		});
 
-	it( 'should create the URL for retrieving a specific post', function() {
-		expect( posts.id( 1337 ).generateRequestUri() ).to.equal( '/wp-json/posts/1337' );
-	});
+		it( 'should create the URL for retrieving all posts', function() {
+			expect( posts.generateRequestUri() ).to.equal( '/wp-json/posts' );
+		});
 
-	it( 'should create the URL for retrieving all comments for a specific post', function() {
-		expect( posts.id( 1337 ).comments().generateRequestUri() ).to.equal(
-			'/wp-json/posts/1337/comments' );
-	});
+		it( 'should create the URL for retrieving a specific post', function() {
+			expect( posts.id( 1337 ).generateRequestUri() ).to.equal( '/wp-json/posts/1337' );
+		});
 
-	it( 'should create the URL for retrieving a specific comment', function() {
-		expect( posts.id( 1337 ).comments().id( 9001 ).generateRequestUri() ).to.equal(
-			'/wp-json/posts/1337/comments/9001' );
+		it( 'should create the URL for retrieving all comments for a specific post', function() {
+			expect( posts.id( 1337 ).comments().generateRequestUri() ).to.equal(
+				'/wp-json/posts/1337/comments' );
+		});
+
+		it( 'should create the URL for retrieving a specific comment', function() {
+			expect( posts.id( 1337 ).comments().id( 9001 ).generateRequestUri() ).to.equal(
+				'/wp-json/posts/1337/comments/9001' );
+		});
+
 	});
 
 });

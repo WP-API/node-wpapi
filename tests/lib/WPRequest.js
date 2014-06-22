@@ -51,7 +51,7 @@ describe( 'WPRequest', function() {
 
 	});
 
-	describe( 'WPRequest.prototype.filter', function() {
+	describe( 'prototype.filter', function() {
 		var request;
 
 		beforeEach(function() {
