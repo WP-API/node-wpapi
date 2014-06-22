@@ -31,8 +31,8 @@ const defaults = {
 
 /**
  * @method posts
- * @param {Object} [options]* An options hash for a new PostsQuery
- * @return {PostsQuery} A PostsQuery instance
+ * @param {Object} [options]* An options hash for a new PostsRequest
+ * @return {PostsRequest} A PostsRequest instance
  */
 WP.prototype.posts = function( options ) {
 		var PostRequest = require( './lib/posts' );
@@ -43,8 +43,8 @@ WP.prototype.posts = function( options ) {
 
 /**
  * @method taxonomies
- * @param {Object} [options]* An options hash for a new TaxonomiesQuery
- * @return {TaxonomiesQuery} A TaxonomiesQuery instance
+ * @param {Object} [options]* An options hash for a new TaxonomiesRequest
+ * @return {TaxonomiesRequest} A TaxonomiesRequest instance
  */
 WP.prototype.taxonomies = function( options ) {
 		var TaxonomyRequest = require( './lib/taxonomies' );
@@ -55,8 +55,8 @@ WP.prototype.taxonomies = function( options ) {
 
 /**
  * @method users
- * @param {Object} [options]* An options hash for a new UsersQuery
- * @return {UsersQuery} A UsersQuery instance
+ * @param {Object} [options]* An options hash for a new UsersRequest
+ * @return {UsersRequest} A UsersRequest instance
  */
 WP.prototype.users = function( options ) {
 		var UserRequest = require( './lib/users' );

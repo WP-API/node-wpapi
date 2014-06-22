@@ -1,13 +1,13 @@
 const expect = require( 'chai' ).expect;
 
-const PostsQuery = require( '../../lib/posts' );
+const PostsRequest = require( '../../lib/posts' );
 
 describe( 'wp.posts', function() {
 
 	var posts;
 
 	beforeEach(function() {
-		posts = new PostsQuery();
+		posts = new PostsRequest();
 		posts._options = {
 			endpoint: '/wp-json'
 		};

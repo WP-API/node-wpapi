@@ -1,13 +1,13 @@
 const expect = require( 'chai' ).expect;
 
-const UsersQuery = require( '../../lib/users' );
+const UsersRequest = require( '../../lib/users' );
 
 describe( 'wp.users', function() {
 
 	var users;
 
 	beforeEach(function() {
-		users = new UsersQuery();
+		users = new UsersRequest();
 		users._options = {
 			endpoint: '/wp-json'
 		};
