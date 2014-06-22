@@ -6,7 +6,7 @@ module.exports = function( grunt ) {
 	var files = {
 		grunt: [ 'Gruntfile.js' ],
 		lib: [ 'index.js', 'lib/**/*.js' ],
-		test: [ 'test/**/*.js' ]
+		tests: [ 'tests/**/*.js' ]
 	};
 
 	// Reusable JSHintRC options
@@ -31,7 +31,7 @@ module.exports = function( grunt ) {
 				src: files.lib
 			},
 			tests: {
-				src: files.test
+				src: files.tests
 			}
 		},
 
@@ -55,13 +55,13 @@ module.exports = function( grunt ) {
 						'it': false
 					}
 				}, jshintrc ),
-				src: files.test
+				src: files.tests
 			}
 		},
 
 		simplemocha: {
-			test: {
-				src: files.test,
+			tests: {
+				src: files.tests,
 				options: {
 					reporter: 'Nyan'
 				}
@@ -74,7 +74,7 @@ module.exports = function( grunt ) {
 				tasks: [ 'jscs:lib', 'jshint:lib', 'simplemocha' ]
 			},
 			tests: {
-				files: files.test,
+				files: files.tests,
 				tasks: [ 'jscs:tests', 'jshint:tests', 'simplemocha' ]
 			}
 		}
