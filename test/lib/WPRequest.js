@@ -1,18 +1,18 @@
 const expect = require( 'chai' ).expect;
 
-const WPQuery = require( '../../lib/wpQuery' );
+const WPRequest = require( '../../lib/WPRequest' );
 
-describe( 'WPQuery', function() {
+describe( 'WPRequest', function() {
 
 	describe( 'constructor', function() {
 
-		it( 'should create a WPQuery instance', function() {
-			var query1 = new WPQuery();
-			expect( query1 instanceof WPQuery ).to.equal( true );
+		it( 'should create a WPRequest instance', function() {
+			var query1 = new WPRequest();
+			expect( query1 instanceof WPRequest ).to.equal( true );
 		});
 
 		it( 'should set any passed-in options', function() {
-			var query = new WPQuery({
+			var query = new WPRequest({
 				booleanProp: true,
 				strProp: 'Some string'
 			});
@@ -21,12 +21,12 @@ describe( 'WPQuery', function() {
 		});
 
 		it( 'should define a _filters object', function() {
-			var query = new WPQuery();
+			var query = new WPRequest();
 			expect( typeof query._filters ).to.equal( 'object' );
 		});
 
 		it( 'should define a _supportedMethods array', function() {
-			var query = new WPQuery();
+			var query = new WPRequest();
 			expect( query._supportedMethods.sort().join( '|' ) ).to.equal(
 				'delete|get|head|patch|post|put' );
 		});
@@ -36,12 +36,12 @@ describe( 'WPQuery', function() {
 	describe( '_isSupportedMethod', function() {
 
 		it( 'should return true when called with a supported method', function() {
-			var query = new WPQuery();
+			var query = new WPRequest();
 			expect( query._isSupportedMethod( 'get' ) ).to.equal( true );
 		});
 
 		it( 'should throw an error when called with an unsupported method', function() {
-			var query = new WPQuery();
+			var query = new WPRequest();
 			query._supportedMethods = [ 'get' ];
 
 			expect(function() {
