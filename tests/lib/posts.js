@@ -1,8 +1,59 @@
-const expect = require( 'chai' ).expect;
+const chai = require( 'chai' );
+const expect = chai.expect;
+const sinon = require( 'sinon' );
+chai.use( require( 'sinon-chai' ) );
+const sandbox = require( 'sandboxed-module' );
 
 const PostsRequest = require( '../../lib/posts' );
 
 describe( 'wp.posts', function() {
+
+	describe( 'constructor', function() {
+
+		it( 'should create a PostsRequest instance', function() {
+			var query1 = new PostsRequest();
+			expect( query1 instanceof PostsRequest ).to.be.true;
+		});
+
+		it( 'should set any passed-in options', function() {
+			var posts = new PostsRequest({
+				booleanProp: true,
+				strProp: 'Some string'
+			});
+			expect( posts._options.booleanProp ).to.be.true;
+			expect( posts._options.strProp ).to.equal( 'Some string' );
+		});
+
+		it( 'should default _options to {}', function() {
+			var posts = new PostsRequest();
+			expect( posts._options ).to.deep.equal( {} );
+		});
+		it( 'should intitialize instance properties', function() {
+			var posts = new PostsRequest();
+			expect( posts._action ).to.be.null;
+			expect( posts._actionId ).to.be.null;
+			expect( posts._id ).to.be.null;
+			var _supportedMethods = posts._supportedMethods.sort().join( '|' );
+			expect( _supportedMethods ).to.equal( 'get|head|post' );
+		});
+
+		it( 'should inherit PostsRequest from WPRequest using util.inherits', function() {
+
+			var utilInherits = sinon.spy();
+			sandbox.load( '../../lib/posts', {
+				requires: {
+					'./WPRequest': 'WPRequestMock',
+					'util': {
+						inherits: utilInherits
+					}
+				}
+			});
+
+			// [ 0 ][ 1 ]: Call #1, Argument #2 should be our request mock
+			expect( utilInherits.args[ 0 ][ 1 ] ).to.equal( 'WPRequestMock' );
+		});
+
+	});
 
 	describe( 'prototype.generateRequestUri', function() {
 

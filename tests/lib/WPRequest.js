@@ -1,4 +1,6 @@
-const expect = require( 'chai' ).expect;
+const chai = require( 'chai' );
+const expect = chai.expect;
+chai.use( require( 'sinon-chai' ) );
 
 const WPRequest = require( '../../lib/WPRequest' );
 
@@ -7,28 +9,28 @@ describe( 'WPRequest', function() {
 	describe( 'constructor', function() {
 
 		it( 'should create a WPRequest instance', function() {
-			var query1 = new WPRequest();
-			expect( query1 instanceof WPRequest ).to.equal( true );
+			var request = new WPRequest();
+			expect( request instanceof WPRequest ).to.be.true;
 		});
 
 		it( 'should set any passed-in options', function() {
-			var query = new WPRequest({
+			var request = new WPRequest({
 				booleanProp: true,
 				strProp: 'Some string'
 			});
-			expect( query._options.booleanProp ).to.equal( true );
-			expect( query._options.strProp ).to.equal( 'Some string' );
+			expect( request._options.booleanProp ).to.be.true;
+			expect( request._options.strProp ).to.equal( 'Some string' );
 		});
 
 		it( 'should define a _filters object', function() {
-			var query = new WPRequest();
-			expect( typeof query._filters ).to.equal( 'object' );
+			var request = new WPRequest();
+			expect( request._filters ).to.deep.equal({});
 		});
 
 		it( 'should define a _supportedMethods array', function() {
-			var query = new WPRequest();
-			expect( query._supportedMethods.sort().join( '|' ) ).to.equal(
-				'delete|get|head|patch|post|put' );
+			var request = new WPRequest();
+			var _supportedMethods = request._supportedMethods.sort().join( '|' );
+			expect( _supportedMethods ).to.equal( 'delete|get|head|patch|post|put' );
 		});
 
 	});
