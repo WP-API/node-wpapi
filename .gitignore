@@ -1,0 +1,29 @@
+# This is the gitignore for the gh-pages branch!
+# It excludes all of the normal master branch's working files, so that
+# when you switch back and forth it is easy to commit only docs changes.
+
+# Files that belong to the main source code branches:
+docs-theme/
+lib/
+tests/
+.jscsrc
+.jshintrc
+Gruntfile.js
+LICENSE
+package.json
+README.md
+wp.js
+
+
+# Files that are excluded in the .gitignore on master (because if we don't need
+# them there we probably don't need them here either, excepting docs/):
+logs
+pids
+*.pid
+*.seed
+lib-cov
+coverage
+.grunt
+build/Release
+node_modules
+test.js
