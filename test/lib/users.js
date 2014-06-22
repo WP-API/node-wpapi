@@ -1,12 +1,17 @@
-const chai = require( 'chai' );
-const expect = chai.expect;
+const expect = require( 'chai' ).expect;
 
-const WP = require( '../../wp' );
+const UsersQuery = require( '../../lib/users' );
 
 describe( 'wp.users', function() {
 
-	var wp = new WP({ endpoint: '/wp-json' });
-	var users = wp.users();
+	var users;
+
+	beforeEach(function() {
+		users = new UsersQuery();
+		users._options = {
+			endpoint: '/wp-json'
+		};
+	});
 
 	it( 'should create the URL for retrieving all users', function() {
 		var url = users.generateRequestUri();

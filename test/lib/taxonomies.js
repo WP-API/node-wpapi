@@ -1,12 +1,17 @@
-const chai = require( 'chai' );
-const expect = chai.expect;
+const expect = require( 'chai' ).expect;
 
-const WP = require( '../../wp' );
+const TaxonomiesQuery = require( '../../lib/taxonomies' );
 
 describe( 'wp.taxonomies', function() {
 
-	var wp = new WP({ endpoint: '/wp-json' });
-	var taxonomies = wp.taxonomies();
+	var taxonomies;
+
+	beforeEach(function() {
+		taxonomies = new TaxonomiesQuery();
+		taxonomies._options = {
+			endpoint: '/wp-json'
+		};
+	});
 
 	it( 'should create the URL for retrieving all taxonomies', function() {
 		var url = taxonomies.generateRequestUri();

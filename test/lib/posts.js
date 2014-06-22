@@ -1,11 +1,17 @@
 const expect = require( 'chai' ).expect;
 
-const WP = require( '../../wp' );
+const PostsQuery = require( '../../lib/posts' );
 
 describe( 'wp.posts', function() {
 
-	var wp = new WP({ endpoint: '/wp-json' });
-	var posts = wp.posts();
+	var posts;
+
+	beforeEach(function() {
+		posts = new PostsQuery();
+		posts._options = {
+			endpoint: '/wp-json'
+		};
+	});
 
 	it( 'should create the URL for retrieving all posts', function() {
 		expect( posts.generateRequestUri() ).to.equal( '/wp-json/posts' );

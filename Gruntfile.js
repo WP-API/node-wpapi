@@ -50,6 +50,7 @@ module.exports = function( grunt ) {
 			tests: {
 				options: extend({
 					globals: {
+						'beforeEach': false,
 						'describe': false,
 						'it': false
 					}
