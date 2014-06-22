@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>lib/WPRequest.js - node-wp-api</title>
+    <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
+    <link rel="shortcut icon" type="image/png" href="../assets/favicon.png">
+    <script src="../assets/vendor/yui-min.js"></script>
+</head>
+<body>
+
+<div id="doc">
+    <header class="main-header">
+        <div class="content">
+            <div class="project-title">
+                
+                
+                    <h1 class="project-name">node-wp-api</h1> <span class="project-version">0.0.2</span>
+                
+                
+                    <p class="description">A Node.js client for interacting with the WordPress REST API</p>
+                
+            </div>
+            <ul class="jump-links">
+                <li><a href="#index" class="index-jump-link">index</a></li>
+                <li><a href="#top" class="top-jump-link">top</a></li>
+            </ul>
+        </div>
+    </header>
+    <div id="bd" class="main-body">
+
+        <div id="docs-sidebar" class="sidebar apidocs">
+            <div id="api-list">
+    <div id="api-tabview" class="tabview">
+        <ul class="tabs">
+            <li><a href="#api-classes">Classes</a></li>
+            <li><a href="#api-modules">Modules</a></li>
+        </ul>
+
+        <div id="api-tabview-filter">
+            <input type="search" id="api-filter" placeholder="Type to filter APIs">
+        </div>
+
+        <div id="api-tabview-panel">
+            <ul id="api-classes" class="apis classes">
+            
+                <li><a class="type" href="../classes/PostsRequest.html">PostsRequest</a></li>
+            
+                <li><a class="type" href="../classes/TaxonomiesRequest.html">TaxonomiesRequest</a></li>
+            
+                <li><a class="type" href="../classes/UsersRequest.html">UsersRequest</a></li>
+            
+                <li><a class="type" href="../classes/WP.html">WP</a></li>
+            
+                <li><a class="type" href="../classes/WPRequest.html">WPRequest</a></li>
+            
+            </ul>
+
+            <ul id="api-modules" class="apis modules">
+            
+            </ul>
+        </div>
+    </div>
+</div>
+
+        </div>
+
+        <div id="docs-main" class="apidocs">
+            <div class="content container">
+                <h1 class="file-heading">File: lib/WPRequest.js</h1>
+
+<div class="file">
+    <pre class="code prettyprint linenums">
+/*jshint -W079 */// Suppress warning about redefiniton of &#x60;Promise&#x60;
+const Promise = require( &#x27;bluebird&#x27; );
+const agent = require( &#x27;superagent&#x27; );
+
+/**
+ * @class WPRequest
+ * @constructor
+ */
+function WPRequest( options ) {
+	this._options = options || {};
+	this._filters = {};
+
+	// Individual endpoint handlers specify their own supported methods
+	this._supportedMethods = [ &#x27;head&#x27;, &#x27;get&#x27;, &#x27;put&#x27;, &#x27;post&#x27;, &#x27;patch&#x27;, &#x27;delete&#x27; ];
+}
+
+// Helpers
+
+/** No-op function for use within ensureFunction() */
+function noop() {}
+
+/**
+ * If fn is a function, return it; else, return a no-op function
+ *
+ * @param {Function|undefined} fn A WPRequest request callback
+ * @return {Function} The provided callback function or a no-op
+ */
+function ensureFunction( fn ) {
+	return ( typeof fn === &#x27;function&#x27; ) ? fn : noop;
+}
+
+/**
+ * Submit the provided superagent request object, invoke a callback (if it was
+ * provided), and return a promise to the response from the HTTP request.
+ *
+ * @param {Object} request A superagent request object
+ * @param {Function} callback A callback function (optional)
+ * @return {Promise} A promise to the superagent request
+ */
+function invokeAndPromisify( request, callback ) {
+	callback = ensureFunction( callback );
+
+	// Return a promise, to enable chaining if so desired
+	return new Promise(function( resolve, reject ) {
+		request.end(function( err, result ) {
+
+			// Invoke the callback (if provided), to conform to standard Node pattern
+			callback( err, result );
+
+			// Resolve the returned promise
+			if ( err || result.error ) {
+				reject( err || result.error );
+			} else {
+				resolve( result );
+			}
+		});
+	});
+}
+
+// Prototype Methods
+
+/**
+ * @method filter
+ * @param {Object} A filter properties hash
+ * @return {String} The URI target for the HTTP request
+ */
+WPRequest.prototype.filter = function( obj ) {
+	this._filters = obj;
+	return this;
+};
+
+/**
+ * @method _checkMethodSupport
+ * @protected
+ * @return true iff the method is within _supportedMethods
+ */
+WPRequest.prototype._checkMethodSupport = function( method ) {
+	if ( this._supportedMethods.indexOf( method ) === -1 ) {
+		throw new Error(
+			&#x27;Unsupported method; supported methods are: &#x27; +
+			this._supportedMethods.join( &#x27;, &#x27; )
+		);
+	}
+
+	return true;
+};
+
+/**
+ * Generate the URI for the HTTP request (overridden in the modules for
+ * handling individual endpoints)
+ *
+ * @method generateRequestUri
+ * @return {String} The URI target for the HTTP request
+ */
+WPRequest.prototype.generateRequestUri = function() {
+	return this._options.endpoint;
+};
+
+/**
+ * @method get
+ * @return {Promise} A promise to the results of the HTTP request
+ */
+WPRequest.prototype.get = function( callback ) {
+	this._checkMethodSupport( &#x27;get&#x27; );
+	var url = this.generateRequestUri();
+
+	return invokeAndPromisify( agent.get( url ), function( err, result ) {
+		callback( err, result.body );
+	});
+};
+
+/**
+ * @method post
+ * @return {Promise} A promise to the results of the HTTP request
+ */
+WPRequest.prototype.post = function( data, callback ) {
+	this._checkMethodSupport( &#x27;post&#x27; );
+	var url = this.generateRequestUri();
+	var auth = this._options.username + &#x27;:&#x27; + this._options.password;
+	data = data || {};
+
+	var request = agent.post( url )
+		.set( &#x27;Authorization&#x27;, auth )
+		.send( data );
+
+	return invokeAndPromisify( request, function( err, result ) {
+		callback( err, result.body );
+	});
+};
+
+/**
+ * @method put
+ * @return {Promise} A promise to the results of the HTTP request
+ */
+WPRequest.prototype.put = function( data, callback ) {
+	this._checkMethodSupport( &#x27;put&#x27; );
+	var url = this.generateRequestUri();
+	var auth = this._options.username + &#x27;:&#x27; + this._options.password;
+	data = data || {};
+
+	var request = agent.put( url )
+		.set( &#x27;Authorization&#x27;, auth )
+		.send( data );
+
+	return invokeAndPromisify( request, function( err, result ) {
+		callback( err, result.body );
+	});
+};
+
+/**
+ * @method patch
+ * @return {Promise} A promise to the results of the HTTP request
+ */
+WPRequest.prototype.patch = function( callback ) {
+	this._checkMethodSupport( &#x27;patch&#x27; );
+	// var url = this.generateRequestUri();
+	callback = ensureFunction( callback );
+	// todo: no idea what this method is supposed to do but it&#x27;s documented in the WP-API docs.
+};
+
+// Cannot use &#x60;delete&#x60;: reserved word
+/**
+ * @method remove
+ * @return {Promise} A promise to the results of the HTTP request
+ */
+WPRequest.prototype.remove = function( callback ) {
+	this._checkMethodSupport( &#x27;delete&#x27; );
+	var url = this.generateRequestUri();
+	var auth = this._options.username + &#x27;:&#x27; + this._options.password;
+	var request = agent.del( url ).set( &#x27;Authorization&#x27;, auth );
+
+	invokeAndPromisify( request, function( err, result ) {
+		callback( err, result.body );
+	});
+};
+
+/**
+ * @method head
+ * @return {Promise} A promise to the results of the HTTP request
+ */
+WPRequest.prototype.head = function( callback ) {
+	this._checkMethodSupport( &#x27;head&#x27; );
+	var url = this.generateRequestUri();
+
+	return invokeAndPromisify( agent.head( url ), function( err, result ) {
+		callback( err, result.headers );
+	});
+};
+
+// Calling .then on a query chain will invoke it as a GET and return a promise
+/**
+ * @method then
+ * @return {Promise} A promise to the results of the HTTP request
+ */
+WPRequest.prototype.then = function( callback ) {
+	this._checkMethodSupport( &#x27;get&#x27; );
+	var url = this.generateRequestUri();
+
+	return invokeAndPromisify( agent.get( url ) )
+		.then(function( result ) {
+			return callback( result.body );
+		});
+};
+
+module.exports = WPRequest;
+
+    </pre>
+</div>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+<script src="../assets/vendor/prettify/prettify-min.js"></script>
+<script>prettyPrint();</script>
+<script src="../assets/vendor/jquery.min.js"></script>
+<script src="../assets/js/jquery-offscreen-trigger.js"></script>
+<script src="../assets/js/yui-prettify.js"></script>
+<script src="../assets/../api.js"></script>
+<script src="../assets/js/api-filter.js"></script>
+<script src="../assets/js/api-list.js"></script>
+<script src="../assets/js/api-search.js"></script>
+<script src="../assets/js/apidocs.js"></script>
+</body>
+</html>

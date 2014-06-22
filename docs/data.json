@@ -1,0 +1,521 @@
+{
+    "project": {
+        "name": "node-wp-api",
+        "description": "A Node.js client for interacting with the WordPress REST API",
+        "version": "0.0.2",
+        "url": "https://github.com/kadamwhite/node-wp-api"
+    },
+    "files": {
+        "lib/WPRequest.js": {
+            "name": "lib/WPRequest.js",
+            "modules": {},
+            "classes": {
+                "WPRequest": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "lib/posts.js": {
+            "name": "lib/posts.js",
+            "modules": {},
+            "classes": {
+                "PostsRequest": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "lib/taxonomies.js": {
+            "name": "lib/taxonomies.js",
+            "modules": {},
+            "classes": {
+                "TaxonomiesRequest": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "lib/users.js": {
+            "name": "lib/users.js",
+            "modules": {},
+            "classes": {
+                "UsersRequest": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "wp.js": {
+            "name": "wp.js",
+            "modules": {},
+            "classes": {
+                "WP": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        }
+    },
+    "modules": {},
+    "classes": {
+        "WPRequest": {
+            "name": "WPRequest",
+            "shortname": "WPRequest",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "lib/WPRequest.js",
+            "line": 5,
+            "is_constructor": 1
+        },
+        "PostsRequest": {
+            "name": "PostsRequest",
+            "shortname": "PostsRequest",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "lib/posts.js",
+            "line": 4,
+            "is_constructor": 1,
+            "extends": "WPRequest"
+        },
+        "TaxonomiesRequest": {
+            "name": "TaxonomiesRequest",
+            "shortname": "TaxonomiesRequest",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "lib/taxonomies.js",
+            "line": 4,
+            "is_constructor": 1,
+            "extends": "WPRequest"
+        },
+        "UsersRequest": {
+            "name": "UsersRequest",
+            "shortname": "UsersRequest",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "lib/users.js",
+            "line": 4,
+            "is_constructor": 1,
+            "extends": "WPRequest"
+        },
+        "WP": {
+            "name": "WP",
+            "shortname": "WP",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "wp.js",
+            "line": 3,
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "options",
+                    "description": "An options hash to configure the instance",
+                    "type": "Object",
+                    "props": [
+                        {
+                            "name": "endpoint",
+                            "description": "The URI for a WP-API endpoint",
+                            "type": "String",
+                            "optional": true
+                        },
+                        {
+                            "name": "username",
+                            "description": "A WP-API Basic Auth username",
+                            "type": "String",
+                            "optional": true,
+                            "multiple": true
+                        },
+                        {
+                            "name": "password",
+                            "description": "A WP-API Basic Auth password",
+                            "type": "String",
+                            "optional": true,
+                            "multiple": true
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    "classitems": [
+        {
+            "file": "lib/WPRequest.js",
+            "line": 19,
+            "class": "WPRequest"
+        },
+        {
+            "file": "lib/WPRequest.js",
+            "line": 22,
+            "description": "If fn is a function, return it; else, return a no-op function",
+            "params": [
+                {
+                    "name": "fn",
+                    "description": "A WPRequest request callback",
+                    "type": "Function|undefined"
+                }
+            ],
+            "return": {
+                "description": "The provided callback function or a no-op",
+                "type": "Function"
+            },
+            "class": "WPRequest"
+        },
+        {
+            "file": "lib/WPRequest.js",
+            "line": 32,
+            "description": "Submit the provided superagent request object, invoke a callback (if it was\nprovided), and return a promise to the response from the HTTP request.",
+            "params": [
+                {
+                    "name": "request",
+                    "description": "A superagent request object",
+                    "type": "Object"
+                },
+                {
+                    "name": "callback",
+                    "description": "A callback function (optional)",
+                    "type": "Function"
+                }
+            ],
+            "return": {
+                "description": "A promise to the superagent request",
+                "type": "Promise"
+            },
+            "class": "WPRequest"
+        },
+        {
+            "file": "lib/WPRequest.js",
+            "line": 62,
+            "itemtype": "method",
+            "name": "filter",
+            "params": [
+                {
+                    "name": "A",
+                    "description": "filter properties hash",
+                    "type": "Object"
+                }
+            ],
+            "return": {
+                "description": "The URI target for the HTTP request",
+                "type": "String"
+            },
+            "class": "WPRequest"
+        },
+        {
+            "file": "lib/WPRequest.js",
+            "line": 72,
+            "itemtype": "method",
+            "name": "_checkMethodSupport",
+            "access": "protected",
+            "tagname": "",
+            "return": {
+                "description": "true iff the method is within _supportedMethods"
+            },
+            "class": "WPRequest"
+        },
+        {
+            "file": "lib/WPRequest.js",
+            "line": 88,
+            "description": "Generate the URI for the HTTP request (overridden in the modules for\nhandling individual endpoints)",
+            "itemtype": "method",
+            "name": "generateRequestUri",
+            "return": {
+                "description": "The URI target for the HTTP request",
+                "type": "String"
+            },
+            "class": "WPRequest"
+        },
+        {
+            "file": "lib/WPRequest.js",
+            "line": 99,
+            "itemtype": "method",
+            "name": "get",
+            "return": {
+                "description": "A promise to the results of the HTTP request",
+                "type": "Promise"
+            },
+            "class": "WPRequest"
+        },
+        {
+            "file": "lib/WPRequest.js",
+            "line": 112,
+            "itemtype": "method",
+            "name": "post",
+            "return": {
+                "description": "A promise to the results of the HTTP request",
+                "type": "Promise"
+            },
+            "class": "WPRequest"
+        },
+        {
+            "file": "lib/WPRequest.js",
+            "line": 131,
+            "itemtype": "method",
+            "name": "put",
+            "return": {
+                "description": "A promise to the results of the HTTP request",
+                "type": "Promise"
+            },
+            "class": "WPRequest"
+        },
+        {
+            "file": "lib/WPRequest.js",
+            "line": 150,
+            "itemtype": "method",
+            "name": "patch",
+            "return": {
+                "description": "A promise to the results of the HTTP request",
+                "type": "Promise"
+            },
+            "class": "WPRequest"
+        },
+        {
+            "file": "lib/WPRequest.js",
+            "line": 162,
+            "itemtype": "method",
+            "name": "remove",
+            "return": {
+                "description": "A promise to the results of the HTTP request",
+                "type": "Promise"
+            },
+            "class": "WPRequest"
+        },
+        {
+            "file": "lib/WPRequest.js",
+            "line": 177,
+            "itemtype": "method",
+            "name": "head",
+            "return": {
+                "description": "A promise to the results of the HTTP request",
+                "type": "Promise"
+            },
+            "class": "WPRequest"
+        },
+        {
+            "file": "lib/WPRequest.js",
+            "line": 191,
+            "itemtype": "method",
+            "name": "then",
+            "return": {
+                "description": "A promise to the results of the HTTP request",
+                "type": "Promise"
+            },
+            "class": "WPRequest"
+        },
+        {
+            "file": "lib/posts.js",
+            "line": 19,
+            "itemtype": "method",
+            "name": "id",
+            "return": {
+                "description": "The PostsRequest instance (for chaining)",
+                "type": "PostsRequest"
+            },
+            "class": "PostsRequest"
+        },
+        {
+            "file": "lib/posts.js",
+            "line": 38,
+            "itemtype": "method",
+            "name": "comments",
+            "return": {
+                "description": "The PostsRequest instance (for chaining)",
+                "type": "PostsRequest"
+            },
+            "class": "PostsRequest"
+        },
+        {
+            "file": "lib/posts.js",
+            "line": 48,
+            "itemtype": "method",
+            "name": "types",
+            "return": {
+                "description": "The PostsRequest instance (for chaining)",
+                "type": "PostsRequest"
+            },
+            "class": "PostsRequest"
+        },
+        {
+            "file": "lib/posts.js",
+            "line": 58,
+            "itemtype": "method",
+            "name": "revisions",
+            "return": {
+                "description": "The PostsRequest instance (for chaining)",
+                "type": "PostsRequest"
+            },
+            "class": "PostsRequest"
+        },
+        {
+            "file": "lib/posts.js",
+            "line": 68,
+            "itemtype": "method",
+            "name": "statuses",
+            "return": {
+                "description": "The PostsRequest instance (for chaining)",
+                "type": "PostsRequest"
+            },
+            "class": "PostsRequest"
+        },
+        {
+            "file": "lib/posts.js",
+            "line": 78,
+            "itemtype": "method",
+            "name": "generateRequestUri",
+            "return": {
+                "description": "The URI target for the HTTP request",
+                "type": "String"
+            },
+            "class": "PostsRequest"
+        },
+        {
+            "file": "lib/taxonomies.js",
+            "line": 19,
+            "itemtype": "method",
+            "name": "id",
+            "return": {
+                "description": "The TaxonomiesRequest instance (for chaining)",
+                "type": "TaxonomiesRequest"
+            },
+            "class": "TaxonomiesRequest"
+        },
+        {
+            "file": "lib/taxonomies.js",
+            "line": 35,
+            "itemtype": "method",
+            "name": "terms",
+            "return": {
+                "description": "The TaxonomiesRequest instance (for chaining)",
+                "type": "TaxonomiesRequest"
+            },
+            "class": "TaxonomiesRequest"
+        },
+        {
+            "file": "lib/taxonomies.js",
+            "line": 46,
+            "itemtype": "method",
+            "name": "generateRequestUri",
+            "return": {
+                "description": "The TaxonomiesRequest instance (for chaining)",
+                "type": "TaxonomiesRequest"
+            },
+            "class": "TaxonomiesRequest"
+        },
+        {
+            "file": "lib/users.js",
+            "line": 17,
+            "itemtype": "method",
+            "name": "me",
+            "return": {
+                "description": "The UsersRequest instance (for chaining)",
+                "type": "UsersRequest"
+            },
+            "class": "UsersRequest"
+        },
+        {
+            "file": "lib/users.js",
+            "line": 27,
+            "itemtype": "method",
+            "name": "id",
+            "return": {
+                "description": "The UsersRequest instance (for chaining)",
+                "type": "UsersRequest"
+            },
+            "class": "UsersRequest"
+        },
+        {
+            "file": "lib/users.js",
+            "line": 38,
+            "itemtype": "method",
+            "name": "generateRequestUri",
+            "return": {
+                "description": "The UsersRequest instance (for chaining)",
+                "type": "UsersRequest"
+            },
+            "class": "UsersRequest"
+        },
+        {
+            "file": "wp.js",
+            "line": 32,
+            "itemtype": "method",
+            "name": "posts",
+            "params": [
+                {
+                    "name": "options",
+                    "description": "An options hash for a new PostsRequest",
+                    "type": "Object",
+                    "optional": true,
+                    "multiple": true
+                }
+            ],
+            "return": {
+                "description": "A PostsRequest instance",
+                "type": "PostsRequest"
+            },
+            "class": "WP"
+        },
+        {
+            "file": "wp.js",
+            "line": 44,
+            "itemtype": "method",
+            "name": "taxonomies",
+            "params": [
+                {
+                    "name": "options",
+                    "description": "An options hash for a new TaxonomiesRequest",
+                    "type": "Object",
+                    "optional": true,
+                    "multiple": true
+                }
+            ],
+            "return": {
+                "description": "A TaxonomiesRequest instance",
+                "type": "TaxonomiesRequest"
+            },
+            "class": "WP"
+        },
+        {
+            "file": "wp.js",
+            "line": 56,
+            "itemtype": "method",
+            "name": "users",
+            "params": [
+                {
+                    "name": "options",
+                    "description": "An options hash for a new UsersRequest",
+                    "type": "Object",
+                    "optional": true,
+                    "multiple": true
+                }
+            ],
+            "return": {
+                "description": "A UsersRequest instance",
+                "type": "UsersRequest"
+            },
+            "class": "WP"
+        }
+    ],
+    "warnings": [
+        {
+            "message": "Missing item type",
+            "line": " lib/WPRequest.js:19"
+        },
+        {
+            "message": "Missing item type\nIf fn is a function, return it; else, return a no-op function",
+            "line": " lib/WPRequest.js:22"
+        },
+        {
+            "message": "Missing item type\nSubmit the provided superagent request object, invoke a callback (if it was\nprovided), and return a promise to the response from the HTTP request.",
+            "line": " lib/WPRequest.js:32"
+        }
+    ]
+}

@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>lib/taxonomies.js - node-wp-api</title>
+    <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
+    <link rel="shortcut icon" type="image/png" href="../assets/favicon.png">
+    <script src="../assets/vendor/yui-min.js"></script>
+</head>
+<body>
+
+<div id="doc">
+    <header class="main-header">
+        <div class="content">
+            <div class="project-title">
+                
+                
+                    <h1 class="project-name">node-wp-api</h1> <span class="project-version">0.0.2</span>
+                
+                
+                    <p class="description">A Node.js client for interacting with the WordPress REST API</p>
+                
+            </div>
+            <ul class="jump-links">
+                <li><a href="#index" class="index-jump-link">index</a></li>
+                <li><a href="#top" class="top-jump-link">top</a></li>
+            </ul>
+        </div>
+    </header>
+    <div id="bd" class="main-body">
+
+        <div id="docs-sidebar" class="sidebar apidocs">
+            <div id="api-list">
+    <div id="api-tabview" class="tabview">
+        <ul class="tabs">
+            <li><a href="#api-classes">Classes</a></li>
+            <li><a href="#api-modules">Modules</a></li>
+        </ul>
+
+        <div id="api-tabview-filter">
+            <input type="search" id="api-filter" placeholder="Type to filter APIs">
+        </div>
+
+        <div id="api-tabview-panel">
+            <ul id="api-classes" class="apis classes">
+            
+                <li><a class="type" href="../classes/PostsRequest.html">PostsRequest</a></li>
+            
+                <li><a class="type" href="../classes/TaxonomiesRequest.html">TaxonomiesRequest</a></li>
+            
+                <li><a class="type" href="../classes/UsersRequest.html">UsersRequest</a></li>
+            
+                <li><a class="type" href="../classes/WP.html">WP</a></li>
+            
+                <li><a class="type" href="../classes/WPRequest.html">WPRequest</a></li>
+            
+            </ul>
+
+            <ul id="api-modules" class="apis modules">
+            
+            </ul>
+        </div>
+    </div>
+</div>
+
+        </div>
+
+        <div id="docs-main" class="apidocs">
+            <div class="content container">
+                <h1 class="file-heading">File: lib/taxonomies.js</h1>
+
+<div class="file">
+    <pre class="code prettyprint linenums">
+const WPRequest = require( &#x27;./WPRequest&#x27; );
+const util = require( &#x27;util&#x27; );
+
+/**
+ * @class TaxonomiesRequest
+ * @constructor
+ * @extends WPRequest
+ */
+function TaxonomiesRequest( options ) {
+	this._options = options || {};
+	this._id = null;
+	this._supportedMethods = [ &#x27;head&#x27;, &#x27;get&#x27; ];
+	this._action = null;
+	this._actionId = null;
+}
+
+util.inherits( TaxonomiesRequest, WPRequest );
+
+/**
+ * @method id
+ * @return {TaxonomiesRequest} The TaxonomiesRequest instance (for chaining)
+ */
+TaxonomiesRequest.prototype.id = function( id ) {
+	if ( this._action === null ) {
+		this._id = id;
+		this._supportedMethods = [ &#x27;head&#x27;, &#x27;get&#x27;, &#x27;put&#x27;, &#x27;post&#x27;, &#x27;patch&#x27;, &#x27;delete&#x27; ];
+	} else if ( this._action === &#x27;terms&#x27; ) {
+		this._actionId = id;
+		this._supportedMethods = [ &#x27;head&#x27;, &#x27;get&#x27;, &#x27;put&#x27;, &#x27;post&#x27;, &#x27;patch&#x27;, &#x27;delete&#x27; ];
+	}
+
+	return this;
+};
+
+/**
+ * @method terms
+ * @return {TaxonomiesRequest} The TaxonomiesRequest instance (for chaining)
+ */
+TaxonomiesRequest.prototype.terms = function() {
+	this._action = &#x27;terms&#x27;;
+	this._supportedMethods = [ &#x27;head&#x27;, &#x27;get&#x27;, &#x27;post&#x27; ];
+
+	return this;
+};
+
+/**
+ * @method generateRequestUri
+ * @return {TaxonomiesRequest} The TaxonomiesRequest instance (for chaining)
+ */
+TaxonomiesRequest.prototype.generateRequestUri = function() {
+	var path = [ &#x27;taxonomies&#x27; ];
+
+	if ( this._id !== null ) {
+		path.push( this._id );
+	}
+
+	if ( this._action !== null ) {
+		path.push( this._action );
+	}
+
+	if ( this._actionId !== null ) {
+		path.push( this._actionId );
+	}
+
+	return this._options.endpoint.replace( /\/?$/, &#x27;/&#x27; ) + path.join( &#x27;/&#x27; );
+};
+
+module.exports = TaxonomiesRequest;
+
+    </pre>
+</div>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+<script src="../assets/vendor/prettify/prettify-min.js"></script>
+<script>prettyPrint();</script>
+<script src="../assets/vendor/jquery.min.js"></script>
+<script src="../assets/js/jquery-offscreen-trigger.js"></script>
+<script src="../assets/js/yui-prettify.js"></script>
+<script src="../assets/../api.js"></script>
+<script src="../assets/js/api-filter.js"></script>
+<script src="../assets/js/api-list.js"></script>
+<script src="../assets/js/api-search.js"></script>
+<script src="../assets/js/apidocs.js"></script>
+</body>
+</html>
