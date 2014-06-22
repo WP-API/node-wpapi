@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>{{htmlTitle}}</title>
+    <link rel="stylesheet" href="{{projectAssets}}/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="{{projectAssets}}/css/main.css" id="site_styles">
+    <link rel="shortcut icon" type="image/png" href="{{projectAssets}}/favicon.png">
+    <script src="{{projectAssets}}/vendor/yui-min.js"></script>
+</head>
+<body>
+
+<div id="doc">
+    <header class="main-header">
+        <div class="content">
+            <div class="project-title">
+                {{#if projectLogo}}
+                    <img class="logo" src="{{projectLogo}}" title="{{projectName}}">
+                {{/if}}
+                {{#if projectName}}
+                    <h1 class="project-name">{{projectName}}</h1>{{#if projectVersion}} <span class="project-version">{{projectVersion}}</span>{{/if}}
+                {{/if}}
+                {{#if projectDescription}}
+                    <p class="description">{{projectDescription}}</p>
+                {{/if}}
+            </div>
+            <ul class="jump-links">
+                <li><a href="#index" class="index-jump-link">index</a></li>
+                <li><a href="#top" class="top-jump-link">top</a></li>
+            </ul>
+        </div>
+    </header>
+    <div id="bd" class="main-body">
+
+        <div id="docs-sidebar" class="sidebar apidocs">
+            {{>sidebar}}
+        </div>
+
+        <div id="docs-main" class="apidocs">
+            <div class="content container">
+                {{>layout_content}}
+            </div>
+        </div>
+
+    </div>
+</div>
+<script src="{{projectAssets}}/vendor/prettify/prettify-min.js"></script>
+<script>prettyPrint();</script>
+<script src="{{projectAssets}}/vendor/jquery.min.js"></script>
+<script src="{{projectAssets}}/js/jquery-offscreen-trigger.js"></script>
+<script src="{{projectAssets}}/js/yui-prettify.js"></script>
+<script src="{{projectAssets}}/../api.js"></script>
+<script src="{{projectAssets}}/js/api-filter.js"></script>
+<script src="{{projectAssets}}/js/api-list.js"></script>
+<script src="{{projectAssets}}/js/api-search.js"></script>
+<script src="{{projectAssets}}/js/apidocs.js"></script>
+</body>
+</html>
