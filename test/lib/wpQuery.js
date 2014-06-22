@@ -1,6 +1,6 @@
 const expect = require( 'chai' ).expect;
 
-const wpQuery = require( '../lib/wpQuery' );
+const wpQuery = require( '../../lib/wpQuery' );
 
 describe( 'wpQuery', function() {
 

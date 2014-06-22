@@ -1,6 +1,6 @@
 const expect = require( 'chai' ).expect;
 
-const WP = require( '../' );
+const WP = require( '../../wp' );
 
 describe( 'wp.posts', function() {
 

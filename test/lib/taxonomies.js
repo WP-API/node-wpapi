@@ -1,7 +1,7 @@
 const chai = require( 'chai' );
 const expect = chai.expect;
 
-const WP = require( '../' );
+const WP = require( '../../wp' );
 
 describe( 'wp.taxonomies', function() {
 
