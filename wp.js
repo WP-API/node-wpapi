@@ -16,6 +16,11 @@
  */
 const extend = require( 'node.extend' );
 
+const defaults = {
+	username: '',
+	password: ''
+};
+
 /**
  * The constructor for the WP API service
  *
@@ -41,11 +46,6 @@ function WP( options ) {
 
 	return this;
 }
-
-const defaults = {
-	username: '',
-	password: ''
-};
 
 /**
  * @method posts
