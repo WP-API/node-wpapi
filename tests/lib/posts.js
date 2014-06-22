@@ -1,7 +1,6 @@
 const chai = require( 'chai' );
 const expect = chai.expect;
 const sinon = require( 'sinon' );
-chai.use( require( 'sinon-chai' ) );
 const sandbox = require( 'sandboxed-module' );
 
 const PostsRequest = require( '../../lib/posts' );
