@@ -44,6 +44,9 @@ function WP( options ) {
 		throw new Error( 'options hash must contain an API endpoint URL string' );
 	}
 
+	// Ensure trailing slash on endpoint URI
+	this._options.endpoint = this._options.endpoint.replace( /\/?$/, '/' );
+
 	return this;
 }
 
