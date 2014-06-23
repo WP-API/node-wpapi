@@ -170,7 +170,7 @@ describe( 'WPRequest', function() {
 
 		});
 
-		describe( '.remove()', function() {
+		describe( '.delete()', function() {
 
 			it( 'should trigger an HTTP DELETE request', function() {});
 
