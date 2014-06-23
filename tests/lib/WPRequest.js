@@ -1,6 +1,8 @@
 const chai = require( 'chai' );
 const expect = chai.expect;
 chai.use( require( 'sinon-chai' ) );
+const sinon = require( 'sinon' );
+const sandbox = require( 'sandboxed-module' );
 
 const WPRequest = require( '../../lib/WPRequest' );
 
@@ -95,6 +97,87 @@ describe( 'WPRequest', function() {
 				postsPerPage: 7,
 				postStatus: 'draft'
 			});
+		});
+
+	});
+
+	describe( 'request methods', function() {
+
+		var MockAgent = require( '../mocks/mock-superagent' );
+		var mockAgent;
+		var SandboxedRequest;
+		var wpRequest;
+
+		beforeEach(function() {
+			mockAgent = new MockAgent();
+			SandboxedRequest = sandbox.require( '../../lib/WPRequest', {
+				requires: {
+					'superagent': mockAgent
+				}
+			});
+			wpRequest = new SandboxedRequest({
+				endpoint: 'endpoint'
+			});
+		});
+
+		describe( '.get()', function() {
+
+			it( 'should trigger an HTTP GET request', function() {
+				sinon.spy( mockAgent, 'get' );
+				sinon.stub( mockAgent, 'end' );
+
+				wpRequest.get();
+
+				expect( mockAgent.get ).to.have.been.calledWith( 'endpoint' );
+				expect( mockAgent.end ).to.have.been.called;
+			});
+
+			it( 'should invoke a callback, if provided', function() {
+				var spy = sinon.spy();
+				mockAgent._response = { body: 'data' };
+
+				wpRequest.get( spy );
+
+				expect( spy ).to.have.been.calledWith( null, 'data' );
+			});
+
+			it( 'should return a Promise to the request data', function() {
+				mockAgent._response = { body: 'data' };
+				return wpRequest.get().then(function( data ) {
+					expect( data ).to.equal( 'data' );
+				});
+			});
+
+		});
+
+		describe( '.post()', function() {
+
+			it( 'should trigger an HTTP POST request', function() {});
+
+			it( 'should invoke a callback, if provided', function() {});
+
+			it( 'should return a Promise to the request data', function() {});
+
+		});
+
+		describe( '.put()', function() {
+
+			it( 'should trigger an HTTP PUT request', function() {});
+
+			it( 'should invoke a callback, if provided', function() {});
+
+			it( 'should return a Promise to the request data', function() {});
+
+		});
+
+		describe( '.remove()', function() {
+
+			it( 'should trigger an HTTP DELETE request', function() {});
+
+			it( 'should invoke a callback, if provided', function() {});
+
+			it( 'should return a Promise to the request data', function() {});
+
 		});
 
 	});
