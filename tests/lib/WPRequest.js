@@ -148,6 +148,13 @@ describe( 'WPRequest', function() {
 				});
 			});
 
+			it( 'should be invoked automatically by .then()', function() {
+				mockAgent._response = { body: 'data' };
+				return wpRequest.then(function( data ) {
+					expect( data ).to.equal( 'data' );
+				});
+			});
+
 		});
 
 		describe( '.post()', function() {
