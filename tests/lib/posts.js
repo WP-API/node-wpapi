@@ -54,22 +54,29 @@ describe( 'wp.posts', function() {
 		});
 
 		it( 'should extend PostsRequest.prototype with filter methods', function() {
-			var extend = sinon.spy();
+			var mockFilterMixins = {
+				filter: 'methods',
+				getInstanceProp: function() {
+					return this._id;
+				}
+			};
+			var extend = sinon.spy( require( 'node.extend' ) );
 			var SandboxedPostsRequest = sandbox.require( '../../lib/posts', {
 				requires: {
-					'./WPRequest': 'WPRequestMock',
+					// './WPRequest': 'WPRequestMock',
 					'./shared/filters': {
-						mixins: { filter: 'methods' }
-					}
+						mixins: mockFilterMixins
+					},
+					'node.extend': extend
 				}
 			});
 			var posts = new SandboxedPostsRequest();
+			posts._id = 7;
 
-			expect( posts.prototype.filter ).to.equal( 'methods' );
+			expect( posts.filter ).to.equal( 'methods' );
+			expect( posts.getInstanceProp() ).to.equal( 7 );
 			// [ 0 ][ 1 ]: Call #1, Argument #2 should be the mixins property from the filter mock
-			expect( extend.args[ 0 ][ 1 ] ).to.deep.equal({
-				filter: 'methods'
-			});
+			expect( extend.args[ 0 ][ 1 ] ).to.deep.equal( mockFilterMixins );
 		});
 
 	});
