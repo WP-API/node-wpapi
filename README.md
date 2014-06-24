@@ -9,6 +9,17 @@ A Node.js-based client for the [WordPress JSON API](http://wp-api.org/).
 
 This library is designed to make it easy for your [Node.js](http://nodejs.org) application to request specific resources from a WordPress install. It uses a query builder-style syntax to let you craft the request being made to the WP-API endpoints, then returns the data to your application as a JavaScript object.
 
+## Installation
+
+To use the library, install it with [npm](http://npmjs.org):
+```bash
+npm install --save wordpress-rest-api
+```
+Then, within your application's script files, `require` the module to gain access to it:
+```javascript
+var WP_API = require( 'wordpress-rest-api' );
+```
+
 ## Using The Client
 
 The module is a constructor, so you can create an instance of the API client bound to the endpoint for your WordPress install:
