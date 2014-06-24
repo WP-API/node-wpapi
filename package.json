@@ -1,6 +1,6 @@
 {
   "name": "wordpress-rest-api",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A client for interacting with the WordPress REST API",
   "main": "wp.js",
   "repository": {
@@ -14,8 +14,8 @@
   },
   "homepage": "https://github.com/kadamwhite/node-wp-api",
   "scripts": {
-    "postinstall": "grunt",
-    "test": "grunt test"
+    "prepublish": "grunt",
+    "test": "grunt"
   },
   "dependencies": {
     "bluebird": "^2.1.3",
