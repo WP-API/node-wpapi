@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>lib/shared/filters.js - wordpress-rest-api</title>
+    <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
+    <link rel="shortcut icon" type="image/png" href="../assets/favicon.png">
+    <script src="../assets/vendor/yui-min.js"></script>
+</head>
+<body>
+
+<div id="doc">
+    <header class="main-header">
+        <div class="content">
+            <div class="project-title">
+                
+                
+                    <h1 class="project-name">wordpress-rest-api</h1> <span class="project-version">0.1.1</span>
+                
+                
+                    <p class="description">A client for interacting with the WordPress REST API</p>
+                
+            </div>
+            <ul class="jump-links">
+                <li><a href="#index" class="index-jump-link">index</a></li>
+                <li><a href="#top" class="top-jump-link">top</a></li>
+            </ul>
+        </div>
+    </header>
+    <div id="bd" class="main-body">
+
+        <div id="docs-sidebar" class="sidebar apidocs">
+            <div id="api-list">
+    <div id="api-tabview" class="tabview">
+        <ul class="tabs">
+            <li><a href="#api-classes">Classes</a></li>
+            <li><a href="#api-modules">Modules</a></li>
+        </ul>
+
+        <div id="api-tabview-filter">
+            <input type="search" id="api-filter" placeholder="Type to filter APIs">
+        </div>
+
+        <div id="api-tabview-panel">
+            <ul id="api-classes" class="apis classes">
+            
+                <li><a class="type" href="../classes/CollectionFilters.html">CollectionFilters</a></li>
+            
+                <li><a class="type" href="../classes/PostsRequest.html">PostsRequest</a></li>
+            
+                <li><a class="type" href="../classes/TaxonomiesRequest.html">TaxonomiesRequest</a></li>
+            
+                <li><a class="type" href="../classes/UsersRequest.html">UsersRequest</a></li>
+            
+                <li><a class="type" href="../classes/WP.html">WP</a></li>
+            
+                <li><a class="type" href="../classes/WPRequest.html">WPRequest</a></li>
+            
+            </ul>
+
+            <ul id="api-modules" class="apis modules">
+            
+                <li><a class="module" href="../modules/CollectionFilters.html">CollectionFilters</a></li>
+            
+                <li><a class="module" href="../modules/PostsRequest.html">PostsRequest</a></li>
+            
+                <li><a class="module" href="../modules/TaxonomiesRequest.html">TaxonomiesRequest</a></li>
+            
+                <li><a class="module" href="../modules/UsersRequest.html">UsersRequest</a></li>
+            
+                <li><a class="module" href="../modules/WP.html">WP</a></li>
+            
+                <li><a class="module" href="../modules/WPRequest.html">WPRequest</a></li>
+            
+            </ul>
+        </div>
+    </div>
+</div>
+
+        </div>
+
+        <div id="docs-main" class="apidocs">
+            <div class="content container">
+                <h1 class="file-heading">File: lib/shared/filters.js</h1>
+
+<div class="file">
+    <pre class="code prettyprint linenums">
+/*jshint -W106 */// Disable underscore_case warnings in this file b/c WP uses them
+/**
+ * @module WP
+ * @submodule CollectionFilters
+ * @beta
+ */
+const _ = require( &#x27;lodash&#x27; );
+const extend = require( &#x27;node.extend&#x27; );
+const url = require( &#x27;url&#x27; );
+
+/**
+ * Process arrays of taxonomy terms into query parameters
+ * All terms listed in the arrays will be required (AND behavior)
+ *
+ * @example
+ *    prepareTaxFilters({
+ *        tag: [ &#x27;tag1 &#x27;, &#x27;tag2&#x27; ], // by term slug
+ *        cat: [ 7 ] // by term ID
+ *    }) === {
+ *        tag: &#x27;tag1+tag2&#x27;,
+ *        cat: &#x27;7&#x27;
+ *    }
+ *
+ * @private
+ *
+ * @param {Object} taxonomyFilters An object of taxonomy term arrays, keyed by taxonomy name
+ * @return {Object} An object of prepareFilters-ready query arg and query param value pairs
+ */
+function prepareTaxFilters( taxonomyFilters ) {
+	return _.reduce( taxonomyFilters, function( result, terms, key ) {
+		// Trim whitespace and concatenate multiple terms with +
+		result[ key ] = terms.map(function( term ) {
+			// Coerce term into a string so that trim() won&#x27;t fail
+			term = term + &#x27;&#x27;;
+			return term.trim().toLowerCase();
+		}).join( &#x27;+&#x27; );
+		return result;
+	}, {});
+}
+
+/**
+ * Process an array of filter keys and values into WP-API-ready query parameter syntax
+ *
+ * @example
+ *    prepareFilters({
+ *        tag: &#x27;tag1+tag2&#x27;,
+ *        category_name: &#x27;news&#x27;
+ *    }) === {
+ *        &#x27;filter[tag]&#x27;: &#x27;tag1+tag2&#x27;,
+ *        &#x27;filter[category_name]&#x27;: &#x27;news&#x27;
+ *    }
+ *
+ * @private
+ *
+ * @param {Object} filters An object of filter values, keyed by filter parameter name
+ * @return {Object} An object of WP-API filter query parameter key-value pairs
+ */
+function prepareFilters( filters ) {
+	return _.reduce( filters, function( result, value, key ) {
+		key = &#x27;filter[&#x27; + key + &#x27;]&#x27;;
+		result[ key ] = value;
+		return result;
+	}, {});
+}
+
+/**
+ * Generate a complete query string from the provided array of query parameters
+ *
+ * @example
+ *     generateQueryString({
+ *         &#x27;filter[tag]&#x27;: &#x27;tag1&#x27;,
+ *         &#x27;filter[post_status&#x27;: &#x27;publish&#x27;,
+ *         &#x27;type&#x27;: &#x27;cpt_item&#x27;
+ *     }) === &#x27;?filter%5Btag%5D=tag1&amp;filter%5Bpost_status=publish&amp;type=cpt_item&#x27;
+ *
+ * @private
+ *
+ * @param {Object} queryParams A hash of query parameter keys and values
+ * @return {String} A complete, rendered query string
+ */
+function generateQueryString( queryParams ) {
+	// Sort the object properties by alphabetical order
+	// (consistent property ordering means easier caching of request URIs)
+	var keys = _.keys( queryParams ).sort();
+	queryParams = _.pick( queryParams, keys );
+	return url.format({
+		query: queryParams
+	});
+}
+
+/**
+ * Utility function for sorting arrays of numbers or strings
+ *
+ * @private
+ *
+ * @param {String|Number} a The first comparator operand
+ * @param {String|Number} a The second comparator operand
+ * @return -1 if the values are backwards, 1 if they&#x27;re ordered, and 0 if they&#x27;re the same
+ */
+function alphaNumericSort( a, b ) {
+	if ( a &gt; b ) {
+		return 1;
+	}
+	if ( a &lt; b ) {
+		return -1;
+	}
+	return 0;
+}
+
+/**
+ * CollectionFilters&#x27; &quot;mixins&quot; object is intended to extend endpoint modules&#x27; prototypes
+ *
+ * @class CollectionFilters
+ * @static
+ * @extensionfor PostsRequest
+ */
+var mixins = {};
+
+/**
+ * Process the endpoint query&#x27;s filter objects into a valid query string.
+ * (This query string will only be valid for collection endpoints such as /posts)
+ *
+ * @method _queryStr
+ * @return {String} A query string representing the specified filter parameters
+ */
+mixins._queryStr = function() {
+	var taxonomies = prepareTaxFilters( this._taxonomyFilters );
+	var query = extend( {}, this._filters, taxonomies );
+	return generateQueryString( prepareFilters( query ) );
+};
+
+/**
+ * Specify key-value pairs by which to filter the API results (commonly used
+ * to retrieve only posts meeting certain criteria, such as posts within a
+ * particular category or by a particular author)
+ *
+ * @example
+ *     // Set a single property:
+ *     wp.filter( &#x27;post_type&#x27;, &#x27;cpt_event&#x27; )...
+ *
+ *     // Set multiple properties at once:
+ *     wp.filter({
+ *         post_status: &#x27;publish&#x27;,
+ *         category_name: &#x27;news&#x27;
+ *     }).//...
+ *
+ *     // Chain calls to .filter():
+ *     wp.filter( &#x27;post_status&#x27;, &#x27;publish&#x27; ).filter( &#x27;category_name&#x27;, &#x27;news&#x27; ).//...
+ *
+ * @method filter
+ * @chainable
+ * @param {String|Object} props A filter property name string, or object of name/value pairs
+ * @param {String|Number|Array} [value] The value(s) corresponding to the provided filter property
+ * @return {WPRequest} The WPRequest instance (for chaining)
+ */
+mixins.filter = function( props, value ) {
+	var prop;
+	if ( typeof props === &#x27;string&#x27; &amp;&amp; value ) {
+		// convert the property name string &#x60;props&#x60; and value &#x60;value&#x60; into an object
+		prop = {};
+		prop[ props ] = value;
+		this._filters = extend( this._filters, prop );
+	} else {
+		this._filters = extend( this._filters, props );
+	}
+
+	return this;
+};
+
+/**
+ * Restrict the query results to posts matching one or more taxonomy terms
+ *
+ * @method taxonomy
+ * @chainable
+ * @param {String} taxonomy The name of the taxonomy to filter by
+ * @param {String|Number|Array} term A string|integer, or array thereof, representing terms
+ * @return this The endpoint request object (for chaining)
+ */
+mixins.taxonomy = function( taxonomy, term ) {
+	var termIsArray = _.isArray( term );
+	var termIsNumber = termIsArray ? _.isNumber( term[ 0 ] ) : _.isNumber( term );
+	var termIsString = termIsArray ? _.isString( term[ 0 ] ) : _.isString( term );
+	var taxonomyTerms;
+
+	if ( ! termIsString &amp;&amp; ! termIsNumber ) {
+		throw new Error( &#x27;term must be a number, string, or array of numbers or strings&#x27; );
+	}
+
+	if ( taxonomy === &#x27;category&#x27; ) {
+		if ( termIsString ) {
+			// Query param for filtering by category slug is category_name
+			taxonomy = &#x27;category_name&#x27;;
+		} else if ( termIsNumber ) {
+			// Query param for filtering by category slug is category_name
+			taxonomy = &#x27;cat&#x27;;
+		}
+	} else if ( taxonomy === &#x27;post_tag&#x27; ) {
+		// tag is used in place of post_tag in the public query variables
+		taxonomy = &#x27;tag&#x27;;
+	}
+
+	// Ensure there&#x27;s an array of terms available for this taxonomy
+	taxonomyTerms = this._taxonomyFilters[ taxonomy ] || [];
+
+	// Insert the provided terms into the specified taxonomy&#x27;s terms array
+	if ( termIsArray ) {
+		taxonomyTerms = taxonomyTerms.concat( term );
+	} else {
+		taxonomyTerms.push( term );
+	}
+
+	// Sort array
+	taxonomyTerms.sort( alphaNumericSort );
+
+	// De-dupe
+	this._taxonomyFilters[ taxonomy ] = _.unique( taxonomyTerms, true );
+
+	return this;
+};
+
+/**
+ * Convenience wrapper for .taxonomy( &#x27;category&#x27;, ... )
+ *
+ * @method category
+ * @chainable
+ * @param {String|Number|Array} category A string|integer, or array thereof, representing terms
+ * @return this The endpoint request object (for chaining)
+ */
+mixins.category = function( category ) {
+	return this.taxonomy( &#x27;category&#x27;, category );
+};
+
+/**
+ * Convenience wrapper for .taxonomy( &#x27;tag&#x27;, ... )
+ *
+ * @method tag
+ * @chainable
+ * @param {String|Number|Array} tag A tag term string or array of tag term strings
+ * @return this The endpoint request object (for chaining)
+ */
+mixins.tag = function( tag ) {
+	return this.taxonomy( &#x27;tag&#x27;, tag );
+};
+
+/**
+ * Filter results to those matching the specified search terms
+ *
+ * @method search
+ * @param {String} searchString A string to search for within post content
+ * @return this The endpoint request object (for chaining)
+ */
+mixins.search = function( searchString ) {
+	return this.filter( &#x27;s&#x27;,  searchString );
+};
+
+/**
+ * Query for posts by a specific author
+ * This method will replace any previous &#x27;author&#x27; query parameters that had been set
+ *
+ * @method author
+ * @chainable
+ * @param {String|Number} author The nicename or ID for a particular author
+ * @return this The endpoint request object (for chaining)
+ */
+mixins.author = function( author ) {
+	if ( _.isString( author ) ) {
+		delete this._filters.author;
+		return this.filter( &#x27;author_name&#x27;, author );
+	}
+	if ( _.isNumber( author ) ) {
+		delete this._filters.author_name;
+		return this.filter( &#x27;author&#x27;, author );
+	}
+	throw new Error( &#x27;author must be either a nicename string or numeric ID&#x27; );
+};
+
+/**
+ * Query a collection of posts for a post with a specific slug
+ *
+ * @method name
+ * @chainable
+ * @param {String} slug A post name (slug), e.g. &quot;hello-world&quot;
+ * @return this The endpoint request object (for chaining)
+ */
+mixins.name = function( slug ) {
+	return this.filter( &#x27;name&#x27;, slug );
+};
+
+/**
+ * Alias for .name()
+ *
+ * @method slug
+ * @alias name
+ * @param {String} slug A post slug, e.g. &quot;hello-world&quot;
+ * @return this The endpoint request object (for chaining)
+ */
+mixins.slug = mixins.name;
+
+module.exports = {
+	mixins: mixins
+};
+
+    </pre>
+</div>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+<script src="../assets/vendor/prettify/prettify-min.js"></script>
+<script>prettyPrint();</script>
+<script src="../assets/vendor/jquery.min.js"></script>
+<script src="../assets/js/jquery-offscreen-trigger.js"></script>
+<script src="../assets/js/yui-prettify.js"></script>
+<script src="../assets/../api.js"></script>
+<script src="../assets/js/api-filter.js"></script>
+<script src="../assets/js/api-list.js"></script>
+<script src="../assets/js/api-search.js"></script>
+<script src="../assets/js/apidocs.js"></script>
+</body>
+</html>

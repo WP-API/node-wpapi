@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>lib/users.js - node-wp-api</title>
+    <title>lib/users.js - wordpress-rest-api</title>
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
     <link rel="shortcut icon" type="image/png" href="../assets/favicon.png">
@@ -16,10 +16,10 @@
             <div class="project-title">
                 
                 
-                    <h1 class="project-name">node-wp-api</h1> <span class="project-version">0.0.2</span>
+                    <h1 class="project-name">wordpress-rest-api</h1> <span class="project-version">0.1.1</span>
                 
                 
-                    <p class="description">A Node.js client for interacting with the WordPress REST API</p>
+                    <p class="description">A client for interacting with the WordPress REST API</p>
                 
             </div>
             <ul class="jump-links">
@@ -45,6 +45,8 @@
         <div id="api-tabview-panel">
             <ul id="api-classes" class="apis classes">
             
+                <li><a class="type" href="../classes/CollectionFilters.html">CollectionFilters</a></li>
+            
                 <li><a class="type" href="../classes/PostsRequest.html">PostsRequest</a></li>
             
                 <li><a class="type" href="../classes/TaxonomiesRequest.html">TaxonomiesRequest</a></li>
@@ -59,6 +61,18 @@
 
             <ul id="api-modules" class="apis modules">
             
+                <li><a class="module" href="../modules/CollectionFilters.html">CollectionFilters</a></li>
+            
+                <li><a class="module" href="../modules/PostsRequest.html">PostsRequest</a></li>
+            
+                <li><a class="module" href="../modules/TaxonomiesRequest.html">TaxonomiesRequest</a></li>
+            
+                <li><a class="module" href="../modules/UsersRequest.html">UsersRequest</a></li>
+            
+                <li><a class="module" href="../modules/WP.html">WP</a></li>
+            
+                <li><a class="module" href="../modules/WPRequest.html">WPRequest</a></li>
+            
             </ul>
         </div>
     </div>
@@ -72,17 +86,47 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
+/**
+ * @module WP
+ * @submodule UsersRequest
+ * @beta
+ */
 const WPRequest = require( &#x27;./WPRequest&#x27; );
 const util = require( &#x27;util&#x27; );
 
 /**
+ * UsersRequest extends WPRequest to handle the /users API endpoint
+ *
  * @class UsersRequest
  * @constructor
  * @extends WPRequest
+ * @param {Object} options A hash of options for the UsersRequest instance
+ * @param {String} options.endpoint The endpoint URI for the invoking WP instance
+ * @param {String} [options.username] A username for authenticating API requests
+ * @param {String} [options.password] A password for authenticating API requests
  */
 function UsersRequest( options ) {
+	/**
+	 * Configuration options for the request such as the endpoint for the invoking WP instance
+	 * @property _options
+	 * @type Object
+	 * @default {}
+	 */
 	this._options = options || {};
+
+	/**
+	 * The ID for the user record being requested
+	 * @property _id
+	 * @type Number
+	 * @default null
+	 */
 	this._id = null;
+
+	/**
+	 * @property _supportedMethods
+	 * @type Array
+	 * @default [ &#x27;head&#x27;, &#x27;get&#x27;, &#x27;post&#x27; ]
+	 */
 	this._supportedMethods = [ &#x27;head&#x27;, &#x27;get&#x27;, &#x27;post&#x27; ];
 }
 
@@ -90,6 +134,7 @@ util.inherits( UsersRequest, WPRequest );
 
 /**
  * @method me
+ * @chainable
  * @return {UsersRequest} The UsersRequest instance (for chaining)
  */
 UsersRequest.prototype.me = function() {
@@ -100,6 +145,8 @@ UsersRequest.prototype.me = function() {
 
 /**
  * @method id
+ * @chainable
+ * @param {Number} id The integer ID of a user record
  * @return {UsersRequest} The UsersRequest instance (for chaining)
  */
 UsersRequest.prototype.id = function( id ) {
@@ -110,8 +157,10 @@ UsersRequest.prototype.id = function( id ) {
 };
 
 /**
+ * Parse the request&#x27;s instance properties into a WordPress API request URI
+ *
  * @method generateRequestUri
- * @return {UsersRequest} The UsersRequest instance (for chaining)
+ * @return {String} The URI for the HTTP request to the users endpoint
  */
 UsersRequest.prototype.generateRequestUri = function() {
 	var path = [ &#x27;users&#x27; ];
@@ -119,7 +168,7 @@ UsersRequest.prototype.generateRequestUri = function() {
 		path.push( this._id );
 	}
 
-	return this._options.endpoint.replace( /\/?$/, &#x27;/&#x27; ) + path.join( &#x27;/&#x27; );
+	return this._options.endpoint + path.join( &#x27;/&#x27; );
 };
 
 module.exports = UsersRequest;

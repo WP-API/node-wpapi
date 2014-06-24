@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>lib/var/public-query-vars.js - wordpress-rest-api</title>
+    <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
+    <link rel="shortcut icon" type="image/png" href="../assets/favicon.png">
+    <script src="../assets/vendor/yui-min.js"></script>
+</head>
+<body>
+
+<div id="doc">
+    <header class="main-header">
+        <div class="content">
+            <div class="project-title">
+                
+                
+                    <h1 class="project-name">wordpress-rest-api</h1> <span class="project-version">0.1.1</span>
+                
+                
+                    <p class="description">A client for interacting with the WordPress REST API</p>
+                
+            </div>
+            <ul class="jump-links">
+                <li><a href="#index" class="index-jump-link">index</a></li>
+                <li><a href="#top" class="top-jump-link">top</a></li>
+            </ul>
+        </div>
+    </header>
+    <div id="bd" class="main-body">
+
+        <div id="docs-sidebar" class="sidebar apidocs">
+            <div id="api-list">
+    <div id="api-tabview" class="tabview">
+        <ul class="tabs">
+            <li><a href="#api-classes">Classes</a></li>
+            <li><a href="#api-modules">Modules</a></li>
+        </ul>
+
+        <div id="api-tabview-filter">
+            <input type="search" id="api-filter" placeholder="Type to filter APIs">
+        </div>
+
+        <div id="api-tabview-panel">
+            <ul id="api-classes" class="apis classes">
+            
+                <li><a class="type" href="../classes/CollectionFilters.html">CollectionFilters</a></li>
+            
+                <li><a class="type" href="../classes/PostsRequest.html">PostsRequest</a></li>
+            
+                <li><a class="type" href="../classes/TaxonomiesRequest.html">TaxonomiesRequest</a></li>
+            
+                <li><a class="type" href="../classes/UsersRequest.html">UsersRequest</a></li>
+            
+                <li><a class="type" href="../classes/WP.html">WP</a></li>
+            
+                <li><a class="type" href="../classes/WPRequest.html">WPRequest</a></li>
+            
+            </ul>
+
+            <ul id="api-modules" class="apis modules">
+            
+                <li><a class="module" href="../modules/CollectionFilters.html">CollectionFilters</a></li>
+            
+                <li><a class="module" href="../modules/PostsRequest.html">PostsRequest</a></li>
+            
+                <li><a class="module" href="../modules/TaxonomiesRequest.html">TaxonomiesRequest</a></li>
+            
+                <li><a class="module" href="../modules/UsersRequest.html">UsersRequest</a></li>
+            
+                <li><a class="module" href="../modules/WP.html">WP</a></li>
+            
+                <li><a class="module" href="../modules/WPRequest.html">WPRequest</a></li>
+            
+            </ul>
+        </div>
+    </div>
+</div>
+
+        </div>
+
+        <div id="docs-main" class="apidocs">
+            <div class="content container">
+                <h1 class="file-heading">File: lib/var/public-query-vars.js</h1>
+
+<div class="file">
+    <pre class="code prettyprint linenums">
+/**
+ * Sorted list of publicly-exposed WP_Query variables
+ * This may be used for a whitelist soon, but at present please consider it
+ * to be simply documentation.
+ *
+ * Documentation:
+ *
+ * - WP_Query parameters: http://codex.wordpress.org/Class_Reference/WP_Query
+ * - Public query variables: http://codex.wordpress.org/WordPress_Query_Vars
+ *
+ * Note: posts_per_page is a private query varaible within WordPress, but is
+ * explicitly exposed for public querying within the WP API
+ */
+module.exports = [
+	// Search parameter
+	&#x27;s&#x27;,               // (string) - Search keyword.
+
+	// Number and order of results per page
+	&#x27;posts_per_page&#x27;,  // (int) - number of posts per page. -1 for all.
+	&#x27;order&#x27;,           // (string) - Designates the ascending or descending order of the &#x27;orderby&#x27;
+	//                               parameter. Defaults to &#x27;DESC&#x27;.
+	&#x27;orderby&#x27;,         // (string) - Sort retrieved posts by parameter. Defaults to &#x27;date&#x27;. One or
+	//                               more options can be passed.
+
+	// Name &amp; ID queries
+	&#x27;pagename&#x27;,        // (string) - use page slug.
+	&#x27;page_id&#x27;,         // (int) - use page id.
+	&#x27;p&#x27;,               // (int) - use post id.
+
+	// Date parameters
+	&#x27;m&#x27;,               // (int) - YearMonth (For e.g.: 201307).
+	&#x27;w&#x27;,               // (int) - Week of the year (from 0 to 53). Uses MySQL WEEK command.
+	//                            The mode is dependent on the &quot;start_of_week&quot; option.
+	&#x27;year&#x27;,            // (int) - 4 digit year (e.g. 2011).
+	&#x27;monthnum&#x27;,        // (int) - Month number (from 1 to 12).
+	&#x27;day&#x27;,             // (int) - Week of the year (from 0 to 53).
+	&#x27;hour&#x27;,            // (int) - Hour (from 0 to 23).
+	&#x27;minute&#x27;,          // (int) - Minute (from 0 to 60).
+	&#x27;second&#x27;,          // (int) - Second (0 to 60).
+	&#x27;name&#x27;,            // (string) - use post slug.
+
+	// Taxonomy parameters
+	&#x27;cat&#x27;,             // (int) - use category id.
+	&#x27;category_name&#x27;,   // (string) - use category slug (NOT name).
+	&#x27;tag&#x27;,             // (string) - use tag slug. (for multiple tags, use &#x27;filter[tag]=slug,slug&#x27;
+	//                               for OR or &#x27;filter[tag]=slug+slug&#x27; for AND)
+	// &#x27;cpt_name&#x27;      // (string) - use custom tax slugs or ids based on the type of taxonomy.
+
+	// Author parameters
+	&#x27;author&#x27;,          // (int) - use author id.
+	&#x27;author_name&#x27;,     // (string) - use &#x27;user_nicename&#x27; (NOT name).
+
+	// Things I do not believe to be useful to the API client
+	// &#x27;error&#x27;         // (string) - error page to show, e.g. ?error=404
+	// &#x27;feed&#x27;,         // (string) - Type of feed to return, e.g. &#x27;rss2&#x27;.
+
+	&#x27;post_type&#x27;,       // (string / array) - use post types. Retrieves posts by Post Types, default
+	//                    value is &#x27;post&#x27;. If &#x27;tax_query&#x27; is set for a query, the default value
+	//                    becomes &#x27;any&#x27;. This was replaced by &#x60;type=cpt_name&#x60;
+
+	// The following properties should be set directly, not within &quot;filter[]&quot;
+	&#x27;page&#x27;,            // (int) - number of pages to skip when paging through posts.
+	&#x27;type&#x27;             // (string) - the name of a custom post type object (replaces post_type)
+
+	// The following properties appear to have been replaced with direct-use query parameters:
+	// &#x27;taxonomy&#x27;,        // Replaced by &quot;?filter[tax_name]=terms&quot;: (string) - Taxonomy.
+	// &#x27;paged&#x27;,           // Replaced by &quot;?page=n&quot;:number of pages to skip
+	// &#x27;post_type&#x27;,       // Replaced by &quot;?type=cpt_name&quot;: (string / array) - use post types.
+
+	// Cannot find documentation for these:
+	// &#x27;more&#x27;,            // &lt;no documentation available&gt;
+	// &#x27;posts&#x27;,           // &lt;no documentation available&gt;
+	// &#x27;withcomments&#x27;,    // &lt;no documentation available&gt;
+	// &#x27;withoutcomments&#x27;, // &lt;no documentation available&gt;
+	// &#x27;search&#x27;,          // &lt;no documentation available&gt;
+	// &#x27;exact&#x27;,           // &lt;no documentation available&gt;
+	// &#x27;sentence&#x27;,        // &lt;no documentation available&gt;
+	// &#x27;calendar&#x27;,        // &lt;no documentation available&gt;
+	// &#x27;tb&#x27;,              // &lt;no documentation available&gt;
+	// &#x27;pb&#x27;,              // &lt;no documentation available&gt;
+	// &#x27;static&#x27;,          // &lt;no documentation available&gt;
+	// &#x27;comments_popup&#x27;,  // &lt;no documentation available&gt;
+	// &#x27;attachment&#x27;,      // &lt;no documentation available&gt;
+	// &#x27;attachment_id&#x27;,   // &lt;no documentation available&gt;
+	// &#x27;subpost&#x27;,         // &lt;no documentation available&gt;
+	// &#x27;subpost_id&#x27;,      // &lt;no documentation available&gt;
+	// &#x27;preview&#x27;,         // &lt;no documentation available&gt;
+	// &#x27;robots&#x27;,          // &lt;no documentation available&gt;
+	// &#x27;term&#x27;,            // &lt;no documentation available&gt;
+	// &#x27;cpage&#x27;            // &lt;no documentation available&gt;
+].sort();
+
+    </pre>
+</div>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+<script src="../assets/vendor/prettify/prettify-min.js"></script>
+<script>prettyPrint();</script>
+<script src="../assets/vendor/jquery.min.js"></script>
+<script src="../assets/js/jquery-offscreen-trigger.js"></script>
+<script src="../assets/js/yui-prettify.js"></script>
+<script src="../assets/../api.js"></script>
+<script src="../assets/js/api-filter.js"></script>
+<script src="../assets/js/api-list.js"></script>
+<script src="../assets/js/api-search.js"></script>
+<script src="../assets/js/apidocs.js"></script>
+</body>
+</html>

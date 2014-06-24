@@ -1,14 +1,41 @@
 {
     "project": {
-        "name": "node-wp-api",
-        "description": "A Node.js client for interacting with the WordPress REST API",
-        "version": "0.0.2",
+        "name": "wordpress-rest-api",
+        "description": "A client for interacting with the WordPress REST API",
+        "version": "0.1.1",
         "url": "https://github.com/kadamwhite/node-wp-api"
     },
     "files": {
+        "lib/shared/filters.js": {
+            "name": "lib/shared/filters.js",
+            "modules": {
+                "CollectionFilters": 1
+            },
+            "classes": {
+                "CollectionFilters": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "lib/var/private-query-vars.js": {
+            "name": "lib/var/private-query-vars.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "lib/var/public-query-vars.js": {
+            "name": "lib/var/public-query-vars.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
         "lib/WPRequest.js": {
             "name": "lib/WPRequest.js",
-            "modules": {},
+            "modules": {
+                "WPRequest": 1
+            },
             "classes": {
                 "WPRequest": 1
             },
@@ -17,7 +44,9 @@
         },
         "lib/posts.js": {
             "name": "lib/posts.js",
-            "modules": {},
+            "modules": {
+                "PostsRequest": 1
+            },
             "classes": {
                 "PostsRequest": 1
             },
@@ -26,7 +55,9 @@
         },
         "lib/taxonomies.js": {
             "name": "lib/taxonomies.js",
-            "modules": {},
+            "modules": {
+                "TaxonomiesRequest": 1
+            },
             "classes": {
                 "TaxonomiesRequest": 1
             },
@@ -35,7 +66,9 @@
         },
         "lib/users.js": {
             "name": "lib/users.js",
-            "modules": {},
+            "modules": {
+                "UsersRequest": 1
+            },
             "classes": {
                 "UsersRequest": 1
             },
@@ -44,7 +77,9 @@
         },
         "wp.js": {
             "name": "wp.js",
-            "modules": {},
+            "modules": {
+                "WP": 1
+            },
             "classes": {
                 "WP": 1
             },
@@ -52,8 +87,136 @@
             "namespaces": {}
         }
     },
-    "modules": {},
+    "modules": {
+        "WP": {
+            "name": "WP",
+            "submodules": {
+                "CollectionFilters": 1,
+                "WPRequest": 1,
+                "PostsRequest": 1,
+                "TaxonomiesRequest": 1,
+                "UsersRequest": 1
+            },
+            "classes": {
+                "CollectionFilters": 1,
+                "WPRequest": 1,
+                "PostsRequest": 1,
+                "TaxonomiesRequest": 1,
+                "UsersRequest": 1,
+                "WP": 1
+            },
+            "fors": {},
+            "namespaces": {},
+            "tag": "main",
+            "file": "wp.js",
+            "line": 24,
+            "description": "A WP REST API client for Node.js",
+            "example": [
+                "\n    var wp = new WP({ endpoint: 'http://src.wordpress-develop.dev/wp-json' });\n    wp.posts().then(function( posts ) {\n        console.log( posts );\n    }).catch(function( err ) {\n        console.error( err );\n    });"
+            ],
+            "itemtype": "main"
+        },
+        "CollectionFilters": {
+            "name": "CollectionFilters",
+            "submodules": {},
+            "classes": {
+                "CollectionFilters": 1
+            },
+            "fors": {},
+            "is_submodule": 1,
+            "namespaces": {},
+            "module": "WP",
+            "namespace": "",
+            "file": "lib/shared/filters.js",
+            "line": 110,
+            "beta": 1,
+            "description": "CollectionFilters' \"mixins\" object is intended to extend endpoint modules' prototypes"
+        },
+        "WPRequest": {
+            "name": "WPRequest",
+            "submodules": {},
+            "classes": {
+                "WPRequest": 1
+            },
+            "fors": {},
+            "is_submodule": 1,
+            "namespaces": {},
+            "module": "WP",
+            "namespace": "",
+            "file": "lib/WPRequest.js",
+            "line": 11,
+            "beta": 1,
+            "description": "WPRequest is the base API request object constructor"
+        },
+        "PostsRequest": {
+            "name": "PostsRequest",
+            "submodules": {},
+            "classes": {
+                "PostsRequest": 1
+            },
+            "fors": {},
+            "is_submodule": 1,
+            "namespaces": {},
+            "module": "WP",
+            "namespace": "",
+            "file": "lib/posts.js",
+            "line": 11,
+            "beta": 1,
+            "description": "PostsRequest extends WPRequest to handle the /posts API endpoint"
+        },
+        "TaxonomiesRequest": {
+            "name": "TaxonomiesRequest",
+            "submodules": {},
+            "classes": {
+                "TaxonomiesRequest": 1
+            },
+            "fors": {},
+            "is_submodule": 1,
+            "namespaces": {},
+            "module": "WP",
+            "namespace": "",
+            "file": "lib/taxonomies.js",
+            "line": 9,
+            "beta": 1,
+            "description": "TaxonomiesRequest extends WPRequest to handle the /taxonomies API endpoint"
+        },
+        "UsersRequest": {
+            "name": "UsersRequest",
+            "submodules": {},
+            "classes": {
+                "UsersRequest": 1
+            },
+            "fors": {},
+            "is_submodule": 1,
+            "namespaces": {},
+            "module": "WP",
+            "namespace": "",
+            "file": "lib/users.js",
+            "line": 9,
+            "beta": 1,
+            "description": "UsersRequest extends WPRequest to handle the /users API endpoint"
+        }
+    },
     "classes": {
+        "CollectionFilters": {
+            "name": "CollectionFilters",
+            "shortname": "CollectionFilters",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [
+                "PostsRequest",
+                "PostsRequest"
+            ],
+            "module": "WP",
+            "submodule": "CollectionFilters",
+            "namespace": "",
+            "file": "lib/shared/filters.js",
+            "line": 110,
+            "description": "CollectionFilters' \"mixins\" object is intended to extend endpoint modules' prototypes",
+            "static": 1
+        },
         "WPRequest": {
             "name": "WPRequest",
             "shortname": "WPRequest",
@@ -62,9 +225,39 @@
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
+            "module": "WP",
+            "submodule": "WPRequest",
+            "namespace": "",
             "file": "lib/WPRequest.js",
-            "line": 5,
-            "is_constructor": 1
+            "line": 11,
+            "description": "WPRequest is the base API request object constructor",
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "options",
+                    "description": "A hash of options for the WPRequest instance",
+                    "type": "Object",
+                    "props": [
+                        {
+                            "name": "endpoint",
+                            "description": "The endpoint URI for the invoking WP instance",
+                            "type": "String"
+                        },
+                        {
+                            "name": "username",
+                            "description": "A username for authenticating API requests",
+                            "type": "String",
+                            "optional": true
+                        },
+                        {
+                            "name": "password",
+                            "description": "A password for authenticating API requests",
+                            "type": "String",
+                            "optional": true
+                        }
+                    ]
+                }
+            ]
         },
         "PostsRequest": {
             "name": "PostsRequest",
@@ -73,11 +266,46 @@
             "plugins": [],
             "extensions": [],
             "plugin_for": [],
-            "extension_for": [],
+            "extension_for": [
+                "WP"
+            ],
+            "module": "WP",
+            "submodule": "PostsRequest",
+            "namespace": "",
             "file": "lib/posts.js",
-            "line": 4,
+            "line": 11,
+            "description": "PostsRequest extends WPRequest to handle the /posts API endpoint",
             "is_constructor": 1,
-            "extends": "WPRequest"
+            "extends": "WPRequest",
+            "uses": [
+                "CollectionFilters"
+            ],
+            "params": [
+                {
+                    "name": "options",
+                    "description": "A hash of options for the PostsRequest instance",
+                    "type": "Object",
+                    "props": [
+                        {
+                            "name": "endpoint",
+                            "description": "The endpoint URI for the invoking WP instance",
+                            "type": "String"
+                        },
+                        {
+                            "name": "username",
+                            "description": "A username for authenticating API requests",
+                            "type": "String",
+                            "optional": true
+                        },
+                        {
+                            "name": "password",
+                            "description": "A password for authenticating API requests",
+                            "type": "String",
+                            "optional": true
+                        }
+                    ]
+                }
+            ]
         },
         "TaxonomiesRequest": {
             "name": "TaxonomiesRequest",
@@ -86,11 +314,43 @@
             "plugins": [],
             "extensions": [],
             "plugin_for": [],
-            "extension_for": [],
+            "extension_for": [
+                "WP"
+            ],
+            "module": "WP",
+            "submodule": "TaxonomiesRequest",
+            "namespace": "",
             "file": "lib/taxonomies.js",
-            "line": 4,
+            "line": 9,
+            "description": "TaxonomiesRequest extends WPRequest to handle the /taxonomies API endpoint",
             "is_constructor": 1,
-            "extends": "WPRequest"
+            "extends": "WPRequest",
+            "params": [
+                {
+                    "name": "options",
+                    "description": "A hash of options for the TaxonomiesRequest instance",
+                    "type": "Object",
+                    "props": [
+                        {
+                            "name": "endpoint",
+                            "description": "The endpoint URI for the invoking WP instance",
+                            "type": "String"
+                        },
+                        {
+                            "name": "username",
+                            "description": "A username for authenticating API requests",
+                            "type": "String",
+                            "optional": true
+                        },
+                        {
+                            "name": "password",
+                            "description": "A password for authenticating API requests",
+                            "type": "String",
+                            "optional": true
+                        }
+                    ]
+                }
+            ]
         },
         "UsersRequest": {
             "name": "UsersRequest",
@@ -99,11 +359,43 @@
             "plugins": [],
             "extensions": [],
             "plugin_for": [],
-            "extension_for": [],
+            "extension_for": [
+                "WP"
+            ],
+            "module": "WP",
+            "submodule": "UsersRequest",
+            "namespace": "",
             "file": "lib/users.js",
-            "line": 4,
+            "line": 9,
+            "description": "UsersRequest extends WPRequest to handle the /users API endpoint",
             "is_constructor": 1,
-            "extends": "WPRequest"
+            "extends": "WPRequest",
+            "params": [
+                {
+                    "name": "options",
+                    "description": "A hash of options for the UsersRequest instance",
+                    "type": "Object",
+                    "props": [
+                        {
+                            "name": "endpoint",
+                            "description": "The endpoint URI for the invoking WP instance",
+                            "type": "String"
+                        },
+                        {
+                            "name": "username",
+                            "description": "A username for authenticating API requests",
+                            "type": "String",
+                            "optional": true
+                        },
+                        {
+                            "name": "password",
+                            "description": "A password for authenticating API requests",
+                            "type": "String",
+                            "optional": true
+                        }
+                    ]
+                }
+            ]
         },
         "WP": {
             "name": "WP",
@@ -113,9 +405,17 @@
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
+            "module": "WP",
+            "namespace": "",
             "file": "wp.js",
-            "line": 3,
+            "line": 24,
+            "description": "The base constructor for the WP API service",
             "is_constructor": 1,
+            "uses": [
+                "PostsRequest",
+                "TaxonomiesRequest",
+                "UsersRequest"
+            ],
             "params": [
                 {
                     "name": "options",
@@ -125,22 +425,19 @@
                         {
                             "name": "endpoint",
                             "description": "The URI for a WP-API endpoint",
-                            "type": "String",
-                            "optional": true
+                            "type": "String"
                         },
                         {
                             "name": "username",
                             "description": "A WP-API Basic Auth username",
                             "type": "String",
-                            "optional": true,
-                            "multiple": true
+                            "optional": true
                         },
                         {
                             "name": "password",
                             "description": "A WP-API Basic Auth password",
                             "type": "String",
-                            "optional": true,
-                            "multiple": true
+                            "optional": true
                         }
                     ]
                 }
@@ -149,14 +446,362 @@
     },
     "classitems": [
         {
-            "file": "lib/WPRequest.js",
-            "line": 19,
-            "class": "WPRequest"
+            "file": "lib/shared/filters.js",
+            "line": 11,
+            "description": "Process arrays of taxonomy terms into query parameters\nAll terms listed in the arrays will be required (AND behavior)",
+            "example": [
+                "\n   prepareTaxFilters({\n       tag: [ 'tag1 ', 'tag2' ], // by term slug\n       cat: [ 7 ] // by term ID\n   }) === {\n       tag: 'tag1+tag2',\n       cat: '7'\n   }"
+            ],
+            "access": "private",
+            "tagname": "",
+            "params": [
+                {
+                    "name": "taxonomyFilters",
+                    "description": "An object of taxonomy term arrays, keyed by taxonomy name",
+                    "type": "Object"
+                }
+            ],
+            "return": {
+                "description": "An object of prepareFilters-ready query arg and query param value pairs",
+                "type": "Object"
+            },
+            "class": "CollectionFilters",
+            "module": "WP",
+            "submodule": "CollectionFilters"
+        },
+        {
+            "file": "lib/shared/filters.js",
+            "line": 41,
+            "description": "Process an array of filter keys and values into WP-API-ready query parameter syntax",
+            "example": [
+                "\n   prepareFilters({\n       tag: 'tag1+tag2',\n       category_name: 'news'\n   }) === {\n       'filter[tag]': 'tag1+tag2',\n       'filter[category_name]': 'news'\n   }"
+            ],
+            "access": "private",
+            "tagname": "",
+            "params": [
+                {
+                    "name": "filters",
+                    "description": "An object of filter values, keyed by filter parameter name",
+                    "type": "Object"
+                }
+            ],
+            "return": {
+                "description": "An object of WP-API filter query parameter key-value pairs",
+                "type": "Object"
+            },
+            "class": "CollectionFilters",
+            "module": "WP",
+            "submodule": "CollectionFilters"
+        },
+        {
+            "file": "lib/shared/filters.js",
+            "line": 66,
+            "description": "Generate a complete query string from the provided array of query parameters",
+            "example": [
+                "\n    generateQueryString({\n        'filter[tag]': 'tag1',\n        'filter[post_status': 'publish',\n        'type': 'cpt_item'\n    }) === '?filter%5Btag%5D=tag1&filter%5Bpost_status=publish&type=cpt_item'"
+            ],
+            "access": "private",
+            "tagname": "",
+            "params": [
+                {
+                    "name": "queryParams",
+                    "description": "A hash of query parameter keys and values",
+                    "type": "Object"
+                }
+            ],
+            "return": {
+                "description": "A complete, rendered query string",
+                "type": "String"
+            },
+            "class": "CollectionFilters",
+            "module": "WP",
+            "submodule": "CollectionFilters"
+        },
+        {
+            "file": "lib/shared/filters.js",
+            "line": 91,
+            "description": "Utility function for sorting arrays of numbers or strings",
+            "access": "private",
+            "tagname": "",
+            "params": [
+                {
+                    "name": "a",
+                    "description": "The first comparator operand",
+                    "type": "String|Number"
+                },
+                {
+                    "name": "a",
+                    "description": "The second comparator operand",
+                    "type": "String|Number"
+                }
+            ],
+            "return": {
+                "description": "-1 if the values are backwards, 1 if they're ordered, and 0 if they're the same"
+            },
+            "class": "CollectionFilters",
+            "module": "WP",
+            "submodule": "CollectionFilters"
+        },
+        {
+            "file": "lib/shared/filters.js",
+            "line": 119,
+            "description": "Process the endpoint query's filter objects into a valid query string.\n(This query string will only be valid for collection endpoints such as /posts)",
+            "itemtype": "method",
+            "name": "_queryStr",
+            "return": {
+                "description": "A query string representing the specified filter parameters",
+                "type": "String"
+            },
+            "class": "CollectionFilters",
+            "module": "WP",
+            "submodule": "CollectionFilters"
+        },
+        {
+            "file": "lib/shared/filters.js",
+            "line": 132,
+            "description": "Specify key-value pairs by which to filter the API results (commonly used\nto retrieve only posts meeting certain criteria, such as posts within a\nparticular category or by a particular author)",
+            "example": [
+                "\n    // Set a single property:\n    wp.filter( 'post_type', 'cpt_event' )...\n\n    // Set multiple properties at once:\n    wp.filter({\n        post_status: 'publish',\n        category_name: 'news'\n    }).//...\n\n    // Chain calls to .filter():\n    wp.filter( 'post_status', 'publish' ).filter( 'category_name', 'news' ).//..."
+            ],
+            "itemtype": "method",
+            "name": "filter",
+            "chainable": 1,
+            "params": [
+                {
+                    "name": "props",
+                    "description": "A filter property name string, or object of name/value pairs",
+                    "type": "String|Object"
+                },
+                {
+                    "name": "value",
+                    "description": "The value(s) corresponding to the provided filter property",
+                    "type": "String|Number|Array",
+                    "optional": true
+                }
+            ],
+            "return": {
+                "description": "The WPRequest instance (for chaining)",
+                "type": "WPRequest"
+            },
+            "class": "CollectionFilters",
+            "module": "WP",
+            "submodule": "CollectionFilters"
+        },
+        {
+            "file": "lib/shared/filters.js",
+            "line": 170,
+            "description": "Restrict the query results to posts matching one or more taxonomy terms",
+            "itemtype": "method",
+            "name": "taxonomy",
+            "chainable": 1,
+            "params": [
+                {
+                    "name": "taxonomy",
+                    "description": "The name of the taxonomy to filter by",
+                    "type": "String"
+                },
+                {
+                    "name": "term",
+                    "description": "A string|integer, or array thereof, representing terms",
+                    "type": "String|Number|Array"
+                }
+            ],
+            "return": {
+                "description": "this The endpoint request object (for chaining)"
+            },
+            "class": "CollectionFilters",
+            "module": "WP",
+            "submodule": "CollectionFilters"
+        },
+        {
+            "file": "lib/shared/filters.js",
+            "line": 221,
+            "description": "Convenience wrapper for .taxonomy( 'category', ... )",
+            "itemtype": "method",
+            "name": "category",
+            "chainable": 1,
+            "params": [
+                {
+                    "name": "category",
+                    "description": "A string|integer, or array thereof, representing terms",
+                    "type": "String|Number|Array"
+                }
+            ],
+            "return": {
+                "description": "this The endpoint request object (for chaining)"
+            },
+            "class": "CollectionFilters",
+            "module": "WP",
+            "submodule": "CollectionFilters"
+        },
+        {
+            "file": "lib/shared/filters.js",
+            "line": 233,
+            "description": "Convenience wrapper for .taxonomy( 'tag', ... )",
+            "itemtype": "method",
+            "name": "tag",
+            "chainable": 1,
+            "params": [
+                {
+                    "name": "tag",
+                    "description": "A tag term string or array of tag term strings",
+                    "type": "String|Number|Array"
+                }
+            ],
+            "return": {
+                "description": "this The endpoint request object (for chaining)"
+            },
+            "class": "CollectionFilters",
+            "module": "WP",
+            "submodule": "CollectionFilters"
+        },
+        {
+            "file": "lib/shared/filters.js",
+            "line": 245,
+            "description": "Filter results to those matching the specified search terms",
+            "itemtype": "method",
+            "name": "search",
+            "params": [
+                {
+                    "name": "searchString",
+                    "description": "A string to search for within post content",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "this The endpoint request object (for chaining)"
+            },
+            "class": "CollectionFilters",
+            "module": "WP",
+            "submodule": "CollectionFilters"
+        },
+        {
+            "file": "lib/shared/filters.js",
+            "line": 256,
+            "description": "Query for posts by a specific author\nThis method will replace any previous 'author' query parameters that had been set",
+            "itemtype": "method",
+            "name": "author",
+            "chainable": 1,
+            "params": [
+                {
+                    "name": "author",
+                    "description": "The nicename or ID for a particular author",
+                    "type": "String|Number"
+                }
+            ],
+            "return": {
+                "description": "this The endpoint request object (for chaining)"
+            },
+            "class": "CollectionFilters",
+            "module": "WP",
+            "submodule": "CollectionFilters"
+        },
+        {
+            "file": "lib/shared/filters.js",
+            "line": 277,
+            "description": "Query a collection of posts for a post with a specific slug",
+            "itemtype": "method",
+            "name": "name",
+            "chainable": 1,
+            "params": [
+                {
+                    "name": "slug",
+                    "description": "A post name (slug), e.g. \"hello-world\"",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "this The endpoint request object (for chaining)"
+            },
+            "class": "CollectionFilters",
+            "module": "WP",
+            "submodule": "CollectionFilters"
+        },
+        {
+            "file": "lib/shared/filters.js",
+            "line": 289,
+            "description": "Alias for .name()",
+            "itemtype": "method",
+            "name": "slug",
+            "alias": "name",
+            "params": [
+                {
+                    "name": "slug",
+                    "description": "A post slug, e.g. \"hello-world\"",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "this The endpoint request object (for chaining)"
+            },
+            "class": "CollectionFilters",
+            "module": "WP",
+            "submodule": "CollectionFilters"
+        },
+        {
+            "file": "lib/var/private-query-vars.js",
+            "line": 1,
+            "description": "Sorted list of private WP_Query variables, requiring authentication\nThis may be used for a whitelist soon, but at present please consider it\nto be simply documentation.\n\nDocumentation:\n\n- WP_Query parameters: http://codex.wordpress.org/Class_Reference/WP_Query\n- Privat query variables: WordPress core, wp-includes/class-wp.php\n\nNote: posts_per_page is a private query varaible within WordPress, but is\nexplicitly exposed for public querying within the WP API so it exists in\nthe list within public-query-vars.js",
+            "class": "WPRequest",
+            "module": "WP"
+        },
+        {
+            "file": "lib/var/public-query-vars.js",
+            "line": 1,
+            "description": "Sorted list of publicly-exposed WP_Query variables\nThis may be used for a whitelist soon, but at present please consider it\nto be simply documentation.\n\nDocumentation:\n\n- WP_Query parameters: http://codex.wordpress.org/Class_Reference/WP_Query\n- Public query variables: http://codex.wordpress.org/WordPress_Query_Vars\n\nNote: posts_per_page is a private query varaible within WordPress, but is\nexplicitly exposed for public querying within the WP API",
+            "class": "WPRequest",
+            "module": "WP"
         },
         {
             "file": "lib/WPRequest.js",
             "line": 22,
+            "description": "Configuration options for the request such as the endpoint for the invoking WP instance",
+            "itemtype": "property",
+            "name": "_options",
+            "type": "Object",
+            "default": "{}",
+            "class": "WPRequest",
+            "module": "WP",
+            "submodule": "WPRequest"
+        },
+        {
+            "file": "lib/WPRequest.js",
+            "line": 30,
+            "description": "Methods supported by this API request instance:\nIndividual endpoint handlers specify their own subset of supported methods",
+            "itemtype": "property",
+            "name": "_supportedMethods",
+            "type": "Array",
+            "default": "[ 'head', 'get', 'put', 'post', 'patch', 'delete' ]",
+            "class": "WPRequest",
+            "module": "WP",
+            "submodule": "WPRequest"
+        },
+        {
+            "file": "lib/WPRequest.js",
+            "line": 43,
+            "description": "No-op function for use within ensureFunction()",
+            "access": "private",
+            "tagname": "",
+            "class": "WPRequest",
+            "module": "WP",
+            "submodule": "WPRequest"
+        },
+        {
+            "file": "lib/WPRequest.js",
+            "line": 50,
+            "description": "Identity function for use within invokeAndPromisify()",
+            "access": "private",
+            "tagname": "",
+            "class": "WPRequest",
+            "module": "WP",
+            "submodule": "WPRequest"
+        },
+        {
+            "file": "lib/WPRequest.js",
+            "line": 59,
             "description": "If fn is a function, return it; else, return a no-op function",
+            "access": "private",
+            "tagname": "",
             "params": [
                 {
                     "name": "fn",
@@ -168,12 +813,16 @@
                 "description": "The provided callback function or a no-op",
                 "type": "Function"
             },
-            "class": "WPRequest"
+            "class": "WPRequest",
+            "module": "WP",
+            "submodule": "WPRequest"
         },
         {
             "file": "lib/WPRequest.js",
-            "line": 32,
+            "line": 71,
             "description": "Submit the provided superagent request object, invoke a callback (if it was\nprovided), and return a promise to the response from the HTTP request.",
+            "access": "private",
+            "tagname": "",
             "params": [
                 {
                     "name": "request",
@@ -184,268 +833,697 @@
                     "name": "callback",
                     "description": "A callback function (optional)",
                     "type": "Function"
+                },
+                {
+                    "name": "transform",
+                    "description": "A function to transform the result data (optional)",
+                    "type": "Function"
                 }
             ],
             "return": {
                 "description": "A promise to the superagent request",
                 "type": "Promise"
             },
-            "class": "WPRequest"
+            "class": "WPRequest",
+            "module": "WP",
+            "submodule": "WPRequest"
         },
         {
             "file": "lib/WPRequest.js",
-            "line": 62,
-            "itemtype": "method",
-            "name": "filter",
+            "line": 103,
+            "description": "Extract and return the body property from a superagent response object",
+            "access": "private",
+            "tagname": "",
             "params": [
                 {
-                    "name": "A",
-                    "description": "filter properties hash",
+                    "name": "result",
+                    "description": "The results from the HTTP request",
                     "type": "Object"
                 }
             ],
             "return": {
-                "description": "The URI target for the HTTP request",
-                "type": "String"
+                "description": "The \"body\" property of the result",
+                "type": "Object"
             },
-            "class": "WPRequest"
+            "class": "WPRequest",
+            "module": "WP",
+            "submodule": "WPRequest"
         },
         {
             "file": "lib/WPRequest.js",
-            "line": 72,
+            "line": 115,
+            "description": "Extract and return the headers property from a superagent response object",
+            "access": "private",
+            "tagname": "",
+            "params": [
+                {
+                    "name": "result",
+                    "description": "The results from the HTTP request",
+                    "type": "Object"
+                }
+            ],
+            "return": {
+                "description": "The \"headers\" property of the result",
+                "type": "Object"
+            },
+            "class": "WPRequest",
+            "module": "WP",
+            "submodule": "WPRequest"
+        },
+        {
+            "file": "lib/WPRequest.js",
+            "line": 130,
             "itemtype": "method",
             "name": "_checkMethodSupport",
-            "access": "protected",
-            "tagname": "",
+            "params": [
+                {
+                    "name": "method",
+                    "description": "An HTTP method to check ('get', 'post', etc)",
+                    "type": "String"
+                }
+            ],
             "return": {
-                "description": "true iff the method is within _supportedMethods"
+                "description": "true iff the method is within this._supportedMethods"
             },
-            "class": "WPRequest"
+            "class": "WPRequest",
+            "module": "WP",
+            "submodule": "WPRequest"
         },
         {
             "file": "lib/WPRequest.js",
-            "line": 88,
+            "line": 146,
             "description": "Generate the URI for the HTTP request (overridden in the modules for\nhandling individual endpoints)",
+            "access": "protected",
+            "tagname": "",
             "itemtype": "method",
             "name": "generateRequestUri",
             "return": {
                 "description": "The URI target for the HTTP request",
                 "type": "String"
             },
-            "class": "WPRequest"
-        },
-        {
-            "file": "lib/WPRequest.js",
-            "line": 99,
-            "itemtype": "method",
-            "name": "get",
-            "return": {
-                "description": "A promise to the results of the HTTP request",
-                "type": "Promise"
-            },
-            "class": "WPRequest"
-        },
-        {
-            "file": "lib/WPRequest.js",
-            "line": 112,
-            "itemtype": "method",
-            "name": "post",
-            "return": {
-                "description": "A promise to the results of the HTTP request",
-                "type": "Promise"
-            },
-            "class": "WPRequest"
-        },
-        {
-            "file": "lib/WPRequest.js",
-            "line": 131,
-            "itemtype": "method",
-            "name": "put",
-            "return": {
-                "description": "A promise to the results of the HTTP request",
-                "type": "Promise"
-            },
-            "class": "WPRequest"
-        },
-        {
-            "file": "lib/WPRequest.js",
-            "line": 150,
-            "itemtype": "method",
-            "name": "patch",
-            "return": {
-                "description": "A promise to the results of the HTTP request",
-                "type": "Promise"
-            },
-            "class": "WPRequest"
+            "class": "WPRequest",
+            "module": "WP",
+            "submodule": "WPRequest"
         },
         {
             "file": "lib/WPRequest.js",
             "line": 162,
             "itemtype": "method",
-            "name": "remove",
+            "name": "get",
+            "async": 1,
+            "params": [
+                {
+                    "name": "callback",
+                    "description": "A callback to invoke with the results of the GET request",
+                    "type": "Function",
+                    "optional": true,
+                    "props": [
+                        {
+                            "name": "err",
+                            "description": "Any errors encountered during the request",
+                            "type": "Error|Object"
+                        },
+                        {
+                            "name": "result",
+                            "description": "The body of the server response",
+                            "type": "Object"
+                        }
+                    ]
+                }
+            ],
             "return": {
                 "description": "A promise to the results of the HTTP request",
                 "type": "Promise"
             },
-            "class": "WPRequest"
+            "class": "WPRequest",
+            "module": "WP",
+            "submodule": "WPRequest"
         },
         {
             "file": "lib/WPRequest.js",
             "line": 177,
             "itemtype": "method",
-            "name": "head",
+            "name": "post",
+            "async": 1,
+            "params": [
+                {
+                    "name": "data",
+                    "description": "The data for the POST request",
+                    "type": "Object"
+                },
+                {
+                    "name": "callback",
+                    "description": "A callback to invoke with the results of the POST request",
+                    "type": "Function",
+                    "optional": true,
+                    "props": [
+                        {
+                            "name": "err",
+                            "description": "Any errors encountered during the request",
+                            "type": "Error|Object"
+                        },
+                        {
+                            "name": "result",
+                            "description": "The body of the server response",
+                            "type": "Object"
+                        }
+                    ]
+                }
+            ],
             "return": {
                 "description": "A promise to the results of the HTTP request",
                 "type": "Promise"
             },
-            "class": "WPRequest"
+            "class": "WPRequest",
+            "module": "WP",
+            "submodule": "WPRequest"
         },
         {
             "file": "lib/WPRequest.js",
-            "line": 191,
+            "line": 199,
             "itemtype": "method",
-            "name": "then",
+            "name": "put",
+            "async": 1,
+            "params": [
+                {
+                    "name": "data",
+                    "description": "The data for the PUT request",
+                    "type": "Object"
+                },
+                {
+                    "name": "callback",
+                    "description": "A callback to invoke with the results of the PUT request",
+                    "type": "Function",
+                    "optional": true,
+                    "props": [
+                        {
+                            "name": "err",
+                            "description": "Any errors encountered during the request",
+                            "type": "Error|Object"
+                        },
+                        {
+                            "name": "result",
+                            "description": "The body of the server response",
+                            "type": "Object"
+                        }
+                    ]
+                }
+            ],
             "return": {
                 "description": "A promise to the results of the HTTP request",
                 "type": "Promise"
             },
-            "class": "WPRequest"
+            "class": "WPRequest",
+            "module": "WP",
+            "submodule": "WPRequest"
+        },
+        {
+            "file": "lib/WPRequest.js",
+            "line": 221,
+            "itemtype": "method",
+            "name": "patch",
+            "async": 1,
+            "params": [
+                {
+                    "name": "callback",
+                    "description": "A callback to invoke with the results of the PATCH request",
+                    "type": "Function",
+                    "optional": true,
+                    "props": [
+                        {
+                            "name": "err",
+                            "description": "Any errors encountered during the request",
+                            "type": "Error|Object"
+                        },
+                        {
+                            "name": "result",
+                            "description": "The body of the server response",
+                            "type": "Object"
+                        }
+                    ]
+                }
+            ],
+            "return": {
+                "description": "A promise to the results of the HTTP request",
+                "type": "Promise"
+            },
+            "class": "WPRequest",
+            "module": "WP",
+            "submodule": "WPRequest"
+        },
+        {
+            "file": "lib/WPRequest.js",
+            "line": 236,
+            "itemtype": "method",
+            "name": "delete",
+            "async": 1,
+            "params": [
+                {
+                    "name": "callback",
+                    "description": "A callback to invoke with the results of the DELETE request",
+                    "type": "Function",
+                    "optional": true,
+                    "props": [
+                        {
+                            "name": "err",
+                            "description": "Any errors encountered during the request",
+                            "type": "Error|Object"
+                        },
+                        {
+                            "name": "result",
+                            "description": "The body of the server response",
+                            "type": "Object"
+                        }
+                    ]
+                }
+            ],
+            "return": {
+                "description": "A promise to the results of the HTTP request",
+                "type": "Promise"
+            },
+            "class": "WPRequest",
+            "module": "WP",
+            "submodule": "WPRequest"
+        },
+        {
+            "file": "lib/WPRequest.js",
+            "line": 253,
+            "itemtype": "method",
+            "name": "head",
+            "async": 1,
+            "params": [
+                {
+                    "name": "callback",
+                    "description": "A callback to invoke with the results of the HEAD request",
+                    "type": "Function",
+                    "optional": true,
+                    "props": [
+                        {
+                            "name": "err",
+                            "description": "Any errors encountered during the request",
+                            "type": "Error|Object"
+                        },
+                        {
+                            "name": "result",
+                            "description": "The headers from the server response",
+                            "type": "Object"
+                        }
+                    ]
+                }
+            ],
+            "return": {
+                "description": "A promise to the header results of the HTTP request",
+                "type": "Promise"
+            },
+            "class": "WPRequest",
+            "module": "WP",
+            "submodule": "WPRequest"
+        },
+        {
+            "file": "lib/WPRequest.js",
+            "line": 268,
+            "description": "Calling .then on a query chain will invoke it as a GET and return a promise",
+            "itemtype": "method",
+            "name": "then",
+            "async": 1,
+            "params": [
+                {
+                    "name": "callback",
+                    "description": "A callback to invoke with the results of the GET request",
+                    "type": "Function",
+                    "optional": true,
+                    "props": [
+                        {
+                            "name": "results",
+                            "description": "The body of the server response",
+                            "type": "Object"
+                        }
+                    ]
+                }
+            ],
+            "return": {
+                "description": "A promise to the results of the HTTP request",
+                "type": "Promise"
+            },
+            "class": "WPRequest",
+            "module": "WP",
+            "submodule": "WPRequest"
         },
         {
             "file": "lib/posts.js",
-            "line": 19,
+            "line": 24,
+            "description": "Configuration options for the request such as the endpoint for the invoking WP instance",
+            "itemtype": "property",
+            "name": "_options",
+            "type": "Object",
+            "default": "{}",
+            "class": "PostsRequest",
+            "module": "WP",
+            "submodule": "PostsRequest"
+        },
+        {
+            "file": "lib/posts.js",
+            "line": 32,
+            "description": "A hash of filter values to parse into the final request URI",
+            "itemtype": "property",
+            "name": "_filters",
+            "type": "Object",
+            "default": "{}",
+            "class": "PostsRequest",
+            "module": "WP",
+            "submodule": "PostsRequest"
+        },
+        {
+            "file": "lib/posts.js",
+            "line": 40,
+            "description": "A hash of taxonomy terms to parse into the final request URI",
+            "itemtype": "property",
+            "name": "_taxonomyFilters",
+            "type": "Object",
+            "default": "{}",
+            "class": "PostsRequest",
+            "module": "WP",
+            "submodule": "PostsRequest"
+        },
+        {
+            "file": "lib/posts.js",
+            "line": 48,
+            "description": "The ID for the post being requested",
+            "itemtype": "property",
+            "name": "_id",
+            "type": "Number",
+            "default": "null",
+            "class": "PostsRequest",
+            "module": "WP",
+            "submodule": "PostsRequest"
+        },
+        {
+            "file": "lib/posts.js",
+            "line": 56,
+            "itemtype": "property",
+            "name": "_supportedMethods",
+            "type": "Array",
+            "default": "[ 'head', 'get', 'post' ]",
+            "class": "PostsRequest",
+            "module": "WP",
+            "submodule": "PostsRequest"
+        },
+        {
+            "file": "lib/posts.js",
+            "line": 63,
+            "itemtype": "property",
+            "name": "_action",
+            "type": "String",
+            "default": "null",
+            "class": "PostsRequest",
+            "module": "WP",
+            "submodule": "PostsRequest"
+        },
+        {
+            "file": "lib/posts.js",
+            "line": 70,
+            "itemtype": "property",
+            "name": "_actionId",
+            "type": "String",
+            "default": "null",
+            "class": "PostsRequest",
+            "module": "WP",
+            "submodule": "PostsRequest"
+        },
+        {
+            "file": "lib/posts.js",
+            "line": 80,
             "itemtype": "method",
             "name": "id",
             "return": {
                 "description": "The PostsRequest instance (for chaining)",
                 "type": "PostsRequest"
             },
-            "class": "PostsRequest"
+            "class": "PostsRequest",
+            "module": "WP",
+            "submodule": "PostsRequest"
         },
         {
             "file": "lib/posts.js",
-            "line": 38,
+            "line": 99,
             "itemtype": "method",
             "name": "comments",
             "return": {
                 "description": "The PostsRequest instance (for chaining)",
                 "type": "PostsRequest"
             },
-            "class": "PostsRequest"
+            "class": "PostsRequest",
+            "module": "WP",
+            "submodule": "PostsRequest"
         },
         {
             "file": "lib/posts.js",
-            "line": 48,
+            "line": 109,
             "itemtype": "method",
             "name": "types",
             "return": {
                 "description": "The PostsRequest instance (for chaining)",
                 "type": "PostsRequest"
             },
-            "class": "PostsRequest"
+            "class": "PostsRequest",
+            "module": "WP",
+            "submodule": "PostsRequest"
         },
         {
             "file": "lib/posts.js",
-            "line": 58,
+            "line": 119,
             "itemtype": "method",
             "name": "revisions",
             "return": {
                 "description": "The PostsRequest instance (for chaining)",
                 "type": "PostsRequest"
             },
-            "class": "PostsRequest"
+            "class": "PostsRequest",
+            "module": "WP",
+            "submodule": "PostsRequest"
         },
         {
             "file": "lib/posts.js",
-            "line": 68,
+            "line": 129,
             "itemtype": "method",
             "name": "statuses",
             "return": {
                 "description": "The PostsRequest instance (for chaining)",
                 "type": "PostsRequest"
             },
-            "class": "PostsRequest"
+            "class": "PostsRequest",
+            "module": "WP",
+            "submodule": "PostsRequest"
         },
         {
             "file": "lib/posts.js",
-            "line": 78,
+            "line": 139,
+            "description": "Parse the request's instance properties into a WordPress API request URI",
             "itemtype": "method",
             "name": "generateRequestUri",
             "return": {
-                "description": "The URI target for the HTTP request",
+                "description": "The URI for the HTTP request to the posts endpoint",
                 "type": "String"
             },
-            "class": "PostsRequest"
+            "class": "PostsRequest",
+            "module": "WP",
+            "submodule": "PostsRequest"
         },
         {
             "file": "lib/taxonomies.js",
-            "line": 19,
+            "line": 21,
+            "description": "Configuration options for the request such as the endpoint for the invoking WP instance",
+            "itemtype": "property",
+            "name": "_options",
+            "type": "Object",
+            "default": "{}",
+            "class": "TaxonomiesRequest",
+            "module": "WP",
+            "submodule": "TaxonomiesRequest"
+        },
+        {
+            "file": "lib/taxonomies.js",
+            "line": 29,
+            "description": "The ID for the taxonomy term being requested",
+            "itemtype": "property",
+            "name": "_id",
+            "type": "Number",
+            "default": "null",
+            "class": "TaxonomiesRequest",
+            "module": "WP",
+            "submodule": "TaxonomiesRequest"
+        },
+        {
+            "file": "lib/taxonomies.js",
+            "line": 37,
+            "itemtype": "property",
+            "name": "_supportedMethods",
+            "type": "Array",
+            "default": "[ 'head', 'get' ]",
+            "class": "TaxonomiesRequest",
+            "module": "WP",
+            "submodule": "TaxonomiesRequest"
+        },
+        {
+            "file": "lib/taxonomies.js",
+            "line": 44,
+            "itemtype": "property",
+            "name": "_action",
+            "type": "String",
+            "default": "null",
+            "class": "TaxonomiesRequest",
+            "module": "WP",
+            "submodule": "TaxonomiesRequest"
+        },
+        {
+            "file": "lib/taxonomies.js",
+            "line": 51,
+            "itemtype": "property",
+            "name": "_actionId",
+            "type": "String",
+            "default": "null",
+            "class": "TaxonomiesRequest",
+            "module": "WP",
+            "submodule": "TaxonomiesRequest"
+        },
+        {
+            "file": "lib/taxonomies.js",
+            "line": 61,
+            "description": "Specify the ID for a specific taxonomy term",
             "itemtype": "method",
             "name": "id",
+            "chainable": 1,
+            "params": [
+                {
+                    "name": "id",
+                    "description": "The ID of the taxonomy term",
+                    "type": "Number"
+                }
+            ],
             "return": {
                 "description": "The TaxonomiesRequest instance (for chaining)",
                 "type": "TaxonomiesRequest"
             },
-            "class": "TaxonomiesRequest"
+            "class": "TaxonomiesRequest",
+            "module": "WP",
+            "submodule": "TaxonomiesRequest"
         },
         {
             "file": "lib/taxonomies.js",
-            "line": 35,
+            "line": 80,
+            "description": "Specify that we are requesting the terms for a taxonomy",
             "itemtype": "method",
             "name": "terms",
+            "chainable": 1,
             "return": {
                 "description": "The TaxonomiesRequest instance (for chaining)",
                 "type": "TaxonomiesRequest"
             },
-            "class": "TaxonomiesRequest"
+            "class": "TaxonomiesRequest",
+            "module": "WP",
+            "submodule": "TaxonomiesRequest"
         },
         {
             "file": "lib/taxonomies.js",
-            "line": 46,
+            "line": 94,
+            "description": "Parse the request's instance properties into a WordPress API request URI",
             "itemtype": "method",
             "name": "generateRequestUri",
             "return": {
-                "description": "The TaxonomiesRequest instance (for chaining)",
-                "type": "TaxonomiesRequest"
+                "description": "The URI for the HTTP request to the taxonomies endpoint",
+                "type": "String"
             },
-            "class": "TaxonomiesRequest"
+            "class": "TaxonomiesRequest",
+            "module": "WP",
+            "submodule": "TaxonomiesRequest"
         },
         {
             "file": "lib/users.js",
-            "line": 17,
+            "line": 21,
+            "description": "Configuration options for the request such as the endpoint for the invoking WP instance",
+            "itemtype": "property",
+            "name": "_options",
+            "type": "Object",
+            "default": "{}",
+            "class": "UsersRequest",
+            "module": "WP",
+            "submodule": "UsersRequest"
+        },
+        {
+            "file": "lib/users.js",
+            "line": 29,
+            "description": "The ID for the user record being requested",
+            "itemtype": "property",
+            "name": "_id",
+            "type": "Number",
+            "default": "null",
+            "class": "UsersRequest",
+            "module": "WP",
+            "submodule": "UsersRequest"
+        },
+        {
+            "file": "lib/users.js",
+            "line": 37,
+            "itemtype": "property",
+            "name": "_supportedMethods",
+            "type": "Array",
+            "default": "[ 'head', 'get', 'post' ]",
+            "class": "UsersRequest",
+            "module": "WP",
+            "submodule": "UsersRequest"
+        },
+        {
+            "file": "lib/users.js",
+            "line": 47,
             "itemtype": "method",
             "name": "me",
+            "chainable": 1,
             "return": {
                 "description": "The UsersRequest instance (for chaining)",
                 "type": "UsersRequest"
             },
-            "class": "UsersRequest"
+            "class": "UsersRequest",
+            "module": "WP",
+            "submodule": "UsersRequest"
         },
         {
             "file": "lib/users.js",
-            "line": 27,
+            "line": 58,
             "itemtype": "method",
             "name": "id",
+            "chainable": 1,
+            "params": [
+                {
+                    "name": "id",
+                    "description": "The integer ID of a user record",
+                    "type": "Number"
+                }
+            ],
             "return": {
                 "description": "The UsersRequest instance (for chaining)",
                 "type": "UsersRequest"
             },
-            "class": "UsersRequest"
+            "class": "UsersRequest",
+            "module": "WP",
+            "submodule": "UsersRequest"
         },
         {
             "file": "lib/users.js",
-            "line": 38,
+            "line": 71,
+            "description": "Parse the request's instance properties into a WordPress API request URI",
             "itemtype": "method",
             "name": "generateRequestUri",
             "return": {
-                "description": "The UsersRequest instance (for chaining)",
-                "type": "UsersRequest"
+                "description": "The URI for the HTTP request to the users endpoint",
+                "type": "String"
             },
-            "class": "UsersRequest"
+            "class": "UsersRequest",
+            "module": "WP",
+            "submodule": "UsersRequest"
         },
         {
             "file": "wp.js",
-            "line": 32,
+            "line": 56,
             "itemtype": "method",
             "name": "posts",
             "params": [
@@ -453,19 +1531,19 @@
                     "name": "options",
                     "description": "An options hash for a new PostsRequest",
                     "type": "Object",
-                    "optional": true,
-                    "multiple": true
+                    "optional": true
                 }
             ],
             "return": {
                 "description": "A PostsRequest instance",
                 "type": "PostsRequest"
             },
-            "class": "WP"
+            "class": "WP",
+            "module": "WP"
         },
         {
             "file": "wp.js",
-            "line": 44,
+            "line": 68,
             "itemtype": "method",
             "name": "taxonomies",
             "params": [
@@ -473,19 +1551,19 @@
                     "name": "options",
                     "description": "An options hash for a new TaxonomiesRequest",
                     "type": "Object",
-                    "optional": true,
-                    "multiple": true
+                    "optional": true
                 }
             ],
             "return": {
                 "description": "A TaxonomiesRequest instance",
                 "type": "TaxonomiesRequest"
             },
-            "class": "WP"
+            "class": "WP",
+            "module": "WP"
         },
         {
             "file": "wp.js",
-            "line": 56,
+            "line": 80,
             "itemtype": "method",
             "name": "users",
             "params": [
@@ -493,29 +1571,69 @@
                     "name": "options",
                     "description": "An options hash for a new UsersRequest",
                     "type": "Object",
-                    "optional": true,
-                    "multiple": true
+                    "optional": true
                 }
             ],
             "return": {
                 "description": "A UsersRequest instance",
                 "type": "UsersRequest"
             },
-            "class": "WP"
+            "class": "WP",
+            "module": "WP"
         }
     ],
     "warnings": [
         {
-            "message": "Missing item type",
-            "line": " lib/WPRequest.js:19"
+            "message": "unknown tag: alias",
+            "line": " lib/shared/filters.js:289"
+        },
+        {
+            "message": "Missing item type\nProcess arrays of taxonomy terms into query parameters\nAll terms listed in the arrays will be required (AND behavior)",
+            "line": " lib/shared/filters.js:11"
+        },
+        {
+            "message": "Missing item type\nProcess an array of filter keys and values into WP-API-ready query parameter syntax",
+            "line": " lib/shared/filters.js:41"
+        },
+        {
+            "message": "Missing item type\nGenerate a complete query string from the provided array of query parameters",
+            "line": " lib/shared/filters.js:66"
+        },
+        {
+            "message": "Missing item type\nUtility function for sorting arrays of numbers or strings",
+            "line": " lib/shared/filters.js:91"
+        },
+        {
+            "message": "Missing item type\nSorted list of private WP_Query variables, requiring authentication\nThis may be used for a whitelist soon, but at present please consider it\nto be simply documentation.\n\nDocumentation:\n\n- WP_Query parameters: http://codex.wordpress.org/Class_Reference/WP_Query\n- Privat query variables: WordPress core, wp-includes/class-wp.php\n\nNote: posts_per_page is a private query varaible within WordPress, but is\nexplicitly exposed for public querying within the WP API so it exists in\nthe list within public-query-vars.js",
+            "line": " lib/var/private-query-vars.js:1"
+        },
+        {
+            "message": "Missing item type\nSorted list of publicly-exposed WP_Query variables\nThis may be used for a whitelist soon, but at present please consider it\nto be simply documentation.\n\nDocumentation:\n\n- WP_Query parameters: http://codex.wordpress.org/Class_Reference/WP_Query\n- Public query variables: http://codex.wordpress.org/WordPress_Query_Vars\n\nNote: posts_per_page is a private query varaible within WordPress, but is\nexplicitly exposed for public querying within the WP API",
+            "line": " lib/var/public-query-vars.js:1"
+        },
+        {
+            "message": "Missing item type\nNo-op function for use within ensureFunction()",
+            "line": " lib/WPRequest.js:43"
+        },
+        {
+            "message": "Missing item type\nIdentity function for use within invokeAndPromisify()",
+            "line": " lib/WPRequest.js:50"
         },
         {
             "message": "Missing item type\nIf fn is a function, return it; else, return a no-op function",
-            "line": " lib/WPRequest.js:22"
+            "line": " lib/WPRequest.js:59"
         },
         {
             "message": "Missing item type\nSubmit the provided superagent request object, invoke a callback (if it was\nprovided), and return a promise to the response from the HTTP request.",
-            "line": " lib/WPRequest.js:32"
+            "line": " lib/WPRequest.js:71"
+        },
+        {
+            "message": "Missing item type\nExtract and return the body property from a superagent response object",
+            "line": " lib/WPRequest.js:103"
+        },
+        {
+            "message": "Missing item type\nExtract and return the headers property from a superagent response object",
+            "line": " lib/WPRequest.js:115"
         }
     ]
 }

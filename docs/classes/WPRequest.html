@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>WPRequest - node-wp-api</title>
+    <title>WPRequest - wordpress-rest-api</title>
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
     <link rel="shortcut icon" type="image/png" href="../assets/favicon.png">
@@ -16,10 +16,10 @@
             <div class="project-title">
                 
                 
-                    <h1 class="project-name">node-wp-api</h1> <span class="project-version">0.0.2</span>
+                    <h1 class="project-name">wordpress-rest-api</h1> <span class="project-version">0.1.1</span>
                 
                 
-                    <p class="description">A Node.js client for interacting with the WordPress REST API</p>
+                    <p class="description">A client for interacting with the WordPress REST API</p>
                 
             </div>
             <ul class="jump-links">
@@ -45,6 +45,8 @@
         <div id="api-tabview-panel">
             <ul id="api-classes" class="apis classes">
             
+                <li><a class="type" href="../classes/CollectionFilters.html">CollectionFilters</a></li>
+            
                 <li><a class="type" href="../classes/PostsRequest.html">PostsRequest</a></li>
             
                 <li><a class="type" href="../classes/TaxonomiesRequest.html">TaxonomiesRequest</a></li>
@@ -58,6 +60,18 @@
             </ul>
 
             <ul id="api-modules" class="apis modules">
+            
+                <li><a class="module" href="../modules/CollectionFilters.html">CollectionFilters</a></li>
+            
+                <li><a class="module" href="../modules/PostsRequest.html">PostsRequest</a></li>
+            
+                <li><a class="module" href="../modules/TaxonomiesRequest.html">TaxonomiesRequest</a></li>
+            
+                <li><a class="module" href="../modules/UsersRequest.html">UsersRequest</a></li>
+            
+                <li><a class="module" href="../modules/WP.html">WP</a></li>
+            
+                <li><a class="module" href="../modules/WPRequest.html">WPRequest</a></li>
             
             </ul>
         </div>
@@ -76,10 +90,15 @@
 
     
         <div class="foundat">
-            Defined in: <a href="../files/lib_WPRequest.js.html#l5"><code>lib&#x2F;WPRequest.js:5</code></a>
+            Defined in: <a href="../files/lib_WPRequest.js.html#l11"><code>lib&#x2F;WPRequest.js:11</code></a>
         </div>
     
 
+    
+        
+            Module: <a href="../modules/WPRequest.html">WPRequest</a><br>
+            Parent Module: <a href="../modules/WP.html">WP</a>
+        
     
 
     
@@ -88,7 +107,8 @@
 
 
 <div class="box intro">
-    
+    <p>WPRequest is the base API request object constructor</p>
+
 </div>
 
 <!-- Class member index -->
@@ -123,6 +143,26 @@
 
 
 
+    <div class="index-section properties">
+        <h3>Properties</h3>
+
+        <ul class="index-list properties">
+            
+                <li class="index-item property">
+                    <a href="#property__options">_options</a>
+
+                    
+                </li>
+            
+                <li class="index-item property">
+                    <a href="#property__supportedMethods">_supportedMethods</a>
+
+                    
+                </li>
+            
+        </ul>
+    </div>
+
 
 
 
@@ -145,7 +185,7 @@
             
 
             
-                <li class="index-item method protected">
+                <li class="index-item method">
                     <a href="#method__checkMethodSupport">_checkMethodSupport</a>
 
                     
@@ -153,13 +193,13 @@
                 </li>
             
                 <li class="index-item method">
-                    <a href="#method_filter">filter</a>
+                    <a href="#method_delete">delete</a>
 
                     
                     
                 </li>
             
-                <li class="index-item method">
+                <li class="index-item method protected">
                     <a href="#method_generateRequestUri">generateRequestUri</a>
 
                     
@@ -202,13 +242,6 @@
                 </li>
             
                 <li class="index-item method">
-                    <a href="#method_remove">remove</a>
-
-                    
-                    
-                </li>
-            
-                <li class="index-item method">
                     <a href="#method_then">then</a>
 
                     
@@ -226,6 +259,122 @@
 <div class="class-detail">
 
 
+    <div class="properties-detail">
+        <h2>Properties</h2>
+
+        
+            <a name="property__options" class="anchor-link"></a>
+<div class="property item">
+    <h3 class="name"><code>_options</code>
+    <span class="type">Object</span>
+
+    
+
+    
+
+    
+
+    
+
+    </h3>
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/lib_WPRequest.js.html#l22"><code>lib&#x2F;WPRequest.js:22</code></a>
+        
+        </p>
+
+        
+
+        
+    </div>
+
+    <div class="extended-detail">
+        <div class="description">
+            <p>Configuration options for the request such as the endpoint for the invoking WP instance</p>
+
+        </div>
+
+        
+            <p class="default"><strong>Default:</strong> <span class="default-value">{}</span></p>
+        
+
+        
+
+        
+    </div>
+</div>
+
+        
+            <a name="property__supportedMethods" class="anchor-link"></a>
+<div class="property item">
+    <h3 class="name"><code>_supportedMethods</code>
+    <span class="type">Array</span>
+
+    
+
+    
+
+    
+
+    
+
+    </h3>
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/lib_WPRequest.js.html#l30"><code>lib&#x2F;WPRequest.js:30</code></a>
+        
+        </p>
+
+        
+
+        
+    </div>
+
+    <div class="extended-detail">
+        <div class="description">
+            <p>Methods supported by this API request instance:
+Individual endpoint handlers specify their own subset of supported methods</p>
+
+        </div>
+
+        
+            <p class="default"><strong>Default:</strong> <span class="default-value">[ &#x27;head&#x27;, &#x27;get&#x27;, &#x27;put&#x27;, &#x27;post&#x27;, &#x27;patch&#x27;, &#x27;delete&#x27; ]</span></p>
+        
+
+        
+
+        
+    </div>
+</div>
+
+        
+
+        <div class="no-visible-items-message">
+            <p>There are no properties that match your current filter settings. You can change your filter settings in the index section on this page. <a href="#index" class="index-jump-link">index</a></p>
+        </div>
+
+    </div>
+
 
 
 
@@ -237,7 +386,17 @@
     <h3 class="name"><code>WPRequest</code>
 
     
-        <span class="paren">()</span>
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code>options</code>
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
     
 
     
@@ -267,7 +426,7 @@
             
         
         
-        <a href="../files/lib_WPRequest.js.html#l5"><code>lib&#x2F;WPRequest.js:5</code></a>
+        <a href="../files/lib_WPRequest.js.html#l11"><code>lib&#x2F;WPRequest.js:11</code></a>
         
         </p>
 
@@ -283,6 +442,78 @@
             
         </div>
 
+        
+            <div class="params">
+                <h4>Parameters:</h4>
+
+                <ul class="params-list">
+                
+                    <li class="param">
+                        
+                            <code class="param-name">options</code>
+                            <span class="type">Object</span>
+                        
+
+                        
+
+                        <div class="param-description">
+                            <p>A hash of options for the WPRequest instance</p>
+
+                        </div>
+
+                        
+                            <ul class="params-list">
+                                
+                                <li class="param">
+                                    
+                                        <code class="param-name">endpoint</code>
+                                        <span class="type">String</span>
+                                    
+
+                                    <div class="param-description">
+                                        <p>The endpoint URI for the invoking WP instance</p>
+
+                                    </div>
+
+                                    
+                                </li>
+                                
+                                <li class="param">
+                                    
+                                        <code class="param-name optional">[username]</code>
+                                        <span class="type">String</span>
+                                        <span class="flag optional" title="This parameter is optional.">optional</span>
+                                    
+
+                                    <div class="param-description">
+                                        <p>A username for authenticating API requests</p>
+
+                                    </div>
+
+                                    
+                                </li>
+                                
+                                <li class="param">
+                                    
+                                        <code class="param-name optional">[password]</code>
+                                        <span class="type">String</span>
+                                        <span class="flag optional" title="This parameter is optional.">optional</span>
+                                    
+
+                                    <div class="param-description">
+                                        <p>A password for authenticating API requests</p>
+
+                                    </div>
+
+                                    
+                                </li>
+                                
+                            </ul>
+                        
+                    </li>
+                
+                </ul>
+            </div>
         
 
         
@@ -300,8 +531,265 @@
 
         
             <a name="method__checkMethodSupport" class="anchor-link"></a>
-<div class="method item protected">
+<div class="method item">
     <h3 class="name"><code>_checkMethodSupport</code>
+
+    
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code>method</code>
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
+    
+
+    
+        <span class="returns-inline">
+            <span class="type"></span>
+        </span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    </h3>
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/lib_WPRequest.js.html#l130"><code>lib&#x2F;WPRequest.js:130</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="extended-detail">
+
+        <div class="description">
+            
+        </div>
+
+        
+            <div class="params">
+                <h4>Parameters:</h4>
+
+                <ul class="params-list">
+                
+                    <li class="param">
+                        
+                            <code class="param-name">method</code>
+                            <span class="type">String</span>
+                        
+
+                        
+
+                        <div class="param-description">
+                            <p>An HTTP method to check (&#39;get&#39;, &#39;post&#39;, etc)</p>
+
+                        </div>
+
+                        
+                    </li>
+                
+                </ul>
+            </div>
+        
+
+        
+            <div class="returns">
+                <h4>Returns:</h4>
+
+                <div class="returns-description">
+                    
+                        
+                        <p>true iff the method is within this._supportedMethods</p>
+
+                    
+                </div>
+            </div>
+        
+
+        
+    </div>
+</div>
+
+        
+            <a name="method_delete" class="anchor-link"></a>
+<div class="method item">
+    <h3 class="name"><code>delete</code>
+
+    
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code class="optional">[callback]</code>
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
+    
+
+    
+        <span class="returns-inline">
+            <span class="type">Promise</span>
+        </span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <span class="flag async">async</span>
+    
+
+    </h3>
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/lib_WPRequest.js.html#l236"><code>lib&#x2F;WPRequest.js:236</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="extended-detail">
+
+        <div class="description">
+            
+        </div>
+
+        
+            <div class="params">
+                <h4>Parameters:</h4>
+
+                <ul class="params-list">
+                
+                    <li class="param">
+                        
+                            <code class="param-name optional">[callback]</code>
+                            <span class="type">Function</span>
+                            <span class="flag optional" title="This parameter is optional.">optional</span>
+                        
+
+                        
+
+                        <div class="param-description">
+                            <p>A callback to invoke with the results of the DELETE request</p>
+
+                        </div>
+
+                        
+                            <ul class="params-list">
+                                
+                                <li class="param">
+                                    
+                                        <code class="param-name">err</code>
+                                        <span class="type">Error | Object</span>
+                                    
+
+                                    <div class="param-description">
+                                        <p>Any errors encountered during the request</p>
+
+                                    </div>
+
+                                    
+                                </li>
+                                
+                                <li class="param">
+                                    
+                                        <code class="param-name">result</code>
+                                        <span class="type">Object</span>
+                                    
+
+                                    <div class="param-description">
+                                        <p>The body of the server response</p>
+
+                                    </div>
+
+                                    
+                                </li>
+                                
+                            </ul>
+                        
+                    </li>
+                
+                </ul>
+            </div>
+        
+
+        
+            <div class="returns">
+                <h4>Returns:</h4>
+
+                <div class="returns-description">
+                    
+                        
+                            <span class="type">Promise</span>:
+                        
+                        <p>A promise to the results of the HTTP request</p>
+
+                    
+                </div>
+            </div>
+        
+
+        
+    </div>
+</div>
+
+        
+            <a name="method_generateRequestUri" class="anchor-link"></a>
+<div class="method item protected">
+    <h3 class="name"><code>generateRequestUri</code>
 
     
         <span class="paren">()</span>
@@ -309,7 +797,7 @@
 
     
         <span class="returns-inline">
-            <span class="type"></span>
+            <span class="type">String</span>
         </span>
     
 
@@ -340,195 +828,7 @@
             
         
         
-        <a href="../files/lib_WPRequest.js.html#l72"><code>lib&#x2F;WPRequest.js:72</code></a>
-        
-        </p>
-
-
-        
-
-        
-    </div>
-
-    <div class="extended-detail">
-
-        <div class="description">
-            
-        </div>
-
-        
-
-        
-            <div class="returns">
-                <h4>Returns:</h4>
-
-                <div class="returns-description">
-                    
-                        
-                        <p>true iff the method is within _supportedMethods</p>
-
-                    
-                </div>
-            </div>
-        
-
-        
-    </div>
-</div>
-
-        
-            <a name="method_filter" class="anchor-link"></a>
-<div class="method item">
-    <h3 class="name"><code>filter</code>
-
-    
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-            
-                <li class="arg">
-                    
-                        <code>A</code>
-                    
-                </li>
-            
-            </ul><span class="paren">)</span>
-        </div>
-    
-
-    
-        <span class="returns-inline">
-            <span class="type">String</span>
-        </span>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    </h3>
-
-    <div class="meta">
-        
-            
-                
-                <p>
-                
-                Defined in
-                
-            
-        
-        
-        <a href="../files/lib_WPRequest.js.html#l62"><code>lib&#x2F;WPRequest.js:62</code></a>
-        
-        </p>
-
-
-        
-
-        
-    </div>
-
-    <div class="extended-detail">
-
-        <div class="description">
-            
-        </div>
-
-        
-            <div class="params">
-                <h4>Parameters:</h4>
-
-                <ul class="params-list">
-                
-                    <li class="param">
-                        
-                            <code class="param-name">A</code>
-                            <span class="type">Object</span>
-                        
-
-                        
-
-                        <div class="param-description">
-                            <p>filter properties hash</p>
-
-                        </div>
-
-                        
-                    </li>
-                
-                </ul>
-            </div>
-        
-
-        
-            <div class="returns">
-                <h4>Returns:</h4>
-
-                <div class="returns-description">
-                    
-                        
-                            <span class="type">String</span>:
-                        
-                        <p>The URI target for the HTTP request</p>
-
-                    
-                </div>
-            </div>
-        
-
-        
-    </div>
-</div>
-
-        
-            <a name="method_generateRequestUri" class="anchor-link"></a>
-<div class="method item">
-    <h3 class="name"><code>generateRequestUri</code>
-
-    
-        <span class="paren">()</span>
-    
-
-    
-        <span class="returns-inline">
-            <span class="type">String</span>
-        </span>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    </h3>
-
-    <div class="meta">
-        
-            
-                
-                <p>
-                
-                Defined in
-                
-            
-        
-        
-        <a href="../files/lib_WPRequest.js.html#l88"><code>lib&#x2F;WPRequest.js:88</code></a>
+        <a href="../files/lib_WPRequest.js.html#l146"><code>lib&#x2F;WPRequest.js:146</code></a>
         
         </p>
 
@@ -574,85 +874,17 @@ handling individual endpoints)</p>
     <h3 class="name"><code>get</code>
 
     
-        <span class="paren">()</span>
-    
-
-    
-        <span class="returns-inline">
-            <span class="type">Promise</span>
-        </span>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    </h3>
-
-    <div class="meta">
-        
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
             
-                
-                <p>
-                
-                Defined in
-                
+                <li class="arg">
+                    
+                        <code class="optional">[callback]</code>
+                    
+                </li>
             
-        
-        
-        <a href="../files/lib_WPRequest.js.html#l99"><code>lib&#x2F;WPRequest.js:99</code></a>
-        
-        </p>
-
-
-        
-
-        
-    </div>
-
-    <div class="extended-detail">
-
-        <div class="description">
-            
+            </ul><span class="paren">)</span>
         </div>
-
-        
-
-        
-            <div class="returns">
-                <h4>Returns:</h4>
-
-                <div class="returns-description">
-                    
-                        
-                            <span class="type">Promise</span>:
-                        
-                        <p>A promise to the results of the HTTP request</p>
-
-                    
-                </div>
-            </div>
-        
-
-        
-    </div>
-</div>
-
-        
-            <a name="method_head" class="anchor-link"></a>
-<div class="method item">
-    <h3 class="name"><code>head</code>
-
-    
-        <span class="paren">()</span>
     
 
     
@@ -672,317 +904,7 @@ handling individual endpoints)</p>
     
 
     
-
-    </h3>
-
-    <div class="meta">
-        
-            
-                
-                <p>
-                
-                Defined in
-                
-            
-        
-        
-        <a href="../files/lib_WPRequest.js.html#l177"><code>lib&#x2F;WPRequest.js:177</code></a>
-        
-        </p>
-
-
-        
-
-        
-    </div>
-
-    <div class="extended-detail">
-
-        <div class="description">
-            
-        </div>
-
-        
-
-        
-            <div class="returns">
-                <h4>Returns:</h4>
-
-                <div class="returns-description">
-                    
-                        
-                            <span class="type">Promise</span>:
-                        
-                        <p>A promise to the results of the HTTP request</p>
-
-                    
-                </div>
-            </div>
-        
-
-        
-    </div>
-</div>
-
-        
-            <a name="method_patch" class="anchor-link"></a>
-<div class="method item">
-    <h3 class="name"><code>patch</code>
-
-    
-        <span class="paren">()</span>
-    
-
-    
-        <span class="returns-inline">
-            <span class="type">Promise</span>
-        </span>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    </h3>
-
-    <div class="meta">
-        
-            
-                
-                <p>
-                
-                Defined in
-                
-            
-        
-        
-        <a href="../files/lib_WPRequest.js.html#l150"><code>lib&#x2F;WPRequest.js:150</code></a>
-        
-        </p>
-
-
-        
-
-        
-    </div>
-
-    <div class="extended-detail">
-
-        <div class="description">
-            
-        </div>
-
-        
-
-        
-            <div class="returns">
-                <h4>Returns:</h4>
-
-                <div class="returns-description">
-                    
-                        
-                            <span class="type">Promise</span>:
-                        
-                        <p>A promise to the results of the HTTP request</p>
-
-                    
-                </div>
-            </div>
-        
-
-        
-    </div>
-</div>
-
-        
-            <a name="method_post" class="anchor-link"></a>
-<div class="method item">
-    <h3 class="name"><code>post</code>
-
-    
-        <span class="paren">()</span>
-    
-
-    
-        <span class="returns-inline">
-            <span class="type">Promise</span>
-        </span>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    </h3>
-
-    <div class="meta">
-        
-            
-                
-                <p>
-                
-                Defined in
-                
-            
-        
-        
-        <a href="../files/lib_WPRequest.js.html#l112"><code>lib&#x2F;WPRequest.js:112</code></a>
-        
-        </p>
-
-
-        
-
-        
-    </div>
-
-    <div class="extended-detail">
-
-        <div class="description">
-            
-        </div>
-
-        
-
-        
-            <div class="returns">
-                <h4>Returns:</h4>
-
-                <div class="returns-description">
-                    
-                        
-                            <span class="type">Promise</span>:
-                        
-                        <p>A promise to the results of the HTTP request</p>
-
-                    
-                </div>
-            </div>
-        
-
-        
-    </div>
-</div>
-
-        
-            <a name="method_put" class="anchor-link"></a>
-<div class="method item">
-    <h3 class="name"><code>put</code>
-
-    
-        <span class="paren">()</span>
-    
-
-    
-        <span class="returns-inline">
-            <span class="type">Promise</span>
-        </span>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    </h3>
-
-    <div class="meta">
-        
-            
-                
-                <p>
-                
-                Defined in
-                
-            
-        
-        
-        <a href="../files/lib_WPRequest.js.html#l131"><code>lib&#x2F;WPRequest.js:131</code></a>
-        
-        </p>
-
-
-        
-
-        
-    </div>
-
-    <div class="extended-detail">
-
-        <div class="description">
-            
-        </div>
-
-        
-
-        
-            <div class="returns">
-                <h4>Returns:</h4>
-
-                <div class="returns-description">
-                    
-                        
-                            <span class="type">Promise</span>:
-                        
-                        <p>A promise to the results of the HTTP request</p>
-
-                    
-                </div>
-            </div>
-        
-
-        
-    </div>
-</div>
-
-        
-            <a name="method_remove" class="anchor-link"></a>
-<div class="method item">
-    <h3 class="name"><code>remove</code>
-
-    
-        <span class="paren">()</span>
-    
-
-    
-        <span class="returns-inline">
-            <span class="type">Promise</span>
-        </span>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
+        <span class="flag async">async</span>
     
 
     </h3>
@@ -1015,6 +937,695 @@ handling individual endpoints)</p>
         </div>
 
         
+            <div class="params">
+                <h4>Parameters:</h4>
+
+                <ul class="params-list">
+                
+                    <li class="param">
+                        
+                            <code class="param-name optional">[callback]</code>
+                            <span class="type">Function</span>
+                            <span class="flag optional" title="This parameter is optional.">optional</span>
+                        
+
+                        
+
+                        <div class="param-description">
+                            <p>A callback to invoke with the results of the GET request</p>
+
+                        </div>
+
+                        
+                            <ul class="params-list">
+                                
+                                <li class="param">
+                                    
+                                        <code class="param-name">err</code>
+                                        <span class="type">Error | Object</span>
+                                    
+
+                                    <div class="param-description">
+                                        <p>Any errors encountered during the request</p>
+
+                                    </div>
+
+                                    
+                                </li>
+                                
+                                <li class="param">
+                                    
+                                        <code class="param-name">result</code>
+                                        <span class="type">Object</span>
+                                    
+
+                                    <div class="param-description">
+                                        <p>The body of the server response</p>
+
+                                    </div>
+
+                                    
+                                </li>
+                                
+                            </ul>
+                        
+                    </li>
+                
+                </ul>
+            </div>
+        
+
+        
+            <div class="returns">
+                <h4>Returns:</h4>
+
+                <div class="returns-description">
+                    
+                        
+                            <span class="type">Promise</span>:
+                        
+                        <p>A promise to the results of the HTTP request</p>
+
+                    
+                </div>
+            </div>
+        
+
+        
+    </div>
+</div>
+
+        
+            <a name="method_head" class="anchor-link"></a>
+<div class="method item">
+    <h3 class="name"><code>head</code>
+
+    
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code class="optional">[callback]</code>
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
+    
+
+    
+        <span class="returns-inline">
+            <span class="type">Promise</span>
+        </span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <span class="flag async">async</span>
+    
+
+    </h3>
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/lib_WPRequest.js.html#l253"><code>lib&#x2F;WPRequest.js:253</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="extended-detail">
+
+        <div class="description">
+            
+        </div>
+
+        
+            <div class="params">
+                <h4>Parameters:</h4>
+
+                <ul class="params-list">
+                
+                    <li class="param">
+                        
+                            <code class="param-name optional">[callback]</code>
+                            <span class="type">Function</span>
+                            <span class="flag optional" title="This parameter is optional.">optional</span>
+                        
+
+                        
+
+                        <div class="param-description">
+                            <p>A callback to invoke with the results of the HEAD request</p>
+
+                        </div>
+
+                        
+                            <ul class="params-list">
+                                
+                                <li class="param">
+                                    
+                                        <code class="param-name">err</code>
+                                        <span class="type">Error | Object</span>
+                                    
+
+                                    <div class="param-description">
+                                        <p>Any errors encountered during the request</p>
+
+                                    </div>
+
+                                    
+                                </li>
+                                
+                                <li class="param">
+                                    
+                                        <code class="param-name">result</code>
+                                        <span class="type">Object</span>
+                                    
+
+                                    <div class="param-description">
+                                        <p>The headers from the server response</p>
+
+                                    </div>
+
+                                    
+                                </li>
+                                
+                            </ul>
+                        
+                    </li>
+                
+                </ul>
+            </div>
+        
+
+        
+            <div class="returns">
+                <h4>Returns:</h4>
+
+                <div class="returns-description">
+                    
+                        
+                            <span class="type">Promise</span>:
+                        
+                        <p>A promise to the header results of the HTTP request</p>
+
+                    
+                </div>
+            </div>
+        
+
+        
+    </div>
+</div>
+
+        
+            <a name="method_patch" class="anchor-link"></a>
+<div class="method item">
+    <h3 class="name"><code>patch</code>
+
+    
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code class="optional">[callback]</code>
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
+    
+
+    
+        <span class="returns-inline">
+            <span class="type">Promise</span>
+        </span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <span class="flag async">async</span>
+    
+
+    </h3>
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/lib_WPRequest.js.html#l221"><code>lib&#x2F;WPRequest.js:221</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="extended-detail">
+
+        <div class="description">
+            
+        </div>
+
+        
+            <div class="params">
+                <h4>Parameters:</h4>
+
+                <ul class="params-list">
+                
+                    <li class="param">
+                        
+                            <code class="param-name optional">[callback]</code>
+                            <span class="type">Function</span>
+                            <span class="flag optional" title="This parameter is optional.">optional</span>
+                        
+
+                        
+
+                        <div class="param-description">
+                            <p>A callback to invoke with the results of the PATCH request</p>
+
+                        </div>
+
+                        
+                            <ul class="params-list">
+                                
+                                <li class="param">
+                                    
+                                        <code class="param-name">err</code>
+                                        <span class="type">Error | Object</span>
+                                    
+
+                                    <div class="param-description">
+                                        <p>Any errors encountered during the request</p>
+
+                                    </div>
+
+                                    
+                                </li>
+                                
+                                <li class="param">
+                                    
+                                        <code class="param-name">result</code>
+                                        <span class="type">Object</span>
+                                    
+
+                                    <div class="param-description">
+                                        <p>The body of the server response</p>
+
+                                    </div>
+
+                                    
+                                </li>
+                                
+                            </ul>
+                        
+                    </li>
+                
+                </ul>
+            </div>
+        
+
+        
+            <div class="returns">
+                <h4>Returns:</h4>
+
+                <div class="returns-description">
+                    
+                        
+                            <span class="type">Promise</span>:
+                        
+                        <p>A promise to the results of the HTTP request</p>
+
+                    
+                </div>
+            </div>
+        
+
+        
+    </div>
+</div>
+
+        
+            <a name="method_post" class="anchor-link"></a>
+<div class="method item">
+    <h3 class="name"><code>post</code>
+
+    
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code>data</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code class="optional">[callback]</code>
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
+    
+
+    
+        <span class="returns-inline">
+            <span class="type">Promise</span>
+        </span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <span class="flag async">async</span>
+    
+
+    </h3>
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/lib_WPRequest.js.html#l177"><code>lib&#x2F;WPRequest.js:177</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="extended-detail">
+
+        <div class="description">
+            
+        </div>
+
+        
+            <div class="params">
+                <h4>Parameters:</h4>
+
+                <ul class="params-list">
+                
+                    <li class="param">
+                        
+                            <code class="param-name">data</code>
+                            <span class="type">Object</span>
+                        
+
+                        
+
+                        <div class="param-description">
+                            <p>The data for the POST request</p>
+
+                        </div>
+
+                        
+                    </li>
+                
+                    <li class="param">
+                        
+                            <code class="param-name optional">[callback]</code>
+                            <span class="type">Function</span>
+                            <span class="flag optional" title="This parameter is optional.">optional</span>
+                        
+
+                        
+
+                        <div class="param-description">
+                            <p>A callback to invoke with the results of the POST request</p>
+
+                        </div>
+
+                        
+                            <ul class="params-list">
+                                
+                                <li class="param">
+                                    
+                                        <code class="param-name">err</code>
+                                        <span class="type">Error | Object</span>
+                                    
+
+                                    <div class="param-description">
+                                        <p>Any errors encountered during the request</p>
+
+                                    </div>
+
+                                    
+                                </li>
+                                
+                                <li class="param">
+                                    
+                                        <code class="param-name">result</code>
+                                        <span class="type">Object</span>
+                                    
+
+                                    <div class="param-description">
+                                        <p>The body of the server response</p>
+
+                                    </div>
+
+                                    
+                                </li>
+                                
+                            </ul>
+                        
+                    </li>
+                
+                </ul>
+            </div>
+        
+
+        
+            <div class="returns">
+                <h4>Returns:</h4>
+
+                <div class="returns-description">
+                    
+                        
+                            <span class="type">Promise</span>:
+                        
+                        <p>A promise to the results of the HTTP request</p>
+
+                    
+                </div>
+            </div>
+        
+
+        
+    </div>
+</div>
+
+        
+            <a name="method_put" class="anchor-link"></a>
+<div class="method item">
+    <h3 class="name"><code>put</code>
+
+    
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code>data</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code class="optional">[callback]</code>
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
+    
+
+    
+        <span class="returns-inline">
+            <span class="type">Promise</span>
+        </span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <span class="flag async">async</span>
+    
+
+    </h3>
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/lib_WPRequest.js.html#l199"><code>lib&#x2F;WPRequest.js:199</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="extended-detail">
+
+        <div class="description">
+            
+        </div>
+
+        
+            <div class="params">
+                <h4>Parameters:</h4>
+
+                <ul class="params-list">
+                
+                    <li class="param">
+                        
+                            <code class="param-name">data</code>
+                            <span class="type">Object</span>
+                        
+
+                        
+
+                        <div class="param-description">
+                            <p>The data for the PUT request</p>
+
+                        </div>
+
+                        
+                    </li>
+                
+                    <li class="param">
+                        
+                            <code class="param-name optional">[callback]</code>
+                            <span class="type">Function</span>
+                            <span class="flag optional" title="This parameter is optional.">optional</span>
+                        
+
+                        
+
+                        <div class="param-description">
+                            <p>A callback to invoke with the results of the PUT request</p>
+
+                        </div>
+
+                        
+                            <ul class="params-list">
+                                
+                                <li class="param">
+                                    
+                                        <code class="param-name">err</code>
+                                        <span class="type">Error | Object</span>
+                                    
+
+                                    <div class="param-description">
+                                        <p>Any errors encountered during the request</p>
+
+                                    </div>
+
+                                    
+                                </li>
+                                
+                                <li class="param">
+                                    
+                                        <code class="param-name">result</code>
+                                        <span class="type">Object</span>
+                                    
+
+                                    <div class="param-description">
+                                        <p>The body of the server response</p>
+
+                                    </div>
+
+                                    
+                                </li>
+                                
+                            </ul>
+                        
+                    </li>
+                
+                </ul>
+            </div>
+        
 
         
             <div class="returns">
@@ -1042,7 +1653,17 @@ handling individual endpoints)</p>
     <h3 class="name"><code>then</code>
 
     
-        <span class="paren">()</span>
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code class="optional">[callback]</code>
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
     
 
     
@@ -1062,6 +1683,8 @@ handling individual endpoints)</p>
     
 
     
+        <span class="flag async">async</span>
+    
 
     </h3>
 
@@ -1076,7 +1699,7 @@ handling individual endpoints)</p>
             
         
         
-        <a href="../files/lib_WPRequest.js.html#l191"><code>lib&#x2F;WPRequest.js:191</code></a>
+        <a href="../files/lib_WPRequest.js.html#l268"><code>lib&#x2F;WPRequest.js:268</code></a>
         
         </p>
 
@@ -1089,9 +1712,53 @@ handling individual endpoints)</p>
     <div class="extended-detail">
 
         <div class="description">
-            
+            <p>Calling .then on a query chain will invoke it as a GET and return a promise</p>
+
         </div>
 
+        
+            <div class="params">
+                <h4>Parameters:</h4>
+
+                <ul class="params-list">
+                
+                    <li class="param">
+                        
+                            <code class="param-name optional">[callback]</code>
+                            <span class="type">Function</span>
+                            <span class="flag optional" title="This parameter is optional.">optional</span>
+                        
+
+                        
+
+                        <div class="param-description">
+                            <p>A callback to invoke with the results of the GET request</p>
+
+                        </div>
+
+                        
+                            <ul class="params-list">
+                                
+                                <li class="param">
+                                    
+                                        <code class="param-name">results</code>
+                                        <span class="type">Object</span>
+                                    
+
+                                    <div class="param-description">
+                                        <p>The body of the server response</p>
+
+                                    </div>
+
+                                    
+                                </li>
+                                
+                            </ul>
+                        
+                    </li>
+                
+                </ul>
+            </div>
         
 
         

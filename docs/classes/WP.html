@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>WP - node-wp-api</title>
+    <title>WP - wordpress-rest-api</title>
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
     <link rel="shortcut icon" type="image/png" href="../assets/favicon.png">
@@ -16,10 +16,10 @@
             <div class="project-title">
                 
                 
-                    <h1 class="project-name">node-wp-api</h1> <span class="project-version">0.0.2</span>
+                    <h1 class="project-name">wordpress-rest-api</h1> <span class="project-version">0.1.1</span>
                 
                 
-                    <p class="description">A Node.js client for interacting with the WordPress REST API</p>
+                    <p class="description">A client for interacting with the WordPress REST API</p>
                 
             </div>
             <ul class="jump-links">
@@ -45,6 +45,8 @@
         <div id="api-tabview-panel">
             <ul id="api-classes" class="apis classes">
             
+                <li><a class="type" href="../classes/CollectionFilters.html">CollectionFilters</a></li>
+            
                 <li><a class="type" href="../classes/PostsRequest.html">PostsRequest</a></li>
             
                 <li><a class="type" href="../classes/TaxonomiesRequest.html">TaxonomiesRequest</a></li>
@@ -59,6 +61,18 @@
 
             <ul id="api-modules" class="apis modules">
             
+                <li><a class="module" href="../modules/CollectionFilters.html">CollectionFilters</a></li>
+            
+                <li><a class="module" href="../modules/PostsRequest.html">PostsRequest</a></li>
+            
+                <li><a class="module" href="../modules/TaxonomiesRequest.html">TaxonomiesRequest</a></li>
+            
+                <li><a class="module" href="../modules/UsersRequest.html">UsersRequest</a></li>
+            
+                <li><a class="module" href="../modules/WP.html">WP</a></li>
+            
+                <li><a class="module" href="../modules/WPRequest.html">WPRequest</a></li>
+            
             </ul>
         </div>
     </div>
@@ -71,15 +85,32 @@
                 <h1>WP Class</h1>
 <div class="box meta">
     
+        <div class="uses">
+            Uses
+            <ul class="inline commas">
+                
+                    <li><a href="PostsRequest.html">PostsRequest</a></li>
+                
+                    <li><a href="TaxonomiesRequest.html">TaxonomiesRequest</a></li>
+                
+                    <li><a href="UsersRequest.html">UsersRequest</a></li>
+                
+            </ul>
+        </div>
+    
 
     
 
     
         <div class="foundat">
-            Defined in: <a href="../files/wp.js.html#l3"><code>wp.js:3</code></a>
+            Defined in: <a href="../files/wp.js.html#l24"><code>wp.js:24</code></a>
         </div>
     
 
+    
+        
+            Module: <a href="../modules/WP.html">WP</a>
+        
     
 
     
@@ -88,7 +119,8 @@
 
 
 <div class="box intro">
-    
+    <p>The base constructor for the WP API service</p>
+
 </div>
 
 <!-- Class member index -->
@@ -123,6 +155,56 @@
 
 
 
+    <div class="index-section properties">
+        <h3>Properties</h3>
+
+        <ul class="index-list properties">
+            
+                <li class="index-item property inherited inherited">
+                    <a href="#property__action">_action</a>
+
+                    
+                </li>
+            
+                <li class="index-item property inherited inherited">
+                    <a href="#property__actionId">_actionId</a>
+
+                    
+                </li>
+            
+                <li class="index-item property inherited">
+                    <a href="#property__filters">_filters</a>
+
+                    
+                </li>
+            
+                <li class="index-item property inherited inherited">
+                    <a href="#property__id">_id</a>
+
+                    
+                </li>
+            
+                <li class="index-item property inherited inherited">
+                    <a href="#property__options">_options</a>
+
+                    
+                </li>
+            
+                <li class="index-item property inherited inherited">
+                    <a href="#property__supportedMethods">_supportedMethods</a>
+
+                    
+                </li>
+            
+                <li class="index-item property inherited">
+                    <a href="#property__taxonomyFilters">_taxonomyFilters</a>
+
+                    
+                </li>
+            
+        </ul>
+    </div>
+
 
 
 
@@ -145,6 +227,34 @@
             
 
             
+                <li class="index-item method inherited">
+                    <a href="#method_comments">comments</a>
+
+                    
+                    
+                </li>
+            
+                <li class="index-item method inherited inherited">
+                    <a href="#method_generateRequestUri">generateRequestUri</a>
+
+                    
+                    
+                </li>
+            
+                <li class="index-item method inherited inherited">
+                    <a href="#method_id">id</a>
+
+                    
+                    
+                </li>
+            
+                <li class="index-item method inherited">
+                    <a href="#method_me">me</a>
+
+                    
+                    
+                </li>
+            
                 <li class="index-item method">
                     <a href="#method_posts">posts</a>
 
@@ -152,8 +262,36 @@
                     
                 </li>
             
+                <li class="index-item method inherited">
+                    <a href="#method_revisions">revisions</a>
+
+                    
+                    
+                </li>
+            
+                <li class="index-item method inherited">
+                    <a href="#method_statuses">statuses</a>
+
+                    
+                    
+                </li>
+            
                 <li class="index-item method">
                     <a href="#method_taxonomies">taxonomies</a>
+
+                    
+                    
+                </li>
+            
+                <li class="index-item method inherited">
+                    <a href="#method_terms">terms</a>
+
+                    
+                    
+                </li>
+            
+                <li class="index-item method inherited">
+                    <a href="#method_types">types</a>
 
                     
                     
@@ -176,6 +314,372 @@
 
 <div class="class-detail">
 
+
+    <div class="properties-detail">
+        <h2>Properties</h2>
+
+        
+            <a name="property__action" class="anchor-link"></a>
+<div class="property item inherited">
+    <h3 class="name"><code>_action</code>
+    <span class="type">String</span>
+
+    
+
+    
+
+    
+
+    
+
+    </h3>
+
+    <div class="meta">
+        
+            <p>Inherited from
+            <a href="../classes/TaxonomiesRequest.html#property__action" class="type">
+                TaxonomiesRequest
+            </a>
+            
+            but overwritten in
+            
+        
+        
+        <a href="../files/lib_posts.js.html#l63"><code>lib&#x2F;posts.js:63</code></a>
+        
+        </p>
+
+        
+
+        
+    </div>
+
+    <div class="extended-detail">
+        <div class="description">
+            
+        </div>
+
+        
+            <p class="default"><strong>Default:</strong> <span class="default-value">null</span></p>
+        
+
+        
+
+        
+    </div>
+</div>
+
+        
+            <a name="property__actionId" class="anchor-link"></a>
+<div class="property item inherited">
+    <h3 class="name"><code>_actionId</code>
+    <span class="type">String</span>
+
+    
+
+    
+
+    
+
+    
+
+    </h3>
+
+    <div class="meta">
+        
+            <p>Inherited from
+            <a href="../classes/TaxonomiesRequest.html#property__actionId" class="type">
+                TaxonomiesRequest
+            </a>
+            
+            but overwritten in
+            
+        
+        
+        <a href="../files/lib_posts.js.html#l70"><code>lib&#x2F;posts.js:70</code></a>
+        
+        </p>
+
+        
+
+        
+    </div>
+
+    <div class="extended-detail">
+        <div class="description">
+            
+        </div>
+
+        
+            <p class="default"><strong>Default:</strong> <span class="default-value">null</span></p>
+        
+
+        
+
+        
+    </div>
+</div>
+
+        
+            <a name="property__filters" class="anchor-link"></a>
+<div class="property item inherited">
+    <h3 class="name"><code>_filters</code>
+    <span class="type">Object</span>
+
+    
+
+    
+
+    
+
+    
+
+    </h3>
+
+    <div class="meta">
+        
+            
+                <p>Inherited from
+                <a href="../classes/PostsRequest.html#property__filters" class="type">PostsRequest</a>:
+            
+        
+        
+        <a href="../files/lib_posts.js.html#l32"><code>lib&#x2F;posts.js:32</code></a>
+        
+        </p>
+
+        
+
+        
+    </div>
+
+    <div class="extended-detail">
+        <div class="description">
+            <p>A hash of filter values to parse into the final request URI</p>
+
+        </div>
+
+        
+            <p class="default"><strong>Default:</strong> <span class="default-value">{}</span></p>
+        
+
+        
+
+        
+    </div>
+</div>
+
+        
+            <a name="property__id" class="anchor-link"></a>
+<div class="property item inherited">
+    <h3 class="name"><code>_id</code>
+    <span class="type">Number</span>
+
+    
+
+    
+
+    
+
+    
+
+    </h3>
+
+    <div class="meta">
+        
+            <p>Inherited from
+            <a href="../classes/UsersRequest.html#property__id" class="type">
+                UsersRequest
+            </a>
+            
+            but overwritten in
+            
+        
+        
+        <a href="../files/lib_posts.js.html#l48"><code>lib&#x2F;posts.js:48</code></a>
+        
+        </p>
+
+        
+
+        
+    </div>
+
+    <div class="extended-detail">
+        <div class="description">
+            <p>The ID for the post being requested</p>
+
+        </div>
+
+        
+            <p class="default"><strong>Default:</strong> <span class="default-value">null</span></p>
+        
+
+        
+
+        
+    </div>
+</div>
+
+        
+            <a name="property__options" class="anchor-link"></a>
+<div class="property item inherited">
+    <h3 class="name"><code>_options</code>
+    <span class="type">Object</span>
+
+    
+
+    
+
+    
+
+    
+
+    </h3>
+
+    <div class="meta">
+        
+            <p>Inherited from
+            <a href="../classes/UsersRequest.html#property__options" class="type">
+                UsersRequest
+            </a>
+            
+            but overwritten in
+            
+        
+        
+        <a href="../files/lib_posts.js.html#l24"><code>lib&#x2F;posts.js:24</code></a>
+        
+        </p>
+
+        
+
+        
+    </div>
+
+    <div class="extended-detail">
+        <div class="description">
+            <p>Configuration options for the request such as the endpoint for the invoking WP instance</p>
+
+        </div>
+
+        
+            <p class="default"><strong>Default:</strong> <span class="default-value">{}</span></p>
+        
+
+        
+
+        
+    </div>
+</div>
+
+        
+            <a name="property__supportedMethods" class="anchor-link"></a>
+<div class="property item inherited">
+    <h3 class="name"><code>_supportedMethods</code>
+    <span class="type">Array</span>
+
+    
+
+    
+
+    
+
+    
+
+    </h3>
+
+    <div class="meta">
+        
+            <p>Inherited from
+            <a href="../classes/UsersRequest.html#property__supportedMethods" class="type">
+                UsersRequest
+            </a>
+            
+            but overwritten in
+            
+        
+        
+        <a href="../files/lib_posts.js.html#l56"><code>lib&#x2F;posts.js:56</code></a>
+        
+        </p>
+
+        
+
+        
+    </div>
+
+    <div class="extended-detail">
+        <div class="description">
+            
+        </div>
+
+        
+            <p class="default"><strong>Default:</strong> <span class="default-value">[ &#x27;head&#x27;, &#x27;get&#x27;, &#x27;post&#x27; ]</span></p>
+        
+
+        
+
+        
+    </div>
+</div>
+
+        
+            <a name="property__taxonomyFilters" class="anchor-link"></a>
+<div class="property item inherited">
+    <h3 class="name"><code>_taxonomyFilters</code>
+    <span class="type">Object</span>
+
+    
+
+    
+
+    
+
+    
+
+    </h3>
+
+    <div class="meta">
+        
+            
+                <p>Inherited from
+                <a href="../classes/PostsRequest.html#property__taxonomyFilters" class="type">PostsRequest</a>:
+            
+        
+        
+        <a href="../files/lib_posts.js.html#l40"><code>lib&#x2F;posts.js:40</code></a>
+        
+        </p>
+
+        
+
+        
+    </div>
+
+    <div class="extended-detail">
+        <div class="description">
+            <p>A hash of taxonomy terms to parse into the final request URI</p>
+
+        </div>
+
+        
+            <p class="default"><strong>Default:</strong> <span class="default-value">{}</span></p>
+        
+
+        
+
+        
+    </div>
+</div>
+
+        
+
+        <div class="no-visible-items-message">
+            <p>There are no properties that match your current filter settings. You can change your filter settings in the index section on this page. <a href="#index" class="index-jump-link">index</a></p>
+        </div>
+
+    </div>
 
 
 
@@ -228,7 +732,7 @@
             
         
         
-        <a href="../files/wp.js.html#l3"><code>wp.js:3</code></a>
+        <a href="../files/wp.js.html#l24"><code>wp.js:24</code></a>
         
         </p>
 
@@ -268,9 +772,8 @@
                                 
                                 <li class="param">
                                     
-                                        <code class="param-name optional">[endpoint]</code>
+                                        <code class="param-name">endpoint</code>
                                         <span class="type">String</span>
-                                        <span class="flag optional" title="This parameter is optional.">optional</span>
                                     
 
                                     <div class="param-description">
@@ -333,6 +836,315 @@
         <h2>Methods</h2>
 
         
+            <a name="method_comments" class="anchor-link"></a>
+<div class="method item inherited">
+    <h3 class="name"><code>comments</code>
+
+    
+        <span class="paren">()</span>
+    
+
+    
+        <span class="returns-inline">
+            <span class="type"><a href="../classes/PostsRequest.html" class="crosslink">PostsRequest</a></span>
+        </span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    </h3>
+
+    <div class="meta">
+        
+            
+                <p>Inherited from
+                <a href="../classes/PostsRequest.html#method_comments" class="type">PostsRequest</a>:
+            
+        
+        
+        <a href="../files/lib_posts.js.html#l99"><code>lib&#x2F;posts.js:99</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="extended-detail">
+
+        <div class="description">
+            
+        </div>
+
+        
+
+        
+            <div class="returns">
+                <h4>Returns:</h4>
+
+                <div class="returns-description">
+                    
+                        
+                            <span class="type"><a href="../classes/PostsRequest.html" class="crosslink">PostsRequest</a></span>:
+                        
+                        <p>The PostsRequest instance (for chaining)</p>
+
+                    
+                </div>
+            </div>
+        
+
+        
+    </div>
+</div>
+
+        
+            <a name="method_generateRequestUri" class="anchor-link"></a>
+<div class="method item inherited inherited">
+    <h3 class="name"><code>generateRequestUri</code>
+
+    
+        <span class="paren">()</span>
+    
+
+    
+        <span class="returns-inline">
+            <span class="type">String</span>
+        </span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    </h3>
+
+    <div class="meta">
+        
+            <p>Inherited from
+            <a href="../classes/UsersRequest.html#method_generateRequestUri" class="type">
+                UsersRequest
+            </a>
+            
+            but overwritten in
+            
+        
+        
+        <a href="../files/lib_posts.js.html#l139"><code>lib&#x2F;posts.js:139</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="extended-detail">
+
+        <div class="description">
+            <p>Parse the request&#39;s instance properties into a WordPress API request URI</p>
+
+        </div>
+
+        
+
+        
+            <div class="returns">
+                <h4>Returns:</h4>
+
+                <div class="returns-description">
+                    
+                        
+                            <span class="type">String</span>:
+                        
+                        <p>The URI for the HTTP request to the posts endpoint</p>
+
+                    
+                </div>
+            </div>
+        
+
+        
+    </div>
+</div>
+
+        
+            <a name="method_id" class="anchor-link"></a>
+<div class="method item inherited inherited">
+    <h3 class="name"><code>id</code>
+
+    
+        <span class="paren">()</span>
+    
+
+    
+        <span class="returns-inline">
+            <span class="type"><a href="../classes/PostsRequest.html" class="crosslink">PostsRequest</a></span>
+        </span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    </h3>
+
+    <div class="meta">
+        
+            <p>Inherited from
+            <a href="../classes/UsersRequest.html#method_id" class="type">
+                UsersRequest
+            </a>
+            
+            but overwritten in
+            
+        
+        
+        <a href="../files/lib_posts.js.html#l80"><code>lib&#x2F;posts.js:80</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="extended-detail">
+
+        <div class="description">
+            
+        </div>
+
+        
+
+        
+            <div class="returns">
+                <h4>Returns:</h4>
+
+                <div class="returns-description">
+                    
+                        
+                            <span class="type"><a href="../classes/PostsRequest.html" class="crosslink">PostsRequest</a></span>:
+                        
+                        <p>The PostsRequest instance (for chaining)</p>
+
+                    
+                </div>
+            </div>
+        
+
+        
+    </div>
+</div>
+
+        
+            <a name="method_me" class="anchor-link"></a>
+<div class="method item inherited">
+    <h3 class="name"><code>me</code>
+
+    
+        <span class="paren">()</span>
+    
+
+    
+        <span class="returns-inline">
+            <span class="type"><a href="../classes/UsersRequest.html" class="crosslink">UsersRequest</a></span>
+        </span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <span class="flag chainable">chainable</span>
+    
+
+    
+
+    </h3>
+
+    <div class="meta">
+        
+            
+                <p>Inherited from
+                <a href="../classes/UsersRequest.html#method_me" class="type">UsersRequest</a>:
+            
+        
+        
+        <a href="../files/lib_users.js.html#l47"><code>lib&#x2F;users.js:47</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="extended-detail">
+
+        <div class="description">
+            
+        </div>
+
+        
+
+        
+            <div class="returns">
+                <h4>Returns:</h4>
+
+                <div class="returns-description">
+                    
+                        
+                            <span class="type"><a href="../classes/UsersRequest.html" class="crosslink">UsersRequest</a></span>:
+                        
+                        <p>The UsersRequest instance (for chaining)</p>
+
+                    
+                </div>
+            </div>
+        
+
+        
+    </div>
+</div>
+
+        
             <a name="method_posts" class="anchor-link"></a>
 <div class="method item">
     <h3 class="name"><code>posts</code>
@@ -382,7 +1194,7 @@
             
         
         
-        <a href="../files/wp.js.html#l32"><code>wp.js:32</code></a>
+        <a href="../files/wp.js.html#l56"><code>wp.js:56</code></a>
         
         </p>
 
@@ -412,8 +1224,6 @@
                         
 
                         
-                            <span class="flag multiple" title="This argument may occur one or more times.">multiple</span>
-                        
 
                         <div class="param-description">
                             <p>An options hash for a new PostsRequest</p>
@@ -437,6 +1247,156 @@
                             <span class="type"><a href="../classes/PostsRequest.html" class="crosslink">PostsRequest</a></span>:
                         
                         <p>A PostsRequest instance</p>
+
+                    
+                </div>
+            </div>
+        
+
+        
+    </div>
+</div>
+
+        
+            <a name="method_revisions" class="anchor-link"></a>
+<div class="method item inherited">
+    <h3 class="name"><code>revisions</code>
+
+    
+        <span class="paren">()</span>
+    
+
+    
+        <span class="returns-inline">
+            <span class="type"><a href="../classes/PostsRequest.html" class="crosslink">PostsRequest</a></span>
+        </span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    </h3>
+
+    <div class="meta">
+        
+            
+                <p>Inherited from
+                <a href="../classes/PostsRequest.html#method_revisions" class="type">PostsRequest</a>:
+            
+        
+        
+        <a href="../files/lib_posts.js.html#l119"><code>lib&#x2F;posts.js:119</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="extended-detail">
+
+        <div class="description">
+            
+        </div>
+
+        
+
+        
+            <div class="returns">
+                <h4>Returns:</h4>
+
+                <div class="returns-description">
+                    
+                        
+                            <span class="type"><a href="../classes/PostsRequest.html" class="crosslink">PostsRequest</a></span>:
+                        
+                        <p>The PostsRequest instance (for chaining)</p>
+
+                    
+                </div>
+            </div>
+        
+
+        
+    </div>
+</div>
+
+        
+            <a name="method_statuses" class="anchor-link"></a>
+<div class="method item inherited">
+    <h3 class="name"><code>statuses</code>
+
+    
+        <span class="paren">()</span>
+    
+
+    
+        <span class="returns-inline">
+            <span class="type"><a href="../classes/PostsRequest.html" class="crosslink">PostsRequest</a></span>
+        </span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    </h3>
+
+    <div class="meta">
+        
+            
+                <p>Inherited from
+                <a href="../classes/PostsRequest.html#method_statuses" class="type">PostsRequest</a>:
+            
+        
+        
+        <a href="../files/lib_posts.js.html#l129"><code>lib&#x2F;posts.js:129</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="extended-detail">
+
+        <div class="description">
+            
+        </div>
+
+        
+
+        
+            <div class="returns">
+                <h4>Returns:</h4>
+
+                <div class="returns-description">
+                    
+                        
+                            <span class="type"><a href="../classes/PostsRequest.html" class="crosslink">PostsRequest</a></span>:
+                        
+                        <p>The PostsRequest instance (for chaining)</p>
 
                     
                 </div>
@@ -497,7 +1457,7 @@
             
         
         
-        <a href="../files/wp.js.html#l44"><code>wp.js:44</code></a>
+        <a href="../files/wp.js.html#l68"><code>wp.js:68</code></a>
         
         </p>
 
@@ -527,8 +1487,6 @@
                         
 
                         
-                            <span class="flag multiple" title="This argument may occur one or more times.">multiple</span>
-                        
 
                         <div class="param-description">
                             <p>An options hash for a new TaxonomiesRequest</p>
@@ -552,6 +1510,159 @@
                             <span class="type"><a href="../classes/TaxonomiesRequest.html" class="crosslink">TaxonomiesRequest</a></span>:
                         
                         <p>A TaxonomiesRequest instance</p>
+
+                    
+                </div>
+            </div>
+        
+
+        
+    </div>
+</div>
+
+        
+            <a name="method_terms" class="anchor-link"></a>
+<div class="method item inherited">
+    <h3 class="name"><code>terms</code>
+
+    
+        <span class="paren">()</span>
+    
+
+    
+        <span class="returns-inline">
+            <span class="type"><a href="../classes/TaxonomiesRequest.html" class="crosslink">TaxonomiesRequest</a></span>
+        </span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <span class="flag chainable">chainable</span>
+    
+
+    
+
+    </h3>
+
+    <div class="meta">
+        
+            
+                <p>Inherited from
+                <a href="../classes/TaxonomiesRequest.html#method_terms" class="type">TaxonomiesRequest</a>:
+            
+        
+        
+        <a href="../files/lib_taxonomies.js.html#l80"><code>lib&#x2F;taxonomies.js:80</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="extended-detail">
+
+        <div class="description">
+            <p>Specify that we are requesting the terms for a taxonomy</p>
+
+        </div>
+
+        
+
+        
+            <div class="returns">
+                <h4>Returns:</h4>
+
+                <div class="returns-description">
+                    
+                        
+                            <span class="type"><a href="../classes/TaxonomiesRequest.html" class="crosslink">TaxonomiesRequest</a></span>:
+                        
+                        <p>The TaxonomiesRequest instance (for chaining)</p>
+
+                    
+                </div>
+            </div>
+        
+
+        
+    </div>
+</div>
+
+        
+            <a name="method_types" class="anchor-link"></a>
+<div class="method item inherited">
+    <h3 class="name"><code>types</code>
+
+    
+        <span class="paren">()</span>
+    
+
+    
+        <span class="returns-inline">
+            <span class="type"><a href="../classes/PostsRequest.html" class="crosslink">PostsRequest</a></span>
+        </span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    </h3>
+
+    <div class="meta">
+        
+            
+                <p>Inherited from
+                <a href="../classes/PostsRequest.html#method_types" class="type">PostsRequest</a>:
+            
+        
+        
+        <a href="../files/lib_posts.js.html#l109"><code>lib&#x2F;posts.js:109</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="extended-detail">
+
+        <div class="description">
+            
+        </div>
+
+        
+
+        
+            <div class="returns">
+                <h4>Returns:</h4>
+
+                <div class="returns-description">
+                    
+                        
+                            <span class="type"><a href="../classes/PostsRequest.html" class="crosslink">PostsRequest</a></span>:
+                        
+                        <p>The PostsRequest instance (for chaining)</p>
 
                     
                 </div>
@@ -612,7 +1723,7 @@
             
         
         
-        <a href="../files/wp.js.html#l56"><code>wp.js:56</code></a>
+        <a href="../files/wp.js.html#l80"><code>wp.js:80</code></a>
         
         </p>
 
@@ -641,8 +1752,6 @@
                             <span class="flag optional" title="This parameter is optional.">optional</span>
                         
 
-                        
-                            <span class="flag multiple" title="This argument may occur one or more times.">multiple</span>
                         
 
                         <div class="param-description">

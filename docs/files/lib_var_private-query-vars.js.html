@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>PostsRequest - wordpress-rest-api</title>
+    <title>lib/var/private-query-vars.js - wordpress-rest-api</title>
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
     <link rel="shortcut icon" type="image/png" href="../assets/favicon.png">
@@ -82,50 +82,61 @@
 
         <div id="docs-main" class="apidocs">
             <div class="content container">
-                <h1>PostsRequest Module</h1>
-<div class="box clearfix meta">
-    
+                <h1 class="file-heading">File: lib/var/private-query-vars.js</h1>
 
-    
+<div class="file">
+    <pre class="code prettyprint linenums">
+/**
+ * Sorted list of private WP_Query variables, requiring authentication
+ * This may be used for a whitelist soon, but at present please consider it
+ * to be simply documentation.
+ *
+ * Documentation:
+ *
+ * - WP_Query parameters: http://codex.wordpress.org/Class_Reference/WP_Query
+ * - Privat query variables: WordPress core, wp-includes/class-wp.php
+ *
+ * Note: posts_per_page is a private query varaible within WordPress, but is
+ * explicitly exposed for public querying within the WP API so it exists in
+ * the list within public-query-vars.js
+ */
+module.exports = [
+	&#x27;offset&#x27;,                 // (int) - number of post to displace or pass over. Warning: Setting
+	//                                   the offset parameter overrides/ignores the paged parameter
+	//                                   and breaks pagination (Click here for a workaround). The
+	//                                   &#x27;offset&#x27; parameter is ignored when &#x27;posts_per_page&#x27;=&gt;-1
+	//                                   (show all posts) is used.
+	&#x27;posts_per_archive_page&#x27;, // (int) - number of posts to show per page - on archive pages only.
+	//                                   Over-rides posts_per_page and showposts on pages where
+	//                                   is_archive() or is_search() would be true.
+	// &#x27;showposts&#x27;,           // &lt;replaced by posts_per_page&gt;
+	&#x27;nopaging&#x27;,               // (boolean) - show all posts or use pagination. Default value is
+	//                                       &#x27;false&#x27;, use paging.
+	&#x27;post_type&#x27;,              // (string / array) - use post types. Retrieves posts by Post Types,
+	//                                              default value is &#x27;post&#x27;.
+	&#x27;post_status&#x27;,            // (string / array) - use post status. Retrieves posts by Post Status.
+	//                                              Default value is &#x27;publish&#x27;, but if the user is
+	//                                              logged in, &#x27;private&#x27; is added.
+	&#x27;category__in&#x27;,           // (array) - use category id.
+	&#x27;category__not_in&#x27;,       // (array) - use category id.
+	&#x27;category__and&#x27;,          // (array) - use category id.
+	&#x27;tag__in&#x27;,                // (array) - use tag ids.
+	&#x27;tag__not_in&#x27;,            // (array) - use tag ids.
+	&#x27;tag__and&#x27;,               // (array) - use tag ids.
+	&#x27;tag_slug__in&#x27;,           // (array) - use tag slugs.
+	&#x27;tag_slug__and&#x27;,          // (array) - use tag slugs.
+	&#x27;tag_id&#x27;,                 // (int) - use tag id.
+	//&#x27;post_mime_type&#x27;,       // &lt;no documentation available&gt;
+	&#x27;perm&#x27;,                   // (string) - User permission.
+	//&#x27;comments_per_page&#x27;,    // &lt;no documentation available&gt;
+	&#x27;post__in&#x27;,               // (array) - use post ids. Specify posts to retrieve.
+	&#x27;post__not_in&#x27;,           // (array) - use post ids. Specify post NOT to retrieve.
+	&#x27;post_parent&#x27;,            // (int) - use page id. Return just the child Pages.
+	&#x27;post_parent__in&#x27;,        // (array) - use post ids. Specify posts whose parent is in an array.
+	&#x27;post_parent__not_in&#x27;     // (array) - use post ids. Specify posts whose parent isn&#x27;t in an arr.
+].sort();
 
-    
-        <div class="foundat">
-            Defined in: <a href="../files/lib_posts.js.html#l11"><code>lib&#x2F;posts.js:11</code></a>
-        </div>
-    
-
-    
-</div>
-
-
-
-<div class="box intro">
-    <p>PostsRequest extends WPRequest to handle the /posts API endpoint</p>
-
-</div>
-
-
-
-<div class="yui3-g">
-    <div class="yui3-u-1-2">
-        
-            <p>This module provides the following classes:</p>
-
-            <ul class="module-classes">
-            
-                <li class="module-class">
-                    <a href="../classes/PostsRequest.html">
-                        PostsRequest
-                    </a>
-                </li>
-            
-            </ul>
-        
-    </div>
-
-    <div class="yui3-u-1-2">
-        
-    </div>
+    </pre>
 </div>
 
             </div>
