@@ -1,15 +1,19 @@
-node-wp-api
-===========
+A WordPress REST API client for Node.js
+=======================================
 
-A Node.js-based client for the [WordPress JSON API](http://wp-api.org/).
+This is a client for the [WordPress REST API](http://wp-api.org/).
 
 **This project is under active development**, and should be considered beta. [Issues](https://github.com/kadamwhite/node-wp-api/issues) are welcome if you find something that doesn't work!
+
+[![Build Status](https://api.travis-ci.org/kadamwhite/node-wp-api.png?branch=master)](https://travis-ci.org/kadamwhite/node-wp-api)
 
 ## Purpose
 
 This library is designed to make it easy for your [Node.js](http://nodejs.org) application to request specific resources from a WordPress install. It uses a query builder-style syntax to let you craft the request being made to the WP-API endpoints, then returns the data to your application as a JavaScript object.
 
 ## Installation
+
+Currently, this module only supports Node v0.10 & 0.11.
 
 To use the library, install it with [npm](http://npmjs.org):
 ```bash
