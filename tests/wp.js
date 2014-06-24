@@ -28,7 +28,7 @@ describe( 'wp', function() {
 				username: 'fyodor',
 				password: 'dostoyevsky'
 			});
-			expect( wp._options.endpoint ).to.equal( 'http://some.url.com/wp-json' );
+			expect( wp._options.endpoint ).to.equal( 'http://some.url.com/wp-json/' );
 			expect( wp._options.username ).to.equal( 'fyodor' );
 			expect( wp._options.password ).to.equal( 'dostoyevsky' );
 		});

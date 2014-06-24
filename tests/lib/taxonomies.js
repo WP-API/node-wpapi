@@ -62,7 +62,7 @@ describe( 'wp.taxonomies', function() {
 		beforeEach(function() {
 			taxonomies = new TaxonomiesRequest();
 			taxonomies._options = {
-				endpoint: '/wp-json'
+				endpoint: '/wp-json/'
 			};
 		});
 

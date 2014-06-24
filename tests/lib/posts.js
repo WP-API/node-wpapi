@@ -27,6 +27,7 @@ describe( 'wp.posts', function() {
 			var posts = new PostsRequest();
 			expect( posts._options ).to.deep.equal( {} );
 		});
+
 		it( 'should intitialize instance properties', function() {
 			var posts = new PostsRequest();
 			expect( posts._action ).to.be.null;
@@ -37,11 +38,11 @@ describe( 'wp.posts', function() {
 		});
 
 		it( 'should inherit PostsRequest from WPRequest using util.inherits', function() {
-
 			var utilInherits = sinon.spy();
 			sandbox.load( '../../lib/posts', {
 				requires: {
 					'./WPRequest': 'WPRequestMock',
+					'./shared/filters': { mixins: {} },
 					'util': {
 						inherits: utilInherits
 					}
@@ -50,6 +51,25 @@ describe( 'wp.posts', function() {
 
 			// [ 0 ][ 1 ]: Call #1, Argument #2 should be our request mock
 			expect( utilInherits.args[ 0 ][ 1 ] ).to.equal( 'WPRequestMock' );
+		});
+
+		it( 'should extend PostsRequest.prototype with filter methods', function() {
+			var extend = sinon.spy();
+			var SandboxedPostsRequest = sandbox.require( '../../lib/posts', {
+				requires: {
+					'./WPRequest': 'WPRequestMock',
+					'./shared/filters': {
+						mixins: { filter: 'methods' }
+					}
+				}
+			});
+			var posts = new SandboxedPostsRequest();
+
+			expect( posts.prototype.filter ).to.equal( 'methods' );
+			// [ 0 ][ 1 ]: Call #1, Argument #2 should be the mixins property from the filter mock
+			expect( extend.args[ 0 ][ 1 ] ).to.deep.equal({
+				filter: 'methods'
+			});
 		});
 
 	});
@@ -61,7 +81,7 @@ describe( 'wp.posts', function() {
 		beforeEach(function() {
 			posts = new PostsRequest();
 			posts._options = {
-				endpoint: '/wp-json'
+				endpoint: '/wp-json/'
 			};
 		});
 

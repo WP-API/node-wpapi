@@ -60,7 +60,7 @@ describe( 'wp.users', function() {
 		beforeEach(function() {
 			users = new UsersRequest();
 			users._options = {
-				endpoint: '/wp-json'
+				endpoint: '/wp-json/'
 			};
 		});
 

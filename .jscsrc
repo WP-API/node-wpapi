@@ -11,7 +11,6 @@
 	"requireOperatorBeforeLineBreak": true,
 	"requireParenthesesAroundIIFE": true,
 	"requireCommaBeforeLineBreak": true,
-	"requireCamelCaseOrUpperCaseIdentifiers": true,
 	"requireDotNotation": true,
 	"requireBlocksOnNewline": 1,
 	"maximumLineLength": {
