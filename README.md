@@ -100,11 +100,9 @@ wp.posts().filter( 'posts_per_page', 20 )...
 
 ## API Documentation
 
-We have automatically-generated API documentation at [kadamwhite.github.io/node-wp-api](http://kadamwhite.github.io/node-wp-api); more user-oriented documentation (including a proper getting started guide) will be added to this README in the near future.
-
-The original working document describing our vision for the functionality of this library is [on this repository's wiki](https://github.com/kadamwhite/node-wp-api/wiki).
+In addition to the above getting-started guide, we have automatically-generated [API documentation](http://kadamwhite.github.io/node-wp-api). More user-oriented documentation, including a more in-depth overview of available endpoint and filter methods, will be added to this README in the near future.
 
 
 ## Issues
 
-https://github.com/kadamwhite/node-wp-api/issues
+If you identify any errors in this module, or have an idea for an improvement, please [open an issue](https://github.com/kadamwhite/node-wp-api/issues). We're excited to see what the community thinks of this project, and we would love your input!
