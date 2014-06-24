@@ -64,6 +64,11 @@ describe( 'CollectionFilters', function() {
 
 	describe( 'filtering convenience methods', function() {
 
+		beforeEach(function() {
+			request._taxonomyFilters = {};
+			request._filters = {};
+		});
+
 		describe( 'taxonomy()', function() {
 
 			it( 'should throw if an invalid term argument is provided', function() {
@@ -84,6 +89,62 @@ describe( 'CollectionFilters', function() {
 				}).to.throw();
 			});
 
+			it( 'should store taxonomy terms in a sorted array, keyed by taxonomy', function() {
+				request.taxonomy( 'some_tax', 'nigel' );
+				request.taxonomy( 'some_tax', [ 'tufnel', 'derek', 'smalls' ] );
+				expect( request._taxonomyFilters ).to.deep.equal({
+					some_tax: [ 'derek', 'nigel', 'smalls', 'tufnel' ]
+				});
+				request
+					.taxonomy( 'drummers', [ 'stumpy', 'mama' ] )
+					.taxonomy( 'drummers', [ 'stumpy-joe', 'james' ] )
+					.taxonomy( 'drummers', 'ric' );
+				expect( request._taxonomyFilters ).to.deep.equal({
+					some_tax: [ 'derek', 'nigel', 'smalls', 'tufnel' ],
+					drummers: [ 'james', 'mama', 'ric', 'stumpy', 'stumpy-joe' ]
+				});
+			});
+
+			it( 'should handle numeric terms, for category and taxonomy ID', function() {
+				request.taxonomy( 'age', [ 42, 2001, 13 ] );
+				expect( request._taxonomyFilters ).to.deep.equal({
+					age: [ 13, 42, 2001 ]
+				});
+			});
+
+			it( 'should map "category" to "cat" for numeric terms', function() {
+				request.taxonomy( 'category', 7 );
+				expect( request._taxonomyFilters ).to.deep.equal({
+					cat: [ 7 ]
+				});
+				request.taxonomy( 'category', [ 10, 2 ] );
+				expect( request._taxonomyFilters ).to.deep.equal({
+					cat: [ 2, 7, 10 ]
+				});
+			});
+
+			it( 'should map "category" to "category_name" for string terms', function() {
+				request.taxonomy( 'category', 'news' );
+				expect( request._taxonomyFilters ).to.deep.equal({
+					category_name: [ 'news' ]
+				});
+				request.taxonomy( 'category', [ 'events', 'fluxus-happenings' ] );
+				expect( request._taxonomyFilters ).to.deep.equal({
+					category_name: [ 'events', 'fluxus-happenings', 'news' ]
+				});
+			});
+
+			it( 'should map "post_tag" to "tag" for tag terms', function() {
+				request.taxonomy( 'post_tag', 'disclosure' );
+				expect( request._taxonomyFilters ).to.deep.equal({
+					tag: [ 'disclosure' ]
+				});
+				request.taxonomy( 'post_tag', [ 'white-noise', 'settle' ] );
+				expect( request._taxonomyFilters ).to.deep.equal({
+					tag: [ 'disclosure', 'settle', 'white-noise' ]
+				});
+			});
+
 		});
 
 		describe( 'category()', function() {
@@ -92,6 +153,7 @@ describe( 'CollectionFilters', function() {
 				request.taxonomy = sinon.stub();
 				request.category( 'news' );
 				expect( request.taxonomy ).to.have.been.calledWith( 'category', 'news' );
+				request.category( 'bat-country' ).category( 'bunny' )
 			});
 
 		});
@@ -119,6 +181,14 @@ describe( 'CollectionFilters', function() {
 			// Filters should be in alpha order, to support caching requests
 			expect( query ).to
 				.equal( '?filter%5Bcustom_tax%5D=7&filter%5Btag%5D=clouds%2Bislands' );
+		});
+
+		it( 'lower-cases taxonomy terms', function() {
+			request._taxonomyFilters = {
+				tag: [ 'Diamond-Dust' ]
+			};
+			var query = request._queryStr();
+			expect( query ).to.equal( '?filter%5Btag%5D=diamond-dust' );
 		});
 
 		it( 'properly parses regular filters', function() {
