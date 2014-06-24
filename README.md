@@ -57,16 +57,29 @@ wp.posts().filter({
 // 'category' can accept either numeric IDs, or string slugs, but not both!
 wp.posts().category( 7 ).tag( 'music' ).get();
 
-// Put it all together: 5 most recent posts by jadenbeirne in 'islands'
+// Convenience methods also exist for specifying an author: this can also take
+// either a numeric ID, or a nicename string. Unlike tags, setting a new value
+// will erase any prior value, regardless of type.
+
+// equivalent to .filter( 'author_name', 'williamgibson' ):
+wp.posts().author( 'williamgibson' ).get();
+// equivalent to .filter( 'author', 42 ):
+wp.posts().author( 42 ).get();
+// last value wins: this queries for author_name == frankherbert
+wp.posts().author( 42 ).author( 'frankherbert' ).get();
+
+// Put it all together: Get the 5 most recent posts by jadenbeirne in 'fiction'
 wp.posts()
-    .filter( 'author_name', 'jadenbeirne' )
+    .author( 'jadenbeirne' )
     .filter( 'posts_per_page', 5 )
-    .tag( 'islands' )
+    .tag( 'fiction' )
     .get();
 
 // posts_per_page is exposed to set the maximum number of posts to return
 // All posts:
-wp.posts().filter( 'posts_per_page', -1 );
+wp.posts().filter( 'posts_per_page', -1 )...
+// 20 latest posts:
+wp.posts().filter( 'posts_per_page', 20 )...
 ```
 
 

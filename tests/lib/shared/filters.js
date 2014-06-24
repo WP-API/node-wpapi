@@ -197,6 +197,31 @@ describe( 'CollectionFilters', function() {
 
 		});
 
+		describe( 'author()', function() {
+
+			it( 'should set the "author" filter property for numeric arguments', function() {
+				request.author( 301 );
+				expect( request._filters.author ).to.equal( 301 );
+				expect( request._filters.author_name ).not.to.exist;
+			});
+
+			it( 'should set the "author_name" filter property for string arguments', function() {
+				request.author( 'jamesagarfield' );
+				expect( request._filters.author_name ).to.equal( 'jamesagarfield' );
+				expect( request._filters.author ).not.to.exist;
+			});
+
+			it( 'should be chainable, and replace values', function() {
+				expect( request.author( 'fforde' ).author( 'bronte' ) ).to.equal( request );
+				expect( request._filters.author_name ).to.equal( 'bronte' );
+
+				request.author( 1847 );
+				expect( request._filters.author_name ).not.to.exist;
+				expect( request._filters.author ).to.equal( 1847 );
+			});
+
+		});
+
 		describe( 'name()', function() {
 
 			it( 'should set the "name" filter property on the request object', function() {
