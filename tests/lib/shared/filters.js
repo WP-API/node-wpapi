@@ -156,10 +156,8 @@ describe( 'CollectionFilters', function() {
 				request.taxonomy.restore();
 			});
 
-			it( 'is chainable', function() {
-				expect(function() {
-					request.category( 'bat-country' ).category( 'bunny' );
-				}).not.to.throw();
+			it( 'should be chainable, and accumulates values', function() {
+				expect( request.category( 'bat-country' ).category( 'bunny' ) ).to.equal( request );
 				expect( request._taxonomyFilters ).to.deep.equal({
 					category_name: [ 'bat-country', 'bunny' ]
 				});
@@ -176,13 +174,57 @@ describe( 'CollectionFilters', function() {
 				request.taxonomy.restore();
 			});
 
-			it( 'is chainable', function() {
-				expect(function() {
-					request.tag( 'drive-by' ).tag( 'jackson-pollock' );
-				}).not.to.throw();
+			it( 'should be chainable, and accumulates values', function() {
+				expect( request.tag( 'drive-by' ).tag( 'jackson-pollock' ) ).to.equal( request );
 				expect( request._taxonomyFilters ).to.deep.equal({
 					tag: [ 'drive-by', 'jackson-pollock' ]
 				});
+			});
+
+		});
+
+		describe( 'search()', function() {
+
+			it( 'should set the "s" filter property on the request object', function() {
+				request.search( 'Some search string' );
+				expect( request._filters.s ).to.equal( 'Some search string' );
+			});
+
+			it( 'should be chainable, and replace values', function() {
+				expect( request.search( 'str1' ).search( 'str2' ) ).to.equal( request );
+				expect( request._filters.s ).to.equal( 'str2' );
+			});
+
+		});
+
+		describe( 'name()', function() {
+
+			it( 'should set the "name" filter property on the request object', function() {
+				request.name( 'greatest-post-in-the-world' );
+				expect( request._filters.name ).to.equal( 'greatest-post-in-the-world' );
+			});
+
+			it( 'should be chainable, and replace values', function() {
+				expect( request.name( 'post-slug-1' ).name( 'hello-world' ) ).to.equal( request );
+				expect( request._filters.name ).to.equal( 'hello-world' );
+			});
+
+		});
+
+		describe( 'slug()', function() {
+
+			it( 'should be an alias for name()', function() {
+				expect( request.slug ).to.equal( request.name );
+			});
+
+			it( 'should set the "name" filter property on the request object', function() {
+				request.slug( 'greatest-post-in-the-world' );
+				expect( request._filters.name ).to.equal( 'greatest-post-in-the-world' );
+			});
+
+			it( 'should be chainable, and replace values', function() {
+				expect( request.slug( 'post-slug-1' ).slug( 'hello-world' ) ).to.equal( request );
+				expect( request._filters.name ).to.equal( 'hello-world' );
 			});
 
 		});
