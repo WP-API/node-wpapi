@@ -22,10 +22,13 @@ const defaults = {
 };
 
 /**
- * The constructor for the WP API service
+ * The base constructor for the WP API service
  *
  * @class WP
  * @constructor
+ * @uses PostsRequest
+ * @uses TaxonomiesRequest
+ * @uses UsersRequest
  * @param {Object} options An options hash to configure the instance
  * @param {String} options.endpoint The URI for a WP-API endpoint
  * @param {String} [options.username] A WP-API Basic Auth username
