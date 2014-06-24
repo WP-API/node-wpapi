@@ -150,10 +150,19 @@ describe( 'CollectionFilters', function() {
 		describe( 'category()', function() {
 
 			it( 'delegates to taxonomy()', function() {
-				request.taxonomy = sinon.stub();
+				sinon.stub( request, 'taxonomy' );
 				request.category( 'news' );
 				expect( request.taxonomy ).to.have.been.calledWith( 'category', 'news' );
-				request.category( 'bat-country' ).category( 'bunny' )
+				request.taxonomy.restore();
+			});
+
+			it( 'is chainable', function() {
+				expect(function() {
+					request.category( 'bat-country' ).category( 'bunny' );
+				}).not.to.throw();
+				expect( request._taxonomyFilters ).to.deep.equal({
+					category_name: [ 'bat-country', 'bunny' ]
+				});
 			});
 
 		});
@@ -161,9 +170,19 @@ describe( 'CollectionFilters', function() {
 		describe( 'tag()', function() {
 
 			it( 'delegates to taxonomy()', function() {
-				request.taxonomy = sinon.stub();
+				sinon.stub( request, 'taxonomy' );
 				request.tag( 'the-good-life' );
 				expect( request.taxonomy ).to.have.been.calledWith( 'tag', 'the-good-life' );
+				request.taxonomy.restore();
+			});
+
+			it( 'is chainable', function() {
+				expect(function() {
+					request.tag( 'drive-by' ).tag( 'jackson-pollock' );
+				}).not.to.throw();
+				expect( request._taxonomyFilters ).to.deep.equal({
+					tag: [ 'drive-by', 'jackson-pollock' ]
+				});
 			});
 
 		});

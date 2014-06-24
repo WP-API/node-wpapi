@@ -33,6 +33,8 @@ describe( 'wp.posts', function() {
 			expect( posts._action ).to.be.null;
 			expect( posts._actionId ).to.be.null;
 			expect( posts._id ).to.be.null;
+			expect( posts._filters ).to.deep.equal({});
+			expect( posts._taxonomyFilters ).to.deep.equal({});
 			var _supportedMethods = posts._supportedMethods.sort().join( '|' );
 			expect( _supportedMethods ).to.equal( 'get|head|post' );
 		});
