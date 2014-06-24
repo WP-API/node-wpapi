@@ -1,14 +1,14 @@
 /*jshint -W106 */// Disable underscore_case warnings in this file b/c WP uses them
 const chai = require( 'chai' );
 const expect = chai.expect;
-// chai.use( require( 'sinon-chai' ) );
-// const sinon = require( 'sinon' );
+const sinon = require( 'sinon' );
+chai.use( require( 'sinon-chai' ) );
 // const sandbox = require( 'sandboxed-module' );
 
 const extend = require( 'node.extend' );
 const filters = require( '../../../lib/shared/filters' );
 
-describe( 'collection().filters', function() {
+describe( 'CollectionFilters', function() {
 
 	var request;
 
@@ -21,7 +21,7 @@ describe( 'collection().filters', function() {
 		request = new Endpoint();
 	});
 
-	describe( 'filter', function() {
+	describe( 'filter()', function() {
 
 		it( 'should set the internal _filters hash', function() {
 			request.filter({
@@ -62,7 +62,53 @@ describe( 'collection().filters', function() {
 
 	});
 
-	describe( '_queryStr', function() {
+	describe( 'filtering convenience methods', function() {
+
+		describe( 'taxonomy()', function() {
+
+			it( 'should throw if an invalid term argument is provided', function() {
+				expect(function() {
+					request.taxonomy( 'tag', 'slug' );
+				}).not.to.throw();
+
+				expect(function() {
+					request.taxonomy( 'cat', 7 );
+				}).not.to.throw();
+
+				expect(function() {
+					request.taxonomy( 'category_name', [ 'slug1', 'slug2' ] );
+				}).not.to.throw();
+
+				expect(function() {
+					request.taxonomy( 'tag', {} );
+				}).to.throw();
+			});
+
+		});
+
+		describe( 'category()', function() {
+
+			it( 'delegates to taxonomy()', function() {
+				request.taxonomy = sinon.stub();
+				request.category( 'news' );
+				expect( request.taxonomy ).to.have.been.calledWith( 'category', 'news' );
+			});
+
+		});
+
+		describe( 'tag()', function() {
+
+			it( 'delegates to taxonomy()', function() {
+				request.taxonomy = sinon.stub();
+				request.tag( 'the-good-life' );
+				expect( request.taxonomy ).to.have.been.calledWith( 'tag', 'the-good-life' );
+			});
+
+		});
+
+	});
+
+	describe( '_queryStr()', function() {
 
 		it( 'properly parses taxonomy filters', function() {
 			request._taxonomyFilters = {
