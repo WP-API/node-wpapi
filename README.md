@@ -3,9 +3,9 @@ A WordPress REST API client for Node.js
 
 This is a client for the [WordPress REST API](http://wp-api.org/).
 
-**This project is under active development**, and should be considered beta. [Issues](https://github.com/kadamwhite/node-wp-api/issues) are welcome if you find something that doesn't work!
+**This project is under active development**, and should be considered beta. [Issues](https://github.com/kadamwhite/wordpress-rest-api/issues) are welcome if you find something that doesn't work!
 
-[![Build Status](https://api.travis-ci.org/kadamwhite/node-wp-api.png?branch=master)](https://travis-ci.org/kadamwhite/node-wp-api)
+[![Build Status](https://api.travis-ci.org/kadamwhite/wordpress-rest-api.png?branch=master)](https://travis-ci.org/kadamwhite/wordpress-rest-api)
 
 ## Purpose
 
@@ -28,7 +28,7 @@ var WP_API = require( 'wordpress-rest-api' );
 
 The module is a constructor, so you can create an instance of the API client bound to the endpoint for your WordPress install:
 ```javascript
-var WP = require( 'node-wp-api' );
+var WP = require( 'wordpress-rest-api' );
 var wp = new WP({ endpoint: 'http://src.wordpress-develop.dev' });
 ```
 Once an instance is constructed, you can chain off of it to construct a specific request. (Think of it as a query-builder for WordPress!)
@@ -100,9 +100,9 @@ wp.posts().filter( 'posts_per_page', 20 )...
 
 ## API Documentation
 
-In addition to the above getting-started guide, we have automatically-generated [API documentation](http://kadamwhite.github.io/node-wp-api). More user-oriented documentation, including a more in-depth overview of available endpoint and filter methods, will be added to this README in the near future.
+In addition to the above getting-started guide, we have automatically-generated [API documentation](http://kadamwhite.github.io/wordpress-rest-api). More user-oriented documentation, including a more in-depth overview of available endpoint and filter methods, will be added to this README in the near future.
 
 
 ## Issues
 
-If you identify any errors in this module, or have an idea for an improvement, please [open an issue](https://github.com/kadamwhite/node-wp-api/issues). We're excited to see what the community thinks of this project, and we would love your input!
+If you identify any errors in this module, or have an idea for an improvement, please [open an issue](https://github.com/kadamwhite/wordpress-rest-api/issues). We're excited to see what the community thinks of this project, and we would love your input!

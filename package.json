@@ -5,14 +5,17 @@
   "main": "wp.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/kadamwhite/node-wp-api.git"
+    "url": "https://github.com/kadamwhite/wordpress-rest-api.git"
   },
-  "author": "",
+  "author": {
+    "name": "K.Adam White",
+    "url": "http://www.kadamwhite.com"
+  },
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/kadamwhite/node-wp-api/issues"
+    "url": "https://github.com/kadamwhite/wordpress-rest-api/issues"
   },
-  "homepage": "https://github.com/kadamwhite/node-wp-api",
+  "homepage": "https://github.com/kadamwhite/wordpress-rest-api",
   "scripts": {
     "prepublish": "grunt",
     "test": "grunt"
