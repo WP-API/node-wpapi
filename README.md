@@ -21,7 +21,7 @@ npm install --save wordpress-rest-api
 ```
 Then, within your application's script files, `require` the module to gain access to it:
 ```javascript
-var WP_API = require( 'wordpress-rest-api' );
+var WP = require( 'wordpress-rest-api' );
 ```
 
 ## Using The Client
