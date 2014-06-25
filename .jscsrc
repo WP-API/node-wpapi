@@ -26,7 +26,7 @@
 	"disallowTrailingWhitespace": true,
 	"disallowMultipleLineStrings": true,
 	"disallowTrailingComma": true,
-
+	"validateIndentation": "\t",
 
 	"requireSpacesInFunctionExpression": {
 		"beforeOpeningCurlyBrace": true

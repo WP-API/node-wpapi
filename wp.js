@@ -76,10 +76,10 @@ WP.site = function( endpoint ) {
  * @return {PostsRequest} A PostsRequest instance
  */
 WP.prototype.posts = function( options ) {
-		var PostRequest = require( './lib/posts' );
-		options = options || {};
-		options = extend( options, this._options );
-		return new PostRequest( options );
+	var PostRequest = require( './lib/posts' );
+	options = options || {};
+	options = extend( options, this._options );
+	return new PostRequest( options );
 };
 
 /**
@@ -88,10 +88,10 @@ WP.prototype.posts = function( options ) {
  * @return {TaxonomiesRequest} A TaxonomiesRequest instance
  */
 WP.prototype.taxonomies = function( options ) {
-		var TaxonomyRequest = require( './lib/taxonomies' );
-		options = options || {};
-		options = extend( options, this._options );
-		return new TaxonomyRequest( options );
+	var TaxonomyRequest = require( './lib/taxonomies' );
+	options = options || {};
+	options = extend( options, this._options );
+	return new TaxonomyRequest( options );
 };
 
 /**
@@ -100,10 +100,10 @@ WP.prototype.taxonomies = function( options ) {
  * @return {UsersRequest} A UsersRequest instance
  */
 WP.prototype.users = function( options ) {
-		var UserRequest = require( './lib/users' );
-		options = options || {};
-		options = extend( options, this._options );
-		return new UserRequest( options );
+	var UserRequest = require( './lib/users' );
+	options = options || {};
+	options = extend( options, this._options );
+	return new UserRequest( options );
 };
 
 module.exports = WP;
