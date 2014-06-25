@@ -18,6 +18,10 @@
   "homepage": "https://github.com/kadamwhite/wordpress-rest-api",
   "scripts": {
     "prepublish": "grunt",
+    "docs": "grunt yuidoc",
+    "lint": "grunt jscs jshint",
+    "mocha": "grunt test",
+    "watch": "grunt watch",
     "test": "grunt"
   },
   "dependencies": {
