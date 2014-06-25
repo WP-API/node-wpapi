@@ -7,9 +7,15 @@ This document outlines some of the best practices and conventions used within th
 
 ## Best Practices for Commits
 
-*Thanks to the [WP-API project](https://github.com/WP-API/WP-API/blob/master/CONTRIBUTING.md) for these examples*
+You should always run `npm test` before committing, to identify any syntax, style or unit test errors in your branch.
+
+#### Commit Granularity
+
+A single commit should encompass a single, related set of changes. Work on different features should be addressed in different commit. We do not squash commits when merging pull requests, in order to preserve this granular history.
 
 #### Commit Messages
+
+*Thanks to the [WP-API project](https://github.com/WP-API/WP-API/blob/master/CONTRIBUTING.md) for these examples*
 
 Commit messages should follow the standard laid out in the git manual; that is, a one-line summary, followed by longer explanatory text when necessary.
 
@@ -28,10 +34,6 @@ Commit messages should follow the standard laid out in the git manual; that is, 
 
      - Typically a hyphen or asterisk is used for the bullet, preceded by a
        single space, with blank lines in between, but conventions vary here
-
-#### Commit Granularity
-
-A single commit should encompass a single, related set of changes. Work on different features should be addressed in different commit. We do not squash commits when merging pull requests, in order to preserve this granular history.
 
 #### Commit & Pull Request Process
 
@@ -73,7 +75,7 @@ We prefer `camelCase` variable and function names, and `UpperCamelCase` construc
 
 ## Testing
 
-Run the existing tests with `npm test` (or `grunt test`, if you have the Grunt command-line interface installed).
+Run the existing tests with `npm run mocha` (or `grunt test`, if you have the Grunt command-line interface installed).
 
 ### Adding Tests
 
@@ -102,6 +104,8 @@ The README getting started guide & YUIDoc block comment should be kept up-to-dat
 
 The API docs will be updated whenever a new NPM module version is published. No files within `docs/` should be committed in any branch other than gh-pages.
 
+To generate the docs yourself, run `npm run docs` (aliased to `grunt yuidoc`).
+
 ## Branch Naming & Pull Requests
 
 Internally, we try to use the following branch naming scheme to keep things organized:
@@ -116,4 +120,4 @@ It is not essential to maintain this naming structure in your own branches, thou
 
 ## License
 
-All code contributed to this repository will be licensed under (and should be compatible with) the [MIT license](http://opensource.org/licenses/MIT). 
+All code contributed to this repository will be licensed under the [MIT license](http://opensource.org/licenses/MIT). Code you contribute should be owned by you, and by submitting a pull request you assert that the Node WordPress REST API client team has the authority to license that code to other people.
