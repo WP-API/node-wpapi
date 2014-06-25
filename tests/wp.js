@@ -35,4 +35,14 @@ describe( 'wp', function() {
 
 	});
 
+	describe( '.site()', function() {
+
+		it( 'Creates and returns a new WP instance', function() {
+			var site = WP.site( 'endpoint/url' );
+			expect( site instanceof WP ).to.be.true;
+			expect( site._options.endpoint ).to.equal( 'endpoint/url/' );
+		});
+
+	});
+
 });

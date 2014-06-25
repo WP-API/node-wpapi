@@ -54,6 +54,23 @@ function WP( options ) {
 }
 
 /**
+ * Convenience method for making a new WP instance
+ *
+ * @example
+ *    // These are equivalent:
+ *    var wp = WP.site( 'http://my.blog.url/wp-json' );
+ *    var wp = new WP({ endpoint: 'http://my.blog.url/wp-json' });
+ *
+ * @method site
+ * @static
+ * @param {String} endpoint The URI for a WP-API endpoint
+ * @return {WP} A new WP instance, bound to the provided endpoint
+ */
+WP.site = function( endpoint ) {
+	return new WP({ endpoint: endpoint });
+};
+
+/**
  * @method posts
  * @param {Object} [options] An options hash for a new PostsRequest
  * @return {PostsRequest} A PostsRequest instance
