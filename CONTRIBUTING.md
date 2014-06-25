@@ -1,0 +1,119 @@
+Contributing
+============
+
+WordPress is a community effort, as is the WP-API; this client library should be, too. We welcome contributions, however big or small!
+
+This document outlines some of the best practices and conventions used within this project, with links to the libraries and tools we use for testing, syntax checking, and so on.
+
+## Best Practices for Commits
+
+*Thanks to the [WP-API project](https://github.com/WP-API/WP-API/blob/master/CONTRIBUTING.md) for these examples*
+
+#### Commit Messages
+
+Commit messages should follow the standard laid out in the git manual; that is, a one-line summary, followed by longer explanatory text when necessary.
+
+    Short (50 chars or less) summary of changes
+
+    More detailed explanatory text, if necessary.  Wrap it to about 75
+    characters or so.  In some contexts, the first line is treated as the
+    subject of an email and the rest of the text as the body.  The blank
+    line separating the summary from the body is critical (unless you omit
+    the body entirely); tools like rebase can get confused if you run the
+    two together.
+
+    Further paragraphs come after blank lines.
+
+     - Bullet points are okay, too
+
+     - Typically a hyphen or asterisk is used for the bullet, preceded by a
+       single space, with blank lines in between, but conventions vary here
+
+#### Commit Granularity
+
+A single commit should encompass a single, related set of changes. Work on different features should be addressed in different commit. We do not squash commits when merging pull requests, in order to preserve this granular history.
+
+#### Commit & Pull Request Process
+
+Changes are proposed in the form of [pull requests](https://help.github.com/articles/using-pull-requests) submitted by you, the contributor! After submitting your proposed changes, a member of the library's development team will review your commits and discuss any necessary changes with you in the PR comment thread. Your pull request will then be merged after final review.
+
+We rebase feature branches onto master when merging in order to maintain a linear history, so committers should avoid using the Big Green Button.
+
+## Code Syntax & Style
+
+We use [JSCS](https://www.npmjs.org/package/jscs) to enforce a basic set of code style guidelines, and [JSHint](http://jshint.com/) to guard against syntax errors. To run them both execute `npm run lint` (or `grunt jscs jshint`, if you have the Grunt command-line tool installed).
+
+JSCS is a useful tool for enforcing a code style, but isn't flexible enough to cover all guidelines. Note our standard for spacing within function parentheses, which is not enforced mechanically but will be evaluated manually when reviewing pull requests:
+```javascript
+// Function params and args should be spaced out from the parentheses:
+someMethodCall( param1, param2 );
+function newFunction( arg1, arg2 ) {};
+```
+"When in doubt, space it out," with the following exceptions.
+```javascript
+// The space can be omitted when passing function expressions, object literals
+// or array literals as arguments:
+someMethodCall(function() {
+    // do stuff
+});
+someOtherMethod({
+    object: 'no space before an object literal'
+}, 'but this String argument still has a space after it' );
+someMethodThatTakesAnArray([
+    'no',
+    'leading or trailing',
+    'spaces needed'
+]);
+```
+
+We prefer `camelCase` variable and function names, and `UpperCamelCase` constructors. When using the `underscore_case` parameter names that are required by the WordPress API, the following JSHint directive can be used to disable the case enforcement for that particular file:
+```javascript
+/*jshint -W106 */// Disable underscore_case warnings in this file
+```
+
+## Testing
+
+Run the existing tests with `npm test` (or `grunt test`, if you have the Grunt command-line interface installed).
+
+### Adding Tests
+
+Adding new code, or submitting a pull request? If it does something, it should have tests! Under the hood we use [Mocha](visionmedia.github.io/mocha/) to run our tests, and write our assertions using [Chai's "expect" BDD syntax](http://chaijs.com/api/bdd/), *e.g.*:
+```javascript
+expect( wp._options.endpoint ).to.equal( 'http://some.url.com/wp-json/' );
+```
+
+**If you are uncomfortable or unfamiliar with writing unit tests, you should feel free to submit a pull request without them!** We'll work with you in the PR comments to walk you through how to test the code.
+
+#### This Function Is Totally Not A Spy
+
+We use [Sinon.js](sinonjs.org/docs/) for [spying on](sinonjs.org/docs/#spies) and [stubbing](http://sinonjs.org/docs/#stubs) functionality. Sinon assertions should also be written with the BDD style, which is enabled via [sinon-chai](https://www.npmjs.org/package/sinon-chai):
+```javascript
+expect( mockAgent.get ).to.have.been.calledWith( 'url/' );
+```
+See the [existing test files](https://github.com/kadamwhite/wordpress-rest-api/tree/master/tests) for more examples.
+
+#### Mocking Dependencies
+
+When testing code that uses 3rd-party modules, mocks may be injected for those dependencies by using the [sandboxed-module](https://www.npmjs.org/package/sandboxed-module) package. See the [WPRequest tests](https://github.com/kadamwhite/wordpress-rest-api/blob/master/tests/lib/WPRequest.js) for example usage.
+
+## Documentation
+
+The README getting started guide & YUIDoc block comment should be kept up-to-date with feature development: If you aren't familiar with adding doc blocks, we'll help you work through it in the comments of your PR.
+
+The API docs will be updated whenever a new NPM module version is published. No files within `docs/` should be committed in any branch other than gh-pages.
+
+## Branch Naming & Pull Requests
+
+Internally, we try to use the following branch naming scheme to keep things organized:
+
+* **feature/feature-name**: New features & enhancements (optionally, "feature/feature-name-[Github Issue/PR #]")
+* **bug/bug-name-[Github Issue #]**: Bug fixes: these should always have a corresponding [GH issue](https://github.com/kadamwhite/wordpress-rest-api/issues).
+* **refactor/feature-name**: Architectural changes, refactoring
+* **build/feature-name**: Features relating to the build process, Gruntfile, linting or testing process, NPM package, *etcetera*
+* **docs/feature-name**: Documentation, README, contributing guide, fleshing out inline doc blocks; anything in the repository that's authored to be human-readable
+
+It is not essential to maintain this naming structure in your own branches, though it is preferred; the important thing is that pull requests *not* be submitted from your master branch.
+
+## License
+
+All code contributed to this repository will be licensed under (and should be compatible with) the [MIT license](http://opensource.org/licenses/MIT). 
