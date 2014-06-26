@@ -30,9 +30,7 @@ describe( 'wp.taxonomies', function() {
 
 		it( 'should intitialize instance properties', function() {
 			var taxonomies = new TaxonomiesRequest();
-			expect( taxonomies._action ).to.be.null;
-			expect( taxonomies._actionId ).to.be.null;
-			expect( taxonomies._id ).to.be.null;
+			expect( taxonomies._path.values ).to.deep.equal({});
 			var _supportedMethods = taxonomies._supportedMethods.sort().join( '|' );
 			expect( _supportedMethods ).to.equal( 'get|head' );
 		});
@@ -72,17 +70,17 @@ describe( 'wp.taxonomies', function() {
 		});
 
 		it( 'should create the URL for retrieving a specific taxonomy', function() {
-			var url = taxonomies.id( 'my-tax' )._renderURI();
+			var url = taxonomies.taxonomy( 'my-tax' )._renderURI();
 			expect( url ).to.equal( '/wp-json/taxonomies/my-tax' );
 		});
 
 		it( 'should create the URL for retrieving all terms for a specific taxonomy', function() {
-			var url = taxonomies.id( 'my-tax' ).terms()._renderURI();
+			var url = taxonomies.taxonomy( 'my-tax' ).terms()._renderURI();
 			expect( url ).to.equal( '/wp-json/taxonomies/my-tax/terms' );
 		});
 
 		it( 'should create the URL for retrieving a specific taxonomy term', function() {
-			var url = taxonomies.id( 'my-tax' ).terms().id( 1337 )._renderURI();
+			var url = taxonomies.taxonomy( 'my-tax' ).terms().term( 1337 )._renderURI();
 			expect( url ).to.equal( '/wp-json/taxonomies/my-tax/terms/1337' );
 		});
 
