@@ -30,7 +30,7 @@ describe( 'wp.users', function() {
 
 		it( 'should intitialize instance properties', function() {
 			var users = new UsersRequest();
-			expect( users._id ).to.be.null;
+			expect( users._path.values ).to.deep.equal({});
 			var _supportedMethods = users._supportedMethods.sort().join( '|' );
 			expect( _supportedMethods ).to.equal( 'get|head|post' );
 		});
@@ -71,12 +71,16 @@ describe( 'wp.users', function() {
 
 		it( 'should create the URL for retrieving the current user', function() {
 			var url = users.me()._renderURI();
+			var _supportedMethods = users._supportedMethods.sort().join( '|' );
 			expect( url ).to.equal( '/wp-json/users/me' );
+			expect( _supportedMethods ).to.equal( 'get|head' );
 		});
 
 		it( 'should create the URL for retrieving a specific user by ID', function() {
 			var url = users.id( 1337 )._renderURI();
+			var _supportedMethods = users._supportedMethods.sort().join( '|' );
 			expect( url ).to.equal( '/wp-json/users/1337' );
+			expect( _supportedMethods ).to.equal( 'delete|get|head|patch|post|put' );
 		});
 
 	});
