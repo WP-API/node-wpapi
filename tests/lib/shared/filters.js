@@ -256,14 +256,14 @@ describe( 'CollectionFilters', function() {
 
 	});
 
-	describe( '_queryStr()', function() {
+	describe( '_renderQuery()', function() {
 
 		it( 'properly parses taxonomy filters', function() {
 			request._taxonomyFilters = {
 				tag: [ 'clouds ', 'islands' ],
 				custom_tax: [ 7 ]
 			};
-			var query = request._queryStr();
+			var query = request._renderQuery();
 			// Filters should be in alpha order, to support caching requests
 			expect( query ).to
 				.equal( '?filter%5Bcustom_tax%5D=7&filter%5Btag%5D=clouds%2Bislands' );
@@ -273,7 +273,7 @@ describe( 'CollectionFilters', function() {
 			request._taxonomyFilters = {
 				tag: [ 'Diamond-Dust' ]
 			};
-			var query = request._queryStr();
+			var query = request._renderQuery();
 			expect( query ).to.equal( '?filter%5Btag%5D=diamond-dust' );
 		});
 
@@ -281,7 +281,7 @@ describe( 'CollectionFilters', function() {
 			request._filters = {
 				post_status: 'publish', s: 'Some search string'
 			};
-			var query = request._queryStr();
+			var query = request._renderQuery();
 			expect( query ).to
 				.equal( '?filter%5Bpost_status%5D=publish&filter%5Bs%5D=Some%20search%20string' );
 		});
@@ -293,7 +293,7 @@ describe( 'CollectionFilters', function() {
 			request._filters = {
 				name: 'some-slug'
 			};
-			var query = request._queryStr();
+			var query = request._renderQuery();
 			// Filters should be in alpha order, to support caching requests
 			expect( query ).to.equal( '?filter%5Bcat%5D=7%2B10&filter%5Bname%5D=some-slug' );
 		});
