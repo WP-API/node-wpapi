@@ -53,7 +53,7 @@ describe( 'wp.users', function() {
 
 	});
 
-	describe( 'prototype.generateRequestUri', function() {
+	describe( 'prototype._renderURI', function() {
 
 		var users;
 
@@ -65,17 +65,17 @@ describe( 'wp.users', function() {
 		});
 
 		it( 'should create the URL for retrieving all users', function() {
-			var url = users.generateRequestUri();
+			var url = users._renderURI();
 			expect( url ).to.equal( '/wp-json/users' );
 		});
 
 		it( 'should create the URL for retrieving the current user', function() {
-			var url = users.me().generateRequestUri();
+			var url = users.me()._renderURI();
 			expect( url ).to.equal( '/wp-json/users/me' );
 		});
 
 		it( 'should create the URL for retrieving a specific user by ID', function() {
-			var url = users.id( 1337 ).generateRequestUri();
+			var url = users.id( 1337 )._renderURI();
 			expect( url ).to.equal( '/wp-json/users/1337' );
 		});
 

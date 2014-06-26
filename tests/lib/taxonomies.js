@@ -55,7 +55,7 @@ describe( 'wp.taxonomies', function() {
 
 	});
 
-	describe( 'prototype.generateRequestUri', function() {
+	describe( 'prototype._renderURI', function() {
 
 		var taxonomies;
 
@@ -67,22 +67,22 @@ describe( 'wp.taxonomies', function() {
 		});
 
 		it( 'should create the URL for retrieving all taxonomies', function() {
-			var url = taxonomies.generateRequestUri();
+			var url = taxonomies._renderURI();
 			expect( url ).to.equal( '/wp-json/taxonomies' );
 		});
 
 		it( 'should create the URL for retrieving a specific taxonomy', function() {
-			var url = taxonomies.id( 'my-tax' ).generateRequestUri();
+			var url = taxonomies.id( 'my-tax' )._renderURI();
 			expect( url ).to.equal( '/wp-json/taxonomies/my-tax' );
 		});
 
 		it( 'should create the URL for retrieving all terms for a specific taxonomy', function() {
-			var url = taxonomies.id( 'my-tax' ).terms().generateRequestUri();
+			var url = taxonomies.id( 'my-tax' ).terms()._renderURI();
 			expect( url ).to.equal( '/wp-json/taxonomies/my-tax/terms' );
 		});
 
 		it( 'should create the URL for retrieving a specific taxonomy term', function() {
-			var url = taxonomies.id( 'my-tax' ).terms().id( 1337 ).generateRequestUri();
+			var url = taxonomies.id( 'my-tax' ).terms().id( 1337 )._renderURI();
 			expect( url ).to.equal( '/wp-json/taxonomies/my-tax/terms/1337' );
 		});
 
