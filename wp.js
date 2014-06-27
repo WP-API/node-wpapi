@@ -1,3 +1,4 @@
+'use strict';
 /**
  * A WP REST API client for Node.js
  *
@@ -14,9 +15,9 @@
  * @beta
  })
  */
-const extend = require( 'node.extend' );
+var extend = require( 'node.extend' );
 
-const defaults = {
+var defaults = {
 	username: '',
 	password: ''
 };

@@ -9,6 +9,7 @@
 	"noarg": true,
 	"onevar": true,
 	"quotmark": "single",
+	"strict": true,
 	"trailing": true,
 	"undef": true,
 	"unused": true,

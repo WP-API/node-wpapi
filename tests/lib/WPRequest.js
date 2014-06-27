@@ -1,10 +1,11 @@
-const chai = require( 'chai' );
-const expect = chai.expect;
+'use strict';
+var chai = require( 'chai' );
+var expect = chai.expect;
 chai.use( require( 'sinon-chai' ) );
-const sinon = require( 'sinon' );
-const sandbox = require( 'sandboxed-module' );
+var sinon = require( 'sinon' );
+var sandbox = require( 'sandboxed-module' );
 
-const WPRequest = require( '../../lib/WPRequest' );
+var WPRequest = require( '../../lib/WPRequest' );
 
 describe( 'WPRequest', function() {
 

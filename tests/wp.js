@@ -1,6 +1,7 @@
-const expect = require( 'chai' ).expect;
+'use strict';
+var expect = require( 'chai' ).expect;
 
-const WP = require( '../' );
+var WP = require( '../' );
 
 describe( 'wp', function() {
 

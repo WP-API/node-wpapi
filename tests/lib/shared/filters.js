@@ -1,12 +1,13 @@
+'use strict';
 /*jshint -W106 */// Disable underscore_case warnings in this file b/c WP uses them
-const chai = require( 'chai' );
-const expect = chai.expect;
-const sinon = require( 'sinon' );
+var chai = require( 'chai' );
+var expect = chai.expect;
+var sinon = require( 'sinon' );
 chai.use( require( 'sinon-chai' ) );
-// const sandbox = require( 'sandboxed-module' );
+// var sandbox = require( 'sandboxed-module' );
 
-const extend = require( 'node.extend' );
-const filters = require( '../../../lib/shared/filters' );
+var extend = require( 'node.extend' );
+var filters = require( '../../../lib/shared/filters' );
 
 describe( 'CollectionFilters', function() {
 

@@ -1,4 +1,4 @@
-const extend = require( 'node.extend' );
+var extend = require( 'node.extend' );
 module.exports = function( grunt ) {
 	'use strict';
 
