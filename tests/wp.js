@@ -46,4 +46,34 @@ describe( 'wp', function() {
 
 	});
 
+	describe( 'endpoint accessors', function() {
+
+		var site;
+
+		beforeEach(function() {
+			site = new WP({ endpoint: 'endpoint/url' });
+		});
+
+		it( 'defines a posts endpoint handler', function() {
+			var posts = site.posts();
+			expect( posts instanceof require('../lib/posts' ) ).to.be.true;
+		});
+
+		it( 'defines a taxonomies endpoint handler', function() {
+			var posts = site.taxonomies();
+			expect( posts instanceof require('../lib/taxonomies' ) ).to.be.true;
+		});
+
+		it( 'defines a types endpoint handler', function() {
+			var posts = site.types();
+			expect( posts instanceof require('../lib/types' ) ).to.be.true;
+		});
+
+		it( 'defines a users endpoint handler', function() {
+			var posts = site.users();
+			expect( posts instanceof require('../lib/users' ) ).to.be.true;
+		});
+
+	});
+
 });

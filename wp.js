@@ -96,6 +96,18 @@ WP.prototype.taxonomies = function( options ) {
 };
 
 /**
+ * @method types
+ * @param {Object} [options] An options hash for a new TypesRequest
+ * @return {TypesRequest} A TypesRequest instance
+ */
+WP.prototype.types = function( options ) {
+	var TypesRequest = require( './lib/types' );
+	options = options || {};
+	options = extend( options, this._options );
+	return new TypesRequest( options );
+};
+
+/**
  * @method users
  * @param {Object} [options] An options hash for a new UsersRequest
  * @return {UsersRequest} A UsersRequest instance
