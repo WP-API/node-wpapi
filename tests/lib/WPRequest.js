@@ -107,20 +107,32 @@ describe( 'WPRequest', function() {
 			it( 'should invoke GET and pass the results to the provided callback', function() {
 				mockAgent._response = { body: 'data' };
 				var get = sinon.spy( wpRequest, 'get' );
+				var success = sinon.stub();
+				var failure = sinon.stub();
+				var promise = wpRequest.then( success, failure );
 
-				return wpRequest.then(function( data ) {
+				expect( promise ).to.have.property( 'then' );
+				expect( promise.then ).to.be.a( 'function' );
+
+				return promise.then(function() {
 					expect( get ).to.have.been.calledWith();
-					expect( data ).to.equal( 'data' );
+					expect( success ).to.have.been.calledWith( 'data' );
+					expect( failure ).not.to.have.been.called;
 				});
 			});
 
 			it( 'should call the failure callback if GET fails', function() {
 				mockAgent._err = 'Something went wrong';
 				var success = sinon.stub();
-				success.throws( new Error( 'success handler should not have been called' ) );
+				var failure = sinon.stub();
+				var promise = wpRequest.then( success, failure );
 
-				return wpRequest.then( success, function failure( err ) {
-					expect( err ).to.equal( 'Something went wrong' );
+				expect( promise ).to.have.property( 'then' );
+				expect( promise.then ).to.be.a( 'function' );
+
+				return promise.then(function() {
+					expect( failure ).to.have.been.calledWith( 'Something went wrong' );
+					expect( success ).not.to.have.been.called;
 				});
 			});
 
