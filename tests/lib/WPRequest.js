@@ -29,6 +29,8 @@ describe( 'WPRequest', function() {
 			var request = new WPRequest();
 			var _supportedMethods = request._supportedMethods.sort().join( '|' );
 			expect( _supportedMethods ).to.equal( 'delete|get|head|patch|post|put' );
+			expect( request._path ).to.deep.equal({});
+			expect( request._template ).to.equal( '' );
 		});
 
 	});

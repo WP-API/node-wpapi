@@ -31,7 +31,7 @@ describe( 'wp.users', function() {
 
 		it( 'should intitialize instance properties', function() {
 			var users = new UsersRequest();
-			expect( users._path.values ).to.deep.equal({});
+			expect( users._path ).to.deep.equal({});
 			var _supportedMethods = users._supportedMethods.sort().join( '|' );
 			expect( _supportedMethods ).to.equal( 'get|head|post' );
 		});
@@ -50,6 +50,17 @@ describe( 'wp.users', function() {
 
 			// [ 0 ][ 1 ]: Call #1, Argument #2 should be our request mock
 			expect( utilInherits.args[ 0 ][ 1 ] ).to.equal( 'WPRequestMock' );
+		});
+
+	});
+
+	describe( '_pathValidators', function() {
+
+		it( 'has a validator for the "id" property', function() {
+			var users = new UsersRequest();
+			expect( users._pathValidators ).to.deep.equal({
+				id: /(^\d+$|^me$)/
+			});
 		});
 
 	});

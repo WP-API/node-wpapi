@@ -33,8 +33,8 @@ describe( 'wp.posts', function() {
 			var posts = new PostsRequest();
 			expect( posts._filters ).to.deep.equal({});
 			expect( posts._taxonomyFilters ).to.deep.equal({});
-			expect( posts._path.template ).to.equal( 'posts(/:id)(/:action)(/:actionId)' );
-			expect( posts._path.values ).to.deep.equal({});
+			expect( posts._path ).to.deep.equal({});
+			expect( posts._template ).to.equal( 'posts(/:id)(/:action)(/:actionId)' );
 			var _supportedMethods = posts._supportedMethods.sort().join( '|' );
 			expect( _supportedMethods ).to.equal( 'get|head|post' );
 		});
@@ -83,27 +83,11 @@ describe( 'wp.posts', function() {
 
 	});
 
-	describe( '_path', function() {
-		var path;
-
-		beforeEach(function() {
-			path = new PostsRequest()._path;
-		});
-
-		it( 'is defined', function() {
-			expect( path ).to.be.defined;
-		});
-
-		it( 'has a path template', function() {
-			expect( path.template ).to.equal( 'posts(/:id)(/:action)(/:actionId)' );
-		});
-
-	});
-
 	describe( '_pathValidators', function() {
 
-		it( 'has validators for path properties', function() {
-			expect( PostsRequest.prototype._pathValidators ).to.deep.equal({
+		it( 'defines validators for id and action', function() {
+			var posts = new PostsRequest();
+			expect( posts._pathValidators ).to.deep.equal({
 				id: /^\d+$/,
 				action: /(meta|comments|revisions)/
 			});
@@ -134,12 +118,12 @@ describe( 'wp.posts', function() {
 
 		it( 'throws an error if an invalid ID is specified', function() {
 			expect(function numberPassesValidation() {
-				posts._path.values = { id: 8 };
+				posts._path = { id: 8 };
 				posts._renderPath();
 			}).not.to.throw();
 
 			expect(function stringFailsValidation() {
-				posts._path.values = { id: 'wombat' };
+				posts._path = { id: 'wombat' };
 				posts._renderPath();
 			}).to.throw();
 		});
@@ -160,7 +144,7 @@ describe( 'wp.posts', function() {
 		});
 
 		it( 'should restrict template changes to a single instance', function() {
-			posts._path.template = 'path/with/post/nr/:id';
+			posts._template = 'path/with/post/nr/:id';
 			var newPosts = new PostsRequest();
 			newPosts._options.endpoint = 'endpoint/url/';
 			var path = newPosts.id( 3 )._renderURI();

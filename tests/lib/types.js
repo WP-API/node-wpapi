@@ -32,7 +32,8 @@ describe( 'wp.types', function() {
 		it( 'should intitialize instance properties', function() {
 			var types = new TypesRequest();
 			var _supportedMethods = types._supportedMethods.sort().join( '|' );
-			expect( types._path.values ).to.deep.equal({});
+			expect( types._path ).to.deep.equal({});
+			expect( types._template ).to.equal( 'posts/types(/:type)' );
 			expect( _supportedMethods ).to.equal( 'get|head' );
 		});
 
@@ -50,23 +51,6 @@ describe( 'wp.types', function() {
 
 			// [ 0 ][ 1 ]: Call #1, Argument #2 should be our request mock
 			expect( utilInherits.args[ 0 ][ 1 ] ).to.equal( 'WPRequestMock' );
-		});
-
-	});
-
-	describe( '_path', function() {
-		var path;
-
-		beforeEach(function() {
-			path = new TypesRequest()._path;
-		});
-
-		it( 'is defined', function() {
-			expect( path ).to.be.defined;
-		});
-
-		it( 'has a path template', function() {
-			expect( path.template ).to.equal( 'posts/types(/:type)' );
 		});
 
 	});

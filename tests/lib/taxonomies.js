@@ -32,7 +32,8 @@ describe( 'wp.taxonomies', function() {
 		it( 'should intitialize instance properties', function() {
 			var taxonomies = new TaxonomiesRequest();
 			var _supportedMethods = taxonomies._supportedMethods.sort().join( '|' );
-			expect( taxonomies._path.values ).to.deep.equal({});
+			expect( taxonomies._path ).to.deep.equal({});
+			expect( taxonomies._template ).to.equal( 'taxonomies(/:taxonomy)(/:action)(/:term)' );
 			expect( _supportedMethods ).to.equal( 'get|head' );
 		});
 
@@ -54,28 +55,11 @@ describe( 'wp.taxonomies', function() {
 
 	});
 
-	describe( '_path', function() {
-
-		var path;
-
-		beforeEach(function() {
-			path = new TaxonomiesRequest()._path;
-		});
-
-		it( 'is defined', function() {
-			expect( path ).to.be.defined;
-		});
-
-		it( 'has a path template', function() {
-			expect( path.template ).to.equal( 'taxonomies(/:taxonomy)(/:action)(/:term)' );
-		});
-
-	});
-
 	describe( '_pathValidators', function() {
 
 		it( 'has a validator for the "action" property', function() {
-			expect( TaxonomiesRequest.prototype._pathValidators ).to.deep.equal({
+			var taxonomies = new TaxonomiesRequest();
+			expect( taxonomies._pathValidators ).to.deep.equal({
 				action: /terms/
 			});
 		});
@@ -108,8 +92,8 @@ describe( 'wp.taxonomies', function() {
 			expect( url ).to.equal( '/wp-json/taxonomies/my-tax/terms' );
 		});
 
-		it( 'should error if any _path.values.action other than "terms" is set', function() {
-			taxonomies._path.values.action = 'something',
+		it( 'should error if any _path.action other than "terms" is set', function() {
+			taxonomies._path.action = 'something',
 			expect(function actionMustBeTerms() {
 				taxonomies._renderURI();
 			}).to.throw();
