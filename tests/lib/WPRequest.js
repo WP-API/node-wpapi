@@ -95,7 +95,10 @@ describe( 'WPRequest', function() {
 
 			it( 'should return a Promise to the request data', function() {
 				mockAgent._response = { body: 'data' };
-				return wpRequest.get().then(function( data ) {
+				var promise = wpRequest.get();
+				expect( promise ).to.have.property( 'then' );
+				expect( promise.then ).to.be.a( 'function' );
+				return promise.then(function( data ) {
 					expect( data ).to.equal( 'data' );
 				});
 			});
@@ -174,7 +177,10 @@ describe( 'WPRequest', function() {
 			it( 'should return a Promise to the request response', function() {
 				mockAgent._response = { body: 'resp' };
 				var data = { some: 'data' };
-				return wpRequest.post( data ).then(function( resp ) {
+				var promise = wpRequest.post( data );
+				expect( promise ).to.have.property( 'then' );
+				expect( promise.then ).to.be.a( 'function' );
+				return promise.then(function( resp ) {
 					expect( resp ).to.equal( 'resp' );
 				});
 			});
@@ -217,7 +223,10 @@ describe( 'WPRequest', function() {
 			it( 'should return a Promise to the request data', function() {
 				mockAgent._response = { body: 'resp' };
 				var data = { some: 'data' };
-				return wpRequest.put( data ).then(function( resp ) {
+				var promise = wpRequest.put( data );
+				expect( promise ).to.have.property( 'then' );
+				expect( promise.then ).to.be.a( 'function' );
+				return promise.then(function( resp ) {
 					expect( resp ).to.equal( 'resp' );
 				});
 			});
@@ -254,7 +263,10 @@ describe( 'WPRequest', function() {
 
 			it( 'should return a Promise to the body of the request data', function() {
 				mockAgent._response = { body: 'resp' };
-				return wpRequest.delete().then(function( resp ) {
+				var promise = wpRequest.delete();
+				expect( promise ).to.have.property( 'then' );
+				expect( promise.then ).to.be.a( 'function' );
+				return promise.then(function( resp ) {
 					expect( resp ).to.equal( 'resp' );
 				});
 			});
@@ -286,7 +298,10 @@ describe( 'WPRequest', function() {
 
 			it( 'should return a Promise to the headers from the response', function() {
 				mockAgent._response = { headers: 'resp' };
-				return wpRequest.head().then(function( resp ) {
+				var promise = wpRequest.head();
+				expect( promise ).to.have.property( 'then' );
+				expect( promise.then ).to.be.a( 'function' );
+				return promise.then(function( resp ) {
 					expect( resp ).to.equal( 'resp' );
 				});
 			});
