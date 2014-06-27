@@ -82,7 +82,31 @@ describe( 'wp.posts', function() {
 
 	});
 
-	describe( 'prototype._renderURI', function() {
+	describe( '_path', function() {
+		var path;
+
+		beforeEach(function() {
+			path = new PostsRequest()._path;
+		});
+
+		it( 'is defined', function() {
+			expect( path ).to.be.defined;
+		});
+
+		it( 'has a path template', function() {
+			expect( path.template ).to.equal( 'posts(/:id)(/:action)(/:actionId)' );
+		});
+
+		it( 'sets validators for path properties', function() {
+			expect( path.validators ).to.deep.equal({
+				id: /^\d+$/,
+				action: /(meta|comments|revisions)/
+			});
+		});
+
+	});
+
+	describe( 'URL Generation', function() {
 
 		var posts;
 
@@ -111,6 +135,11 @@ describe( 'wp.posts', function() {
 				'/wp-json/posts/1337/comments/9001' );
 		});
 
+		it( 'should create the URL for retrieving the revisions for a specific post', function() {
+			expect( posts.id( 1337 ).revisions()._renderURI() ).to.equal(
+				'/wp-json/posts/1337/revisions' );
+		});
+
 	});
 
 	describe( 'path generation', function() {
@@ -118,15 +147,6 @@ describe( 'wp.posts', function() {
 
 		beforeEach(function() {
 			posts = new PostsRequest();
-		});
-
-		it( 'renders out a path based on posts._path.template', function() {
-			posts._path.values.id = 7;
-			expect( posts._renderPath() ).to.equal( 'posts/7' );
-			posts._path.values.action = 'comments';
-			expect( posts._renderPath() ).to.equal( 'posts/7/comments' );
-			posts._path.values.actionId = 812;
-			expect( posts._renderPath() ).to.equal( 'posts/7/comments/812' );
 		});
 
 		it( 'correctly enforces path parameter validators', function() {

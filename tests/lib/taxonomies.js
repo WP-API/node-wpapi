@@ -30,8 +30,8 @@ describe( 'wp.taxonomies', function() {
 
 		it( 'should intitialize instance properties', function() {
 			var taxonomies = new TaxonomiesRequest();
-			expect( taxonomies._path.values ).to.deep.equal({});
 			var _supportedMethods = taxonomies._supportedMethods.sort().join( '|' );
+			expect( taxonomies._path.values ).to.deep.equal({});
 			expect( _supportedMethods ).to.equal( 'get|head' );
 		});
 
@@ -53,7 +53,30 @@ describe( 'wp.taxonomies', function() {
 
 	});
 
-	describe( 'prototype._renderURI', function() {
+	describe( '_path', function() {
+		var path;
+
+		beforeEach(function() {
+			path = new TaxonomiesRequest()._path;
+		});
+
+		it( 'is defined', function() {
+			expect( path ).to.be.defined;
+		});
+
+		it( 'has a path template', function() {
+			expect( path.template ).to.equal( 'taxonomies(/:taxonomy)(/:action)(/:term)' );
+		});
+
+		it( 'sets a validator for the "action" property', function() {
+			expect( path.validators ).to.deep.equal({
+				action: /terms/
+			});
+		});
+
+	});
+
+	describe( 'URL Generation', function() {
 
 		var taxonomies;
 
@@ -77,6 +100,13 @@ describe( 'wp.taxonomies', function() {
 		it( 'should create the URL for retrieving all terms for a specific taxonomy', function() {
 			var url = taxonomies.taxonomy( 'my-tax' ).terms()._renderURI();
 			expect( url ).to.equal( '/wp-json/taxonomies/my-tax/terms' );
+		});
+
+		it( 'should error if any _path.values.action other than "terms" is set', function() {
+			taxonomies._path.values.action = 'something',
+			expect(function actionMustBeTerms() {
+				taxonomies._renderURI();
+			}).to.throw();
 		});
 
 		it( 'should create the URL for retrieving a specific taxonomy term', function() {
