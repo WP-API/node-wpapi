@@ -55,6 +55,7 @@ describe( 'wp.taxonomies', function() {
 	});
 
 	describe( '_path', function() {
+
 		var path;
 
 		beforeEach(function() {
@@ -69,8 +70,12 @@ describe( 'wp.taxonomies', function() {
 			expect( path.template ).to.equal( 'taxonomies(/:taxonomy)(/:action)(/:term)' );
 		});
 
-		it( 'sets a validator for the "action" property', function() {
-			expect( path.validators ).to.deep.equal({
+	});
+
+	describe( '_pathValidators', function() {
+
+		it( 'has a validator for the "action" property', function() {
+			expect( TaxonomiesRequest.prototype._pathValidators ).to.deep.equal({
 				action: /terms/
 			});
 		});

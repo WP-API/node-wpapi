@@ -98,8 +98,12 @@ describe( 'wp.posts', function() {
 			expect( path.template ).to.equal( 'posts(/:id)(/:action)(/:actionId)' );
 		});
 
-		it( 'sets validators for path properties', function() {
-			expect( path.validators ).to.deep.equal({
+	});
+
+	describe( '_pathValidators', function() {
+
+		it( 'has validators for path properties', function() {
+			expect( PostsRequest.prototype._pathValidators ).to.deep.equal({
 				id: /^\d+$/,
 				action: /(meta|comments|revisions)/
 			});
@@ -128,6 +132,18 @@ describe( 'wp.posts', function() {
 			expect( path ).to.equal( '/wp-json/posts/1337' );
 		});
 
+		it( 'throws an error if an invalid ID is specified', function() {
+			expect(function numberPassesValidation() {
+				posts._path.values = { id: 8 };
+				posts._renderPath();
+			}).not.to.throw();
+
+			expect(function stringFailsValidation() {
+				posts._path.values = { id: 'wombat' };
+				posts._renderPath();
+			}).to.throw();
+		});
+
 		it( 'should create the URL for retrieving all comments for a specific post', function() {
 			var path = posts.id( 1337 ).comments()._renderURI();
 			expect( path ).to.equal( '/wp-json/posts/1337/comments' );
@@ -143,26 +159,12 @@ describe( 'wp.posts', function() {
 			expect( path ).to.equal( '/wp-json/posts/1337/revisions' );
 		});
 
-	});
-
-	describe( 'path generation', function() {
-		var posts;
-
-		beforeEach(function() {
-			posts = new PostsRequest();
-		});
-
-		it( 'correctly enforces path parameter validators', function() {
-			posts._path.template = 'posts/:id';
-			posts._path.validators = { id: /^\d+/ };
-			expect(function numberPassesValidation() {
-				posts._path.values = { id: 8 };
-				posts._renderPath();
-			}).not.to.throw();
-			expect(function stringFailsValidation() {
-				posts._path.values = { id: 'wombat' };
-				posts._renderPath();
-			}).to.throw();
+		it( 'should restrict template changes to a single instance', function() {
+			posts._path.template = 'path/with/post/nr/:id';
+			var newPosts = new PostsRequest();
+			newPosts._options.endpoint = 'endpoint/url/';
+			var path = newPosts.id( 3 )._renderURI();
+			expect( path ).to.equal( 'endpoint/url/posts/3' );
 		});
 
 	});
