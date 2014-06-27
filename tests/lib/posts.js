@@ -119,26 +119,28 @@ describe( 'wp.posts', function() {
 		});
 
 		it( 'should create the URL for retrieving all posts', function() {
-			expect( posts._renderURI() ).to.equal( '/wp-json/posts' );
+			var path = posts._renderURI();
+			expect( path ).to.equal( '/wp-json/posts' );
 		});
 
 		it( 'should create the URL for retrieving a specific post', function() {
-			expect( posts.id( 1337 )._renderURI() ).to.equal( '/wp-json/posts/1337' );
+			var path = posts.id( 1337 )._renderURI();
+			expect( path ).to.equal( '/wp-json/posts/1337' );
 		});
 
 		it( 'should create the URL for retrieving all comments for a specific post', function() {
-			expect( posts.id( 1337 ).comments()._renderURI() ).to.equal(
-				'/wp-json/posts/1337/comments' );
+			var path = posts.id( 1337 ).comments()._renderURI();
+			expect( path ).to.equal( '/wp-json/posts/1337/comments' );
 		});
 
 		it( 'should create the URL for retrieving a specific comment', function() {
-			expect( posts.id( 1337 ).comments().id( 9001 )._renderURI() ).to.equal(
-				'/wp-json/posts/1337/comments/9001' );
+			var path = posts.id( 1337 ).comments().id( 9001 )._renderURI();
+			expect( path ).to.equal( '/wp-json/posts/1337/comments/9001' );
 		});
 
 		it( 'should create the URL for retrieving the revisions for a specific post', function() {
-			expect( posts.id( 1337 ).revisions()._renderURI() ).to.equal(
-				'/wp-json/posts/1337/revisions' );
+			var path = posts.id( 1337 ).revisions()._renderURI();
+			expect( path ).to.equal( '/wp-json/posts/1337/revisions' );
 		});
 
 	});
