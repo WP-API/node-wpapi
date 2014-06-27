@@ -15,7 +15,7 @@ MockAgent.prototype = {
 	set: function() { return this; },
 	end: function( cb ) {
 		cb = cb || noop;
-		cb( null, this._response || {} );
+		cb( this._err || null, this._response || {} );
 	}
 };
 

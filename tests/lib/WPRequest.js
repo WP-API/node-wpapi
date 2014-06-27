@@ -99,10 +99,27 @@ describe( 'WPRequest', function() {
 				});
 			});
 
-			it( 'should be invoked automatically by .then()', function() {
+		});
+
+		describe( '.then()', function() {
+
+			it( 'should invoke GET and pass the results to the provided callback', function() {
 				mockAgent._response = { body: 'data' };
+				var get = sinon.spy( wpRequest, 'get' );
+
 				return wpRequest.then(function( data ) {
+					expect( get ).to.have.been.calledWith();
 					expect( data ).to.equal( 'data' );
+				});
+			});
+
+			it( 'should call the failure callback if GET fails', function() {
+				mockAgent._err = 'Something went wrong';
+				var success = sinon.stub();
+				success.throws( new Error( 'success handler should not have been called' ) );
+
+				return wpRequest.then( success, function failure( err ) {
+					expect( err ).to.equal( 'Something went wrong' );
 				});
 			});
 
