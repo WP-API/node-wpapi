@@ -65,6 +65,34 @@ describe( 'wp.users', function() {
 
 	});
 
+	describe( '.me()', function() {
+
+		it( 'sets the path to users/me', function() {
+			var users = new UsersRequest();
+			users._options = {
+				endpoint: 'url/endpoint'
+			};
+			users.me();
+			expect( users._path ).to.have.property( 'id' );
+			expect( users._path.id ).to.equal( 'me' );
+		});
+
+	});
+
+	describe( '.id()', function() {
+
+		it( 'sets the path ID to the passed-in value', function() {
+			var users = new UsersRequest();
+			users._options = {
+				endpoint: 'url/endpoint'
+			};
+			users.id( 2501 );
+			expect( users._path ).to.have.property( 'id' );
+			expect( users._path.id ).to.equal( 2501 );
+		});
+
+	});
+
 	describe( 'prototype._renderURI', function() {
 
 		var users;
