@@ -85,10 +85,9 @@ describe( 'wp.pages', function() {
 
 	describe( '_pathValidators', function() {
 
-		it( 'defines validators for id, action, and commentId', function() {
+		it( 'defines validators for action and commentId', function() {
 			var pages = new PagesRequest();
 			expect( pages._pathValidators ).to.deep.equal({
-				id: /^\d+$/,
 				action: /(comments|revisions)/,
 				commentId: /^\d+$/
 			});
@@ -115,26 +114,34 @@ describe( 'wp.pages', function() {
 			expect( path ).to.equal( 'endpoint/url/pages/3' );
 		});
 
-		it( 'should create the URL for retrieving all pages', function() {
-			var path = pages._renderURI();
-			expect( path ).to.equal( '/wp-json/pages' );
+		describe( 'page collections', function() {
+
+			it( 'should create the URL for retrieving all pages', function() {
+				var path = pages._renderURI();
+				expect( path ).to.equal( '/wp-json/pages' );
+			});
+
+			it( 'should provide filtering methods', function() {
+				expect( pages ).to.have.property( 'filter' );
+				expect( pages.filter ).to.be.a( 'function' );
+				var path = pages.filter('name', 'some-slug')._renderURI();
+				expect( path ).to.equal( '/wp-json/pages?filter%5Bname%5D=some-slug' );
+			});
+
 		});
 
-		it( 'should create the URL for retrieving a specific post', function() {
-			var path = pages.id( 1337 )._renderURI();
-			expect( path ).to.equal( '/wp-json/pages/1337' );
-		});
+		describe( 'page resources', function() {
 
-		it( 'throws an error if an invalid ID is specified', function() {
-			expect(function numberPassesValidation() {
-				pages._path = { id: 8 };
-				pages._renderPath();
-			}).not.to.throw();
+			it( 'should create the URL for retrieving a specific post', function() {
+				var path = pages.id( 1337 )._renderURI();
+				expect( path ).to.equal( '/wp-json/pages/1337' );
+			});
 
-			expect(function stringFailsValidation() {
-				pages._path = { id: 'wombat' };
-				pages._renderPath();
-			}).to.throw();
+			it( 'should create the URL for retrieving a post by path', function() {
+				var path = pages.path( 'some/nested/page' )._renderURI();
+				expect( path ).to.equal( '/wp-json/pages/some/nested/page' );
+			});
+
 		});
 
 		describe( 'comments', function() {
