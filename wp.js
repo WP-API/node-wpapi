@@ -72,6 +72,18 @@ WP.site = function( endpoint ) {
 };
 
 /**
+ * @method pages
+ * @param {Object} [options] An options hash for a new PagesRequest
+ * @return {PagesRequest} A PagesRequest instance
+ */
+WP.prototype.pages = function( options ) {
+	var PagesRequest = require( './lib/pages' );
+	options = options || {};
+	options = extend( options, this._options );
+	return new PagesRequest( options );
+};
+
+/**
  * @method posts
  * @param {Object} [options] An options hash for a new PostsRequest
  * @return {PostsRequest} A PostsRequest instance

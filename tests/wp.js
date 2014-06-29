@@ -54,6 +54,11 @@ describe( 'wp', function() {
 			site = new WP({ endpoint: 'endpoint/url' });
 		});
 
+		it( 'defines a pages endpoint handler', function() {
+			var posts = site.pages();
+			expect( posts instanceof require('../lib/pages' ) ).to.be.true;
+		});
+
 		it( 'defines a posts endpoint handler', function() {
 			var posts = site.posts();
 			expect( posts instanceof require('../lib/posts' ) ).to.be.true;
