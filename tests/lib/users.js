@@ -120,7 +120,7 @@ describe( 'wp.users', function() {
 			var url = users.id( 1337 )._renderURI();
 			var _supportedMethods = users._supportedMethods.sort().join( '|' );
 			expect( url ).to.equal( '/wp-json/users/1337' );
-			expect( _supportedMethods ).to.equal( 'delete|get|head|patch|post|put' );
+			expect( _supportedMethods ).to.equal( 'delete|get|head|post|put' );
 		});
 
 	});
