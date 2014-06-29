@@ -134,8 +134,13 @@ describe( 'wp.posts', function() {
 		});
 
 		it( 'should create the URL for retrieving a specific comment', function() {
-			var path = posts.id( 1337 ).comments().id( 9001 )._renderURI();
+			var path = posts.id( 1337 ).comments().comment( 9001 )._renderURI();
 			expect( path ).to.equal( '/wp-json/posts/1337/comments/9001' );
+		});
+
+		it( 'should force the "comments" action when comment() is called', function() {
+			var path = posts.id( 2501 ).comment( 9 )._renderURI();
+			expect( path ).to.equal( '/wp-json/posts/2501/comments/9' );
 		});
 
 		it( 'should create the URL for retrieving the revisions for a specific post', function() {
