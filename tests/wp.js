@@ -9,6 +9,7 @@ var PostsRequest = require( '../lib/posts' );
 var TaxonomiesRequest = require( '../lib/taxonomies' );
 var TypesRequest = require( '../lib/types' );
 var UsersRequest = require( '../lib/users' );
+var CollectionRequest = require( '../lib/shared/collection-request' );
 var WPRequest = require( '../lib/shared/wp-request' );
 
 describe( 'wp', function() {
@@ -131,6 +132,53 @@ describe( 'wp', function() {
 			expect( request._options.endpoint ).to.equal( 'http://new-endpoint.com/' );
 			expect( request._options ).to.have.property( 'identifier' );
 			expect( request._options.identifier ).to.equal( 'some unique value' );
+		});
+
+	});
+
+	describe( '.root()', function() {
+
+		it( 'is defined', function() {
+			expect( site ).to.have.property( 'root' );
+			expect( site.root ).to.be.a( 'function' );
+		});
+
+		it( 'creates a get request against the root endpoint', function() {
+			site._options.endpoint = 'http://my.site.com/wp-json/';
+			var request = site.root();
+			expect( request._renderURI() ).to.equal( 'http://my.site.com/wp-json/' );
+		});
+
+		it( 'takes a "path" property to query a root-relative path', function() {
+			site._options.endpoint = 'http://my.site.com/wp-json/';
+			var request = site.root( 'custom/endpoint' );
+			expect( request._renderURI() ).to.equal( 'http://my.site.com/wp-json/custom/endpoint' );
+		});
+
+		it( 'creates a basic WPRequest if "collection" is unspecified or "false"', function() {
+			var pathRequest = site.root( 'some/relative/root' );
+			expect( pathRequest._template ).to.equal( 'some/relative/root' );
+			expect( pathRequest instanceof WPRequest ).to.be.true;
+			expect( pathRequest instanceof CollectionRequest ).to.be.false;
+		});
+
+		it( 'creates a CollectionRequest object if "collection" is "true"', function() {
+			var pathRequest = site.root( 'some/collection/endpoint', true );
+			expect( pathRequest._template ).to.equal( 'some/collection/endpoint' );
+			expect( pathRequest instanceof WPRequest ).to.be.true;
+			expect( pathRequest instanceof CollectionRequest ).to.be.true;
+		});
+
+		it( 'inherits options from the parent WP instance', function() {
+			var wp = new WP({
+				endpoint: 'http://cat.website.com/',
+				customOption: 'best method ever'
+			});
+			var request = wp.root( 'custom-path' );
+			expect( request._options ).to.have.property( 'endpoint' );
+			expect( request._options.endpoint ).to.equal( 'http://cat.website.com/' );
+			expect( request._options ).to.have.property( 'customOption' );
+			expect( request._options.customOption ).to.equal( 'best method ever' );
 		});
 
 	});

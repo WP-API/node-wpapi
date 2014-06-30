@@ -28,6 +28,7 @@ var PostsRequest = require( './lib/posts' );
 var TaxonomiesRequest = require( './lib/taxonomies' );
 var TypesRequest = require( './lib/types' );
 var UsersRequest = require( './lib/users' );
+var CollectionRequest = require( './lib/shared/collection-request' );
 var WPRequest = require( './lib/shared/wp-request' );
 
 /**
@@ -194,6 +195,28 @@ WP.prototype.url = function( url ) {
 		endpoint: url
 	});
 	return new WPRequest( options );
+};
+
+/**
+ * Generate a query against an arbitrary path on the current endpoint. This is useful for
+ * requesting resources at custom WP-API endpoints, such as WooCommerce's `/products`.
+ *
+ * @method root
+ * @param {String} [relativePath] An endpoint-relative path to which to bind the request
+ * @param {Boolean} [collection] Whether to return a CollectionRequest or a vanilla WPRequest
+ * @return {CollectionRequest|WPRequest} A request object
+ */
+WP.prototype.root = function( relativePath, collection ) {
+	relativePath = relativePath || '';
+	collection = collection || false;
+	var options = extend( {}, this._options );
+	// Request should be
+	var request = collection ? new CollectionRequest( options ) : new WPRequest( options );
+
+	// Set the path template to the string passed in
+	request._template = relativePath;
+
+	return request;
 };
 
 module.exports = WP;
