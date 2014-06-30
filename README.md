@@ -58,8 +58,9 @@ A WP instance object provides the following basic request methods:
 * `wp.pages()...`: Start a request for the `/pages` endpoints
 * `wp.users()...`: Get resources within the `/users` endpoints
 * `wp.types()...`: Get Post Type collections and objects from the `/posts/types` endpoints
+* `wp.media()...`: Get Media collections and objects from the `/media` endpoints
 
-All of these methods return a customizable request object. The request object can be further refined with chaining methods, and/or sent to the server via `.get()`, `.post()`, `.put()`, `.delete()`, `.head()`, or `.then()`.
+All of these methods return a customizable request object. The request object can be further refined with chaining methods, and/or sent to the server via `.get()`, `.post()`, `.put()`, `.delete()`, `.head()`, or `.then()`. (Not all endpoints support all methods; for example, you cannot POST or PUT records on `/posts/types`, as these are defined in WordPress plugin or theme code.)
 
 Additional querying methods provided, by endpoint:
 
@@ -89,6 +90,9 @@ Additional querying methods provided, by endpoint:
     - `wp.users()`: get a collection of registered users
     - `wp.users().me()`: get the authenticated user record
     - `wp.users().id( n )`: get the user with ID *n*
+* **media**
+    - `wp.media()`: get a collection of media objects (attachments)
+    - `wp.media().id( n )`: get media object with ID *n*
 
 For security reasons, methods like `.revisions()` and `.users()` require the request to be authenticated.
 
