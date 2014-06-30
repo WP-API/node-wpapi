@@ -65,9 +65,10 @@ function WP( options ) {
  * Convenience method for making a new WP instance
  *
  * @example
- *    // These are equivalent:
- *    var wp = WP.site( 'http://my.blog.url/wp-json' );
- *    var wp = new WP({ endpoint: 'http://my.blog.url/wp-json' });
+ * These are equivalent:
+ *
+ *     var wp = new WP({ endpoint: 'http://my.blog.url/wp-json' });
+ *     var wp = WP.site( 'http://my.blog.url/wp-json' );
  *
  * @method site
  * @static
@@ -79,6 +80,8 @@ WP.site = function( endpoint ) {
 };
 
 /**
+ * Start a request against the `/pages` endpoint
+ *
  * @method pages
  * @param {Object} [options] An options hash for a new PagesRequest
  * @return {PagesRequest} A PagesRequest instance
@@ -90,6 +93,8 @@ WP.prototype.pages = function( options ) {
 };
 
 /**
+ * Start a request against the `/posts` endpoint
+ *
  * @method posts
  * @param {Object} [options] An options hash for a new PostsRequest
  * @return {PostsRequest} A PostsRequest instance
@@ -101,6 +106,8 @@ WP.prototype.posts = function( options ) {
 };
 
 /**
+ * Start a request against the `taxonomies` endpoint
+ *
  * @method taxonomies
  * @param {Object} [options] An options hash for a new TaxonomiesRequest
  * @return {TaxonomiesRequest} A TaxonomiesRequest instance
@@ -112,6 +119,8 @@ WP.prototype.taxonomies = function( options ) {
 };
 
 /**
+ * Start a request against the `/posts/types` endpoint
+ *
  * @method types
  * @param {Object} [options] An options hash for a new TypesRequest
  * @return {TypesRequest} A TypesRequest instance
@@ -123,6 +132,8 @@ WP.prototype.types = function( options ) {
 };
 
 /**
+ * Start a request against the `/users` endpoint
+ *
  * @method users
  * @param {Object} [options] An options hash for a new UsersRequest
  * @return {UsersRequest} A UsersRequest instance
@@ -134,6 +145,24 @@ WP.prototype.users = function( options ) {
 };
 
 /**
+ * Define a method to handle specific custom post types.
+ *
+ * @example
+ * If your site had an events custom type with name `event_cpt`, you could create a convenience
+ * method for querying events and store it on the WP instance.
+ *
+ * Create the WP instance, define the custom endpoint handler, and save it to `wp.events`:
+ *
+ *     var wp = new WP({ endpoint: 'http://some-website.com/wp-json' });
+ *     wp.events = wp.registerType( 'event_cpt' );
+ *
+ * You can now call `wp.events()` to trigger event post requests
+ *
+ *     wp.events().get()... // equivalent to wp.posts().type( 'event_cpt' ).get()...
+ *
+ * `registerType()` just returns a function, so there's no requirement to store it as a property
+ * on the WP instance; however, following the above pattern is likely to be the most useful.
+ *
  * @method registerType
  * @param {String|Array} type A string or array of post type names
  * @return {Function} A function to create PostsRequests pre-bound to the provided types
