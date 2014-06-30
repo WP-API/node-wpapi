@@ -87,6 +87,19 @@ describe( 'wp', function() {
 			expect( request._params.type ).to.deep.equal([ 'cpt1', 'cpt2', 'posts' ]);
 		});
 
+		it( 'inherits options from the parent WP instance', function() {
+			var wp = new WP({
+				endpoint: 'http://website.com',
+				custom: 'option value'
+			});
+			var requestMethod = wp.registerType( 'cat_breeds' );
+			var request = requestMethod();
+			expect( request._options ).to.have.property( 'endpoint' );
+			expect( request._options.endpoint ).to.equal( 'http://website.com/' );
+			expect( request._options ).to.have.property( 'custom' );
+			expect( request._options.custom ).to.equal( 'option value' );
+		});
+
 	});
 
 	describe( '.url()', function() {
@@ -106,6 +119,18 @@ describe( 'wp', function() {
 			var request = site.url( 'http://some.url.com/wp-json?filter[name]=some-slug' );
 			var path = request._renderURI();
 			expect( path ).to.equal( 'http://some.url.com/wp-json?filter[name]=some-slug' );
+		});
+
+		it( 'inherits non-endpoint options from the parent WP instance', function() {
+			var wp = new WP({
+				endpoint: 'http://website.com/',
+				identifier: 'some unique value'
+			});
+			var request = wp.url( 'http://new-endpoint.com/' );
+			expect( request._options ).to.have.property( 'endpoint' );
+			expect( request._options.endpoint ).to.equal( 'http://new-endpoint.com/' );
+			expect( request._options ).to.have.property( 'identifier' );
+			expect( request._options.identifier ).to.equal( 'some unique value' );
 		});
 
 	});

@@ -169,8 +169,9 @@ WP.prototype.users = function( options ) {
  * @return {Function} A function to create PostsRequests pre-bound to the provided types
  */
 WP.prototype.registerType = function( type ) {
+	var options = extend( {}, this._options );
 	return function() {
-		return new PostsRequest().type( type );
+		return new PostsRequest( options ).type( type );
 	};
 };
 
@@ -189,9 +190,10 @@ WP.prototype.registerType = function( type ) {
  * @return {WPRequest} A WPRequest object bound to the provided URL
  */
 WP.prototype.url = function( url ) {
-	return new WPRequest({
+	var options = extend( {}, this._options, {
 		endpoint: url
 	});
+	return new WPRequest( options );
 };
 
 module.exports = WP;
