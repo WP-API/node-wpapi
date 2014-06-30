@@ -3,7 +3,20 @@ var expect = require( 'chai' ).expect;
 
 var WP = require( '../' );
 
+// Other constructors, for use with instanceof checks
+var PagesRequest = require( '../lib/pages' );
+var PostsRequest = require( '../lib/posts' );
+var TaxonomiesRequest = require( '../lib/taxonomies' );
+var TypesRequest = require( '../lib/types' );
+var UsersRequest = require( '../lib/users' );
+
 describe( 'wp', function() {
+
+	var site;
+
+	beforeEach(function() {
+		site = new WP({ endpoint: 'endpoint/url' });
+	});
 
 	describe( 'constructor', function() {
 
@@ -46,37 +59,60 @@ describe( 'wp', function() {
 
 	});
 
-	describe( 'endpoint accessors', function() {
+	describe( '.registerType()', function() {
 
-		var site;
-
-		beforeEach(function() {
-			site = new WP({ endpoint: 'endpoint/url' });
+		it( 'is defined', function() {
+			expect( site ).to.have.property( 'registerType' );
+			expect( site.registerType ).to.be.a( 'function' );
 		});
+
+		it( 'returns a function that creates new PostsRequest instances', function() {
+			var requestMethod = site.registerType( 'some_cpt' );
+			expect( requestMethod ).to.be.a( 'function' );
+			var request = requestMethod();
+			expect( request instanceof PostsRequest ).to.be.true;
+		});
+
+		it( 'binds the returned PostsRequest to the provided post type(s)', function() {
+			var requestMethod = site.registerType( 'cpt_name' );
+			var request = requestMethod();
+			expect( request ).to.have.property( '_params' );
+			expect( request._params ).to.have.property( 'type' );
+			expect( request._params.type ).to.equal( 'cpt_name' );
+
+			// Try with multiple post types
+			var postsAndCPTs = site.registerType([ 'cpt1', 'cpt2', 'posts' ]);
+			request = postsAndCPTs();
+			expect( request._params.type ).to.deep.equal([ 'cpt1', 'cpt2', 'posts' ]);
+		});
+
+	});
+
+	describe( 'endpoint accessors', function() {
 
 		it( 'defines a pages endpoint handler', function() {
 			var posts = site.pages();
-			expect( posts instanceof require('../lib/pages' ) ).to.be.true;
+			expect( posts instanceof PagesRequest ).to.be.true;
 		});
 
 		it( 'defines a posts endpoint handler', function() {
 			var posts = site.posts();
-			expect( posts instanceof require('../lib/posts' ) ).to.be.true;
+			expect( posts instanceof PostsRequest ).to.be.true;
 		});
 
 		it( 'defines a taxonomies endpoint handler', function() {
 			var posts = site.taxonomies();
-			expect( posts instanceof require('../lib/taxonomies' ) ).to.be.true;
+			expect( posts instanceof TaxonomiesRequest ).to.be.true;
 		});
 
 		it( 'defines a types endpoint handler', function() {
 			var posts = site.types();
-			expect( posts instanceof require('../lib/types' ) ).to.be.true;
+			expect( posts instanceof TypesRequest ).to.be.true;
 		});
 
 		it( 'defines a users endpoint handler', function() {
 			var posts = site.users();
-			expect( posts instanceof require('../lib/users' ) ).to.be.true;
+			expect( posts instanceof UsersRequest ).to.be.true;
 		});
 
 	});

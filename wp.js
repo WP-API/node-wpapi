@@ -22,6 +22,13 @@ var defaults = {
 	password: ''
 };
 
+// Pull in request module constructors
+var PagesRequest = require( './lib/pages' );
+var PostsRequest = require( './lib/posts' );
+var TaxonomiesRequest = require( './lib/taxonomies' );
+var TypesRequest = require( './lib/types' );
+var UserRequest = require( './lib/users' );
+
 /**
  * The base constructor for the WP API service
  *
@@ -77,7 +84,6 @@ WP.site = function( endpoint ) {
  * @return {PagesRequest} A PagesRequest instance
  */
 WP.prototype.pages = function( options ) {
-	var PagesRequest = require( './lib/pages' );
 	options = options || {};
 	options = extend( options, this._options );
 	return new PagesRequest( options );
@@ -89,10 +95,9 @@ WP.prototype.pages = function( options ) {
  * @return {PostsRequest} A PostsRequest instance
  */
 WP.prototype.posts = function( options ) {
-	var PostRequest = require( './lib/posts' );
 	options = options || {};
 	options = extend( options, this._options );
-	return new PostRequest( options );
+	return new PostsRequest( options );
 };
 
 /**
@@ -101,10 +106,9 @@ WP.prototype.posts = function( options ) {
  * @return {TaxonomiesRequest} A TaxonomiesRequest instance
  */
 WP.prototype.taxonomies = function( options ) {
-	var TaxonomyRequest = require( './lib/taxonomies' );
 	options = options || {};
 	options = extend( options, this._options );
-	return new TaxonomyRequest( options );
+	return new TaxonomiesRequest( options );
 };
 
 /**
@@ -113,7 +117,6 @@ WP.prototype.taxonomies = function( options ) {
  * @return {TypesRequest} A TypesRequest instance
  */
 WP.prototype.types = function( options ) {
-	var TypesRequest = require( './lib/types' );
 	options = options || {};
 	options = extend( options, this._options );
 	return new TypesRequest( options );
@@ -125,10 +128,20 @@ WP.prototype.types = function( options ) {
  * @return {UsersRequest} A UsersRequest instance
  */
 WP.prototype.users = function( options ) {
-	var UserRequest = require( './lib/users' );
 	options = options || {};
 	options = extend( options, this._options );
 	return new UserRequest( options );
+};
+
+/**
+ * @method registerType
+ * @param {String|Array} type A string or array of post type names
+ * @return {Function} A function to create PostsRequests pre-bound to the provided types
+ */
+WP.prototype.registerType = function( type ) {
+	return function() {
+		return new PostsRequest().type( type );
+	};
 };
 
 module.exports = WP;
