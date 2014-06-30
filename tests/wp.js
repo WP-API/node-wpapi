@@ -4,6 +4,7 @@ var expect = require( 'chai' ).expect;
 var WP = require( '../' );
 
 // Other constructors, for use with instanceof checks
+var MediaRequest = require( '../lib/media' );
 var PagesRequest = require( '../lib/pages' );
 var PostsRequest = require( '../lib/posts' );
 var TaxonomiesRequest = require( '../lib/taxonomies' );
@@ -184,6 +185,11 @@ describe( 'wp', function() {
 	});
 
 	describe( 'endpoint accessors', function() {
+
+		it( 'defines a media endpoint handler', function() {
+			var media = site.media();
+			expect( media instanceof MediaRequest ).to.be.true;
+		});
 
 		it( 'defines a pages endpoint handler', function() {
 			var posts = site.pages();

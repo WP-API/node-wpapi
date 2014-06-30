@@ -23,6 +23,7 @@ var defaults = {
 };
 
 // Pull in request module constructors
+var MediaRequest = require( './lib/media' );
 var PagesRequest = require( './lib/pages' );
 var PostsRequest = require( './lib/posts' );
 var TaxonomiesRequest = require( './lib/taxonomies' );
@@ -79,6 +80,19 @@ function WP( options ) {
  */
 WP.site = function( endpoint ) {
 	return new WP({ endpoint: endpoint });
+};
+
+/**
+ * Start a request against the `/media` endpoint
+ *
+ * @method media
+ * @param {Object} [options] An options hash for a new MediaRequest
+ * @return {MediaRequest} A MediaRequest instance
+ */
+WP.prototype.media = function( options ) {
+	options = options || {};
+	options = extend( options, this._options );
+	return new MediaRequest( options );
 };
 
 /**
