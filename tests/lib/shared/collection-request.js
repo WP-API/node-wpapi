@@ -14,6 +14,7 @@ describe( 'CollectionRequest', function() {
 
 	beforeEach(function() {
 		request = new CollectionRequest();
+		request._options.endpoint = '/';
 	});
 
 	describe( 'constructor', function() {
@@ -87,6 +88,29 @@ describe( 'CollectionRequest', function() {
 			expect( request._params.type ).to.deep.equal( [ 'page', 'post' ] );
 			request.param( 'type', [ 'page', 'cpt_item' ], true );
 			expect( request._params.type ).to.deep.equal( [ 'cpt_item', 'page', 'post' ] );
+		});
+
+	});
+
+	describe( 'parameter convenience methods', function() {
+
+		describe( 'page', function() {
+
+			it( 'should be defined', function() {
+				expect( request ).to.have.property( 'page' );
+			});
+
+			it( 'should set the "page" parameter', function() {
+				request.page( 2 );
+				expect( request._params ).to.have.property( 'page' );
+				expect( request._params.page ).to.equal( 2 );
+			});
+
+			it( 'should map to the "page=N" query parameter', function() {
+				var path = request.page( 71 )._renderURI();
+				expect( path ).to.equal( '/?page=71' );
+			});
+
 		});
 
 	});
