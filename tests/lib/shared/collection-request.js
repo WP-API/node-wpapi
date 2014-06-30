@@ -101,6 +101,12 @@ describe( 'CollectionRequest', function() {
 				expect( request.page ).to.be.a( 'function' );
 			});
 
+			it( 'wraps .param()', function() {
+				sinon.stub( request, 'param' );
+				request.page( 9 );
+				expect( request.param ).to.have.been.calledWith( 'page', 9 );
+			});
+
 			it( 'should set the "page" parameter', function() {
 				request.page( 2 );
 				expect( request._params ).to.have.property( 'page' );
@@ -124,6 +130,12 @@ describe( 'CollectionRequest', function() {
 			it( 'should be defined', function() {
 				expect( request ).to.have.property( 'context' );
 				expect( request.context ).to.be.a( 'function' );
+			});
+
+			it( 'wraps .param()', function() {
+				sinon.stub( request, 'param' );
+				request.context( 'view' );
+				expect( request.param ).to.have.been.calledWith( 'context', 'view' );
 			});
 
 			it( 'should set the "context" parameter', function() {
