@@ -121,6 +121,18 @@ describe( 'wp.pages', function() {
 				expect( path ).to.equal( '/wp-json/pages/some/nested/page' );
 			});
 
+			it( 'should update the supported methods when setting ID', function() {
+				pages.id( 8 );
+				var _supportedMethods = pages._supportedMethods.sort().join( '|' );
+				expect( _supportedMethods ).to.equal( 'delete|get|head|post|put' );
+			});
+
+			it( 'should update the supported methods when setting Path', function() {
+				pages.path( 'page/path' );
+				var _supportedMethods = pages._supportedMethods.sort().join( '|' );
+				expect( _supportedMethods ).to.equal( 'delete|get|head|post|put' );
+			});
+
 		});
 
 		describe( 'comments', function() {

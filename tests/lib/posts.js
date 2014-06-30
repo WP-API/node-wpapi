@@ -102,6 +102,12 @@ describe( 'wp.posts', function() {
 			expect( posts._path.id ).to.equal( 4 );
 		});
 
+		it( 'should update the supported methods when setting ID', function() {
+			posts.id( 8 );
+			var _supportedMethods = posts._supportedMethods.sort().join( '|' );
+			expect( _supportedMethods ).to.equal( 'delete|get|head|post|put' );
+		});
+
 		it( 'provides a method to query for comments', function() {
 			expect( posts ).to.have.property( 'comments' );
 			expect( posts.comments ).to.be.a( 'function' );
