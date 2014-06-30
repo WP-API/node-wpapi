@@ -34,7 +34,9 @@ describe( 'wp.taxonomies', function() {
 
 		it( 'should intitialize instance properties', function() {
 			var _supportedMethods = taxonomies._supportedMethods.sort().join( '|' );
+			expect( taxonomies._filters ).to.deep.equal( {} );
 			expect( taxonomies._path ).to.deep.equal( {} );
+			expect( taxonomies._params ).to.deep.equal( {} );
 			expect( taxonomies._template ).to.equal( 'taxonomies(/:taxonomy)(/:action)(/:term)' );
 			expect( _supportedMethods ).to.equal( 'get|head' );
 		});

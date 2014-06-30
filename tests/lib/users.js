@@ -31,7 +31,9 @@ describe( 'wp.users', function() {
 		});
 
 		it( 'should intitialize instance properties', function() {
+			expect( users._filters ).to.deep.equal( {} );
 			expect( users._path ).to.deep.equal( {} );
+			expect( users._params ).to.deep.equal( {} );
 			var _supportedMethods = users._supportedMethods.sort().join( '|' );
 			expect( _supportedMethods ).to.equal( 'get|head|post' );
 		});
