@@ -98,6 +98,7 @@ describe( 'CollectionRequest', function() {
 
 			it( 'should be defined', function() {
 				expect( request ).to.have.property( 'page' );
+				expect( request.page ).to.be.a( 'function' );
 			});
 
 			it( 'should set the "page" parameter', function() {
@@ -109,6 +110,43 @@ describe( 'CollectionRequest', function() {
 			it( 'should map to the "page=N" query parameter', function() {
 				var path = request.page( 71 )._renderURI();
 				expect( path ).to.equal( '/?page=71' );
+			});
+
+			it( 'should replace values when called multiple times', function() {
+				var path = request.page( 71 ).page( 2 )._renderURI();
+				expect( path ).to.equal( '/?page=2' );
+			});
+
+		});
+
+		describe( 'context', function() {
+
+			it( 'should be defined', function() {
+				expect( request ).to.have.property( 'context' );
+				expect( request.context ).to.be.a( 'function' );
+			});
+
+			it( 'should set the "context" parameter', function() {
+				request.context( 'edit' );
+				expect( request._params ).to.have.property( 'context' );
+				expect( request._params.context ).to.equal( 'edit' );
+			});
+
+			it( 'should map to the "context=VALUE" query parameter', function() {
+				var path = request.context( 'edit' ).renderURI();
+				expect( path ).to.equal( '/?context=edit' );
+			});
+
+			it( 'should replace values when called multiple times', function() {
+				var path = request.context( 'edit' ).context( 'view' )._renderURI();
+				expect( path ).to.equal( '/?context=view' );
+			});
+
+			it( 'should provide a .edit() shortcut for .context( "edit" )', function() {
+				sinon.spy( request, 'context' );
+				request.edit();
+				expect( request.context ).to.have.been.calledWith( 'edit' );
+				expect( request._renderURI() ).to.equal( '/?context=edit' );
 			});
 
 		});
