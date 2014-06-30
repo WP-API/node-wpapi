@@ -5,19 +5,24 @@ chai.use( require( 'sinon-chai' ) );
 var sinon = require( 'sinon' );
 var sandbox = require( 'sandboxed-module' );
 
-var WPRequest = require( '../../lib/WPRequest' );
+var WPRequest = require( '../../../lib/shared/wp-request' );
 
 describe( 'WPRequest', function() {
+
+	var request;
+
+	beforeEach(function() {
+		request = new WPRequest();
+	});
 
 	describe( 'constructor', function() {
 
 		it( 'should create a WPRequest instance', function() {
-			var request = new WPRequest();
 			expect( request instanceof WPRequest ).to.be.true;
 		});
 
 		it( 'should set any passed-in options', function() {
-			var request = new WPRequest({
+			request = new WPRequest({
 				booleanProp: true,
 				strProp: 'Some string'
 			});
@@ -26,10 +31,9 @@ describe( 'WPRequest', function() {
 		});
 
 		it( 'should define a _supportedMethods array', function() {
-			var request = new WPRequest();
 			var _supportedMethods = request._supportedMethods.sort().join( '|' );
 			expect( _supportedMethods ).to.equal( 'delete|get|head|post|put' );
-			expect( request._path ).to.deep.equal({});
+			expect( request._path ).to.deep.equal( {} );
 			expect( request._template ).to.equal( '' );
 		});
 
@@ -38,16 +42,14 @@ describe( 'WPRequest', function() {
 	describe( '_checkMethodSupport', function() {
 
 		it( 'should return true when called with a supported method', function() {
-			var query = new WPRequest();
-			expect( query._checkMethodSupport( 'get' ) ).to.equal( true );
+			expect( request._checkMethodSupport( 'get' ) ).to.equal( true );
 		});
 
 		it( 'should throw an error when called with an unsupported method', function() {
-			var query = new WPRequest();
-			query._supportedMethods = [ 'get' ];
+			request._supportedMethods = [ 'get' ];
 
 			expect(function() {
-				return query._checkMethodSupport( 'post' );
+				return request._checkMethodSupport( 'post' );
 			}).to.throw();
 		});
 
@@ -55,14 +57,14 @@ describe( 'WPRequest', function() {
 
 	describe( 'request methods', function() {
 
-		var MockAgent = require( '../mocks/mock-superagent' );
+		var MockAgent = require( '../../mocks/mock-superagent' );
 		var mockAgent;
 		var SandboxedRequest;
 		var wpRequest;
 
 		beforeEach(function() {
 			mockAgent = new MockAgent();
-			SandboxedRequest = sandbox.require( '../../lib/WPRequest', {
+			SandboxedRequest = sandbox.require( '../../../lib/shared/wp-request', {
 				requires: {
 					'superagent': mockAgent
 				}

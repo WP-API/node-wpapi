@@ -4,22 +4,91 @@ var chai = require( 'chai' );
 var expect = chai.expect;
 var sinon = require( 'sinon' );
 chai.use( require( 'sinon-chai' ) );
-// var sandbox = require( 'sandboxed-module' );
 
-var extend = require( 'node.extend' );
-var filters = require( '../../../lib/shared/filters' );
+var CollectionRequest = require( '../../../lib/shared/collection-request' );
+var WPRequest = require( '../../../lib/shared/wp-request' );
 
-describe( 'CollectionFilters', function() {
+describe( 'CollectionRequest', function() {
 
 	var request;
 
 	beforeEach(function() {
-		function Endpoint() {
-			this._filters = {};
-			this._taxonomyFilters = {};
-		}
-		extend( Endpoint.prototype, filters.mixins );
-		request = new Endpoint();
+		request = new CollectionRequest();
+	});
+
+	describe( 'constructor', function() {
+
+		it( 'should create a CollectionRequest instance', function() {
+			expect( request instanceof CollectionRequest ).to.be.true;
+		});
+
+		it( 'should inherit from WPRequest', function() {
+			expect( request instanceof WPRequest ).to.be.true;
+		});
+
+		it( 'should intitialize instance properties', function() {
+			var _supportedMethods = request._supportedMethods.sort().join( '|' );
+			expect( _supportedMethods ).to.equal( 'delete|get|head|post|put' );
+			expect( request._filters ).to.deep.equal( {} );
+			expect( request._taxonomyFilters ).to.deep.equal( {} );
+			expect( request._params ).to.deep.equal( {} );
+			expect( request._path ).to.deep.equal( {} );
+			expect( request._template ).to.equal( '' );
+		});
+
+		it( 'initializes requests with a _params dictionary', function() {
+			expect( request ).to.have.property( '_params' );
+			expect( request._params ).to.deep.equal( {} );
+		});
+
+	});
+
+	describe( 'param()', function() {
+
+		it( 'method exists', function() {
+			expect( request ).to.have.property( 'param' );
+			expect( request.param ).to.be.a( 'function' );
+		});
+
+		it( 'will set a query parameter value', function() {
+			request.param( 'key', 'value' );
+			expect( request._params ).to.have.property( 'key' );
+			expect( request._params.key ).to.equal( 'value' );
+		});
+
+		it( 'should set the internal _params hash', function() {
+			request.param( 'type', 'some_cpt' );
+			expect( request._params ).to.have.property( 'type' );
+			expect( request._params.type ).to.equal( 'some_cpt' );
+			request.param( 'context', 'edit' );
+			expect( request._params ).to.have.property( 'context' );
+			expect( request._params.context ).to.equal( 'edit' );
+		});
+
+		it( 'should set parameters by passing a hash object', function() {
+			request.param({
+				page: 309,
+				context: 'view'
+			});
+			expect( request._params ).to.have.property( 'page' );
+			expect( request._params.page ).to.equal( 309 );
+			expect( request._params ).to.have.property( 'context' );
+			expect( request._params.context ).to.equal( 'view' );
+		});
+
+		it( 'should merge provided values if merge is set to true', function() {
+			request.param( 'type', 'post' );
+			request.param( 'type', 'page', true );
+			expect( request._params.type ).to.deep.equal( [ 'page', 'post' ] );
+		});
+
+		it( 'should merge, de-dupe & sort array values', function() {
+			request.param( 'type', [ 'post', 'page', 'post' ] );
+			expect( request._params.type ).to.deep.equal( [ 'page', 'post' ] );
+			request.param( 'type', [ 'page', 'cpt_item' ], true );
+			expect( request._params.type ).to.deep.equal( [ 'cpt_item', 'page', 'post' ] );
+		});
+
 	});
 
 	describe( 'filter()', function() {

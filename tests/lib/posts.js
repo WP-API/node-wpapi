@@ -1,22 +1,26 @@
 'use strict';
-var chai = require( 'chai' );
-var expect = chai.expect;
-var sinon = require( 'sinon' );
-var sandbox = require( 'sandboxed-module' );
+var expect = require( 'chai' ).expect;
 
 var PostsRequest = require( '../../lib/posts' );
+var CollectionRequest = require( '../../lib/shared/collection-request' );
+var WPRequest = require( '../../lib/shared/wp-request' );
 
 describe( 'wp.posts', function() {
 
 	describe( 'constructor', function() {
 
+		var posts;
+
+		beforeEach(function() {
+			posts = new PostsRequest();
+		});
+
 		it( 'should create a PostsRequest instance', function() {
-			var query1 = new PostsRequest();
-			expect( query1 instanceof PostsRequest ).to.be.true;
+			expect( posts instanceof PostsRequest ).to.be.true;
 		});
 
 		it( 'should set any passed-in options', function() {
-			var posts = new PostsRequest({
+			posts = new PostsRequest({
 				booleanProp: true,
 				strProp: 'Some string'
 			});
@@ -25,60 +29,34 @@ describe( 'wp.posts', function() {
 		});
 
 		it( 'should default _options to {}', function() {
-			var posts = new PostsRequest();
 			expect( posts._options ).to.deep.equal( {} );
 		});
 
 		it( 'should intitialize instance properties', function() {
-			var posts = new PostsRequest();
-			expect( posts._filters ).to.deep.equal({});
-			expect( posts._taxonomyFilters ).to.deep.equal({});
-			expect( posts._path ).to.deep.equal({});
+			expect( posts._filters ).to.deep.equal( {} );
+			expect( posts._taxonomyFilters ).to.deep.equal( {} );
+			expect( posts._path ).to.deep.equal( {} );
 			expect( posts._template ).to.equal( 'posts(/:id)(/:action)(/:actionId)' );
 			var _supportedMethods = posts._supportedMethods.sort().join( '|' );
 			expect( _supportedMethods ).to.equal( 'get|head|post' );
 		});
 
-		it( 'should inherit PostsRequest from WPRequest using util.inherits', function() {
-			var utilInherits = sinon.spy();
-			sandbox.load( '../../lib/posts', {
-				requires: {
-					'./WPRequest': 'WPRequestMock',
-					'./shared/filters': { mixins: {} },
-					'util': {
-						inherits: utilInherits
-					}
-				}
-			});
-
-			// [ 0 ][ 1 ]: Call #1, Argument #2 should be our request mock
-			expect( utilInherits.args[ 0 ][ 1 ] ).to.equal( 'WPRequestMock' );
+		it( 'should inherit PostsRequest from CollectionRequest', function() {
+			expect( posts instanceof CollectionRequest ).to.be.true;
+			expect( posts instanceof WPRequest ).to.be.true;
 		});
 
-		it( 'should extend PostsRequest.prototype with filter methods', function() {
-			var mockFilterMixins = {
-				filter: 'methods',
-				getInstanceProp: function() {
-					return this._id;
-				}
-			};
-			var extend = sinon.spy( require( 'node.extend' ) );
-			var SandboxedPostsRequest = sandbox.require( '../../lib/posts', {
-				requires: {
-					// './WPRequest': 'WPRequestMock',
-					'./shared/filters': {
-						mixins: mockFilterMixins
-					},
-					'node.extend': extend
-				}
-			});
-			var posts = new SandboxedPostsRequest();
-			posts._id = 7;
-
-			expect( posts.filter ).to.equal( 'methods' );
-			expect( posts.getInstanceProp() ).to.equal( 7 );
-			// [ 0 ][ 1 ]: Call #1, Argument #2 should be the mixins property from the filter mock
-			expect( extend.args[ 0 ][ 1 ] ).to.deep.equal( mockFilterMixins );
+		it( 'should inherit prototype methods from both ancestors', function() {
+			// Spot-check from CollectionRequest:
+			expect( posts ).to.have.property( 'filter' );
+			expect( posts.filter ).to.be.a( 'function' );
+			expect( posts ).to.have.property( 'param' );
+			expect( posts.param ).to.be.a( 'function' );
+			// From WPRequest:
+			expect( posts ).to.have.property( 'get' );
+			expect( posts.get ).to.be.a( 'function' );
+			expect( posts ).to.have.property( '_renderURI' );
+			expect( posts._renderURI ).to.be.a( 'function' );
 		});
 
 	});
@@ -91,6 +69,73 @@ describe( 'wp.posts', function() {
 				id: /^\d+$/,
 				action: /(meta|comments|revisions)/
 			});
+		});
+
+	});
+
+	describe( 'query methods', function() {
+
+		var posts;
+
+		beforeEach(function() {
+			posts = new PostsRequest();
+			posts._options = {
+				endpoint: '/wp-json/'
+			};
+		});
+
+		it( 'provides a method to set the ID', function() {
+			expect( posts ).to.have.property( 'id' );
+			expect( posts.id ).to.be.a( 'function' );
+			posts.id( 314159 );
+			expect( posts._path ).to.have.property( 'id' );
+			expect( posts._path.id ).to.equal( 314159 );
+		});
+
+		it( 'parses ID parameters into integers', function() {
+			expect( posts ).to.have.property( 'id' );
+			expect( posts.id ).to.be.a( 'function' );
+			posts.id( '8' );
+			expect( posts._path ).to.have.property( 'id' );
+			expect( posts._path.id ).to.equal( 8 );
+			posts.id( 4.019 );
+			expect( posts._path.id ).to.equal( 4 );
+		});
+
+		it( 'provides a method to query for comments', function() {
+			expect( posts ).to.have.property( 'comments' );
+			expect( posts.comments ).to.be.a( 'function' );
+			posts.comments();
+			expect( posts._path ).to.have.property( 'action' );
+			expect( posts._path.action ).to.equal( 'comments' );
+		});
+
+		it( 'provides a method to query by type', function() {
+			expect( posts ).to.have.property( 'type' );
+			expect( posts.type ).to.be.a( 'function' );
+			posts.type( 'some_cpt' );
+			expect( posts._params ).to.have.property( 'type' );
+			expect( posts._params.type ).to.deep.equal('some_cpt');
+
+			var uri = posts._renderURI();
+			expect( uri ).to.equal( '/wp-json/posts?type=some_cpt' );
+		});
+
+		it( 'merges the values provided in successive calls to type', function() {
+			posts.type( 'cpt1' ).type( 'cpt2' );
+			expect( posts._params.type ).to.deep.equal([
+				'cpt1',
+				'cpt2'
+			]);
+			posts.type([ 'page' ]);
+			expect( posts._params.type ).to.deep.equal([
+				'cpt1',
+				'cpt2',
+				'page'
+			]);
+
+			var uri = '/wp-json/posts?type%5B%5D=cpt1&type%5B%5D=cpt2&type%5B%5D=page';
+			expect( posts._renderURI() ).to.equal( uri );
 		});
 
 	});

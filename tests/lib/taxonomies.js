@@ -1,18 +1,22 @@
 'use strict';
-var chai = require( 'chai' );
-var expect = chai.expect;
-var sinon = require( 'sinon' );
-var sandbox = require( 'sandboxed-module' );
+var expect = require( 'chai' ).expect;
 
 var TaxonomiesRequest = require( '../../lib/taxonomies' );
+var CollectionRequest = require( '../../lib/shared/collection-request' );
+var WPRequest = require( '../../lib/shared/wp-request' );
 
 describe( 'wp.taxonomies', function() {
 
 	describe( 'constructor', function() {
 
+		var taxonomies;
+
+		beforeEach(function() {
+			taxonomies = new TaxonomiesRequest();
+		});
+
 		it( 'should create a TaxonomiesRequest instance', function() {
-			var query1 = new TaxonomiesRequest();
-			expect( query1 instanceof TaxonomiesRequest ).to.be.true;
+			expect( taxonomies instanceof TaxonomiesRequest ).to.be.true;
 		});
 
 		it( 'should set any passed-in options', function() {
@@ -25,32 +29,30 @@ describe( 'wp.taxonomies', function() {
 		});
 
 		it( 'should default _options to {}', function() {
-			var taxonomies = new TaxonomiesRequest();
 			expect( taxonomies._options ).to.deep.equal( {} );
 		});
 
 		it( 'should intitialize instance properties', function() {
-			var taxonomies = new TaxonomiesRequest();
 			var _supportedMethods = taxonomies._supportedMethods.sort().join( '|' );
-			expect( taxonomies._path ).to.deep.equal({});
+			expect( taxonomies._path ).to.deep.equal( {} );
 			expect( taxonomies._template ).to.equal( 'taxonomies(/:taxonomy)(/:action)(/:term)' );
 			expect( _supportedMethods ).to.equal( 'get|head' );
 		});
 
-		it( 'should inherit TaxonomiesRequest from WPRequest using util.inherits', function() {
+		it( 'should inherit PostsRequest from CollectionRequest', function() {
+			expect( taxonomies instanceof CollectionRequest ).to.be.true;
+			expect( taxonomies instanceof WPRequest ).to.be.true;
+		});
 
-			var utilInherits = sinon.spy();
-			sandbox.load( '../../lib/taxonomies', {
-				requires: {
-					'./WPRequest': 'WPRequestMock',
-					'util': {
-						inherits: utilInherits
-					}
-				}
-			});
-
-			// [ 0 ][ 1 ]: Call #1, Argument #2 should be our request mock
-			expect( utilInherits.args[ 0 ][ 1 ] ).to.equal( 'WPRequestMock' );
+		it( 'should inherit prototype methods from both ancestors', function() {
+			// Spot-check from CollectionRequest:
+			expect( taxonomies ).to.have.property( 'param' );
+			expect( taxonomies.param ).to.be.a( 'function' );
+			// From WPRequest:
+			expect( taxonomies ).to.have.property( 'get' );
+			expect( taxonomies.get ).to.be.a( 'function' );
+			expect( taxonomies ).to.have.property( '_renderURI' );
+			expect( taxonomies._renderURI ).to.be.a( 'function' );
 		});
 
 	});

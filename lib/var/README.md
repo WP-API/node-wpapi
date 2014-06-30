@@ -1,0 +1,5 @@
+## /lib/var
+
+This directory stores files defining constants used in the application.
+
+At present, it is the home to two modules: `private-query-vars` and `public-query-vars`. Neither of these is currently used anywhere in the library. They document the values that WordPress exposes as [query parameters](codex.wordpress.org/WordPress_Query_Vars). Some of these values, such as `post_type`, are overwridden by the API itself; but by and large they define the possibility space of the `filter` method. They are being kept in the library provisionally while we consider whether it would be productive to whitelist valid key values for the `filter` and `param` method of collection instances. This would enable us to warn users if they were querying off of an invalid value; more saliently, they would let us easily expose camelCase versions of the underscore_case parameters. (We've considered doing that in an automated way, but if we're maintaining an array anyway it could easily serve the same purpose by being made a key-value store, e.g. `postsPerPage => 'posts_per_page'`.)

@@ -1,18 +1,22 @@
 'use strict';
-var chai = require( 'chai' );
-var expect = chai.expect;
-var sinon = require( 'sinon' );
-var sandbox = require( 'sandboxed-module' );
+var expect = require( 'chai' ).expect;
 
 var TypesRequest = require( '../../lib/types' );
+var CollectionRequest = require( '../../lib/shared/collection-request' );
+var WPRequest = require( '../../lib/shared/wp-request' );
 
 describe( 'wp.types', function() {
 
 	describe( 'constructor', function() {
 
+		var types;
+
+		beforeEach(function() {
+			types = new TypesRequest();
+		});
+
 		it( 'should create a TypesRequest instance', function() {
-			var query1 = new TypesRequest();
-			expect( query1 instanceof TypesRequest ).to.be.true;
+			expect( types instanceof TypesRequest ).to.be.true;
 		});
 
 		it( 'should set any passed-in options', function() {
@@ -25,32 +29,32 @@ describe( 'wp.types', function() {
 		});
 
 		it( 'should default _options to {}', function() {
-			var types = new TypesRequest();
 			expect( types._options ).to.deep.equal( {} );
 		});
 
 		it( 'should intitialize instance properties', function() {
-			var types = new TypesRequest();
 			var _supportedMethods = types._supportedMethods.sort().join( '|' );
-			expect( types._path ).to.deep.equal({});
+			expect( types._path ).to.deep.equal( {} );
 			expect( types._template ).to.equal( 'posts/types(/:type)' );
 			expect( _supportedMethods ).to.equal( 'get|head' );
 		});
 
-		it( 'should inherit TypesRequest from WPRequest using util.inherits', function() {
+		it( 'should inherit PostsRequest from CollectionRequest', function() {
+			expect( types instanceof CollectionRequest ).to.be.true;
+			expect( types instanceof WPRequest ).to.be.true;
+		});
 
-			var utilInherits = sinon.spy();
-			sandbox.load( '../../lib/types', {
-				requires: {
-					'./WPRequest': 'WPRequestMock',
-					'util': {
-						inherits: utilInherits
-					}
-				}
-			});
-
-			// [ 0 ][ 1 ]: Call #1, Argument #2 should be our request mock
-			expect( utilInherits.args[ 0 ][ 1 ] ).to.equal( 'WPRequestMock' );
+		it( 'should inherit prototype methods from both ancestors', function() {
+			// Spot-check from CollectionRequest:
+			expect( types ).to.have.property( 'filter' );
+			expect( types.filter ).to.be.a( 'function' );
+			expect( types ).to.have.property( 'param' );
+			expect( types.param ).to.be.a( 'function' );
+			// From WPRequest:
+			expect( types ).to.have.property( 'get' );
+			expect( types.get ).to.be.a( 'function' );
+			expect( types ).to.have.property( '_renderURI' );
+			expect( types._renderURI ).to.be.a( 'function' );
 		});
 
 	});

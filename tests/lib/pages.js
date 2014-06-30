@@ -1,18 +1,22 @@
 'use strict';
-var chai = require( 'chai' );
-var expect = chai.expect;
-var sinon = require( 'sinon' );
-var sandbox = require( 'sandboxed-module' );
+var expect = require( 'chai' ).expect;
 
 var PagesRequest = require( '../../lib/pages' );
+var CollectionRequest = require( '../../lib/shared/collection-request' );
+var WPRequest = require( '../../lib/shared/wp-request' );
 
 describe( 'wp.pages', function() {
 
 	describe( 'constructor', function() {
 
+		var pages;
+
+		beforeEach(function() {
+			pages = new PagesRequest();
+		});
+
 		it( 'should create a PagesRequest instance', function() {
-			var query1 = new PagesRequest();
-			expect( query1 instanceof PagesRequest ).to.be.true;
+			expect( pages instanceof PagesRequest ).to.be.true;
 		});
 
 		it( 'should set any passed-in options', function() {
@@ -25,60 +29,35 @@ describe( 'wp.pages', function() {
 		});
 
 		it( 'should default _options to {}', function() {
-			var pages = new PagesRequest();
 			expect( pages._options ).to.deep.equal( {} );
 		});
 
 		it( 'should intitialize instance properties', function() {
-			var pages = new PagesRequest();
-			expect( pages._filters ).to.deep.equal({});
-			expect( pages._taxonomyFilters ).to.deep.equal({});
-			expect( pages._path ).to.deep.equal({});
+			expect( pages._filters ).to.deep.equal( {} );
+			expect( pages._taxonomyFilters ).to.deep.equal( {} );
+			expect( pages._path ).to.deep.equal( {} );
+			expect( pages._params ).to.deep.equal( {} );
 			expect( pages._template ).to.equal( 'pages(/:id)(/:action)(/:commentId)' );
 			var _supportedMethods = pages._supportedMethods.sort().join( '|' );
 			expect( _supportedMethods ).to.equal( 'get|head|post' );
 		});
 
-		it( 'should inherit PagesRequest from WPRequest using util.inherits', function() {
-			var utilInherits = sinon.spy();
-			sandbox.load( '../../lib/pages', {
-				requires: {
-					'./WPRequest': 'WPRequestMock',
-					'./shared/filters': { mixins: {} },
-					'util': {
-						inherits: utilInherits
-					}
-				}
-			});
-
-			// [ 0 ][ 1 ]: Call #1, Argument #2 should be our request mock
-			expect( utilInherits.args[ 0 ][ 1 ] ).to.equal( 'WPRequestMock' );
+		it( 'should inherit PagesRequest from CollectionRequest', function() {
+			expect( pages instanceof CollectionRequest ).to.be.true;
+			expect( pages instanceof WPRequest ).to.be.true;
 		});
 
-		it( 'should extend PagesRequest.prototype with filter methods', function() {
-			var mockFilterMixins = {
-				filter: 'methods',
-				getInstanceProp: function() {
-					return this._id;
-				}
-			};
-			var extend = sinon.spy( require( 'node.extend' ) );
-			var SandboxedPagesRequest = sandbox.require( '../../lib/pages', {
-				requires: {
-					// './WPRequest': 'WPRequestMock',
-					'./shared/filters': {
-						mixins: mockFilterMixins
-					},
-					'node.extend': extend
-				}
-			});
-			var pages = new SandboxedPagesRequest();
-			pages._id = 7;
-
-			expect( pages.filter ).to.equal( 'methods' );
-			expect( pages.getInstanceProp() ).to.equal( 7 );
-			// [ 0 ][ 1 ]: Call #1, Argument #2 should be the mixins property from the filter mock
-			expect( extend.args[ 0 ][ 1 ] ).to.deep.equal( mockFilterMixins );
+		it( 'should inherit prototype methods from both ancestors', function() {
+			// Spot-check from CollectionRequest:
+			expect( pages ).to.have.property( 'filter' );
+			expect( pages.filter ).to.be.a( 'function' );
+			expect( pages ).to.have.property( 'param' );
+			expect( pages.param ).to.be.a( 'function' );
+			// From WPRequest:
+			expect( pages ).to.have.property( 'get' );
+			expect( pages.get ).to.be.a( 'function' );
+			expect( pages ).to.have.property( '_renderURI' );
+			expect( pages._renderURI ).to.be.a( 'function' );
 		});
 
 	});
