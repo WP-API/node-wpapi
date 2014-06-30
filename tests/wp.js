@@ -9,6 +9,7 @@ var PostsRequest = require( '../lib/posts' );
 var TaxonomiesRequest = require( '../lib/taxonomies' );
 var TypesRequest = require( '../lib/types' );
 var UsersRequest = require( '../lib/users' );
+var WPRequest = require( '../lib/shared/wp-request' );
 
 describe( 'wp', function() {
 
@@ -84,6 +85,27 @@ describe( 'wp', function() {
 			var postsAndCPTs = site.registerType([ 'cpt1', 'cpt2', 'posts' ]);
 			request = postsAndCPTs();
 			expect( request._params.type ).to.deep.equal([ 'cpt1', 'cpt2', 'posts' ]);
+		});
+
+	});
+
+	describe( '.url()', function() {
+
+		it( 'is defined', function() {
+			expect( site ).to.have.property( 'url' );
+			expect( site.url ).to.be.a( 'function' );
+		});
+
+		it( 'creates a basic WPRequest object bound to the provided URL', function() {
+			var request = site.url( 'http://some.arbitrary.url' );
+			expect( request instanceof WPRequest ).to.be.true;
+			expect( request._options.endpoint ).to.equal( 'http://some.arbitrary.url' );
+		});
+
+		it( 'maps requests directly onto the provided URL', function() {
+			var request = site.url( 'http://some.url.com/wp-json?filter[name]=some-slug' );
+			var path = request._renderURI();
+			expect( path ).to.equal( 'http://some.url.com/wp-json?filter[name]=some-slug' );
 		});
 
 	});

@@ -27,7 +27,8 @@ var PagesRequest = require( './lib/pages' );
 var PostsRequest = require( './lib/posts' );
 var TaxonomiesRequest = require( './lib/taxonomies' );
 var TypesRequest = require( './lib/types' );
-var UserRequest = require( './lib/users' );
+var UsersRequest = require( './lib/users' );
+var WPRequest = require( './lib/shared/wp-request' );
 
 /**
  * The base constructor for the WP API service
@@ -141,7 +142,7 @@ WP.prototype.types = function( options ) {
 WP.prototype.users = function( options ) {
 	options = options || {};
 	options = extend( options, this._options );
-	return new UserRequest( options );
+	return new UsersRequest( options );
 };
 
 /**
@@ -171,6 +172,26 @@ WP.prototype.registerType = function( type ) {
 	return function() {
 		return new PostsRequest().type( type );
 	};
+};
+
+/**
+ * Generate a request against a completely arbitrary endpoint, with no assumptions about
+ * or mutation of path, filtering, or query parameters. This request is not restricted to
+ * the endpoint specified during WP object instantiation.
+ *
+ * @example
+ * Generate a request to the explicit URL "http://your.website.com/wp-json/some/custom/path" (yeah, we wish ;)
+ *
+ *     wp.url( 'http://your.website.com/wp-json/some/custom/path' ).get()...
+ *
+ * @method url
+ * @param {String} url The URL to request
+ * @return {WPRequest} A WPRequest object bound to the provided URL
+ */
+WP.prototype.url = function( url ) {
+	return new WPRequest({
+		endpoint: url
+	});
 };
 
 module.exports = WP;
