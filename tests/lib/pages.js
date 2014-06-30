@@ -103,7 +103,7 @@ describe( 'wp.pages', function() {
 			it( 'should provide filtering methods', function() {
 				expect( pages ).to.have.property( 'filter' );
 				expect( pages.filter ).to.be.a( 'function' );
-				var path = pages.filter('name', 'some-slug')._renderURI();
+				var path = pages.filter( 'name', 'some-slug' )._renderURI();
 				expect( path ).to.equal( '/wp-json/pages?filter%5Bname%5D=some-slug' );
 			});
 
