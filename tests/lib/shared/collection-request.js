@@ -133,7 +133,7 @@ describe( 'CollectionRequest', function() {
 			});
 
 			it( 'should map to the "context=VALUE" query parameter', function() {
-				var path = request.context( 'edit' ).renderURI();
+				var path = request.context( 'edit' )._renderURI();
 				expect( path ).to.equal( '/?context=edit' );
 			});
 
