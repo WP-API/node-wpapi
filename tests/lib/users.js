@@ -26,11 +26,13 @@ describe( 'wp.users', function() {
 			expect( users._options.strProp ).to.equal( 'Some string' );
 		});
 
-		it( 'should default _options to {}', function() {
-			expect( users._options ).to.deep.equal( {} );
+		it( 'should default _options to { auth: true }', function() {
+			expect( users._options ).to.deep.equal({
+				auth: true
+			});
 		});
 
-		it( 'should intitialize instance properties', function() {
+		it( 'should initialize instance properties', function() {
 			expect( users._filters ).to.deep.equal( {} );
 			expect( users._path ).to.deep.equal( {} );
 			expect( users._params ).to.deep.equal( {} );
