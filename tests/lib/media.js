@@ -24,7 +24,7 @@ describe( 'wp.media', function() {
 		});
 
 		it( 'should set any passed-in options', function() {
-			var media = new MediaRequest({
+			media = new MediaRequest({
 				booleanProp: true,
 				strProp: 'Some string'
 			});

@@ -20,7 +20,7 @@ describe( 'wp.pages', function() {
 		});
 
 		it( 'should set any passed-in options', function() {
-			var pages = new PagesRequest({
+			pages = new PagesRequest({
 				booleanProp: true,
 				strProp: 'Some string'
 			});
@@ -169,6 +169,12 @@ describe( 'wp.pages', function() {
 		it( 'should create the URL for retrieving the revisions for a specific post', function() {
 			var path = pages.id( 1337 ).revisions()._renderURI();
 			expect( path ).to.equal( '/wp-json/pages/1337/revisions' );
+		});
+
+		it( 'should force authentication when querying pages/id/revisions', function() {
+			pages.id( 1337 ).revisions();
+			expect( pages._options ).to.have.property( 'auth' );
+			expect( pages._options.auth ).to.be.true;
 		});
 
 	});

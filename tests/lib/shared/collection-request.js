@@ -161,6 +161,12 @@ describe( 'CollectionRequest', function() {
 				expect( request._renderURI() ).to.equal( '/?context=edit' );
 			});
 
+			it( 'should force authentication when called with "edit"', function() {
+				request.edit();
+				expect( request._options ).to.have.property( 'auth' );
+				expect( request._options.auth ).to.be.true;
+			});
+
 		});
 
 	});

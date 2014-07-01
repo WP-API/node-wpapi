@@ -199,6 +199,12 @@ describe( 'wp.posts', function() {
 			expect( path ).to.equal( '/wp-json/posts/1337/revisions' );
 		});
 
+		it( 'should force authentication when querying posts/id/revisions', function() {
+			posts.id( 1337 ).revisions();
+			expect( posts._options ).to.have.property( 'auth' );
+			expect( posts._options.auth ).to.be.true;
+		});
+
 		it( 'should restrict template changes to a single instance', function() {
 			posts._template = 'path/with/post/nr/:id';
 			var newPosts = new PostsRequest();

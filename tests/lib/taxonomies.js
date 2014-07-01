@@ -20,7 +20,7 @@ describe( 'wp.taxonomies', function() {
 		});
 
 		it( 'should set any passed-in options', function() {
-			var taxonomies = new TaxonomiesRequest({
+			taxonomies = new TaxonomiesRequest({
 				booleanProp: true,
 				strProp: 'Some string'
 			});

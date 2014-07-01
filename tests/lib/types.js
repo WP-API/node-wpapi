@@ -20,7 +20,7 @@ describe( 'wp.types', function() {
 		});
 
 		it( 'should set any passed-in options', function() {
-			var types = new TypesRequest({
+			types = new TypesRequest({
 				booleanProp: true,
 				strProp: 'Some string'
 			});

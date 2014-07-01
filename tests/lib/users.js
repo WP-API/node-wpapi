@@ -18,12 +18,17 @@ describe( 'wp.users', function() {
 		});
 
 		it( 'should set any passed-in options', function() {
-			var users = new UsersRequest({
+			users = new UsersRequest({
 				booleanProp: true,
 				strProp: 'Some string'
 			});
 			expect( users._options.booleanProp ).to.be.true;
 			expect( users._options.strProp ).to.equal( 'Some string' );
+		});
+
+		it( 'should force authentication', function() {
+			expect( users._options ).to.have.property( 'auth' );
+			expect( users._options.auth ).to.be.true;
 		});
 
 		it( 'should default _options to { auth: true }', function() {
