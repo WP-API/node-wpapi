@@ -5,6 +5,15 @@ This is a client for the [WordPress REST API](http://wp-api.org/). It is **under
 
 [![Build Status](https://api.travis-ci.org/kadamwhite/wordpress-rest-api.png?branch=master)](https://travis-ci.org/kadamwhite/wordpress-rest-api)
 
+**Index**:
+[Purpose](#purpose) &bull;
+[Installation](#installation) &bull;
+[Using The Client](#using-the-client) &bull;
+[Authentication](#authentication) &bull;
+[API Documentation](#api-documentation) &bull;
+[Issues](#issues) &bull;
+[Contributing](#contributing)
+
 ## Purpose
 
 This library is designed to make it easy for your [Node.js](http://nodejs.org) application to request specific resources from a WordPress install. It uses a query builder-style syntax to let you craft the request being made to the WP-API endpoints, then returns the API server's response to your application as a JavaScript object.
@@ -71,6 +80,7 @@ Additional querying methods provided, by endpoint:
     - `wp.posts().id( n ).comment( i )`: get a comment with the ID *i* from post with ID *n* 
     - `wp.posts().id( n ).revisions()`: get a collection of revisions for the post with ID *n*
     - `wp.posts().type( type_name )`: get posts of custom type *type_name*
+    - *There is currently no support for querying post meta values*
 * **pages**
     - `wp.pages()`: get a collection of page items
     - `wp.pages().id( n )`: get the page with numeric ID *n*
@@ -176,6 +186,58 @@ wp.events().then(function( eventItems ) {
 });
 ```
 
+## Authentication
+
+You must be authenticated with WordPress to create, edit or delete resources via the API. Some WP-API endpoints additionally require authentication for GET requsts in cases where the data being requested could be considered private: examples include any of the `/users` endpoints, requests where the `context` query parameter is `true`, and `/revisions` for posts and pages, among others.
+
+This library currently supports [basic HTTP authentication](http://en.wikipedia.org/wiki/Basic_access_authentication). To authenticate with your WordPress install,
+
+1. Download and install the [Basic Authentication handler plugin](https://github.com/WP-API/Basic-Auth) on your target WordPress site. *(Note that the basic auth handler is not curently available through the plugin repository: you must install it manually.)*
+2. Activate the plugin.
+3. Specify the username and password of an authorized user (a user that can edit_posts) when instantiating the WP request object:
+```javascript
+var wp = new WP({
+    endpoint: 'http://www.website.com/wp-json',
+    username: 'someusername',
+    password: 'thepasswordforthatuser'
+});
+```
+
+Now any requests generated from this WP instance will use that username and password for basic authentication if the targeted endpoint requires it.
+
+As an example, `wp.users().me()` will automatically enable authentication to permit access to the `/users/me` endpoint. (If a username and password had not been provided, a 401 error would have been returned.)
+
+### Manually forcing authentication
+
+Because authentication may not always be set when needed, an `.auth()` method is provided which can enable authentication for any request chain:
+```javascript
+// This will authenticate the GET to /posts/id/817
+wp.posts().id( 817 ).auth().get(...
+```
+This `.auth` method can also be used to manually specify a username and a password as part of a request chain:
+```javascript
+// Use username "mcurie" and password "nobel" for this request
+wp.posts().id( 817 ).auth( 'mcurie', 'nobel' ).get(...
+```
+This will override any previously-set username or password values.
+
+**Authenticate all requests for a WP instance**
+
+It is possible to make all requests from a WP instance use authentication by setting the `auth` option to `true` on instantiation:
+```javascript
+var wp = new WP({
+    endpoint: // ...
+    username: // ...
+    password: // ...
+    auth: true
+});
+```
+
+#### SECURITY WARNING
+
+Please be aware that basic authentication sends your username and password over the wire, in plain text. **We only recommend using basic authentication in production if you are securing your requests with SSL.**
+
+More robust authentication methods will hopefully be added; we would welcome contributions in this area!
 
 ## API Documentation
 
