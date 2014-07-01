@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>lib/users.js - wordpress-rest-api</title>
+    <title>lib/media.js - wordpress-rest-api</title>
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
     <link rel="shortcut icon" type="image/png" href="../assets/favicon.png">
@@ -94,32 +94,31 @@
 
         <div id="docs-main" class="apidocs">
             <div class="content container">
-                <h1 class="file-heading">File: lib/users.js</h1>
+                <h1 class="file-heading">File: lib/media.js</h1>
 
 <div class="file">
     <pre class="code prettyprint linenums">
 &#x27;use strict&#x27;;
 /**
  * @module WP
- * @submodule UsersRequest
+ * @submodule MediaRequest
  * @beta
  */
 var CollectionRequest = require( &#x27;./shared/collection-request&#x27; );
 var inherit = require( &#x27;util&#x27; ).inherits;
 
 /**
- * UsersRequest extends CollectionRequest to handle the &#x60;/users&#x60; API endpoint. The &#x60;/users&#x60;
- * endpoint responds with a 401 error without authentication, so &#x60;users()&#x60; forces basic auth.
+ * MediaRequest extends CollectionRequest to handle the /media API endpoint
  *
- * @class UsersRequest
+ * @class MediaRequest
  * @constructor
  * @extends CollectionRequest
- * @param {Object} options A hash of options for the UsersRequest instance
+ * @param {Object} options A hash of options for the MediaRequest instance
  * @param {String} options.endpoint The endpoint URI for the invoking WP instance
  * @param {String} [options.username] A username for authenticating API requests
  * @param {String} [options.password] A password for authenticating API requests
  */
-function UsersRequest( options ) {
+function MediaRequest( options ) {
 	/**
 	 * Configuration options for the request such as the endpoint for the invoking WP instance
 	 * @property _options
@@ -137,6 +136,15 @@ function UsersRequest( options ) {
 	 * @default {}
 	 */
 	this._filters = {};
+
+	/**
+	 * A hash of taxonomy terms to parse into the final request URI
+	 * @property _taxonomyFilters
+	 * @type Object
+	 * @private
+	 * @default {}
+	 */
+	this._taxonomyFilters = {};
 
 	/**
 	 * A hash of non-filter query parameters
@@ -164,9 +172,9 @@ function UsersRequest( options ) {
 	 * @property _template
 	 * @type String
 	 * @protected
-	 * @default &#x27;users(/:id)&#x27;
+	 * @default &#x27;media(/:id)&#x27;
 	 */
-	this._template = &#x27;users(/:id)&#x27;;
+	this._template = &#x27;media(/:id)&#x27;;
 
 	/**
 	 * @property _supportedMethods
@@ -175,12 +183,9 @@ function UsersRequest( options ) {
 	 * @default [ &#x27;head&#x27;, &#x27;get&#x27;, &#x27;post&#x27; ]
 	 */
 	this._supportedMethods = [ &#x27;head&#x27;, &#x27;get&#x27;, &#x27;post&#x27; ];
-
-	// Force authentication on all users requests
-	return this.auth();
 }
 
-inherit( UsersRequest, CollectionRequest );
+inherit( MediaRequest, CollectionRequest );
 
 /**
  * A hash table of path keys and regex validators for those path elements
@@ -189,7 +194,7 @@ inherit( UsersRequest, CollectionRequest );
  * @type Object
  * @private
  */
-UsersRequest.prototype._pathValidators = {
+MediaRequest.prototype._pathValidators = {
 
 	/**
 	 * ID must be an integer or &quot;me&quot;
@@ -197,35 +202,23 @@ UsersRequest.prototype._pathValidators = {
 	 * @property _pathValidators.id
 	 * @type {RegExp}
 	 */
-	id: /(^\d+$|^me$)/
-};
-
-/**
- * @method me
- * @chainable
- * @return {UsersRequest} The UsersRequest instance (for chaining)
- */
-UsersRequest.prototype.me = function() {
-	this._path.id = &#x27;me&#x27;;
-	this._supportedMethods = [ &#x27;head&#x27;, &#x27;get&#x27; ];
-
-	return this;
+	id: /^\d+$/
 };
 
 /**
  * @method id
  * @chainable
- * @param {Number} id The integer ID of a user record
- * @return {UsersRequest} The UsersRequest instance (for chaining)
+ * @param {Number} id The integer ID of a media record
+ * @return {MediaRequest} The MediaRequest instance (for chaining)
  */
-UsersRequest.prototype.id = function( id ) {
+MediaRequest.prototype.id = function( id ) {
 	this._path.id = parseInt( id, 10 );
 	this._supportedMethods = [ &#x27;head&#x27;, &#x27;get&#x27;, &#x27;put&#x27;, &#x27;post&#x27;, &#x27;delete&#x27; ];
 
 	return this;
 };
 
-module.exports = UsersRequest;
+module.exports = MediaRequest;
 
     </pre>
 </div>

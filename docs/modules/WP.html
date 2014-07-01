@@ -16,7 +16,7 @@
             <div class="project-title">
                 
                 
-                    <h1 class="project-name">wordpress-rest-api</h1> <span class="project-version">0.1.1</span>
+                    <h1 class="project-name">wordpress-rest-api</h1> <span class="project-version">0.2.0</span>
                 
                 
                     <p class="description">A client for interacting with the WordPress REST API</p>
@@ -45,11 +45,17 @@
         <div id="api-tabview-panel">
             <ul id="api-classes" class="apis classes">
             
-                <li><a class="type" href="../classes/CollectionFilters.html">CollectionFilters</a></li>
+                <li><a class="type" href="../classes/CollectionRequest.html">CollectionRequest</a></li>
+            
+                <li><a class="type" href="../classes/MediaRequest.html">MediaRequest</a></li>
+            
+                <li><a class="type" href="../classes/PagesRequest.html">PagesRequest</a></li>
             
                 <li><a class="type" href="../classes/PostsRequest.html">PostsRequest</a></li>
             
                 <li><a class="type" href="../classes/TaxonomiesRequest.html">TaxonomiesRequest</a></li>
+            
+                <li><a class="type" href="../classes/TypesRequest.html">TypesRequest</a></li>
             
                 <li><a class="type" href="../classes/UsersRequest.html">UsersRequest</a></li>
             
@@ -61,11 +67,17 @@
 
             <ul id="api-modules" class="apis modules">
             
-                <li><a class="module" href="../modules/CollectionFilters.html">CollectionFilters</a></li>
+                <li><a class="module" href="../modules/CollectionRequest.html">CollectionRequest</a></li>
+            
+                <li><a class="module" href="../modules/MediaRequest.html">MediaRequest</a></li>
+            
+                <li><a class="module" href="../modules/PagesRequest.html">PagesRequest</a></li>
             
                 <li><a class="module" href="../modules/PostsRequest.html">PostsRequest</a></li>
             
                 <li><a class="module" href="../modules/TaxonomiesRequest.html">TaxonomiesRequest</a></li>
+            
+                <li><a class="module" href="../modules/TypesRequest.html">TypesRequest</a></li>
             
                 <li><a class="module" href="../modules/UsersRequest.html">UsersRequest</a></li>
             
@@ -90,7 +102,7 @@
 
     
         <div class="foundat">
-            Defined in: <a href="../files/wp.js.html#l24"><code>wp.js:24</code></a>
+            Defined in: <a href="../files/wp.js.html#l35"><code>wp.js:35</code></a>
         </div>
     
 
@@ -127,8 +139,20 @@ wp.posts().then(function( posts ) {
             <ul class="module-classes">
             
                 <li class="module-class">
-                    <a href="../classes/CollectionFilters.html">
-                        CollectionFilters
+                    <a href="../classes/CollectionRequest.html">
+                        CollectionRequest
+                    </a>
+                </li>
+            
+                <li class="module-class">
+                    <a href="../classes/MediaRequest.html">
+                        MediaRequest
+                    </a>
+                </li>
+            
+                <li class="module-class">
+                    <a href="../classes/PagesRequest.html">
+                        PagesRequest
                     </a>
                 </li>
             
@@ -141,6 +165,12 @@ wp.posts().then(function( posts ) {
                 <li class="module-class">
                     <a href="../classes/TaxonomiesRequest.html">
                         TaxonomiesRequest
+                    </a>
+                </li>
+            
+                <li class="module-class">
+                    <a href="../classes/TypesRequest.html">
+                        TypesRequest
                     </a>
                 </li>
             
@@ -173,12 +203,33 @@ wp.posts().then(function( posts ) {
             <ul class="module-submodules">
             
                 <li class="module-submodule">
-                    <a href="../modules/CollectionFilters.html">
-                        CollectionFilters
+                    <a href="../modules/CollectionRequest.html">
+                        CollectionRequest
                     </a>
 
                     <div class="module-submodule-description">
-                        CollectionFilters' "mixins" object is intended to extend endpoint modules' prototypes
+                        CollectionRequest extends WPRequest with properties & methods for filtering collections
+via query parameters. It is the base constructor for most top-level WP instance methods.
+                    </div>
+                </li>
+            
+                <li class="module-submodule">
+                    <a href="../modules/MediaRequest.html">
+                        MediaRequest
+                    </a>
+
+                    <div class="module-submodule-description">
+                        MediaRequest extends CollectionRequest to handle the /media API endpoint
+                    </div>
+                </li>
+            
+                <li class="module-submodule">
+                    <a href="../modules/PagesRequest.html">
+                        PagesRequest
+                    </a>
+
+                    <div class="module-submodule-description">
+                        PagesRequest extends CollectionRequest to handle the /posts API endpoint
                     </div>
                 </li>
             
@@ -188,7 +239,7 @@ wp.posts().then(function( posts ) {
                     </a>
 
                     <div class="module-submodule-description">
-                        PostsRequest extends WPRequest to handle the /posts API endpoint
+                        PostsRequest extends CollectionRequest to handle the /posts API endpoint
                     </div>
                 </li>
             
@@ -198,7 +249,17 @@ wp.posts().then(function( posts ) {
                     </a>
 
                     <div class="module-submodule-description">
-                        TaxonomiesRequest extends WPRequest to handle the /taxonomies API endpoint
+                        TaxonomiesRequest extends CollectionRequest to handle the /taxonomies API endpoint
+                    </div>
+                </li>
+            
+                <li class="module-submodule">
+                    <a href="../modules/TypesRequest.html">
+                        TypesRequest
+                    </a>
+
+                    <div class="module-submodule-description">
+                        TypesRequest extends CollectionRequest to handle the /taxonomies API endpoint
                     </div>
                 </li>
             
@@ -208,7 +269,8 @@ wp.posts().then(function( posts ) {
                     </a>
 
                     <div class="module-submodule-description">
-                        UsersRequest extends WPRequest to handle the /users API endpoint
+                        UsersRequest extends CollectionRequest to handle the <code>&#x2F;users</code> API endpoint. The <code>&#x2F;users</code>
+endpoint responds with a 401 error without authentication, so <code>users()</code> forces basic auth.
                     </div>
                 </li>
             

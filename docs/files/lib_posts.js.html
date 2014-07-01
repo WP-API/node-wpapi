@@ -16,7 +16,7 @@
             <div class="project-title">
                 
                 
-                    <h1 class="project-name">wordpress-rest-api</h1> <span class="project-version">0.1.1</span>
+                    <h1 class="project-name">wordpress-rest-api</h1> <span class="project-version">0.2.0</span>
                 
                 
                     <p class="description">A client for interacting with the WordPress REST API</p>
@@ -45,11 +45,17 @@
         <div id="api-tabview-panel">
             <ul id="api-classes" class="apis classes">
             
-                <li><a class="type" href="../classes/CollectionFilters.html">CollectionFilters</a></li>
+                <li><a class="type" href="../classes/CollectionRequest.html">CollectionRequest</a></li>
+            
+                <li><a class="type" href="../classes/MediaRequest.html">MediaRequest</a></li>
+            
+                <li><a class="type" href="../classes/PagesRequest.html">PagesRequest</a></li>
             
                 <li><a class="type" href="../classes/PostsRequest.html">PostsRequest</a></li>
             
                 <li><a class="type" href="../classes/TaxonomiesRequest.html">TaxonomiesRequest</a></li>
+            
+                <li><a class="type" href="../classes/TypesRequest.html">TypesRequest</a></li>
             
                 <li><a class="type" href="../classes/UsersRequest.html">UsersRequest</a></li>
             
@@ -61,11 +67,17 @@
 
             <ul id="api-modules" class="apis modules">
             
-                <li><a class="module" href="../modules/CollectionFilters.html">CollectionFilters</a></li>
+                <li><a class="module" href="../modules/CollectionRequest.html">CollectionRequest</a></li>
+            
+                <li><a class="module" href="../modules/MediaRequest.html">MediaRequest</a></li>
+            
+                <li><a class="module" href="../modules/PagesRequest.html">PagesRequest</a></li>
             
                 <li><a class="module" href="../modules/PostsRequest.html">PostsRequest</a></li>
             
                 <li><a class="module" href="../modules/TaxonomiesRequest.html">TaxonomiesRequest</a></li>
+            
+                <li><a class="module" href="../modules/TypesRequest.html">TypesRequest</a></li>
             
                 <li><a class="module" href="../modules/UsersRequest.html">UsersRequest</a></li>
             
@@ -86,23 +98,21 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
+&#x27;use strict&#x27;;
 /**
  * @module WP
  * @submodule PostsRequest
  * @beta
  */
-const WPRequest = require( &#x27;./WPRequest&#x27; );
-const util = require( &#x27;util&#x27; );
-const extend = require( &#x27;node.extend&#x27; );
-const filters = require( &#x27;./shared/filters&#x27; );
+var CollectionRequest = require( &#x27;./shared/collection-request&#x27; );
+var inherit = require( &#x27;util&#x27; ).inherits;
 
 /**
- * PostsRequest extends WPRequest to handle the /posts API endpoint
+ * PostsRequest extends CollectionRequest to handle the /posts API endpoint
  *
  * @class PostsRequest
  * @constructor
- * @extends WPRequest
- * @uses CollectionFilters
+ * @extends CollectionRequest
  * @param {Object} options A hash of options for the PostsRequest instance
  * @param {String} options.endpoint The endpoint URI for the invoking WP instance
  * @param {String} [options.username] A username for authenticating API requests
@@ -113,6 +123,7 @@ function PostsRequest( options ) {
 	 * Configuration options for the request such as the endpoint for the invoking WP instance
 	 * @property _options
 	 * @type Object
+	 * @private
 	 * @default {}
 	 */
 	this._options = options || {};
@@ -121,6 +132,7 @@ function PostsRequest( options ) {
 	 * A hash of filter values to parse into the final request URI
 	 * @property _filters
 	 * @type Object
+	 * @private
 	 * @default {}
 	 */
 	this._filters = {};
@@ -129,125 +141,161 @@ function PostsRequest( options ) {
 	 * A hash of taxonomy terms to parse into the final request URI
 	 * @property _taxonomyFilters
 	 * @type Object
+	 * @private
 	 * @default {}
 	 */
 	this._taxonomyFilters = {};
 
 	/**
-	 * The ID for the post being requested
-	 * @property _id
-	 * @type Number
-	 * @default null
+	 * A hash of non-filter query parameters
+	 *
+	 * @property _params
+	 * @type Object
+	 * @private
+	 * @default {}
 	 */
-	this._id = null;
+	this._params = {};
+
+	/**
+	 * A hash of values to assemble into the API request path
+	 *
+	 * @property _path
+	 * @type Object
+	 * @private
+	 * @default {}
+	 */
+	this._path = {};
+
+	/**
+	 * The URL template that will be used to assemble endpoint paths
+	 *
+	 * @property _template
+	 * @type String
+	 * @private
+	 * @default &#x27;posts(/:id)(/:action)(/:actionId)&#x27;
+	 */
+	this._template = &#x27;posts(/:id)(/:action)(/:actionId)&#x27;;
 
 	/**
 	 * @property _supportedMethods
 	 * @type Array
+	 * @private
 	 * @default [ &#x27;head&#x27;, &#x27;get&#x27;, &#x27;post&#x27; ]
 	 */
 	this._supportedMethods = [ &#x27;head&#x27;, &#x27;get&#x27;, &#x27;post&#x27; ];
-
-	/**
-	 * @property _action
-	 * @type String
-	 * @default null
-	 */
-	this._action = null;
-
-	/**
-	 * @property _actionId
-	 * @type String
-	 * @default null
-	 */
-	this._actionId = null;
 }
 
-util.inherits( PostsRequest, WPRequest );
+inherit( PostsRequest, CollectionRequest );
 
 /**
+ * A hash table of path keys and regex validators for those path elements
+ *
+ * @property _pathValidators
+ * @type Object
+ * @private
+ */
+PostsRequest.prototype._pathValidators = {
+
+	/**
+	 * ID must be an integer
+	 *
+	 * @property _pathValidators.id
+	 * @type {RegExp}
+	 */
+	id: /^\d+$/,
+
+	/**
+	 * Action must be one of &#x27;meta&#x27;, &#x27;comments&#x27;, or &#x27;revisions&#x27;
+	 *
+	 * @property _pathValidators.action
+	 * @type {RegExp}
+	 */
+	action: /(meta|comments|revisions)/
+};
+
+/**
+ * Specify a post ID to query
+ *
  * @method id
+ * @chainable
+ * @param {Number} id The ID of a post to retrieve
  * @return {PostsRequest} The PostsRequest instance (for chaining)
  */
 PostsRequest.prototype.id = function( id ) {
-	if ( this._action === null ) {
-		this._id = parseInt( id, 10 );
-		this._supportedMethods = [ &#x27;head&#x27;, &#x27;get&#x27;, &#x27;put&#x27;, &#x27;post&#x27;, &#x27;patch&#x27;, &#x27;delete&#x27; ];
-	} else if ( this._action === &#x27;comments&#x27; ) {
-		this._actionId = parseInt( id, 10 );
-		this._supportedMethods = [ &#x27;head&#x27;, &#x27;get&#x27;, &#x27;put&#x27;, &#x27;post&#x27;, &#x27;patch&#x27;, &#x27;delete&#x27; ];
-	} else if ( this._action === &#x27;types&#x27; ) {
-		this._actionId = id;
-		this._supportedMethods = [ &#x27;head&#x27;, &#x27;get&#x27; ];
-	}
+	this._path.id = parseInt( id, 10 );
+	this._supportedMethods = [ &#x27;head&#x27;, &#x27;get&#x27;, &#x27;put&#x27;, &#x27;post&#x27;, &#x27;delete&#x27; ];
 
 	return this;
 };
 
 /**
+ * Specify that we are getting the comments for a specific post
+ *
  * @method comments
+ * @chainable
  * @return {PostsRequest} The PostsRequest instance (for chaining)
  */
 PostsRequest.prototype.comments = function() {
-	this._action = &#x27;comments&#x27;;
+	this._path.action = &#x27;comments&#x27;;
 	this._supportedMethods = [ &#x27;head&#x27;, &#x27;get&#x27;, &#x27;post&#x27; ];
 	return this;
 };
 
 /**
- * @method types
- * @return {PostsRequest} The PostsRequest instance (for chaining)
+ * Specify a particular comment to retrieve
+ * (forces action &quot;comments&quot;)
+ *
+ * @method comment
+ * @chainable
+ * @param {Number} id The ID of the comment to retrieve
+ * @return {PostsRequest}
  */
-PostsRequest.prototype.types = function() {
-	this._action = &#x27;types&#x27;;
-	this._supportedMethods = [ &#x27;head&#x27;, &#x27;get&#x27; ];
+PostsRequest.prototype.comment = function( id ) {
+	this._path.action = &#x27;comments&#x27;;
+	this._path.actionId = parseInt( id, 10 );
+	this._supportedMethods = [ &#x27;head&#x27;, &#x27;get&#x27;, &#x27;delete&#x27; ];
+
 	return this;
 };
 
 /**
+ * Query a collection of posts for posts of a specific type
+ *
+ * @method type
+ * @param {String|Array} type A string or array of strings specifying post types to query
+ * @chainable
+ * @return {PostsRequest} The PostsRequest instance (for chaining)
+ */
+PostsRequest.prototype.type = function( type ) {
+	this.param( &#x27;type&#x27;, type, true );
+	return this;
+};
+
+/**
+ * Specify that we are requesting the revisions for a specific post (forces basic auth)
+ *
  * @method revisions
+ * @chainable
  * @return {PostsRequest} The PostsRequest instance (for chaining)
  */
 PostsRequest.prototype.revisions = function() {
-	this._action = &#x27;revisions&#x27;;
+	this._path.action = &#x27;revisions&#x27;;
 	this._supportedMethods = [ &#x27;head&#x27;, &#x27;get&#x27; ];
-	return this;
+
+	return this.auth();
 };
 
 /**
  * @method statuses
+ * @chainable
  * @return {PostsRequest} The PostsRequest instance (for chaining)
  */
 PostsRequest.prototype.statuses = function() {
-	this._action = &#x27;statuses&#x27;;
+	this._path.action = &#x27;statuses&#x27;;
 	this._supportedMethods = [ &#x27;head&#x27;, &#x27;get&#x27; ];
+
 	return this;
 };
-
-/**
- * Parse the request&#x27;s instance properties into a WordPress API request URI
- *
- * @method generateRequestUri
- * @return {String} The URI for the HTTP request to the posts endpoint
- */
-PostsRequest.prototype.generateRequestUri = function() {
-	var path = [ &#x27;posts&#x27; ];
-	if ( this._id !== null ) {
-		path.push( this._id );
-	}
-	if ( this._action !== null ) {
-		path.push( this._action );
-	}
-	if ( this._actionId !== null ) {
-		path.push( this._actionId );
-	}
-
-	// Ensure trailing slash on endpoint and concatenate with request path
-	return this._options.endpoint + path.join( &#x27;/&#x27; ) + this._queryStr();
-};
-
-// All filter methods should be available to PostsRequest instances
-extend( PostsRequest.prototype, filters.mixins );
 
 module.exports = PostsRequest;
 

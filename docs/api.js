@@ -1,41 +1,62 @@
 YUI.add("yuidoc-meta", function(Y) {
    Y.YUIDoc = { meta: {
     "classes": [
-        "CollectionFilters",
+        "CollectionRequest",
+        "MediaRequest",
+        "PagesRequest",
         "PostsRequest",
         "TaxonomiesRequest",
+        "TypesRequest",
         "UsersRequest",
         "WP",
         "WPRequest"
     ],
     "modules": [
-        "CollectionFilters",
+        "CollectionRequest",
+        "MediaRequest",
+        "PagesRequest",
         "PostsRequest",
         "TaxonomiesRequest",
+        "TypesRequest",
         "UsersRequest",
         "WP",
         "WPRequest"
     ],
     "allModules": [
         {
-            "displayName": "CollectionFilters",
-            "name": "CollectionFilters",
-            "description": "CollectionFilters' \"mixins\" object is intended to extend endpoint modules' prototypes"
+            "displayName": "CollectionRequest",
+            "name": "CollectionRequest",
+            "description": "CollectionRequest extends WPRequest with properties & methods for filtering collections\nvia query parameters. It is the base constructor for most top-level WP instance methods."
+        },
+        {
+            "displayName": "MediaRequest",
+            "name": "MediaRequest",
+            "description": "MediaRequest extends CollectionRequest to handle the /media API endpoint"
+        },
+        {
+            "displayName": "PagesRequest",
+            "name": "PagesRequest",
+            "description": "PagesRequest extends CollectionRequest to handle the /posts API endpoint"
         },
         {
             "displayName": "PostsRequest",
             "name": "PostsRequest",
-            "description": "PostsRequest extends WPRequest to handle the /posts API endpoint"
+            "description": "PostsRequest extends CollectionRequest to handle the /posts API endpoint"
         },
         {
             "displayName": "TaxonomiesRequest",
             "name": "TaxonomiesRequest",
-            "description": "TaxonomiesRequest extends WPRequest to handle the /taxonomies API endpoint"
+            "description": "TaxonomiesRequest extends CollectionRequest to handle the /taxonomies API endpoint"
+        },
+        {
+            "displayName": "TypesRequest",
+            "name": "TypesRequest",
+            "description": "TypesRequest extends CollectionRequest to handle the /taxonomies API endpoint"
         },
         {
             "displayName": "UsersRequest",
             "name": "UsersRequest",
-            "description": "UsersRequest extends WPRequest to handle the /users API endpoint"
+            "description": "UsersRequest extends CollectionRequest to handle the `/users` API endpoint. The `/users`\nendpoint responds with a 401 error without authentication, so `users()` forces basic auth."
         },
         {
             "displayName": "WP",

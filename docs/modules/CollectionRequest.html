@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>lib/users.js - wordpress-rest-api</title>
+    <title>CollectionRequest - wordpress-rest-api</title>
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
     <link rel="shortcut icon" type="image/png" href="../assets/favicon.png">
@@ -94,140 +94,51 @@
 
         <div id="docs-main" class="apidocs">
             <div class="content container">
-                <h1 class="file-heading">File: lib/users.js</h1>
+                <h1>CollectionRequest Module</h1>
+<div class="box clearfix meta">
+    
 
-<div class="file">
-    <pre class="code prettyprint linenums">
-&#x27;use strict&#x27;;
-/**
- * @module WP
- * @submodule UsersRequest
- * @beta
- */
-var CollectionRequest = require( &#x27;./shared/collection-request&#x27; );
-var inherit = require( &#x27;util&#x27; ).inherits;
+    
 
-/**
- * UsersRequest extends CollectionRequest to handle the &#x60;/users&#x60; API endpoint. The &#x60;/users&#x60;
- * endpoint responds with a 401 error without authentication, so &#x60;users()&#x60; forces basic auth.
- *
- * @class UsersRequest
- * @constructor
- * @extends CollectionRequest
- * @param {Object} options A hash of options for the UsersRequest instance
- * @param {String} options.endpoint The endpoint URI for the invoking WP instance
- * @param {String} [options.username] A username for authenticating API requests
- * @param {String} [options.password] A password for authenticating API requests
- */
-function UsersRequest( options ) {
-	/**
-	 * Configuration options for the request such as the endpoint for the invoking WP instance
-	 * @property _options
-	 * @type Object
-	 * @private
-	 * @default {}
-	 */
-	this._options = options || {};
+    
+        <div class="foundat">
+            Defined in: <a href="../files/lib_shared_collection-request.js.html#l14"><code>lib&#x2F;shared&#x2F;collection-request.js:14</code></a>
+        </div>
+    
 
-	/**
-	 * A hash of filter values to parse into the final request URI
-	 * @property _filters
-	 * @type Object
-	 * @private
-	 * @default {}
-	 */
-	this._filters = {};
+    
+</div>
 
-	/**
-	 * A hash of non-filter query parameters
-	 *
-	 * @property _params
-	 * @type Object
-	 * @private
-	 * @default {}
-	 */
-	this._params = {};
 
-	/**
-	 * A hash of values to assemble into the API request path
-	 *
-	 * @property _path
-	 * @type Object
-	 * @private
-	 * @default {}
-	 */
-	this._path = {};
 
-	/**
-	 * The URL template that will be used to assemble endpoint paths
-	 *
-	 * @property _template
-	 * @type String
-	 * @protected
-	 * @default &#x27;users(/:id)&#x27;
-	 */
-	this._template = &#x27;users(/:id)&#x27;;
+<div class="box intro">
+    <p>CollectionRequest extends WPRequest with properties &amp; methods for filtering collections
+via query parameters. It is the base constructor for most top-level WP instance methods.</p>
 
-	/**
-	 * @property _supportedMethods
-	 * @type Array
-	 * @private
-	 * @default [ &#x27;head&#x27;, &#x27;get&#x27;, &#x27;post&#x27; ]
-	 */
-	this._supportedMethods = [ &#x27;head&#x27;, &#x27;get&#x27;, &#x27;post&#x27; ];
+</div>
 
-	// Force authentication on all users requests
-	return this.auth();
-}
 
-inherit( UsersRequest, CollectionRequest );
 
-/**
- * A hash table of path keys and regex validators for those path elements
- *
- * @property _pathValidators
- * @type Object
- * @private
- */
-UsersRequest.prototype._pathValidators = {
+<div class="yui3-g">
+    <div class="yui3-u-1-2">
+        
+            <p>This module provides the following classes:</p>
 
-	/**
-	 * ID must be an integer or &quot;me&quot;
-	 *
-	 * @property _pathValidators.id
-	 * @type {RegExp}
-	 */
-	id: /(^\d+$|^me$)/
-};
+            <ul class="module-classes">
+            
+                <li class="module-class">
+                    <a href="../classes/CollectionRequest.html">
+                        CollectionRequest
+                    </a>
+                </li>
+            
+            </ul>
+        
+    </div>
 
-/**
- * @method me
- * @chainable
- * @return {UsersRequest} The UsersRequest instance (for chaining)
- */
-UsersRequest.prototype.me = function() {
-	this._path.id = &#x27;me&#x27;;
-	this._supportedMethods = [ &#x27;head&#x27;, &#x27;get&#x27; ];
-
-	return this;
-};
-
-/**
- * @method id
- * @chainable
- * @param {Number} id The integer ID of a user record
- * @return {UsersRequest} The UsersRequest instance (for chaining)
- */
-UsersRequest.prototype.id = function( id ) {
-	this._path.id = parseInt( id, 10 );
-	this._supportedMethods = [ &#x27;head&#x27;, &#x27;get&#x27;, &#x27;put&#x27;, &#x27;post&#x27;, &#x27;delete&#x27; ];
-
-	return this;
-};
-
-module.exports = UsersRequest;
-
-    </pre>
+    <div class="yui3-u-1-2">
+        
+    </div>
 </div>
 
             </div>

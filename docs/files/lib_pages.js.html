@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>lib/users.js - wordpress-rest-api</title>
+    <title>lib/pages.js - wordpress-rest-api</title>
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
     <link rel="shortcut icon" type="image/png" href="../assets/favicon.png">
@@ -94,32 +94,31 @@
 
         <div id="docs-main" class="apidocs">
             <div class="content container">
-                <h1 class="file-heading">File: lib/users.js</h1>
+                <h1 class="file-heading">File: lib/pages.js</h1>
 
 <div class="file">
     <pre class="code prettyprint linenums">
 &#x27;use strict&#x27;;
 /**
  * @module WP
- * @submodule UsersRequest
+ * @submodule PagesRequest
  * @beta
  */
 var CollectionRequest = require( &#x27;./shared/collection-request&#x27; );
 var inherit = require( &#x27;util&#x27; ).inherits;
 
 /**
- * UsersRequest extends CollectionRequest to handle the &#x60;/users&#x60; API endpoint. The &#x60;/users&#x60;
- * endpoint responds with a 401 error without authentication, so &#x60;users()&#x60; forces basic auth.
+ * PagesRequest extends CollectionRequest to handle the /posts API endpoint
  *
- * @class UsersRequest
+ * @class PagesRequest
  * @constructor
  * @extends CollectionRequest
- * @param {Object} options A hash of options for the UsersRequest instance
+ * @param {Object} options A hash of options for the PagesRequest instance
  * @param {String} options.endpoint The endpoint URI for the invoking WP instance
  * @param {String} [options.username] A username for authenticating API requests
  * @param {String} [options.password] A password for authenticating API requests
  */
-function UsersRequest( options ) {
+function PagesRequest( options ) {
 	/**
 	 * Configuration options for the request such as the endpoint for the invoking WP instance
 	 * @property _options
@@ -137,6 +136,15 @@ function UsersRequest( options ) {
 	 * @default {}
 	 */
 	this._filters = {};
+
+	/**
+	 * A hash of taxonomy terms to parse into the final request URI
+	 * @property _taxonomyFilters
+	 * @type Object
+	 * @private
+	 * @default {}
+	 */
+	this._taxonomyFilters = {};
 
 	/**
 	 * A hash of non-filter query parameters
@@ -163,10 +171,10 @@ function UsersRequest( options ) {
 	 *
 	 * @property _template
 	 * @type String
-	 * @protected
-	 * @default &#x27;users(/:id)&#x27;
+	 * @private
+	 * @default &#x27;pages(/:id)(/:action)(/:commentId)&#x27;
 	 */
-	this._template = &#x27;users(/:id)&#x27;;
+	this._template = &#x27;pages(/:id)(/:action)(/:commentId)&#x27;;
 
 	/**
 	 * @property _supportedMethods
@@ -175,12 +183,9 @@ function UsersRequest( options ) {
 	 * @default [ &#x27;head&#x27;, &#x27;get&#x27;, &#x27;post&#x27; ]
 	 */
 	this._supportedMethods = [ &#x27;head&#x27;, &#x27;get&#x27;, &#x27;post&#x27; ];
-
-	// Force authentication on all users requests
-	return this.auth();
 }
 
-inherit( UsersRequest, CollectionRequest );
+inherit( PagesRequest, CollectionRequest );
 
 /**
  * A hash table of path keys and regex validators for those path elements
@@ -189,43 +194,105 @@ inherit( UsersRequest, CollectionRequest );
  * @type Object
  * @private
  */
-UsersRequest.prototype._pathValidators = {
+PagesRequest.prototype._pathValidators = {
+
+	// No validation on &quot;id&quot;, since it can be a string path OR a numeric ID
 
 	/**
-	 * ID must be an integer or &quot;me&quot;
+	 * Action must be &#x27;comments&#x27; or &#x27;revisions&#x27;
 	 *
-	 * @property _pathValidators.id
+	 * @property _pathValidators.action
 	 * @type {RegExp}
+	 * @private
 	 */
-	id: /(^\d+$|^me$)/
+	action: /(comments|revisions)/,
+
+	/**
+	 * Comment ID must be an integer
+	 *
+	 * @property _pathValidators.commentId
+	 * @type {RegExp}
+	 * @private
+	 */
+	commentId: /^\d+$/
 };
 
 /**
- * @method me
+ * Specify a post ID to query
+ *
+ * @method id
  * @chainable
- * @return {UsersRequest} The UsersRequest instance (for chaining)
+ * @return {PagesRequest} The PagesRequest instance (for chaining)
  */
-UsersRequest.prototype.me = function() {
-	this._path.id = &#x27;me&#x27;;
+PagesRequest.prototype.id = function( id ) {
+	this._path.id = parseInt( id, 10 );
+
+	this._supportedMethods = [ &#x27;head&#x27;, &#x27;get&#x27;, &#x27;put&#x27;, &#x27;post&#x27;, &#x27;delete&#x27; ];
+
+	return this;
+};
+
+/**
+ * Specify that we are getting the comments for a specific page
+ *
+ * @method comments
+ * @chainable
+ * @return {PagesRequest} The PagesRequest instance (for chaining)
+ */
+PagesRequest.prototype.comments = function() {
+	this._path.action = &#x27;comments&#x27;;
 	this._supportedMethods = [ &#x27;head&#x27;, &#x27;get&#x27; ];
 
 	return this;
 };
 
 /**
- * @method id
+ * Specify a particular comment to retrieve
+ * (forces action &quot;comments&quot;)
+ *
+ * @method comment
  * @chainable
- * @param {Number} id The integer ID of a user record
- * @return {UsersRequest} The UsersRequest instance (for chaining)
+ * @param {Number} id The ID of the comment to retrieve
+ * @return {PagesRequest}
  */
-UsersRequest.prototype.id = function( id ) {
-	this._path.id = parseInt( id, 10 );
+PagesRequest.prototype.comment = function( id ) {
+	this._path.action = &#x27;comments&#x27;;
+	this._path.commentId = parseInt( id, 10 );
+	this._supportedMethods = [ &#x27;head&#x27;, &#x27;get&#x27;, &#x27;delete&#x27; ];
+
+	return this;
+};
+
+/**
+ * Specify that we are requesting the revisions for a specific post (forces basic auth)
+ *
+ * @method revisions
+ * @chainable
+ * @return {PagesRequest} The PagesRequest instance (for chaining)
+ */
+PagesRequest.prototype.revisions = function() {
+	this._path.action = &#x27;revisions&#x27;;
+	this._supportedMethods = [ &#x27;head&#x27;, &#x27;get&#x27; ];
+
+	return this.auth();
+};
+
+/**
+ * Specify that we are requesting a page by its path
+ *
+ * @method path
+ * @chainable
+ * @param {String} path The root-relative URL path for a page
+ * @return {PagesRequest} The PagesRequest instance (for chaining)
+ */
+PagesRequest.prototype.path = function( path ) {
+	this._path.id = path;
 	this._supportedMethods = [ &#x27;head&#x27;, &#x27;get&#x27;, &#x27;put&#x27;, &#x27;post&#x27;, &#x27;delete&#x27; ];
 
 	return this;
 };
 
-module.exports = UsersRequest;
+module.exports = PagesRequest;
 
     </pre>
 </div>

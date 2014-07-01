@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>UsersRequest - wordpress-rest-api</title>
+    <title>PagesRequest - wordpress-rest-api</title>
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
     <link rel="shortcut icon" type="image/png" href="../assets/favicon.png">
@@ -94,7 +94,7 @@
 
         <div id="docs-main" class="apidocs">
             <div class="content container">
-                <h1>UsersRequest Class</h1>
+                <h1>PagesRequest Class</h1>
 <div class="box meta">
     
 
@@ -106,13 +106,13 @@
 
     
         <div class="foundat">
-            Defined in: <a href="../files/lib_users.js.html#l10"><code>lib&#x2F;users.js:10</code></a>
+            Defined in: <a href="../files/lib_pages.js.html#l10"><code>lib&#x2F;pages.js:10</code></a>
         </div>
     
 
     
         
-            Module: <a href="../modules/UsersRequest.html">UsersRequest</a><br>
+            Module: <a href="../modules/PagesRequest.html">PagesRequest</a><br>
             Parent Module: <a href="../modules/WP.html">WP</a>
         
     
@@ -123,8 +123,7 @@
 
 
 <div class="box intro">
-    <p>UsersRequest extends CollectionRequest to handle the <code>/users</code> API endpoint. The <code>/users</code>
-endpoint responds with a 401 error without authentication, so <code>users()</code> forces basic auth.</p>
+    <p>PagesRequest extends CollectionRequest to handle the /posts API endpoint</p>
 
 </div>
 
@@ -195,8 +194,14 @@ endpoint responds with a 401 error without authentication, so <code>users()</cod
                     
                 </li>
             
-                <li class="index-item property">
-                    <a href="#property__pathValidators.id">_pathValidators.id</a>
+                <li class="index-item property private">
+                    <a href="#property__pathValidators.action">_pathValidators.action</a>
+
+                    
+                </li>
+            
+                <li class="index-item property private">
+                    <a href="#property__pathValidators.commentId">_pathValidators.commentId</a>
 
                     
                 </li>
@@ -213,7 +218,7 @@ endpoint responds with a 401 error without authentication, so <code>users()</cod
                     
                 </li>
             
-                <li class="index-item property protected inherited">
+                <li class="index-item property private inherited">
                     <a href="#property__template">_template</a>
 
                     
@@ -234,7 +239,7 @@ endpoint responds with a 401 error without authentication, so <code>users()</cod
 
             
                 <li class="index-item method constructor">
-                    <a href="#method_UsersRequest">UsersRequest</a>
+                    <a href="#method_PagesRequest">PagesRequest</a>
 
                     <span class="flag constructor">constructor</span>
 
@@ -300,6 +305,20 @@ endpoint responds with a 401 error without authentication, so <code>users()</cod
                     
                 </li>
             
+                <li class="index-item method">
+                    <a href="#method_comment">comment</a>
+
+                    
+                    
+                </li>
+            
+                <li class="index-item method">
+                    <a href="#method_comments">comments</a>
+
+                    
+                    
+                </li>
+            
                 <li class="index-item method inherited">
                     <a href="#method_context">context</a>
 
@@ -349,13 +368,6 @@ endpoint responds with a 401 error without authentication, so <code>users()</cod
                     
                 </li>
             
-                <li class="index-item method">
-                    <a href="#method_me">me</a>
-
-                    
-                    
-                </li>
-            
                 <li class="index-item method inherited">
                     <a href="#method_name">name</a>
 
@@ -377,6 +389,13 @@ endpoint responds with a 401 error without authentication, so <code>users()</cod
                     
                 </li>
             
+                <li class="index-item method">
+                    <a href="#method_path">path</a>
+
+                    
+                    
+                </li>
+            
                 <li class="index-item method inherited">
                     <a href="#method_post">post</a>
 
@@ -386,6 +405,13 @@ endpoint responds with a 401 error without authentication, so <code>users()</cod
             
                 <li class="index-item method inherited">
                     <a href="#method_put">put</a>
+
+                    
+                    
+                </li>
+            
+                <li class="index-item method">
+                    <a href="#method_revisions">revisions</a>
 
                     
                     
@@ -469,7 +495,7 @@ endpoint responds with a 401 error without authentication, so <code>users()</cod
             
         
         
-        <a href="../files/lib_users.js.html#l32"><code>lib&#x2F;users.js:32</code></a>
+        <a href="../files/lib_pages.js.html#l31"><code>lib&#x2F;pages.js:31</code></a>
         
         </p>
 
@@ -523,7 +549,7 @@ endpoint responds with a 401 error without authentication, so <code>users()</cod
             
         
         
-        <a href="../files/lib_users.js.html#l23"><code>lib&#x2F;users.js:23</code></a>
+        <a href="../files/lib_pages.js.html#l22"><code>lib&#x2F;pages.js:22</code></a>
         
         </p>
 
@@ -577,7 +603,7 @@ endpoint responds with a 401 error without authentication, so <code>users()</cod
             
         
         
-        <a href="../files/lib_users.js.html#l41"><code>lib&#x2F;users.js:41</code></a>
+        <a href="../files/lib_pages.js.html#l49"><code>lib&#x2F;pages.js:49</code></a>
         
         </p>
 
@@ -631,7 +657,7 @@ endpoint responds with a 401 error without authentication, so <code>users()</cod
             
         
         
-        <a href="../files/lib_users.js.html#l51"><code>lib&#x2F;users.js:51</code></a>
+        <a href="../files/lib_pages.js.html#l59"><code>lib&#x2F;pages.js:59</code></a>
         
         </p>
 
@@ -685,7 +711,7 @@ endpoint responds with a 401 error without authentication, so <code>users()</cod
             
         
         
-        <a href="../files/lib_users.js.html#l85"><code>lib&#x2F;users.js:85</code></a>
+        <a href="../files/lib_pages.js.html#l90"><code>lib&#x2F;pages.js:90</code></a>
         
         </p>
 
@@ -709,13 +735,15 @@ endpoint responds with a 401 error without authentication, so <code>users()</cod
 </div>
 
         
-            <a name="property__pathValidators.id" class="anchor-link"></a>
-<div class="property item">
-    <h3 class="name"><code>_pathValidators.id</code>
+            <a name="property__pathValidators.action" class="anchor-link"></a>
+<div class="property item private">
+    <h3 class="name"><code>_pathValidators.action</code>
     <span class="type">RegExp</span>
 
     
 
+    
+        <span class="flag private">private</span>
     
 
     
@@ -735,7 +763,7 @@ endpoint responds with a 401 error without authentication, so <code>users()</cod
             
         
         
-        <a href="../files/lib_users.js.html#l94"><code>lib&#x2F;users.js:94</code></a>
+        <a href="../files/lib_pages.js.html#l101"><code>lib&#x2F;pages.js:101</code></a>
         
         </p>
 
@@ -746,7 +774,59 @@ endpoint responds with a 401 error without authentication, so <code>users()</cod
 
     <div class="extended-detail">
         <div class="description">
-            <p>ID must be an integer or &quot;me&quot;</p>
+            <p>Action must be &#39;comments&#39; or &#39;revisions&#39;</p>
+
+        </div>
+
+        
+
+        
+
+        
+    </div>
+</div>
+
+        
+            <a name="property__pathValidators.commentId" class="anchor-link"></a>
+<div class="property item private">
+    <h3 class="name"><code>_pathValidators.commentId</code>
+    <span class="type">RegExp</span>
+
+    
+
+    
+        <span class="flag private">private</span>
+    
+
+    
+
+    
+
+    </h3>
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/lib_pages.js.html#l110"><code>lib&#x2F;pages.js:110</code></a>
+        
+        </p>
+
+        
+
+        
+    </div>
+
+    <div class="extended-detail">
+        <div class="description">
+            <p>Comment ID must be an integer</p>
 
         </div>
 
@@ -787,7 +867,7 @@ endpoint responds with a 401 error without authentication, so <code>users()</cod
             
         
         
-        <a href="../files/lib_users.js.html#l71"><code>lib&#x2F;users.js:71</code></a>
+        <a href="../files/lib_pages.js.html#l79"><code>lib&#x2F;pages.js:79</code></a>
         
         </p>
 
@@ -813,7 +893,7 @@ endpoint responds with a 401 error without authentication, so <code>users()</cod
 
         
             <a name="property__taxonomyFilters" class="anchor-link"></a>
-<div class="property item private inherited">
+<div class="property item private">
     <h3 class="name"><code>_taxonomyFilters</code>
     <span class="type">Object</span>
 
@@ -831,13 +911,16 @@ endpoint responds with a 401 error without authentication, so <code>users()</cod
 
     <div class="meta">
         
+            <p>Inherited from
+            <a href="../classes/CollectionRequest.html#property__taxonomyFilters" class="type">
+                CollectionRequest
+            </a>
             
-                <p>Inherited from
-                <a href="../classes/CollectionRequest.html#property__taxonomyFilters" class="type">CollectionRequest</a>:
+            but overwritten in
             
         
         
-        <a href="../files/lib_shared_collection-request.js.html#l50"><code>lib&#x2F;shared&#x2F;collection-request.js:50</code></a>
+        <a href="../files/lib_pages.js.html#l40"><code>lib&#x2F;pages.js:40</code></a>
         
         </p>
 
@@ -864,14 +947,14 @@ endpoint responds with a 401 error without authentication, so <code>users()</cod
 
         
             <a name="property__template" class="anchor-link"></a>
-<div class="property item protected">
+<div class="property item private">
     <h3 class="name"><code>_template</code>
     <span class="type">String</span>
 
     
 
     
-        <span class="flag protected">protected</span>
+        <span class="flag private">private</span>
     
 
     
@@ -891,7 +974,7 @@ endpoint responds with a 401 error without authentication, so <code>users()</cod
             
         
         
-        <a href="../files/lib_users.js.html#l61"><code>lib&#x2F;users.js:61</code></a>
+        <a href="../files/lib_pages.js.html#l69"><code>lib&#x2F;pages.js:69</code></a>
         
         </p>
 
@@ -907,7 +990,7 @@ endpoint responds with a 401 error without authentication, so <code>users()</cod
         </div>
 
         
-            <p class="default"><strong>Default:</strong> <span class="default-value">&#x27;users(/:id)&#x27;</span></p>
+            <p class="default"><strong>Default:</strong> <span class="default-value">&#x27;pages(/:id)(/:action)(/:commentId)&#x27;</span></p>
         
 
         
@@ -930,9 +1013,9 @@ endpoint responds with a 401 error without authentication, so <code>users()</cod
 
     <div class="constructor">
         <h2>Constructor</h2>
-        <a name="method_UsersRequest" class="anchor-link"></a>
+        <a name="method_PagesRequest" class="anchor-link"></a>
 <div class="method item">
-    <h3 class="name"><code>UsersRequest</code>
+    <h3 class="name"><code>PagesRequest</code>
 
     
         <div class="args">
@@ -975,7 +1058,7 @@ endpoint responds with a 401 error without authentication, so <code>users()</cod
             
         
         
-        <a href="../files/lib_users.js.html#l10"><code>lib&#x2F;users.js:10</code></a>
+        <a href="../files/lib_pages.js.html#l10"><code>lib&#x2F;pages.js:10</code></a>
         
         </p>
 
@@ -1006,7 +1089,7 @@ endpoint responds with a 401 error without authentication, so <code>users()</cod
                         
 
                         <div class="param-description">
-                            <p>A hash of options for the UsersRequest instance</p>
+                            <p>A hash of options for the PagesRequest instance</p>
 
                         </div>
 
@@ -1935,6 +2018,201 @@ This method will replace any previous &#39;author&#39; query parameters that had
 </div>
 
         
+            <a name="method_comment" class="anchor-link"></a>
+<div class="method item">
+    <h3 class="name"><code>comment</code>
+
+    
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code>id</code>
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
+    
+
+    
+        <span class="returns-inline">
+            <span class="type"><a href="../classes/PagesRequest.html" class="crosslink">PagesRequest</a></span>
+        </span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <span class="flag chainable">chainable</span>
+    
+
+    
+
+    </h3>
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/lib_pages.js.html#l149"><code>lib&#x2F;pages.js:149</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="extended-detail">
+
+        <div class="description">
+            <p>Specify a particular comment to retrieve
+(forces action &quot;comments&quot;)</p>
+
+        </div>
+
+        
+            <div class="params">
+                <h4>Parameters:</h4>
+
+                <ul class="params-list">
+                
+                    <li class="param">
+                        
+                            <code class="param-name">id</code>
+                            <span class="type">Number</span>
+                        
+
+                        
+
+                        <div class="param-description">
+                            <p>The ID of the comment to retrieve</p>
+
+                        </div>
+
+                        
+                    </li>
+                
+                </ul>
+            </div>
+        
+
+        
+            <div class="returns">
+                <h4>Returns:</h4>
+
+                <div class="returns-description">
+                    
+                        
+                            <span class="type"><a href="../classes/PagesRequest.html" class="crosslink">PagesRequest</a></span>:
+                        
+                    
+                </div>
+            </div>
+        
+
+        
+    </div>
+</div>
+
+        
+            <a name="method_comments" class="anchor-link"></a>
+<div class="method item">
+    <h3 class="name"><code>comments</code>
+
+    
+        <span class="paren">()</span>
+    
+
+    
+        <span class="returns-inline">
+            <span class="type"><a href="../classes/PagesRequest.html" class="crosslink">PagesRequest</a></span>
+        </span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <span class="flag chainable">chainable</span>
+    
+
+    
+
+    </h3>
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/lib_pages.js.html#l135"><code>lib&#x2F;pages.js:135</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="extended-detail">
+
+        <div class="description">
+            <p>Specify that we are getting the comments for a specific page</p>
+
+        </div>
+
+        
+
+        
+            <div class="returns">
+                <h4>Returns:</h4>
+
+                <div class="returns-description">
+                    
+                        
+                            <span class="type"><a href="../classes/PagesRequest.html" class="crosslink">PagesRequest</a></span>:
+                        
+                        <p>The PagesRequest instance (for chaining)</p>
+
+                    
+                </div>
+            </div>
+        
+
+        
+    </div>
+</div>
+
+        
             <a name="method_context" class="anchor-link"></a>
 <div class="method item inherited">
     <h3 class="name"><code>context</code>
@@ -2719,126 +2997,12 @@ wp.filter( &#39;post_status&#39;, &#39;publish&#39; ).filter( &#39;category_name
     <h3 class="name"><code>id</code>
 
     
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-            
-                <li class="arg">
-                    
-                        <code>id</code>
-                    
-                </li>
-            
-            </ul><span class="paren">)</span>
-        </div>
-    
-
-    
-        <span class="returns-inline">
-            <span class="type"><a href="../classes/UsersRequest.html" class="crosslink">UsersRequest</a></span>
-        </span>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-        <span class="flag chainable">chainable</span>
-    
-
-    
-
-    </h3>
-
-    <div class="meta">
-        
-            
-                
-                <p>
-                
-                Defined in
-                
-            
-        
-        
-        <a href="../files/lib_users.js.html#l115"><code>lib&#x2F;users.js:115</code></a>
-        
-        </p>
-
-
-        
-
-        
-    </div>
-
-    <div class="extended-detail">
-
-        <div class="description">
-            
-        </div>
-
-        
-            <div class="params">
-                <h4>Parameters:</h4>
-
-                <ul class="params-list">
-                
-                    <li class="param">
-                        
-                            <code class="param-name">id</code>
-                            <span class="type">Number</span>
-                        
-
-                        
-
-                        <div class="param-description">
-                            <p>The integer ID of a user record</p>
-
-                        </div>
-
-                        
-                    </li>
-                
-                </ul>
-            </div>
-        
-
-        
-            <div class="returns">
-                <h4>Returns:</h4>
-
-                <div class="returns-description">
-                    
-                        
-                            <span class="type"><a href="../classes/UsersRequest.html" class="crosslink">UsersRequest</a></span>:
-                        
-                        <p>The UsersRequest instance (for chaining)</p>
-
-                    
-                </div>
-            </div>
-        
-
-        
-    </div>
-</div>
-
-        
-            <a name="method_me" class="anchor-link"></a>
-<div class="method item">
-    <h3 class="name"><code>me</code>
-
-    
         <span class="paren">()</span>
     
 
     
         <span class="returns-inline">
-            <span class="type"><a href="../classes/UsersRequest.html" class="crosslink">UsersRequest</a></span>
+            <span class="type"><a href="../classes/PagesRequest.html" class="crosslink">PagesRequest</a></span>
         </span>
     
 
@@ -2869,7 +3033,7 @@ wp.filter( &#39;post_status&#39;, &#39;publish&#39; ).filter( &#39;category_name
             
         
         
-        <a href="../files/lib_users.js.html#l103"><code>lib&#x2F;users.js:103</code></a>
+        <a href="../files/lib_pages.js.html#l120"><code>lib&#x2F;pages.js:120</code></a>
         
         </p>
 
@@ -2882,7 +3046,8 @@ wp.filter( &#39;post_status&#39;, &#39;publish&#39; ).filter( &#39;category_name
     <div class="extended-detail">
 
         <div class="description">
-            
+            <p>Specify a post ID to query</p>
+
         </div>
 
         
@@ -2894,9 +3059,9 @@ wp.filter( &#39;post_status&#39;, &#39;publish&#39; ).filter( &#39;category_name
                 <div class="returns-description">
                     
                         
-                            <span class="type"><a href="../classes/UsersRequest.html" class="crosslink">UsersRequest</a></span>:
+                            <span class="type"><a href="../classes/PagesRequest.html" class="crosslink">PagesRequest</a></span>:
                         
-                        <p>The UsersRequest instance (for chaining)</p>
+                        <p>The PagesRequest instance (for chaining)</p>
 
                     
                 </div>
@@ -3293,6 +3458,121 @@ retrieved from the response&#39;s .)</p>
 </div>
 
         
+            <a name="method_path" class="anchor-link"></a>
+<div class="method item">
+    <h3 class="name"><code>path</code>
+
+    
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code>path</code>
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
+    
+
+    
+        <span class="returns-inline">
+            <span class="type"><a href="../classes/PagesRequest.html" class="crosslink">PagesRequest</a></span>
+        </span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <span class="flag chainable">chainable</span>
+    
+
+    
+
+    </h3>
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/lib_pages.js.html#l180"><code>lib&#x2F;pages.js:180</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="extended-detail">
+
+        <div class="description">
+            <p>Specify that we are requesting a page by its path</p>
+
+        </div>
+
+        
+            <div class="params">
+                <h4>Parameters:</h4>
+
+                <ul class="params-list">
+                
+                    <li class="param">
+                        
+                            <code class="param-name">path</code>
+                            <span class="type">String</span>
+                        
+
+                        
+
+                        <div class="param-description">
+                            <p>The root-relative URL path for a page</p>
+
+                        </div>
+
+                        
+                    </li>
+                
+                </ul>
+            </div>
+        
+
+        
+            <div class="returns">
+                <h4>Returns:</h4>
+
+                <div class="returns-description">
+                    
+                        
+                            <span class="type"><a href="../classes/PagesRequest.html" class="crosslink">PagesRequest</a></span>:
+                        
+                        <p>The PagesRequest instance (for chaining)</p>
+
+                    
+                </div>
+            </div>
+        
+
+        
+    </div>
+</div>
+
+        
             <a name="method_post" class="anchor-link"></a>
 <div class="method item inherited">
     <h3 class="name"><code>post</code>
@@ -3614,6 +3894,87 @@ retrieved from the response&#39;s .)</p>
                             <span class="type">Promise</span>:
                         
                         <p>A promise to the results of the HTTP request</p>
+
+                    
+                </div>
+            </div>
+        
+
+        
+    </div>
+</div>
+
+        
+            <a name="method_revisions" class="anchor-link"></a>
+<div class="method item">
+    <h3 class="name"><code>revisions</code>
+
+    
+        <span class="paren">()</span>
+    
+
+    
+        <span class="returns-inline">
+            <span class="type"><a href="../classes/PagesRequest.html" class="crosslink">PagesRequest</a></span>
+        </span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <span class="flag chainable">chainable</span>
+    
+
+    
+
+    </h3>
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/lib_pages.js.html#l166"><code>lib&#x2F;pages.js:166</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="extended-detail">
+
+        <div class="description">
+            <p>Specify that we are requesting the revisions for a specific post (forces basic auth)</p>
+
+        </div>
+
+        
+
+        
+            <div class="returns">
+                <h4>Returns:</h4>
+
+                <div class="returns-description">
+                    
+                        
+                            <span class="type"><a href="../classes/PagesRequest.html" class="crosslink">PagesRequest</a></span>:
+                        
+                        <p>The PagesRequest instance (for chaining)</p>
 
                     
                 </div>

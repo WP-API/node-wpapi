@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>UsersRequest - wordpress-rest-api</title>
+    <title>CollectionRequest - wordpress-rest-api</title>
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
     <link rel="shortcut icon" type="image/png" href="../assets/favicon.png">
@@ -94,25 +94,25 @@
 
         <div id="docs-main" class="apidocs">
             <div class="content container">
-                <h1>UsersRequest Class</h1>
+                <h1>CollectionRequest Class</h1>
 <div class="box meta">
     
 
     
         <div class="extends">
-            Extends <a href="../classes/CollectionRequest.html" class="crosslink">CollectionRequest</a>
+            Extends <a href="../classes/WPRequest.html" class="crosslink">WPRequest</a>
         </div>
     
 
     
         <div class="foundat">
-            Defined in: <a href="../files/lib_users.js.html#l10"><code>lib&#x2F;users.js:10</code></a>
+            Defined in: <a href="../files/lib_shared_collection-request.js.html#l14"><code>lib&#x2F;shared&#x2F;collection-request.js:14</code></a>
         </div>
     
 
     
         
-            Module: <a href="../modules/UsersRequest.html">UsersRequest</a><br>
+            Module: <a href="../modules/CollectionRequest.html">CollectionRequest</a><br>
             Parent Module: <a href="../modules/WP.html">WP</a>
         
     
@@ -123,8 +123,8 @@
 
 
 <div class="box intro">
-    <p>UsersRequest extends CollectionRequest to handle the <code>/users</code> API endpoint. The <code>/users</code>
-endpoint responds with a 401 error without authentication, so <code>users()</code> forces basic auth.</p>
+    <p>CollectionRequest extends WPRequest with properties &amp; methods for filtering collections
+via query parameters. It is the base constructor for most top-level WP instance methods.</p>
 
 </div>
 
@@ -165,7 +165,7 @@ endpoint responds with a 401 error without authentication, so <code>users()</cod
 
         <ul class="index-list properties extends">
             
-                <li class="index-item property private inherited">
+                <li class="index-item property private">
                     <a href="#property__filters">_filters</a>
 
                     
@@ -177,7 +177,7 @@ endpoint responds with a 401 error without authentication, so <code>users()</cod
                     
                 </li>
             
-                <li class="index-item property private inherited">
+                <li class="index-item property private">
                     <a href="#property__params">_params</a>
 
                     
@@ -189,31 +189,19 @@ endpoint responds with a 401 error without authentication, so <code>users()</cod
                     
                 </li>
             
-                <li class="index-item property private">
-                    <a href="#property__pathValidators">_pathValidators</a>
-
-                    
-                </li>
-            
-                <li class="index-item property">
-                    <a href="#property__pathValidators.id">_pathValidators.id</a>
-
-                    
-                </li>
-            
                 <li class="index-item property private inherited">
                     <a href="#property__supportedMethods">_supportedMethods</a>
 
                     
                 </li>
             
-                <li class="index-item property private inherited">
+                <li class="index-item property private">
                     <a href="#property__taxonomyFilters">_taxonomyFilters</a>
 
                     
                 </li>
             
-                <li class="index-item property protected inherited">
+                <li class="index-item property private inherited">
                     <a href="#property__template">_template</a>
 
                     
@@ -234,7 +222,7 @@ endpoint responds with a 401 error without authentication, so <code>users()</cod
 
             
                 <li class="index-item method constructor">
-                    <a href="#method_UsersRequest">UsersRequest</a>
+                    <a href="#method_CollectionRequest">CollectionRequest</a>
 
                     <span class="flag constructor">constructor</span>
 
@@ -265,7 +253,7 @@ endpoint responds with a 401 error without authentication, so <code>users()</cod
                     
                 </li>
             
-                <li class="index-item method private inherited">
+                <li class="index-item method private">
                     <a href="#method__renderQuery">_renderQuery</a>
 
                     
@@ -286,21 +274,21 @@ endpoint responds with a 401 error without authentication, so <code>users()</cod
                     
                 </li>
             
-                <li class="index-item method inherited">
+                <li class="index-item method">
                     <a href="#method_author">author</a>
 
                     
                     
                 </li>
             
-                <li class="index-item method inherited">
+                <li class="index-item method">
                     <a href="#method_category">category</a>
 
                     
                     
                 </li>
             
-                <li class="index-item method inherited">
+                <li class="index-item method">
                     <a href="#method_context">context</a>
 
                     
@@ -314,14 +302,14 @@ endpoint responds with a 401 error without authentication, so <code>users()</cod
                     
                 </li>
             
-                <li class="index-item method inherited">
+                <li class="index-item method">
                     <a href="#method_edit">edit</a>
 
                     
                     
                 </li>
             
-                <li class="index-item method inherited">
+                <li class="index-item method">
                     <a href="#method_filter">filter</a>
 
                     
@@ -343,34 +331,20 @@ endpoint responds with a 401 error without authentication, so <code>users()</cod
                 </li>
             
                 <li class="index-item method">
-                    <a href="#method_id">id</a>
-
-                    
-                    
-                </li>
-            
-                <li class="index-item method">
-                    <a href="#method_me">me</a>
-
-                    
-                    
-                </li>
-            
-                <li class="index-item method inherited">
                     <a href="#method_name">name</a>
 
                     
                     
                 </li>
             
-                <li class="index-item method inherited">
+                <li class="index-item method">
                     <a href="#method_page">page</a>
 
                     
                     
                 </li>
             
-                <li class="index-item method inherited">
+                <li class="index-item method">
                     <a href="#method_param">param</a>
 
                     
@@ -391,28 +365,28 @@ endpoint responds with a 401 error without authentication, so <code>users()</cod
                     
                 </li>
             
-                <li class="index-item method inherited">
+                <li class="index-item method">
                     <a href="#method_search">search</a>
 
                     
                     
                 </li>
             
-                <li class="index-item method inherited">
+                <li class="index-item method">
                     <a href="#method_slug">slug</a>
 
                     
                     
                 </li>
             
-                <li class="index-item method inherited">
+                <li class="index-item method">
                     <a href="#method_tag">tag</a>
 
                     
                     
                 </li>
             
-                <li class="index-item method inherited">
+                <li class="index-item method">
                     <a href="#method_taxonomy">taxonomy</a>
 
                     
@@ -460,16 +434,16 @@ endpoint responds with a 401 error without authentication, so <code>users()</cod
 
     <div class="meta">
         
-            <p>Inherited from
-            <a href="../classes/CollectionRequest.html#property__filters" class="type">
-                CollectionRequest
-            </a>
             
-            but overwritten in
+                
+                <p>
+                
+                Defined in
+                
             
         
         
-        <a href="../files/lib_users.js.html#l32"><code>lib&#x2F;users.js:32</code></a>
+        <a href="../files/lib_shared_collection-request.js.html#l41"><code>lib&#x2F;shared&#x2F;collection-request.js:41</code></a>
         
         </p>
 
@@ -523,7 +497,7 @@ endpoint responds with a 401 error without authentication, so <code>users()</cod
             
         
         
-        <a href="../files/lib_users.js.html#l23"><code>lib&#x2F;users.js:23</code></a>
+        <a href="../files/lib_shared_collection-request.js.html#l32"><code>lib&#x2F;shared&#x2F;collection-request.js:32</code></a>
         
         </p>
 
@@ -568,16 +542,16 @@ endpoint responds with a 401 error without authentication, so <code>users()</cod
 
     <div class="meta">
         
-            <p>Inherited from
-            <a href="../classes/CollectionRequest.html#property__params" class="type">
-                CollectionRequest
-            </a>
             
-            but overwritten in
+                
+                <p>
+                
+                Defined in
+                
             
         
         
-        <a href="../files/lib_users.js.html#l41"><code>lib&#x2F;users.js:41</code></a>
+        <a href="../files/lib_shared_collection-request.js.html#l59"><code>lib&#x2F;shared&#x2F;collection-request.js:59</code></a>
         
         </p>
 
@@ -588,7 +562,8 @@ endpoint responds with a 401 error without authentication, so <code>users()</cod
 
     <div class="extended-detail">
         <div class="description">
-            <p>A hash of non-filter query parameters</p>
+            <p>A hash of non-filter query parameters
+This is used to store the query values for Type, Page &amp; Context</p>
 
         </div>
 
@@ -631,7 +606,7 @@ endpoint responds with a 401 error without authentication, so <code>users()</cod
             
         
         
-        <a href="../files/lib_users.js.html#l51"><code>lib&#x2F;users.js:51</code></a>
+        <a href="../files/lib_shared_collection-request.js.html#l70"><code>lib&#x2F;shared&#x2F;collection-request.js:70</code></a>
         
         </p>
 
@@ -648,108 +623,6 @@ endpoint responds with a 401 error without authentication, so <code>users()</cod
 
         
             <p class="default"><strong>Default:</strong> <span class="default-value">{}</span></p>
-        
-
-        
-
-        
-    </div>
-</div>
-
-        
-            <a name="property__pathValidators" class="anchor-link"></a>
-<div class="property item private">
-    <h3 class="name"><code>_pathValidators</code>
-    <span class="type">Object</span>
-
-    
-
-    
-        <span class="flag private">private</span>
-    
-
-    
-
-    
-
-    </h3>
-
-    <div class="meta">
-        
-            
-                
-                <p>
-                
-                Defined in
-                
-            
-        
-        
-        <a href="../files/lib_users.js.html#l85"><code>lib&#x2F;users.js:85</code></a>
-        
-        </p>
-
-        
-
-        
-    </div>
-
-    <div class="extended-detail">
-        <div class="description">
-            <p>A hash table of path keys and regex validators for those path elements</p>
-
-        </div>
-
-        
-
-        
-
-        
-    </div>
-</div>
-
-        
-            <a name="property__pathValidators.id" class="anchor-link"></a>
-<div class="property item">
-    <h3 class="name"><code>_pathValidators.id</code>
-    <span class="type">RegExp</span>
-
-    
-
-    
-
-    
-
-    
-
-    </h3>
-
-    <div class="meta">
-        
-            
-                
-                <p>
-                
-                Defined in
-                
-            
-        
-        
-        <a href="../files/lib_users.js.html#l94"><code>lib&#x2F;users.js:94</code></a>
-        
-        </p>
-
-        
-
-        
-    </div>
-
-    <div class="extended-detail">
-        <div class="description">
-            <p>ID must be an integer or &quot;me&quot;</p>
-
-        </div>
-
         
 
         
@@ -787,7 +660,7 @@ endpoint responds with a 401 error without authentication, so <code>users()</cod
             
         
         
-        <a href="../files/lib_users.js.html#l71"><code>lib&#x2F;users.js:71</code></a>
+        <a href="../files/lib_shared_collection-request.js.html#l90"><code>lib&#x2F;shared&#x2F;collection-request.js:90</code></a>
         
         </p>
 
@@ -798,11 +671,12 @@ endpoint responds with a 401 error without authentication, so <code>users()</cod
 
     <div class="extended-detail">
         <div class="description">
-            
+            <p>An array of supported methods; to be overridden by descendent constructors</p>
+
         </div>
 
         
-            <p class="default"><strong>Default:</strong> <span class="default-value">[ &#x27;head&#x27;, &#x27;get&#x27;, &#x27;post&#x27; ]</span></p>
+            <p class="default"><strong>Default:</strong> <span class="default-value">[ &#x27;head&#x27;, &#x27;get&#x27;, &#x27;put&#x27;, &#x27;post&#x27;, &#x27;delete&#x27; ]</span></p>
         
 
         
@@ -813,7 +687,7 @@ endpoint responds with a 401 error without authentication, so <code>users()</cod
 
         
             <a name="property__taxonomyFilters" class="anchor-link"></a>
-<div class="property item private inherited">
+<div class="property item private">
     <h3 class="name"><code>_taxonomyFilters</code>
     <span class="type">Object</span>
 
@@ -832,8 +706,11 @@ endpoint responds with a 401 error without authentication, so <code>users()</cod
     <div class="meta">
         
             
-                <p>Inherited from
-                <a href="../classes/CollectionRequest.html#property__taxonomyFilters" class="type">CollectionRequest</a>:
+                
+                <p>
+                
+                Defined in
+                
             
         
         
@@ -864,14 +741,14 @@ endpoint responds with a 401 error without authentication, so <code>users()</cod
 
         
             <a name="property__template" class="anchor-link"></a>
-<div class="property item protected">
+<div class="property item private">
     <h3 class="name"><code>_template</code>
     <span class="type">String</span>
 
     
 
     
-        <span class="flag protected">protected</span>
+        <span class="flag private">private</span>
     
 
     
@@ -891,7 +768,7 @@ endpoint responds with a 401 error without authentication, so <code>users()</cod
             
         
         
-        <a href="../files/lib_users.js.html#l61"><code>lib&#x2F;users.js:61</code></a>
+        <a href="../files/lib_shared_collection-request.js.html#l80"><code>lib&#x2F;shared&#x2F;collection-request.js:80</code></a>
         
         </p>
 
@@ -907,7 +784,7 @@ endpoint responds with a 401 error without authentication, so <code>users()</cod
         </div>
 
         
-            <p class="default"><strong>Default:</strong> <span class="default-value">&#x27;users(/:id)&#x27;</span></p>
+            <p class="default"><strong>Default:</strong> <span class="default-value">&#x27;&#x27;</span></p>
         
 
         
@@ -930,9 +807,9 @@ endpoint responds with a 401 error without authentication, so <code>users()</cod
 
     <div class="constructor">
         <h2>Constructor</h2>
-        <a name="method_UsersRequest" class="anchor-link"></a>
+        <a name="method_CollectionRequest" class="anchor-link"></a>
 <div class="method item">
-    <h3 class="name"><code>UsersRequest</code>
+    <h3 class="name"><code>CollectionRequest</code>
 
     
         <div class="args">
@@ -975,7 +852,7 @@ endpoint responds with a 401 error without authentication, so <code>users()</cod
             
         
         
-        <a href="../files/lib_users.js.html#l10"><code>lib&#x2F;users.js:10</code></a>
+        <a href="../files/lib_shared_collection-request.js.html#l14"><code>lib&#x2F;shared&#x2F;collection-request.js:14</code></a>
         
         </p>
 
@@ -1006,7 +883,7 @@ endpoint responds with a 401 error without authentication, so <code>users()</cod
                         
 
                         <div class="param-description">
-                            <p>A hash of options for the UsersRequest instance</p>
+                            <p>A hash of options for the CollectionRequest instance</p>
 
                         </div>
 
@@ -1406,7 +1283,7 @@ endpoint responds with a 401 error without authentication, so <code>users()</cod
 
         
             <a name="method__renderQuery" class="anchor-link"></a>
-<div class="method item private inherited">
+<div class="method item private">
     <h3 class="name"><code>_renderQuery</code>
 
     
@@ -1438,8 +1315,11 @@ endpoint responds with a 401 error without authentication, so <code>users()</cod
     <div class="meta">
         
             
-                <p>Inherited from
-                <a href="../classes/CollectionRequest.html#method__renderQuery" class="type">CollectionRequest</a>:
+                
+                <p>
+                
+                Defined in
+                
             
         
         
@@ -1697,8 +1577,8 @@ endpoint responds with a 401 error without authentication, so <code>users()</cod
                 <h4>Example:</h4>
 
                 <div class="example-content">
-                    <p><p><p>If auth credentials were already specified when the WP instance was created, calling
-<code>.auth</code> on the request chain will set that request to use the existing credentials:</p></p></p>
+                    <p>If auth credentials were already specified when the WP instance was created, calling
+<code>.auth</code> on the request chain will set that request to use the existing credentials:</p>
 <pre class="code prettyprint"><code>request.auth().get...</code></pre>
 <p>Alternatively, a username &amp; password can be explicitly passed into <code>.auth</code>:</p>
 <pre class="code prettyprint"><code>request.auth( &#39;username&#39;, &#39;password&#39; ).get...</code></pre>
@@ -1711,7 +1591,7 @@ endpoint responds with a 401 error without authentication, so <code>users()</cod
 
         
             <a name="method_author" class="anchor-link"></a>
-<div class="method item inherited">
+<div class="method item">
     <h3 class="name"><code>author</code>
 
     
@@ -1753,8 +1633,11 @@ endpoint responds with a 401 error without authentication, so <code>users()</cod
     <div class="meta">
         
             
-                <p>Inherited from
-                <a href="../classes/CollectionRequest.html#method_author" class="type">CollectionRequest</a>:
+                
+                <p>
+                
+                Defined in
+                
             
         
         
@@ -1824,7 +1707,7 @@ This method will replace any previous &#39;author&#39; query parameters that had
 
         
             <a name="method_category" class="anchor-link"></a>
-<div class="method item inherited">
+<div class="method item">
     <h3 class="name"><code>category</code>
 
     
@@ -1866,8 +1749,11 @@ This method will replace any previous &#39;author&#39; query parameters that had
     <div class="meta">
         
             
-                <p>Inherited from
-                <a href="../classes/CollectionRequest.html#method_category" class="type">CollectionRequest</a>:
+                
+                <p>
+                
+                Defined in
+                
             
         
         
@@ -1936,7 +1822,7 @@ This method will replace any previous &#39;author&#39; query parameters that had
 
         
             <a name="method_context" class="anchor-link"></a>
-<div class="method item inherited">
+<div class="method item">
     <h3 class="name"><code>context</code>
 
     
@@ -1978,8 +1864,11 @@ This method will replace any previous &#39;author&#39; query parameters that had
     <div class="meta">
         
             
-                <p>Inherited from
-                <a href="../classes/CollectionRequest.html#method_context" class="type">CollectionRequest</a>:
+                
+                <p>
+                
+                Defined in
+                
             
         
         
@@ -2193,7 +2082,7 @@ object, by setting the context to &quot;edit&quot;.</p>
 
         
             <a name="method_edit" class="anchor-link"></a>
-<div class="method item inherited">
+<div class="method item">
     <h3 class="name"><code>edit</code>
 
     
@@ -2225,8 +2114,11 @@ object, by setting the context to &quot;edit&quot;.</p>
     <div class="meta">
         
             
-                <p>Inherited from
-                <a href="../classes/CollectionRequest.html#method_edit" class="type">CollectionRequest</a>:
+                
+                <p>
+                
+                Defined in
+                
             
         
         
@@ -2271,7 +2163,7 @@ object, by setting the context to &quot;edit&quot;.</p>
 
         
             <a name="method_filter" class="anchor-link"></a>
-<div class="method item inherited">
+<div class="method item">
     <h3 class="name"><code>filter</code>
 
     
@@ -2319,8 +2211,11 @@ object, by setting the context to &quot;edit&quot;.</p>
     <div class="meta">
         
             
-                <p>Inherited from
-                <a href="../classes/CollectionRequest.html#method_filter" class="type">CollectionRequest</a>:
+                
+                <p>
+                
+                Defined in
+                
             
         
         
@@ -2714,202 +2609,8 @@ wp.filter( &#39;post_status&#39;, &#39;publish&#39; ).filter( &#39;category_name
 </div>
 
         
-            <a name="method_id" class="anchor-link"></a>
-<div class="method item">
-    <h3 class="name"><code>id</code>
-
-    
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-            
-                <li class="arg">
-                    
-                        <code>id</code>
-                    
-                </li>
-            
-            </ul><span class="paren">)</span>
-        </div>
-    
-
-    
-        <span class="returns-inline">
-            <span class="type"><a href="../classes/UsersRequest.html" class="crosslink">UsersRequest</a></span>
-        </span>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-        <span class="flag chainable">chainable</span>
-    
-
-    
-
-    </h3>
-
-    <div class="meta">
-        
-            
-                
-                <p>
-                
-                Defined in
-                
-            
-        
-        
-        <a href="../files/lib_users.js.html#l115"><code>lib&#x2F;users.js:115</code></a>
-        
-        </p>
-
-
-        
-
-        
-    </div>
-
-    <div class="extended-detail">
-
-        <div class="description">
-            
-        </div>
-
-        
-            <div class="params">
-                <h4>Parameters:</h4>
-
-                <ul class="params-list">
-                
-                    <li class="param">
-                        
-                            <code class="param-name">id</code>
-                            <span class="type">Number</span>
-                        
-
-                        
-
-                        <div class="param-description">
-                            <p>The integer ID of a user record</p>
-
-                        </div>
-
-                        
-                    </li>
-                
-                </ul>
-            </div>
-        
-
-        
-            <div class="returns">
-                <h4>Returns:</h4>
-
-                <div class="returns-description">
-                    
-                        
-                            <span class="type"><a href="../classes/UsersRequest.html" class="crosslink">UsersRequest</a></span>:
-                        
-                        <p>The UsersRequest instance (for chaining)</p>
-
-                    
-                </div>
-            </div>
-        
-
-        
-    </div>
-</div>
-
-        
-            <a name="method_me" class="anchor-link"></a>
-<div class="method item">
-    <h3 class="name"><code>me</code>
-
-    
-        <span class="paren">()</span>
-    
-
-    
-        <span class="returns-inline">
-            <span class="type"><a href="../classes/UsersRequest.html" class="crosslink">UsersRequest</a></span>
-        </span>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-        <span class="flag chainable">chainable</span>
-    
-
-    
-
-    </h3>
-
-    <div class="meta">
-        
-            
-                
-                <p>
-                
-                Defined in
-                
-            
-        
-        
-        <a href="../files/lib_users.js.html#l103"><code>lib&#x2F;users.js:103</code></a>
-        
-        </p>
-
-
-        
-
-        
-    </div>
-
-    <div class="extended-detail">
-
-        <div class="description">
-            
-        </div>
-
-        
-
-        
-            <div class="returns">
-                <h4>Returns:</h4>
-
-                <div class="returns-description">
-                    
-                        
-                            <span class="type"><a href="../classes/UsersRequest.html" class="crosslink">UsersRequest</a></span>:
-                        
-                        <p>The UsersRequest instance (for chaining)</p>
-
-                    
-                </div>
-            </div>
-        
-
-        
-    </div>
-</div>
-
-        
             <a name="method_name" class="anchor-link"></a>
-<div class="method item inherited">
+<div class="method item">
     <h3 class="name"><code>name</code>
 
     
@@ -2951,8 +2652,11 @@ wp.filter( &#39;post_status&#39;, &#39;publish&#39; ).filter( &#39;category_name
     <div class="meta">
         
             
-                <p>Inherited from
-                <a href="../classes/CollectionRequest.html#method_name" class="type">CollectionRequest</a>:
+                
+                <p>
+                
+                Defined in
+                
             
         
         
@@ -3021,7 +2725,7 @@ wp.filter( &#39;post_status&#39;, &#39;publish&#39; ).filter( &#39;category_name
 
         
             <a name="method_page" class="anchor-link"></a>
-<div class="method item inherited">
+<div class="method item">
     <h3 class="name"><code>page</code>
 
     
@@ -3063,8 +2767,11 @@ wp.filter( &#39;post_status&#39;, &#39;publish&#39; ).filter( &#39;category_name
     <div class="meta">
         
             
-                <p>Inherited from
-                <a href="../classes/CollectionRequest.html#method_page" class="type">CollectionRequest</a>:
+                
+                <p>
+                
+                Defined in
+                
             
         
         
@@ -3135,7 +2842,7 @@ retrieved from the response&#39;s .)</p>
 
         
             <a name="method_param" class="anchor-link"></a>
-<div class="method item inherited">
+<div class="method item">
     <h3 class="name"><code>param</code>
 
     
@@ -3189,8 +2896,11 @@ retrieved from the response&#39;s .)</p>
     <div class="meta">
         
             
-                <p>Inherited from
-                <a href="../classes/CollectionRequest.html#method_param" class="type">CollectionRequest</a>:
+                
+                <p>
+                
+                Defined in
+                
             
         
         
@@ -3626,7 +3336,7 @@ retrieved from the response&#39;s .)</p>
 
         
             <a name="method_search" class="anchor-link"></a>
-<div class="method item inherited">
+<div class="method item">
     <h3 class="name"><code>search</code>
 
     
@@ -3666,8 +3376,11 @@ retrieved from the response&#39;s .)</p>
     <div class="meta">
         
             
-                <p>Inherited from
-                <a href="../classes/CollectionRequest.html#method_search" class="type">CollectionRequest</a>:
+                
+                <p>
+                
+                Defined in
+                
             
         
         
@@ -3736,7 +3449,7 @@ retrieved from the response&#39;s .)</p>
 
         
             <a name="method_slug" class="anchor-link"></a>
-<div class="method item inherited">
+<div class="method item">
     <h3 class="name"><code>slug</code>
 
     
@@ -3778,8 +3491,11 @@ retrieved from the response&#39;s .)</p>
     <div class="meta">
         
             
-                <p>Inherited from
-                <a href="../classes/CollectionRequest.html#method_slug" class="type">CollectionRequest</a>:
+                
+                <p>
+                
+                Defined in
+                
             
         
         
@@ -3848,7 +3564,7 @@ retrieved from the response&#39;s .)</p>
 
         
             <a name="method_tag" class="anchor-link"></a>
-<div class="method item inherited">
+<div class="method item">
     <h3 class="name"><code>tag</code>
 
     
@@ -3890,8 +3606,11 @@ retrieved from the response&#39;s .)</p>
     <div class="meta">
         
             
-                <p>Inherited from
-                <a href="../classes/CollectionRequest.html#method_tag" class="type">CollectionRequest</a>:
+                
+                <p>
+                
+                Defined in
+                
             
         
         
@@ -3960,7 +3679,7 @@ retrieved from the response&#39;s .)</p>
 
         
             <a name="method_taxonomy" class="anchor-link"></a>
-<div class="method item inherited">
+<div class="method item">
     <h3 class="name"><code>taxonomy</code>
 
     
@@ -4008,8 +3727,11 @@ retrieved from the response&#39;s .)</p>
     <div class="meta">
         
             
-                <p>Inherited from
-                <a href="../classes/CollectionRequest.html#method_taxonomy" class="type">CollectionRequest</a>:
+                
+                <p>
+                
+                Defined in
+                
             
         
         

@@ -16,7 +16,7 @@
             <div class="project-title">
                 
                 
-                    <h1 class="project-name">wordpress-rest-api</h1> <span class="project-version">0.1.1</span>
+                    <h1 class="project-name">wordpress-rest-api</h1> <span class="project-version">0.2.0</span>
                 
                 
                     <p class="description">A client for interacting with the WordPress REST API</p>
@@ -45,11 +45,17 @@
         <div id="api-tabview-panel">
             <ul id="api-classes" class="apis classes">
             
-                <li><a class="type" href="../classes/CollectionFilters.html">CollectionFilters</a></li>
+                <li><a class="type" href="../classes/CollectionRequest.html">CollectionRequest</a></li>
+            
+                <li><a class="type" href="../classes/MediaRequest.html">MediaRequest</a></li>
+            
+                <li><a class="type" href="../classes/PagesRequest.html">PagesRequest</a></li>
             
                 <li><a class="type" href="../classes/PostsRequest.html">PostsRequest</a></li>
             
                 <li><a class="type" href="../classes/TaxonomiesRequest.html">TaxonomiesRequest</a></li>
+            
+                <li><a class="type" href="../classes/TypesRequest.html">TypesRequest</a></li>
             
                 <li><a class="type" href="../classes/UsersRequest.html">UsersRequest</a></li>
             
@@ -61,11 +67,17 @@
 
             <ul id="api-modules" class="apis modules">
             
-                <li><a class="module" href="../modules/CollectionFilters.html">CollectionFilters</a></li>
+                <li><a class="module" href="../modules/CollectionRequest.html">CollectionRequest</a></li>
+            
+                <li><a class="module" href="../modules/MediaRequest.html">MediaRequest</a></li>
+            
+                <li><a class="module" href="../modules/PagesRequest.html">PagesRequest</a></li>
             
                 <li><a class="module" href="../modules/PostsRequest.html">PostsRequest</a></li>
             
                 <li><a class="module" href="../modules/TaxonomiesRequest.html">TaxonomiesRequest</a></li>
+            
+                <li><a class="module" href="../modules/TypesRequest.html">TypesRequest</a></li>
             
                 <li><a class="module" href="../modules/UsersRequest.html">UsersRequest</a></li>
             
@@ -88,13 +100,13 @@
 
     
         <div class="extends">
-            Extends <a href="../classes/WPRequest.html" class="crosslink">WPRequest</a>
+            Extends <a href="../classes/CollectionRequest.html" class="crosslink">CollectionRequest</a>
         </div>
     
 
     
         <div class="foundat">
-            Defined in: <a href="../files/lib_taxonomies.js.html#l9"><code>lib&#x2F;taxonomies.js:9</code></a>
+            Defined in: <a href="../files/lib_taxonomies.js.html#l10"><code>lib&#x2F;taxonomies.js:10</code></a>
         </div>
     
 
@@ -111,7 +123,7 @@
 
 
 <div class="box intro">
-    <p>TaxonomiesRequest extends WPRequest to handle the /taxonomies API endpoint</p>
+    <p>TaxonomiesRequest extends CollectionRequest to handle the /taxonomies API endpoint</p>
 
 </div>
 
@@ -152,32 +164,56 @@
 
         <ul class="index-list properties extends">
             
-                <li class="index-item property">
-                    <a href="#property__action">_action</a>
+                <li class="index-item property private inherited">
+                    <a href="#property__filters">_filters</a>
 
                     
                 </li>
             
-                <li class="index-item property">
-                    <a href="#property__actionId">_actionId</a>
-
-                    
-                </li>
-            
-                <li class="index-item property">
-                    <a href="#property__id">_id</a>
-
-                    
-                </li>
-            
-                <li class="index-item property inherited">
+                <li class="index-item property private inherited">
                     <a href="#property__options">_options</a>
 
                     
                 </li>
             
-                <li class="index-item property inherited">
+                <li class="index-item property private inherited">
+                    <a href="#property__params">_params</a>
+
+                    
+                </li>
+            
+                <li class="index-item property private inherited">
+                    <a href="#property__path">_path</a>
+
+                    
+                </li>
+            
+                <li class="index-item property private">
+                    <a href="#property__pathValidators">_pathValidators</a>
+
+                    
+                </li>
+            
+                <li class="index-item property">
+                    <a href="#property__pathValidators.action">_pathValidators.action</a>
+
+                    
+                </li>
+            
+                <li class="index-item property private inherited">
                     <a href="#property__supportedMethods">_supportedMethods</a>
+
+                    
+                </li>
+            
+                <li class="index-item property private inherited">
+                    <a href="#property__taxonomyFilters">_taxonomyFilters</a>
+
+                    
+                </li>
+            
+                <li class="index-item property private inherited">
+                    <a href="#property__template">_template</a>
 
                     
                 </li>
@@ -207,8 +243,64 @@
             
 
             
-                <li class="index-item method inherited">
+                <li class="index-item method private inherited">
+                    <a href="#method__auth">_auth</a>
+
+                    
+                    
+                </li>
+            
+                <li class="index-item method private inherited">
                     <a href="#method__checkMethodSupport">_checkMethodSupport</a>
+
+                    
+                    
+                </li>
+            
+                <li class="index-item method private inherited">
+                    <a href="#method__renderPath">_renderPath</a>
+
+                    
+                    
+                </li>
+            
+                <li class="index-item method private inherited">
+                    <a href="#method__renderQuery">_renderQuery</a>
+
+                    
+                    
+                </li>
+            
+                <li class="index-item method private inherited">
+                    <a href="#method__renderURI">_renderURI</a>
+
+                    
+                    
+                </li>
+            
+                <li class="index-item method inherited">
+                    <a href="#method_auth">auth</a>
+
+                    
+                    
+                </li>
+            
+                <li class="index-item method inherited">
+                    <a href="#method_author">author</a>
+
+                    
+                    
+                </li>
+            
+                <li class="index-item method inherited">
+                    <a href="#method_category">category</a>
+
+                    
+                    
+                </li>
+            
+                <li class="index-item method inherited">
+                    <a href="#method_context">context</a>
 
                     
                     
@@ -222,7 +314,14 @@
                 </li>
             
                 <li class="index-item method inherited">
-                    <a href="#method_generateRequestUri">generateRequestUri</a>
+                    <a href="#method_edit">edit</a>
+
+                    
+                    
+                </li>
+            
+                <li class="index-item method inherited">
+                    <a href="#method_filter">filter</a>
 
                     
                     
@@ -242,15 +341,22 @@
                     
                 </li>
             
-                <li class="index-item method">
-                    <a href="#method_id">id</a>
+                <li class="index-item method inherited">
+                    <a href="#method_name">name</a>
 
                     
                     
                 </li>
             
                 <li class="index-item method inherited">
-                    <a href="#method_patch">patch</a>
+                    <a href="#method_page">page</a>
+
+                    
+                    
+                </li>
+            
+                <li class="index-item method inherited">
+                    <a href="#method_param">param</a>
 
                     
                     
@@ -265,6 +371,41 @@
             
                 <li class="index-item method inherited">
                     <a href="#method_put">put</a>
+
+                    
+                    
+                </li>
+            
+                <li class="index-item method inherited">
+                    <a href="#method_search">search</a>
+
+                    
+                    
+                </li>
+            
+                <li class="index-item method inherited">
+                    <a href="#method_slug">slug</a>
+
+                    
+                    
+                </li>
+            
+                <li class="index-item method inherited">
+                    <a href="#method_tag">tag</a>
+
+                    
+                    
+                </li>
+            
+                <li class="index-item method inherited">
+                    <a href="#method_taxonomy">taxonomy</a>
+
+                    
+                    
+                </li>
+            
+                <li class="index-item method">
+                    <a href="#method_term">term</a>
 
                     
                     
@@ -299,64 +440,15 @@
         <h2>Properties</h2>
 
         
-            <a name="property__action" class="anchor-link"></a>
-<div class="property item">
-    <h3 class="name"><code>_action</code>
-    <span class="type">String</span>
+            <a name="property__filters" class="anchor-link"></a>
+<div class="property item private">
+    <h3 class="name"><code>_filters</code>
+    <span class="type">Object</span>
 
     
 
     
-
-    
-
-    
-
-    </h3>
-
-    <div class="meta">
-        
-            
-                
-                <p>
-                
-                Defined in
-                
-            
-        
-        
-        <a href="../files/lib_taxonomies.js.html#l44"><code>lib&#x2F;taxonomies.js:44</code></a>
-        
-        </p>
-
-        
-
-        
-    </div>
-
-    <div class="extended-detail">
-        <div class="description">
-            
-        </div>
-
-        
-            <p class="default"><strong>Default:</strong> <span class="default-value">null</span></p>
-        
-
-        
-
-        
-    </div>
-</div>
-
-        
-            <a name="property__actionId" class="anchor-link"></a>
-<div class="property item">
-    <h3 class="name"><code>_actionId</code>
-    <span class="type">String</span>
-
-    
-
+        <span class="flag private">private</span>
     
 
     
@@ -367,16 +459,16 @@
 
     <div class="meta">
         
+            <p>Inherited from
+            <a href="../classes/CollectionRequest.html#property__filters" class="type">
+                CollectionRequest
+            </a>
             
-                
-                <p>
-                
-                Defined in
-                
+            but overwritten in
             
         
         
-        <a href="../files/lib_taxonomies.js.html#l51"><code>lib&#x2F;taxonomies.js:51</code></a>
+        <a href="../files/lib_taxonomies.js.html#l31"><code>lib&#x2F;taxonomies.js:31</code></a>
         
         </p>
 
@@ -387,63 +479,12 @@
 
     <div class="extended-detail">
         <div class="description">
-            
-        </div>
-
-        
-            <p class="default"><strong>Default:</strong> <span class="default-value">null</span></p>
-        
-
-        
-
-        
-    </div>
-</div>
-
-        
-            <a name="property__id" class="anchor-link"></a>
-<div class="property item">
-    <h3 class="name"><code>_id</code>
-    <span class="type">Number</span>
-
-    
-
-    
-
-    
-
-    
-
-    </h3>
-
-    <div class="meta">
-        
-            
-                
-                <p>
-                
-                Defined in
-                
-            
-        
-        
-        <a href="../files/lib_taxonomies.js.html#l29"><code>lib&#x2F;taxonomies.js:29</code></a>
-        
-        </p>
-
-        
-
-        
-    </div>
-
-    <div class="extended-detail">
-        <div class="description">
-            <p>The ID for the taxonomy term being requested</p>
+            <p>A hash of filter values to parse into the final request URI</p>
 
         </div>
 
         
-            <p class="default"><strong>Default:</strong> <span class="default-value">null</span></p>
+            <p class="default"><strong>Default:</strong> <span class="default-value">{}</span></p>
         
 
         
@@ -454,12 +495,14 @@
 
         
             <a name="property__options" class="anchor-link"></a>
-<div class="property item">
+<div class="property item private">
     <h3 class="name"><code>_options</code>
     <span class="type">Object</span>
 
     
 
+    
+        <span class="flag private">private</span>
     
 
     
@@ -479,7 +522,7 @@
             
         
         
-        <a href="../files/lib_taxonomies.js.html#l21"><code>lib&#x2F;taxonomies.js:21</code></a>
+        <a href="../files/lib_taxonomies.js.html#l22"><code>lib&#x2F;taxonomies.js:22</code></a>
         
         </p>
 
@@ -505,13 +548,225 @@
 </div>
 
         
-            <a name="property__supportedMethods" class="anchor-link"></a>
+            <a name="property__params" class="anchor-link"></a>
+<div class="property item private">
+    <h3 class="name"><code>_params</code>
+    <span class="type">Object</span>
+
+    
+
+    
+        <span class="flag private">private</span>
+    
+
+    
+
+    
+
+    </h3>
+
+    <div class="meta">
+        
+            <p>Inherited from
+            <a href="../classes/CollectionRequest.html#property__params" class="type">
+                CollectionRequest
+            </a>
+            
+            but overwritten in
+            
+        
+        
+        <a href="../files/lib_taxonomies.js.html#l40"><code>lib&#x2F;taxonomies.js:40</code></a>
+        
+        </p>
+
+        
+
+        
+    </div>
+
+    <div class="extended-detail">
+        <div class="description">
+            <p>A hash of non-filter query parameters</p>
+
+        </div>
+
+        
+            <p class="default"><strong>Default:</strong> <span class="default-value">{}</span></p>
+        
+
+        
+
+        
+    </div>
+</div>
+
+        
+            <a name="property__path" class="anchor-link"></a>
+<div class="property item private">
+    <h3 class="name"><code>_path</code>
+    <span class="type">Object</span>
+
+    
+
+    
+        <span class="flag private">private</span>
+    
+
+    
+
+    
+
+    </h3>
+
+    <div class="meta">
+        
+            <p>Inherited from
+            <a href="../classes/WPRequest.html#property__path" class="type">
+                WPRequest
+            </a>
+            
+            but overwritten in
+            
+        
+        
+        <a href="../files/lib_taxonomies.js.html#l50"><code>lib&#x2F;taxonomies.js:50</code></a>
+        
+        </p>
+
+        
+
+        
+    </div>
+
+    <div class="extended-detail">
+        <div class="description">
+            <p>A hash of values to assemble into the API request path</p>
+
+        </div>
+
+        
+            <p class="default"><strong>Default:</strong> <span class="default-value">{}</span></p>
+        
+
+        
+
+        
+    </div>
+</div>
+
+        
+            <a name="property__pathValidators" class="anchor-link"></a>
+<div class="property item private">
+    <h3 class="name"><code>_pathValidators</code>
+    <span class="type">Object</span>
+
+    
+
+    
+        <span class="flag private">private</span>
+    
+
+    
+
+    
+
+    </h3>
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/lib_taxonomies.js.html#l82"><code>lib&#x2F;taxonomies.js:82</code></a>
+        
+        </p>
+
+        
+
+        
+    </div>
+
+    <div class="extended-detail">
+        <div class="description">
+            <p>A hash of path keys to regex validators for those path elements</p>
+
+        </div>
+
+        
+
+        
+
+        
+    </div>
+</div>
+
+        
+            <a name="property__pathValidators.action" class="anchor-link"></a>
 <div class="property item">
+    <h3 class="name"><code>_pathValidators.action</code>
+    <span class="type">RegExp</span>
+
+    
+
+    
+
+    
+
+    
+
+    </h3>
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/lib_taxonomies.js.html#l91"><code>lib&#x2F;taxonomies.js:91</code></a>
+        
+        </p>
+
+        
+
+        
+    </div>
+
+    <div class="extended-detail">
+        <div class="description">
+            <p>The only &quot;action&quot; permitted on a taxonomy is to get a list of terms</p>
+
+        </div>
+
+        
+
+        
+
+        
+    </div>
+</div>
+
+        
+            <a name="property__supportedMethods" class="anchor-link"></a>
+<div class="property item private">
     <h3 class="name"><code>_supportedMethods</code>
     <span class="type">Array</span>
 
     
 
+    
+        <span class="flag private">private</span>
     
 
     
@@ -531,7 +786,7 @@
             
         
         
-        <a href="../files/lib_taxonomies.js.html#l37"><code>lib&#x2F;taxonomies.js:37</code></a>
+        <a href="../files/lib_taxonomies.js.html#l70"><code>lib&#x2F;taxonomies.js:70</code></a>
         
         </p>
 
@@ -547,6 +802,111 @@
 
         
             <p class="default"><strong>Default:</strong> <span class="default-value">[ &#x27;head&#x27;, &#x27;get&#x27; ]</span></p>
+        
+
+        
+
+        
+    </div>
+</div>
+
+        
+            <a name="property__taxonomyFilters" class="anchor-link"></a>
+<div class="property item private inherited">
+    <h3 class="name"><code>_taxonomyFilters</code>
+    <span class="type">Object</span>
+
+    
+
+    
+        <span class="flag private">private</span>
+    
+
+    
+
+    
+
+    </h3>
+
+    <div class="meta">
+        
+            
+                <p>Inherited from
+                <a href="../classes/CollectionRequest.html#property__taxonomyFilters" class="type">CollectionRequest</a>:
+            
+        
+        
+        <a href="../files/lib_shared_collection-request.js.html#l50"><code>lib&#x2F;shared&#x2F;collection-request.js:50</code></a>
+        
+        </p>
+
+        
+
+        
+    </div>
+
+    <div class="extended-detail">
+        <div class="description">
+            <p>A hash of taxonomy terms to parse into the final request URI</p>
+
+        </div>
+
+        
+            <p class="default"><strong>Default:</strong> <span class="default-value">{}</span></p>
+        
+
+        
+
+        
+    </div>
+</div>
+
+        
+            <a name="property__template" class="anchor-link"></a>
+<div class="property item private">
+    <h3 class="name"><code>_template</code>
+    <span class="type">String</span>
+
+    
+
+    
+        <span class="flag private">private</span>
+    
+
+    
+
+    
+
+    </h3>
+
+    <div class="meta">
+        
+            <p>Inherited from
+            <a href="../classes/WPRequest.html#property__template" class="type">
+                WPRequest
+            </a>
+            
+            but overwritten in
+            
+        
+        
+        <a href="../files/lib_taxonomies.js.html#l60"><code>lib&#x2F;taxonomies.js:60</code></a>
+        
+        </p>
+
+        
+
+        
+    </div>
+
+    <div class="extended-detail">
+        <div class="description">
+            <p>The URL template that will be used to assemble endpoint paths</p>
+
+        </div>
+
+        
+            <p class="default"><strong>Default:</strong> <span class="default-value">&#x27;taxonomies(/:taxonomy)(/:action)(/:term)&#x27;</span></p>
         
 
         
@@ -614,7 +974,7 @@
             
         
         
-        <a href="../files/lib_taxonomies.js.html#l9"><code>lib&#x2F;taxonomies.js:9</code></a>
+        <a href="../files/lib_taxonomies.js.html#l10"><code>lib&#x2F;taxonomies.js:10</code></a>
         
         </p>
 
@@ -718,8 +1078,146 @@
         <h2>Methods</h2>
 
         
+            <a name="method__auth" class="anchor-link"></a>
+<div class="method item private inherited">
+    <h3 class="name"><code>_auth</code>
+
+    
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code>request</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code>forceAuthentication</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code>A</code>
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
+    
+
+    
+
+    
+
+    
+        <span class="flag private">private</span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    </h3>
+
+    <div class="meta">
+        
+            
+                <p>Inherited from
+                <a href="../classes/WPRequest.html#method__auth" class="type">WPRequest</a>:
+            
+        
+        
+        <a href="../files/lib_shared_wp-request.js.html#l226"><code>lib&#x2F;shared&#x2F;wp-request.js:226</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="extended-detail">
+
+        <div class="description">
+            <p>Conditionally set basic authentication on a server request object</p>
+
+        </div>
+
+        
+            <div class="params">
+                <h4>Parameters:</h4>
+
+                <ul class="params-list">
+                
+                    <li class="param">
+                        
+                            <code class="param-name">request</code>
+                            <span class="type">Object</span>
+                        
+
+                        
+
+                        <div class="param-description">
+                            <p>A superagent request object</p>
+
+                        </div>
+
+                        
+                    </li>
+                
+                    <li class="param">
+                        
+                            <code class="param-name">forceAuthentication</code>
+                            <span class="type">Boolean</span>
+                        
+
+                        
+
+                        <div class="param-description">
+                            <p>whether to force authentication on the request</p>
+
+                        </div>
+
+                        
+                    </li>
+                
+                    <li class="param">
+                        
+                            <code class="param-name">A</code>
+                            <span class="type">Object</span>
+                        
+
+                        
+
+                        <div class="param-description">
+                            <p>superagent request object, conditionally configured to use basic auth</p>
+
+                        </div>
+
+                        
+                    </li>
+                
+                </ul>
+            </div>
+        
+
+        
+
+        
+    </div>
+</div>
+
+        
             <a name="method__checkMethodSupport" class="anchor-link"></a>
-<div class="method item inherited">
+<div class="method item private inherited">
     <h3 class="name"><code>_checkMethodSupport</code>
 
     
@@ -745,6 +1243,8 @@
     
 
     
+        <span class="flag private">private</span>
+    
 
     
 
@@ -764,7 +1264,7 @@
             
         
         
-        <a href="../files/lib_WPRequest.js.html#l130"><code>lib&#x2F;WPRequest.js:130</code></a>
+        <a href="../files/lib_shared_wp-request.js.html#l173"><code>lib&#x2F;shared&#x2F;wp-request.js:173</code></a>
         
         </p>
 
@@ -777,7 +1277,8 @@
     <div class="extended-detail">
 
         <div class="description">
-            
+            <p>Verify that the current request object supports a given HTTP verb</p>
+
         </div>
 
         
@@ -814,6 +1315,727 @@
                     
                         
                         <p>true iff the method is within this._supportedMethods</p>
+
+                    
+                </div>
+            </div>
+        
+
+        
+    </div>
+</div>
+
+        
+            <a name="method__renderPath" class="anchor-link"></a>
+<div class="method item private inherited">
+    <h3 class="name"><code>_renderPath</code>
+
+    
+        <span class="paren">()</span>
+    
+
+    
+        <span class="returns-inline">
+            <span class="type">String</span>
+        </span>
+    
+
+    
+
+    
+        <span class="flag private">private</span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    </h3>
+
+    <div class="meta">
+        
+            
+                <p>Inherited from
+                <a href="../classes/WPRequest.html#method__renderPath" class="type">WPRequest</a>:
+            
+        
+        
+        <a href="../files/lib_shared_wp-request.js.html#l193"><code>lib&#x2F;shared&#x2F;wp-request.js:193</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="extended-detail">
+
+        <div class="description">
+            <p>Validate &amp; assemble a path string from the request object&#39;s _path</p>
+
+        </div>
+
+        
+
+        
+            <div class="returns">
+                <h4>Returns:</h4>
+
+                <div class="returns-description">
+                    
+                        
+                            <span class="type">String</span>:
+                        
+                        <p>The rendered path</p>
+
+                    
+                </div>
+            </div>
+        
+
+        
+    </div>
+</div>
+
+        
+            <a name="method__renderQuery" class="anchor-link"></a>
+<div class="method item private inherited">
+    <h3 class="name"><code>_renderQuery</code>
+
+    
+        <span class="paren">()</span>
+    
+
+    
+        <span class="returns-inline">
+            <span class="type">String</span>
+        </span>
+    
+
+    
+
+    
+        <span class="flag private">private</span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    </h3>
+
+    <div class="meta">
+        
+            
+                <p>Inherited from
+                <a href="../classes/CollectionRequest.html#method__renderQuery" class="type">CollectionRequest</a>:
+            
+        
+        
+        <a href="../files/lib_shared_collection-request.js.html#l230"><code>lib&#x2F;shared&#x2F;collection-request.js:230</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="extended-detail">
+
+        <div class="description">
+            <p>Process the endpoint query&#39;s filter objects into a valid query string.</p>
+
+        </div>
+
+        
+
+        
+            <div class="returns">
+                <h4>Returns:</h4>
+
+                <div class="returns-description">
+                    
+                        
+                            <span class="type">String</span>:
+                        
+                        <p>A query string representing the specified filter parameters</p>
+
+                    
+                </div>
+            </div>
+        
+
+        
+    </div>
+</div>
+
+        
+            <a name="method__renderURI" class="anchor-link"></a>
+<div class="method item private inherited">
+    <h3 class="name"><code>_renderURI</code>
+
+    
+        <span class="paren">()</span>
+    
+
+    
+        <span class="returns-inline">
+            <span class="type">String</span>
+        </span>
+    
+
+    
+
+    
+        <span class="flag private">private</span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    </h3>
+
+    <div class="meta">
+        
+            
+                <p>Inherited from
+                <a href="../classes/WPRequest.html#method__renderURI" class="type">WPRequest</a>:
+            
+        
+        
+        <a href="../files/lib_shared_wp-request.js.html#l208"><code>lib&#x2F;shared&#x2F;wp-request.js:208</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="extended-detail">
+
+        <div class="description">
+            <p>Parse the request&#39;s instance properties into a WordPress API request URI</p>
+
+        </div>
+
+        
+
+        
+            <div class="returns">
+                <h4>Returns:</h4>
+
+                <div class="returns-description">
+                    
+                        
+                            <span class="type">String</span>:
+                        
+                        <p>The URI for the HTTP request to be sent</p>
+
+                    
+                </div>
+            </div>
+        
+
+        
+    </div>
+</div>
+
+        
+            <a name="method_auth" class="anchor-link"></a>
+<div class="method item inherited">
+    <h3 class="name"><code>auth</code>
+
+    
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code class="optional">[username]</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code class="optional">[password]</code>
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
+    
+
+    
+        <span class="returns-inline">
+            <span class="type"><a href="../classes/WPRequest.html" class="crosslink">WPRequest</a></span>
+        </span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <span class="flag chainable">chainable</span>
+    
+
+    
+
+    </h3>
+
+    <div class="meta">
+        
+            
+                <p>Inherited from
+                <a href="../classes/WPRequest.html#method_auth" class="type">WPRequest</a>:
+            
+        
+        
+        <a href="../files/lib_shared_wp-request.js.html#l257"><code>lib&#x2F;shared&#x2F;wp-request.js:257</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="extended-detail">
+
+        <div class="description">
+            <p>Set a requst to use authentication, and optionally provide auth credentials</p>
+
+        </div>
+
+        
+            <div class="params">
+                <h4>Parameters:</h4>
+
+                <ul class="params-list">
+                
+                    <li class="param">
+                        
+                            <code class="param-name optional">[username]</code>
+                            <span class="type">String</span>
+                            <span class="flag optional" title="This parameter is optional.">optional</span>
+                        
+
+                        
+
+                        <div class="param-description">
+                            <p>A username string for basic authentication</p>
+
+                        </div>
+
+                        
+                    </li>
+                
+                    <li class="param">
+                        
+                            <code class="param-name optional">[password]</code>
+                            <span class="type">String</span>
+                            <span class="flag optional" title="This parameter is optional.">optional</span>
+                        
+
+                        
+
+                        <div class="param-description">
+                            <p>A user password string for basic authentication</p>
+
+                        </div>
+
+                        
+                    </li>
+                
+                </ul>
+            </div>
+        
+
+        
+            <div class="returns">
+                <h4>Returns:</h4>
+
+                <div class="returns-description">
+                    
+                        
+                            <span class="type"><a href="../classes/WPRequest.html" class="crosslink">WPRequest</a></span>:
+                        
+                        <p>The WPRequest instance (for chaining)</p>
+
+                    
+                </div>
+            </div>
+        
+
+        
+            <div class="example">
+                <h4>Example:</h4>
+
+                <div class="example-content">
+                    <p><p><p>If auth credentials were already specified when the WP instance was created, calling
+<code>.auth</code> on the request chain will set that request to use the existing credentials:</p></p></p>
+<pre class="code prettyprint"><code>request.auth().get...</code></pre>
+<p>Alternatively, a username &amp; password can be explicitly passed into <code>.auth</code>:</p>
+<pre class="code prettyprint"><code>request.auth( &#39;username&#39;, &#39;password&#39; ).get...</code></pre>
+
+                </div>
+            </div>
+        
+    </div>
+</div>
+
+        
+            <a name="method_author" class="anchor-link"></a>
+<div class="method item inherited">
+    <h3 class="name"><code>author</code>
+
+    
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code>author</code>
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
+    
+
+    
+        <span class="returns-inline">
+            <span class="type"><a href="../classes/CollectionRequest.html" class="crosslink">CollectionRequest</a></span>
+        </span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <span class="flag chainable">chainable</span>
+    
+
+    
+
+    </h3>
+
+    <div class="meta">
+        
+            
+                <p>Inherited from
+                <a href="../classes/CollectionRequest.html#method_author" class="type">CollectionRequest</a>:
+            
+        
+        
+        <a href="../files/lib_shared_collection-request.js.html#l470"><code>lib&#x2F;shared&#x2F;collection-request.js:470</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="extended-detail">
+
+        <div class="description">
+            <p>Query for posts by a specific author.
+This method will replace any previous &#39;author&#39; query parameters that had been set.</p>
+
+        </div>
+
+        
+            <div class="params">
+                <h4>Parameters:</h4>
+
+                <ul class="params-list">
+                
+                    <li class="param">
+                        
+                            <code class="param-name">author</code>
+                            <span class="type">String | Number</span>
+                        
+
+                        
+
+                        <div class="param-description">
+                            <p>The nicename or ID for a particular author</p>
+
+                        </div>
+
+                        
+                    </li>
+                
+                </ul>
+            </div>
+        
+
+        
+            <div class="returns">
+                <h4>Returns:</h4>
+
+                <div class="returns-description">
+                    
+                        
+                            <span class="type"><a href="../classes/CollectionRequest.html" class="crosslink">CollectionRequest</a></span>:
+                        
+                        <p>The CollectionRequest instance (for chaining)</p>
+
+                    
+                </div>
+            </div>
+        
+
+        
+    </div>
+</div>
+
+        
+            <a name="method_category" class="anchor-link"></a>
+<div class="method item inherited">
+    <h3 class="name"><code>category</code>
+
+    
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code>category</code>
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
+    
+
+    
+        <span class="returns-inline">
+            <span class="type"><a href="../classes/CollectionRequest.html" class="crosslink">CollectionRequest</a></span>
+        </span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <span class="flag chainable">chainable</span>
+    
+
+    
+
+    </h3>
+
+    <div class="meta">
+        
+            
+                <p>Inherited from
+                <a href="../classes/CollectionRequest.html#method_category" class="type">CollectionRequest</a>:
+            
+        
+        
+        <a href="../files/lib_shared_collection-request.js.html#l435"><code>lib&#x2F;shared&#x2F;collection-request.js:435</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="extended-detail">
+
+        <div class="description">
+            <p>Convenience wrapper for <code>.taxonomy( &#39;category&#39;, ... )</code>.</p>
+
+        </div>
+
+        
+            <div class="params">
+                <h4>Parameters:</h4>
+
+                <ul class="params-list">
+                
+                    <li class="param">
+                        
+                            <code class="param-name">category</code>
+                            <span class="type">String | Number | Array</span>
+                        
+
+                        
+
+                        <div class="param-description">
+                            <p>A string or integer, or array thereof, representing terms</p>
+
+                        </div>
+
+                        
+                    </li>
+                
+                </ul>
+            </div>
+        
+
+        
+            <div class="returns">
+                <h4>Returns:</h4>
+
+                <div class="returns-description">
+                    
+                        
+                            <span class="type"><a href="../classes/CollectionRequest.html" class="crosslink">CollectionRequest</a></span>:
+                        
+                        <p>The CollectionRequest instance (for chaining)</p>
+
+                    
+                </div>
+            </div>
+        
+
+        
+    </div>
+</div>
+
+        
+            <a name="method_context" class="anchor-link"></a>
+<div class="method item inherited">
+    <h3 class="name"><code>context</code>
+
+    
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code>context</code>
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
+    
+
+    
+        <span class="returns-inline">
+            <span class="type"><a href="../classes/CollectionRequest.html" class="crosslink">CollectionRequest</a></span>
+        </span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <span class="flag chainable">chainable</span>
+    
+
+    
+
+    </h3>
+
+    <div class="meta">
+        
+            
+                <p>Inherited from
+                <a href="../classes/CollectionRequest.html#method_context" class="type">CollectionRequest</a>:
+            
+        
+        
+        <a href="../files/lib_shared_collection-request.js.html#l321"><code>lib&#x2F;shared&#x2F;collection-request.js:321</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="extended-detail">
+
+        <div class="description">
+            <p>Set the context of the request. Used primarily to expose private values on a request
+object, by setting the context to &quot;edit&quot;.</p>
+
+        </div>
+
+        
+            <div class="params">
+                <h4>Parameters:</h4>
+
+                <ul class="params-list">
+                
+                    <li class="param">
+                        
+                            <code class="param-name">context</code>
+                            <span class="type">String</span>
+                        
+
+                        
+
+                        <div class="param-description">
+                            <p>The context to set on the request</p>
+
+                        </div>
+
+                        
+                    </li>
+                
+                </ul>
+            </div>
+        
+
+        
+            <div class="returns">
+                <h4>Returns:</h4>
+
+                <div class="returns-description">
+                    
+                        
+                            <span class="type"><a href="../classes/CollectionRequest.html" class="crosslink">CollectionRequest</a></span>:
+                        
+                        <p>The CollectionRequest instance (for chaining)</p>
 
                     
                 </div>
@@ -873,7 +2095,7 @@
             
         
         
-        <a href="../files/lib_WPRequest.js.html#l236"><code>lib&#x2F;WPRequest.js:236</code></a>
+        <a href="../files/lib_shared_wp-request.js.html#l349"><code>lib&#x2F;shared&#x2F;wp-request.js:349</code></a>
         
         </p>
 
@@ -969,9 +2191,9 @@
 </div>
 
         
-            <a name="method_generateRequestUri" class="anchor-link"></a>
+            <a name="method_edit" class="anchor-link"></a>
 <div class="method item inherited">
-    <h3 class="name"><code>generateRequestUri</code>
+    <h3 class="name"><code>edit</code>
 
     
         <span class="paren">()</span>
@@ -979,7 +2201,7 @@
 
     
         <span class="returns-inline">
-            <span class="type">String</span>
+            <span class="type"><a href="../classes/CollectionRequest.html" class="crosslink">CollectionRequest</a></span>
         </span>
     
 
@@ -992,6 +2214,8 @@
     
 
     
+        <span class="flag chainable">chainable</span>
+    
 
     
 
@@ -999,16 +2223,13 @@
 
     <div class="meta">
         
-            <p>Inherited from
-            <a href="../classes/WPRequest.html#method_generateRequestUri" class="type">
-                WPRequest
-            </a>
             
-            but overwritten in
+                <p>Inherited from
+                <a href="../classes/CollectionRequest.html#method_edit" class="type">CollectionRequest</a>:
             
         
         
-        <a href="../files/lib_taxonomies.js.html#l94"><code>lib&#x2F;taxonomies.js:94</code></a>
+        <a href="../files/lib_shared_collection-request.js.html#l338"><code>lib&#x2F;shared&#x2F;collection-request.js:338</code></a>
         
         </p>
 
@@ -1021,7 +2242,7 @@
     <div class="extended-detail">
 
         <div class="description">
-            <p>Parse the request&#39;s instance properties into a WordPress API request URI</p>
+            <p>Convenience wrapper for <code>.context( &#39;edit&#39; )</code></p>
 
         </div>
 
@@ -1034,15 +2255,171 @@
                 <div class="returns-description">
                     
                         
-                            <span class="type">String</span>:
+                            <span class="type"><a href="../classes/CollectionRequest.html" class="crosslink">CollectionRequest</a></span>:
                         
-                        <p>The URI for the HTTP request to the taxonomies endpoint</p>
+                        <p>The CollectionRequest instance (for chaining)</p>
 
                     
                 </div>
             </div>
         
 
+        
+    </div>
+</div>
+
+        
+            <a name="method_filter" class="anchor-link"></a>
+<div class="method item inherited">
+    <h3 class="name"><code>filter</code>
+
+    
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code>props</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code class="optional">[value]</code>
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
+    
+
+    
+        <span class="returns-inline">
+            <span class="type"><a href="../classes/CollectionRequest.html" class="crosslink">CollectionRequest</a></span>
+        </span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <span class="flag chainable">chainable</span>
+    
+
+    
+
+    </h3>
+
+    <div class="meta">
+        
+            
+                <p>Inherited from
+                <a href="../classes/CollectionRequest.html#method_filter" class="type">CollectionRequest</a>:
+            
+        
+        
+        <a href="../files/lib_shared_collection-request.js.html#l349"><code>lib&#x2F;shared&#x2F;collection-request.js:349</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="extended-detail">
+
+        <div class="description">
+            <p>Specify key-value pairs by which to filter the API results (commonly used
+to retrieve only posts meeting certain criteria, such as posts within a
+particular category or by a particular author).</p>
+
+        </div>
+
+        
+            <div class="params">
+                <h4>Parameters:</h4>
+
+                <ul class="params-list">
+                
+                    <li class="param">
+                        
+                            <code class="param-name">props</code>
+                            <span class="type">String | Object</span>
+                        
+
+                        
+
+                        <div class="param-description">
+                            <p>A filter property name string, or object of name/value pairs</p>
+
+                        </div>
+
+                        
+                    </li>
+                
+                    <li class="param">
+                        
+                            <code class="param-name optional">[value]</code>
+                            <span class="type">String | Number | Array</span>
+                            <span class="flag optional" title="This parameter is optional.">optional</span>
+                        
+
+                        
+
+                        <div class="param-description">
+                            <p>The value(s) corresponding to the provided filter property</p>
+
+                        </div>
+
+                        
+                    </li>
+                
+                </ul>
+            </div>
+        
+
+        
+            <div class="returns">
+                <h4>Returns:</h4>
+
+                <div class="returns-description">
+                    
+                        
+                            <span class="type"><a href="../classes/CollectionRequest.html" class="crosslink">CollectionRequest</a></span>:
+                        
+                        <p>The CollectionRequest instance (for chaining)</p>
+
+                    
+                </div>
+            </div>
+        
+
+        
+            <div class="example">
+                <h4>Example:</h4>
+
+                <div class="example-content">
+                    <pre class="code prettyprint"><code>// Set a single property:
+wp.filter( &#39;post_type&#39;, &#39;cpt_event&#39; )...
+
+// Set multiple properties at once:
+wp.filter({
+    post_status: &#39;publish&#39;,
+    category_name: &#39;news&#39;
+})...
+
+// Chain calls to .filter():
+wp.filter( &#39;post_status&#39;, &#39;publish&#39; ).filter( &#39;category_name&#39;, &#39;news&#39; )...</code></pre>
+
+                </div>
+            </div>
         
     </div>
 </div>
@@ -1096,7 +2473,7 @@
             
         
         
-        <a href="../files/lib_WPRequest.js.html#l162"><code>lib&#x2F;WPRequest.js:162</code></a>
+        <a href="../files/lib_shared_wp-request.js.html#l294"><code>lib&#x2F;shared&#x2F;wp-request.js:294</code></a>
         
         </p>
 
@@ -1240,7 +2617,7 @@
             
         
         
-        <a href="../files/lib_WPRequest.js.html#l253"><code>lib&#x2F;WPRequest.js:253</code></a>
+        <a href="../files/lib_shared_wp-request.js.html#l365"><code>lib&#x2F;shared&#x2F;wp-request.js:365</code></a>
         
         </p>
 
@@ -1336,9 +2713,9 @@
 </div>
 
         
-            <a name="method_id" class="anchor-link"></a>
-<div class="method item">
-    <h3 class="name"><code>id</code>
+            <a name="method_name" class="anchor-link"></a>
+<div class="method item inherited">
+    <h3 class="name"><code>name</code>
 
     
         <div class="args">
@@ -1346,7 +2723,7 @@
             
                 <li class="arg">
                     
-                        <code>id</code>
+                        <code>slug</code>
                     
                 </li>
             
@@ -1356,7 +2733,7 @@
 
     
         <span class="returns-inline">
-            <span class="type"><a href="../classes/TaxonomiesRequest.html" class="crosslink">TaxonomiesRequest</a></span>
+            <span class="type"><a href="../classes/CollectionRequest.html" class="crosslink">CollectionRequest</a></span>
         </span>
     
 
@@ -1379,15 +2756,12 @@
     <div class="meta">
         
             
-                
-                <p>
-                
-                Defined in
-                
+                <p>Inherited from
+                <a href="../classes/CollectionRequest.html#method_name" class="type">CollectionRequest</a>:
             
         
         
-        <a href="../files/lib_taxonomies.js.html#l61"><code>lib&#x2F;taxonomies.js:61</code></a>
+        <a href="../files/lib_shared_collection-request.js.html#l491"><code>lib&#x2F;shared&#x2F;collection-request.js:491</code></a>
         
         </p>
 
@@ -1400,7 +2774,7 @@
     <div class="extended-detail">
 
         <div class="description">
-            <p>Specify the ID for a specific taxonomy term</p>
+            <p>Query a collection of posts for a post with a specific slug.</p>
 
         </div>
 
@@ -1412,14 +2786,14 @@
                 
                     <li class="param">
                         
-                            <code class="param-name">id</code>
-                            <span class="type">Number</span>
+                            <code class="param-name">slug</code>
+                            <span class="type">String</span>
                         
 
                         
 
                         <div class="param-description">
-                            <p>The ID of the taxonomy term</p>
+                            <p>A post name (slug), e.g. &quot;hello-world&quot;</p>
 
                         </div>
 
@@ -1437,9 +2811,9 @@
                 <div class="returns-description">
                     
                         
-                            <span class="type"><a href="../classes/TaxonomiesRequest.html" class="crosslink">TaxonomiesRequest</a></span>:
+                            <span class="type"><a href="../classes/CollectionRequest.html" class="crosslink">CollectionRequest</a></span>:
                         
-                        <p>The TaxonomiesRequest instance (for chaining)</p>
+                        <p>The CollectionRequest instance (for chaining)</p>
 
                     
                 </div>
@@ -1451,9 +2825,9 @@
 </div>
 
         
-            <a name="method_patch" class="anchor-link"></a>
+            <a name="method_page" class="anchor-link"></a>
 <div class="method item inherited">
-    <h3 class="name"><code>patch</code>
+    <h3 class="name"><code>page</code>
 
     
         <div class="args">
@@ -1461,7 +2835,7 @@
             
                 <li class="arg">
                     
-                        <code class="optional">[callback]</code>
+                        <code>pageNumber</code>
                     
                 </li>
             
@@ -1471,7 +2845,7 @@
 
     
         <span class="returns-inline">
-            <span class="type">Promise</span>
+            <span class="type"><a href="../classes/CollectionRequest.html" class="crosslink">CollectionRequest</a></span>
         </span>
     
 
@@ -1484,9 +2858,9 @@
     
 
     
-
+        <span class="flag chainable">chainable</span>
     
-        <span class="flag async">async</span>
+
     
 
     </h3>
@@ -1495,11 +2869,11 @@
         
             
                 <p>Inherited from
-                <a href="../classes/WPRequest.html#method_patch" class="type">WPRequest</a>:
+                <a href="../classes/CollectionRequest.html#method_page" class="type">CollectionRequest</a>:
             
         
         
-        <a href="../files/lib_WPRequest.js.html#l221"><code>lib&#x2F;WPRequest.js:221</code></a>
+        <a href="../files/lib_shared_collection-request.js.html#l307"><code>lib&#x2F;shared&#x2F;collection-request.js:307</code></a>
         
         </p>
 
@@ -1512,7 +2886,10 @@
     <div class="extended-detail">
 
         <div class="description">
-            
+            <p>Set the pagination of a request. Use in conjunction with <code>filter( posts_per_page )</code> for
+explicit pagination handling. (Note that the number of posts in a response can be
+retrieved from the response&#39;s .)</p>
+
         </div>
 
         
@@ -1523,50 +2900,17 @@
                 
                     <li class="param">
                         
-                            <code class="param-name optional">[callback]</code>
-                            <span class="type">Function</span>
-                            <span class="flag optional" title="This parameter is optional.">optional</span>
+                            <code class="param-name">pageNumber</code>
+                            <span class="type">Number</span>
                         
 
                         
 
                         <div class="param-description">
-                            <p>A callback to invoke with the results of the PATCH request</p>
+                            <p>The page number of results to retrieve</p>
 
                         </div>
 
-                        
-                            <ul class="params-list">
-                                
-                                <li class="param">
-                                    
-                                        <code class="param-name">err</code>
-                                        <span class="type">Error | Object</span>
-                                    
-
-                                    <div class="param-description">
-                                        <p>Any errors encountered during the request</p>
-
-                                    </div>
-
-                                    
-                                </li>
-                                
-                                <li class="param">
-                                    
-                                        <code class="param-name">result</code>
-                                        <span class="type">Object</span>
-                                    
-
-                                    <div class="param-description">
-                                        <p>The body of the server response</p>
-
-                                    </div>
-
-                                    
-                                </li>
-                                
-                            </ul>
                         
                     </li>
                 
@@ -1581,9 +2925,168 @@
                 <div class="returns-description">
                     
                         
-                            <span class="type">Promise</span>:
+                            <span class="type"><a href="../classes/CollectionRequest.html" class="crosslink">CollectionRequest</a></span>:
                         
-                        <p>A promise to the results of the HTTP request</p>
+                        <p>The CollectionRequest instance (for chaining)</p>
+
+                    
+                </div>
+            </div>
+        
+
+        
+    </div>
+</div>
+
+        
+            <a name="method_param" class="anchor-link"></a>
+<div class="method item inherited">
+    <h3 class="name"><code>param</code>
+
+    
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code>props</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code class="optional">[value]</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code class="optional">[merge]</code>
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
+    
+
+    
+        <span class="returns-inline">
+            <span class="type"><a href="../classes/CollectionRequest.html" class="crosslink">CollectionRequest</a></span>
+        </span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <span class="flag chainable">chainable</span>
+    
+
+    
+
+    </h3>
+
+    <div class="meta">
+        
+            
+                <p>Inherited from
+                <a href="../classes/CollectionRequest.html#method_param" class="type">CollectionRequest</a>:
+            
+        
+        
+        <a href="../files/lib_shared_collection-request.js.html#l252"><code>lib&#x2F;shared&#x2F;collection-request.js:252</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="extended-detail">
+
+        <div class="description">
+            <p>Set a parameter to render into the final query URI.</p>
+
+        </div>
+
+        
+            <div class="params">
+                <h4>Parameters:</h4>
+
+                <ul class="params-list">
+                
+                    <li class="param">
+                        
+                            <code class="param-name">props</code>
+                            <span class="type">String | Object</span>
+                        
+
+                        
+
+                        <div class="param-description">
+                            <p>The name of the parameter to set, or an object containing
+                             parameter keys and their corresponding values</p>
+
+                        </div>
+
+                        
+                    </li>
+                
+                    <li class="param">
+                        
+                            <code class="param-name optional">[value]</code>
+                            <span class="type">String | Number | Array</span>
+                            <span class="flag optional" title="This parameter is optional.">optional</span>
+                        
+
+                        
+
+                        <div class="param-description">
+                            <p>The value of the parameter being set</p>
+
+                        </div>
+
+                        
+                    </li>
+                
+                    <li class="param">
+                        
+                            <code class="param-name optional">[merge]</code>
+                            <span class="type">Boolean</span>
+                            <span class="flag optional" title="This parameter is optional.">optional</span>
+                        
+
+                        
+
+                        <div class="param-description">
+                            <p>Whether to merge the value (true) or replace it (false, default)</p>
+
+                        </div>
+
+                        
+                    </li>
+                
+                </ul>
+            </div>
+        
+
+        
+            <div class="returns">
+                <h4>Returns:</h4>
+
+                <div class="returns-description">
+                    
+                        
+                            <span class="type"><a href="../classes/CollectionRequest.html" class="crosslink">CollectionRequest</a></span>:
+                        
+                        <p>The CollectionRequest instance (for chaining)</p>
 
                     
                 </div>
@@ -1649,7 +3152,7 @@
             
         
         
-        <a href="../files/lib_WPRequest.js.html#l177"><code>lib&#x2F;WPRequest.js:177</code></a>
+        <a href="../files/lib_shared_wp-request.js.html#l311"><code>lib&#x2F;shared&#x2F;wp-request.js:311</code></a>
         
         </p>
 
@@ -1815,7 +3318,7 @@
             
         
         
-        <a href="../files/lib_WPRequest.js.html#l199"><code>lib&#x2F;WPRequest.js:199</code></a>
+        <a href="../files/lib_shared_wp-request.js.html#l330"><code>lib&#x2F;shared&#x2F;wp-request.js:330</code></a>
         
         </p>
 
@@ -1927,6 +3430,570 @@
 </div>
 
         
+            <a name="method_search" class="anchor-link"></a>
+<div class="method item inherited">
+    <h3 class="name"><code>search</code>
+
+    
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code>searchString</code>
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
+    
+
+    
+        <span class="returns-inline">
+            <span class="type"><a href="../classes/CollectionRequest.html" class="crosslink">CollectionRequest</a></span>
+        </span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    </h3>
+
+    <div class="meta">
+        
+            
+                <p>Inherited from
+                <a href="../classes/CollectionRequest.html#method_search" class="type">CollectionRequest</a>:
+            
+        
+        
+        <a href="../files/lib_shared_collection-request.js.html#l459"><code>lib&#x2F;shared&#x2F;collection-request.js:459</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="extended-detail">
+
+        <div class="description">
+            <p>Filter results to those matching the specified search terms.</p>
+
+        </div>
+
+        
+            <div class="params">
+                <h4>Parameters:</h4>
+
+                <ul class="params-list">
+                
+                    <li class="param">
+                        
+                            <code class="param-name">searchString</code>
+                            <span class="type">String</span>
+                        
+
+                        
+
+                        <div class="param-description">
+                            <p>A string to search for within post content</p>
+
+                        </div>
+
+                        
+                    </li>
+                
+                </ul>
+            </div>
+        
+
+        
+            <div class="returns">
+                <h4>Returns:</h4>
+
+                <div class="returns-description">
+                    
+                        
+                            <span class="type"><a href="../classes/CollectionRequest.html" class="crosslink">CollectionRequest</a></span>:
+                        
+                        <p>The CollectionRequest instance (for chaining)</p>
+
+                    
+                </div>
+            </div>
+        
+
+        
+    </div>
+</div>
+
+        
+            <a name="method_slug" class="anchor-link"></a>
+<div class="method item inherited">
+    <h3 class="name"><code>slug</code>
+
+    
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code>slug</code>
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
+    
+
+    
+        <span class="returns-inline">
+            <span class="type"><a href="../classes/CollectionRequest.html" class="crosslink">CollectionRequest</a></span>
+        </span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <span class="flag chainable">chainable</span>
+    
+
+    
+
+    </h3>
+
+    <div class="meta">
+        
+            
+                <p>Inherited from
+                <a href="../classes/CollectionRequest.html#method_slug" class="type">CollectionRequest</a>:
+            
+        
+        
+        <a href="../files/lib_shared_collection-request.js.html#l503"><code>lib&#x2F;shared&#x2F;collection-request.js:503</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="extended-detail">
+
+        <div class="description">
+            <p>Alias for <code>.name()</code>.</p>
+
+        </div>
+
+        
+            <div class="params">
+                <h4>Parameters:</h4>
+
+                <ul class="params-list">
+                
+                    <li class="param">
+                        
+                            <code class="param-name">slug</code>
+                            <span class="type">String</span>
+                        
+
+                        
+
+                        <div class="param-description">
+                            <p>A post slug, e.g. &quot;hello-world&quot;</p>
+
+                        </div>
+
+                        
+                    </li>
+                
+                </ul>
+            </div>
+        
+
+        
+            <div class="returns">
+                <h4>Returns:</h4>
+
+                <div class="returns-description">
+                    
+                        
+                            <span class="type"><a href="../classes/CollectionRequest.html" class="crosslink">CollectionRequest</a></span>:
+                        
+                        <p>The CollectionRequest instance (for chaining)</p>
+
+                    
+                </div>
+            </div>
+        
+
+        
+    </div>
+</div>
+
+        
+            <a name="method_tag" class="anchor-link"></a>
+<div class="method item inherited">
+    <h3 class="name"><code>tag</code>
+
+    
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code>tag</code>
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
+    
+
+    
+        <span class="returns-inline">
+            <span class="type"><a href="../classes/CollectionRequest.html" class="crosslink">CollectionRequest</a></span>
+        </span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <span class="flag chainable">chainable</span>
+    
+
+    
+
+    </h3>
+
+    <div class="meta">
+        
+            
+                <p>Inherited from
+                <a href="../classes/CollectionRequest.html#method_tag" class="type">CollectionRequest</a>:
+            
+        
+        
+        <a href="../files/lib_shared_collection-request.js.html#l447"><code>lib&#x2F;shared&#x2F;collection-request.js:447</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="extended-detail">
+
+        <div class="description">
+            <p>Convenience wrapper for <code>.taxonomy( &#39;tag&#39;, ... )</code>.</p>
+
+        </div>
+
+        
+            <div class="params">
+                <h4>Parameters:</h4>
+
+                <ul class="params-list">
+                
+                    <li class="param">
+                        
+                            <code class="param-name">tag</code>
+                            <span class="type">String | Number | Array</span>
+                        
+
+                        
+
+                        <div class="param-description">
+                            <p>A tag term string or array of tag term strings</p>
+
+                        </div>
+
+                        
+                    </li>
+                
+                </ul>
+            </div>
+        
+
+        
+            <div class="returns">
+                <h4>Returns:</h4>
+
+                <div class="returns-description">
+                    
+                        
+                            <span class="type"><a href="../classes/CollectionRequest.html" class="crosslink">CollectionRequest</a></span>:
+                        
+                        <p>The CollectionRequest instance (for chaining)</p>
+
+                    
+                </div>
+            </div>
+        
+
+        
+    </div>
+</div>
+
+        
+            <a name="method_taxonomy" class="anchor-link"></a>
+<div class="method item inherited">
+    <h3 class="name"><code>taxonomy</code>
+
+    
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code>taxonomyName</code>
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
+    
+
+    
+        <span class="returns-inline">
+            <span class="type"><a href="../classes/TaxonomiesRequest.html" class="crosslink">TaxonomiesRequest</a></span>
+        </span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <span class="flag chainable">chainable</span>
+    
+
+    
+
+    </h3>
+
+    <div class="meta">
+        
+            <p>Inherited from
+            <a href="../classes/CollectionRequest.html#method_taxonomy" class="type">
+                CollectionRequest
+            </a>
+            
+            but overwritten in
+            
+        
+        
+        <a href="../files/lib_taxonomies.js.html#l102"><code>lib&#x2F;taxonomies.js:102</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="extended-detail">
+
+        <div class="description">
+            <p>Specify the name of the taxonomy to query</p>
+
+        </div>
+
+        
+            <div class="params">
+                <h4>Parameters:</h4>
+
+                <ul class="params-list">
+                
+                    <li class="param">
+                        
+                            <code class="param-name">taxonomyName</code>
+                            <span class="type">String</span>
+                        
+
+                        
+
+                        <div class="param-description">
+                            <p>The name of the taxonomy to query</p>
+
+                        </div>
+
+                        
+                    </li>
+                
+                </ul>
+            </div>
+        
+
+        
+            <div class="returns">
+                <h4>Returns:</h4>
+
+                <div class="returns-description">
+                    
+                        
+                            <span class="type"><a href="../classes/TaxonomiesRequest.html" class="crosslink">TaxonomiesRequest</a></span>:
+                        
+                        <p>The TaxonomiesRequest instance (for chaining)</p>
+
+                    
+                </div>
+            </div>
+        
+
+        
+    </div>
+</div>
+
+        
+            <a name="method_term" class="anchor-link"></a>
+<div class="method item">
+    <h3 class="name"><code>term</code>
+
+    
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code>term</code>
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
+    
+
+    
+        <span class="returns-inline">
+            <span class="type"><a href="../classes/TaxonomiesRequest.html" class="crosslink">TaxonomiesRequest</a></span>
+        </span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <span class="flag chainable">chainable</span>
+    
+
+    
+
+    </h3>
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/lib_taxonomies.js.html#l116"><code>lib&#x2F;taxonomies.js:116</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="extended-detail">
+
+        <div class="description">
+            <p>Specify a taxonomy term to request</p>
+
+        </div>
+
+        
+            <div class="params">
+                <h4>Parameters:</h4>
+
+                <ul class="params-list">
+                
+                    <li class="param">
+                        
+                            <code class="param-name">term</code>
+                            <span class="type">String</span>
+                        
+
+                        
+
+                        <div class="param-description">
+                            <p>The ID or slug of the term to request</p>
+
+                        </div>
+
+                        
+                    </li>
+                
+                </ul>
+            </div>
+        
+
+        
+            <div class="returns">
+                <h4>Returns:</h4>
+
+                <div class="returns-description">
+                    
+                        
+                            <span class="type"><a href="../classes/TaxonomiesRequest.html" class="crosslink">TaxonomiesRequest</a></span>:
+                        
+                        <p>The TaxonomiesRequest instance (for chaining)</p>
+
+                    
+                </div>
+            </div>
+        
+
+        
+    </div>
+</div>
+
+        
             <a name="method_terms" class="anchor-link"></a>
 <div class="method item">
     <h3 class="name"><code>terms</code>
@@ -1968,7 +4035,7 @@
             
         
         
-        <a href="../files/lib_taxonomies.js.html#l80"><code>lib&#x2F;taxonomies.js:80</code></a>
+        <a href="../files/lib_taxonomies.js.html#l131"><code>lib&#x2F;taxonomies.js:131</code></a>
         
         </p>
 
@@ -1981,7 +4048,7 @@
     <div class="extended-detail">
 
         <div class="description">
-            <p>Specify that we are requesting the terms for a taxonomy</p>
+            <p>Specify that we are requesting a collection of terms for a taxonomy</p>
 
         </div>
 
@@ -2018,7 +4085,13 @@
             
                 <li class="arg">
                     
-                        <code class="optional">[callback]</code>
+                        <code class="optional">[successCallback]</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code class="optional">[failureCallback]</code>
                     
                 </li>
             
@@ -2056,7 +4129,7 @@
             
         
         
-        <a href="../files/lib_WPRequest.js.html#l268"><code>lib&#x2F;WPRequest.js:268</code></a>
+        <a href="../files/lib_shared_wp-request.js.html#l381"><code>lib&#x2F;shared&#x2F;wp-request.js:381</code></a>
         
         </p>
 
@@ -2069,7 +4142,7 @@
     <div class="extended-detail">
 
         <div class="description">
-            <p>Calling .then on a query chain will invoke it as a GET and return a promise</p>
+            <p>Calling .then on a query chain will invoke the query as a GET and return a promise</p>
 
         </div>
 
@@ -2081,7 +4154,7 @@
                 
                     <li class="param">
                         
-                            <code class="param-name optional">[callback]</code>
+                            <code class="param-name optional">[successCallback]</code>
                             <span class="type">Function</span>
                             <span class="flag optional" title="This parameter is optional.">optional</span>
                         
@@ -2089,28 +4162,27 @@
                         
 
                         <div class="param-description">
-                            <p>A callback to invoke with the results of the GET request</p>
+                            <p>A callback to handle the data returned from the GET request</p>
 
                         </div>
 
                         
-                            <ul class="params-list">
-                                
-                                <li class="param">
-                                    
-                                        <code class="param-name">results</code>
-                                        <span class="type">Object</span>
-                                    
+                    </li>
+                
+                    <li class="param">
+                        
+                            <code class="param-name optional">[failureCallback]</code>
+                            <span class="type">Function</span>
+                            <span class="flag optional" title="This parameter is optional.">optional</span>
+                        
 
-                                    <div class="param-description">
-                                        <p>The body of the server response</p>
+                        
 
-                                    </div>
+                        <div class="param-description">
+                            <p>A callback to handle any errors encountered by the request</p>
 
-                                    
-                                </li>
-                                
-                            </ul>
+                        </div>
+
                         
                     </li>
                 

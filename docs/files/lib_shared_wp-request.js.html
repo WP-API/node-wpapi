@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>lib/WPRequest.js - wordpress-rest-api</title>
+    <title>lib/shared/wp-request.js - wordpress-rest-api</title>
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
     <link rel="shortcut icon" type="image/png" href="../assets/favicon.png">
@@ -16,7 +16,7 @@
             <div class="project-title">
                 
                 
-                    <h1 class="project-name">wordpress-rest-api</h1> <span class="project-version">0.1.1</span>
+                    <h1 class="project-name">wordpress-rest-api</h1> <span class="project-version">0.2.0</span>
                 
                 
                     <p class="description">A client for interacting with the WordPress REST API</p>
@@ -45,11 +45,17 @@
         <div id="api-tabview-panel">
             <ul id="api-classes" class="apis classes">
             
-                <li><a class="type" href="../classes/CollectionFilters.html">CollectionFilters</a></li>
+                <li><a class="type" href="../classes/CollectionRequest.html">CollectionRequest</a></li>
+            
+                <li><a class="type" href="../classes/MediaRequest.html">MediaRequest</a></li>
+            
+                <li><a class="type" href="../classes/PagesRequest.html">PagesRequest</a></li>
             
                 <li><a class="type" href="../classes/PostsRequest.html">PostsRequest</a></li>
             
                 <li><a class="type" href="../classes/TaxonomiesRequest.html">TaxonomiesRequest</a></li>
+            
+                <li><a class="type" href="../classes/TypesRequest.html">TypesRequest</a></li>
             
                 <li><a class="type" href="../classes/UsersRequest.html">UsersRequest</a></li>
             
@@ -61,11 +67,17 @@
 
             <ul id="api-modules" class="apis modules">
             
-                <li><a class="module" href="../modules/CollectionFilters.html">CollectionFilters</a></li>
+                <li><a class="module" href="../modules/CollectionRequest.html">CollectionRequest</a></li>
+            
+                <li><a class="module" href="../modules/MediaRequest.html">MediaRequest</a></li>
+            
+                <li><a class="module" href="../modules/PagesRequest.html">PagesRequest</a></li>
             
                 <li><a class="module" href="../modules/PostsRequest.html">PostsRequest</a></li>
             
                 <li><a class="module" href="../modules/TaxonomiesRequest.html">TaxonomiesRequest</a></li>
+            
+                <li><a class="module" href="../modules/TypesRequest.html">TypesRequest</a></li>
             
                 <li><a class="module" href="../modules/UsersRequest.html">UsersRequest</a></li>
             
@@ -82,10 +94,11 @@
 
         <div id="docs-main" class="apidocs">
             <div class="content container">
-                <h1 class="file-heading">File: lib/WPRequest.js</h1>
+                <h1 class="file-heading">File: lib/shared/wp-request.js</h1>
 
 <div class="file">
     <pre class="code prettyprint linenums">
+&#x27;use strict&#x27;;
 /**
  * @module WP
  * @submodule WPRequest
@@ -93,8 +106,9 @@
  */
 
 /*jshint -W079 */// Suppress warning about redefiniton of &#x60;Promise&#x60;
-const Promise = require( &#x27;bluebird&#x27; );
-const agent = require( &#x27;superagent&#x27; );
+var Promise = require( &#x27;bluebird&#x27; );
+var agent = require( &#x27;superagent&#x27; );
+var Route = require( &#x27;route-parser&#x27; );
 
 /**
  * WPRequest is the base API request object constructor
@@ -109,8 +123,10 @@ const agent = require( &#x27;superagent&#x27; );
 function WPRequest( options ) {
 	/**
 	 * Configuration options for the request such as the endpoint for the invoking WP instance
+	 *
 	 * @property _options
 	 * @type Object
+	 * @private
 	 * @default {}
 	 */
 	this._options = options || {};
@@ -118,36 +134,50 @@ function WPRequest( options ) {
 	/**
 	 * Methods supported by this API request instance:
 	 * Individual endpoint handlers specify their own subset of supported methods
+	 *
 	 * @property _supportedMethods
 	 * @type Array
-	 * @default [ &#x27;head&#x27;, &#x27;get&#x27;, &#x27;put&#x27;, &#x27;post&#x27;, &#x27;patch&#x27;, &#x27;delete&#x27; ]
+	 * @private
+	 * @default [ &#x27;head&#x27;, &#x27;get&#x27;, &#x27;put&#x27;, &#x27;post&#x27;, &#x27;delete&#x27; ]
 	 */
-	this._supportedMethods = [ &#x27;head&#x27;, &#x27;get&#x27;, &#x27;put&#x27;, &#x27;post&#x27;, &#x27;patch&#x27;, &#x27;delete&#x27; ];
+	this._supportedMethods = [ &#x27;head&#x27;, &#x27;get&#x27;, &#x27;put&#x27;, &#x27;post&#x27;, &#x27;delete&#x27; ];
+
+	/**
+	 * A hash of values to assemble into the API request path
+	 * (This will be overwritten by each specific endpoint handler constructor)
+	 *
+	 * @property _path
+	 * @type Object
+	 * @private
+	 * @default {}
+	 */
+	this._path = {};
+
+	/**
+	 * The URL template that will be used to assemble endpoint paths
+	 * (This will be overwritten by each specific endpoint handler constructor)
+	 *
+	 * @property _template
+	 * @type String
+	 * @private
+	 * @default &#x27;&#x27;
+	 */
+	this._template = &#x27;&#x27;;
 }
 
 // Helpers
 // =======
 
-/**
- * No-op function for use within ensureFunction()
- *
- * @private
- */
+/** No-op function for use within ensureFunction() */
 function noop() {}
 
-/**
- * Identity function for use within invokeAndPromisify()
- *
- * @private
- */
+/** Identity function for use within invokeAndPromisify() */
 function identity( value ) {
 	return value;
 }
 
 /**
  * If fn is a function, return it; else, return a no-op function
- *
- * @private
  *
  * @param {Function|undefined} fn A WPRequest request callback
  * @return {Function} The provided callback function or a no-op
@@ -159,8 +189,6 @@ function ensureFunction( fn ) {
 /**
  * Submit the provided superagent request object, invoke a callback (if it was
  * provided), and return a promise to the response from the HTTP request.
- *
- * @private
  *
  * @param {Object} request A superagent request object
  * @param {Function} callback A callback function (optional)
@@ -191,8 +219,6 @@ function invokeAndPromisify( request, callback, transform ) {
 /**
  * Extract and return the body property from a superagent response object
  *
- * @private
- *
  * @param {Object} result The results from the HTTP request
  * @return {Object} The &quot;body&quot; property of the result
  */
@@ -203,8 +229,6 @@ function returnBody( result ) {
 /**
  * Extract and return the headers property from a superagent response object
  *
- * @private
- *
  * @param {Object} result The results from the HTTP request
  * @return {Object} The &quot;headers&quot; property of the result
  */
@@ -212,10 +236,45 @@ function returnHeaders( result ) {
 	return result.headers;
 }
 
+/**
+ * Check path parameter values against validation regular expressions
+ *
+ * @param {Object} pathValues A hash of path placeholder keys and their corresponding values
+ * @param {Object} validators A hash of placeholder keys to validation regexes
+ * @return {Object} Returns pathValues if all validation passes (else will throw)
+ */
+function validatePath( pathValues, validators ) {
+	if ( ! validators ) {
+		return pathValues;
+	}
+	for ( var param in pathValues ) {
+		if ( ! pathValues.hasOwnProperty( param ) ) {
+			continue;
+		}
+
+		// No validator, no problem
+		if ( ! validators[ param ] ) {
+			continue;
+		}
+
+		// Convert parameter to a string value and check it against the regex
+		if ( ! ( pathValues[ param ] + &#x27;&#x27; ).match( validators[ param ] ) ) {
+			throw new Error( param + &#x27; does not match &#x27; + validators[ param ] );
+		}
+	}
+
+	// If validation passed, return the pathValues object
+	return pathValues;
+}
+
 // Prototype Methods
 // =================
 
 /**
+ * Verify that the current request object supports a given HTTP verb
+ *
+ * @private
+ *
  * @method _checkMethodSupport
  * @param {String} method An HTTP method to check (&#x27;get&#x27;, &#x27;post&#x27;, etc)
  * @return true iff the method is within this._supportedMethods
@@ -232,16 +291,101 @@ WPRequest.prototype._checkMethodSupport = function( method ) {
 };
 
 /**
- * Generate the URI for the HTTP request (overridden in the modules for
- * handling individual endpoints)
+ * Validate &amp; assemble a path string from the request object&#x27;s _path
  *
- * @protected
+ * @private
  *
- * @method generateRequestUri
- * @return {String} The URI target for the HTTP request
+ * @method _renderPath
+ * @return {String} The rendered path
  */
-WPRequest.prototype.generateRequestUri = function() {
-	return this._options.endpoint;
+WPRequest.prototype._renderPath = function() {
+	var path = new Route( this._template );
+	var pathValues = validatePath( this._path, this._pathValidators );
+
+	return path.reverse( pathValues ) || &#x27;&#x27;;
+};
+
+/**
+ * Parse the request&#x27;s instance properties into a WordPress API request URI
+ *
+ * @private
+ *
+ * @method _renderURI
+ * @return {String} The URI for the HTTP request to be sent
+ */
+WPRequest.prototype._renderURI = function() {
+	// Render the path to a string
+	var path = this._renderPath();
+
+	// If the current request supports filters, render them to a query string
+	var queryStr = this._renderQuery ? this._renderQuery() : &#x27;&#x27;;
+
+	return this._options.endpoint + path + queryStr;
+};
+
+/**
+ * Conditionally set basic authentication on a server request object
+ *
+ * @method _auth
+ * @private
+ * @param {Object} request A superagent request object
+ * @param {Boolean} forceAuthentication whether to force authentication on the request
+ * @param {Object} A superagent request object, conditionally configured to use basic auth
+ */
+WPRequest.prototype._auth = function( request, forceAuthentication ) {
+	// If we&#x27;re not supposed to authenticate, don&#x27;t even start
+	if ( ! forceAuthentication &amp;&amp; ! this._options.auth ) {
+		return request;
+	}
+
+	// Retrieve the username &amp; password from the request options if they weren&#x27;t provided
+	var username = username || this._options.username;
+	var password = password || this._options.password;
+
+	// If no username &amp; password, can&#x27;t authenticate
+	if ( ! username || ! password ) {
+		return request;
+	}
+
+	// Can authenticate: set basic auth parameters on the request
+	return request.auth( username, password );
+};
+
+// Chaining methods
+// ================
+
+/**
+ * Set a requst to use authentication, and optionally provide auth credentials
+ *
+ * @example
+ * If auth credentials were already specified when the WP instance was created, calling
+ * &#x60;.auth&#x60; on the request chain will set that request to use the existing credentials:
+ *
+ *     request.auth().get...
+ *
+ * Alternatively, a username &amp; password can be explicitly passed into &#x60;.auth&#x60;:
+ *
+ *     request.auth( &#x27;username&#x27;, &#x27;password&#x27; ).get...
+ *
+ * @method auth
+ * @chainable
+ * @param {String} [username] A username string for basic authentication
+ * @param {String} [password] A user password string for basic authentication
+ * @return {WPRequest} The WPRequest instance (for chaining)
+ */
+WPRequest.prototype.auth = function( username, password ) {
+	if ( username &amp;&amp; typeof username === &#x27;string&#x27; ) {
+		this._options.username = username;
+	}
+
+	if ( password &amp;&amp; typeof password === &#x27;string&#x27; ) {
+		this._options.password = password;
+	}
+
+	// Set the &quot;auth&quot; options flag that will force authentication on this request
+	this._options.auth = true;
+
+	return this;
 };
 
 // HTTP Methods
@@ -257,9 +401,11 @@ WPRequest.prototype.generateRequestUri = function() {
  */
 WPRequest.prototype.get = function( callback ) {
 	this._checkMethodSupport( &#x27;get&#x27; );
-	var url = this.generateRequestUri();
+	var url = this._renderURI();
 
-	return invokeAndPromisify( agent.get( url ), callback, returnBody );
+	var request = this._auth( agent.get( url ) );
+
+	return invokeAndPromisify( request, callback, returnBody );
 };
 
 /**
@@ -273,13 +419,10 @@ WPRequest.prototype.get = function( callback ) {
  */
 WPRequest.prototype.post = function( data, callback ) {
 	this._checkMethodSupport( &#x27;post&#x27; );
-	var url = this.generateRequestUri();
-	var auth = this._options.username + &#x27;:&#x27; + this._options.password;
+	var url = this._renderURI();
 	data = data || {};
 
-	var request = agent.post( url )
-		.set( &#x27;Authorization&#x27;, auth )
-		.send( data );
+	var request = this._auth( agent.post( url ), true ).send( data );
 
 	return invokeAndPromisify( request, callback, returnBody );
 };
@@ -295,30 +438,12 @@ WPRequest.prototype.post = function( data, callback ) {
  */
 WPRequest.prototype.put = function( data, callback ) {
 	this._checkMethodSupport( &#x27;put&#x27; );
-	var url = this.generateRequestUri();
-	var auth = this._options.username + &#x27;:&#x27; + this._options.password;
+	var url = this._renderURI();
 	data = data || {};
 
-	var request = agent.put( url )
-		.set( &#x27;Authorization&#x27;, auth )
-		.send( data );
+	var request = this._auth( agent.put( url ), true ).send( data );
 
 	return invokeAndPromisify( request, callback, returnBody );
-};
-
-/**
- * @method patch
- * @async
- * @param {Function} [callback] A callback to invoke with the results of the PATCH request
- * @param {Error|Object} callback.err Any errors encountered during the request
- * @param {Object} callback.result The body of the server response
- * @return {Promise} A promise to the results of the HTTP request
- */
-WPRequest.prototype.patch = function( callback ) {
-	this._checkMethodSupport( &#x27;patch&#x27; );
-	// var url = this.generateRequestUri();
-	callback = ensureFunction( callback );
-	// todo: no idea what this method is supposed to do but it&#x27;s documented in the WP-API docs.
 };
 
 /**
@@ -331,9 +456,8 @@ WPRequest.prototype.patch = function( callback ) {
  */
 WPRequest.prototype.delete = function( callback ) {
 	this._checkMethodSupport( &#x27;delete&#x27; );
-	var url = this.generateRequestUri();
-	var auth = this._options.username + &#x27;:&#x27; + this._options.password;
-	var request = agent.del( url ).set( &#x27;Authorization&#x27;, auth );
+	var url = this._renderURI();
+	var request = this._auth( agent.del( url ), true );
 
 	return invokeAndPromisify( request, callback, returnBody );
 };
@@ -348,22 +472,23 @@ WPRequest.prototype.delete = function( callback ) {
  */
 WPRequest.prototype.head = function( callback ) {
 	this._checkMethodSupport( &#x27;head&#x27; );
-	var url = this.generateRequestUri();
+	var url = this._renderURI();
+	var request = this._auth( agent.head( url ) );
 
-	return invokeAndPromisify( agent.head( url ), callback, returnHeaders );
+	return invokeAndPromisify( request, callback, returnHeaders );
 };
 
 /**
- * Calling .then on a query chain will invoke it as a GET and return a promise
+ * Calling .then on a query chain will invoke the query as a GET and return a promise
  *
  * @method then
  * @async
- * @param {Function} [callback] A callback to invoke with the results of the GET request
- * @param {Object} callback.results The body of the server response
+ * @param {Function} [successCallback] A callback to handle the data returned from the GET request
+ * @param {Function} [failureCallback] A callback to handle any errors encountered by the request
  * @return {Promise} A promise to the results of the HTTP request
  */
-WPRequest.prototype.then = function( callback ) {
-	return this.get().then( callback );
+WPRequest.prototype.then = function( successCallback, failureCallback ) {
+	return this.get().then( successCallback, failureCallback );
 };
 
 module.exports = WPRequest;
