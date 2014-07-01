@@ -25,7 +25,7 @@
   "scripts": {
     "prepublish": "grunt",
     "docs": "grunt yuidoc",
-    "lint": "grunt jscs jshint",
+    "lint": "grunt jshint jscs",
     "mocha": "grunt test",
     "watch": "grunt watch",
     "test": "grunt"

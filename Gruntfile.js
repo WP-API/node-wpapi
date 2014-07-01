@@ -98,7 +98,7 @@ module.exports = function( grunt ) {
 
 	});
 
-	grunt.registerTask( 'lint', [ 'jscs', 'jshint' ] );
+	grunt.registerTask( 'lint', [ 'jshint', 'jscs' ] );
 	grunt.registerTask( 'test', [ 'simplemocha' ] );
 	grunt.registerTask( 'docs', [ 'yuidoc' ] );
 	grunt.registerTask( 'default', [ 'lint', 'test' ] );
