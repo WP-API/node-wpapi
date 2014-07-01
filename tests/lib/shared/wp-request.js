@@ -55,6 +55,88 @@ describe( 'WPRequest', function() {
 
 	});
 
+	describe( 'auth', function() {
+
+		it( 'is defined', function() {
+			expect( request ).to.have.property( 'auth' );
+			expect( request.auth ).to.be.a( 'function' );
+		});
+
+		it( 'sets the "auth" option to "true"', function() {
+			expect( request._options ).not.to.have.property( 'auth' );
+			request.auth();
+			expect( request._options ).to.have.property( 'auth' );
+			expect( request._options.auth ).to.be.true;
+		});
+
+		it( 'sets the username and password options, if provided', function() {
+			expect( request._options ).not.to.have.property( 'username' );
+			expect( request._options ).not.to.have.property( 'password' );
+			request.auth( 'user', 'pass' );
+			expect( request._options ).to.have.property( 'username' );
+			expect( request._options ).to.have.property( 'password' );
+			expect( request._options.username ).to.equal( 'user' );
+			expect( request._options.password ).to.equal( 'pass' );
+		});
+
+	});
+
+	describe( '._auth', function() {
+
+		var mockAgent;
+
+		beforeEach(function() {
+			mockAgent = {
+				auth: sinon.stub()
+			};
+		});
+
+		it( 'should set basic auth on the provided request if auth is forced', function() {
+			request._options = {
+				username: 'usr',
+				password: 'pwd'
+			};
+			request._auth( mockAgent, true );
+			expect( mockAgent.auth ).to.have.been.calledWith( 'usr', 'pwd' );
+		});
+
+		it( 'should set auth on the provided request if the "auth" option is true', function() {
+			request._options = {
+				username: 'usr',
+				password: 'pwd',
+				auth: true
+			};
+			request._auth( mockAgent );
+			expect( mockAgent.auth ).to.have.been.calledWith( 'usr', 'pwd' );
+		});
+
+		it( 'should not set auth if username is not available', function() {
+			request._options = {
+				password: 'pwd'
+			};
+			request._auth( mockAgent, true );
+			expect( mockAgent.auth ).not.to.have.been.called;
+		});
+
+		it( 'should not set auth if password is not available', function() {
+			request._options = {
+				username: 'usr'
+			};
+			request._auth( mockAgent, true );
+			expect( mockAgent.auth ).not.to.have.been.called;
+		});
+
+		it( 'should not set auth if auth is not true, and not forced', function() {
+			request._options = {
+				username: 'usr',
+				password: 'pwd'
+			};
+			request._auth( mockAgent );
+			expect( mockAgent.auth ).not.to.have.been.called;
+		});
+
+	});
+
 	describe( 'request methods', function() {
 
 		var MockAgent = require( '../../mocks/mock-superagent' );
@@ -149,7 +231,7 @@ describe( 'WPRequest', function() {
 
 			it( 'should trigger an HTTP POST request', function() {
 				sinon.spy( mockAgent, 'post' );
-				sinon.spy( mockAgent, 'set' );
+				sinon.spy( mockAgent, 'auth' );
 				sinon.spy( mockAgent, 'send' );
 				sinon.stub( mockAgent, 'end' );
 
@@ -161,8 +243,8 @@ describe( 'WPRequest', function() {
 
 				expect( mockAgent.post ).to.have.been.calledOnce;
 				expect( mockAgent.post ).to.have.been.calledWith( 'url/' );
-				expect( mockAgent.set ).to.have.been.calledOnce;
-				expect( mockAgent.set ).to.have.been.calledWith( 'Authorization', 'user:pass' );
+				expect( mockAgent.auth ).to.have.been.calledOnce;
+				expect( mockAgent.auth ).to.have.been.calledWith( 'user', 'pass' );
 				expect( mockAgent.send ).to.have.been.calledOnce;
 				expect( mockAgent.send ).to.have.been.calledWith( data );
 			});
@@ -195,7 +277,7 @@ describe( 'WPRequest', function() {
 
 			it( 'should trigger an HTTP PUT request', function() {
 				sinon.spy( mockAgent, 'put' );
-				sinon.spy( mockAgent, 'set' );
+				sinon.spy( mockAgent, 'auth' );
 				sinon.spy( mockAgent, 'send' );
 				sinon.stub( mockAgent, 'end' );
 
@@ -207,8 +289,8 @@ describe( 'WPRequest', function() {
 
 				expect( mockAgent.put ).to.have.been.calledOnce;
 				expect( mockAgent.put ).to.have.been.calledWith( 'url/' );
-				expect( mockAgent.set ).to.have.been.calledOnce;
-				expect( mockAgent.set ).to.have.been.calledWith( 'Authorization', 'user:pass' );
+				expect( mockAgent.auth ).to.have.been.calledOnce;
+				expect( mockAgent.auth ).to.have.been.calledWith( 'user', 'pass' );
 				expect( mockAgent.send ).to.have.been.calledOnce;
 				expect( mockAgent.send ).to.have.been.calledWith( data );
 			});
@@ -241,7 +323,7 @@ describe( 'WPRequest', function() {
 
 			it( 'should trigger an HTTP DELETE request', function() {
 				sinon.spy( mockAgent, 'del' );
-				sinon.spy( mockAgent, 'set' );
+				sinon.spy( mockAgent, 'auth' );
 				sinon.stub( mockAgent, 'end' );
 
 				wpRequest._options.username = 'user';
@@ -251,8 +333,8 @@ describe( 'WPRequest', function() {
 
 				expect( mockAgent.del ).to.have.been.calledOnce;
 				expect( mockAgent.del ).to.have.been.calledWith( 'url/' );
-				expect( mockAgent.set ).to.have.been.calledOnce;
-				expect( mockAgent.set ).to.have.been.calledWith( 'Authorization', 'user:pass' );
+				expect( mockAgent.auth ).to.have.been.calledOnce;
+				expect( mockAgent.auth ).to.have.been.calledWith( 'user', 'pass' );
 			});
 
 			it( 'should invoke a callback, if provided', function() {

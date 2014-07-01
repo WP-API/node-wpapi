@@ -13,7 +13,7 @@ MockAgent.prototype = {
 		this._data = data;
 		return this;
 	},
-	set: function() { return this; },
+	auth: function() { return this; },
 	end: function( cb ) {
 		cb = cb || noop;
 		cb( this._err || null, this._response || {} );
