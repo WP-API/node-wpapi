@@ -169,6 +169,7 @@ WP.prototype.taxonomy = function( taxonomyName ) {
  *
  * @example
  * These are equivalent:
+ *
  *     wp.taxonomies().taxonomy( 'category' ).terms()
  *     wp.categories()
  *
@@ -187,6 +188,7 @@ WP.prototype.categories = function() {
  *
  * @example
  * These are equivalent:
+ *
  *     wp.taxonomies().taxonomy( 'post_tag' ).terms()
  *     wp.tags()
  *
