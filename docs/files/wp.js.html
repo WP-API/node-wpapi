@@ -16,7 +16,7 @@
             <div class="project-title">
                 
                 
-                    <h1 class="project-name">wordpress-rest-api</h1> <span class="project-version">0.2.0</span>
+                    <h1 class="project-name">wordpress-rest-api</h1> <span class="project-version">0.2.1</span>
                 
                 
                     <p class="description">A client for interacting with the WordPress REST API</p>
@@ -232,6 +232,72 @@ WP.prototype.taxonomies = function( options ) {
 	options = options || {};
 	options = extend( options, this._options );
 	return new TaxonomiesRequest( options );
+};
+
+/**
+ * Start a request for a specific taxonomy object
+ *
+ * It is repetitive to have to type &#x60;.taxonomies().taxonomy()&#x60; whenever you want to request
+ * a taxonomy object or list of terms for a taxonomy. This convenience method lets you
+ * create a &#x60;TaxonomiesRequest&#x60; object that is bound to the provided taxonomy name.
+ *
+ * @example
+ * If your site uses two custom taxonomies, book_genre and book_publisher, before you would
+ * have had to request these terms using the verbose form:
+ *
+ *     wp.taxonomies().taxonomy( &#x27;book_genre&#x27; ).terms()...
+ *     wp.taxonomies().taxonomy( &#x27;book_publisher&#x27; )...
+ *
+ * Using &#x60;.taxonomy()&#x60;, the same query can be achieved much more succinctly:
+ *
+ *     wp.taxonomy( &#x27;book_genre&#x27; ).terms()...
+ *     wp.taxonomy( &#x27;book_publisher&#x27; )...
+ *
+ * @method taxonomy
+ * @param {String} taxonomyName The name of the taxonomy to request
+ * @return {TaxonomiesRequest} A TaxonomiesRequest object bound to the value of taxonomyName
+ */
+WP.prototype.taxonomy = function( taxonomyName ) {
+	var options = extend( {}, this._options );
+	return new TaxonomiesRequest( options ).taxonomy( taxonomyName );
+};
+
+/**
+ * Request a list of category terms
+ *
+ * This is a shortcut method to retrieve the terms for the &quot;category&quot; taxonomy
+ *
+ * @example
+ * These are equivalent:
+ *
+ *     wp.taxonomies().taxonomy( &#x27;category&#x27; ).terms()
+ *     wp.categories()
+ *
+ * @method categories
+ * @return {TaxonomiesRequest} A TaxonomiesRequest object bound to the terms for &quot;category&quot;
+ */
+WP.prototype.categories = function() {
+	var options = extend( {}, this._options );
+	return new TaxonomiesRequest( options ).taxonomy( &#x27;category&#x27; ).terms();
+};
+
+/**
+ * Request a list of post_tag terms
+ *
+ * This is a shortcut method to retrieve the terms for the &quot;post_tag&quot; taxonomy
+ *
+ * @example
+ * These are equivalent:
+ *
+ *     wp.taxonomies().taxonomy( &#x27;post_tag&#x27; ).terms()
+ *     wp.tags()
+ *
+ * @method tags
+ * @return {TaxonomiesRequest} A TaxonomiesRequest object bound to the terms for &quot;post_tag&quot;
+ */
+WP.prototype.tags = function() {
+	var options = extend( {}, this._options );
+	return new TaxonomiesRequest( options ).taxonomy( &#x27;post_tag&#x27; ).terms();
 };
 
 /**

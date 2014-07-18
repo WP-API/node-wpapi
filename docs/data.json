@@ -2,7 +2,7 @@
     "project": {
         "name": "wordpress-rest-api",
         "description": "A client for interacting with the WordPress REST API",
-        "version": "0.2.0",
+        "version": "0.2.1",
         "url": "https://github.com/kadamwhite/wordpress-rest-api"
     },
     "files": {
@@ -2844,6 +2844,61 @@
         {
             "file": "wp.js",
             "line": 137,
+            "description": "Start a request for a specific taxonomy object\n\nIt is repetitive to have to type `.taxonomies().taxonomy()` whenever you want to request\na taxonomy object or list of terms for a taxonomy. This convenience method lets you\ncreate a `TaxonomiesRequest` object that is bound to the provided taxonomy name.",
+            "example": [
+                "\nIf your site uses two custom taxonomies, book_genre and book_publisher, before you would\nhave had to request these terms using the verbose form:\n\n    wp.taxonomies().taxonomy( 'book_genre' ).terms()...\n    wp.taxonomies().taxonomy( 'book_publisher' )...\n\nUsing `.taxonomy()`, the same query can be achieved much more succinctly:\n\n    wp.taxonomy( 'book_genre' ).terms()...\n    wp.taxonomy( 'book_publisher' )..."
+            ],
+            "itemtype": "method",
+            "name": "taxonomy",
+            "params": [
+                {
+                    "name": "taxonomyName",
+                    "description": "The name of the taxonomy to request",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "A TaxonomiesRequest object bound to the value of taxonomyName",
+                "type": "TaxonomiesRequest"
+            },
+            "class": "WP",
+            "module": "WP"
+        },
+        {
+            "file": "wp.js",
+            "line": 165,
+            "description": "Request a list of category terms\n\nThis is a shortcut method to retrieve the terms for the \"category\" taxonomy",
+            "example": [
+                "\nThese are equivalent:\n\n    wp.taxonomies().taxonomy( 'category' ).terms()\n    wp.categories()"
+            ],
+            "itemtype": "method",
+            "name": "categories",
+            "return": {
+                "description": "A TaxonomiesRequest object bound to the terms for \"category\"",
+                "type": "TaxonomiesRequest"
+            },
+            "class": "WP",
+            "module": "WP"
+        },
+        {
+            "file": "wp.js",
+            "line": 184,
+            "description": "Request a list of post_tag terms\n\nThis is a shortcut method to retrieve the terms for the \"post_tag\" taxonomy",
+            "example": [
+                "\nThese are equivalent:\n\n    wp.taxonomies().taxonomy( 'post_tag' ).terms()\n    wp.tags()"
+            ],
+            "itemtype": "method",
+            "name": "tags",
+            "return": {
+                "description": "A TaxonomiesRequest object bound to the terms for \"post_tag\"",
+                "type": "TaxonomiesRequest"
+            },
+            "class": "WP",
+            "module": "WP"
+        },
+        {
+            "file": "wp.js",
+            "line": 203,
             "description": "Start a request against the `/posts/types` endpoint",
             "itemtype": "method",
             "name": "types",
@@ -2864,7 +2919,7 @@
         },
         {
             "file": "wp.js",
-            "line": 150,
+            "line": 216,
             "description": "Start a request against the `/users` endpoint",
             "itemtype": "method",
             "name": "users",
@@ -2885,7 +2940,7 @@
         },
         {
             "file": "wp.js",
-            "line": 163,
+            "line": 229,
             "description": "Define a method to handle specific custom post types.",
             "example": [
                 "\nIf your site had an events custom type with name `event_cpt`, you could create a convenience\nmethod for querying events and store it on the WP instance.\n\nCreate the WP instance, define the custom endpoint handler, and save it to `wp.events`:\n\n    var wp = new WP({ endpoint: 'http://some-website.com/wp-json' });\n    wp.events = wp.registerType( 'event_cpt' );\n\nYou can now call `wp.events()` to trigger event post requests\n\n    wp.events().get()... // equivalent to wp.posts().type( 'event_cpt' ).get()...\n\n`registerType()` just returns a function, so there's no requirement to store it as a property\non the WP instance; however, following the above pattern is likely to be the most useful."
@@ -2908,7 +2963,7 @@
         },
         {
             "file": "wp.js",
-            "line": 193,
+            "line": 259,
             "description": "Generate a request against a completely arbitrary endpoint, with no assumptions about\nor mutation of path, filtering, or query parameters. This request is not restricted to\nthe endpoint specified during WP object instantiation.",
             "example": [
                 "\nGenerate a request to the explicit URL \"http://your.website.com/wp-json/some/custom/path\" (yeah, we wish ;)\n\n    wp.url( 'http://your.website.com/wp-json/some/custom/path' ).get()..."
@@ -2931,7 +2986,7 @@
         },
         {
             "file": "wp.js",
-            "line": 214,
+            "line": 280,
             "description": "Generate a query against an arbitrary path on the current endpoint. This is useful for\nrequesting resources at custom WP-API endpoints, such as WooCommerce's `/products`.",
             "itemtype": "method",
             "name": "root",

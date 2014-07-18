@@ -16,7 +16,7 @@
             <div class="project-title">
                 
                 
-                    <h1 class="project-name">wordpress-rest-api</h1> <span class="project-version">0.2.0</span>
+                    <h1 class="project-name">wordpress-rest-api</h1> <span class="project-version">0.2.1</span>
                 
                 
                     <p class="description">A client for interacting with the WordPress REST API</p>
@@ -257,6 +257,13 @@
             
 
             
+                <li class="index-item method">
+                    <a href="#method_categories">categories</a>
+
+                    
+                    
+                </li>
+            
                 <li class="index-item method inherited">
                     <a href="#method_comment">comment</a>
 
@@ -344,13 +351,20 @@
                 </li>
             
                 <li class="index-item method">
+                    <a href="#method_tags">tags</a>
+
+                    
+                    
+                </li>
+            
+                <li class="index-item method">
                     <a href="#method_taxonomies">taxonomies</a>
 
                     
                     
                 </li>
             
-                <li class="index-item method inherited inherited">
+                <li class="index-item method inherited">
                     <a href="#method_taxonomy">taxonomy</a>
 
                     
@@ -1103,6 +1117,97 @@
 
     <div class="methods-detail">
         <h2>Methods</h2>
+
+        
+            <a name="method_categories" class="anchor-link"></a>
+<div class="method item">
+    <h3 class="name"><code>categories</code>
+
+    
+        <span class="paren">()</span>
+    
+
+    
+        <span class="returns-inline">
+            <span class="type"><a href="../classes/TaxonomiesRequest.html" class="crosslink">TaxonomiesRequest</a></span>
+        </span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    </h3>
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/wp.js.html#l165"><code>wp.js:165</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="extended-detail">
+
+        <div class="description">
+            <p>Request a list of category terms</p>
+<p>This is a shortcut method to retrieve the terms for the &quot;category&quot; taxonomy</p>
+
+        </div>
+
+        
+
+        
+            <div class="returns">
+                <h4>Returns:</h4>
+
+                <div class="returns-description">
+                    
+                        
+                            <span class="type"><a href="../classes/TaxonomiesRequest.html" class="crosslink">TaxonomiesRequest</a></span>:
+                        
+                        <p>A TaxonomiesRequest object bound to the terms for &quot;category&quot;</p>
+
+                    
+                </div>
+            </div>
+        
+
+        
+            <div class="example">
+                <h4>Example:</h4>
+
+                <div class="example-content">
+                    <p>These are equivalent:</p>
+<pre class="code prettyprint"><code>wp.taxonomies().taxonomy( &#39;category&#39; ).terms()
+wp.categories()</code></pre>
+
+                </div>
+            </div>
+        
+    </div>
+</div>
 
         
             <a name="method_comment" class="anchor-link"></a>
@@ -1877,7 +1982,7 @@
             
         
         
-        <a href="../files/wp.js.html#l163"><code>wp.js:163</code></a>
+        <a href="../files/wp.js.html#l229"><code>wp.js:229</code></a>
         
         </p>
 
@@ -2091,7 +2196,7 @@ on the WP instance; however, following the above pattern is likely to be the mos
             
         
         
-        <a href="../files/wp.js.html#l214"><code>wp.js:214</code></a>
+        <a href="../files/wp.js.html#l280"><code>wp.js:280</code></a>
         
         </p>
 
@@ -2377,6 +2482,97 @@ var wp = WP.site( &#39;http://my.blog.url/wp-json&#39; );</code></pre>
 </div>
 
         
+            <a name="method_tags" class="anchor-link"></a>
+<div class="method item">
+    <h3 class="name"><code>tags</code>
+
+    
+        <span class="paren">()</span>
+    
+
+    
+        <span class="returns-inline">
+            <span class="type"><a href="../classes/TaxonomiesRequest.html" class="crosslink">TaxonomiesRequest</a></span>
+        </span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    </h3>
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/wp.js.html#l184"><code>wp.js:184</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="extended-detail">
+
+        <div class="description">
+            <p>Request a list of post_tag terms</p>
+<p>This is a shortcut method to retrieve the terms for the &quot;post_tag&quot; taxonomy</p>
+
+        </div>
+
+        
+
+        
+            <div class="returns">
+                <h4>Returns:</h4>
+
+                <div class="returns-description">
+                    
+                        
+                            <span class="type"><a href="../classes/TaxonomiesRequest.html" class="crosslink">TaxonomiesRequest</a></span>:
+                        
+                        <p>A TaxonomiesRequest object bound to the terms for &quot;post_tag&quot;</p>
+
+                    
+                </div>
+            </div>
+        
+
+        
+            <div class="example">
+                <h4>Example:</h4>
+
+                <div class="example-content">
+                    <p>These are equivalent:</p>
+<pre class="code prettyprint"><code>wp.taxonomies().taxonomy( &#39;post_tag&#39; ).terms()
+wp.tags()</code></pre>
+
+                </div>
+            </div>
+        
+    </div>
+</div>
+
+        
             <a name="method_taxonomies" class="anchor-link"></a>
 <div class="method item">
     <h3 class="name"><code>taxonomies</code>
@@ -2492,7 +2688,7 @@ var wp = WP.site( &#39;http://my.blog.url/wp-json&#39; );</code></pre>
 
         
             <a name="method_taxonomy" class="anchor-link"></a>
-<div class="method item inherited inherited">
+<div class="method item inherited">
     <h3 class="name"><code>taxonomy</code>
 
     
@@ -2524,8 +2720,6 @@ var wp = WP.site( &#39;http://my.blog.url/wp-json&#39; );</code></pre>
     
 
     
-        <span class="flag chainable">chainable</span>
-    
 
     
 
@@ -2534,15 +2728,15 @@ var wp = WP.site( &#39;http://my.blog.url/wp-json&#39; );</code></pre>
     <div class="meta">
         
             <p>Inherited from
-            <a href="../classes/CollectionRequest.html#method_taxonomy" class="type">
-                CollectionRequest
+            <a href="../classes/TaxonomiesRequest.html#method_taxonomy" class="type">
+                TaxonomiesRequest
             </a>
             
             but overwritten in
             
         
         
-        <a href="../files/lib_taxonomies.js.html#l102"><code>lib&#x2F;taxonomies.js:102</code></a>
+        <a href="../files/wp.js.html#l137"><code>wp.js:137</code></a>
         
         </p>
 
@@ -2555,7 +2749,10 @@ var wp = WP.site( &#39;http://my.blog.url/wp-json&#39; );</code></pre>
     <div class="extended-detail">
 
         <div class="description">
-            <p>Specify the name of the taxonomy to query</p>
+            <p>Start a request for a specific taxonomy object</p>
+<p>It is repetitive to have to type <code>.taxonomies().taxonomy()</code> whenever you want to request
+a taxonomy object or list of terms for a taxonomy. This convenience method lets you
+create a <code>TaxonomiesRequest</code> object that is bound to the provided taxonomy name.</p>
 
         </div>
 
@@ -2574,7 +2771,7 @@ var wp = WP.site( &#39;http://my.blog.url/wp-json&#39; );</code></pre>
                         
 
                         <div class="param-description">
-                            <p>The name of the taxonomy to query</p>
+                            <p>The name of the taxonomy to request</p>
 
                         </div>
 
@@ -2594,13 +2791,28 @@ var wp = WP.site( &#39;http://my.blog.url/wp-json&#39; );</code></pre>
                         
                             <span class="type"><a href="../classes/TaxonomiesRequest.html" class="crosslink">TaxonomiesRequest</a></span>:
                         
-                        <p>The TaxonomiesRequest instance (for chaining)</p>
+                        <p>A TaxonomiesRequest object bound to the value of taxonomyName</p>
 
                     
                 </div>
             </div>
         
 
+        
+            <div class="example">
+                <h4>Example:</h4>
+
+                <div class="example-content">
+                    <p>If your site uses two custom taxonomies, book_genre and book_publisher, before you would
+have had to request these terms using the verbose form:</p>
+<pre class="code prettyprint"><code>wp.taxonomies().taxonomy( &#39;book_genre&#39; ).terms()...
+wp.taxonomies().taxonomy( &#39;book_publisher&#39; )...</code></pre>
+<p>Using <code>.taxonomy()</code>, the same query can be achieved much more succinctly:</p>
+<pre class="code prettyprint"><code>wp.taxonomy( &#39;book_genre&#39; ).terms()...
+wp.taxonomy( &#39;book_publisher&#39; )...</code></pre>
+
+                </div>
+            </div>
         
     </div>
 </div>
@@ -2957,7 +3169,7 @@ var wp = WP.site( &#39;http://my.blog.url/wp-json&#39; );</code></pre>
             
         
         
-        <a href="../files/wp.js.html#l137"><code>wp.js:137</code></a>
+        <a href="../files/wp.js.html#l203"><code>wp.js:203</code></a>
         
         </p>
 
@@ -3071,7 +3283,7 @@ var wp = WP.site( &#39;http://my.blog.url/wp-json&#39; );</code></pre>
             
         
         
-        <a href="../files/wp.js.html#l193"><code>wp.js:193</code></a>
+        <a href="../files/wp.js.html#l259"><code>wp.js:259</code></a>
         
         </p>
 
@@ -3196,7 +3408,7 @@ the endpoint specified during WP object instantiation.</p>
             
         
         
-        <a href="../files/wp.js.html#l150"><code>wp.js:150</code></a>
+        <a href="../files/wp.js.html#l216"><code>wp.js:216</code></a>
         
         </p>
 
