@@ -93,6 +93,10 @@ Additional querying methods provided, by endpoint:
     - `wp.taxonomies().taxonomy( 'taxonomy_name' )`: get a specific taxonomy object with name *taxonomy_name*
     - `wp.taxonomies().taxonomy( 'taxonomy_name' ).terms()`: get all terms for taxonomy *taxonomy_name*
     - `wp.taxonomies().taxonomy( 'taxonomy_name' ).term( termIdentifier )`: get the term with slug or ID *termIdentifier* from the taxonomy *taxonomy_name*
+    - **shortcut methods**: These methods enable concisely querying taxonomy endpoint sub-resources
+        - `wp.categories()`: shortcut method to retrieve the terms collection for the "category" taxonomy
+        - `wp.tags()`: shortcut method to retrieve the terms collection for the "post_tag" taxonomy
+        - `wp.taxonomy( 'tax_name' )`: shortcut method to retrieve the taxonomy object corresponding to the provided taxonomy name (equivalent to calling `wp.taxonomies().taxonomy( 'tax_name' )`)
 * **types**
     - `wp.types()`: get a collection of all registered public post types
     - `wp.types().type( 'cpt_name' )`: get the object for the custom post type with the name *cpt_name*
