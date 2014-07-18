@@ -135,6 +135,34 @@ WP.prototype.taxonomies = function( options ) {
 };
 
 /**
+ * Define a method to handle specific taxonomies.
+ *
+ * It is repetitive to have to type `.taxonomies().taxonomy()` whenever you want to request
+ * a taxonomy object or list of terms for a taxonomy. This convenience method lets you
+ * create a `TaxonomiesRequest` object that is bound to the provided taxonomy name.
+ *
+ * @example
+ * If your site uses two custom taxonomies, book_genre and book_publisher, before you would
+ * have had to request these terms using the verbose form:
+ *
+ *     wp.taxonomies().taxonomy( 'book_genre' ).terms()...
+ *     wp.taxonomies().taxonomy( 'book_publisher' )...
+ *
+ * Using `.taxonomy()`, the same query can be achieved much more succinctly:
+ *
+ *     wp.taxonomy( 'book_genre' ).terms()...
+ *     wp.taxonomy( 'book_publisher' )...
+ *
+ * @method taxonomy
+ * @param {String} taxonomyName The name of the taxonomy to request
+ * @return {TaxonomiesRequest} A TaxonomiesRequest object bound to the value of taxonomyName
+ */
+WP.prototype.taxonomy = function( taxonomyName ) {
+	var options = extend( {}, this._options );
+	return new TaxonomiesRequest( options ).taxonomy( taxonomyName );
+};
+
+/**
  * Start a request against the `/posts/types` endpoint
  *
  * @method types

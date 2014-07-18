@@ -232,11 +232,11 @@ describe( 'wp', function() {
 			expect( tags._renderURI() ).to.equal( 'endpoint/url/taxonomies/post_tag/terms' );
 		});
 
-		it( 'defines a generic .taxonomy() shortcut handler for arbitrary taxonomies', function() {
+		it( 'defines a generic .taxonomy() handler for arbitrary taxonomy objects', function() {
 			var taxRequest = site.taxonomy( 'my_custom_tax' );
 			expect( taxRequest instanceof TaxonomiesRequest ).to.be.true;
 			var uri = taxRequest._renderURI();
-			expect( uri ).to.equal( 'endpoint/url/taxonomies/my_custom_tax/terms' );
+			expect( uri ).to.equal( 'endpoint/url/taxonomies/my_custom_tax' );
 		});
 
 	});
