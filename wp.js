@@ -135,7 +135,7 @@ WP.prototype.taxonomies = function( options ) {
 };
 
 /**
- * Define a method to handle specific taxonomies.
+ * Start a request for a specific taxonomy object
  *
  * It is repetitive to have to type `.taxonomies().taxonomy()` whenever you want to request
  * a taxonomy object or list of terms for a taxonomy. This convenience method lets you
@@ -160,6 +160,42 @@ WP.prototype.taxonomies = function( options ) {
 WP.prototype.taxonomy = function( taxonomyName ) {
 	var options = extend( {}, this._options );
 	return new TaxonomiesRequest( options ).taxonomy( taxonomyName );
+};
+
+/**
+ * Request a list of category terms
+ *
+ * This is a shortcut method to retrieve the terms for the "category" taxonomy
+ *
+ * @example
+ * These are equivalent:
+ *     wp.taxonomies().taxonomy( 'category' ).terms()
+ *     wp.categories()
+ *
+ * @method categories
+ * @return {TaxonomiesRequest} A TaxonomiesRequest object bound to the terms for "category"
+ */
+WP.prototype.categories = function() {
+	var options = extend( {}, this._options );
+	return new TaxonomiesRequest( options ).taxonomy( 'category' ).terms();
+};
+
+/**
+ * Request a list of post_tag terms
+ *
+ * This is a shortcut method to retrieve the terms for the "post_tag" taxonomy
+ *
+ * @example
+ * These are equivalent:
+ *     wp.taxonomies().taxonomy( 'post_tag' ).terms()
+ *     wp.tags()
+ *
+ * @method tags
+ * @return {TaxonomiesRequest} A TaxonomiesRequest object bound to the terms for "post_tag"
+ */
+WP.prototype.tags = function() {
+	var options = extend( {}, this._options );
+	return new TaxonomiesRequest( options ).taxonomy( 'post_tag' ).terms();
 };
 
 /**
