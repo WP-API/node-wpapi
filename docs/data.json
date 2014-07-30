@@ -2,7 +2,7 @@
     "project": {
         "name": "wordpress-rest-api",
         "description": "A client for interacting with the WordPress REST API",
-        "version": "0.2.1",
+        "version": "0.2.2",
         "url": "https://github.com/kadamwhite/wordpress-rest-api"
     },
     "files": {
@@ -1313,7 +1313,7 @@
         },
         {
             "file": "lib/shared/wp-request.js",
-            "line": 119,
+            "line": 116,
             "description": "Extract and return the body property from a superagent response object",
             "params": [
                 {
@@ -1332,7 +1332,7 @@
         },
         {
             "file": "lib/shared/wp-request.js",
-            "line": 129,
+            "line": 126,
             "description": "Extract and return the headers property from a superagent response object",
             "params": [
                 {
@@ -1351,7 +1351,7 @@
         },
         {
             "file": "lib/shared/wp-request.js",
-            "line": 139,
+            "line": 136,
             "description": "Check path parameter values against validation regular expressions",
             "params": [
                 {
@@ -1375,7 +1375,7 @@
         },
         {
             "file": "lib/shared/wp-request.js",
-            "line": 173,
+            "line": 170,
             "description": "Verify that the current request object supports a given HTTP verb",
             "access": "private",
             "tagname": "",
@@ -1397,7 +1397,7 @@
         },
         {
             "file": "lib/shared/wp-request.js",
-            "line": 193,
+            "line": 190,
             "description": "Validate & assemble a path string from the request object's _path",
             "access": "private",
             "tagname": "",
@@ -1413,7 +1413,7 @@
         },
         {
             "file": "lib/shared/wp-request.js",
-            "line": 208,
+            "line": 205,
             "description": "Parse the request's instance properties into a WordPress API request URI",
             "access": "private",
             "tagname": "",
@@ -1429,7 +1429,7 @@
         },
         {
             "file": "lib/shared/wp-request.js",
-            "line": 226,
+            "line": 223,
             "description": "Conditionally set basic authentication on a server request object",
             "itemtype": "method",
             "name": "_auth",
@@ -1458,7 +1458,7 @@
         },
         {
             "file": "lib/shared/wp-request.js",
-            "line": 257,
+            "line": 254,
             "description": "Set a requst to use authentication, and optionally provide auth credentials",
             "example": [
                 "\nIf auth credentials were already specified when the WP instance was created, calling\n`.auth` on the request chain will set that request to use the existing credentials:\n\n    request.auth().get...\n\nAlternatively, a username & password can be explicitly passed into `.auth`:\n\n    request.auth( 'username', 'password' ).get..."
@@ -1490,7 +1490,7 @@
         },
         {
             "file": "lib/shared/wp-request.js",
-            "line": 294,
+            "line": 291,
             "itemtype": "method",
             "name": "get",
             "async": 1,
@@ -1524,7 +1524,7 @@
         },
         {
             "file": "lib/shared/wp-request.js",
-            "line": 311,
+            "line": 308,
             "itemtype": "method",
             "name": "post",
             "async": 1,
@@ -1563,7 +1563,7 @@
         },
         {
             "file": "lib/shared/wp-request.js",
-            "line": 330,
+            "line": 327,
             "itemtype": "method",
             "name": "put",
             "async": 1,
@@ -1602,7 +1602,7 @@
         },
         {
             "file": "lib/shared/wp-request.js",
-            "line": 349,
+            "line": 346,
             "itemtype": "method",
             "name": "delete",
             "async": 1,
@@ -1636,7 +1636,7 @@
         },
         {
             "file": "lib/shared/wp-request.js",
-            "line": 365,
+            "line": 362,
             "itemtype": "method",
             "name": "head",
             "async": 1,
@@ -1670,7 +1670,7 @@
         },
         {
             "file": "lib/shared/wp-request.js",
-            "line": 381,
+            "line": 378,
             "description": "Calling .then on a query chain will invoke the query as a GET and return a promise",
             "itemtype": "method",
             "name": "then",
@@ -3055,15 +3055,15 @@
         },
         {
             "message": "Missing item type\nExtract and return the body property from a superagent response object",
-            "line": " lib/shared/wp-request.js:119"
+            "line": " lib/shared/wp-request.js:116"
         },
         {
             "message": "Missing item type\nExtract and return the headers property from a superagent response object",
-            "line": " lib/shared/wp-request.js:129"
+            "line": " lib/shared/wp-request.js:126"
         },
         {
             "message": "Missing item type\nCheck path parameter values against validation regular expressions",
-            "line": " lib/shared/wp-request.js:139"
+            "line": " lib/shared/wp-request.js:136"
         },
         {
             "message": "Missing item type\nSorted list of private WP_Query variables, requiring authentication\nThis may be used for a whitelist soon, but at present please consider it\nto be simply documentation.\n\nDocumentation:\n\n- WP_Query parameters: http://codex.wordpress.org/Class_Reference/WP_Query\n- Privat query variables: WordPress core, wp-includes/class-wp.php\n\nNote: posts_per_page is a private query varaible within WordPress, but is\nexplicitly exposed for public querying within the WP API so it exists in\nthe list within public-query-vars.js",

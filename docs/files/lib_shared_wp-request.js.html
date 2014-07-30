@@ -16,7 +16,7 @@
             <div class="project-title">
                 
                 
-                    <h1 class="project-name">wordpress-rest-api</h1> <span class="project-version">0.2.1</span>
+                    <h1 class="project-name">wordpress-rest-api</h1> <span class="project-version">0.2.2</span>
                 
                 
                     <p class="description">A client for interacting with the WordPress REST API</p>
@@ -203,17 +203,14 @@ function invokeAndPromisify( request, callback, transform ) {
 		// Fire off the result
 		request.end(function( err, result ) {
 
-			// Invoke the callback (if provided), to conform to standard Node pattern
-			callback( err, transform( result ) );
-
 			// Return the results as a promise
 			if ( err || result.error ) {
 				reject( err || result.error );
 			} else {
-				resolve( transform( result ) );
+				resolve( result );
 			}
 		});
-	});
+	}).then(transform).nodeify(callback);
 }
 
 /**
