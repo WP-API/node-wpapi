@@ -173,10 +173,10 @@ describe( 'WPRequest', function() {
 				var spy = sinon.spy();
 				mockAgent._response = { body: 'data' };
 
-				wpRequest.get( spy );
-
-				expect( spy ).to.have.been.calledOnce;
-				expect( spy ).to.have.been.calledWith( null, 'data' );
+				return wpRequest.get( spy ).then( function() {
+					expect( spy ).to.have.been.calledOnce;
+					expect( spy ).to.have.been.calledWith( null, 'data' );
+				});
 			});
 
 			it( 'should return a Promise to the request data', function() {
@@ -254,10 +254,10 @@ describe( 'WPRequest', function() {
 				var data = { some: 'data' };
 				mockAgent._response = { body: 'some data' };
 
-				wpRequest.post( data, spy );
-
-				expect( spy ).to.have.been.calledOnce;
-				expect( spy ).to.have.been.calledWith( null, 'some data' );
+				return wpRequest.post( data, spy ).then( function() {
+					expect( spy ).to.have.been.calledOnce;
+					expect( spy ).to.have.been.calledWith( null, 'some data' );
+				});
 			});
 
 			it( 'should return a Promise to the request response', function() {
@@ -300,10 +300,10 @@ describe( 'WPRequest', function() {
 				var data = { some: 'data' };
 				mockAgent._response = { body: 'some data' };
 
-				wpRequest.put( data, spy );
-
-				expect( spy ).to.have.been.calledOnce;
-				expect( spy ).to.have.been.calledWith( null, 'some data' );
+				return wpRequest.put( data, spy ).then( function() {
+					expect( spy ).to.have.been.calledOnce;
+					expect( spy ).to.have.been.calledWith( null, 'some data' );
+				});
 			});
 
 			it( 'should return a Promise to the request data', function() {
@@ -341,10 +341,10 @@ describe( 'WPRequest', function() {
 				var spy = sinon.spy();
 				mockAgent._response = { body: 'some data' };
 
-				wpRequest.delete( spy );
-
-				expect( spy ).to.have.been.calledOnce;
-				expect( spy ).to.have.been.calledWith( null, 'some data' );
+				return wpRequest.delete( spy ).then( function() {
+					expect( spy ).to.have.been.calledOnce;
+					expect( spy ).to.have.been.calledWith( null, 'some data' );
+				});
 			});
 
 			it( 'should return a Promise to the body of the request data', function() {
@@ -376,10 +376,10 @@ describe( 'WPRequest', function() {
 				var spy = sinon.spy();
 				mockAgent._response = { headers: 'some headers' };
 
-				wpRequest.head( spy );
-
-				expect( spy ).to.have.been.calledOnce;
-				expect( spy ).to.have.been.calledWith( null, 'some headers' );
+				return wpRequest.head( spy ).then(function() {
+					expect( spy ).to.have.been.calledOnce;
+					expect( spy ).to.have.been.calledWith( null, 'some headers' );
+				});
 			});
 
 			it( 'should return a Promise to the headers from the response', function() {
