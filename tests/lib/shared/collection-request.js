@@ -361,6 +361,12 @@ describe( 'CollectionRequest', function() {
 				expect( request._filters.author ).not.to.exist;
 			});
 
+			it( 'should throw an error if arguments are neither string nor number', function() {
+				expect(function() {
+					request.author({ some: 'object' });
+				}).to.throw();
+			});
+
 			it( 'should be chainable, and replace values', function() {
 				expect( request.author( 'fforde' ).author( 'bronte' ) ).to.equal( request );
 				expect( request._filters.author_name ).to.equal( 'bronte' );
