@@ -117,8 +117,8 @@ describe( 'wp.pages', function() {
 			});
 
 			it( 'should create the URL for retrieving a post by path', function() {
-				var path = pages.path( 'some/nested/page' )._renderURI();
-				expect( path ).to.equal( '/wp-json/pages/some/nested/page' );
+				var path = pages.path( 'nested/page' )._renderURI();
+				expect( path ).to.equal( '/wp-json/pages?filter%5Bpagename%5D=nested%2Fpage' );
 			});
 
 			it( 'should update the supported methods when setting ID', function() {
@@ -127,10 +127,10 @@ describe( 'wp.pages', function() {
 				expect( _supportedMethods ).to.equal( 'delete|get|head|post|put' );
 			});
 
-			it( 'should update the supported methods when setting Path', function() {
+			it( 'should not update the supported methods when setting Path', function() {
 				pages.path( 'page/path' );
 				var _supportedMethods = pages._supportedMethods.sort().join( '|' );
-				expect( _supportedMethods ).to.equal( 'delete|get|head|post|put' );
+				expect( _supportedMethods ).to.equal( 'get|head|post' );
 			});
 
 		});
