@@ -171,7 +171,7 @@ describe( 'WPRequest', function() {
 
 			it( 'should invoke a callback, if provided', function() {
 				var spy = sinon.spy();
-				mockAgent._response = { body: 'data' };
+				mockAgent._response = { body: 'data', headers: {} };
 
 				return wpRequest.get( spy ).then( function() {
 					expect( spy ).to.have.been.calledOnce;
@@ -180,7 +180,7 @@ describe( 'WPRequest', function() {
 			});
 
 			it( 'should return a Promise to the request data', function() {
-				mockAgent._response = { body: 'data' };
+				mockAgent._response = { body: 'data', headers: {} };
 				var promise = wpRequest.get();
 				expect( promise ).to.have.property( 'then' );
 				expect( promise.then ).to.be.a( 'function' );
@@ -194,7 +194,7 @@ describe( 'WPRequest', function() {
 		describe( '.then()', function() {
 
 			it( 'should invoke GET and pass the results to the provided callback', function() {
-				mockAgent._response = { body: 'data' };
+				mockAgent._response = { body: 'data', headers: {} };
 				var get = sinon.spy( wpRequest, 'get' );
 				var success = sinon.stub();
 				var failure = sinon.stub();
@@ -252,7 +252,7 @@ describe( 'WPRequest', function() {
 			it( 'should invoke a callback, if provided', function() {
 				var spy = sinon.spy();
 				var data = { some: 'data' };
-				mockAgent._response = { body: 'some data' };
+				mockAgent._response = { body: 'some data', headers: {} };
 
 				return wpRequest.post( data, spy ).then( function() {
 					expect( spy ).to.have.been.calledOnce;
@@ -261,7 +261,7 @@ describe( 'WPRequest', function() {
 			});
 
 			it( 'should return a Promise to the request response', function() {
-				mockAgent._response = { body: 'resp' };
+				mockAgent._response = { body: 'resp', headers: {} };
 				var data = { some: 'data' };
 				var promise = wpRequest.post( data );
 				expect( promise ).to.have.property( 'then' );
@@ -298,7 +298,7 @@ describe( 'WPRequest', function() {
 			it( 'should invoke a callback, if provided', function() {
 				var spy = sinon.spy();
 				var data = { some: 'data' };
-				mockAgent._response = { body: 'some data' };
+				mockAgent._response = { body: 'some data', headers: {} };
 
 				return wpRequest.put( data, spy ).then( function() {
 					expect( spy ).to.have.been.calledOnce;
@@ -307,7 +307,7 @@ describe( 'WPRequest', function() {
 			});
 
 			it( 'should return a Promise to the request data', function() {
-				mockAgent._response = { body: 'resp' };
+				mockAgent._response = { body: 'resp', headers: {} };
 				var data = { some: 'data' };
 				var promise = wpRequest.put( data );
 				expect( promise ).to.have.property( 'then' );
@@ -339,7 +339,7 @@ describe( 'WPRequest', function() {
 
 			it( 'should invoke a callback, if provided', function() {
 				var spy = sinon.spy();
-				mockAgent._response = { body: 'some data' };
+				mockAgent._response = { body: 'some data', headers: {} };
 
 				return wpRequest.delete( spy ).then( function() {
 					expect( spy ).to.have.been.calledOnce;
@@ -348,7 +348,7 @@ describe( 'WPRequest', function() {
 			});
 
 			it( 'should return a Promise to the body of the request data', function() {
-				mockAgent._response = { body: 'resp' };
+				mockAgent._response = { body: 'resp', headers: {} };
 				var promise = wpRequest.delete();
 				expect( promise ).to.have.property( 'then' );
 				expect( promise.then ).to.be.a( 'function' );
@@ -394,6 +394,94 @@ describe( 'WPRequest', function() {
 
 		});
 
-	});
+		describe( 'pagination', function() {
 
+			beforeEach(function() {
+				wpRequest = new SandboxedRequest({
+					endpoint: 'http://site.com/wp-json'
+				});
+			});
+
+			it( 'passes data through unchanged if no pagination headers are present', function() {
+				mockAgent._response = {
+					headers: {},
+					body: 'some object'
+				};
+				wpRequest.then(function(parsedResult) {
+					expect( parsedResult ).to.equal( 'some object' );
+					expect( parsedResult ).not.to.have.property( '_paging' );
+				});
+			});
+
+			it( 'parses link headers', function() {
+				mockAgent._response = {
+					headers: {
+						'x-wp-totalpages': 3,
+						'x-wp-total': 5,
+						link: [
+							'</wp-json/posts?filter%5Bposts_per_page%5D=2&page=1>;',
+							'rel="prev",',
+							'</wp-json/posts?filter%5Bposts_per_page%5D=2&page=2>;',
+							'rel="next",',
+							'<http://site.com/wp-json/posts/1024>; rel="item";',
+							'title="Article Title",',
+							'<http://site.com/wp-json/posts/994>; rel="item";',
+							'title="Another Article"'
+						].join(' ')
+					},
+					body: {}
+				};
+				return wpRequest.then(function(parsedResult) {
+					expect( parsedResult ).to.have.property( '_paging' );
+					expect( parsedResult._paging ).to.have.property( 'links' );
+					expect( parsedResult._paging.links ).to.have.property( 'prev' );
+					var expectedPrevLink = '/wp-json/posts?filter%5Bposts_per_page%5D=2&page=1';
+					expect( parsedResult._paging.links.prev ).to.equal( expectedPrevLink );
+					expect( parsedResult._paging.links ).to.have.property( 'next' );
+					var expectedNextLink = '/wp-json/posts?filter%5Bposts_per_page%5D=2&page=2';
+					expect( parsedResult._paging.links.next ).to.equal( expectedNextLink );
+				});
+			});
+
+			it( 'generates a .next object if a "next" header is present', function() {
+				mockAgent._response = {
+					headers: {
+						'x-wp-totalpages': 3,
+						'x-wp-total': 5,
+						link: '</wp-json/posts?filter%5Bposts_per_page%5D=2&page=3>; rel="next"'
+					},
+					body: {}
+				};
+				return wpRequest.then(function(parsedResult) {
+					expect( parsedResult ).to.have.property( '_paging' );
+					expect( parsedResult._paging ).to.have.property( 'next' );
+					expect( parsedResult._paging.next ).to.be.an.instanceof( SandboxedRequest );
+					expect( parsedResult._paging.next._options.endpoint ).to.equal(
+						'http://site.com/wp-json/posts?filter%5Bposts_per_page%5D=2&page=3'
+					);
+				});
+			});
+
+			it( 'generates a .prev object if a "prev" header is present', function() {
+				mockAgent._response = {
+					headers: {
+						'x-wp-totalpages': 3,
+						'x-wp-total': 5,
+						link: '</wp-json/posts?filter%5Bposts_per_page%5D=2&page=1>; rel="prev"'
+					},
+					body: {}
+				};
+				return wpRequest.then(function(parsedResult) {
+					expect( parsedResult ).to.have.property( '_paging' );
+					expect( parsedResult._paging ).to.have.property( 'prev' );
+					expect( parsedResult._paging.prev ).to.be.an.instanceof( SandboxedRequest );
+					expect( parsedResult._paging.prev._options.endpoint ).to.equal(
+						'http://site.com/wp-json/posts?filter%5Bposts_per_page%5D=2&page=1'
+					);
+				});
+			});
+
+		});
+
+	});
 });
