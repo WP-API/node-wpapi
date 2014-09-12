@@ -53,7 +53,7 @@ describe( 'WPRequest', function() {
 			}).to.throw();
 		});
 
-	});
+	}); // constructor
 
 	describe( 'auth', function() {
 
@@ -79,7 +79,7 @@ describe( 'WPRequest', function() {
 			expect( request._options.password ).to.equal( 'pass' );
 		});
 
-	});
+	}); // auth
 
 	describe( '._auth', function() {
 
@@ -135,7 +135,7 @@ describe( 'WPRequest', function() {
 			expect( mockAgent.auth ).not.to.have.been.called;
 		});
 
-	});
+	}); // ._auth
 
 	describe( 'request methods', function() {
 
@@ -189,7 +189,7 @@ describe( 'WPRequest', function() {
 				});
 			});
 
-		});
+		}); // .get()
 
 		describe( '.then()', function() {
 
@@ -225,7 +225,7 @@ describe( 'WPRequest', function() {
 				});
 			});
 
-		});
+		}); // .then()
 
 		describe( '.post()', function() {
 
@@ -271,7 +271,7 @@ describe( 'WPRequest', function() {
 				});
 			});
 
-		});
+		}); // .post()
 
 		describe( '.put()', function() {
 
@@ -317,7 +317,7 @@ describe( 'WPRequest', function() {
 				});
 			});
 
-		});
+		}); // .put()
 
 		describe( '.delete()', function() {
 
@@ -357,7 +357,7 @@ describe( 'WPRequest', function() {
 				});
 			});
 
-		});
+		}); // .delete()
 
 		describe( '.head()', function() {
 
@@ -392,7 +392,7 @@ describe( 'WPRequest', function() {
 				});
 			});
 
-		});
+		}); // .head()
 
 		describe( 'pagination', function() {
 
@@ -505,7 +505,7 @@ describe( 'WPRequest', function() {
 				});
 			});
 
-		});
+		}); // Pagination
 
-	});
+	}); // Request methods
 });
