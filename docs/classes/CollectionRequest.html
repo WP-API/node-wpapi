@@ -16,7 +16,7 @@
             <div class="project-title">
                 
                 
-                    <h1 class="project-name">wordpress-rest-api</h1> <span class="project-version">0.2.2</span>
+                    <h1 class="project-name">wordpress-rest-api</h1> <span class="project-version">0.3.0</span>
                 
                 
                     <p class="description">A client for interacting with the WordPress REST API</p>
@@ -360,6 +360,13 @@ via query parameters. It is the base constructor for most top-level WP instance 
             
                 <li class="index-item method inherited">
                     <a href="#method_put">put</a>
+
+                    
+                    
+                </li>
+            
+                <li class="index-item method private inherited">
+                    <a href="#method_returnBody">returnBody</a>
 
                     
                     
@@ -1012,7 +1019,7 @@ This is used to store the query values for Type, Page &amp; Context</p>
             
         
         
-        <a href="../files/lib_shared_wp-request.js.html#l223"><code>lib&#x2F;shared&#x2F;wp-request.js:223</code></a>
+        <a href="../files/lib_shared_wp-request.js.html#l320"><code>lib&#x2F;shared&#x2F;wp-request.js:320</code></a>
         
         </p>
 
@@ -1142,7 +1149,7 @@ This is used to store the query values for Type, Page &amp; Context</p>
             
         
         
-        <a href="../files/lib_shared_wp-request.js.html#l170"><code>lib&#x2F;shared&#x2F;wp-request.js:170</code></a>
+        <a href="../files/lib_shared_wp-request.js.html#l267"><code>lib&#x2F;shared&#x2F;wp-request.js:267</code></a>
         
         </p>
 
@@ -1242,7 +1249,7 @@ This is used to store the query values for Type, Page &amp; Context</p>
             
         
         
-        <a href="../files/lib_shared_wp-request.js.html#l190"><code>lib&#x2F;shared&#x2F;wp-request.js:190</code></a>
+        <a href="../files/lib_shared_wp-request.js.html#l287"><code>lib&#x2F;shared&#x2F;wp-request.js:287</code></a>
         
         </p>
 
@@ -1401,7 +1408,7 @@ This is used to store the query values for Type, Page &amp; Context</p>
             
         
         
-        <a href="../files/lib_shared_wp-request.js.html#l205"><code>lib&#x2F;shared&#x2F;wp-request.js:205</code></a>
+        <a href="../files/lib_shared_wp-request.js.html#l302"><code>lib&#x2F;shared&#x2F;wp-request.js:302</code></a>
         
         </p>
 
@@ -1495,7 +1502,7 @@ This is used to store the query values for Type, Page &amp; Context</p>
             
         
         
-        <a href="../files/lib_shared_wp-request.js.html#l254"><code>lib&#x2F;shared&#x2F;wp-request.js:254</code></a>
+        <a href="../files/lib_shared_wp-request.js.html#l351"><code>lib&#x2F;shared&#x2F;wp-request.js:351</code></a>
         
         </p>
 
@@ -1985,7 +1992,7 @@ object, by setting the context to &quot;edit&quot;.</p>
             
         
         
-        <a href="../files/lib_shared_wp-request.js.html#l346"><code>lib&#x2F;shared&#x2F;wp-request.js:346</code></a>
+        <a href="../files/lib_shared_wp-request.js.html#l443"><code>lib&#x2F;shared&#x2F;wp-request.js:443</code></a>
         
         </p>
 
@@ -2369,7 +2376,7 @@ wp.filter( &#39;post_status&#39;, &#39;publish&#39; ).filter( &#39;category_name
             
         
         
-        <a href="../files/lib_shared_wp-request.js.html#l291"><code>lib&#x2F;shared&#x2F;wp-request.js:291</code></a>
+        <a href="../files/lib_shared_wp-request.js.html#l388"><code>lib&#x2F;shared&#x2F;wp-request.js:388</code></a>
         
         </p>
 
@@ -2513,7 +2520,7 @@ wp.filter( &#39;post_status&#39;, &#39;publish&#39; ).filter( &#39;category_name
             
         
         
-        <a href="../files/lib_shared_wp-request.js.html#l362"><code>lib&#x2F;shared&#x2F;wp-request.js:362</code></a>
+        <a href="../files/lib_shared_wp-request.js.html#l459"><code>lib&#x2F;shared&#x2F;wp-request.js:459</code></a>
         
         </p>
 
@@ -3057,7 +3064,7 @@ retrieved from the response&#39;s .)</p>
             
         
         
-        <a href="../files/lib_shared_wp-request.js.html#l308"><code>lib&#x2F;shared&#x2F;wp-request.js:308</code></a>
+        <a href="../files/lib_shared_wp-request.js.html#l405"><code>lib&#x2F;shared&#x2F;wp-request.js:405</code></a>
         
         </p>
 
@@ -3223,7 +3230,7 @@ retrieved from the response&#39;s .)</p>
             
         
         
-        <a href="../files/lib_shared_wp-request.js.html#l327"><code>lib&#x2F;shared&#x2F;wp-request.js:327</code></a>
+        <a href="../files/lib_shared_wp-request.js.html#l424"><code>lib&#x2F;shared&#x2F;wp-request.js:424</code></a>
         
         </p>
 
@@ -3324,6 +3331,120 @@ retrieved from the response&#39;s .)</p>
                             <span class="type">Promise</span>:
                         
                         <p>A promise to the results of the HTTP request</p>
+
+                    
+                </div>
+            </div>
+        
+
+        
+    </div>
+</div>
+
+        
+            <a name="method_returnBody" class="anchor-link"></a>
+<div class="method item private inherited">
+    <h3 class="name"><code>returnBody</code>
+
+    
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code>result</code>
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
+    
+
+    
+        <span class="returns-inline">
+            <span class="type">Object</span>
+        </span>
+    
+
+    
+
+    
+        <span class="flag private">private</span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    </h3>
+
+    <div class="meta">
+        
+            
+                <p>Inherited from
+                <a href="../classes/WPRequest.html#method_returnBody" class="type">WPRequest</a>:
+            
+        
+        
+        <a href="../files/lib_shared_wp-request.js.html#l118"><code>lib&#x2F;shared&#x2F;wp-request.js:118</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="extended-detail">
+
+        <div class="description">
+            <p>Return the body of the request, augmented with pagination information if the
+result is a paged collection.</p>
+
+        </div>
+
+        
+            <div class="params">
+                <h4>Parameters:</h4>
+
+                <ul class="params-list">
+                
+                    <li class="param">
+                        
+                            <code class="param-name">result</code>
+                            <span class="type">Object</span>
+                        
+
+                        
+
+                        <div class="param-description">
+                            <p>The results from the HTTP request</p>
+
+                        </div>
+
+                        
+                    </li>
+                
+                </ul>
+            </div>
+        
+
+        
+            <div class="returns">
+                <h4>Returns:</h4>
+
+                <div class="returns-description">
+                    
+                        
+                            <span class="type">Object</span>:
+                        
+                        <p>The &quot;body&quot; property of the result, conditionally augmented with
+                 pagination information if the result is a partial collection.</p>
 
                     
                 </div>
@@ -3869,7 +3990,7 @@ retrieved from the response&#39;s .)</p>
             
         
         
-        <a href="../files/lib_shared_wp-request.js.html#l378"><code>lib&#x2F;shared&#x2F;wp-request.js:378</code></a>
+        <a href="../files/lib_shared_wp-request.js.html#l475"><code>lib&#x2F;shared&#x2F;wp-request.js:475</code></a>
         
         </p>
 

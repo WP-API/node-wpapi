@@ -2,7 +2,7 @@
     "project": {
         "name": "wordpress-rest-api",
         "description": "A client for interacting with the WordPress REST API",
-        "version": "0.2.2",
+        "version": "0.3.0",
         "url": "https://github.com/kadamwhite/wordpress-rest-api"
     },
     "files": {
@@ -183,7 +183,7 @@
             "module": "WP",
             "namespace": "",
             "file": "lib/shared/wp-request.js",
-            "line": 13,
+            "line": 15,
             "beta": 1,
             "description": "WPRequest is the base API request object constructor"
         },
@@ -346,7 +346,7 @@
             "submodule": "WPRequest",
             "namespace": "",
             "file": "lib/shared/wp-request.js",
-            "line": 13,
+            "line": 15,
             "description": "WPRequest is the base API request object constructor",
             "is_constructor": 1,
             "params": [
@@ -1195,7 +1195,7 @@
         },
         {
             "file": "lib/shared/wp-request.js",
-            "line": 24,
+            "line": 26,
             "description": "Configuration options for the request such as the endpoint for the invoking WP instance",
             "itemtype": "property",
             "name": "_options",
@@ -1209,7 +1209,7 @@
         },
         {
             "file": "lib/shared/wp-request.js",
-            "line": 34,
+            "line": 36,
             "description": "Methods supported by this API request instance:\nIndividual endpoint handlers specify their own subset of supported methods",
             "itemtype": "property",
             "name": "_supportedMethods",
@@ -1223,7 +1223,7 @@
         },
         {
             "file": "lib/shared/wp-request.js",
-            "line": 45,
+            "line": 47,
             "description": "A hash of values to assemble into the API request path\n(This will be overwritten by each specific endpoint handler constructor)",
             "itemtype": "property",
             "name": "_path",
@@ -1237,7 +1237,7 @@
         },
         {
             "file": "lib/shared/wp-request.js",
-            "line": 56,
+            "line": 58,
             "description": "The URL template that will be used to assemble endpoint paths\n(This will be overwritten by each specific endpoint handler constructor)",
             "itemtype": "property",
             "name": "_template",
@@ -1251,21 +1251,21 @@
         },
         {
             "file": "lib/shared/wp-request.js",
-            "line": 71,
+            "line": 73,
             "class": "WPRequest",
             "module": "WP",
             "submodule": "WPRequest"
         },
         {
             "file": "lib/shared/wp-request.js",
-            "line": 74,
+            "line": 76,
             "class": "WPRequest",
             "module": "WP",
             "submodule": "WPRequest"
         },
         {
             "file": "lib/shared/wp-request.js",
-            "line": 79,
+            "line": 81,
             "description": "If fn is a function, return it; else, return a no-op function",
             "params": [
                 {
@@ -1284,7 +1284,7 @@
         },
         {
             "file": "lib/shared/wp-request.js",
-            "line": 89,
+            "line": 91,
             "description": "Submit the provided superagent request object, invoke a callback (if it was\nprovided), and return a promise to the response from the HTTP request.",
             "params": [
                 {
@@ -1313,8 +1313,12 @@
         },
         {
             "file": "lib/shared/wp-request.js",
-            "line": 116,
-            "description": "Extract and return the body property from a superagent response object",
+            "line": 118,
+            "description": "Return the body of the request, augmented with pagination information if the\nresult is a paged collection.",
+            "itemtype": "method",
+            "name": "returnBody",
+            "access": "private",
+            "tagname": "",
             "params": [
                 {
                     "name": "result",
@@ -1323,7 +1327,7 @@
                 }
             ],
             "return": {
-                "description": "The \"body\" property of the result",
+                "description": "The \"body\" property of the result, conditionally augmented with\n                 pagination information if the result is a partial collection.",
                 "type": "Object"
             },
             "class": "WPRequest",
@@ -1332,7 +1336,7 @@
         },
         {
             "file": "lib/shared/wp-request.js",
-            "line": 126,
+            "line": 134,
             "description": "Extract and return the headers property from a superagent response object",
             "params": [
                 {
@@ -1351,7 +1355,7 @@
         },
         {
             "file": "lib/shared/wp-request.js",
-            "line": 136,
+            "line": 144,
             "description": "Check path parameter values against validation regular expressions",
             "params": [
                 {
@@ -1375,7 +1379,55 @@
         },
         {
             "file": "lib/shared/wp-request.js",
-            "line": 170,
+            "line": 178,
+            "description": "Combine the API endpoint root URI and link URI into a valid request URL.\nEndpoints are generally a full path to the JSON API's root endpoint, such\nas `website.com/wp-json`: the link headers, however, are returned as root-\nrelative paths. Concatenating these would generate a URL such as\n`website.com/wp-json/wp-json/posts?page=2`: we must intelligently merge the\nURI strings in order to generate a valid new request URL.",
+            "params": [
+                {
+                    "name": "endpoint",
+                    "description": "The endpoint URL for the REST API root",
+                    "type": "String"
+                },
+                {
+                    "name": "linkPath",
+                    "description": "A root-relative link path to an API request",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "The full URL path to the provided link",
+                "type": "String"
+            },
+            "class": "WPRequest",
+            "module": "WP",
+            "submodule": "WPRequest"
+        },
+        {
+            "file": "lib/shared/wp-request.js",
+            "line": 204,
+            "description": "If the response is not paged, return the body as-is. If pagination\ninformation is present in the response headers, parse those headers into\na custom `_paging` property on the response body. `_paging` contains links\nto the previous and next pages in the collection, as well as metadata\nabout the size and number of pages in the collection.\n\nThe structure of the `_paging` property is as follows:\n\n- `total` {Integer} The total number of records in the collection\n- `totalPages` {Integer} The number of pages available\n- `links` {Object} The parsed \"links\" headers, separated into individual URI strings\n- `next` {WPRequest} A WPRequest object bound to the \"next\" page (if page exists)\n- `prev` {WPRequest} A WPRequest object bound to the \"previous\" page (if page exists)",
+            "params": [
+                {
+                    "name": "result",
+                    "description": "The response object from the HTTP request",
+                    "type": "Object"
+                },
+                {
+                    "name": "endpoint",
+                    "description": "The base URL of the requested API endpoint",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "The body of the HTTP request, conditionally augmented with\n                  pagination metadata",
+                "type": "Object"
+            },
+            "class": "WPRequest",
+            "module": "WP",
+            "submodule": "WPRequest"
+        },
+        {
+            "file": "lib/shared/wp-request.js",
+            "line": 267,
             "description": "Verify that the current request object supports a given HTTP verb",
             "access": "private",
             "tagname": "",
@@ -1397,7 +1449,7 @@
         },
         {
             "file": "lib/shared/wp-request.js",
-            "line": 190,
+            "line": 287,
             "description": "Validate & assemble a path string from the request object's _path",
             "access": "private",
             "tagname": "",
@@ -1413,7 +1465,7 @@
         },
         {
             "file": "lib/shared/wp-request.js",
-            "line": 205,
+            "line": 302,
             "description": "Parse the request's instance properties into a WordPress API request URI",
             "access": "private",
             "tagname": "",
@@ -1429,7 +1481,7 @@
         },
         {
             "file": "lib/shared/wp-request.js",
-            "line": 223,
+            "line": 320,
             "description": "Conditionally set basic authentication on a server request object",
             "itemtype": "method",
             "name": "_auth",
@@ -1458,7 +1510,7 @@
         },
         {
             "file": "lib/shared/wp-request.js",
-            "line": 254,
+            "line": 351,
             "description": "Set a requst to use authentication, and optionally provide auth credentials",
             "example": [
                 "\nIf auth credentials were already specified when the WP instance was created, calling\n`.auth` on the request chain will set that request to use the existing credentials:\n\n    request.auth().get...\n\nAlternatively, a username & password can be explicitly passed into `.auth`:\n\n    request.auth( 'username', 'password' ).get..."
@@ -1490,7 +1542,7 @@
         },
         {
             "file": "lib/shared/wp-request.js",
-            "line": 291,
+            "line": 388,
             "itemtype": "method",
             "name": "get",
             "async": 1,
@@ -1524,7 +1576,7 @@
         },
         {
             "file": "lib/shared/wp-request.js",
-            "line": 308,
+            "line": 405,
             "itemtype": "method",
             "name": "post",
             "async": 1,
@@ -1563,7 +1615,7 @@
         },
         {
             "file": "lib/shared/wp-request.js",
-            "line": 327,
+            "line": 424,
             "itemtype": "method",
             "name": "put",
             "async": 1,
@@ -1602,7 +1654,7 @@
         },
         {
             "file": "lib/shared/wp-request.js",
-            "line": 346,
+            "line": 443,
             "itemtype": "method",
             "name": "delete",
             "async": 1,
@@ -1636,7 +1688,7 @@
         },
         {
             "file": "lib/shared/wp-request.js",
-            "line": 362,
+            "line": 459,
             "itemtype": "method",
             "name": "head",
             "async": 1,
@@ -1670,7 +1722,7 @@
         },
         {
             "file": "lib/shared/wp-request.js",
-            "line": 378,
+            "line": 475,
             "description": "Calling .then on a query chain will invoke the query as a GET and return a promise",
             "itemtype": "method",
             "name": "then",
@@ -3018,6 +3070,14 @@
             "line": " lib/shared/collection-request.js:503"
         },
         {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " lib/shared/wp-request.js:178"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " lib/shared/wp-request.js:204"
+        },
+        {
             "message": "Missing item type\nProcess arrays of taxonomy terms into query parameters.\nAll terms listed in the arrays will be required (AND behavior).",
             "line": " lib/shared/collection-request.js:105"
         },
@@ -3039,31 +3099,35 @@
         },
         {
             "message": "Missing item type",
-            "line": " lib/shared/wp-request.js:71"
+            "line": " lib/shared/wp-request.js:73"
         },
         {
             "message": "Missing item type",
-            "line": " lib/shared/wp-request.js:74"
+            "line": " lib/shared/wp-request.js:76"
         },
         {
             "message": "Missing item type\nIf fn is a function, return it; else, return a no-op function",
-            "line": " lib/shared/wp-request.js:79"
+            "line": " lib/shared/wp-request.js:81"
         },
         {
             "message": "Missing item type\nSubmit the provided superagent request object, invoke a callback (if it was\nprovided), and return a promise to the response from the HTTP request.",
-            "line": " lib/shared/wp-request.js:89"
-        },
-        {
-            "message": "Missing item type\nExtract and return the body property from a superagent response object",
-            "line": " lib/shared/wp-request.js:116"
+            "line": " lib/shared/wp-request.js:91"
         },
         {
             "message": "Missing item type\nExtract and return the headers property from a superagent response object",
-            "line": " lib/shared/wp-request.js:126"
+            "line": " lib/shared/wp-request.js:134"
         },
         {
             "message": "Missing item type\nCheck path parameter values against validation regular expressions",
-            "line": " lib/shared/wp-request.js:136"
+            "line": " lib/shared/wp-request.js:144"
+        },
+        {
+            "message": "Missing item type\nCombine the API endpoint root URI and link URI into a valid request URL.\nEndpoints are generally a full path to the JSON API's root endpoint, such\nas `website.com/wp-json`: the link headers, however, are returned as root-\nrelative paths. Concatenating these would generate a URL such as\n`website.com/wp-json/wp-json/posts?page=2`: we must intelligently merge the\nURI strings in order to generate a valid new request URL.",
+            "line": " lib/shared/wp-request.js:178"
+        },
+        {
+            "message": "Missing item type\nIf the response is not paged, return the body as-is. If pagination\ninformation is present in the response headers, parse those headers into\na custom `_paging` property on the response body. `_paging` contains links\nto the previous and next pages in the collection, as well as metadata\nabout the size and number of pages in the collection.\n\nThe structure of the `_paging` property is as follows:\n\n- `total` {Integer} The total number of records in the collection\n- `totalPages` {Integer} The number of pages available\n- `links` {Object} The parsed \"links\" headers, separated into individual URI strings\n- `next` {WPRequest} A WPRequest object bound to the \"next\" page (if page exists)\n- `prev` {WPRequest} A WPRequest object bound to the \"previous\" page (if page exists)",
+            "line": " lib/shared/wp-request.js:204"
         },
         {
             "message": "Missing item type\nSorted list of private WP_Query variables, requiring authentication\nThis may be used for a whitelist soon, but at present please consider it\nto be simply documentation.\n\nDocumentation:\n\n- WP_Query parameters: http://codex.wordpress.org/Class_Reference/WP_Query\n- Privat query variables: WordPress core, wp-includes/class-wp.php\n\nNote: posts_per_page is a private query varaible within WordPress, but is\nexplicitly exposed for public querying within the WP API so it exists in\nthe list within public-query-vars.js",

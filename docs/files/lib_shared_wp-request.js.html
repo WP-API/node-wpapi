@@ -16,7 +16,7 @@
             <div class="project-title">
                 
                 
-                    <h1 class="project-name">wordpress-rest-api</h1> <span class="project-version">0.2.2</span>
+                    <h1 class="project-name">wordpress-rest-api</h1> <span class="project-version">0.3.0</span>
                 
                 
                     <p class="description">A client for interacting with the WordPress REST API</p>
@@ -109,6 +109,8 @@
 var Promise = require( &#x27;bluebird&#x27; );
 var agent = require( &#x27;superagent&#x27; );
 var Route = require( &#x27;route-parser&#x27; );
+var parseLinkHeader = require( &#x27;li&#x27; ).parse;
+var url = require( &#x27;url&#x27; );
 
 /**
  * WPRequest is the base API request object constructor
@@ -214,13 +216,19 @@ function invokeAndPromisify( request, callback, transform ) {
 }
 
 /**
- * Extract and return the body property from a superagent response object
+ * Return the body of the request, augmented with pagination information if the
+ * result is a paged collection.
  *
- * @param {Object} result The results from the HTTP request
- * @return {Object} The &quot;body&quot; property of the result
+ * @method returnBody
+ * @private
+ * @param result {Object} The results from the HTTP request
+ * @return {Object} The &quot;body&quot; property of the result, conditionally augmented with
+ *                  pagination information if the result is a partial collection.
  */
 function returnBody( result ) {
-	return result.body;
+	/* jshint validthis:true */
+	var endpoint = this._options.endpoint;
+	return paginateResponse( result, endpoint ).body;
 }
 
 /**
@@ -262,6 +270,95 @@ function validatePath( pathValues, validators ) {
 
 	// If validation passed, return the pathValues object
 	return pathValues;
+}
+
+// Pagination-Related Helpers
+// ==========================
+
+/**
+ * Combine the API endpoint root URI and link URI into a valid request URL.
+ * Endpoints are generally a full path to the JSON API&#x27;s root endpoint, such
+ * as &#x60;website.com/wp-json&#x60;: the link headers, however, are returned as root-
+ * relative paths. Concatenating these would generate a URL such as
+ * &#x60;website.com/wp-json/wp-json/posts?page=2&#x60;: we must intelligently merge the
+ * URI strings in order to generate a valid new request URL.
+ *
+ * @param endpoint {String} The endpoint URL for the REST API root
+ * @param linkPath {String} A root-relative link path to an API request
+ * @returns {String} The full URL path to the provided link
+ */
+function mergeUrl( endpoint, linkPath ) {
+	var request = url.parse( endpoint );
+	linkPath = url.parse( linkPath, true );
+
+	// Overwrite relevant request URL object properties with the link&#x27;s values:
+	// Setting these three values from the link will ensure proper URL generation
+	request.query = linkPath.query;
+	request.search = linkPath.search;
+	request.pathname = linkPath.pathname;
+
+	// Reassemble and return the merged URL
+	return url.format(request);
+}
+
+/**
+ * If the response is not paged, return the body as-is. If pagination
+ * information is present in the response headers, parse those headers into
+ * a custom &#x60;_paging&#x60; property on the response body. &#x60;_paging&#x60; contains links
+ * to the previous and next pages in the collection, as well as metadata
+ * about the size and number of pages in the collection.
+ *
+ * The structure of the &#x60;_paging&#x60; property is as follows:
+ *
+ * - &#x60;total&#x60; {Integer} The total number of records in the collection
+ * - &#x60;totalPages&#x60; {Integer} The number of pages available
+ * - &#x60;links&#x60; {Object} The parsed &quot;links&quot; headers, separated into individual URI strings
+ * - &#x60;next&#x60; {WPRequest} A WPRequest object bound to the &quot;next&quot; page (if page exists)
+ * - &#x60;prev&#x60; {WPRequest} A WPRequest object bound to the &quot;previous&quot; page (if page exists)
+ *
+ * @param result {Object} The response object from the HTTP request
+ * @param endpoint {String} The base URL of the requested API endpoint
+ * @returns {Object} The body of the HTTP request, conditionally augmented with
+ *                   pagination metadata
+ */
+function paginateResponse( result, endpoint ) {
+	if ( ! result.headers || ! result.headers.link ) {
+		// No headers: return as-is
+		return result;
+	}
+
+	var totalPages = result.headers[&#x27;x-wp-totalpages&#x27;];
+
+	if ( ! totalPages || totalPages === &#x27;0&#x27; || totalPages === &#x27;1&#x27; ) {
+		// No paging: return as-is
+		return result;
+	}
+
+	// Decode the link header object
+	var links = parseLinkHeader( result.headers.link );
+
+	// Store pagination data from response headers on the response collection
+	result.body._paging = {
+		total: result.headers[&#x27;x-wp-total&#x27;],
+		totalPages: totalPages,
+		links: links
+	};
+
+	// Create a WPRequest instance pre-bound to the &quot;next&quot; page, if available
+	if ( links.next ) {
+		result.body._paging.next = new WPRequest({
+			endpoint: mergeUrl( endpoint, links.next )
+		});
+	}
+
+	// Create a WPRequest instance pre-bound to the &quot;prev&quot; page, if available
+	if ( links.prev ) {
+		result.body._paging.prev = new WPRequest({
+			endpoint: mergeUrl( endpoint, links.prev )
+		});
+	}
+
+	return result;
 }
 
 // Prototype Methods
@@ -402,7 +499,7 @@ WPRequest.prototype.get = function( callback ) {
 
 	var request = this._auth( agent.get( url ) );
 
-	return invokeAndPromisify( request, callback, returnBody );
+	return invokeAndPromisify( request, callback, returnBody.bind( this ) );
 };
 
 /**
@@ -421,7 +518,7 @@ WPRequest.prototype.post = function( data, callback ) {
 
 	var request = this._auth( agent.post( url ), true ).send( data );
 
-	return invokeAndPromisify( request, callback, returnBody );
+	return invokeAndPromisify( request, callback, returnBody.bind( this ) );
 };
 
 /**
@@ -440,7 +537,7 @@ WPRequest.prototype.put = function( data, callback ) {
 
 	var request = this._auth( agent.put( url ), true ).send( data );
 
-	return invokeAndPromisify( request, callback, returnBody );
+	return invokeAndPromisify( request, callback, returnBody.bind( this ) );
 };
 
 /**
@@ -456,7 +553,7 @@ WPRequest.prototype.delete = function( callback ) {
 	var url = this._renderURI();
 	var request = this._auth( agent.del( url ), true );
 
-	return invokeAndPromisify( request, callback, returnBody );
+	return invokeAndPromisify( request, callback, returnBody.bind( this ) );
 };
 
 /**

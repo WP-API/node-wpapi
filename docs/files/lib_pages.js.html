@@ -16,7 +16,7 @@
             <div class="project-title">
                 
                 
-                    <h1 class="project-name">wordpress-rest-api</h1> <span class="project-version">0.2.2</span>
+                    <h1 class="project-name">wordpress-rest-api</h1> <span class="project-version">0.3.0</span>
                 
                 
                     <p class="description">A client for interacting with the WordPress REST API</p>
@@ -286,10 +286,9 @@ PagesRequest.prototype.revisions = function() {
  * @return {PagesRequest} The PagesRequest instance (for chaining)
  */
 PagesRequest.prototype.path = function( path ) {
-	this._path.id = path;
-	this._supportedMethods = [ &#x27;head&#x27;, &#x27;get&#x27;, &#x27;put&#x27;, &#x27;post&#x27;, &#x27;delete&#x27; ];
-
-	return this;
+	return this.filter({
+		pagename: path
+	});
 };
 
 module.exports = PagesRequest;
