@@ -440,13 +440,11 @@ describe( 'WPRequest', function() {
 			it( 'parses link headers', function() {
 				mockAgent._response = {
 					headers: {
-						'x-wp-totalpages': 3,
-						'x-wp-total': 5,
+						'x-wp-totalpages': 4,
+						'x-wp-total': 7,
 						link: [
-							'</wp-json/posts?filter%5Bposts_per_page%5D=2&page=1>;',
-							'rel="prev",',
-							'</wp-json/posts?filter%5Bposts_per_page%5D=2&page=2>;',
-							'rel="next",',
+							'</wp-json/posts?page=1>; rel="prev",',
+							'</wp-json/posts?page=2>; rel="next",',
 							'<http://site.com/wp-json/posts/1024>; rel="item";',
 							'title="Article Title",',
 							'<http://site.com/wp-json/posts/994>; rel="item";',
@@ -459,50 +457,94 @@ describe( 'WPRequest', function() {
 					expect( parsedResult ).to.have.property( '_paging' );
 					expect( parsedResult._paging ).to.have.property( 'links' );
 					expect( parsedResult._paging.links ).to.have.property( 'prev' );
-					var expectedPrevLink = '/wp-json/posts?filter%5Bposts_per_page%5D=2&page=1';
+					var expectedPrevLink = '/wp-json/posts?page=1';
 					expect( parsedResult._paging.links.prev ).to.equal( expectedPrevLink );
 					expect( parsedResult._paging.links ).to.have.property( 'next' );
-					var expectedNextLink = '/wp-json/posts?filter%5Bposts_per_page%5D=2&page=2';
+					var expectedNextLink = '/wp-json/posts?page=2';
 					expect( parsedResult._paging.links.next ).to.equal( expectedNextLink );
 				});
 			});
 
-			it( 'generates a .next object if a "next" header is present', function() {
-				mockAgent._response = {
-					headers: {
-						'x-wp-totalpages': 3,
-						'x-wp-total': 5,
-						link: '</wp-json/posts?filter%5Bposts_per_page%5D=2&page=3>; rel="next"'
-					},
-					body: {}
-				};
-				return wpRequest.then(function(parsedResult) {
-					expect( parsedResult ).to.have.property( '_paging' );
-					expect( parsedResult._paging ).to.have.property( 'next' );
-					expect( parsedResult._paging.next ).to.be.an.instanceof( SandboxedRequest );
-					expect( parsedResult._paging.next._options.endpoint ).to.equal(
-						'http://site.com/wp-json/posts?filter%5Bposts_per_page%5D=2&page=3'
-					);
+			describe( '.next object', function() {
+
+				beforeEach(function() {
+					mockAgent._response = {
+						headers: {
+							'x-wp-totalpages': 4,
+							'x-wp-total': 7,
+							link: '</wp-json/posts?page=3>; rel="next"'
+						},
+						body: {}
+					};
 				});
+
+				it( 'is generated if a "next" header is present', function() {
+					return wpRequest.then(function(parsedResult) {
+						expect( parsedResult ).to.have.property( '_paging' );
+						expect( parsedResult._paging ).to.have.property( 'next' );
+						expect( parsedResult._paging.next ).to.be.an.instanceof( SandboxedRequest );
+						expect( parsedResult._paging.next._options.endpoint ).to.equal(
+							'http://site.com/wp-json/posts?page=3'
+						);
+					});
+				});
+
+				it( 'is generated correctly for requests to explicit endpoints', function() {
+					// Testing full URLs as endpoints validates that _paging.next.then works
+					wpRequest._options.endpoint = 'http://site.com/wp-json/posts?page=3';
+					mockAgent._response.headers.link = '</wp-json/posts?page=4>; rel="next"';
+
+					return wpRequest.then(function(parsedResult) {
+						expect( parsedResult ).to.have.property( '_paging' );
+						expect( parsedResult._paging ).to.have.property( 'next' );
+						expect( parsedResult._paging.next ).to.be.an.instanceof( SandboxedRequest );
+						expect( parsedResult._paging.next._options.endpoint ).to.equal(
+							'http://site.com/wp-json/posts?page=4'
+						);
+					});
+				});
+
 			});
 
-			it( 'generates a .prev object if a "prev" header is present', function() {
-				mockAgent._response = {
-					headers: {
-						'x-wp-totalpages': 3,
-						'x-wp-total': 5,
-						link: '</wp-json/posts?filter%5Bposts_per_page%5D=2&page=1>; rel="prev"'
-					},
-					body: {}
-				};
-				return wpRequest.then(function(parsedResult) {
-					expect( parsedResult ).to.have.property( '_paging' );
-					expect( parsedResult._paging ).to.have.property( 'prev' );
-					expect( parsedResult._paging.prev ).to.be.an.instanceof( SandboxedRequest );
-					expect( parsedResult._paging.prev._options.endpoint ).to.equal(
-						'http://site.com/wp-json/posts?filter%5Bposts_per_page%5D=2&page=1'
-					);
+			describe( '.prev object', function() {
+
+				beforeEach(function() {
+					mockAgent._response = {
+						headers: {
+							'x-wp-totalpages': 4,
+							'x-wp-total': 7,
+							link: '</wp-json/posts?page=2>; rel="prev"'
+						},
+						body: {}
+					};
 				});
+
+				it( 'is generated if a "prev" header is present', function() {
+					return wpRequest.then(function(parsedResult) {
+						expect( parsedResult ).to.have.property( '_paging' );
+						expect( parsedResult._paging ).to.have.property( 'prev' );
+						expect( parsedResult._paging.prev ).to.be.an.instanceof( SandboxedRequest );
+						expect( parsedResult._paging.prev._options.endpoint ).to.equal(
+							'http://site.com/wp-json/posts?page=2'
+						);
+					});
+				});
+
+				it( 'is generated correctly for requests to explicit endpoints', function() {
+					// Testing full URLs as endpoints validates that _paging.prev.then works
+					wpRequest._options.endpoint = 'http://site.com/wp-json/posts?page=2';
+					mockAgent._response.headers.link = '</wp-json/posts?page=1>; rel="prev"';
+
+					return wpRequest.then(function(parsedResult) {
+						expect( parsedResult ).to.have.property( '_paging' );
+						expect( parsedResult._paging ).to.have.property( 'prev' );
+						expect( parsedResult._paging.prev ).to.be.an.instanceof( SandboxedRequest );
+						expect( parsedResult._paging.prev._options.endpoint ).to.equal(
+							'http://site.com/wp-json/posts?page=1'
+						);
+					});
+				});
+
 			});
 
 		}); // Pagination
