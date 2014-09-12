@@ -402,12 +402,36 @@ describe( 'WPRequest', function() {
 				});
 			});
 
-			it( 'passes data through unchanged if no pagination headers are present', function() {
+			it( 'passes data through unchanged if no headers are present', function() {
 				mockAgent._response = {
-					headers: {},
 					body: 'some object'
 				};
-				wpRequest.then(function(parsedResult) {
+				return wpRequest.then(function(parsedResult) {
+					expect( parsedResult ).to.equal( 'some object' );
+					expect( parsedResult ).not.to.have.property( '_paging' );
+				});
+			});
+
+			it( 'passes data through unchanged if header has no link property', function() {
+				mockAgent._response = {
+					headers: {
+						'x-wp-totalpages': '0',
+						'x-wp-total': '0'
+					},
+					body: 'some object'
+				};
+				return wpRequest.then(function(parsedResult) {
+					expect( parsedResult ).to.equal( 'some object' );
+					expect( parsedResult ).not.to.have.property( '_paging' );
+				});
+			});
+
+			it( 'passes data through unchanged if pagination header is unset or empty', function() {
+				mockAgent._response = {
+					headers: { link: '' },
+					body: 'some object'
+				};
+				return wpRequest.then(function(parsedResult) {
 					expect( parsedResult ).to.equal( 'some object' );
 					expect( parsedResult ).not.to.have.property( '_paging' );
 				});
