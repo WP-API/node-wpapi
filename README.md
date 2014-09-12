@@ -190,6 +190,42 @@ wp.events().then(function( eventItems ) {
 });
 ```
 
+## Working with Paged Response Data
+
+WordPress sites can have a lot of content&mdash;far more than you'd want to pull down in a single request. The API endpoints default to providing a limited number of items per request, the same way that a WordPress site will default to 10 posts per page in archive views. The number of objects you can get back can be adjusted by passing a `posts_per_page` filter, but many servers will return a 502 error if too much information is requested in one batch.
+
+To work around these restrictions, paginated collection responses are augmented with a `_paging` property. That property contains some useful metadata:
+
+- `total`: The total number of records matching the provided query
+- `totalPages`: The number of pages available (`total` / `posts_per_page`)
+- `next`: A WPRequest object pre-bound to the next page of results
+- `prev`: A WPRequest object pre-bound to the previous page of results
+- `links`: an object containing the parsed `link` HTTP header data
+
+The existence of the `_paging` property can be used as a flag to conditionally show or hide your paging UI, if necessary, as it will not be present for single-page or single-item responses.
+
+You can use the `next` and `prev` properties to traverse an entire collection, should you so choose. For example, this snippet will recursively request the next page and concatenate it with existing results, in order to build up an array of every post on your site:
+```javascript
+getAll( request ) {
+  return request.then(function( response ) {
+    if ( ! response._paging || ! response._paging.next ) {
+      return response;
+    }
+    // Request the next page and return both responses as one collection
+    return Promise.all([
+      response,
+      getAll( response._paging.next )
+    ]).then(function( responses ) {
+      return _.flatten( responses );
+    });
+  });
+}
+// Kick off the request
+getAll( wp.posts() ).then(function( allPosts ) { /* ... */ });
+```
+
+Be aware that this sort of unbounded recursion can take a **very long time**: if you use this technique in your application, we strongly recommend caching the response objects in a local database rather than re-requesting from the WP remote every time you need them.
+
 ## Authentication
 
 You must be authenticated with WordPress to create, edit or delete resources via the API. Some WP-API endpoints additionally require authentication for GET requsts in cases where the data being requested could be considered private: examples include any of the `/users` endpoints, requests where the `context` query parameter is `true`, and `/revisions` for posts and pages, among others.
