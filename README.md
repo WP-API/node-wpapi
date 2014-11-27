@@ -226,6 +226,8 @@ getAll( wp.posts() ).then(function( allPosts ) { /* ... */ });
 
 Be aware that this sort of unbounded recursion can take a **very long time**: if you use this technique in your application, we strongly recommend caching the response objects in a local database rather than re-requesting from the WP remote every time you need them.
 
+You can also use a `.page(pagenumber)` method on calls that support pagination to directly get that page.
+
 ## Authentication
 
 You must be authenticated with WordPress to create, edit or delete resources via the API. Some WP-API endpoints additionally require authentication for GET requsts in cases where the data being requested could be considered private: examples include any of the `/users` endpoints, requests where the `context` query parameter is `true`, and `/revisions` for posts and pages, among others.
