@@ -150,8 +150,6 @@ wp.posts()
     .get();
 
 // posts_per_page is exposed to set the maximum number of posts to return
-// All posts:
-wp.posts().filter( 'posts_per_page', -1 )...
 // 20 latest posts:
 wp.posts().filter( 'posts_per_page', 20 )...
 // 21st through 40th latest posts (*i.e.* the second page of results):
