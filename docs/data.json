@@ -2,7 +2,7 @@
     "project": {
         "name": "wordpress-rest-api",
         "description": "A client for interacting with the WordPress REST API",
-        "version": "0.3.0",
+        "version": "0.3.1",
         "url": "https://github.com/kadamwhite/wordpress-rest-api"
     },
     "files": {
@@ -791,7 +791,7 @@
             "line": 105,
             "description": "Process arrays of taxonomy terms into query parameters.\nAll terms listed in the arrays will be required (AND behavior).",
             "example": [
-                "\n   prepareTaxonomies({\n       tag: [ 'tag1 ', 'tag2' ], // by term slug\n       cat: [ 7 ] // by term ID\n   }) === {\n       tag: 'tag1+tag2',\n       cat: '7'\n   }"
+                "\n    prepareTaxonomies({\n        tag: [ 'tag1 ', 'tag2' ], // by term slug\n        cat: [ 7 ] // by term ID\n    }) === {\n        tag: 'tag1+tag2',\n        cat: '7'\n    }"
             ],
             "params": [
                 {
@@ -811,69 +811,6 @@
         {
             "file": "lib/shared/collection-request.js",
             "line": 137,
-            "description": "Process the _params object into valid API-ready query parameters.",
-            "params": [
-                {
-                    "name": "params",
-                    "description": "The _params object to process",
-                    "type": "Object"
-                }
-            ],
-            "return": {
-                "description": "An object of WP-API non-filter query parameter key-value pairs",
-                "type": "Object"
-            },
-            "class": "CollectionRequest",
-            "module": "WP",
-            "submodule": "CollectionRequest"
-        },
-        {
-            "file": "lib/shared/collection-request.js",
-            "line": 163,
-            "description": "Process an array of filter keys and values into API-ready query parameter syntax.",
-            "example": [
-                "\n   prepareFilters({\n       tag: 'tag1+tag2',\n       category_name: 'news'\n   }) === {\n       'filter[tag]': 'tag1+tag2',\n       'filter[category_name]': 'news'\n   }"
-            ],
-            "params": [
-                {
-                    "name": "filters",
-                    "description": "An object of filter values, keyed by filter parameter name",
-                    "type": "Object"
-                }
-            ],
-            "return": {
-                "description": "An object of WP-API filter query parameter key-value pairs",
-                "type": "Object"
-            },
-            "class": "CollectionRequest",
-            "module": "WP",
-            "submodule": "CollectionRequest"
-        },
-        {
-            "file": "lib/shared/collection-request.js",
-            "line": 187,
-            "description": "Generate a complete query string from the provided array of query parameters.",
-            "example": [
-                "\n    generateQueryString({\n        'filter[tag]': 'tag1',\n        'filter[post_status': 'publish',\n        'type': 'cpt_item'\n    }) === '?filter%5Btag%5D=tag1&filter%5Bpost_status=publish&type=cpt_item'"
-            ],
-            "params": [
-                {
-                    "name": "queryParams",
-                    "description": "A hash of query parameter keys and values",
-                    "type": "Object"
-                }
-            ],
-            "return": {
-                "description": "A complete, rendered query string",
-                "type": "String"
-            },
-            "class": "CollectionRequest",
-            "module": "WP",
-            "submodule": "CollectionRequest"
-        },
-        {
-            "file": "lib/shared/collection-request.js",
-            "line": 210,
             "description": "Utility function for sorting arrays of numbers or strings.",
             "params": [
                 {
@@ -896,8 +833,11 @@
         },
         {
             "file": "lib/shared/collection-request.js",
-            "line": 230,
-            "description": "Process the endpoint query's filter objects into a valid query string.",
+            "line": 157,
+            "description": "Process the endpoint query's filter objects into a valid query string.\nNested objects and Array properties are rendered with indexed array syntax.",
+            "example": [
+                "\n    _renderQuery({ p1: 'val1', p2: 'val2' });  // ?p1=val1&p2=val2\n    _renderQuery({ obj: { prop: 'val' } });    // ?obj[prop]=val\n    _renderQuery({ arr: [ 'val1', 'val2' ] }); // ?arr[0]=val1&arr[1]=val2"
+            ],
             "access": "private",
             "tagname": "",
             "itemtype": "method",
@@ -912,7 +852,7 @@
         },
         {
             "file": "lib/shared/collection-request.js",
-            "line": 252,
+            "line": 191,
             "description": "Set a parameter to render into the final query URI.",
             "itemtype": "method",
             "name": "param",
@@ -946,8 +886,8 @@
         },
         {
             "file": "lib/shared/collection-request.js",
-            "line": 307,
-            "description": "Set the pagination of a request. Use in conjunction with `filter( posts_per_page )` for\nexplicit pagination handling. (Note that the number of posts in a response can be\nretrieved from the response's .)",
+            "line": 246,
+            "description": "Set the pagination of a request. Use in conjunction with `filter( posts_per_page )` for\nexplicit pagination handling. (The number of pages in a response can be retrieved from\nthe response's `_paging.totalPages` property.)",
             "itemtype": "method",
             "name": "page",
             "chainable": 1,
@@ -968,7 +908,7 @@
         },
         {
             "file": "lib/shared/collection-request.js",
-            "line": 321,
+            "line": 260,
             "description": "Set the context of the request. Used primarily to expose private values on a request\nobject, by setting the context to \"edit\".",
             "itemtype": "method",
             "name": "context",
@@ -990,7 +930,7 @@
         },
         {
             "file": "lib/shared/collection-request.js",
-            "line": 338,
+            "line": 277,
             "description": "Convenience wrapper for `.context( 'edit' )`",
             "itemtype": "method",
             "name": "edit",
@@ -1005,7 +945,7 @@
         },
         {
             "file": "lib/shared/collection-request.js",
-            "line": 349,
+            "line": 288,
             "description": "Specify key-value pairs by which to filter the API results (commonly used\nto retrieve only posts meeting certain criteria, such as posts within a\nparticular category or by a particular author).",
             "example": [
                 "\n    // Set a single property:\n    wp.filter( 'post_type', 'cpt_event' )...\n\n    // Set multiple properties at once:\n    wp.filter({\n        post_status: 'publish',\n        category_name: 'news'\n    })...\n\n    // Chain calls to .filter():\n    wp.filter( 'post_status', 'publish' ).filter( 'category_name', 'news' )..."
@@ -1036,7 +976,7 @@
         },
         {
             "file": "lib/shared/collection-request.js",
-            "line": 384,
+            "line": 323,
             "description": "Restrict the query results to posts matching one or more taxonomy terms.",
             "itemtype": "method",
             "name": "taxonomy",
@@ -1063,7 +1003,7 @@
         },
         {
             "file": "lib/shared/collection-request.js",
-            "line": 435,
+            "line": 374,
             "description": "Convenience wrapper for `.taxonomy( 'category', ... )`.",
             "itemtype": "method",
             "name": "category",
@@ -1085,7 +1025,7 @@
         },
         {
             "file": "lib/shared/collection-request.js",
-            "line": 447,
+            "line": 386,
             "description": "Convenience wrapper for `.taxonomy( 'tag', ... )`.",
             "itemtype": "method",
             "name": "tag",
@@ -1107,7 +1047,7 @@
         },
         {
             "file": "lib/shared/collection-request.js",
-            "line": 459,
+            "line": 398,
             "description": "Filter results to those matching the specified search terms.",
             "itemtype": "method",
             "name": "search",
@@ -1128,7 +1068,7 @@
         },
         {
             "file": "lib/shared/collection-request.js",
-            "line": 470,
+            "line": 409,
             "description": "Query for posts by a specific author.\nThis method will replace any previous 'author' query parameters that had been set.",
             "itemtype": "method",
             "name": "author",
@@ -1150,7 +1090,7 @@
         },
         {
             "file": "lib/shared/collection-request.js",
-            "line": 491,
+            "line": 430,
             "description": "Query a collection of posts for a post with a specific slug.",
             "itemtype": "method",
             "name": "name",
@@ -1172,7 +1112,7 @@
         },
         {
             "file": "lib/shared/collection-request.js",
-            "line": 503,
+            "line": 442,
             "description": "Alias for `.name()`.",
             "itemtype": "method",
             "name": "slug",
@@ -3067,7 +3007,7 @@
     "warnings": [
         {
             "message": "unknown tag: alias",
-            "line": " lib/shared/collection-request.js:503"
+            "line": " lib/shared/collection-request.js:442"
         },
         {
             "message": "replacing incorrect tag: returns with return",
@@ -3082,20 +3022,8 @@
             "line": " lib/shared/collection-request.js:105"
         },
         {
-            "message": "Missing item type\nProcess the _params object into valid API-ready query parameters.",
-            "line": " lib/shared/collection-request.js:137"
-        },
-        {
-            "message": "Missing item type\nProcess an array of filter keys and values into API-ready query parameter syntax.",
-            "line": " lib/shared/collection-request.js:163"
-        },
-        {
-            "message": "Missing item type\nGenerate a complete query string from the provided array of query parameters.",
-            "line": " lib/shared/collection-request.js:187"
-        },
-        {
             "message": "Missing item type\nUtility function for sorting arrays of numbers or strings.",
-            "line": " lib/shared/collection-request.js:210"
+            "line": " lib/shared/collection-request.js:137"
         },
         {
             "message": "Missing item type",

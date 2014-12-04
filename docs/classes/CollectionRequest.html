@@ -16,7 +16,7 @@
             <div class="project-title">
                 
                 
-                    <h1 class="project-name">wordpress-rest-api</h1> <span class="project-version">0.3.0</span>
+                    <h1 class="project-name">wordpress-rest-api</h1> <span class="project-version">0.3.1</span>
                 
                 
                     <p class="description">A client for interacting with the WordPress REST API</p>
@@ -1330,7 +1330,7 @@ This is used to store the query values for Type, Page &amp; Context</p>
             
         
         
-        <a href="../files/lib_shared_collection-request.js.html#l230"><code>lib&#x2F;shared&#x2F;collection-request.js:230</code></a>
+        <a href="../files/lib_shared_collection-request.js.html#l157"><code>lib&#x2F;shared&#x2F;collection-request.js:157</code></a>
         
         </p>
 
@@ -1343,7 +1343,8 @@ This is used to store the query values for Type, Page &amp; Context</p>
     <div class="extended-detail">
 
         <div class="description">
-            <p>Process the endpoint query&#39;s filter objects into a valid query string.</p>
+            <p>Process the endpoint query&#39;s filter objects into a valid query string.
+Nested objects and Array properties are rendered with indexed array syntax.</p>
 
         </div>
 
@@ -1365,6 +1366,17 @@ This is used to store the query values for Type, Page &amp; Context</p>
             </div>
         
 
+        
+            <div class="example">
+                <h4>Example:</h4>
+
+                <div class="example-content">
+                    <pre class="code prettyprint"><code>_renderQuery({ p1: &#39;val1&#39;, p2: &#39;val2&#39; });  // ?p1=val1&amp;p2=val2
+_renderQuery({ obj: { prop: &#39;val&#39; } });    // ?obj[prop]=val
+_renderQuery({ arr: [ &#39;val1&#39;, &#39;val2&#39; ] }); // ?arr[0]=val1&amp;arr[1]=val2</code></pre>
+
+                </div>
+            </div>
         
     </div>
 </div>
@@ -1648,7 +1660,7 @@ This is used to store the query values for Type, Page &amp; Context</p>
             
         
         
-        <a href="../files/lib_shared_collection-request.js.html#l470"><code>lib&#x2F;shared&#x2F;collection-request.js:470</code></a>
+        <a href="../files/lib_shared_collection-request.js.html#l409"><code>lib&#x2F;shared&#x2F;collection-request.js:409</code></a>
         
         </p>
 
@@ -1764,7 +1776,7 @@ This method will replace any previous &#39;author&#39; query parameters that had
             
         
         
-        <a href="../files/lib_shared_collection-request.js.html#l435"><code>lib&#x2F;shared&#x2F;collection-request.js:435</code></a>
+        <a href="../files/lib_shared_collection-request.js.html#l374"><code>lib&#x2F;shared&#x2F;collection-request.js:374</code></a>
         
         </p>
 
@@ -1879,7 +1891,7 @@ This method will replace any previous &#39;author&#39; query parameters that had
             
         
         
-        <a href="../files/lib_shared_collection-request.js.html#l321"><code>lib&#x2F;shared&#x2F;collection-request.js:321</code></a>
+        <a href="../files/lib_shared_collection-request.js.html#l260"><code>lib&#x2F;shared&#x2F;collection-request.js:260</code></a>
         
         </p>
 
@@ -2129,7 +2141,7 @@ object, by setting the context to &quot;edit&quot;.</p>
             
         
         
-        <a href="../files/lib_shared_collection-request.js.html#l338"><code>lib&#x2F;shared&#x2F;collection-request.js:338</code></a>
+        <a href="../files/lib_shared_collection-request.js.html#l277"><code>lib&#x2F;shared&#x2F;collection-request.js:277</code></a>
         
         </p>
 
@@ -2226,7 +2238,7 @@ object, by setting the context to &quot;edit&quot;.</p>
             
         
         
-        <a href="../files/lib_shared_collection-request.js.html#l349"><code>lib&#x2F;shared&#x2F;collection-request.js:349</code></a>
+        <a href="../files/lib_shared_collection-request.js.html#l288"><code>lib&#x2F;shared&#x2F;collection-request.js:288</code></a>
         
         </p>
 
@@ -2667,7 +2679,7 @@ wp.filter( &#39;post_status&#39;, &#39;publish&#39; ).filter( &#39;category_name
             
         
         
-        <a href="../files/lib_shared_collection-request.js.html#l491"><code>lib&#x2F;shared&#x2F;collection-request.js:491</code></a>
+        <a href="../files/lib_shared_collection-request.js.html#l430"><code>lib&#x2F;shared&#x2F;collection-request.js:430</code></a>
         
         </p>
 
@@ -2782,7 +2794,7 @@ wp.filter( &#39;post_status&#39;, &#39;publish&#39; ).filter( &#39;category_name
             
         
         
-        <a href="../files/lib_shared_collection-request.js.html#l307"><code>lib&#x2F;shared&#x2F;collection-request.js:307</code></a>
+        <a href="../files/lib_shared_collection-request.js.html#l246"><code>lib&#x2F;shared&#x2F;collection-request.js:246</code></a>
         
         </p>
 
@@ -2796,8 +2808,8 @@ wp.filter( &#39;post_status&#39;, &#39;publish&#39; ).filter( &#39;category_name
 
         <div class="description">
             <p>Set the pagination of a request. Use in conjunction with <code>filter( posts_per_page )</code> for
-explicit pagination handling. (Note that the number of posts in a response can be
-retrieved from the response&#39;s .)</p>
+explicit pagination handling. (The number of pages in a response can be retrieved from
+the response&#39;s <code>_paging.totalPages</code> property.)</p>
 
         </div>
 
@@ -2911,7 +2923,7 @@ retrieved from the response&#39;s .)</p>
             
         
         
-        <a href="../files/lib_shared_collection-request.js.html#l252"><code>lib&#x2F;shared&#x2F;collection-request.js:252</code></a>
+        <a href="../files/lib_shared_collection-request.js.html#l191"><code>lib&#x2F;shared&#x2F;collection-request.js:191</code></a>
         
         </p>
 
@@ -3505,7 +3517,7 @@ result is a paged collection.</p>
             
         
         
-        <a href="../files/lib_shared_collection-request.js.html#l459"><code>lib&#x2F;shared&#x2F;collection-request.js:459</code></a>
+        <a href="../files/lib_shared_collection-request.js.html#l398"><code>lib&#x2F;shared&#x2F;collection-request.js:398</code></a>
         
         </p>
 
@@ -3620,7 +3632,7 @@ result is a paged collection.</p>
             
         
         
-        <a href="../files/lib_shared_collection-request.js.html#l503"><code>lib&#x2F;shared&#x2F;collection-request.js:503</code></a>
+        <a href="../files/lib_shared_collection-request.js.html#l442"><code>lib&#x2F;shared&#x2F;collection-request.js:442</code></a>
         
         </p>
 
@@ -3735,7 +3747,7 @@ result is a paged collection.</p>
             
         
         
-        <a href="../files/lib_shared_collection-request.js.html#l447"><code>lib&#x2F;shared&#x2F;collection-request.js:447</code></a>
+        <a href="../files/lib_shared_collection-request.js.html#l386"><code>lib&#x2F;shared&#x2F;collection-request.js:386</code></a>
         
         </p>
 
@@ -3856,7 +3868,7 @@ result is a paged collection.</p>
             
         
         
-        <a href="../files/lib_shared_collection-request.js.html#l384"><code>lib&#x2F;shared&#x2F;collection-request.js:384</code></a>
+        <a href="../files/lib_shared_collection-request.js.html#l323"><code>lib&#x2F;shared&#x2F;collection-request.js:323</code></a>
         
         </p>
 

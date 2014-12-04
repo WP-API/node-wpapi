@@ -16,7 +16,7 @@
             <div class="project-title">
                 
                 
-                    <h1 class="project-name">wordpress-rest-api</h1> <span class="project-version">0.3.0</span>
+                    <h1 class="project-name">wordpress-rest-api</h1> <span class="project-version">0.3.1</span>
                 
                 
                     <p class="description">A client for interacting with the WordPress REST API</p>
@@ -109,7 +109,7 @@ var WPRequest = require( &#x27;./wp-request&#x27; );
 var _ = require( &#x27;lodash&#x27; );
 var extend = require( &#x27;node.extend&#x27; );
 var inherit = require( &#x27;util&#x27; ).inherits;
-var formatUrl = require( &#x27;url&#x27; ).format;
+var qs = require(&#x27;qs&#x27;);
 
 /**
  * CollectionRequest extends WPRequest with properties &amp; methods for filtering collections
@@ -207,13 +207,13 @@ inherit( CollectionRequest, WPRequest );
  * All terms listed in the arrays will be required (AND behavior).
  *
  * @example
- *    prepareTaxonomies({
- *        tag: [ &#x27;tag1 &#x27;, &#x27;tag2&#x27; ], // by term slug
- *        cat: [ 7 ] // by term ID
- *    }) === {
- *        tag: &#x27;tag1+tag2&#x27;,
- *        cat: &#x27;7&#x27;
- *    }
+ *     prepareTaxonomies({
+ *         tag: [ &#x27;tag1 &#x27;, &#x27;tag2&#x27; ], // by term slug
+ *         cat: [ 7 ] // by term ID
+ *     }) === {
+ *         tag: &#x27;tag1+tag2&#x27;,
+ *         cat: &#x27;7&#x27;
+ *     }
  *
  * @param {Object} taxonomyFilters An object of taxonomy term arrays, keyed by taxonomy name
  * @return {Object} An object of prepareFilters-ready query arg and query param value pairs
@@ -232,79 +232,6 @@ function prepareTaxonomies( taxonomyFilters ) {
 		}).join( &#x27;+&#x27; );
 		return result;
 	}, {});
-}
-
-/**
- * Process the _params object into valid API-ready query parameters.
- *
- * @param {Object} params The _params object to process
- * @return {Object} An object of WP-API non-filter query parameter key-value pairs
- */
-function prepareParameters( params ) {
-	return _.reduce( params, function( result, value, key ) {
-		// No need for array syntax if the value array has only a single member
-		if ( _.isArray( value ) &amp;&amp; 1 === value.length ) {
-			value = _.first( value );
-		}
-
-		// If the value was not (or is no longer) an array, set it as-is
-		if ( ! _.isArray( value ) ) {
-			result[ key ] = value;
-		} else {
-			// Use Array-syntax for multiple values (specifically used for the &quot;types&quot; parameter)
-			key = key + &#x27;[]&#x27;;
-			result[ key ] = value;
-		}
-
-		return result;
-	}, {});
-}
-
-/**
- * Process an array of filter keys and values into API-ready query parameter syntax.
- *
- * @example
- *    prepareFilters({
- *        tag: &#x27;tag1+tag2&#x27;,
- *        category_name: &#x27;news&#x27;
- *    }) === {
- *        &#x27;filter[tag]&#x27;: &#x27;tag1+tag2&#x27;,
- *        &#x27;filter[category_name]&#x27;: &#x27;news&#x27;
- *    }
- *
- * @param {Object} filters An object of filter values, keyed by filter parameter name
- * @return {Object} An object of WP-API filter query parameter key-value pairs
- */
-function prepareFilters( filters ) {
-	return _.reduce( filters, function( result, value, key ) {
-		// Filters are specified via query parameter Array syntax
-		key = &#x27;filter[&#x27; + key + &#x27;]&#x27;;
-		result[ key ] = value;
-		return result;
-	}, {});
-}
-
-/**
- * Generate a complete query string from the provided array of query parameters.
- *
- * @example
- *     generateQueryString({
- *         &#x27;filter[tag]&#x27;: &#x27;tag1&#x27;,
- *         &#x27;filter[post_status&#x27;: &#x27;publish&#x27;,
- *         &#x27;type&#x27;: &#x27;cpt_item&#x27;
- *     }) === &#x27;?filter%5Btag%5D=tag1&amp;filter%5Bpost_status=publish&amp;type=cpt_item&#x27;
- *
- * @param {Object} queryParams A hash of query parameter keys and values
- * @return {String} A complete, rendered query string
- */
-function generateQueryString( queryParams ) {
-	// Sort the object properties by alphabetical order
-	// (consistent property ordering means easier caching of request URIs)
-	var keys = _.keys( queryParams ).sort();
-	queryParams = _.pick( queryParams, keys );
-	return formatUrl({
-		query: queryParams
-	});
 }
 
 /**
@@ -329,6 +256,12 @@ function alphaNumericSort( a, b ) {
 
 /**
  * Process the endpoint query&#x27;s filter objects into a valid query string.
+ * Nested objects and Array properties are rendered with indexed array syntax.
+ *
+ * @example
+ *     _renderQuery({ p1: &#x27;val1&#x27;, p2: &#x27;val2&#x27; });  // ?p1=val1&amp;p2=val2
+ *     _renderQuery({ obj: { prop: &#x27;val&#x27; } });    // ?obj[prop]=val
+ *     _renderQuery({ arr: [ &#x27;val1&#x27;, &#x27;val2&#x27; ] }); // ?arr[0]=val1&amp;arr[1]=val2
  *
  * @private
  *
@@ -336,17 +269,23 @@ function alphaNumericSort( a, b ) {
  * @return {String} A query string representing the specified filter parameters
  */
 CollectionRequest.prototype._renderQuery = function() {
-	// Prepare the taxonomies to be converted into filter values
+	// Build the full query parameters object
+	var queryParams = extend( {}, this._params );
+
+	// Prepare the taxonomies and merge with other filter values
 	var taxonomies = prepareTaxonomies( this._taxonomyFilters );
+	queryParams.filter = extend( {}, this._filters, taxonomies );
 
-	// Format all filter query parameters using the filter array syntax
-	var filters = prepareFilters( extend( {}, this._filters, taxonomies ) );
+	// Parse query parameters object into a query string, sorting the object
+	// properties by alphabetical order (consistent property ordering can make
+	// for easier caching of request URIs)
+	var queryString = qs.stringify( queryParams )
+		.split( &#x27;&amp;&#x27; )
+		.sort()
+		.join( &#x27;&amp;&#x27; );
 
-	// Get any non-filter query parameters
-	var parameters = prepareParameters( this._params );
-
-	// Append the non-filter parameters to the object and return a generated query string
-	return generateQueryString( extend( {}, filters, parameters ) );
+	// Prepend a &quot;?&quot; if a query is present, and return
+	return ( queryString === &#x27;&#x27; ) ? &#x27;&#x27; : &#x27;?&#x27; + queryString;
 };
 
 /**
@@ -406,8 +345,8 @@ CollectionRequest.prototype.param = function( props, value, merge ) {
 
 /**
  * Set the pagination of a request. Use in conjunction with &#x60;filter( posts_per_page )&#x60; for
- * explicit pagination handling. (Note that the number of posts in a response can be
- * retrieved from the response&#x27;s .)
+ * explicit pagination handling. (The number of pages in a response can be retrieved from
+ * the response&#x27;s &#x60;_paging.totalPages&#x60; property.)
  *
  * @method page
  * @chainable
