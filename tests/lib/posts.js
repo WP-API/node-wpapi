@@ -92,6 +92,22 @@ describe( 'wp.posts', function() {
 			expect( posts._path.id ).to.equal( 314159 );
 		});
 
+		it( 'provides a method to get all meta for given post', function() {
+			expect( posts).to.have.property( 'meta' );
+			expect( posts.meta).to.be.a( 'function' );
+			posts.id( 3 ).meta();
+			expect( posts._path ).to.have.property( 'action' );
+			expect( posts._path.action ).to.equal( 'meta' );
+		});
+
+		it( 'provides a method to get specific post meta', function() {
+			expect( posts).to.have.property( 'meta' );
+			expect( posts.meta).to.be.a( 'function' );
+			posts.id( 3 ).meta( 5 );
+			expect( posts._path ).to.have.property( 'actionId' );
+			expect( posts._path.actionId ).to.equal( 5 );
+		});
+
 		it( 'parses ID parameters into integers', function() {
 			expect( posts ).to.have.property( 'id' );
 			expect( posts.id ).to.be.a( 'function' );
