@@ -229,6 +229,16 @@ describe( 'wp.posts', function() {
 			}).to.throw();
 		});
 
+		it( 'should create the URL for retrieving all meta for a specific post', function() {
+			var path = posts.id( 1337 ).meta()._renderURI();
+			expect( path ).to.equal( '/wp-json/posts/1337/meta' );
+		});
+
+		it( 'should create the URL for retrieving a specific comment', function() {
+			var path = posts.id( 1337 ).meta( 2001 )._renderURI();
+			expect( path ).to.equal( '/wp-json/posts/1337/meta/2001' );
+		});
+
 		it( 'should create the URL for retrieving all comments for a specific post', function() {
 			var path = posts.id( 1337 ).comments()._renderURI();
 			expect( path ).to.equal( '/wp-json/posts/1337/comments' );
