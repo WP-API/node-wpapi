@@ -93,8 +93,6 @@ describe( 'wp.posts', function() {
 		});
 
 		it( 'parses ID parameters into integers', function() {
-			expect( posts ).to.have.property( 'id' );
-			expect( posts.id ).to.be.a( 'function' );
 			posts.id( '8' );
 			expect( posts._path ).to.have.property( 'id' );
 			expect( posts._path.id ).to.equal( 8 );
@@ -108,9 +106,9 @@ describe( 'wp.posts', function() {
 			expect( _supportedMethods ).to.equal( 'delete|get|head|post|put' );
 		});
 
-		it( 'provides a method to get all meta for given post', function() {
-			expect( posts).to.have.property( 'meta' );
-			expect( posts.meta).to.be.a( 'function' );
+		it( 'provides a method to get the meta values for a post', function() {
+			expect( posts ).to.have.property( 'meta' );
+			expect( posts.meta ).to.be.a( 'function' );
 			posts.id( 3 ).meta();
 			expect( posts._path ).to.have.property( 'action' );
 			expect( posts._path.action ).to.equal( 'meta' );
@@ -129,17 +127,13 @@ describe( 'wp.posts', function() {
 		});
 
 		it( 'provides a method to get specific post meta objects by ID', function() {
-			expect( posts).to.have.property( 'meta' );
-			expect( posts.meta).to.be.a( 'function' );
 			posts.id( 3 ).meta( 5 );
 			expect( posts._path ).to.have.property( 'actionId' );
 			expect( posts._path.actionId ).to.equal( 5 );
 		});
 
 		it( 'parses meta ID parameters into integers', function() {
-			expect( posts ).to.have.property( 'id' );
-			expect( posts.id ).to.be.a( 'function' );
-			posts.id( 3 ).meta( '4');
+			posts.id( 3 ).meta( '4' );
 			expect( posts._path ).to.have.property( 'actionId' );
 			expect( posts._path.actionId ).to.equal( 4 );
 			posts.id( 3 ).meta( 3.14159 );
@@ -171,7 +165,7 @@ describe( 'wp.posts', function() {
 			expect( posts.type ).to.be.a( 'function' );
 			posts.type( 'some_cpt' );
 			expect( posts._params ).to.have.property( 'type' );
-			expect( posts._params.type ).to.deep.equal('some_cpt');
+			expect( posts._params.type ).to.deep.equal( 'some_cpt' );
 
 			var uri = posts._renderURI();
 			expect( uri ).to.equal( '/wp-json/posts?type=some_cpt' );
