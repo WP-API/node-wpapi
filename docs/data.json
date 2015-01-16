@@ -2,7 +2,7 @@
     "project": {
         "name": "wordpress-rest-api",
         "description": "A client for interacting with the WordPress REST API",
-        "version": "0.3.1",
+        "version": "0.4.0",
         "url": "https://github.com/kadamwhite/wordpress-rest-api"
     },
     "files": {
@@ -2227,6 +2227,29 @@
         {
             "file": "lib/posts.js",
             "line": 131,
+            "description": "Specify that we are retrieving Post Meta (forces basic auth)\n\nEither return a collection of all meta objects for the specified post,\nor (if a meta ID was provided) return the requested meta object.",
+            "itemtype": "method",
+            "name": "meta",
+            "chainable": 1,
+            "params": [
+                {
+                    "name": "metaId",
+                    "description": "ID of a specific meta property to retrieve",
+                    "type": "Number",
+                    "optional": true
+                }
+            ],
+            "return": {
+                "description": "The PostsRequest instance (for chainin)",
+                "type": "PostsRequest"
+            },
+            "class": "PostsRequest",
+            "module": "WP",
+            "submodule": "PostsRequest"
+        },
+        {
+            "file": "lib/posts.js",
+            "line": 154,
             "description": "Specify that we are getting the comments for a specific post",
             "itemtype": "method",
             "name": "comments",
@@ -2241,7 +2264,7 @@
         },
         {
             "file": "lib/posts.js",
-            "line": 144,
+            "line": 167,
             "description": "Specify a particular comment to retrieve\n(forces action \"comments\")",
             "itemtype": "method",
             "name": "comment",
@@ -2263,7 +2286,7 @@
         },
         {
             "file": "lib/posts.js",
-            "line": 161,
+            "line": 184,
             "description": "Query a collection of posts for posts of a specific type",
             "itemtype": "method",
             "name": "type",
@@ -2285,7 +2308,7 @@
         },
         {
             "file": "lib/posts.js",
-            "line": 174,
+            "line": 197,
             "description": "Specify that we are requesting the revisions for a specific post (forces basic auth)",
             "itemtype": "method",
             "name": "revisions",
@@ -2300,7 +2323,7 @@
         },
         {
             "file": "lib/posts.js",
-            "line": 188,
+            "line": 211,
             "itemtype": "method",
             "name": "statuses",
             "chainable": 1,

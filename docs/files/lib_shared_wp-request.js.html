@@ -16,7 +16,7 @@
             <div class="project-title">
                 
                 
-                    <h1 class="project-name">wordpress-rest-api</h1> <span class="project-version">0.3.1</span>
+                    <h1 class="project-name">wordpress-rest-api</h1> <span class="project-version">0.4.0</span>
                 
                 
                     <p class="description">A client for interacting with the WordPress REST API</p>
@@ -212,7 +212,7 @@ function invokeAndPromisify( request, callback, transform ) {
 				resolve( result );
 			}
 		});
-	}).then(transform).nodeify(callback);
+	}).then( transform ).nodeify( callback );
 }
 
 /**
@@ -298,7 +298,7 @@ function mergeUrl( endpoint, linkPath ) {
 	request.pathname = linkPath.pathname;
 
 	// Reassemble and return the merged URL
-	return url.format(request);
+	return url.format( request );
 }
 
 /**
@@ -327,7 +327,7 @@ function paginateResponse( result, endpoint ) {
 		return result;
 	}
 
-	var totalPages = result.headers[&#x27;x-wp-totalpages&#x27;];
+	var totalPages = result.headers[ &#x27;x-wp-totalpages&#x27; ];
 
 	if ( ! totalPages || totalPages === &#x27;0&#x27; || totalPages === &#x27;1&#x27; ) {
 		// No paging: return as-is
@@ -339,7 +339,7 @@ function paginateResponse( result, endpoint ) {
 
 	// Store pagination data from response headers on the response collection
 	result.body._paging = {
-		total: result.headers[&#x27;x-wp-total&#x27;],
+		total: result.headers[ &#x27;x-wp-total&#x27; ],
 		totalPages: totalPages,
 		links: links
 	};

@@ -16,7 +16,7 @@
             <div class="project-title">
                 
                 
-                    <h1 class="project-name">wordpress-rest-api</h1> <span class="project-version">0.3.1</span>
+                    <h1 class="project-name">wordpress-rest-api</h1> <span class="project-version">0.4.0</span>
                 
                 
                     <p class="description">A client for interacting with the WordPress REST API</p>
@@ -226,6 +226,29 @@ PostsRequest.prototype.id = function( id ) {
 	this._supportedMethods = [ &#x27;head&#x27;, &#x27;get&#x27;, &#x27;put&#x27;, &#x27;post&#x27;, &#x27;delete&#x27; ];
 
 	return this;
+};
+
+/**
+ * Specify that we are retrieving Post Meta (forces basic auth)
+ *
+ * Either return a collection of all meta objects for the specified post,
+ * or (if a meta ID was provided) return the requested meta object.
+ *
+ * @method meta
+ * @chainable
+ * @param {Number} [metaId] ID of a specific meta property to retrieve
+ * @return {PostsRequest} The PostsRequest instance (for chainin)
+ */
+PostsRequest.prototype.meta = function( metaId ) {
+	this._path.action = &#x27;meta&#x27;;
+	this._supportedMethods = [ &#x27;head&#x27;, &#x27;get&#x27;, &#x27;post&#x27; ];
+	this._path.actionId = parseInt( metaId, 10 ) || null;
+
+	if ( this._path.actionId ) {
+		this._supportedMethods = [ &#x27;head&#x27;, &#x27;get&#x27;, &#x27;put&#x27;, &#x27;post&#x27;, &#x27;delete&#x27; ];
+	}
+
+	return this.auth();
 };
 
 /**
