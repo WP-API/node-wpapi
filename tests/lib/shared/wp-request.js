@@ -406,7 +406,7 @@ describe( 'WPRequest', function() {
 				mockAgent._response = {
 					body: 'some object'
 				};
-				return wpRequest.then(function(parsedResult) {
+				return wpRequest.then(function( parsedResult ) {
 					expect( parsedResult ).to.equal( 'some object' );
 					expect( parsedResult ).not.to.have.property( '_paging' );
 				});
@@ -420,7 +420,7 @@ describe( 'WPRequest', function() {
 					},
 					body: 'some object'
 				};
-				return wpRequest.then(function(parsedResult) {
+				return wpRequest.then(function( parsedResult ) {
 					expect( parsedResult ).to.equal( 'some object' );
 					expect( parsedResult ).not.to.have.property( '_paging' );
 				});
@@ -431,7 +431,7 @@ describe( 'WPRequest', function() {
 					headers: { link: '' },
 					body: 'some object'
 				};
-				return wpRequest.then(function(parsedResult) {
+				return wpRequest.then(function( parsedResult ) {
 					expect( parsedResult ).to.equal( 'some object' );
 					expect( parsedResult ).not.to.have.property( '_paging' );
 				});
@@ -449,11 +449,11 @@ describe( 'WPRequest', function() {
 							'title="Article Title",',
 							'<http://site.com/wp-json/posts/994>; rel="item";',
 							'title="Another Article"'
-						].join(' ')
+						].join( ' ' )
 					},
 					body: {}
 				};
-				return wpRequest.then(function(parsedResult) {
+				return wpRequest.then(function( parsedResult ) {
 					expect( parsedResult ).to.have.property( '_paging' );
 					expect( parsedResult._paging ).to.have.property( 'links' );
 					expect( parsedResult._paging.links ).to.have.property( 'prev' );
@@ -479,7 +479,7 @@ describe( 'WPRequest', function() {
 				});
 
 				it( 'is generated if a "next" header is present', function() {
-					return wpRequest.then(function(parsedResult) {
+					return wpRequest.then(function( parsedResult ) {
 						expect( parsedResult ).to.have.property( '_paging' );
 						expect( parsedResult._paging ).to.have.property( 'next' );
 						expect( parsedResult._paging.next ).to.be.an.instanceof( SandboxedRequest );
@@ -494,7 +494,7 @@ describe( 'WPRequest', function() {
 					wpRequest._options.endpoint = 'http://site.com/wp-json/posts?page=3';
 					mockAgent._response.headers.link = '</wp-json/posts?page=4>; rel="next"';
 
-					return wpRequest.then(function(parsedResult) {
+					return wpRequest.then(function( parsedResult ) {
 						expect( parsedResult ).to.have.property( '_paging' );
 						expect( parsedResult._paging ).to.have.property( 'next' );
 						expect( parsedResult._paging.next ).to.be.an.instanceof( SandboxedRequest );
@@ -520,7 +520,7 @@ describe( 'WPRequest', function() {
 				});
 
 				it( 'is generated if a "prev" header is present', function() {
-					return wpRequest.then(function(parsedResult) {
+					return wpRequest.then(function( parsedResult ) {
 						expect( parsedResult ).to.have.property( '_paging' );
 						expect( parsedResult._paging ).to.have.property( 'prev' );
 						expect( parsedResult._paging.prev ).to.be.an.instanceof( SandboxedRequest );
@@ -535,7 +535,7 @@ describe( 'WPRequest', function() {
 					wpRequest._options.endpoint = 'http://site.com/wp-json/posts?page=2';
 					mockAgent._response.headers.link = '</wp-json/posts?page=1>; rel="prev"';
 
-					return wpRequest.then(function(parsedResult) {
+					return wpRequest.then(function( parsedResult ) {
 						expect( parsedResult ).to.have.property( '_paging' );
 						expect( parsedResult._paging ).to.have.property( 'prev' );
 						expect( parsedResult._paging.prev ).to.be.an.instanceof( SandboxedRequest );
