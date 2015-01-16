@@ -92,6 +92,22 @@ describe( 'wp.posts', function() {
 			expect( posts._path.id ).to.equal( 314159 );
 		});
 
+		it( 'parses ID parameters into integers', function() {
+			expect( posts ).to.have.property( 'id' );
+			expect( posts.id ).to.be.a( 'function' );
+			posts.id( '8' );
+			expect( posts._path ).to.have.property( 'id' );
+			expect( posts._path.id ).to.equal( 8 );
+			posts.id( 4.019 );
+			expect( posts._path.id ).to.equal( 4 );
+		});
+
+		it( 'should update the supported methods when setting ID', function() {
+			posts.id( 8 );
+			var _supportedMethods = posts._supportedMethods.sort().join( '|' );
+			expect( _supportedMethods ).to.equal( 'delete|get|head|post|put' );
+		});
+
 		it( 'provides a method to get all meta for given post', function() {
 			expect( posts).to.have.property( 'meta' );
 			expect( posts.meta).to.be.a( 'function' );
@@ -128,22 +144,6 @@ describe( 'wp.posts', function() {
 
 		it( 'should update the supported methods when querying for meta', function() {
 			posts.id( 1066 ).meta( 2501 );
-			var _supportedMethods = posts._supportedMethods.sort().join( '|' );
-			expect( _supportedMethods ).to.equal( 'delete|get|head|post|put' );
-		});
-
-		it( 'parses ID parameters into integers', function() {
-			expect( posts ).to.have.property( 'id' );
-			expect( posts.id ).to.be.a( 'function' );
-			posts.id( '8' );
-			expect( posts._path ).to.have.property( 'id' );
-			expect( posts._path.id ).to.equal( 8 );
-			posts.id( 4.019 );
-			expect( posts._path.id ).to.equal( 4 );
-		});
-
-		it( 'should update the supported methods when setting ID', function() {
-			posts.id( 8 );
 			var _supportedMethods = posts._supportedMethods.sort().join( '|' );
 			expect( _supportedMethods ).to.equal( 'delete|get|head|post|put' );
 		});
