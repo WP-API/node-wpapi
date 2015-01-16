@@ -100,12 +100,24 @@ describe( 'wp.posts', function() {
 			expect( posts._path.action ).to.equal( 'meta' );
 		});
 
+		it( 'should force authentication when querying posts/id/meta', function() {
+			posts.id( 1337 ).meta();
+			expect( posts._options ).to.have.property( 'auth' );
+			expect( posts._options.auth ).to.be.true;
+		});
+
 		it( 'provides a method to get specific post meta', function() {
 			expect( posts).to.have.property( 'meta' );
 			expect( posts.meta).to.be.a( 'function' );
 			posts.id( 3 ).meta( 5 );
 			expect( posts._path ).to.have.property( 'actionId' );
 			expect( posts._path.actionId ).to.equal( 5 );
+		});
+
+		it( 'should force authentication when querying posts/id/meta/:id', function() {
+			posts.id( 7331 ).meta( 7 );
+			expect( posts._options ).to.have.property( 'auth' );
+			expect( posts._options.auth ).to.be.true;
 		});
 
 		it( 'parses ID parameters into integers', function() {
