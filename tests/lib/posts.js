@@ -128,12 +128,22 @@ describe( 'wp.posts', function() {
 			expect( _supportedMethods ).to.equal( 'get|head|post' );
 		});
 
-		it( 'provides a method to get specific post meta', function() {
+		it( 'provides a method to get specific post meta objects by ID', function() {
 			expect( posts).to.have.property( 'meta' );
 			expect( posts.meta).to.be.a( 'function' );
 			posts.id( 3 ).meta( 5 );
 			expect( posts._path ).to.have.property( 'actionId' );
 			expect( posts._path.actionId ).to.equal( 5 );
+		});
+
+		it( 'parses meta ID parameters into integers', function() {
+			expect( posts ).to.have.property( 'id' );
+			expect( posts.id ).to.be.a( 'function' );
+			posts.id( 3 ).meta( '4');
+			expect( posts._path ).to.have.property( 'actionId' );
+			expect( posts._path.actionId ).to.equal( 4 );
+			posts.id( 3 ).meta( 3.14159 );
+			expect( posts._path.actionId ).to.equal( 3 );
 		});
 
 		it( 'should force authentication when querying posts/id/meta/:id', function() {
