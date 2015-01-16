@@ -1,9 +1,9 @@
 A WordPress REST API client for Node.js
 =======================================
 
-[![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/kadamwhite/wordpress-rest-api?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+This is a client for the [WordPress REST API](http://wp-api.org/). It is **under active development**, and should be considered beta software. More features are in development, and **[issues](https://github.com/kadamwhite/wordpress-rest-api/issues)** are welcome if you find something that doesn't work!
 
-This is a client for the [WordPress REST API](http://wp-api.org/). It is **under active development**, and should be considered beta software. More features will be coming over the course of the summer; meanwhile, **[issues](https://github.com/kadamwhite/wordpress-rest-api/issues)** are welcome if you find something that doesn't work!
+[![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/kadamwhite/wordpress-rest-api?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 [![Build Status](https://api.travis-ci.org/kadamwhite/wordpress-rest-api.png?branch=master)](https://travis-ci.org/kadamwhite/wordpress-rest-api)
 
