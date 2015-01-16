@@ -106,6 +106,12 @@ describe( 'wp.posts', function() {
 			expect( posts._options.auth ).to.be.true;
 		});
 
+		it( 'should update the supported methods when querying for meta', function() {
+			posts.id( 1066 ).meta();
+			var _supportedMethods = posts._supportedMethods.sort().join( '|' );
+			expect( _supportedMethods ).to.equal( 'get|head|post' );
+		});
+
 		it( 'provides a method to get specific post meta', function() {
 			expect( posts).to.have.property( 'meta' );
 			expect( posts.meta).to.be.a( 'function' );
@@ -118,6 +124,12 @@ describe( 'wp.posts', function() {
 			posts.id( 7331 ).meta( 7 );
 			expect( posts._options ).to.have.property( 'auth' );
 			expect( posts._options.auth ).to.be.true;
+		});
+
+		it( 'should update the supported methods when querying for meta', function() {
+			posts.id( 1066 ).meta( 2501 );
+			var _supportedMethods = posts._supportedMethods.sort().join( '|' );
+			expect( _supportedMethods ).to.equal( 'delete|get|head|post|put' );
 		});
 
 		it( 'parses ID parameters into integers', function() {
