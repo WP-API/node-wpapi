@@ -588,6 +588,13 @@ describe( 'CollectionRequest', function() {
 				.equal( '?filter%5Bpost_status%5D=publish&filter%5Bs%5D=Some%20search%20string' );
 		});
 
+		it( 'propery parse array filters', function() {
+			request._filters = { post__in: [ 0, 1 ] };
+			var query = request._renderQuery();
+			expect( query ).to
+				.equal( '?filter%5Bpost__in%5D%5B%5D=0&filter%5Bpost__in%5D%5B%5D=1' );
+		});
+
 		it( 'correctly merges taxonomy and regular filters & renders them in order', function() {
 			request._taxonomyFilters = {
 				cat: [ 7, 10 ]
