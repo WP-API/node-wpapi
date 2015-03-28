@@ -410,6 +410,87 @@ describe( 'CollectionRequest', function() {
 
 		});
 
+		describe( 'year()', function() {
+
+			it( 'function should exist', function() {
+				expect( request.year ).to.exist;
+				expect( request.year ).to.be.a( 'function' );
+			});
+
+			it( 'should set the "year" filter property on the request object', function() {
+				request.year( 2014 );
+				expect( request._filters.year ).to.equal( 2014 );
+			});
+
+			it( 'should accept year numbers as strings', function() {
+				request.year( '1066' );
+				expect( request._filters.year ).to.equal( '1066' );
+			});
+
+			it( 'should be chainable, and replace values', function() {
+				expect( request.year( 1999 ).year( 2000 ) ).to.equal( request );
+				expect( request._filters.year ).to.equal( 2000 );
+			});
+
+		});
+
+		describe( 'month()', function() {
+
+			it( 'function should exist', function() {
+				expect( request.month ).to.exist;
+				expect( request.month ).to.be.a( 'function' );
+			});
+
+			it( 'should set the "monthnum" filter property on the request object', function() {
+				request.month( 7 );
+				expect( request._filters.monthnum ).to.equal( 7 );
+			});
+
+			it( 'should accept month numbers as strings', function() {
+				request.month( '3' );
+				expect( request._filters.monthnum ).to.equal( 3 );
+			});
+
+			it( 'should convert month name strings to month numbers', function() {
+				request.month( 'March' );
+				expect( request._filters.monthnum ).to.equal( 3 );
+				request.month( 'november' );
+				expect( request._filters.monthnum ).to.equal( 11 );
+				request.month( 'Jul' );
+				expect( request._filters.monthnum ).to.equal( 7 );
+			});
+
+			it( 'should be chainable, and replace values', function() {
+				expect( request.month( 2 ).month( 'September' ) ).to.equal( request );
+				expect( request._filters.monthnum ).to.equal( 9 );
+			});
+
+		});
+
+		describe( 'day()', function() {
+
+			it( 'function should exist', function() {
+				expect( request.day ).to.exist;
+				expect( request.day ).to.be.a( 'function' );
+			});
+
+			it( 'should set the "day" filter property on the request object', function() {
+				request.day( 7 );
+				expect( request._filters.day ).to.equal( 7 );
+			});
+
+			it( 'should accept day numbers as strings', function() {
+				request.day( '9' );
+				expect( request._filters.day ).to.equal( '9' );
+			});
+
+			it( 'should be chainable, and replace values', function() {
+				expect( request.day( 7 ).day( 22 ) ).to.equal( request );
+				expect( request._filters.day ).to.equal( 22 );
+			});
+
+		});
+
 	});
 
 	describe( '_renderQuery()', function() {
