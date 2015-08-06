@@ -277,6 +277,33 @@ var wp = new WP({
 });
 ```
 
+### Cookie authentication
+
+When the library in frontend of the WP-site you will communicate with, you can utilize the build in [Cookie authentication](http://wp-api.org/guides/authentication.html) supported by WP Rest API.
+
+First localize your scripts with an object with root-url and nonce in your function.php:
+
+```php
+function my_enqueue_scripts() {
+    wp_enqueue_script( 'app', get_template_directory_uri() . '/assets/dist/bundle.js', array(), false, true );
+    wp_localize_script( 'app', 'WP_API_Settings', array(
+        'endpoint' => esc_url_raw( get_json_url() ), 
+        'nonce' => wp_create_nonce( 'wp_json' ) ) 
+    );
+}
+add_action( 'wp_enqueue_scripts', 'my_enqueue_scripts' );
+```
+
+And then use this nonce when initialising the library:
+
+```javascript
+var WP = require( 'wordpress-rest-api' );
+var wp = new WP({
+    endpoint: window.WP_API_Settings.endpoint, 
+    nonce : window.WP_API_Settings.nonce
+});
+```
+
 #### SECURITY WARNING
 
 Please be aware that basic authentication sends your username and password over the wire, in plain text. **We only recommend using basic authentication in production if you are securing your requests with SSL.**
