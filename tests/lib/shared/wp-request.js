@@ -87,8 +87,17 @@ describe( 'WPRequest', function() {
 
 		beforeEach(function() {
 			mockAgent = {
-				auth: sinon.stub()
+				auth: sinon.stub(),
+				set: sinon.stub()
 			};
+		});
+
+		it( 'should set a header on the request if a nonce is provided', function() {
+			request._options = {
+				nonce: 'testnonce'
+			};
+			request._auth( mockAgent );
+			expect( mockAgent.set ).to.have.been.calledWith( 'X-WP-Nonce', 'testnonce' );
 		});
 
 		it( 'should set basic auth on the provided request if auth is forced', function() {

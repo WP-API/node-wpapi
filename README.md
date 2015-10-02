@@ -279,9 +279,9 @@ var wp = new WP({
 
 ### Cookie authentication
 
-When the library in frontend of the WP-site you will communicate with, you can utilize the build in [Cookie authentication](http://wp-api.org/guides/authentication.html) supported by WP Rest API.
+When the library is loaded from the frontend of the WP-site you are querying against, you can utilize the build in [Cookie authentication](http://wp-api.org/guides/authentication.html) supported by WP REST API.
 
-First localize your scripts with an object with root-url and nonce in your function.php:
+First localize your scripts with an object with root-url and nonce in your theme's `functions.php` or your plugin::
 
 ```php
 function my_enqueue_scripts() {
@@ -294,13 +294,13 @@ function my_enqueue_scripts() {
 add_action( 'wp_enqueue_scripts', 'my_enqueue_scripts' );
 ```
 
-And then use this nonce when initialising the library:
+And then use this nonce when initializing the library:
 
 ```javascript
 var WP = require( 'wordpress-rest-api' );
 var wp = new WP({
     endpoint: window.WP_API_Settings.endpoint, 
-    nonce : window.WP_API_Settings.nonce
+    nonce: window.WP_API_Settings.nonce
 });
 ```
 
