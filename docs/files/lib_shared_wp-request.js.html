@@ -16,7 +16,7 @@
             <div class="project-title">
                 
                 
-                    <h1 class="project-name">wordpress-rest-api</h1> <span class="project-version">0.4.0</span>
+                    <h1 class="project-name">wordpress-rest-api</h1> <span class="project-version">0.5.0</span>
                 
                 
                     <p class="description">A client for interacting with the WordPress REST API</p>
@@ -428,7 +428,13 @@ WPRequest.prototype._renderURI = function() {
  */
 WPRequest.prototype._auth = function( request, forceAuthentication ) {
 	// If we&#x27;re not supposed to authenticate, don&#x27;t even start
-	if ( ! forceAuthentication &amp;&amp; ! this._options.auth ) {
+	if ( ! forceAuthentication &amp;&amp; ! this._options.auth &amp;&amp; ! this._options.nonce ) {
+		return request;
+	}
+
+	// Enable nonce in options for Cookie authentication http://wp-api.org/guides/authentication.html
+	if ( this._options.nonce ) {
+		request.set( &#x27;X-WP-Nonce&#x27;, this._options.nonce );
 		return request;
 	}
 
@@ -436,7 +442,7 @@ WPRequest.prototype._auth = function( request, forceAuthentication ) {
 	var username = username || this._options.username;
 	var password = password || this._options.password;
 
-	// If no username &amp; password, can&#x27;t authenticate
+	// If no username or no password, can&#x27;t authenticate
 	if ( ! username || ! password ) {
 		return request;
 	}

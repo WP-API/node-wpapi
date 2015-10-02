@@ -2,7 +2,7 @@
     "project": {
         "name": "wordpress-rest-api",
         "description": "A client for interacting with the WordPress REST API",
-        "version": "0.4.0",
+        "version": "0.5.0",
         "url": "https://github.com/kadamwhite/wordpress-rest-api"
     },
     "files": {
@@ -1450,7 +1450,7 @@
         },
         {
             "file": "lib/shared/wp-request.js",
-            "line": 351,
+            "line": 357,
             "description": "Set a requst to use authentication, and optionally provide auth credentials",
             "example": [
                 "\nIf auth credentials were already specified when the WP instance was created, calling\n`.auth` on the request chain will set that request to use the existing credentials:\n\n    request.auth().get...\n\nAlternatively, a username & password can be explicitly passed into `.auth`:\n\n    request.auth( 'username', 'password' ).get..."
@@ -1482,7 +1482,7 @@
         },
         {
             "file": "lib/shared/wp-request.js",
-            "line": 388,
+            "line": 394,
             "itemtype": "method",
             "name": "get",
             "async": 1,
@@ -1516,7 +1516,7 @@
         },
         {
             "file": "lib/shared/wp-request.js",
-            "line": 405,
+            "line": 411,
             "itemtype": "method",
             "name": "post",
             "async": 1,
@@ -1555,7 +1555,7 @@
         },
         {
             "file": "lib/shared/wp-request.js",
-            "line": 424,
+            "line": 430,
             "itemtype": "method",
             "name": "put",
             "async": 1,
@@ -1594,7 +1594,7 @@
         },
         {
             "file": "lib/shared/wp-request.js",
-            "line": 443,
+            "line": 449,
             "itemtype": "method",
             "name": "delete",
             "async": 1,
@@ -1628,7 +1628,7 @@
         },
         {
             "file": "lib/shared/wp-request.js",
-            "line": 459,
+            "line": 465,
             "itemtype": "method",
             "name": "head",
             "async": 1,
@@ -1662,7 +1662,7 @@
         },
         {
             "file": "lib/shared/wp-request.js",
-            "line": 475,
+            "line": 481,
             "description": "Calling .then on a query chain will invoke the query as a GET and return a promise",
             "itemtype": "method",
             "name": "then",
