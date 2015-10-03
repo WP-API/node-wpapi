@@ -168,7 +168,7 @@ describe( 'wp.posts', function() {
 			expect( posts._params.type ).to.deep.equal( 'some_cpt' );
 
 			var uri = posts._renderURI();
-			expect( uri ).to.equal( '/wp-json/posts?type=some_cpt' );
+			expect( uri ).to.equal( '/wp-json/wp/v2/posts?type=some_cpt' );
 		});
 
 		it( 'merges the values provided in successive calls to type', function() {
@@ -184,7 +184,7 @@ describe( 'wp.posts', function() {
 				'page'
 			]);
 
-			var uri = '/wp-json/posts?type%5B0%5D=cpt1&type%5B1%5D=cpt2&type%5B2%5D=page';
+			var uri = '/wp-json/wp/v2/posts?type%5B0%5D=cpt1&type%5B1%5D=cpt2&type%5B2%5D=page';
 			expect( posts._renderURI() ).to.equal( uri );
 		});
 
@@ -203,12 +203,12 @@ describe( 'wp.posts', function() {
 
 		it( 'should create the URL for retrieving all posts', function() {
 			var path = posts._renderURI();
-			expect( path ).to.equal( '/wp-json/posts' );
+			expect( path ).to.equal( '/wp-json/wp/v2/posts' );
 		});
 
 		it( 'should create the URL for retrieving a specific post', function() {
 			var path = posts.id( 1337 )._renderURI();
-			expect( path ).to.equal( '/wp-json/posts/1337' );
+			expect( path ).to.equal( '/wp-json/wp/v2/posts/1337' );
 		});
 
 		it( 'throws an error if an invalid ID is specified', function() {
@@ -225,32 +225,32 @@ describe( 'wp.posts', function() {
 
 		it( 'should create the URL for retrieving all meta for a specific post', function() {
 			var path = posts.id( 1337 ).meta()._renderURI();
-			expect( path ).to.equal( '/wp-json/posts/1337/meta' );
+			expect( path ).to.equal( '/wp-json/wp/v2/posts/1337/meta' );
 		});
 
 		it( 'should create the URL for retrieving a specific comment', function() {
 			var path = posts.id( 1337 ).meta( 2001 )._renderURI();
-			expect( path ).to.equal( '/wp-json/posts/1337/meta/2001' );
+			expect( path ).to.equal( '/wp-json/wp/v2/posts/1337/meta/2001' );
 		});
 
 		it( 'should create the URL for retrieving all comments for a specific post', function() {
 			var path = posts.id( 1337 ).comments()._renderURI();
-			expect( path ).to.equal( '/wp-json/posts/1337/comments' );
+			expect( path ).to.equal( '/wp-json/wp/v2/posts/1337/comments' );
 		});
 
 		it( 'should create the URL for retrieving a specific comment', function() {
 			var path = posts.id( 1337 ).comments().comment( 9001 )._renderURI();
-			expect( path ).to.equal( '/wp-json/posts/1337/comments/9001' );
+			expect( path ).to.equal( '/wp-json/wp/v2/posts/1337/comments/9001' );
 		});
 
 		it( 'should force the "comments" action when comment() is called', function() {
 			var path = posts.id( 2501 ).comment( 9 )._renderURI();
-			expect( path ).to.equal( '/wp-json/posts/2501/comments/9' );
+			expect( path ).to.equal( '/wp-json/wp/v2/posts/2501/comments/9' );
 		});
 
 		it( 'should create the URL for retrieving the revisions for a specific post', function() {
 			var path = posts.id( 1337 ).revisions()._renderURI();
-			expect( path ).to.equal( '/wp-json/posts/1337/revisions' );
+			expect( path ).to.equal( '/wp-json/wp/v2/posts/1337/revisions' );
 		});
 
 		it( 'should force authentication when querying posts/id/revisions', function() {
@@ -264,7 +264,7 @@ describe( 'wp.posts', function() {
 			var newPosts = new PostsRequest();
 			newPosts._options.endpoint = 'endpoint/url/';
 			var path = newPosts.id( 3 )._renderURI();
-			expect( path ).to.equal( 'endpoint/url/posts/3' );
+			expect( path ).to.equal( 'endpoint/url/wp/v2/posts/3' );
 		});
 
 	});

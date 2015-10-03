@@ -515,11 +515,11 @@ describe( 'WPRequest', function() {
 						'x-wp-totalpages': 4,
 						'x-wp-total': 7,
 						link: [
-							'</wp-json/posts?page=1>; rel="prev",',
-							'</wp-json/posts?page=2>; rel="next",',
-							'<http://site.com/wp-json/posts/1024>; rel="item";',
+							'</wp-json/wp/v2/posts?page=1>; rel="prev",',
+							'</wp-json/wp/v2/posts?page=2>; rel="next",',
+							'<http://site.com/wp-json/wp/v2/posts/1024>; rel="item";',
 							'title="Article Title",',
-							'<http://site.com/wp-json/posts/994>; rel="item";',
+							'<http://site.com/wp-json/wp/v2/posts/994>; rel="item";',
 							'title="Another Article"'
 						].join( ' ' )
 					},
@@ -529,10 +529,10 @@ describe( 'WPRequest', function() {
 					expect( parsedResult ).to.have.property( '_paging' );
 					expect( parsedResult._paging ).to.have.property( 'links' );
 					expect( parsedResult._paging.links ).to.have.property( 'prev' );
-					var expectedPrevLink = '/wp-json/posts?page=1';
+					var expectedPrevLink = '/wp-json/wp/v2/posts?page=1';
 					expect( parsedResult._paging.links.prev ).to.equal( expectedPrevLink );
 					expect( parsedResult._paging.links ).to.have.property( 'next' );
-					var expectedNextLink = '/wp-json/posts?page=2';
+					var expectedNextLink = '/wp-json/wp/v2/posts?page=2';
 					expect( parsedResult._paging.links.next ).to.equal( expectedNextLink );
 				});
 			});
@@ -544,7 +544,7 @@ describe( 'WPRequest', function() {
 						headers: {
 							'x-wp-totalpages': 4,
 							'x-wp-total': 7,
-							link: '</wp-json/posts?page=3>; rel="next"'
+							link: '</wp-json/wp/v2/posts?page=3>; rel="next"'
 						},
 						body: {}
 					};
@@ -556,22 +556,22 @@ describe( 'WPRequest', function() {
 						expect( parsedResult._paging ).to.have.property( 'next' );
 						expect( parsedResult._paging.next ).to.be.an.instanceof( SandboxedRequest );
 						expect( parsedResult._paging.next._options.endpoint ).to.equal(
-							'http://site.com/wp-json/posts?page=3'
+							'http://site.com/wp-json/wp/v2/posts?page=3'
 						);
 					});
 				});
 
 				it( 'is generated correctly for requests to explicit endpoints', function() {
 					// Testing full URLs as endpoints validates that _paging.next.then works
-					wpRequest._options.endpoint = 'http://site.com/wp-json/posts?page=3';
-					mockAgent._response.headers.link = '</wp-json/posts?page=4>; rel="next"';
+					wpRequest._options.endpoint = 'http://site.com/wp-json/wp/v2/posts?page=3';
+					mockAgent._response.headers.link = '</wp-json/wp/v2/posts?page=4>; rel="next"';
 
 					return wpRequest.then(function( parsedResult ) {
 						expect( parsedResult ).to.have.property( '_paging' );
 						expect( parsedResult._paging ).to.have.property( 'next' );
 						expect( parsedResult._paging.next ).to.be.an.instanceof( SandboxedRequest );
 						expect( parsedResult._paging.next._options.endpoint ).to.equal(
-							'http://site.com/wp-json/posts?page=4'
+							'http://site.com/wp-json/wp/v2/posts?page=4'
 						);
 					});
 				});
@@ -585,7 +585,7 @@ describe( 'WPRequest', function() {
 						headers: {
 							'x-wp-totalpages': 4,
 							'x-wp-total': 7,
-							link: '</wp-json/posts?page=2>; rel="prev"'
+							link: '</wp-json/wp/v2/posts?page=2>; rel="prev"'
 						},
 						body: {}
 					};
@@ -597,22 +597,22 @@ describe( 'WPRequest', function() {
 						expect( parsedResult._paging ).to.have.property( 'prev' );
 						expect( parsedResult._paging.prev ).to.be.an.instanceof( SandboxedRequest );
 						expect( parsedResult._paging.prev._options.endpoint ).to.equal(
-							'http://site.com/wp-json/posts?page=2'
+							'http://site.com/wp-json/wp/v2/posts?page=2'
 						);
 					});
 				});
 
 				it( 'is generated correctly for requests to explicit endpoints', function() {
 					// Testing full URLs as endpoints validates that _paging.prev.then works
-					wpRequest._options.endpoint = 'http://site.com/wp-json/posts?page=2';
-					mockAgent._response.headers.link = '</wp-json/posts?page=1>; rel="prev"';
+					wpRequest._options.endpoint = 'http://site.com/wp-json/wp/v2/posts?page=2';
+					mockAgent._response.headers.link = '</wp-json/wp/v2/posts?page=1>; rel="prev"';
 
 					return wpRequest.then(function( parsedResult ) {
 						expect( parsedResult ).to.have.property( '_paging' );
 						expect( parsedResult._paging ).to.have.property( 'prev' );
 						expect( parsedResult._paging.prev ).to.be.an.instanceof( SandboxedRequest );
 						expect( parsedResult._paging.prev._options.endpoint ).to.equal(
-							'http://site.com/wp-json/posts?page=1'
+							'http://site.com/wp-json/wp/v2/posts?page=1'
 						);
 					});
 				});

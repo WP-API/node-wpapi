@@ -109,17 +109,17 @@ describe( 'wp.media', function() {
 
 		it( 'should create the URL for the media collection', function() {
 			var uri = media._renderURI();
-			expect( uri ).to.equal( 'http://some-site.com/wp-json/media' );
+			expect( uri ).to.equal( 'http://some-site.com/wp-json/wp/v2/media' );
 		});
 
 		it( 'can paginate the media collection responses', function() {
 			var uri = media.page( 4 )._renderURI();
-			expect( uri ).to.equal( 'http://some-site.com/wp-json/media?page=4' );
+			expect( uri ).to.equal( 'http://some-site.com/wp-json/wp/v2/media?page=4' );
 		});
 
 		it( 'should create the URL for a specific media object', function() {
 			var uri = media.id( 1492 )._renderURI();
-			expect( uri ).to.equal( 'http://some-site.com/wp-json/media/1492' );
+			expect( uri ).to.equal( 'http://some-site.com/wp-json/wp/v2/media/1492' );
 		});
 
 	});

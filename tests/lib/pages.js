@@ -90,21 +90,21 @@ describe( 'wp.pages', function() {
 			var newPages = new PagesRequest();
 			newPages._options.endpoint = 'endpoint/url/';
 			var path = newPages.id( 3 )._renderURI();
-			expect( path ).to.equal( 'endpoint/url/pages/3' );
+			expect( path ).to.equal( 'endpoint/url/wp/v2/pages/3' );
 		});
 
 		describe( 'page collections', function() {
 
 			it( 'should create the URL for retrieving all pages', function() {
 				var path = pages._renderURI();
-				expect( path ).to.equal( '/wp-json/pages' );
+				expect( path ).to.equal( '/wp-json/wp/v2/pages' );
 			});
 
 			it( 'should provide filtering methods', function() {
 				expect( pages ).to.have.property( 'filter' );
 				expect( pages.filter ).to.be.a( 'function' );
 				var path = pages.filter( 'name', 'some-slug' )._renderURI();
-				expect( path ).to.equal( '/wp-json/pages?filter%5Bname%5D=some-slug' );
+				expect( path ).to.equal( '/wp-json/wp/v2/pages?filter%5Bname%5D=some-slug' );
 			});
 
 		});
@@ -113,12 +113,13 @@ describe( 'wp.pages', function() {
 
 			it( 'should create the URL for retrieving a specific post', function() {
 				var path = pages.id( 1337 )._renderURI();
-				expect( path ).to.equal( '/wp-json/pages/1337' );
+				expect( path ).to.equal( '/wp-json/wp/v2/pages/1337' );
 			});
 
 			it( 'should create the URL for retrieving a post by path', function() {
 				var path = pages.path( 'nested/page' )._renderURI();
-				expect( path ).to.equal( '/wp-json/pages?filter%5Bpagename%5D=nested%2Fpage' );
+				expect( path ).to
+					.equal( '/wp-json/wp/v2/pages?filter%5Bpagename%5D=nested%2Fpage' );
 			});
 
 			it( 'should update the supported methods when setting ID', function() {
@@ -139,7 +140,7 @@ describe( 'wp.pages', function() {
 
 			it( 'should create the URL for a page\'s comments collection', function() {
 				var path = pages.id( 1337 ).comments()._renderURI();
-				expect( path ).to.equal( '/wp-json/pages/1337/comments' );
+				expect( path ).to.equal( '/wp-json/wp/v2/pages/1337/comments' );
 			});
 
 			it( 'should set the correct supported methods for the comments endpoint', function() {
@@ -150,7 +151,7 @@ describe( 'wp.pages', function() {
 
 			it( 'should create the URL for retrieving a specific comment', function() {
 				var path = pages.id( 1337 ).comments().comment( 9001 )._renderURI();
-				expect( path ).to.equal( '/wp-json/pages/1337/comments/9001' );
+				expect( path ).to.equal( '/wp-json/wp/v2/pages/1337/comments/9001' );
 			});
 
 			it( 'should set the correct supported methods for the comment endpoint', function() {
@@ -161,14 +162,14 @@ describe( 'wp.pages', function() {
 
 			it( 'should force action "comments" when calling .comment()', function() {
 				var path = pages.id( 1337 ).comment( 9002 )._renderURI();
-				expect( path ).to.equal( '/wp-json/pages/1337/comments/9002' );
+				expect( path ).to.equal( '/wp-json/wp/v2/pages/1337/comments/9002' );
 			});
 
 		});
 
 		it( 'should create the URL for retrieving the revisions for a specific post', function() {
 			var path = pages.id( 1337 ).revisions()._renderURI();
-			expect( path ).to.equal( '/wp-json/pages/1337/revisions' );
+			expect( path ).to.equal( '/wp-json/wp/v2/pages/1337/revisions' );
 		});
 
 		it( 'should force authentication when querying pages/id/revisions', function() {
