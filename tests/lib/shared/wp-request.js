@@ -55,6 +55,53 @@ describe( 'WPRequest', function() {
 
 	}); // constructor
 
+	describe( 'namespace', function() {
+
+		it( 'is defined', function() {
+			expect( request ).to.have.property( 'namespace' );
+			expect( request.namespace ).to.be.a( 'function' );
+		});
+
+		it( 'sets a value that is prepended to the path', function() {
+			request.namespace( 'ns' );
+			expect( request._renderPath() ).to.equal( 'ns' );
+		});
+
+		it( 'prefixes any provided template', function() {
+			request._template = 'template';
+			request.namespace( 'ns' );
+			expect( request._renderPath() ).to.equal( 'ns/template' );
+		});
+
+	});
+
+	describe( 'version', function() {
+
+		it( 'is defined', function() {
+			expect( request ).to.have.property( 'version' );
+			expect( request.version ).to.be.a( 'function' );
+		});
+
+		it( 'sets a value that is prepended to the path', function() {
+			request.version( 'v8' );
+			expect( request._renderPath() ).to.equal( 'v8' );
+		});
+
+		it( 'prefixes the provided template', function()  {
+			request._template = 'template';
+			request.version( 'v8' );
+			expect( request._renderPath() ).to.equal( 'v8/template' );
+		});
+
+		it( 'prefixes any provided namespace', function()  {
+			request._template = 'template';
+			request.namespace( 'ns' );
+			request.version( 'v8' );
+			expect( request._renderPath() ).to.equal( 'ns/v8/template' );
+		});
+
+	});
+
 	describe( 'auth', function() {
 
 		it( 'is defined', function() {
