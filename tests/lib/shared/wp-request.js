@@ -73,6 +73,14 @@ describe( 'WPRequest', function() {
 			expect( request._renderPath() ).to.equal( 'ns/template' );
 		});
 
+		it( 'can be removed (to support the legacy api v1)', function() {
+			request._template = 'template';
+			request.namespace( '' );
+			expect( request._renderPath() ).to.equal( 'template' );
+			request.namespace();
+			expect( request._renderPath() ).to.equal( 'template' );
+		});
+
 	});
 
 	describe( 'version', function() {
@@ -98,6 +106,14 @@ describe( 'WPRequest', function() {
 			request.namespace( 'ns' );
 			request.version( 'v8' );
 			expect( request._renderPath() ).to.equal( 'ns/v8/template' );
+		});
+
+		it( 'can be removed (to support the legacy api v1)', function() {
+			request._template = 'template';
+			request.version( '' );
+			expect( request._renderPath() ).to.equal( 'template' );
+			request.version();
+			expect( request._renderPath() ).to.equal( 'template' );
 		});
 
 	});
