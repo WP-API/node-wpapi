@@ -333,6 +333,20 @@ describe( 'CollectionRequest', function() {
 				});
 			});
 
+			it( 'de-dupes the taxonomy list', function() {
+				request.taxonomy( 'post_tag', [
+					'disclosure',
+					'alunageorge',
+					'disclosure',
+					'lorde',
+					'lorde',
+					'clean-bandit'
+				]);
+				expect( request._taxonomyFilters ).to.deep.equal({
+					tag: [ 'alunageorge', 'clean-bandit', 'disclosure', 'lorde' ]
+				});
+			});
+
 		});
 
 		describe( 'category()', function() {
@@ -501,6 +515,19 @@ describe( 'CollectionRequest', function() {
 			it( 'should be chainable, and replace values', function() {
 				expect( request.month( 2 ).month( 'September' ) ).to.equal( request );
 				expect( request._filters.monthnum ).to.equal( 9 );
+			});
+
+			it( 'should not set anything if an invalid string is provided', function() {
+				request.month( 'The oldest in the family is moving with authority' );
+				expect( request._filters.monthnum ).to.be.undefined;
+			});
+
+			it( 'should not set anything if a non-number is provided', function() {
+				request.month({
+					wake: 'me up',
+					when: 'September ends'
+				});
+				expect( request._filters.monthnum ).to.be.undefined;
 			});
 
 		});
