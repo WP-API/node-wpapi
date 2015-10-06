@@ -169,6 +169,9 @@ The following methods are shortcuts for filtering the requested collection down 
 * `.author( author )`: find posts by a specific author, designated either by name or by ID
 * `.name( slug )`: find the post with the specified slug
 * `.slug( slug )`: alias for `.name()`
+* `.year( year )`: find items published in the specified year
+* `.month( month )`: find items published in the specified month, designated by the month index (1&ndash;12) or name (*e.g.* "February")
+* `.day( day )`: find items published on the specified day
 
 ### Custom Post Types
 
