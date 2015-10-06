@@ -125,6 +125,26 @@ describe( 'CollectionRequest', function() {
 
 		});
 
+		describe( 'perPage()', function() {
+
+			it( 'function should exist', function() {
+				expect( request ).to.have.property( 'perPage' );
+				expect( request.perPage ).to.be.a( 'function' );
+			});
+
+			it( 'should set the "per_page=N" query parameter', function() {
+				var path = request.perPage( 6 )._renderURI();
+				expect( path ).to.equal( '/?per_page=6' );
+			});
+
+			it( 'should be chainable, and replace values', function() {
+				expect( request.perPage( 71 ).perPage( 2 ) ).to.equal( request );
+				var path = request.perPage( 71 ).perPage( 2 )._renderURI();
+				expect( path ).to.equal( '/?per_page=2' );
+			});
+
+		});
+
 		describe( 'context', function() {
 
 			it( 'should be defined', function() {

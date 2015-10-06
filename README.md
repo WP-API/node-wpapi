@@ -144,18 +144,17 @@ wp.posts().author( 42 ).get();
 // last value wins: this queries for author_name == frankherbert
 wp.posts().author( 42 ).author( 'frankherbert' ).get();
 
+// perPage() sets the maximum number of posts to return. 20 latest posts:
+wp.posts().perPage( 20 )...
+// 21st through 40th latest posts (*i.e.* the second page of results):
+wp.posts().perPage( 20 ).page( 2 )...
+
 // Put it all together: Get the 5 most recent posts by jadenbeirne in 'fiction'
 wp.posts()
     .author( 'jadenbeirne' )
-    .filter( 'posts_per_page', 5 )
+    .perPage( 5 )
     .tag( 'fiction' )
     .get();
-
-// posts_per_page is exposed to set the maximum number of posts to return
-// 20 latest posts:
-wp.posts().filter( 'posts_per_page', 20 )...
-// 21st through 40th latest posts (*i.e.* the second page of results):
-wp.posts().filter( 'posts_per_page', 20 ).page( 2 )...
 ```
 
 **Filtering Shortcut Methods**
@@ -197,12 +196,12 @@ wp.events().then(function( eventItems ) {
 
 ## Working with Paged Response Data
 
-WordPress sites can have a lot of content&mdash;far more than you'd want to pull down in a single request. The API endpoints default to providing a limited number of items per request, the same way that a WordPress site will default to 10 posts per page in archive views. The number of objects you can get back can be adjusted by passing a `posts_per_page` filter, but many servers will return a 502 error if too much information is requested in one batch.
+WordPress sites can have a lot of content&mdash;far more than you'd want to pull down in a single request. The API endpoints default to providing a limited number of items per request, the same way that a WordPress site will default to 10 posts per page in archive views. The number of objects you can get back can be adjusted by calling the `perPage` method, but many servers will return a 502 error if too much information is requested in one batch.
 
 To work around these restrictions, paginated collection responses are augmented with a `_paging` property. That property contains some useful metadata:
 
 - `total`: The total number of records matching the provided query
-- `totalPages`: The number of pages available (`total` / `posts_per_page`)
+- `totalPages`: The number of pages available (`total` / `perPage`)
 - `next`: A WPRequest object pre-bound to the next page of results
 - `prev`: A WPRequest object pre-bound to the previous page of results
 - `links`: an object containing the parsed `link` HTTP header data
