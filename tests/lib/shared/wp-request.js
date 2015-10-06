@@ -73,11 +73,15 @@ describe( 'WPRequest', function() {
 			expect( request._renderPath() ).to.equal( 'ns/template' );
 		});
 
-		it( 'can be removed (to support the legacy api v1)', function() {
+		it( 'can be removed (to use the legacy api v1) with an empty string', function() {
 			request._template = 'template';
-			request.namespace( '' );
+			request.namespace( 'wp' ).namespace( '' );
 			expect( request._renderPath() ).to.equal( 'template' );
-			request.namespace();
+		});
+
+		it( 'can be removed (to use the legacy api v1) by omitting arguments', function() {
+			request._template = 'template';
+			request.namespace( 'wp' ).namespace();
 			expect( request._renderPath() ).to.equal( 'template' );
 		});
 
@@ -108,11 +112,15 @@ describe( 'WPRequest', function() {
 			expect( request._renderPath() ).to.equal( 'ns/v8/template' );
 		});
 
-		it( 'can be removed (to support the legacy api v1)', function() {
+		it( 'can be removed (to use the legacy api v1) with an empty string', function() {
 			request._template = 'template';
-			request.version( '' );
+			request.version( 'v2' ).version( '' );
 			expect( request._renderPath() ).to.equal( 'template' );
-			request.version();
+		});
+
+		it( 'can be removed (to use the legacy api v1) by omitting arguments', function() {
+			request._template = 'template';
+			request.version( 'v2' ).version();
 			expect( request._renderPath() ).to.equal( 'template' );
 		});
 
