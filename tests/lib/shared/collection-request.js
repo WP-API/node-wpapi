@@ -171,6 +171,24 @@ describe( 'CollectionRequest', function() {
 
 	});
 
+	describe( 'embed()', function() {
+
+		it( 'should be a function', function() {
+			expect( request ).to.have.property( 'embed' );
+			expect( request.embed ).to.be.a( 'function' );
+		});
+
+		it( 'should set the "_embed" parameter', function() {
+			request.embed();
+			expect( request._params._embed ).to.equal( true );
+		});
+
+		it( 'should be chainable', function() {
+			expect( request.embed() ).to.equal( request );
+		});
+
+	});
+
 	describe( 'filter()', function() {
 
 		it( 'should set the internal _filters hash', function() {
