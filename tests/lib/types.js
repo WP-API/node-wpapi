@@ -74,12 +74,12 @@ describe( 'wp.types', function() {
 
 		it( 'should create the URL for retrieving all types', function() {
 			var url = types._renderURI();
-			expect( url ).to.equal( '/wp-json/posts/types' );
+			expect( url ).to.equal( '/wp-json/wp/v2/posts/types' );
 		});
 
 		it( 'should create the URL for retrieving a specific term', function() {
 			var url = types.type( 'some_type' )._renderURI();
-			expect( url ).to.equal( '/wp-json/posts/types/some_type' );
+			expect( url ).to.equal( '/wp-json/wp/v2/posts/types/some_type' );
 		});
 
 	});

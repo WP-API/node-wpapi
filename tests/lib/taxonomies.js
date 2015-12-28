@@ -83,17 +83,17 @@ describe( 'wp.taxonomies', function() {
 
 		it( 'should create the URL for retrieving all taxonomies', function() {
 			var url = taxonomies._renderURI();
-			expect( url ).to.equal( '/wp-json/taxonomies' );
+			expect( url ).to.equal( '/wp-json/wp/v2/taxonomies' );
 		});
 
 		it( 'should create the URL for retrieving a specific taxonomy', function() {
 			var url = taxonomies.taxonomy( 'my-tax' )._renderURI();
-			expect( url ).to.equal( '/wp-json/taxonomies/my-tax' );
+			expect( url ).to.equal( '/wp-json/wp/v2/taxonomies/my-tax' );
 		});
 
 		it( 'should create the URL for retrieving all terms for a specific taxonomy', function() {
 			var url = taxonomies.taxonomy( 'my-tax' ).terms()._renderURI();
-			expect( url ).to.equal( '/wp-json/taxonomies/my-tax/terms' );
+			expect( url ).to.equal( '/wp-json/wp/v2/taxonomies/my-tax/terms' );
 		});
 
 		it( 'should error if any _path.action other than "terms" is set', function() {
@@ -105,7 +105,7 @@ describe( 'wp.taxonomies', function() {
 
 		it( 'should create the URL for retrieving a specific taxonomy term', function() {
 			var url = taxonomies.taxonomy( 'my-tax' ).terms().term( 1337 )._renderURI();
-			expect( url ).to.equal( '/wp-json/taxonomies/my-tax/terms/1337' );
+			expect( url ).to.equal( '/wp-json/wp/v2/taxonomies/my-tax/terms/1337' );
 		});
 
 	});

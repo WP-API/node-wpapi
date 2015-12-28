@@ -59,6 +59,8 @@ module.exports = function( grunt ) {
 			}
 		},
 
+		// Simplemocha is only used for the watch task:
+		// `npm test` runs mocha via its CLI
 		simplemocha: {
 			tests: {
 				src: files.tests,

@@ -110,20 +110,20 @@ describe( 'wp.users', function() {
 
 		it( 'should create the URL for retrieving all users', function() {
 			var url = users._renderURI();
-			expect( url ).to.equal( '/wp-json/users' );
+			expect( url ).to.equal( '/wp-json/wp/v2/users' );
 		});
 
 		it( 'should create the URL for retrieving the current user', function() {
 			var url = users.me()._renderURI();
 			var _supportedMethods = users._supportedMethods.sort().join( '|' );
-			expect( url ).to.equal( '/wp-json/users/me' );
+			expect( url ).to.equal( '/wp-json/wp/v2/users/me' );
 			expect( _supportedMethods ).to.equal( 'get|head' );
 		});
 
 		it( 'should create the URL for retrieving a specific user by ID', function() {
 			var url = users.id( 1337 )._renderURI();
 			var _supportedMethods = users._supportedMethods.sort().join( '|' );
-			expect( url ).to.equal( '/wp-json/users/1337' );
+			expect( url ).to.equal( '/wp-json/wp/v2/users/1337' );
 			expect( _supportedMethods ).to.equal( 'delete|get|head|post|put' );
 		});
 

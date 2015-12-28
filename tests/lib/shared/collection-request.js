@@ -125,6 +125,26 @@ describe( 'CollectionRequest', function() {
 
 		});
 
+		describe( 'perPage()', function() {
+
+			it( 'function should exist', function() {
+				expect( request ).to.have.property( 'perPage' );
+				expect( request.perPage ).to.be.a( 'function' );
+			});
+
+			it( 'should set the "per_page=N" query parameter', function() {
+				var path = request.perPage( 6 )._renderURI();
+				expect( path ).to.equal( '/?per_page=6' );
+			});
+
+			it( 'should be chainable, and replace values', function() {
+				expect( request.perPage( 71 ).perPage( 2 ) ).to.equal( request );
+				var path = request.perPage( 71 ).perPage( 2 )._renderURI();
+				expect( path ).to.equal( '/?per_page=2' );
+			});
+
+		});
+
 		describe( 'context', function() {
 
 			it( 'should be defined', function() {
@@ -167,6 +187,24 @@ describe( 'CollectionRequest', function() {
 				expect( request._options.auth ).to.be.true;
 			});
 
+		});
+
+	});
+
+	describe( 'embed()', function() {
+
+		it( 'should be a function', function() {
+			expect( request ).to.have.property( 'embed' );
+			expect( request.embed ).to.be.a( 'function' );
+		});
+
+		it( 'should set the "_embed" parameter', function() {
+			request.embed();
+			expect( request._params._embed ).to.equal( true );
+		});
+
+		it( 'should be chainable', function() {
+			expect( request.embed() ).to.equal( request );
 		});
 
 	});
@@ -295,6 +333,20 @@ describe( 'CollectionRequest', function() {
 				});
 			});
 
+			it( 'de-dupes the taxonomy list', function() {
+				request.taxonomy( 'post_tag', [
+					'disclosure',
+					'alunageorge',
+					'disclosure',
+					'lorde',
+					'lorde',
+					'clean-bandit'
+				]);
+				expect( request._taxonomyFilters ).to.deep.equal({
+					tag: [ 'alunageorge', 'clean-bandit', 'disclosure', 'lorde' ]
+				});
+			});
+
 		});
 
 		describe( 'category()', function() {
@@ -406,6 +458,100 @@ describe( 'CollectionRequest', function() {
 			it( 'should be chainable, and replace values', function() {
 				expect( request.slug( 'post-slug-1' ).slug( 'hello-world' ) ).to.equal( request );
 				expect( request._filters.name ).to.equal( 'hello-world' );
+			});
+
+		});
+
+		describe( 'year()', function() {
+
+			it( 'function should exist', function() {
+				expect( request.year ).to.exist;
+				expect( request.year ).to.be.a( 'function' );
+			});
+
+			it( 'should set the "year" filter property on the request object', function() {
+				request.year( 2014 );
+				expect( request._filters.year ).to.equal( 2014 );
+			});
+
+			it( 'should accept year numbers as strings', function() {
+				request.year( '1066' );
+				expect( request._filters.year ).to.equal( '1066' );
+			});
+
+			it( 'should be chainable, and replace values', function() {
+				expect( request.year( 1999 ).year( 2000 ) ).to.equal( request );
+				expect( request._filters.year ).to.equal( 2000 );
+			});
+
+		});
+
+		describe( 'month()', function() {
+
+			it( 'function should exist', function() {
+				expect( request.month ).to.exist;
+				expect( request.month ).to.be.a( 'function' );
+			});
+
+			it( 'should set the "monthnum" filter property on the request object', function() {
+				request.month( 7 );
+				expect( request._filters.monthnum ).to.equal( 7 );
+			});
+
+			it( 'should accept month numbers as strings', function() {
+				request.month( '3' );
+				expect( request._filters.monthnum ).to.equal( 3 );
+			});
+
+			it( 'should convert month name strings to month numbers', function() {
+				request.month( 'March' );
+				expect( request._filters.monthnum ).to.equal( 3 );
+				request.month( 'november' );
+				expect( request._filters.monthnum ).to.equal( 11 );
+				request.month( 'Jul' );
+				expect( request._filters.monthnum ).to.equal( 7 );
+			});
+
+			it( 'should be chainable, and replace values', function() {
+				expect( request.month( 2 ).month( 'September' ) ).to.equal( request );
+				expect( request._filters.monthnum ).to.equal( 9 );
+			});
+
+			it( 'should not set anything if an invalid string is provided', function() {
+				request.month( 'The oldest in the family is moving with authority' );
+				expect( request._filters.monthnum ).to.be.undefined;
+			});
+
+			it( 'should not set anything if a non-number is provided', function() {
+				request.month({
+					wake: 'me up',
+					when: 'September ends'
+				});
+				expect( request._filters.monthnum ).to.be.undefined;
+			});
+
+		});
+
+		describe( 'day()', function() {
+
+			it( 'function should exist', function() {
+				expect( request.day ).to.exist;
+				expect( request.day ).to.be.a( 'function' );
+			});
+
+			it( 'should set the "day" filter property on the request object', function() {
+				request.day( 7 );
+				expect( request._filters.day ).to.equal( 7 );
+			});
+
+			it( 'should accept day numbers as strings', function() {
+				request.day( '9' );
+				expect( request._filters.day ).to.equal( '9' );
+			});
+
+			it( 'should be chainable, and replace values', function() {
+				expect( request.day( 7 ).day( 22 ) ).to.equal( request );
+				expect( request._filters.day ).to.equal( 22 );
 			});
 
 		});

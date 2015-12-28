@@ -4,7 +4,7 @@
     "url": "http://www.kadamwhite.com"
   },
   "name": "wordpress-rest-api",
-  "version": "0.4.0",
+  "version": "0.6.0-0",
   "description": "A client for interacting with the WordPress REST API",
   "main": "wp.js",
   "repository": {
@@ -28,7 +28,8 @@
     "lint": "grunt jshint jscs",
     "mocha": "grunt test",
     "watch": "grunt watch",
-    "test": "grunt"
+    "pretest": "npm run lint",
+    "test": "istanbul cover _mocha -- tests --recursive --reporter=nyan"
   },
   "engines": {
     "node": ">= 0.10.0"
@@ -53,6 +54,7 @@
     "grunt-jscs": "^1.2.0",
     "grunt-newer": "^0.7.0",
     "grunt-simple-mocha": "^0.4.0",
+    "istanbul": "^0.3.22",
     "jscs-stylish": "^0.3.0",
     "jshint-stylish": "^0.2.0",
     "load-grunt-tasks": "^0.6.0",

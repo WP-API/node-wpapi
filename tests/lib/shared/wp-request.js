@@ -55,6 +55,77 @@ describe( 'WPRequest', function() {
 
 	}); // constructor
 
+	describe( 'namespace', function() {
+
+		it( 'is defined', function() {
+			expect( request ).to.have.property( 'namespace' );
+			expect( request.namespace ).to.be.a( 'function' );
+		});
+
+		it( 'sets a value that is prepended to the path', function() {
+			request.namespace( 'ns' );
+			expect( request._renderPath() ).to.equal( 'ns' );
+		});
+
+		it( 'prefixes any provided template', function() {
+			request._template = 'template';
+			request.namespace( 'ns' );
+			expect( request._renderPath() ).to.equal( 'ns/template' );
+		});
+
+		it( 'can be removed (to use the legacy api v1) with an empty string', function() {
+			request._template = 'template';
+			request.namespace( 'wp' ).namespace( '' );
+			expect( request._renderPath() ).to.equal( 'template' );
+		});
+
+		it( 'can be removed (to use the legacy api v1) by omitting arguments', function() {
+			request._template = 'template';
+			request.namespace( 'wp' ).namespace();
+			expect( request._renderPath() ).to.equal( 'template' );
+		});
+
+	});
+
+	describe( 'version', function() {
+
+		it( 'is defined', function() {
+			expect( request ).to.have.property( 'version' );
+			expect( request.version ).to.be.a( 'function' );
+		});
+
+		it( 'sets a value that is prepended to the path', function() {
+			request.version( 'v8' );
+			expect( request._renderPath() ).to.equal( 'v8' );
+		});
+
+		it( 'prefixes the provided template', function()  {
+			request._template = 'template';
+			request.version( 'v8' );
+			expect( request._renderPath() ).to.equal( 'v8/template' );
+		});
+
+		it( 'prefixes any provided namespace', function()  {
+			request._template = 'template';
+			request.namespace( 'ns' );
+			request.version( 'v8' );
+			expect( request._renderPath() ).to.equal( 'ns/v8/template' );
+		});
+
+		it( 'can be removed (to use the legacy api v1) with an empty string', function() {
+			request._template = 'template';
+			request.version( 'v2' ).version( '' );
+			expect( request._renderPath() ).to.equal( 'template' );
+		});
+
+		it( 'can be removed (to use the legacy api v1) by omitting arguments', function() {
+			request._template = 'template';
+			request.version( 'v2' ).version();
+			expect( request._renderPath() ).to.equal( 'template' );
+		});
+
+	});
+
 	describe( 'auth', function() {
 
 		it( 'is defined', function() {
@@ -87,8 +158,17 @@ describe( 'WPRequest', function() {
 
 		beforeEach(function() {
 			mockAgent = {
-				auth: sinon.stub()
+				auth: sinon.stub(),
+				set: sinon.stub()
 			};
+		});
+
+		it( 'should set a header on the request if a nonce is provided', function() {
+			request._options = {
+				nonce: 'testnonce'
+			};
+			request._auth( mockAgent );
+			expect( mockAgent.set ).to.have.been.calledWith( 'X-WP-Nonce', 'testnonce' );
 		});
 
 		it( 'should set basic auth on the provided request if auth is forced', function() {
@@ -443,11 +523,11 @@ describe( 'WPRequest', function() {
 						'x-wp-totalpages': 4,
 						'x-wp-total': 7,
 						link: [
-							'</wp-json/posts?page=1>; rel="prev",',
-							'</wp-json/posts?page=2>; rel="next",',
-							'<http://site.com/wp-json/posts/1024>; rel="item";',
+							'</wp-json/wp/v2/posts?page=1>; rel="prev",',
+							'</wp-json/wp/v2/posts?page=2>; rel="next",',
+							'<http://site.com/wp-json/wp/v2/posts/1024>; rel="item";',
 							'title="Article Title",',
-							'<http://site.com/wp-json/posts/994>; rel="item";',
+							'<http://site.com/wp-json/wp/v2/posts/994>; rel="item";',
 							'title="Another Article"'
 						].join( ' ' )
 					},
@@ -457,10 +537,10 @@ describe( 'WPRequest', function() {
 					expect( parsedResult ).to.have.property( '_paging' );
 					expect( parsedResult._paging ).to.have.property( 'links' );
 					expect( parsedResult._paging.links ).to.have.property( 'prev' );
-					var expectedPrevLink = '/wp-json/posts?page=1';
+					var expectedPrevLink = '/wp-json/wp/v2/posts?page=1';
 					expect( parsedResult._paging.links.prev ).to.equal( expectedPrevLink );
 					expect( parsedResult._paging.links ).to.have.property( 'next' );
-					var expectedNextLink = '/wp-json/posts?page=2';
+					var expectedNextLink = '/wp-json/wp/v2/posts?page=2';
 					expect( parsedResult._paging.links.next ).to.equal( expectedNextLink );
 				});
 			});
@@ -472,7 +552,7 @@ describe( 'WPRequest', function() {
 						headers: {
 							'x-wp-totalpages': 4,
 							'x-wp-total': 7,
-							link: '</wp-json/posts?page=3>; rel="next"'
+							link: '</wp-json/wp/v2/posts?page=3>; rel="next"'
 						},
 						body: {}
 					};
@@ -484,22 +564,22 @@ describe( 'WPRequest', function() {
 						expect( parsedResult._paging ).to.have.property( 'next' );
 						expect( parsedResult._paging.next ).to.be.an.instanceof( SandboxedRequest );
 						expect( parsedResult._paging.next._options.endpoint ).to.equal(
-							'http://site.com/wp-json/posts?page=3'
+							'http://site.com/wp-json/wp/v2/posts?page=3'
 						);
 					});
 				});
 
 				it( 'is generated correctly for requests to explicit endpoints', function() {
 					// Testing full URLs as endpoints validates that _paging.next.then works
-					wpRequest._options.endpoint = 'http://site.com/wp-json/posts?page=3';
-					mockAgent._response.headers.link = '</wp-json/posts?page=4>; rel="next"';
+					wpRequest._options.endpoint = 'http://site.com/wp-json/wp/v2/posts?page=3';
+					mockAgent._response.headers.link = '</wp-json/wp/v2/posts?page=4>; rel="next"';
 
 					return wpRequest.then(function( parsedResult ) {
 						expect( parsedResult ).to.have.property( '_paging' );
 						expect( parsedResult._paging ).to.have.property( 'next' );
 						expect( parsedResult._paging.next ).to.be.an.instanceof( SandboxedRequest );
 						expect( parsedResult._paging.next._options.endpoint ).to.equal(
-							'http://site.com/wp-json/posts?page=4'
+							'http://site.com/wp-json/wp/v2/posts?page=4'
 						);
 					});
 				});
@@ -513,7 +593,7 @@ describe( 'WPRequest', function() {
 						headers: {
 							'x-wp-totalpages': 4,
 							'x-wp-total': 7,
-							link: '</wp-json/posts?page=2>; rel="prev"'
+							link: '</wp-json/wp/v2/posts?page=2>; rel="prev"'
 						},
 						body: {}
 					};
@@ -525,22 +605,22 @@ describe( 'WPRequest', function() {
 						expect( parsedResult._paging ).to.have.property( 'prev' );
 						expect( parsedResult._paging.prev ).to.be.an.instanceof( SandboxedRequest );
 						expect( parsedResult._paging.prev._options.endpoint ).to.equal(
-							'http://site.com/wp-json/posts?page=2'
+							'http://site.com/wp-json/wp/v2/posts?page=2'
 						);
 					});
 				});
 
 				it( 'is generated correctly for requests to explicit endpoints', function() {
 					// Testing full URLs as endpoints validates that _paging.prev.then works
-					wpRequest._options.endpoint = 'http://site.com/wp-json/posts?page=2';
-					mockAgent._response.headers.link = '</wp-json/posts?page=1>; rel="prev"';
+					wpRequest._options.endpoint = 'http://site.com/wp-json/wp/v2/posts?page=2';
+					mockAgent._response.headers.link = '</wp-json/wp/v2/posts?page=1>; rel="prev"';
 
 					return wpRequest.then(function( parsedResult ) {
 						expect( parsedResult ).to.have.property( '_paging' );
 						expect( parsedResult._paging ).to.have.property( 'prev' );
 						expect( parsedResult._paging.prev ).to.be.an.instanceof( SandboxedRequest );
 						expect( parsedResult._paging.prev._options.endpoint ).to.equal(
-							'http://site.com/wp-json/posts?page=1'
+							'http://site.com/wp-json/wp/v2/posts?page=1'
 						);
 					});
 				});

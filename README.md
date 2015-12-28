@@ -144,18 +144,17 @@ wp.posts().author( 42 ).get();
 // last value wins: this queries for author_name == frankherbert
 wp.posts().author( 42 ).author( 'frankherbert' ).get();
 
+// perPage() sets the maximum number of posts to return. 20 latest posts:
+wp.posts().perPage( 20 )...
+// 21st through 40th latest posts (*i.e.* the second page of results):
+wp.posts().perPage( 20 ).page( 2 )...
+
 // Put it all together: Get the 5 most recent posts by jadenbeirne in 'fiction'
 wp.posts()
     .author( 'jadenbeirne' )
-    .filter( 'posts_per_page', 5 )
+    .perPage( 5 )
     .tag( 'fiction' )
     .get();
-
-// posts_per_page is exposed to set the maximum number of posts to return
-// 20 latest posts:
-wp.posts().filter( 'posts_per_page', 20 )...
-// 21st through 40th latest posts (*i.e.* the second page of results):
-wp.posts().filter( 'posts_per_page', 20 ).page( 2 )...
 ```
 
 **Filtering Shortcut Methods**
@@ -169,6 +168,9 @@ The following methods are shortcuts for filtering the requested collection down 
 * `.author( author )`: find posts by a specific author, designated either by name or by ID
 * `.name( slug )`: find the post with the specified slug
 * `.slug( slug )`: alias for `.name()`
+* `.year( year )`: find items published in the specified year
+* `.month( month )`: find items published in the specified month, designated by the month index (1&ndash;12) or name (*e.g.* "February")
+* `.day( day )`: find items published on the specified day
 
 ### Custom Post Types
 
@@ -192,14 +194,45 @@ wp.events().then(function( eventItems ) {
 });
 ```
 
+## Embedding data
+
+**Note: This section applies only to the WP-API v2 betas and above**; the initial 1.0 release of the API embedded data by default.
+
+Data types in WordPress are interrelated: A post has an author, some number of tags, some number of categories, *etc*. By default, the API responses will provide pointers to these related objects, but will not embed the full resources: so, for example, the `"author"` property would come back as just the author's ID, *e.g.* `"author": 4`.
+
+This functionality provides API consumers the flexibility to determine when and how they retrieve the related data. However, there are also times where an API consumer will want to get the most data in the fewest number of responses. Certain resources (author, comments, tags, and categories, to name a few) support *embedding*, meaning that they can be included in the response if the `_embed` query parameter is set.
+
+To request that the API respond with embedded data, simply call `.embed()` as part of the request chain:
+
+`wp.posts().id( 2501 ).embed()`...
+
+This will include an `._embedded` object in the response JSON, which contains all of those embeddable objects:
+```js
+{
+    "_embedded": {
+        "author": [ /* ... */ ],
+        "replies": [ /* ... */ ],
+        "http://v2.wp-api.org/attachment": [ /* ... */ ],
+        "http://v2.wp-api.org/term": [
+            [ {}, {} /* category terms */ ],
+            [ {} /* tag terms */ ],
+            /* etc... */
+        ],
+        "http://v2.wp-api.org/meta": [ /* ... */ ]
+    }
+}
+```
+
+For more on working with embedded data, [check out the WP-API documentation](http://v2.wp-api.org/).
+
 ## Working with Paged Response Data
 
-WordPress sites can have a lot of content&mdash;far more than you'd want to pull down in a single request. The API endpoints default to providing a limited number of items per request, the same way that a WordPress site will default to 10 posts per page in archive views. The number of objects you can get back can be adjusted by passing a `posts_per_page` filter, but many servers will return a 502 error if too much information is requested in one batch.
+WordPress sites can have a lot of content&mdash;far more than you'd want to pull down in a single request. The API endpoints default to providing a limited number of items per request, the same way that a WordPress site will default to 10 posts per page in archive views. The number of objects you can get back can be adjusted by calling the `perPage` method, but many servers will return a 502 error if too much information is requested in one batch.
 
 To work around these restrictions, paginated collection responses are augmented with a `_paging` property. That property contains some useful metadata:
 
 - `total`: The total number of records matching the provided query
-- `totalPages`: The number of pages available (`total` / `posts_per_page`)
+- `totalPages`: The number of pages available (`total` / `perPage`)
 - `next`: A WPRequest object pre-bound to the next page of results
 - `prev`: A WPRequest object pre-bound to the previous page of results
 - `links`: an object containing the parsed `link` HTTP header data
@@ -274,6 +307,33 @@ var wp = new WP({
     username: // ...
     password: // ...
     auth: true
+});
+```
+
+### Cookie authentication
+
+When the library is loaded from the frontend of the WP-site you are querying against, you can utilize the build in [Cookie authentication](http://wp-api.org/guides/authentication.html) supported by WP REST API.
+
+First localize your scripts with an object with root-url and nonce in your theme's `functions.php` or your plugin::
+
+```php
+function my_enqueue_scripts() {
+    wp_enqueue_script( 'app', get_template_directory_uri() . '/assets/dist/bundle.js', array(), false, true );
+    wp_localize_script( 'app', 'WP_API_Settings', array(
+        'endpoint' => esc_url_raw( get_json_url() ), 
+        'nonce' => wp_create_nonce( 'wp_json' ) ) 
+    );
+}
+add_action( 'wp_enqueue_scripts', 'my_enqueue_scripts' );
+```
+
+And then use this nonce when initializing the library:
+
+```javascript
+var WP = require( 'wordpress-rest-api' );
+var wp = new WP({
+    endpoint: window.WP_API_Settings.endpoint, 
+    nonce: window.WP_API_Settings.nonce
 });
 ```
 
