@@ -588,7 +588,7 @@ describe( 'CollectionRequest', function() {
 				.equal( '?filter%5Bpost_status%5D=publish&filter%5Bs%5D=Some%20search%20string' );
 		});
 
-		it( 'propery parse array filters', function() {
+		it( 'properly parses array filters', function() {
 			request._filters = { post__in: [ 0, 1 ] };
 			var query = request._renderQuery();
 			expect( query ).to
