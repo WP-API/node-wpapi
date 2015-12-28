@@ -30,3 +30,6 @@ test.js
 # The rendered API docs files will live in the gh-pages branch
 docs/
 index.html
+
+# Webstorm config folder
+.idea
