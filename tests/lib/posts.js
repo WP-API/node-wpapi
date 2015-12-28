@@ -184,7 +184,7 @@ describe( 'wp.posts', function() {
 				'page'
 			]);
 
-			var uri = '/wp-json/wp/v2/posts?type%5B0%5D=cpt1&type%5B1%5D=cpt2&type%5B2%5D=page';
+			var uri = '/wp-json/wp/v2/posts?type%5B%5D=cpt1&type%5B%5D=cpt2&type%5B%5D=page';
 			expect( posts._renderURI() ).to.equal( uri );
 		});
 
