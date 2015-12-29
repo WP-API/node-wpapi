@@ -1,7 +1,7 @@
 'use strict';
 var expect = require( 'chai' ).expect;
 
-var UsersRequest = require( '../../lib/users' );
+var UsersRequest = require( '../../../lib/users' );
 
 describe( 'wp.users', function() {
 

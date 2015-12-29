@@ -5,7 +5,7 @@ chai.use( require( 'sinon-chai' ) );
 var sinon = require( 'sinon' );
 var sandbox = require( 'sandboxed-module' );
 
-var WPRequest = require( '../../../lib/shared/wp-request' );
+var WPRequest = require( '../../../../lib/shared/wp-request' );
 
 describe( 'WPRequest', function() {
 
@@ -226,7 +226,7 @@ describe( 'WPRequest', function() {
 
 		beforeEach(function() {
 			mockAgent = new MockAgent();
-			SandboxedRequest = sandbox.require( '../../../lib/shared/wp-request', {
+			SandboxedRequest = sandbox.require( '../../../../lib/shared/wp-request', {
 				requires: {
 					'superagent': mockAgent
 				}

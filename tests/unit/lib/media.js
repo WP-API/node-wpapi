@@ -1,9 +1,9 @@
 'use strict';
 var expect = require( 'chai' ).expect;
 
-var MediaRequest = require( '../../lib/media' );
-var CollectionRequest = require( '../../lib/shared/collection-request' );
-var WPRequest = require( '../../lib/shared/wp-request' );
+var MediaRequest = require( '../../../lib/media' );
+var CollectionRequest = require( '../../../lib/shared/collection-request' );
+var WPRequest = require( '../../../lib/shared/wp-request' );
 
 describe( 'wp.media', function() {
 

@@ -1,9 +1,9 @@
 'use strict';
 var expect = require( 'chai' ).expect;
 
-var TaxonomiesRequest = require( '../../lib/taxonomies' );
-var CollectionRequest = require( '../../lib/shared/collection-request' );
-var WPRequest = require( '../../lib/shared/wp-request' );
+var TaxonomiesRequest = require( '../../../lib/taxonomies' );
+var CollectionRequest = require( '../../../lib/shared/collection-request' );
+var WPRequest = require( '../../../lib/shared/wp-request' );
 
 describe( 'wp.taxonomies', function() {
 

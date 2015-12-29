@@ -1,9 +1,9 @@
 'use strict';
 var expect = require( 'chai' ).expect;
 
-var PostsRequest = require( '../../lib/posts' );
-var CollectionRequest = require( '../../lib/shared/collection-request' );
-var WPRequest = require( '../../lib/shared/wp-request' );
+var PostsRequest = require( '../../../lib/posts' );
+var CollectionRequest = require( '../../../lib/shared/collection-request' );
+var WPRequest = require( '../../../lib/shared/wp-request' );
 
 describe( 'wp.posts', function() {
 

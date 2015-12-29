@@ -1,17 +1,17 @@
 'use strict';
 var expect = require( 'chai' ).expect;
 
-var WP = require( '../' );
+var WP = require( '../../' );
 
 // Other constructors, for use with instanceof checks
-var MediaRequest = require( '../lib/media' );
-var PagesRequest = require( '../lib/pages' );
-var PostsRequest = require( '../lib/posts' );
-var TaxonomiesRequest = require( '../lib/taxonomies' );
-var TypesRequest = require( '../lib/types' );
-var UsersRequest = require( '../lib/users' );
-var CollectionRequest = require( '../lib/shared/collection-request' );
-var WPRequest = require( '../lib/shared/wp-request' );
+var MediaRequest = require( '../../lib/media' );
+var PagesRequest = require( '../../lib/pages' );
+var PostsRequest = require( '../../lib/posts' );
+var TaxonomiesRequest = require( '../../lib/taxonomies' );
+var TypesRequest = require( '../../lib/types' );
+var UsersRequest = require( '../../lib/users' );
+var CollectionRequest = require( '../../lib/shared/collection-request' );
+var WPRequest = require( '../../lib/shared/wp-request' );
 
 describe( 'wp', function() {
 

@@ -1,9 +1,9 @@
 'use strict';
 var expect = require( 'chai' ).expect;
 
-var TypesRequest = require( '../../lib/types' );
-var CollectionRequest = require( '../../lib/shared/collection-request' );
-var WPRequest = require( '../../lib/shared/wp-request' );
+var TypesRequest = require( '../../../lib/types' );
+var CollectionRequest = require( '../../../lib/shared/collection-request' );
+var WPRequest = require( '../../../lib/shared/wp-request' );
 
 describe( 'wp.types', function() {
 

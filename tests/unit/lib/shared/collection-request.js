@@ -5,8 +5,8 @@ var expect = chai.expect;
 var sinon = require( 'sinon' );
 chai.use( require( 'sinon-chai' ) );
 
-var CollectionRequest = require( '../../../lib/shared/collection-request' );
-var WPRequest = require( '../../../lib/shared/wp-request' );
+var CollectionRequest = require( '../../../../lib/shared/collection-request' );
+var WPRequest = require( '../../../../lib/shared/wp-request' );
 
 describe( 'CollectionRequest', function() {
 

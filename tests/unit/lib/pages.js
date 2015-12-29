@@ -1,9 +1,9 @@
 'use strict';
 var expect = require( 'chai' ).expect;
 
-var PagesRequest = require( '../../lib/pages' );
-var CollectionRequest = require( '../../lib/shared/collection-request' );
-var WPRequest = require( '../../lib/shared/wp-request' );
+var PagesRequest = require( '../../../lib/pages' );
+var CollectionRequest = require( '../../../lib/shared/collection-request' );
+var WPRequest = require( '../../../lib/shared/wp-request' );
 
 describe( 'wp.pages', function() {
 
