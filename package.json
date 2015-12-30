@@ -26,7 +26,9 @@
     "prepublish": "grunt",
     "docs": "grunt yuidoc",
     "lint": "grunt jshint jscs",
-    "mocha": "grunt test",
+    "mocha": "_mocha tests --recursive --reporter=nyan",
+    "mocha:unit": "_mocha tests/unit --recursive --reporter=nyan",
+    "mocha:integration": "_mocha tests/integration --recursive --reporter=nyan",
     "watch": "grunt watch",
     "pretest": "npm run lint",
     "test": "istanbul cover _mocha -- tests --recursive --reporter=nyan"
