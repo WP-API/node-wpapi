@@ -171,4 +171,78 @@ describe( 'integration: posts()', function() {
 
 	});
 
+	describe( 'filter methods', function() {
+
+		describe( 'tag', function() {
+
+			it( 'can be used to return only posts with a provided tag', function() {
+				var prom = wp.posts().tag( 'Title' ).get().then(function( posts ) {
+					expect( posts.length ).to.equal( 5 );
+					expect( getTitles( posts ) ).to.deep.equal([
+						'Markup: Title With Special Characters',
+						'Markup: Title With Markup',
+						'Antidisestablishmentarianism',
+						'',
+						'Edge Case: Many Tags'
+					]);
+					return 'success';
+				});
+				return expect( prom ).to.eventually.equal( 'success' );
+			});
+
+			it( 'can be used to return only posts with all provided tags', function() {
+				var prom = wp.posts().tag([
+					'Template',
+					'Codex'
+				]).get().then(function( posts ) {
+					expect( posts.length ).to.equal( 3 );
+					expect( getTitles( posts ) ).to.deep.equal([
+						'Template: Featured Image (Vertical)',
+						'Template: Featured Image (Horizontal)',
+						'Edge Case: Many Tags'
+					]);
+					return 'success';
+				});
+				return expect( prom ).to.eventually.equal( 'success' );
+			});
+
+		});
+
+		describe( 'category', function() {
+
+			it( 'can be used to return only posts with a provided category', function() {
+				var prom = wp.posts().category( 'Markup' ).get().then(function( posts ) {
+					expect( posts.length ).to.equal( 6 );
+					expect( getTitles( posts ) ).to.deep.equal([
+						'Markup: HTML Tags and Formatting',
+						'Markup: Image Alignment',
+						'Markup: Text Alignment',
+						'Markup: Title With Special Characters',
+						'Markup: Title With Markup',
+						'Edge Case: Many Categories'
+					]);
+					return 'success';
+				});
+				return expect( prom ).to.eventually.equal( 'success' );
+			});
+
+			// Pending until we confirm whether querying by multiple category_name is permitted
+			it( 'can be used to return only posts with all provided categories', function() {
+				var prom = wp.posts().category([
+					'Markup',
+					'pustule'
+				]).get().then(function( posts ) {
+					expect( posts.length ).to.equal( 1 );
+					expect( getTitles( posts ) ).to.deep.equal([
+						'Edge Case: Many Categories'
+					]);
+					return 'success';
+				});
+				return expect( prom ).to.eventually.equal( 'success' );
+			});
+
+		});
+
+	});
+
 });
