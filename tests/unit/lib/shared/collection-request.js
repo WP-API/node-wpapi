@@ -389,12 +389,12 @@ describe( 'CollectionRequest', function() {
 
 			it( 'should set the "s" filter property on the request object', function() {
 				request.search( 'Some search string' );
-				expect( request._filters.s ).to.equal( 'Some search string' );
+				expect( request._params.search ).to.equal( 'Some search string' );
 			});
 
 			it( 'should be chainable, and replace values', function() {
 				expect( request.search( 'str1' ).search( 'str2' ) ).to.equal( request );
-				expect( request._filters.s ).to.equal( 'str2' );
+				expect( request._params.search ).to.equal( 'str2' );
 			});
 
 		});
@@ -403,14 +403,14 @@ describe( 'CollectionRequest', function() {
 
 			it( 'should set the "author" filter property for numeric arguments', function() {
 				request.author( 301 );
-				expect( request._filters.author ).to.equal( 301 );
+				expect( request._params.author ).to.equal( 301 );
 				expect( request._filters.author_name ).not.to.exist;
 			});
 
 			it( 'should set the "author_name" filter property for string arguments', function() {
 				request.author( 'jamesagarfield' );
 				expect( request._filters.author_name ).to.equal( 'jamesagarfield' );
-				expect( request._filters.author ).not.to.exist;
+				expect( request._params.author ).not.to.exist;
 			});
 
 			it( 'should throw an error if arguments are neither string nor number', function() {
@@ -425,7 +425,7 @@ describe( 'CollectionRequest', function() {
 
 				request.author( 1847 );
 				expect( request._filters.author_name ).not.to.exist;
-				expect( request._filters.author ).to.equal( 1847 );
+				expect( request._params.author ).to.equal( 1847 );
 			});
 
 		});
