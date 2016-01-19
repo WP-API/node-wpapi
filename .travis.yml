@@ -1,10 +1,8 @@
 language: node_js
 script: "npm run test:ci"
 node_js:
-  - "stable"
-  - "4.1"
-  - "4.0"
+  - "5"
+  - "4"
   - "0.12"
-  - "iojs"
 # Opt-in to travis container infrastructure
 sudo: false
