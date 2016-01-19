@@ -60,6 +60,55 @@ wp.posts().then(function( data ) {
 });
 ```
 
+### Creating Posts
+
+To create posts, use the `.post()` method on a query to POST a data object to the server (POST is the HTTP "verb" equivalent for "create"):
+
+```js
+// You must authenticate to be able to POST (create) a post
+var wp = new WP({
+    endpoint: 'http://your-site.com/wp-json',
+    // This assumes you are using basic auth, as described further below
+    username: 'someusername',
+    password: 'password'
+});
+wp.posts().post({
+    // "title" and "content" are the only required properties
+    title: 'Your Post Title',
+    content: 'Your post content',
+    // Post will be created as a draft by default if a specific "status"
+    // is not specified
+    status: 'publish'
+}).then(function( response ) {
+    // "response" will hold all properties of your newly-created post,
+    // including the unique `id` the post was assigned on creation
+    console.log( response.id );
+})
+```
+
+### Updating Posts
+
+To create posts, use the `.put()` method on a single-item query to PUT a data object to the server (PUT is the HTTP "verb" equivalent for "update"):
+
+```js
+// You must authenticate to be able to PUT (update) a post
+var wp = new WP({
+    endpoint: 'http://your-site.com/wp-json',
+    // This assumes you are using basic auth, as described further below
+    username: 'someusername',
+    password: 'password'
+});
+// .id() must be used to specify the post we are updating
+wp.posts().id( 2501 ).post({
+    // Update the title
+    title: 'A Better Title',
+    // Set the post live (assuming it was "draft" before)
+    status: 'publish'
+}).then(function( response ) {
+    console.log( response );
+})
+```
+
 ### Requesting Different Resources
 
 A WP instance object provides the following basic request methods:

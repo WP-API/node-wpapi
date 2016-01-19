@@ -51,6 +51,11 @@ var expectedResults = {
 	}
 };
 
+var credentials = {
+	username: 'apiuser',
+	password: 'password'
+};
+
 // Inspecting the titles of the returned posts arrays is an easy way to
 // validate that the right page of results was returned
 function getTitles( posts ) {
@@ -245,6 +250,125 @@ describe( 'integration: posts()', function() {
 
 		});
 
+	});
+
+	// Post creation, update & deletion suites
+
+	it( 'cannot DELETE without authentication', function() {
+		var id;
+		var prom = wp.posts().perPage( 1 ).get().then(function( posts ) {
+			id = posts[ 0 ].id;
+			return wp.posts().id( id ).delete();
+		}).catch(function( err ) {
+			expect( err ).to.be.an( 'object' );
+			expect( err ).to.have.property( 'status' );
+			expect( err.status ).to.equal( 401 );
+			// Ensure that the post was NOT deleted by querying for it again
+			return wp.posts().id( id ).get();
+		}).then(function( result ) {
+			expect( result ).to.have.property( 'id' );
+			expect( result.id ).to.equal( id );
+			return SUCCESS;
+		});
+		return expect( prom ).to.eventually.equal( SUCCESS );
+	});
+
+	it( 'cannot POST (create) without authentication', function() {
+		var prom = wp.posts().post({
+			title: 'New Post 2501',
+			content: 'Some Content'
+		}).catch(function( err ) {
+			expect( err ).to.be.an( 'object' );
+			expect( err ).to.have.property( 'status' );
+			expect( err.status ).to.equal( 403 );
+			return SUCCESS;
+		});
+		return expect( prom ).to.eventually.equal( SUCCESS );
+	});
+
+	it( 'cannot PUT (update) without authentication', function() {
+		var id;
+		var prom = wp.posts().perPage( 1 ).get().then(function( posts ) {
+			id = posts[ 0 ].id;
+			return wp.posts().id( id ).put({
+				title: 'New Post 2501',
+				content: 'Some Content'
+			});
+		}).catch(function( err ) {
+			expect( err ).to.be.an( 'object' );
+			expect( err ).to.have.property( 'status' );
+			expect( err.status ).to.equal( 403 );
+			return SUCCESS;
+		});
+		return expect( prom ).to.eventually.equal( SUCCESS );
+	});
+
+	it( 'can create, update & delete a post when authenticated', function() {
+		var id;
+		var prom = wp.posts().auth( credentials ).post({
+			title: 'New Post 2501',
+			content: 'Some Content'
+		}).then(function( createdPost ) {
+			id = createdPost.id;
+			expect( createdPost ).to.be.an( 'object' );
+			expect( createdPost ).to.have.property( 'status' );
+			expect( createdPost.status ).to.equal( 'draft' );
+			expect( createdPost ).to.have.property( 'title' );
+			expect( createdPost.title ).to.have.property( 'raw' );
+			expect( createdPost.title.raw ).to.equal( 'New Post 2501' );
+			expect( createdPost ).to.have.property( 'content' );
+			expect( createdPost.content ).to.have.property( 'raw' );
+			expect( createdPost.content.raw ).to.equal( 'Some Content' );
+			return wp.posts().auth( credentials ).id( id ).put({
+				title: 'Updated Title',
+				status: 'publish'
+			});
+		}).then(function( updatedPost ) {
+			expect( updatedPost ).to.be.an( 'object' );
+			expect( updatedPost ).to.have.property( 'id' );
+			expect( updatedPost.id ).to.equal( id );
+			expect( updatedPost ).to.have.property( 'status' );
+			expect( updatedPost.status ).to.equal( 'publish' );
+			expect( updatedPost ).to.have.property( 'title' );
+			expect( updatedPost.title ).to.have.property( 'raw' );
+			expect( updatedPost.title.raw ).to.equal( 'Updated Title' );
+			expect( updatedPost ).to.have.property( 'content' );
+			expect( updatedPost.content ).to.have.property( 'raw' );
+			expect( updatedPost.content.raw ).to.equal( 'Some Content' );
+			// Ensure that, now that it is published, we can query for this post
+			// without authentication
+			return wp.posts().id( id );
+		}).then(function( post ) {
+			expect( post ).to.be.an( 'object' );
+			expect( post ).to.have.property( 'id' );
+			expect( post.id ).to.equal( id );
+			expect( post ).to.have.property( 'title' );
+			expect( post.title ).to.have.property( 'rendered' );
+			expect( post.title.rendered ).to.equal( 'Updated Title' );
+			// Re-authenticate & delete (trash) this post
+			return wp.posts().auth( credentials ).id( id ).delete();
+		}).then(function( response ) {
+			expect( response ).to.be.an( 'object' );
+			expect( response ).to.have.property( 'trashed' );
+			expect( response.trashed ).to.equal( true );
+			// Query for the post: expect this to fail, since it is trashed and
+			// the unauthenticated user does not have permissions to see it
+			return wp.posts().id( id );
+		}).catch(function( error ) {
+			expect( error ).to.be.an( 'object' );
+			expect( error ).to.have.property( 'status' );
+			expect( error.status ).to.equal( 403 );
+			// Re-authenticate & permanently delete this post
+			return wp.posts().auth( credentials ).id( id ).delete({
+				force: true
+			});
+		}).then(function( response ) {
+			expect( response ).to.be.an( 'object' );
+			expect( response ).to.have.property( 'deleted' );
+			expect( response.deleted ).to.equal( true );
+			return SUCCESS;
+		});
+		return expect( prom ).to.eventually.equal( SUCCESS );
 	});
 
 });
