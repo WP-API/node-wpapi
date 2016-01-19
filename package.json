@@ -38,13 +38,13 @@
     "node": ">= 0.10.0"
   },
   "dependencies": {
-    "bluebird": "^2.10.2",
+    "bluebird": "^3.1.1",
     "li": "^1.0.1",
     "lodash": "^2.4.2",
     "node.extend": "^1.1.5",
-    "qs": "^5.2.0",
+    "qs": "^6.0.2",
     "route-parser": "^0.0.4",
-    "superagent": "^0.18.2"
+    "superagent": "^1.7.0"
   },
   "devDependencies": {
     "chai": "^1.10.0",
