@@ -427,6 +427,26 @@ describe( 'WPRequest', function() {
 				});
 			});
 
+			it( 'should pass through a provided data object', function() {
+				sinon.spy( mockAgent, 'del' );
+				sinon.spy( mockAgent, 'auth' );
+				sinon.spy( mockAgent, 'send' );
+				sinon.stub( mockAgent, 'end' );
+
+				wpRequest._options.username = 'user';
+				wpRequest._options.password = 'pass';
+				var options = { force: true };
+
+				wpRequest.delete( options );
+
+				expect( mockAgent.del ).to.have.been.calledOnce;
+				expect( mockAgent.del ).to.have.been.calledWith( 'url/' );
+				expect( mockAgent.auth ).to.have.been.calledOnce;
+				expect( mockAgent.auth ).to.have.been.calledWith( 'user', 'pass' );
+				expect( mockAgent.send ).to.have.been.calledOnce;
+				expect( mockAgent.send ).to.have.been.calledWith( options );
+			});
+
 			it( 'should return a Promise to the body of the request data', function() {
 				mockAgent._response = { body: 'resp', headers: {} };
 				var promise = wpRequest.delete();
