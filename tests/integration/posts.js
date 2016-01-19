@@ -1,6 +1,8 @@
 'use strict';
 var chai = require( 'chai' );
-// Chai-as-promised and the `expect( prom ).to.eventually.equal( 'success' ) is
+// Variable to use as our "success token" in promise assertions
+var SUCCESS = 'success';
+// Chai-as-promised and the `expect( prom ).to.eventually.equal( SUCCESS ) is
 // used to ensure that the assertions running within the promise chains are
 // actually run.
 chai.use( require( 'chai-as-promised' ) );
@@ -70,17 +72,17 @@ describe( 'integration: posts()', function() {
 		var prom = wp.posts().get().then(function( posts ) {
 			expect( posts ).to.be.an( 'array' );
 			expect( posts.length ).to.equal( 10 );
-			return 'success';
+			return SUCCESS;
 		});
-		return expect( prom ).to.eventually.equal( 'success' );
+		return expect( prom ).to.eventually.equal( SUCCESS );
 	});
 
 	it( 'fetches the 10 most recent posts by default', function() {
 		var prom = wp.posts().get().then(function( posts ) {
 			expect( getTitles( posts ) ).to.deep.equal( expectedResults.titles.page1 );
-			return 'success';
+			return SUCCESS;
 		});
-		return expect( prom ).to.eventually.equal( 'success' );
+		return expect( prom ).to.eventually.equal( SUCCESS );
 	});
 
 	describe( 'paging properties', function() {
@@ -89,27 +91,27 @@ describe( 'integration: posts()', function() {
 			var prom = wp.posts().get().then(function( posts ) {
 				expect( posts ).to.have.property( '_paging' );
 				expect( posts._paging ).to.be.an( 'object' );
-				return 'success';
+				return SUCCESS;
 			});
-			return expect( prom ).to.eventually.equal( 'success' );
+			return expect( prom ).to.eventually.equal( SUCCESS );
 		});
 
 		it( 'include the total number of posts', function() {
 			var prom = wp.posts().get().then(function( posts ) {
 				expect( posts._paging ).to.have.property( 'total' );
 				expect( posts._paging.total ).to.equal( '38' );
-				return 'success';
+				return SUCCESS;
 			});
-			return expect( prom ).to.eventually.equal( 'success' );
+			return expect( prom ).to.eventually.equal( SUCCESS );
 		});
 
 		it( 'include the total number of pages available', function() {
 			var prom = wp.posts().get().then(function( posts ) {
 				expect( posts._paging ).to.have.property( 'totalPages' );
 				expect( posts._paging.totalPages ).to.equal( '4' );
-				return 'success';
+				return SUCCESS;
 			});
-			return expect( prom ).to.eventually.equal( 'success' );
+			return expect( prom ).to.eventually.equal( SUCCESS );
 		});
 
 		it( 'provides a bound WPRequest for the next page as .next', function() {
@@ -123,10 +125,10 @@ describe( 'integration: posts()', function() {
 				return wp.posts().page( posts._paging.totalPages ).get().then(function( posts ) {
 					expect( posts._paging ).not.to.have.property( 'next' );
 					expect( getTitles( posts ) ).to.deep.equal( expectedResults.titles.page4 );
-					return 'success';
+					return SUCCESS;
 				});
 			});
-			return expect( prom ).to.eventually.equal( 'success' );
+			return expect( prom ).to.eventually.equal( SUCCESS );
 		});
 
 		it( 'allows access to the next page of results via .next', function() {
@@ -135,10 +137,10 @@ describe( 'integration: posts()', function() {
 					expect( posts ).to.be.an( 'array' );
 					expect( posts.length ).to.equal( 9 );
 					expect( getTitles( posts ) ).to.deep.equal( expectedResults.titles.page2 );
-					return 'success';
+					return SUCCESS;
 				});
 			});
-			return expect( prom ).to.eventually.equal( 'success' );
+			return expect( prom ).to.eventually.equal( SUCCESS );
 		});
 
 		it( 'provides a bound WPRequest for the previous page as .prev', function() {
@@ -150,10 +152,10 @@ describe( 'integration: posts()', function() {
 					expect( posts._paging.prev ).to.be.an.instanceOf( WPRequest );
 					expect( posts._paging.prev._options.endpoint ).to
 						.equal( 'http://wpapi.loc/wp-json/wp/v2/posts?page=1' );
-					return 'success';
+					return SUCCESS;
 				});
 			});
-			return expect( prom ).to.eventually.equal( 'success' );
+			return expect( prom ).to.eventually.equal( SUCCESS );
 		});
 
 		it( 'allows access to the previous page of results via .prev', function() {
@@ -163,10 +165,10 @@ describe( 'integration: posts()', function() {
 					expect( posts ).to.be.an( 'array' );
 					expect( posts.length ).to.equal( 10 );
 					expect( getTitles( posts ) ).to.deep.equal( expectedResults.titles.page1 );
-					return 'success';
+					return SUCCESS;
 				});
 			});
-			return expect( prom ).to.eventually.equal( 'success' );
+			return expect( prom ).to.eventually.equal( SUCCESS );
 		});
 
 	});
@@ -185,9 +187,9 @@ describe( 'integration: posts()', function() {
 						'',
 						'Edge Case: Many Tags'
 					]);
-					return 'success';
+					return SUCCESS;
 				});
-				return expect( prom ).to.eventually.equal( 'success' );
+				return expect( prom ).to.eventually.equal( SUCCESS );
 			});
 
 			it( 'can be used to return only posts with all provided tags', function() {
@@ -201,9 +203,9 @@ describe( 'integration: posts()', function() {
 						'Template: Featured Image (Horizontal)',
 						'Edge Case: Many Tags'
 					]);
-					return 'success';
+					return SUCCESS;
 				});
-				return expect( prom ).to.eventually.equal( 'success' );
+				return expect( prom ).to.eventually.equal( SUCCESS );
 			});
 
 		});
@@ -221,9 +223,9 @@ describe( 'integration: posts()', function() {
 						'Markup: Title With Markup',
 						'Edge Case: Many Categories'
 					]);
-					return 'success';
+					return SUCCESS;
 				});
-				return expect( prom ).to.eventually.equal( 'success' );
+				return expect( prom ).to.eventually.equal( SUCCESS );
 			});
 
 			// Pending until we confirm whether querying by multiple category_name is permitted
@@ -236,9 +238,9 @@ describe( 'integration: posts()', function() {
 					expect( getTitles( posts ) ).to.deep.equal([
 						'Edge Case: Many Categories'
 					]);
-					return 'success';
+					return SUCCESS;
 				});
-				return expect( prom ).to.eventually.equal( 'success' );
+				return expect( prom ).to.eventually.equal( SUCCESS );
 			});
 
 		});
