@@ -31,6 +31,15 @@ module.exports = function( grunt ) {
 				src: files.lib
 			},
 			tests: {
+				options: {
+					maximumLineLength: {
+						// Longer max line length in test files
+						value: 150,
+						tabSize: 2,
+						allowUrlComments: true,
+						allowRegex: true
+					}
+				},
 				src: files.tests
 			}
 		},

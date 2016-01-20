@@ -15,7 +15,7 @@
 	"requireBlocksOnNewline": 1,
 	"maximumLineLength": {
 		"value": 100,
-		"tabSize": 4,
+		"tabSize": 2,
 		"allowUrlComments": true,
 		"allowRegex": true
 	},
