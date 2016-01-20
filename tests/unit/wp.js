@@ -220,17 +220,17 @@ describe( 'wp', function() {
 
 	describe( 'taxonomy shortcut handlers', function() {
 
-		it( 'defines a .categories() shortcut for the category taxonomy terms', function() {
+		it( 'defines a .categories() shortcut for the category terms collection', function() {
 			var categories = site.categories();
 			expect( categories instanceof TaxonomiesRequest ).to.be.true;
 			expect( categories._renderURI() ).to
-				.equal( 'endpoint/url/wp/v2/taxonomies/category/terms' );
+				.equal( 'endpoint/url/wp/v2/categories' );
 		});
 
-		it( 'defines a .tags() shortcut for the tag taxonomy terms', function() {
+		it( 'defines a .tags() shortcut for the tag terms collection', function() {
 			var tags = site.tags();
 			expect( tags instanceof TaxonomiesRequest ).to.be.true;
-			expect( tags._renderURI() ).to.equal( 'endpoint/url/wp/v2/taxonomies/post_tag/terms' );
+			expect( tags._renderURI() ).to.equal( 'endpoint/url/wp/v2/tags' );
 		});
 
 		it( 'defines a generic .taxonomy() handler for arbitrary taxonomy objects', function() {

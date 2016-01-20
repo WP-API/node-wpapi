@@ -122,7 +122,7 @@ WP.prototype.posts = function( options ) {
 };
 
 /**
- * Start a request against the `taxonomies` endpoint
+ * Start a request for a taxonomy or taxonomy term collection
  *
  * @method taxonomies
  * @param {Object} [options] An options hash for a new TaxonomiesRequest
@@ -137,21 +137,22 @@ WP.prototype.taxonomies = function( options ) {
 /**
  * Start a request for a specific taxonomy object
  *
- * It is repetitive to have to type `.taxonomies().taxonomy()` whenever you want to request
- * a taxonomy object or list of terms for a taxonomy. This convenience method lets you
- * create a `TaxonomiesRequest` object that is bound to the provided taxonomy name.
+ * It is slightly unintuitive to consider the name of a taxonomy a "term," as is
+ * needed in order to retrieve the taxonomy object from the .taxonomies() method.
+ * This convenience method lets you create a `TaxonomiesRequest` object that is
+ * bound to the provided taxonomy name, without having to utilize the "term" method.
  *
  * @example
  * If your site uses two custom taxonomies, book_genre and book_publisher, before you would
  * have had to request these terms using the verbose form:
  *
- *     wp.taxonomies().taxonomy( 'book_genre' ).terms()...
- *     wp.taxonomies().taxonomy( 'book_publisher' )...
+ *     wp.taxonomies().term( 'book_genre' )
+ *     wp.taxonomies().term( 'book_publisher' )
  *
  * Using `.taxonomy()`, the same query can be achieved much more succinctly:
  *
- *     wp.taxonomy( 'book_genre' ).terms()...
- *     wp.taxonomy( 'book_publisher' )...
+ *     wp.taxonomy( 'book_genre' )
+ *     wp.taxonomy( 'book_publisher' )
  *
  * @method taxonomy
  * @param {String} taxonomyName The name of the taxonomy to request
@@ -159,7 +160,7 @@ WP.prototype.taxonomies = function( options ) {
  */
 WP.prototype.taxonomy = function( taxonomyName ) {
 	var options = extend( {}, this._options );
-	return new TaxonomiesRequest( options ).taxonomy( taxonomyName );
+	return new TaxonomiesRequest( options ).term( taxonomyName );
 };
 
 /**
@@ -170,34 +171,35 @@ WP.prototype.taxonomy = function( taxonomyName ) {
  * @example
  * These are equivalent:
  *
- *     wp.taxonomies().taxonomy( 'category' ).terms()
+ *     wp.taxonomies().collection( 'categories' )
  *     wp.categories()
  *
  * @method categories
- * @return {TaxonomiesRequest} A TaxonomiesRequest object bound to the terms for "category"
+ * @return {TaxonomiesRequest} A TaxonomiesRequest object bound to the categories collection
  */
 WP.prototype.categories = function() {
 	var options = extend( {}, this._options );
-	return new TaxonomiesRequest( options ).taxonomy( 'category' ).terms();
+	return new TaxonomiesRequest( options ).collection( 'categories' );
 };
 
 /**
  * Request a list of post_tag terms
  *
- * This is a shortcut method to retrieve the terms for the "post_tag" taxonomy
+ * This is a shortcut method to interact with the collection of terms for the
+ * "post_tag" taxonomy.
  *
  * @example
  * These are equivalent:
  *
- *     wp.taxonomies().taxonomy( 'post_tag' ).terms()
+ *     wp.taxonomies().collection( 'tags' )
  *     wp.tags()
  *
  * @method tags
- * @return {TaxonomiesRequest} A TaxonomiesRequest object bound to the terms for "post_tag"
+ * @return {TaxonomiesRequest} A TaxonomiesRequest object bound to the tags collection
  */
 WP.prototype.tags = function() {
 	var options = extend( {}, this._options );
-	return new TaxonomiesRequest( options ).taxonomy( 'post_tag' ).terms();
+	return new TaxonomiesRequest( options ).collection( 'tags' );
 };
 
 /**
