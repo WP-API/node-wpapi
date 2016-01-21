@@ -80,6 +80,11 @@ describe( 'wp.taxonomies', function() {
 			expect( url ).to.equal( '/wp-json/wp/v2/taxonomies/my-tax' );
 		});
 
+		it( 'should create the URL for retrieving taxonomies with a shared parent', function() {
+			var url = taxonomies.collection( 'categories' ).parent( 42 )._renderURI();
+			expect( url ).to.equal( '/wp-json/wp/v2/categories?parent=42' );
+		});
+
 	});
 
 });

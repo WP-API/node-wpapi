@@ -262,4 +262,51 @@ describe( 'integration: categories()', function() {
 
 	});
 
+	describe( 'parent()', function() {
+
+		it( 'can be used to retrieve direct children of a specific category', function() {
+			var parentCat;
+			var childCat1;
+			var childCat2;
+			// First, find the "parent" category
+			var prom = wp.categories().search( 'parent' ).get().then(function( categories ) {
+				for ( var i = 0; i < 4; i++ ) {
+					if ( categories[ i ].slug === 'parent' ) {
+						// Return a query for the matching category's child
+						parentCat = categories[ i ];
+						return wp.categories().parent( parentCat.id );
+					}
+				}
+			}).then(function( categories ) {
+				expect( categories ).to.be.an( 'array' );
+				expect( categories.length ).to.equal( 1 );
+				var category = categories[ 0 ];
+				expect( category ).to.have.property( 'name' );
+				expect( category.name ).to.equal( 'Child 1' );
+				expect( category ).to.have.property( 'parent' );
+				expect( category.parent ).to.equal( parentCat.id );
+				childCat1 = category;
+				// Go one level deeper
+				return wp.categories().parent( childCat1.id );
+			}).then(function( categories ) {
+				expect( categories ).to.be.an( 'array' );
+				expect( categories.length ).to.equal( 1 );
+				var category = categories[ 0 ];
+				expect( category ).to.have.property( 'name' );
+				expect( category.name ).to.equal( 'Child 2' );
+				expect( category ).to.have.property( 'parent' );
+				expect( category.parent ).to.equal( childCat1.id );
+				childCat2 = category;
+				// Go one level deeper
+				return wp.categories().parent( childCat2.id );
+			}).then(function( categories ) {
+				expect( categories ).to.be.an( 'array' );
+				expect( categories.length ).to.equal( 0 );
+				return SUCCESS;
+			});
+			return expect( prom ).to.eventually.equal( SUCCESS );
+		});
+
+	});
+
 });
