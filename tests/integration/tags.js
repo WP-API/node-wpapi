@@ -235,7 +235,7 @@ describe( 'integration: tags()', function() {
 				expect( tags.length ).to.equal( 2 );
 				var slugs = tags.map(function( tag ) {
 					return tag.slug;
-				}).sort().join( ' ');
+				}).sort().join( ' ' );
 				expect( slugs ).to.equal( 'post post-formats' );
 				return SUCCESS;
 			});

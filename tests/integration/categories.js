@@ -232,7 +232,7 @@ describe( 'integration: categories()', function() {
 				expect( categories.length ).to.equal( 4 );
 				var slugs = categories.map(function( cat ) {
 					return cat.slug;
-				}).sort().join( ' ');
+				}).sort().join( ' ' );
 				expect( slugs ).to.equal( 'foo-a-foo-parent foo-parent parent parent-category' );
 				return SUCCESS;
 			});
