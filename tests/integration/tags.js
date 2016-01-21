@@ -177,4 +177,91 @@ describe( 'integration: tags()', function() {
 
 	});
 
+	describe( 'term()', function() {
+
+		it( 'can be used to access an individual tag term', function() {
+			var selectedTag;
+			var prom = wp.tags().get().then(function( tags ) {
+				// Pick one of the tags
+				selectedTag = tags[ 3 ];
+				// Query for that tag directly
+				return wp.tags().term( selectedTag.id );
+			}).then(function( tag ) {
+				expect( tag ).to.be.an( 'object' );
+				expect( tag ).to.have.property( 'id' );
+				expect( tag.id ).to.equal( selectedTag.id );
+				expect( tag ).to.have.property( 'slug' );
+				expect( tag.slug ).to.equal( selectedTag.slug );
+				expect( tag ).to.have.property( 'taxonomy' );
+				expect( tag.taxonomy ).to.equal( 'post_tag' );
+				expect( tag ).not.to.have.property( 'parent' );
+				return SUCCESS;
+			});
+			return expect( prom ).to.eventually.equal( SUCCESS );
+		});
+
+	});
+
+	describe( 'search()', function() {
+
+		it( 'can be used to retrieve a tag by slug', function() {
+			var selectedTag;
+			var prom = wp.tags().get().then(function( tags ) {
+				// Pick one of the tags
+				selectedTag = tags[ 3 ];
+				// Search for that tag by slug
+				return wp.tags().search( selectedTag.slug );
+			}).then(function( tags ) {
+				expect( tags ).to.be.an( 'array' );
+				expect( tags.length ).to.equal( 1 );
+				return tags[ 0 ];
+			}).then(function( tag ) {
+				expect( tag ).to.be.an( 'object' );
+				expect( tag ).to.have.property( 'id' );
+				expect( tag.id ).to.equal( selectedTag.id );
+				expect( tag ).to.have.property( 'slug' );
+				expect( tag.slug ).to.equal( selectedTag.slug );
+				expect( tag ).to.have.property( 'taxonomy' );
+				expect( tag.taxonomy ).to.equal( 'post_tag' );
+				expect( tag ).not.to.have.property( 'parent' );
+				return SUCCESS;
+			});
+			return expect( prom ).to.eventually.equal( SUCCESS );
+		});
+
+		it( 'returns all tags matching the provided search string', function() {
+			var prom = wp.tags().search( 'post' ).get().then(function( tags ) {
+				expect( tags ).to.be.an( 'array' );
+				expect( tags.length ).to.equal( 2 );
+				var slugs = tags.map(function( tag ) {
+					return tag.slug;
+				}).sort().join( ' ');
+				expect( slugs ).to.equal( 'post post-formats' );
+				return SUCCESS;
+			});
+			return expect( prom ).to.eventually.equal( SUCCESS );
+		});
+
+		it( 'can be used to retrieve a tag by slug from a set of search results', function() {
+			var prom = wp.tags().search( 'post' ).get().then(function( tags ) {
+				// Iterating over response of search is the best we can do until
+				// filtering for taxonomy term collections is reinstated
+				for ( var i = 0; i < tags.length; i++ ) {
+					if ( tags[ i ].slug === 'post' ) {
+						return tags[ i ];
+					}
+				}
+			}).then(function( tag ) {
+				expect( tag ).to.have.property( 'slug' );
+				expect( tag.slug ).to.equal( 'post' );
+				expect( tag ).to.have.property( 'name' );
+				expect( tag.name ).to.equal( 'post' );
+				expect( tag ).not.to.have.property( 'parent' );
+				return SUCCESS;
+			});
+			return expect( prom ).to.eventually.equal( SUCCESS );
+		});
+
+	});
+
 });

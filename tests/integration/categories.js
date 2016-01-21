@@ -172,4 +172,94 @@ describe( 'integration: categories()', function() {
 
 	});
 
+	describe( 'term()', function() {
+
+		it( 'can be used to access an individual category term', function() {
+			var selectedCategory;
+			var prom = wp.categories().get().then(function( categories ) {
+				// Pick one of the categories
+				selectedCategory = categories[ 3 ];
+				// Query for that category directly
+				return wp.categories().term( selectedCategory.id );
+			}).then(function( category ) {
+				expect( category ).to.be.an( 'object' );
+				expect( category ).to.have.property( 'id' );
+				expect( category.id ).to.equal( selectedCategory.id );
+				expect( category ).to.have.property( 'slug' );
+				expect( category.slug ).to.equal( selectedCategory.slug );
+				expect( category ).to.have.property( 'taxonomy' );
+				expect( category.taxonomy ).to.equal( 'category' );
+				expect( category ).to.have.property( 'parent' );
+				expect( category.parent ).to.equal( 0 );
+				return SUCCESS;
+			});
+			return expect( prom ).to.eventually.equal( SUCCESS );
+		});
+
+	});
+
+	describe( 'search()', function() {
+
+		it( 'can be used to retrieve a category by slug', function() {
+			var selectedCategory;
+			var prom = wp.categories().get().then(function( categories ) {
+				// Pick one of the categories
+				selectedCategory = categories[ 3 ];
+				// Search for that category by slug
+				return wp.categories().search( selectedCategory.slug );
+			}).then(function( categories ) {
+				expect( categories ).to.be.an( 'array' );
+				expect( categories.length ).to.equal( 1 );
+				return categories[ 0 ];
+			}).then(function( category ) {
+				expect( category ).to.be.an( 'object' );
+				expect( category ).to.have.property( 'id' );
+				expect( category.id ).to.equal( selectedCategory.id );
+				expect( category ).to.have.property( 'slug' );
+				expect( category.slug ).to.equal( selectedCategory.slug );
+				expect( category ).to.have.property( 'taxonomy' );
+				expect( category.taxonomy ).to.equal( 'category' );
+				expect( category ).to.have.property( 'parent' );
+				expect( category.parent ).to.equal( 0 );
+				return SUCCESS;
+			});
+			return expect( prom ).to.eventually.equal( SUCCESS );
+		});
+
+		it( 'returns all categories matching the provided search string', function() {
+			var prom = wp.categories().search( 'parent' ).get().then(function( categories ) {
+				expect( categories ).to.be.an( 'array' );
+				expect( categories.length ).to.equal( 4 );
+				var slugs = categories.map(function( cat ) {
+					return cat.slug;
+				}).sort().join( ' ');
+				expect( slugs ).to.equal( 'foo-a-foo-parent foo-parent parent parent-category' );
+				return SUCCESS;
+			});
+			return expect( prom ).to.eventually.equal( SUCCESS );
+		});
+
+		it( 'can be used to retrieve a category by slug from a set of search results', function() {
+			var prom = wp.categories().search( 'parent' ).get().then(function( categories ) {
+				// Iterating over response of search is the best we can do until
+				// filtering for taxonomy term collections is reinstated
+				for ( var i = 0; i < 4; i++ ) {
+					if ( categories[ i ].slug === 'parent' ) {
+						return categories[ i ];
+					}
+				}
+			}).then(function( category ) {
+				expect( category ).to.have.property( 'slug' );
+				expect( category.slug ).to.equal( 'parent' );
+				expect( category ).to.have.property( 'name' );
+				expect( category.name ).to.equal( 'Parent' );
+				expect( category ).to.have.property( 'parent' );
+				expect( category.parent ).to.equal( 0 );
+				return SUCCESS;
+			});
+			return expect( prom ).to.eventually.equal( SUCCESS );
+		});
+
+	});
+
 });
