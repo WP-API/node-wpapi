@@ -284,7 +284,9 @@ To work around these restrictions, paginated collection responses are augmented 
 - `totalPages`: The number of pages available (`total` / `perPage`)
 - `next`: A WPRequest object pre-bound to the next page of results
 - `prev`: A WPRequest object pre-bound to the previous page of results
-- `links`: an object containing the parsed `link` HTTP header data
+- `links`: an object containing the parsed `link` HTTP header data (when present)
+
+The existence of the `_paging.links.prev` and `_paging.links.next` properties can be used as flags to conditionally show or hide your paging UI, if necessary, as they will only be present when an adjacent page of results is available.
 
 You can use the `next` and `prev` properties to traverse an entire collection, should you so choose. For example, this snippet will recursively request the next page and concatenate it with existing results, in order to build up an array of every post on your site:
 ```javascript
