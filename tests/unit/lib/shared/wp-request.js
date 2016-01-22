@@ -584,17 +584,22 @@ describe( 'WPRequest', function() {
 				});
 			});
 
-			it( 'passes data through unchanged if header has no link property', function() {
+			it( 'sets pagination properties if headers include paging counts without links', function() {
 				mockAgent._response = {
 					headers: {
-						'x-wp-totalpages': '0',
-						'x-wp-total': '0'
+						'x-wp-totalpages': 1,
+						'x-wp-total': 5
 					},
-					body: 'some object'
+					body: {}
 				};
 				return wpRequest.then(function( parsedResult ) {
-					expect( parsedResult ).to.equal( 'some object' );
-					expect( parsedResult ).not.to.have.property( '_paging' );
+					expect( parsedResult ).to.have.property( '_paging' );
+					expect( parsedResult._paging ).not.to.have.property( 'next' );
+					expect( parsedResult._paging ).not.to.have.property( 'prev' );
+					expect( parsedResult._paging ).to.have.property( 'total' );
+					expect( parsedResult._paging.total ).to.equal( 5 );
+					expect( parsedResult._paging ).to.have.property( 'totalPages' );
+					expect( parsedResult._paging.totalPages ).to.equal( 1 );
 				});
 			});
 
