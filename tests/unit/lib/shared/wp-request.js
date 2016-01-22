@@ -126,6 +126,54 @@ describe( 'WPRequest', function() {
 
 	});
 
+	describe( 'param()', function() {
+
+		it( 'method exists', function() {
+			expect( request ).to.have.property( 'param' );
+			expect( request.param ).to.be.a( 'function' );
+		});
+
+		it( 'will set a query parameter value', function() {
+			request.param( 'key', 'value' );
+			expect( request._params ).to.have.property( 'key' );
+			expect( request._params.key ).to.equal( 'value' );
+		});
+
+		it( 'should set the internal _params hash', function() {
+			request.param( 'type', 'some_cpt' );
+			expect( request._params ).to.have.property( 'type' );
+			expect( request._params.type ).to.equal( 'some_cpt' );
+			request.param( 'context', 'edit' );
+			expect( request._params ).to.have.property( 'context' );
+			expect( request._params.context ).to.equal( 'edit' );
+		});
+
+		it( 'should set parameters by passing a hash object', function() {
+			request.param({
+				page: 309,
+				context: 'view'
+			});
+			expect( request._params ).to.have.property( 'page' );
+			expect( request._params.page ).to.equal( 309 );
+			expect( request._params ).to.have.property( 'context' );
+			expect( request._params.context ).to.equal( 'view' );
+		});
+
+		it( 'should merge provided values if merge is set to true', function() {
+			request.param( 'type', 'post' );
+			request.param( 'type', 'page', true );
+			expect( request._params.type ).to.deep.equal( [ 'page', 'post' ] );
+		});
+
+		it( 'should merge, de-dupe & sort array values', function() {
+			request.param( 'type', [ 'post', 'page', 'post' ] );
+			expect( request._params.type ).to.deep.equal( [ 'page', 'post' ] );
+			request.param( 'type', [ 'page', 'cpt_item' ], true );
+			expect( request._params.type ).to.deep.equal( [ 'cpt_item', 'page', 'post' ] );
+		});
+
+	});
+
 	describe( 'auth', function() {
 
 		it( 'is defined', function() {
