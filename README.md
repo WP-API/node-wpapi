@@ -128,7 +128,7 @@ Additional querying methods provided, by endpoint:
     - `wp.posts()`: get a collection of posts (default query)
     - `wp.posts().id( n )`: get the post with ID *n*
     - `wp.posts().id( n ).comments()`: get all comments for post with ID *n*
-    - `wp.posts().id( n ).comment( i )`: get a comment with the ID *i* from post with ID *n* 
+    - `wp.posts().id( n ).comment( i )`: get a comment with the ID *i* from post with ID *n*
     - `wp.posts().id( n ).revisions()`: get a collection of revisions for the post with ID *n*
     - `wp.posts().type( type_name )`: get posts of custom type *type_name*
     - *There is currently no support for querying post meta values*
@@ -137,7 +137,7 @@ Additional querying methods provided, by endpoint:
     - `wp.pages().id( n )`: get the page with numeric ID *n*
     - `wp.pages().path( 'path/str' )`: get the page with the root-relative URL path `path/str`
     - `wp.pages().id( n ).comments()`: get all comments for page with ID *n*
-    - `wp.pages().id( n ).comment( i )`: get a comment with the ID *i* from page with ID *n* 
+    - `wp.pages().id( n ).comment( i )`: get a comment with the ID *i* from page with ID *n*
     - `wp.pages().id( n ).revisions()`: get a collection of revisions for the page with ID *n*
 * **taxonomies**
     - `wp.taxonomies()`: retrieve all registered taxonomies
@@ -286,8 +286,6 @@ To work around these restrictions, paginated collection responses are augmented 
 - `prev`: A WPRequest object pre-bound to the previous page of results
 - `links`: an object containing the parsed `link` HTTP header data
 
-The existence of the `_paging` property can be used as a flag to conditionally show or hide your paging UI, if necessary, as it will not be present for single-page or single-item responses.
-
 You can use the `next` and `prev` properties to traverse an entire collection, should you so choose. For example, this snippet will recursively request the next page and concatenate it with existing results, in order to build up an array of every post on your site:
 ```javascript
 getAll( request ) {
@@ -369,8 +367,8 @@ First localize your scripts with an object with root-url and nonce in your theme
 function my_enqueue_scripts() {
     wp_enqueue_script( 'app', get_template_directory_uri() . '/assets/dist/bundle.js', array(), false, true );
     wp_localize_script( 'app', 'WP_API_Settings', array(
-        'endpoint' => esc_url_raw( get_json_url() ), 
-        'nonce' => wp_create_nonce( 'wp_json' ) ) 
+        'endpoint' => esc_url_raw( get_json_url() ),
+        'nonce' => wp_create_nonce( 'wp_json' ) )
     );
 }
 add_action( 'wp_enqueue_scripts', 'my_enqueue_scripts' );
@@ -381,7 +379,7 @@ And then use this nonce when initializing the library:
 ```javascript
 var WP = require( 'wordpress-rest-api' );
 var wp = new WP({
-    endpoint: window.WP_API_Settings.endpoint, 
+    endpoint: window.WP_API_Settings.endpoint,
     nonce: window.WP_API_Settings.nonce
 });
 ```
