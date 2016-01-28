@@ -280,7 +280,7 @@ describe( 'integration: posts()', function() {
 		}).catch(function( err ) {
 			expect( err ).to.be.an( 'object' );
 			expect( err ).to.have.property( 'status' );
-			expect( err.status ).to.equal( 403 );
+			expect( err.status ).to.equal( 401 );
 			return SUCCESS;
 		});
 		return expect( prom ).to.eventually.equal( SUCCESS );
@@ -297,7 +297,7 @@ describe( 'integration: posts()', function() {
 		}).catch(function( err ) {
 			expect( err ).to.be.an( 'object' );
 			expect( err ).to.have.property( 'status' );
-			expect( err.status ).to.equal( 403 );
+			expect( err.status ).to.equal( 401 );
 			return SUCCESS;
 		});
 		return expect( prom ).to.eventually.equal( SUCCESS );
