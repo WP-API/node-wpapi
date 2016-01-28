@@ -85,6 +85,11 @@ describe( 'wp.taxonomies', function() {
 			expect( url ).to.equal( '/wp-json/wp/v2/categories?parent=42' );
 		});
 
+		it( 'should permit specifying the parent for a collection of terms', function() {
+			var url = taxonomies.collection( 'categories' ).forPost( 1234 )._renderURI();
+			expect( url ).to.equal( '/wp-json/wp/v2/categories?post=1234' );
+		});
+
 	});
 
 });
