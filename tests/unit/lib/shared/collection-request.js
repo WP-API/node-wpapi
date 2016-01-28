@@ -382,34 +382,30 @@ describe( 'CollectionRequest', function() {
 
 		});
 
-		describe( 'name()', function() {
-
-			it( 'should set the "name" filter property on the request object', function() {
-				request.name( 'greatest-post-in-the-world' );
-				expect( request._filters.name ).to.equal( 'greatest-post-in-the-world' );
-			});
-
-			it( 'should be chainable, and replace values', function() {
-				expect( request.name( 'post-slug-1' ).name( 'hello-world' ) ).to.equal( request );
-				expect( request._filters.name ).to.equal( 'hello-world' );
-			});
-
-		});
-
 		describe( 'slug()', function() {
 
-			it( 'should be an alias for name()', function() {
-				expect( request.slug ).to.equal( request.name );
-			});
-
-			it( 'should set the "name" filter property on the request object', function() {
+			it( 'should set the "slug" parameter on the request', function() {
 				request.slug( 'greatest-post-in-the-world' );
-				expect( request._filters.name ).to.equal( 'greatest-post-in-the-world' );
+				expect( request._renderURI() ).to.equal( '/?slug=greatest-post-in-the-world' );
 			});
 
 			it( 'should be chainable, and replace values', function() {
 				expect( request.slug( 'post-slug-1' ).slug( 'hello-world' ) ).to.equal( request );
-				expect( request._filters.name ).to.equal( 'hello-world' );
+				expect( request._renderURI() ).to.equal( '/?slug=hello-world' );
+			});
+
+		});
+
+		describe( 'name()', function() {
+
+			it( 'should alias through to set the "slug" parameter on the request', function() {
+				request.name( 'greatest-post-in-the-world' );
+				expect( request._renderURI() ).to.equal( '/?slug=greatest-post-in-the-world' );
+			});
+
+			it( 'should be chainable, and replace values', function() {
+				expect( request.name( 'post-slug-1' ).name( 'hello-world' ) ).to.equal( request );
+				expect( request._renderURI() ).to.equal( '/?slug=hello-world' );
 			});
 
 		});
