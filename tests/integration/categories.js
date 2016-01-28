@@ -7,6 +7,7 @@ var SUCCESS = 'success';
 // actually run.
 chai.use( require( 'chai-as-promised' ) );
 var expect = chai.expect;
+var _ = require( 'lodash' );
 
 var WP = require( '../../' );
 var WPRequest = require( '../../lib/shared/wp-request.js' );
@@ -302,6 +303,39 @@ describe( 'integration: categories()', function() {
 			}).then(function( categories ) {
 				expect( categories ).to.be.an( 'array' );
 				expect( categories.length ).to.equal( 0 );
+				return SUCCESS;
+			});
+			return expect( prom ).to.eventually.equal( SUCCESS );
+		});
+
+	});
+
+	describe( 'forPost()', function() {
+
+		it( 'can be used to retrieve terms for a specific post', function() {
+			var postCategories;
+			var prom = wp.posts().perPage( 1 ).embed().get().then(function( posts ) {
+				var post = posts[ 0 ];
+				// Find the categories for this post
+				postCategories = _.findWhere( post._embedded['https://api.w.org/term'], function( terms ) {
+					if ( terms.length && terms[ 0 ].taxonomy === 'category' ) {
+						return true;
+					}
+				});
+				var postId = post.id;
+				return wp.categories().forPost( postId );
+			}).then(function( categories ) {
+				expect( categories.length ).to.equal( postCategories.length );
+				categories.forEach(function( cat, idx ) {
+					[
+						'id',
+						'name',
+						'slug',
+						'taxonomy'
+					].forEach(function( prop ) {
+						expect( cat[ prop ] ).to.equal( postCategories[ idx ][ prop ] );
+					});
+				});
 				return SUCCESS;
 			});
 			return expect( prom ).to.eventually.equal( SUCCESS );
