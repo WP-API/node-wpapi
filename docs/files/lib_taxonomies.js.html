@@ -16,7 +16,7 @@
             <div class="project-title">
                 
                 
-                    <h1 class="project-name">wordpress-rest-api</h1> <span class="project-version">0.5.0</span>
+                    <h1 class="project-name">wordpress-rest-api</h1> <span class="project-version">0.6.0</span>
                 
                 
                     <p class="description">A client for interacting with the WordPress REST API</p>
@@ -150,22 +150,29 @@ function TaxonomiesRequest( options ) {
 	/**
 	 * A hash of values to assemble into the API request path
 	 *
+	 * Default to requesting the taxonomies &quot;collection&quot; (dictionary of publicly-
+	 * registered taxonomies) if no other collection is specified
+	 *
 	 * @property _path
 	 * @type Object
 	 * @private
 	 * @default {}
 	 */
-	this._path = {};
+	this._path = { collection: &#x27;taxonomies&#x27; };
 
 	/**
 	 * The URL template that will be used to assemble endpoint paths
 	 *
+	 * There is no path validation for taxonomies requests: terms can be numeric
+	 * (categories) or strings (tags), and the list of registered collections is
+	 * not fixed (it can be augmented or modified through plugin and theme behavior).
+	 *
 	 * @property _template
 	 * @type String
 	 * @private
-	 * @default &#x27;taxonomies(/:taxonomy)(/:action)(/:term)&#x27;
+	 * @default &#x27;(:collection)(/:term)&#x27;
 	 */
-	this._template = &#x27;taxonomies(/:taxonomy)(/:action)(/:term)&#x27;;
+	this._template = &#x27;(:collection)(/:term)&#x27;;
 
 	/**
 	 * @property _supportedMethods
@@ -174,41 +181,33 @@ function TaxonomiesRequest( options ) {
 	 * @default [ &#x27;head&#x27;, &#x27;get&#x27; ]
 	 */
 	this._supportedMethods = [ &#x27;head&#x27;, &#x27;get&#x27; ];
+
+	// Default all .taxonomies() requests to assume a query against the WP API v2 endpoints
+	this.namespace( &#x27;wp&#x27; ).version( &#x27;v2&#x27; );
 }
 
 // TaxonomiesRequest extends CollectionRequest
 inherit( TaxonomiesRequest, CollectionRequest );
 
 /**
- * A hash of path keys to regex validators for those path elements
+ * Specify the name of the taxonomy collection to query
  *
- * @property _pathValidators
- * @type Object
- * @private
- */
-TaxonomiesRequest.prototype._pathValidators = {
-
-	/**
-	 * The only &quot;action&quot; permitted on a taxonomy is to get a list of terms
-	 *
-	 * @property _pathValidators.action
-	 * @type {RegExp}
-	 */
-	action: /terms/
-
-	// No validation on :taxonomy or :term: they can be numeric or a string
-};
-
-/**
- * Specify the name of the taxonomy to query
+ * The collections will not be a strict match to defined taxonomies: *e.g.*, to
+ * get the list of terms for the taxonomy &quot;category,&quot;  you must specify the
+ * collection name &quot;categories&quot; (similarly, specify &quot;tags&quot; to get a list of terms
+ * for the &quot;post_tag&quot; taxonomy).
  *
- * @method taxonomy
+ * To get the dictionary of all available taxonomies, specify the collection
+ * &quot;taxonomy&quot; (slight misnomer: this case will return an object, not the array
+ * that would usually be expected with a &quot;collection&quot; request).
+ *
+ * @method collection
  * @chainable
- * @param {String} taxonomyName The name of the taxonomy to query
+ * @param {String} taxonomyCollection The name of the taxonomy collection to query
  * @return {TaxonomiesRequest} The TaxonomiesRequest instance (for chaining)
  */
-TaxonomiesRequest.prototype.taxonomy = function( taxonomyName ) {
-	this._path.taxonomy = taxonomyName;
+TaxonomiesRequest.prototype.collection = function( taxonomyCollection ) {
+	this._path.collection = taxonomyCollection;
 
 	return this;
 };
@@ -222,21 +221,43 @@ TaxonomiesRequest.prototype.taxonomy = function( taxonomyName ) {
  * @return {TaxonomiesRequest} The TaxonomiesRequest instance (for chaining)
  */
 TaxonomiesRequest.prototype.term = function( term ) {
-	this._path.action = &#x27;terms&#x27;;
 	this._path.term = term;
 
 	return this;
 };
 
 /**
- * Specify that we are requesting a collection of terms for a taxonomy
+ * Search for hierarchical taxonomy terms that are children of the parent term
+ * indicated by the provided term ID
  *
- * @method terms
+ * @example
+ *
+ *     wp.categories().parent( 42 ).then(function( categories ) {
+ *       console.log( &#x27;all of these categories are sub-items of cat ID#42:&#x27; );
+ *       console.log( categories );
+ *     });
+ *
+ * @method parent
  * @chainable
+ * @param {Number} parentId The ID of a (hierarchical) taxonomy term
  * @return {TaxonomiesRequest} The TaxonomiesRequest instance (for chaining)
  */
-TaxonomiesRequest.prototype.terms = function() {
-	this._path.action = &#x27;terms&#x27;;
+TaxonomiesRequest.prototype.parent = function( parentId ) {
+	this.param( &#x27;parent&#x27;, parentId, true );
+
+	return this;
+};
+
+/**
+ * Specify the post for which to retrieve terms
+ *
+ * @method forPost
+ * @chainable
+ * @param {String|Number} post The ID of the post for which to retrieve terms
+ * @return {TaxonomiesRequest} The TaxonomiesRequest instance (for chaining)
+ */
+TaxonomiesRequest.prototype.forPost = function( postId ) {
+	this.param( &#x27;post&#x27;, postId );
 
 	return this;
 };

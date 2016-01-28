@@ -16,7 +16,7 @@
             <div class="project-title">
                 
                 
-                    <h1 class="project-name">wordpress-rest-api</h1> <span class="project-version">0.5.0</span>
+                    <h1 class="project-name">wordpress-rest-api</h1> <span class="project-version">0.6.0</span>
                 
                 
                     <p class="description">A client for interacting with the WordPress REST API</p>
@@ -222,7 +222,7 @@ WP.prototype.posts = function( options ) {
 };
 
 /**
- * Start a request against the &#x60;taxonomies&#x60; endpoint
+ * Start a request for a taxonomy or taxonomy term collection
  *
  * @method taxonomies
  * @param {Object} [options] An options hash for a new TaxonomiesRequest
@@ -237,21 +237,22 @@ WP.prototype.taxonomies = function( options ) {
 /**
  * Start a request for a specific taxonomy object
  *
- * It is repetitive to have to type &#x60;.taxonomies().taxonomy()&#x60; whenever you want to request
- * a taxonomy object or list of terms for a taxonomy. This convenience method lets you
- * create a &#x60;TaxonomiesRequest&#x60; object that is bound to the provided taxonomy name.
+ * It is slightly unintuitive to consider the name of a taxonomy a &quot;term,&quot; as is
+ * needed in order to retrieve the taxonomy object from the .taxonomies() method.
+ * This convenience method lets you create a &#x60;TaxonomiesRequest&#x60; object that is
+ * bound to the provided taxonomy name, without having to utilize the &quot;term&quot; method.
  *
  * @example
  * If your site uses two custom taxonomies, book_genre and book_publisher, before you would
  * have had to request these terms using the verbose form:
  *
- *     wp.taxonomies().taxonomy( &#x27;book_genre&#x27; ).terms()...
- *     wp.taxonomies().taxonomy( &#x27;book_publisher&#x27; )...
+ *     wp.taxonomies().term( &#x27;book_genre&#x27; )
+ *     wp.taxonomies().term( &#x27;book_publisher&#x27; )
  *
  * Using &#x60;.taxonomy()&#x60;, the same query can be achieved much more succinctly:
  *
- *     wp.taxonomy( &#x27;book_genre&#x27; ).terms()...
- *     wp.taxonomy( &#x27;book_publisher&#x27; )...
+ *     wp.taxonomy( &#x27;book_genre&#x27; )
+ *     wp.taxonomy( &#x27;book_publisher&#x27; )
  *
  * @method taxonomy
  * @param {String} taxonomyName The name of the taxonomy to request
@@ -259,7 +260,7 @@ WP.prototype.taxonomies = function( options ) {
  */
 WP.prototype.taxonomy = function( taxonomyName ) {
 	var options = extend( {}, this._options );
-	return new TaxonomiesRequest( options ).taxonomy( taxonomyName );
+	return new TaxonomiesRequest( options ).term( taxonomyName );
 };
 
 /**
@@ -270,34 +271,35 @@ WP.prototype.taxonomy = function( taxonomyName ) {
  * @example
  * These are equivalent:
  *
- *     wp.taxonomies().taxonomy( &#x27;category&#x27; ).terms()
+ *     wp.taxonomies().collection( &#x27;categories&#x27; )
  *     wp.categories()
  *
  * @method categories
- * @return {TaxonomiesRequest} A TaxonomiesRequest object bound to the terms for &quot;category&quot;
+ * @return {TaxonomiesRequest} A TaxonomiesRequest object bound to the categories collection
  */
 WP.prototype.categories = function() {
 	var options = extend( {}, this._options );
-	return new TaxonomiesRequest( options ).taxonomy( &#x27;category&#x27; ).terms();
+	return new TaxonomiesRequest( options ).collection( &#x27;categories&#x27; );
 };
 
 /**
  * Request a list of post_tag terms
  *
- * This is a shortcut method to retrieve the terms for the &quot;post_tag&quot; taxonomy
+ * This is a shortcut method to interact with the collection of terms for the
+ * &quot;post_tag&quot; taxonomy.
  *
  * @example
  * These are equivalent:
  *
- *     wp.taxonomies().taxonomy( &#x27;post_tag&#x27; ).terms()
+ *     wp.taxonomies().collection( &#x27;tags&#x27; )
  *     wp.tags()
  *
  * @method tags
- * @return {TaxonomiesRequest} A TaxonomiesRequest object bound to the terms for &quot;post_tag&quot;
+ * @return {TaxonomiesRequest} A TaxonomiesRequest object bound to the tags collection
  */
 WP.prototype.tags = function() {
 	var options = extend( {}, this._options );
-	return new TaxonomiesRequest( options ).taxonomy( &#x27;post_tag&#x27; ).terms();
+	return new TaxonomiesRequest( options ).collection( &#x27;tags&#x27; );
 };
 
 /**

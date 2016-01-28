@@ -16,7 +16,7 @@
             <div class="project-title">
                 
                 
-                    <h1 class="project-name">wordpress-rest-api</h1> <span class="project-version">0.5.0</span>
+                    <h1 class="project-name">wordpress-rest-api</h1> <span class="project-version">0.6.0</span>
                 
                 
                     <p class="description">A client for interacting with the WordPress REST API</p>
@@ -106,6 +106,7 @@
  */
 var CollectionRequest = require( &#x27;./shared/collection-request&#x27; );
 var inherit = require( &#x27;util&#x27; ).inherits;
+var _ = require( &#x27;lodash&#x27; );
 
 /**
  * PostsRequest extends CollectionRequest to handle the /posts API endpoint
@@ -183,6 +184,9 @@ function PostsRequest( options ) {
 	 * @default [ &#x27;head&#x27;, &#x27;get&#x27;, &#x27;post&#x27; ]
 	 */
 	this._supportedMethods = [ &#x27;head&#x27;, &#x27;get&#x27;, &#x27;post&#x27; ];
+
+	// Default all .posts() requests to assume a query against the WP API v2 endpoints
+	this.namespace( &#x27;wp&#x27; ).version( &#x27;v2&#x27; );
 }
 
 inherit( PostsRequest, CollectionRequest );
@@ -318,6 +322,58 @@ PostsRequest.prototype.statuses = function() {
 	this._supportedMethods = [ &#x27;head&#x27;, &#x27;get&#x27; ];
 
 	return this;
+};
+
+/**
+ * Adds the Year filter into the request to retrieve posts for a given year
+ *
+ * @method year
+ * @chainable
+ * @param {Number} year Integer representation of year requested
+ * @returns {PostsRequest} The PostsRequest instance (for chaining)
+ */
+PostsRequest.prototype.year = function( year ) {
+	return this.filter( &#x27;year&#x27;, year );
+};
+
+/**
+ * Add the monthnum filter into the request to retrieve posts for a given month
+ *
+ * Filters posts by a given month in either Integer or String Format.
+ *
+ * @method month
+ * @chainable
+ * @param {Number|String} month Integer for month or month string (&quot;january&quot;)
+ * @returns {PostsRequest} The PostsRequest instance (for chaining)
+ */
+PostsRequest.prototype.month = function( month ) {
+	if ( _.isString( month ) ) {
+		// Append a arbitrary day and year to the month to parse the string into a Date
+		month = new Date( Date.parse( month + &#x27; 1, 2012&#x27; ) );
+		// If month is NaN, then the passed string is not a valid month.
+		if ( isNaN( month ) ) {
+			return this;
+		}
+		// JS Dates are 0 indexed, WP API requires a 1 indexed integer.
+		month = month.getMonth() + 1;
+	}
+	// If month is a Number, add the monthnum filter to the request
+	if ( _.isNumber( month ) ) {
+		return this.filter( &#x27;monthnum&#x27;, month );
+	}
+	return this;
+};
+
+/**
+ * Add the day filter into the request to retrieve posts for a given day
+ *
+ * @method day
+ * @chainable
+ * @param {Number} day Integer representation of the day requested
+ * @returns {PostsRequest} The PostsRequest instance (for chaining)
+ */
+PostsRequest.prototype.day = function( day ) {
+	return this.filter( &#x27;day&#x27;, day );
 };
 
 module.exports = PostsRequest;

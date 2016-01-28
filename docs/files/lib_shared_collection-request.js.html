@@ -16,7 +16,7 @@
             <div class="project-title">
                 
                 
-                    <h1 class="project-name">wordpress-rest-api</h1> <span class="project-version">0.5.0</span>
+                    <h1 class="project-name">wordpress-rest-api</h1> <span class="project-version">0.6.0</span>
                 
                 
                     <p class="description">A client for interacting with the WordPress REST API</p>
@@ -109,7 +109,8 @@ var WPRequest = require( &#x27;./wp-request&#x27; );
 var _ = require( &#x27;lodash&#x27; );
 var extend = require( &#x27;node.extend&#x27; );
 var inherit = require( &#x27;util&#x27; ).inherits;
-var qs = require( &#x27;qs&#x27; );
+
+var alphaNumericSort = require( &#x27;./alphanumeric-sort&#x27; );
 
 /**
  * CollectionRequest extends WPRequest with properties &amp; methods for filtering collections
@@ -203,38 +204,6 @@ inherit( CollectionRequest, WPRequest );
 // ======================
 
 /**
- * Process arrays of taxonomy terms into query parameters.
- * All terms listed in the arrays will be required (AND behavior).
- *
- * @example
- *     prepareTaxonomies({
- *         tag: [ &#x27;tag1 &#x27;, &#x27;tag2&#x27; ], // by term slug
- *         cat: [ 7 ] // by term ID
- *     }) === {
- *         tag: &#x27;tag1+tag2&#x27;,
- *         cat: &#x27;7&#x27;
- *     }
- *
- * @param {Object} taxonomyFilters An object of taxonomy term arrays, keyed by taxonomy name
- * @return {Object} An object of prepareFilters-ready query arg and query param value pairs
- */
-function prepareTaxonomies( taxonomyFilters ) {
-	if ( ! taxonomyFilters ) {
-		return [];
-	}
-
-	return _.reduce( taxonomyFilters, function( result, terms, key ) {
-		// Trim whitespace and concatenate multiple terms with +
-		result[ key ] = terms.map(function( term ) {
-			// Coerce term into a string so that trim() won&#x27;t fail
-			term = term + &#x27;&#x27;;
-			return term.trim().toLowerCase();
-		}).join( &#x27;+&#x27; );
-		return result;
-	}, {});
-}
-
-/**
  * Utility function for sorting arrays of numbers or strings.
  *
  * @param {String|Number} a The first comparator operand
@@ -255,98 +224,9 @@ function alphaNumericSort( a, b ) {
 // =================
 
 /**
- * Process the endpoint query&#x27;s filter objects into a valid query string.
- * Nested objects and Array properties are rendered with indexed array syntax.
- *
- * @example
- *     _renderQuery({ p1: &#x27;val1&#x27;, p2: &#x27;val2&#x27; });  // ?p1=val1&amp;p2=val2
- *     _renderQuery({ obj: { prop: &#x27;val&#x27; } });    // ?obj[prop]=val
- *     _renderQuery({ arr: [ &#x27;val1&#x27;, &#x27;val2&#x27; ] }); // ?arr[0]=val1&amp;arr[1]=val2
- *
- * @private
- *
- * @method _renderQuery
- * @return {String} A query string representing the specified filter parameters
- */
-CollectionRequest.prototype._renderQuery = function() {
-	// Build the full query parameters object
-	var queryParams = extend( {}, this._params );
-
-	// Prepare the taxonomies and merge with other filter values
-	var taxonomies = prepareTaxonomies( this._taxonomyFilters );
-	queryParams.filter = extend( {}, this._filters, taxonomies );
-
-	// Parse query parameters object into a query string, sorting the object
-	// properties by alphabetical order (consistent property ordering can make
-	// for easier caching of request URIs)
-	var queryString = qs.stringify( queryParams )
-		.split( &#x27;&amp;&#x27; )
-		.sort()
-		.join( &#x27;&amp;&#x27; );
-
-	// Prepend a &quot;?&quot; if a query is present, and return
-	return ( queryString === &#x27;&#x27; ) ? &#x27;&#x27; : &#x27;?&#x27; + queryString;
-};
-
-/**
- * Set a parameter to render into the final query URI.
- *
- * @method param
- * @chainable
- * @param {String|Object} props The name of the parameter to set, or an object containing
- *                              parameter keys and their corresponding values
- * @param {String|Number|Array} [value] The value of the parameter being set
- * @param {Boolean} [merge] Whether to merge the value (true) or replace it (false, default)
- * @return {CollectionRequest} The CollectionRequest instance (for chaining)
- */
-CollectionRequest.prototype.param = function( props, value, merge ) {
-	merge = merge || false;
-
-	// We can use the same iterator function below to handle explicit key-value pairs if we
-	// convert them into to an object we can iterate over:
-	if ( _.isString( props ) &amp;&amp; value ) {
-		props = _.object([[ props, value ]]);
-	}
-
-	// Iterate through the properties
-	_.each( props, function( value, key ) {
-		var currentVal = this._params[ key ];
-
-		// Simple case: setting for the first time, or not merging
-		if ( ! currentVal || ! merge ) {
-
-			// Arrays should be de-duped and sorted
-			if ( _.isArray( value ) ) {
-				value = _.unique( value ).sort( alphaNumericSort );
-			}
-
-			// Set the value
-			this._params[ key ] = value;
-
-			// Continue
-			return;
-		}
-
-		// value and currentVal must both be arrays in order to merge
-		if ( ! _.isArray( currentVal ) ) {
-			currentVal = [ currentVal ];
-		}
-
-		if ( ! _.isArray( value ) ) {
-			value = [ value ];
-		}
-
-		// Concat the new values onto the old (and sort)
-		this._params[ key ] = _.union( currentVal, value ).sort( alphaNumericSort );
-	}.bind( this ));
-
-	return this;
-};
-
-/**
- * Set the pagination of a request. Use in conjunction with &#x60;filter( posts_per_page )&#x60; for
- * explicit pagination handling. (The number of pages in a response can be retrieved from
- * the response&#x27;s &#x60;_paging.totalPages&#x60; property.)
+ * Set the pagination of a request. Use in conjunction with &#x60;.perPage()&#x60; for explicit
+ * pagination handling. (The number of pages in a response can be retrieved from the
+ * response&#x27;s &#x60;_paging.totalPages&#x60; property.)
  *
  * @method page
  * @chainable
@@ -358,31 +238,15 @@ CollectionRequest.prototype.page = function( pageNumber ) {
 };
 
 /**
- * Set the context of the request. Used primarily to expose private values on a request
- * object, by setting the context to &quot;edit&quot;.
+ * Set the number of items to be returned in a page of responses.
  *
- * @method context
+ * @method perPage
  * @chainable
- * @param {String} context The context to set on the request
+ * @param {Number} itemsPerPage The number of items to return in one page of results
  * @return {CollectionRequest} The CollectionRequest instance (for chaining)
  */
-CollectionRequest.prototype.context = function( context ) {
-	if ( context === &#x27;edit&#x27; ) {
-		// Force basic authentication for edit context
-		this.auth();
-	}
-	return this.param( &#x27;context&#x27;, context );
-};
-
-/**
- * Convenience wrapper for &#x60;.context( &#x27;edit&#x27; )&#x60;
- *
- * @method edit
- * @chainable
- * @return {CollectionRequest} The CollectionRequest instance (for chaining)
- */
-CollectionRequest.prototype.edit = function() {
-	return this.context( &#x27;edit&#x27; );
+CollectionRequest.prototype.perPage = function( itemsPerPage ) {
+	return this.param( &#x27;per_page&#x27;, itemsPerPage );
 };
 
 /**
@@ -412,7 +276,7 @@ CollectionRequest.prototype.edit = function() {
 CollectionRequest.prototype.filter = function( props, value ) {
 	// convert the property name string &#x60;props&#x60; and value &#x60;value&#x60; into an object
 	if ( _.isString( props ) &amp;&amp; value ) {
-		props = _.object([[ props, value ]]);
+		props = _.zipObject([[ props, value ]]);
 	}
 
 	this._filters = extend( this._filters, props );
@@ -503,7 +367,7 @@ CollectionRequest.prototype.tag = function( tag ) {
  * @return {CollectionRequest} The CollectionRequest instance (for chaining)
  */
 CollectionRequest.prototype.search = function( searchString ) {
-	return this.filter( &#x27;s&#x27;,  searchString );
+	return this.param( &#x27;search&#x27;,  searchString );
 };
 
 /**
@@ -517,38 +381,96 @@ CollectionRequest.prototype.search = function( searchString ) {
  */
 CollectionRequest.prototype.author = function( author ) {
 	if ( _.isString( author ) ) {
-		delete this._filters.author;
+		delete this._params.author;
 		return this.filter( &#x27;author_name&#x27;, author );
 	}
 	if ( _.isNumber( author ) ) {
 		delete this._filters.author_name;
-		return this.filter( &#x27;author&#x27;, author );
+		return this.param( &#x27;author&#x27;, author );
 	}
 	throw new Error( &#x27;author must be either a nicename string or numeric ID&#x27; );
 };
 
 /**
- * Query a collection of posts for a post with a specific slug.
+ * Query a collection for members with a specific slug.
+ *
+ * @method slug
+ * @chainable
+ * @param {String} slug A post slug (slug), e.g. &quot;hello-world&quot;
+ * @return {CollectionRequest} The CollectionRequest instance (for chaining)
+ */
+CollectionRequest.prototype.slug = function( slug ) {
+	return this.param( &#x27;slug&#x27;, slug );
+};
+
+/**
+ * Alias for .slug()
  *
  * @method name
+ * @alias slug
  * @chainable
  * @param {String} slug A post name (slug), e.g. &quot;hello-world&quot;
  * @return {CollectionRequest} The CollectionRequest instance (for chaining)
  */
 CollectionRequest.prototype.name = function( slug ) {
-	return this.filter( &#x27;name&#x27;, slug );
+	return this.slug( slug );
 };
 
 /**
- * Alias for &#x60;.name()&#x60;.
+ * Query for posts published in a given year.
  *
- * @method slug
- * @alias name
+ * @method year
  * @chainable
- * @param {String} slug A post slug, e.g. &quot;hello-world&quot;
- * @return {CollectionRequest} The CollectionRequest instance (for chaining)
+ * @param {Number} year integer representation of year requested
+ * @returns {CollectionRequest} The CollectionRequest instance (for chaining)
  */
-CollectionRequest.prototype.slug = CollectionRequest.prototype.name;
+CollectionRequest.prototype.year = function( year ) {
+	return this.filter( &#x27;year&#x27;, year );
+};
+
+/**
+ * Query for posts published in a given month, either by providing the number
+ * of the requested month (e.g. 3), or the month&#x27;s name as a string (e.g. &quot;March&quot;)
+ *
+ * @method month
+ * @chainable
+ * @param {Number|String} month Integer for month (1) or month string (&quot;January&quot;)
+ * @returns {CollectionRequest} The PostsRequest instance (for chaining)
+ */
+CollectionRequest.prototype.month = function( month ) {
+	var monthDate;
+	if ( _.isString( month ) ) {
+		// Append a arbitrary day and year to the month to parse the string into a Date
+		monthDate = new Date( Date.parse( month + &#x27; 1, 2012&#x27; ) );
+
+		// If the generated Date is NaN, then the passed string is not a valid month
+		if ( isNaN( monthDate ) ) {
+			return this;
+		}
+
+		// JS Dates are 0 indexed, but the WP API requires a 1-indexed integer
+		return this.filter( &#x27;monthnum&#x27;, monthDate.getMonth() + 1 );
+	}
+
+	// If month is a Number, add the monthnum filter to the request
+	if ( _.isNumber( month ) ) {
+		return this.filter( &#x27;monthnum&#x27;, month );
+	}
+
+	return this;
+};
+
+/**
+ * Add the day filter into the request to retrieve posts for a given day
+ *
+ * @method day
+ * @chainable
+ * @param {Number} day Integer representation of the day requested
+ * @returns {CollectionRequest} The CollectionRequest instance (for chaining)
+ */
+CollectionRequest.prototype.day = function( day ) {
+	return this.filter( &#x27;day&#x27;, day );
+};
 
 module.exports = CollectionRequest;
 

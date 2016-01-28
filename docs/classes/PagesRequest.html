@@ -16,7 +16,7 @@
             <div class="project-title">
                 
                 
-                    <h1 class="project-name">wordpress-rest-api</h1> <span class="project-version">0.5.0</span>
+                    <h1 class="project-name">wordpress-rest-api</h1> <span class="project-version">0.6.0</span>
                 
                 
                     <p class="description">A client for interacting with the WordPress REST API</p>
@@ -327,6 +327,13 @@
                 </li>
             
                 <li class="index-item method inherited">
+                    <a href="#method_day">day</a>
+
+                    
+                    
+                </li>
+            
+                <li class="index-item method inherited">
                     <a href="#method_delete">delete</a>
 
                     
@@ -335,6 +342,13 @@
             
                 <li class="index-item method inherited">
                     <a href="#method_edit">edit</a>
+
+                    
+                    
+                </li>
+            
+                <li class="index-item method inherited">
+                    <a href="#method_embed">embed</a>
 
                     
                     
@@ -369,7 +383,21 @@
                 </li>
             
                 <li class="index-item method inherited">
+                    <a href="#method_month">month</a>
+
+                    
+                    
+                </li>
+            
+                <li class="index-item method inherited">
                     <a href="#method_name">name</a>
+
+                    
+                    
+                </li>
+            
+                <li class="index-item method inherited">
+                    <a href="#method_namespace">namespace</a>
 
                     
                     
@@ -391,6 +419,13 @@
             
                 <li class="index-item method">
                     <a href="#method_path">path</a>
+
+                    
+                    
+                </li>
+            
+                <li class="index-item method inherited">
+                    <a href="#method_perPage">perPage</a>
 
                     
                     
@@ -454,6 +489,20 @@
             
                 <li class="index-item method inherited">
                     <a href="#method_then">then</a>
+
+                    
+                    
+                </li>
+            
+                <li class="index-item method inherited">
+                    <a href="#method_version">version</a>
+
+                    
+                    
+                </li>
+            
+                <li class="index-item method inherited">
+                    <a href="#method_year">year</a>
 
                     
                     
@@ -602,8 +651,8 @@
     <div class="meta">
         
             <p>Inherited from
-            <a href="../classes/CollectionRequest.html#property__params" class="type">
-                CollectionRequest
+            <a href="../classes/WPRequest.html#property__params" class="type">
+                WPRequest
             </a>
             
             but overwritten in
@@ -718,7 +767,7 @@
             
         
         
-        <a href="../files/lib_pages.js.html#l90"><code>lib&#x2F;pages.js:90</code></a>
+        <a href="../files/lib_pages.js.html#l93"><code>lib&#x2F;pages.js:93</code></a>
         
         </p>
 
@@ -770,7 +819,7 @@
             
         
         
-        <a href="../files/lib_pages.js.html#l101"><code>lib&#x2F;pages.js:101</code></a>
+        <a href="../files/lib_pages.js.html#l104"><code>lib&#x2F;pages.js:104</code></a>
         
         </p>
 
@@ -822,7 +871,7 @@
             
         
         
-        <a href="../files/lib_pages.js.html#l110"><code>lib&#x2F;pages.js:110</code></a>
+        <a href="../files/lib_pages.js.html#l113"><code>lib&#x2F;pages.js:113</code></a>
         
         </p>
 
@@ -1225,7 +1274,7 @@
             
         
         
-        <a href="../files/lib_shared_wp-request.js.html#l320"><code>lib&#x2F;shared&#x2F;wp-request.js:320</code></a>
+        <a href="../files/lib_shared_wp-request.js.html#l512"><code>lib&#x2F;shared&#x2F;wp-request.js:512</code></a>
         
         </p>
 
@@ -1355,7 +1404,7 @@
             
         
         
-        <a href="../files/lib_shared_wp-request.js.html#l267"><code>lib&#x2F;shared&#x2F;wp-request.js:267</code></a>
+        <a href="../files/lib_shared_wp-request.js.html#l452"><code>lib&#x2F;shared&#x2F;wp-request.js:452</code></a>
         
         </p>
 
@@ -1455,7 +1504,7 @@
             
         
         
-        <a href="../files/lib_shared_wp-request.js.html#l287"><code>lib&#x2F;shared&#x2F;wp-request.js:287</code></a>
+        <a href="../files/lib_shared_wp-request.js.html#l472"><code>lib&#x2F;shared&#x2F;wp-request.js:472</code></a>
         
         </p>
 
@@ -1529,11 +1578,11 @@
         
             
                 <p>Inherited from
-                <a href="../classes/CollectionRequest.html#method__renderQuery" class="type">CollectionRequest</a>:
+                <a href="../classes/WPRequest.html#method__renderQuery" class="type">WPRequest</a>:
             
         
         
-        <a href="../files/lib_shared_collection-request.js.html#l157"><code>lib&#x2F;shared&#x2F;collection-request.js:157</code></a>
+        <a href="../files/lib_shared_wp-request.js.html#l321"><code>lib&#x2F;shared&#x2F;wp-request.js:321</code></a>
         
         </p>
 
@@ -1623,7 +1672,7 @@ _renderQuery({ arr: [ &#39;val1&#39;, &#39;val2&#39; ] }); // ?arr[0]=val1&amp;a
             
         
         
-        <a href="../files/lib_shared_wp-request.js.html#l302"><code>lib&#x2F;shared&#x2F;wp-request.js:302</code></a>
+        <a href="../files/lib_shared_wp-request.js.html#l494"><code>lib&#x2F;shared&#x2F;wp-request.js:494</code></a>
         
         </p>
 
@@ -1673,7 +1722,7 @@ _renderQuery({ arr: [ &#39;val1&#39;, &#39;val2&#39; ] }); // ?arr[0]=val1&amp;a
             
                 <li class="arg">
                     
-                        <code class="optional">[username]</code>
+                        <code class="optional">[usrOrObj]</code>
                     
                 </li>
             
@@ -1717,7 +1766,7 @@ _renderQuery({ arr: [ &#39;val1&#39;, &#39;val2&#39; ] }); // ?arr[0]=val1&amp;a
             
         
         
-        <a href="../files/lib_shared_wp-request.js.html#l357"><code>lib&#x2F;shared&#x2F;wp-request.js:357</code></a>
+        <a href="../files/lib_shared_wp-request.js.html#l579"><code>lib&#x2F;shared&#x2F;wp-request.js:579</code></a>
         
         </p>
 
@@ -1742,15 +1791,17 @@ _renderQuery({ arr: [ &#39;val1&#39;, &#39;val2&#39; ] }); // ?arr[0]=val1&amp;a
                 
                     <li class="param">
                         
-                            <code class="param-name optional">[username]</code>
-                            <span class="type">String</span>
+                            <code class="param-name optional">[usrOrObj]</code>
+                            <span class="type">String | Object</span>
                             <span class="flag optional" title="This parameter is optional.">optional</span>
                         
 
                         
 
                         <div class="param-description">
-                            <p>A username string for basic authentication</p>
+                            <p>A username string for basic authentication,
+                                  or an object with &#39;username&#39; and &#39;password&#39;
+                                  string properties</p>
 
                         </div>
 
@@ -1767,7 +1818,8 @@ _renderQuery({ arr: [ &#39;val1&#39;, &#39;val2&#39; ] }); // ?arr[0]=val1&amp;a
                         
 
                         <div class="param-description">
-                            <p>A user password string for basic authentication</p>
+                            <p>A user password string for basic authentication
+                                  (ignored if usrOrObj is an object)</p>
 
                         </div>
 
@@ -1860,7 +1912,7 @@ _renderQuery({ arr: [ &#39;val1&#39;, &#39;val2&#39; ] }); // ?arr[0]=val1&amp;a
             
         
         
-        <a href="../files/lib_shared_collection-request.js.html#l409"><code>lib&#x2F;shared&#x2F;collection-request.js:409</code></a>
+        <a href="../files/lib_shared_collection-request.js.html#l273"><code>lib&#x2F;shared&#x2F;collection-request.js:273</code></a>
         
         </p>
 
@@ -1973,7 +2025,7 @@ This method will replace any previous &#39;author&#39; query parameters that had
             
         
         
-        <a href="../files/lib_shared_collection-request.js.html#l374"><code>lib&#x2F;shared&#x2F;collection-request.js:374</code></a>
+        <a href="../files/lib_shared_collection-request.js.html#l238"><code>lib&#x2F;shared&#x2F;collection-request.js:238</code></a>
         
         </p>
 
@@ -2088,7 +2140,7 @@ This method will replace any previous &#39;author&#39; query parameters that had
             
         
         
-        <a href="../files/lib_pages.js.html#l149"><code>lib&#x2F;pages.js:149</code></a>
+        <a href="../files/lib_pages.js.html#l152"><code>lib&#x2F;pages.js:152</code></a>
         
         </p>
 
@@ -2192,7 +2244,7 @@ This method will replace any previous &#39;author&#39; query parameters that had
             
         
         
-        <a href="../files/lib_pages.js.html#l135"><code>lib&#x2F;pages.js:135</code></a>
+        <a href="../files/lib_pages.js.html#l138"><code>lib&#x2F;pages.js:138</code></a>
         
         </p>
 
@@ -2252,7 +2304,7 @@ This method will replace any previous &#39;author&#39; query parameters that had
 
     
         <span class="returns-inline">
-            <span class="type"><a href="../classes/CollectionRequest.html" class="crosslink">CollectionRequest</a></span>
+            <span class="type"><a href="../classes/WPRequest.html" class="crosslink">WPRequest</a></span>
         </span>
     
 
@@ -2276,11 +2328,11 @@ This method will replace any previous &#39;author&#39; query parameters that had
         
             
                 <p>Inherited from
-                <a href="../classes/CollectionRequest.html#method_context" class="type">CollectionRequest</a>:
+                <a href="../classes/WPRequest.html#method_context" class="type">WPRequest</a>:
             
         
         
-        <a href="../files/lib_shared_collection-request.js.html#l260"><code>lib&#x2F;shared&#x2F;collection-request.js:260</code></a>
+        <a href="../files/lib_shared_wp-request.js.html#l410"><code>lib&#x2F;shared&#x2F;wp-request.js:410</code></a>
         
         </p>
 
@@ -2331,6 +2383,118 @@ object, by setting the context to &quot;edit&quot;.</p>
                 <div class="returns-description">
                     
                         
+                            <span class="type"><a href="../classes/WPRequest.html" class="crosslink">WPRequest</a></span>:
+                        
+                        <p>The WPRequest instance (for chaining)</p>
+
+                    
+                </div>
+            </div>
+        
+
+        
+    </div>
+</div>
+
+        
+            <a name="method_day" class="anchor-link"></a>
+<div class="method item inherited">
+    <h3 class="name"><code>day</code>
+
+    
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code>day</code>
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
+    
+
+    
+        <span class="returns-inline">
+            <span class="type"><a href="../classes/CollectionRequest.html" class="crosslink">CollectionRequest</a></span>
+        </span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <span class="flag chainable">chainable</span>
+    
+
+    
+
+    </h3>
+
+    <div class="meta">
+        
+            
+                <p>Inherited from
+                <a href="../classes/CollectionRequest.html#method_day" class="type">CollectionRequest</a>:
+            
+        
+        
+        <a href="../files/lib_shared_collection-request.js.html#l363"><code>lib&#x2F;shared&#x2F;collection-request.js:363</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="extended-detail">
+
+        <div class="description">
+            <p>Add the day filter into the request to retrieve posts for a given day</p>
+
+        </div>
+
+        
+            <div class="params">
+                <h4>Parameters:</h4>
+
+                <ul class="params-list">
+                
+                    <li class="param">
+                        
+                            <code class="param-name">day</code>
+                            <span class="type">Number</span>
+                        
+
+                        
+
+                        <div class="param-description">
+                            <p>Integer representation of the day requested</p>
+
+                        </div>
+
+                        
+                    </li>
+                
+                </ul>
+            </div>
+        
+
+        
+            <div class="returns">
+                <h4>Returns:</h4>
+
+                <div class="returns-description">
+                    
+                        
                             <span class="type"><a href="../classes/CollectionRequest.html" class="crosslink">CollectionRequest</a></span>:
                         
                         <p>The CollectionRequest instance (for chaining)</p>
@@ -2352,6 +2516,12 @@ object, by setting the context to &quot;edit&quot;.</p>
     
         <div class="args">
             <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code class="optional">[data]</code>
+                    
+                </li>
             
                 <li class="arg">
                     
@@ -2393,7 +2563,7 @@ object, by setting the context to &quot;edit&quot;.</p>
             
         
         
-        <a href="../files/lib_shared_wp-request.js.html#l449"><code>lib&#x2F;shared&#x2F;wp-request.js:449</code></a>
+        <a href="../files/lib_shared_wp-request.js.html#l678"><code>lib&#x2F;shared&#x2F;wp-request.js:678</code></a>
         
         </p>
 
@@ -2417,6 +2587,23 @@ object, by setting the context to &quot;edit&quot;.</p>
                 
                     <li class="param">
                         
+                            <code class="param-name optional">[data]</code>
+                            <span class="type">Object</span>
+                            <span class="flag optional" title="This parameter is optional.">optional</span>
+                        
+
+                        
+
+                        <div class="param-description">
+                            <p>Data to send along with the DELETE request</p>
+
+                        </div>
+
+                        
+                    </li>
+                
+                    <li class="param">
+                        
                             <code class="param-name optional">[callback]</code>
                             <span class="type">Function</span>
                             <span class="flag optional" title="This parameter is optional.">optional</span>
@@ -2429,38 +2616,6 @@ object, by setting the context to &quot;edit&quot;.</p>
 
                         </div>
 
-                        
-                            <ul class="params-list">
-                                
-                                <li class="param">
-                                    
-                                        <code class="param-name">err</code>
-                                        <span class="type">Error | Object</span>
-                                    
-
-                                    <div class="param-description">
-                                        <p>Any errors encountered during the request</p>
-
-                                    </div>
-
-                                    
-                                </li>
-                                
-                                <li class="param">
-                                    
-                                        <code class="param-name">result</code>
-                                        <span class="type">Object</span>
-                                    
-
-                                    <div class="param-description">
-                                        <p>The body of the server response</p>
-
-                                    </div>
-
-                                    
-                                </li>
-                                
-                            </ul>
                         
                     </li>
                 
@@ -2499,7 +2654,7 @@ object, by setting the context to &quot;edit&quot;.</p>
 
     
         <span class="returns-inline">
-            <span class="type"><a href="../classes/CollectionRequest.html" class="crosslink">CollectionRequest</a></span>
+            <span class="type"><a href="../classes/WPRequest.html" class="crosslink">WPRequest</a></span>
         </span>
     
 
@@ -2523,11 +2678,11 @@ object, by setting the context to &quot;edit&quot;.</p>
         
             
                 <p>Inherited from
-                <a href="../classes/CollectionRequest.html#method_edit" class="type">CollectionRequest</a>:
+                <a href="../classes/WPRequest.html#method_edit" class="type">WPRequest</a>:
             
         
         
-        <a href="../files/lib_shared_collection-request.js.html#l277"><code>lib&#x2F;shared&#x2F;collection-request.js:277</code></a>
+        <a href="../files/lib_shared_wp-request.js.html#l427"><code>lib&#x2F;shared&#x2F;wp-request.js:427</code></a>
         
         </p>
 
@@ -2553,9 +2708,87 @@ object, by setting the context to &quot;edit&quot;.</p>
                 <div class="returns-description">
                     
                         
-                            <span class="type"><a href="../classes/CollectionRequest.html" class="crosslink">CollectionRequest</a></span>:
+                            <span class="type"><a href="../classes/WPRequest.html" class="crosslink">WPRequest</a></span>:
                         
-                        <p>The CollectionRequest instance (for chaining)</p>
+                        <p>The WPRequest instance (for chaining)</p>
+
+                    
+                </div>
+            </div>
+        
+
+        
+    </div>
+</div>
+
+        
+            <a name="method_embed" class="anchor-link"></a>
+<div class="method item inherited">
+    <h3 class="name"><code>embed</code>
+
+    
+        <span class="paren">()</span>
+    
+
+    
+        <span class="returns-inline">
+            <span class="type"><a href="../classes/WPRequest.html" class="crosslink">WPRequest</a></span>
+        </span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <span class="flag chainable">chainable</span>
+    
+
+    
+
+    </h3>
+
+    <div class="meta">
+        
+            
+                <p>Inherited from
+                <a href="../classes/WPRequest.html#method_embed" class="type">WPRequest</a>:
+            
+        
+        
+        <a href="../files/lib_shared_wp-request.js.html#l438"><code>lib&#x2F;shared&#x2F;wp-request.js:438</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="extended-detail">
+
+        <div class="description">
+            <p>Return embedded resources as part of the response payload.</p>
+
+        </div>
+
+        
+
+        
+            <div class="returns">
+                <h4>Returns:</h4>
+
+                <div class="returns-description">
+                    
+                        
+                            <span class="type"><a href="../classes/WPRequest.html" class="crosslink">WPRequest</a></span>:
+                        
+                        <p>The WPRequest instance (for chaining)</p>
 
                     
                 </div>
@@ -2621,7 +2854,7 @@ object, by setting the context to &quot;edit&quot;.</p>
             
         
         
-        <a href="../files/lib_shared_collection-request.js.html#l288"><code>lib&#x2F;shared&#x2F;collection-request.js:288</code></a>
+        <a href="../files/lib_shared_collection-request.js.html#l152"><code>lib&#x2F;shared&#x2F;collection-request.js:152</code></a>
         
         </p>
 
@@ -2771,7 +3004,7 @@ wp.filter( &#39;post_status&#39;, &#39;publish&#39; ).filter( &#39;category_name
             
         
         
-        <a href="../files/lib_shared_wp-request.js.html#l394"><code>lib&#x2F;shared&#x2F;wp-request.js:394</code></a>
+        <a href="../files/lib_shared_wp-request.js.html#l629"><code>lib&#x2F;shared&#x2F;wp-request.js:629</code></a>
         
         </p>
 
@@ -2807,38 +3040,6 @@ wp.filter( &#39;post_status&#39;, &#39;publish&#39; ).filter( &#39;category_name
 
                         </div>
 
-                        
-                            <ul class="params-list">
-                                
-                                <li class="param">
-                                    
-                                        <code class="param-name">err</code>
-                                        <span class="type">Error | Object</span>
-                                    
-
-                                    <div class="param-description">
-                                        <p>Any errors encountered during the request</p>
-
-                                    </div>
-
-                                    
-                                </li>
-                                
-                                <li class="param">
-                                    
-                                        <code class="param-name">result</code>
-                                        <span class="type">Object</span>
-                                    
-
-                                    <div class="param-description">
-                                        <p>The body of the server response</p>
-
-                                    </div>
-
-                                    
-                                </li>
-                                
-                            </ul>
                         
                     </li>
                 
@@ -2915,7 +3116,7 @@ wp.filter( &#39;post_status&#39;, &#39;publish&#39; ).filter( &#39;category_name
             
         
         
-        <a href="../files/lib_shared_wp-request.js.html#l465"><code>lib&#x2F;shared&#x2F;wp-request.js:465</code></a>
+        <a href="../files/lib_shared_wp-request.js.html#l697"><code>lib&#x2F;shared&#x2F;wp-request.js:697</code></a>
         
         </p>
 
@@ -2951,38 +3152,6 @@ wp.filter( &#39;post_status&#39;, &#39;publish&#39; ).filter( &#39;category_name
 
                         </div>
 
-                        
-                            <ul class="params-list">
-                                
-                                <li class="param">
-                                    
-                                        <code class="param-name">err</code>
-                                        <span class="type">Error | Object</span>
-                                    
-
-                                    <div class="param-description">
-                                        <p>Any errors encountered during the request</p>
-
-                                    </div>
-
-                                    
-                                </li>
-                                
-                                <li class="param">
-                                    
-                                        <code class="param-name">result</code>
-                                        <span class="type">Object</span>
-                                    
-
-                                    <div class="param-description">
-                                        <p>The headers from the server response</p>
-
-                                    </div>
-
-                                    
-                                </li>
-                                
-                            </ul>
                         
                     </li>
                 
@@ -3052,7 +3221,7 @@ wp.filter( &#39;post_status&#39;, &#39;publish&#39; ).filter( &#39;category_name
             
         
         
-        <a href="../files/lib_pages.js.html#l120"><code>lib&#x2F;pages.js:120</code></a>
+        <a href="../files/lib_pages.js.html#l123"><code>lib&#x2F;pages.js:123</code></a>
         
         </p>
 
@@ -3081,6 +3250,119 @@ wp.filter( &#39;post_status&#39;, &#39;publish&#39; ).filter( &#39;category_name
                             <span class="type"><a href="../classes/PagesRequest.html" class="crosslink">PagesRequest</a></span>:
                         
                         <p>The PagesRequest instance (for chaining)</p>
+
+                    
+                </div>
+            </div>
+        
+
+        
+    </div>
+</div>
+
+        
+            <a name="method_month" class="anchor-link"></a>
+<div class="method item inherited">
+    <h3 class="name"><code>month</code>
+
+    
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code>month</code>
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
+    
+
+    
+        <span class="returns-inline">
+            <span class="type"><a href="../classes/CollectionRequest.html" class="crosslink">CollectionRequest</a></span>
+        </span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <span class="flag chainable">chainable</span>
+    
+
+    
+
+    </h3>
+
+    <div class="meta">
+        
+            
+                <p>Inherited from
+                <a href="../classes/CollectionRequest.html#method_month" class="type">CollectionRequest</a>:
+            
+        
+        
+        <a href="../files/lib_shared_collection-request.js.html#l331"><code>lib&#x2F;shared&#x2F;collection-request.js:331</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="extended-detail">
+
+        <div class="description">
+            <p>Query for posts published in a given month, either by providing the number
+of the requested month (e.g. 3), or the month&#39;s name as a string (e.g. &quot;March&quot;)</p>
+
+        </div>
+
+        
+            <div class="params">
+                <h4>Parameters:</h4>
+
+                <ul class="params-list">
+                
+                    <li class="param">
+                        
+                            <code class="param-name">month</code>
+                            <span class="type">Number | String</span>
+                        
+
+                        
+
+                        <div class="param-description">
+                            <p>Integer for month (1) or month string (&quot;January&quot;)</p>
+
+                        </div>
+
+                        
+                    </li>
+                
+                </ul>
+            </div>
+        
+
+        
+            <div class="returns">
+                <h4>Returns:</h4>
+
+                <div class="returns-description">
+                    
+                        
+                            <span class="type"><a href="../classes/CollectionRequest.html" class="crosslink">CollectionRequest</a></span>:
+                        
+                        <p>The PostsRequest instance (for chaining)</p>
 
                     
                 </div>
@@ -3140,7 +3422,7 @@ wp.filter( &#39;post_status&#39;, &#39;publish&#39; ).filter( &#39;category_name
             
         
         
-        <a href="../files/lib_shared_collection-request.js.html#l430"><code>lib&#x2F;shared&#x2F;collection-request.js:430</code></a>
+        <a href="../files/lib_shared_collection-request.js.html#l306"><code>lib&#x2F;shared&#x2F;collection-request.js:306</code></a>
         
         </p>
 
@@ -3153,7 +3435,7 @@ wp.filter( &#39;post_status&#39;, &#39;publish&#39; ).filter( &#39;category_name
     <div class="extended-detail">
 
         <div class="description">
-            <p>Query a collection of posts for a post with a specific slug.</p>
+            <p>Alias for .slug()</p>
 
         </div>
 
@@ -3193,6 +3475,120 @@ wp.filter( &#39;post_status&#39;, &#39;publish&#39; ).filter( &#39;category_name
                             <span class="type"><a href="../classes/CollectionRequest.html" class="crosslink">CollectionRequest</a></span>:
                         
                         <p>The CollectionRequest instance (for chaining)</p>
+
+                    
+                </div>
+            </div>
+        
+
+        
+    </div>
+</div>
+
+        
+            <a name="method_namespace" class="anchor-link"></a>
+<div class="method item inherited">
+    <h3 class="name"><code>namespace</code>
+
+    
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code>namespace</code>
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
+    
+
+    
+        <span class="returns-inline">
+            <span class="type"><a href="../classes/WPRequest.html" class="crosslink">WPRequest</a></span>
+        </span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <span class="flag chainable">chainable</span>
+    
+
+    
+
+    </h3>
+
+    <div class="meta">
+        
+            
+                <p>Inherited from
+                <a href="../classes/WPRequest.html#method_namespace" class="type">WPRequest</a>:
+            
+        
+        
+        <a href="../files/lib_shared_wp-request.js.html#l549"><code>lib&#x2F;shared&#x2F;wp-request.js:549</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="extended-detail">
+
+        <div class="description">
+            <p>Set the namespace of the request, e.g. to specify the API root for routes
+registered by wp core (&quot;wp&quot;) or by any given plugin. Any previously-set
+namespace will be overwritten by subsequent calls to the method.</p>
+
+        </div>
+
+        
+            <div class="params">
+                <h4>Parameters:</h4>
+
+                <ul class="params-list">
+                
+                    <li class="param">
+                        
+                            <code class="param-name">namespace</code>
+                            <span class="type">String</span>
+                        
+
+                        
+
+                        <div class="param-description">
+                            <p>A namespace string, e.g. &quot;wp&quot;</p>
+
+                        </div>
+
+                        
+                    </li>
+                
+                </ul>
+            </div>
+        
+
+        
+            <div class="returns">
+                <h4>Returns:</h4>
+
+                <div class="returns-description">
+                    
+                        
+                            <span class="type"><a href="../classes/WPRequest.html" class="crosslink">WPRequest</a></span>:
+                        
+                        <p>The WPRequest instance (for chaining)</p>
 
                     
                 </div>
@@ -3252,7 +3648,7 @@ wp.filter( &#39;post_status&#39;, &#39;publish&#39; ).filter( &#39;category_name
             
         
         
-        <a href="../files/lib_shared_collection-request.js.html#l246"><code>lib&#x2F;shared&#x2F;collection-request.js:246</code></a>
+        <a href="../files/lib_shared_collection-request.js.html#l126"><code>lib&#x2F;shared&#x2F;collection-request.js:126</code></a>
         
         </p>
 
@@ -3265,9 +3661,9 @@ wp.filter( &#39;post_status&#39;, &#39;publish&#39; ).filter( &#39;category_name
     <div class="extended-detail">
 
         <div class="description">
-            <p>Set the pagination of a request. Use in conjunction with <code>filter( posts_per_page )</code> for
-explicit pagination handling. (The number of pages in a response can be retrieved from
-the response&#39;s <code>_paging.totalPages</code> property.)</p>
+            <p>Set the pagination of a request. Use in conjunction with <code>.perPage()</code> for explicit
+pagination handling. (The number of pages in a response can be retrieved from the
+response&#39;s <code>_paging.totalPages</code> property.)</p>
 
         </div>
 
@@ -3350,7 +3746,7 @@ the response&#39;s <code>_paging.totalPages</code> property.)</p>
 
     
         <span class="returns-inline">
-            <span class="type"><a href="../classes/CollectionRequest.html" class="crosslink">CollectionRequest</a></span>
+            <span class="type"><a href="../classes/WPRequest.html" class="crosslink">WPRequest</a></span>
         </span>
     
 
@@ -3374,11 +3770,11 @@ the response&#39;s <code>_paging.totalPages</code> property.)</p>
         
             
                 <p>Inherited from
-                <a href="../classes/CollectionRequest.html#method_param" class="type">CollectionRequest</a>:
+                <a href="../classes/WPRequest.html#method_param" class="type">WPRequest</a>:
             
         
         
-        <a href="../files/lib_shared_collection-request.js.html#l191"><code>lib&#x2F;shared&#x2F;collection-request.js:191</code></a>
+        <a href="../files/lib_shared_wp-request.js.html#l355"><code>lib&#x2F;shared&#x2F;wp-request.js:355</code></a>
         
         </p>
 
@@ -3463,9 +3859,9 @@ the response&#39;s <code>_paging.totalPages</code> property.)</p>
                 <div class="returns-description">
                     
                         
-                            <span class="type"><a href="../classes/CollectionRequest.html" class="crosslink">CollectionRequest</a></span>:
+                            <span class="type"><a href="../classes/WPRequest.html" class="crosslink">WPRequest</a></span>:
                         
-                        <p>The CollectionRequest instance (for chaining)</p>
+                        <p>The WPRequest instance (for chaining)</p>
 
                     
                 </div>
@@ -3528,7 +3924,7 @@ the response&#39;s <code>_paging.totalPages</code> property.)</p>
             
         
         
-        <a href="../files/lib_pages.js.html#l180"><code>lib&#x2F;pages.js:180</code></a>
+        <a href="../files/lib_pages.js.html#l183"><code>lib&#x2F;pages.js:183</code></a>
         
         </p>
 
@@ -3581,6 +3977,118 @@ the response&#39;s <code>_paging.totalPages</code> property.)</p>
                             <span class="type"><a href="../classes/PagesRequest.html" class="crosslink">PagesRequest</a></span>:
                         
                         <p>The PagesRequest instance (for chaining)</p>
+
+                    
+                </div>
+            </div>
+        
+
+        
+    </div>
+</div>
+
+        
+            <a name="method_perPage" class="anchor-link"></a>
+<div class="method item inherited">
+    <h3 class="name"><code>perPage</code>
+
+    
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code>itemsPerPage</code>
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
+    
+
+    
+        <span class="returns-inline">
+            <span class="type"><a href="../classes/CollectionRequest.html" class="crosslink">CollectionRequest</a></span>
+        </span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <span class="flag chainable">chainable</span>
+    
+
+    
+
+    </h3>
+
+    <div class="meta">
+        
+            
+                <p>Inherited from
+                <a href="../classes/CollectionRequest.html#method_perPage" class="type">CollectionRequest</a>:
+            
+        
+        
+        <a href="../files/lib_shared_collection-request.js.html#l140"><code>lib&#x2F;shared&#x2F;collection-request.js:140</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="extended-detail">
+
+        <div class="description">
+            <p>Set the number of items to be returned in a page of responses.</p>
+
+        </div>
+
+        
+            <div class="params">
+                <h4>Parameters:</h4>
+
+                <ul class="params-list">
+                
+                    <li class="param">
+                        
+                            <code class="param-name">itemsPerPage</code>
+                            <span class="type">Number</span>
+                        
+
+                        
+
+                        <div class="param-description">
+                            <p>The number of items to return in one page of results</p>
+
+                        </div>
+
+                        
+                    </li>
+                
+                </ul>
+            </div>
+        
+
+        
+            <div class="returns">
+                <h4>Returns:</h4>
+
+                <div class="returns-description">
+                    
+                        
+                            <span class="type"><a href="../classes/CollectionRequest.html" class="crosslink">CollectionRequest</a></span>:
+                        
+                        <p>The CollectionRequest instance (for chaining)</p>
 
                     
                 </div>
@@ -3646,7 +4154,7 @@ the response&#39;s <code>_paging.totalPages</code> property.)</p>
             
         
         
-        <a href="../files/lib_shared_wp-request.js.html#l411"><code>lib&#x2F;shared&#x2F;wp-request.js:411</code></a>
+        <a href="../files/lib_shared_wp-request.js.html#l644"><code>lib&#x2F;shared&#x2F;wp-request.js:644</code></a>
         
         </p>
 
@@ -3698,38 +4206,6 @@ the response&#39;s <code>_paging.totalPages</code> property.)</p>
 
                         </div>
 
-                        
-                            <ul class="params-list">
-                                
-                                <li class="param">
-                                    
-                                        <code class="param-name">err</code>
-                                        <span class="type">Error | Object</span>
-                                    
-
-                                    <div class="param-description">
-                                        <p>Any errors encountered during the request</p>
-
-                                    </div>
-
-                                    
-                                </li>
-                                
-                                <li class="param">
-                                    
-                                        <code class="param-name">result</code>
-                                        <span class="type">Object</span>
-                                    
-
-                                    <div class="param-description">
-                                        <p>The body of the server response</p>
-
-                                    </div>
-
-                                    
-                                </li>
-                                
-                            </ul>
                         
                     </li>
                 
@@ -3812,7 +4288,7 @@ the response&#39;s <code>_paging.totalPages</code> property.)</p>
             
         
         
-        <a href="../files/lib_shared_wp-request.js.html#l430"><code>lib&#x2F;shared&#x2F;wp-request.js:430</code></a>
+        <a href="../files/lib_shared_wp-request.js.html#l661"><code>lib&#x2F;shared&#x2F;wp-request.js:661</code></a>
         
         </p>
 
@@ -3864,38 +4340,6 @@ the response&#39;s <code>_paging.totalPages</code> property.)</p>
 
                         </div>
 
-                        
-                            <ul class="params-list">
-                                
-                                <li class="param">
-                                    
-                                        <code class="param-name">err</code>
-                                        <span class="type">Error | Object</span>
-                                    
-
-                                    <div class="param-description">
-                                        <p>Any errors encountered during the request</p>
-
-                                    </div>
-
-                                    
-                                </li>
-                                
-                                <li class="param">
-                                    
-                                        <code class="param-name">result</code>
-                                        <span class="type">Object</span>
-                                    
-
-                                    <div class="param-description">
-                                        <p>The body of the server response</p>
-
-                                    </div>
-
-                                    
-                                </li>
-                                
-                            </ul>
                         
                     </li>
                 
@@ -3972,7 +4416,7 @@ the response&#39;s <code>_paging.totalPages</code> property.)</p>
             
         
         
-        <a href="../files/lib_shared_wp-request.js.html#l118"><code>lib&#x2F;shared&#x2F;wp-request.js:118</code></a>
+        <a href="../files/lib_shared_wp-request.js.html#l135"><code>lib&#x2F;shared&#x2F;wp-request.js:135</code></a>
         
         </p>
 
@@ -4079,7 +4523,7 @@ result is a paged collection.</p>
             
         
         
-        <a href="../files/lib_pages.js.html#l166"><code>lib&#x2F;pages.js:166</code></a>
+        <a href="../files/lib_pages.js.html#l169"><code>lib&#x2F;pages.js:169</code></a>
         
         </p>
 
@@ -4165,7 +4609,7 @@ result is a paged collection.</p>
             
         
         
-        <a href="../files/lib_shared_collection-request.js.html#l398"><code>lib&#x2F;shared&#x2F;collection-request.js:398</code></a>
+        <a href="../files/lib_shared_collection-request.js.html#l262"><code>lib&#x2F;shared&#x2F;collection-request.js:262</code></a>
         
         </p>
 
@@ -4277,7 +4721,7 @@ result is a paged collection.</p>
             
         
         
-        <a href="../files/lib_shared_collection-request.js.html#l442"><code>lib&#x2F;shared&#x2F;collection-request.js:442</code></a>
+        <a href="../files/lib_shared_collection-request.js.html#l294"><code>lib&#x2F;shared&#x2F;collection-request.js:294</code></a>
         
         </p>
 
@@ -4290,7 +4734,7 @@ result is a paged collection.</p>
     <div class="extended-detail">
 
         <div class="description">
-            <p>Alias for <code>.name()</code>.</p>
+            <p>Query a collection for members with a specific slug.</p>
 
         </div>
 
@@ -4309,7 +4753,7 @@ result is a paged collection.</p>
                         
 
                         <div class="param-description">
-                            <p>A post slug, e.g. &quot;hello-world&quot;</p>
+                            <p>A post slug (slug), e.g. &quot;hello-world&quot;</p>
 
                         </div>
 
@@ -4389,7 +4833,7 @@ result is a paged collection.</p>
             
         
         
-        <a href="../files/lib_shared_collection-request.js.html#l386"><code>lib&#x2F;shared&#x2F;collection-request.js:386</code></a>
+        <a href="../files/lib_shared_collection-request.js.html#l250"><code>lib&#x2F;shared&#x2F;collection-request.js:250</code></a>
         
         </p>
 
@@ -4507,7 +4951,7 @@ result is a paged collection.</p>
             
         
         
-        <a href="../files/lib_shared_collection-request.js.html#l323"><code>lib&#x2F;shared&#x2F;collection-request.js:323</code></a>
+        <a href="../files/lib_shared_collection-request.js.html#l187"><code>lib&#x2F;shared&#x2F;collection-request.js:187</code></a>
         
         </p>
 
@@ -4641,7 +5085,7 @@ result is a paged collection.</p>
             
         
         
-        <a href="../files/lib_shared_wp-request.js.html#l481"><code>lib&#x2F;shared&#x2F;wp-request.js:481</code></a>
+        <a href="../files/lib_shared_wp-request.js.html#l711"><code>lib&#x2F;shared&#x2F;wp-request.js:711</code></a>
         
         </p>
 
@@ -4712,6 +5156,232 @@ result is a paged collection.</p>
                             <span class="type">Promise</span>:
                         
                         <p>A promise to the results of the HTTP request</p>
+
+                    
+                </div>
+            </div>
+        
+
+        
+    </div>
+</div>
+
+        
+            <a name="method_version" class="anchor-link"></a>
+<div class="method item inherited">
+    <h3 class="name"><code>version</code>
+
+    
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code>version</code>
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
+    
+
+    
+        <span class="returns-inline">
+            <span class="type"><a href="../classes/WPRequest.html" class="crosslink">WPRequest</a></span>
+        </span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <span class="flag chainable">chainable</span>
+    
+
+    
+
+    </h3>
+
+    <div class="meta">
+        
+            
+                <p>Inherited from
+                <a href="../classes/WPRequest.html#method_version" class="type">WPRequest</a>:
+            
+        
+        
+        <a href="../files/lib_shared_wp-request.js.html#l564"><code>lib&#x2F;shared&#x2F;wp-request.js:564</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="extended-detail">
+
+        <div class="description">
+            <p>Set the version of the request, e.g. to specify that &quot;v2&quot; of the wordpress
+API routes should be used. Any previously-set version will be overwritten by
+subsequent calls to the method.</p>
+
+        </div>
+
+        
+            <div class="params">
+                <h4>Parameters:</h4>
+
+                <ul class="params-list">
+                
+                    <li class="param">
+                        
+                            <code class="param-name">version</code>
+                            <span class="type">String</span>
+                        
+
+                        
+
+                        <div class="param-description">
+                            <p>An API version identifier string, e.g. &quot;v2&quot;</p>
+
+                        </div>
+
+                        
+                    </li>
+                
+                </ul>
+            </div>
+        
+
+        
+            <div class="returns">
+                <h4>Returns:</h4>
+
+                <div class="returns-description">
+                    
+                        
+                            <span class="type"><a href="../classes/WPRequest.html" class="crosslink">WPRequest</a></span>:
+                        
+                        <p>The WPRequest instance (for chaining)</p>
+
+                    
+                </div>
+            </div>
+        
+
+        
+    </div>
+</div>
+
+        
+            <a name="method_year" class="anchor-link"></a>
+<div class="method item inherited">
+    <h3 class="name"><code>year</code>
+
+    
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code>year</code>
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
+    
+
+    
+        <span class="returns-inline">
+            <span class="type"><a href="../classes/CollectionRequest.html" class="crosslink">CollectionRequest</a></span>
+        </span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <span class="flag chainable">chainable</span>
+    
+
+    
+
+    </h3>
+
+    <div class="meta">
+        
+            
+                <p>Inherited from
+                <a href="../classes/CollectionRequest.html#method_year" class="type">CollectionRequest</a>:
+            
+        
+        
+        <a href="../files/lib_shared_collection-request.js.html#l319"><code>lib&#x2F;shared&#x2F;collection-request.js:319</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="extended-detail">
+
+        <div class="description">
+            <p>Query for posts published in a given year.</p>
+
+        </div>
+
+        
+            <div class="params">
+                <h4>Parameters:</h4>
+
+                <ul class="params-list">
+                
+                    <li class="param">
+                        
+                            <code class="param-name">year</code>
+                            <span class="type">Number</span>
+                        
+
+                        
+
+                        <div class="param-description">
+                            <p>integer representation of year requested</p>
+
+                        </div>
+
+                        
+                    </li>
+                
+                </ul>
+            </div>
+        
+
+        
+            <div class="returns">
+                <h4>Returns:</h4>
+
+                <div class="returns-description">
+                    
+                        
+                            <span class="type"><a href="../classes/CollectionRequest.html" class="crosslink">CollectionRequest</a></span>:
+                        
+                        <p>The CollectionRequest instance (for chaining)</p>
 
                     
                 </div>

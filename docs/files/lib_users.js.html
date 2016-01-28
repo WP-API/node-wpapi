@@ -16,7 +16,7 @@
             <div class="project-title">
                 
                 
-                    <h1 class="project-name">wordpress-rest-api</h1> <span class="project-version">0.5.0</span>
+                    <h1 class="project-name">wordpress-rest-api</h1> <span class="project-version">0.6.0</span>
                 
                 
                     <p class="description">A client for interacting with the WordPress REST API</p>
@@ -175,6 +175,9 @@ function UsersRequest( options ) {
 	 * @default [ &#x27;head&#x27;, &#x27;get&#x27;, &#x27;post&#x27; ]
 	 */
 	this._supportedMethods = [ &#x27;head&#x27;, &#x27;get&#x27;, &#x27;post&#x27; ];
+
+	// Default all .users() requests to assume a query against the WP API v2 endpoints
+	this.namespace( &#x27;wp&#x27; ).version( &#x27;v2&#x27; );
 
 	// Force authentication on all users requests
 	return this.auth();

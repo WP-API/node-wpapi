@@ -16,7 +16,7 @@
             <div class="project-title">
                 
                 
-                    <h1 class="project-name">wordpress-rest-api</h1> <span class="project-version">0.5.0</span>
+                    <h1 class="project-name">wordpress-rest-api</h1> <span class="project-version">0.6.0</span>
                 
                 
                     <p class="description">A client for interacting with the WordPress REST API</p>
@@ -102,7 +102,7 @@
 
     
         <div class="foundat">
-            Defined in: <a href="../files/lib_shared_wp-request.js.html#l15"><code>lib&#x2F;shared&#x2F;wp-request.js:15</code></a>
+            Defined in: <a href="../files/lib_shared_wp-request.js.html#l21"><code>lib&#x2F;shared&#x2F;wp-request.js:21</code></a>
         </div>
     
 
@@ -162,6 +162,12 @@
             
                 <li class="index-item property private">
                     <a href="#property__options">_options</a>
+
+                    
+                </li>
+            
+                <li class="index-item property private">
+                    <a href="#property__params">_params</a>
 
                     
                 </li>
@@ -231,6 +237,13 @@
                 </li>
             
                 <li class="index-item method private">
+                    <a href="#method__renderQuery">_renderQuery</a>
+
+                    
+                    
+                </li>
+            
+                <li class="index-item method private">
                     <a href="#method__renderURI">_renderURI</a>
 
                     
@@ -245,7 +258,28 @@
                 </li>
             
                 <li class="index-item method">
+                    <a href="#method_context">context</a>
+
+                    
+                    
+                </li>
+            
+                <li class="index-item method">
                     <a href="#method_delete">delete</a>
+
+                    
+                    
+                </li>
+            
+                <li class="index-item method">
+                    <a href="#method_edit">edit</a>
+
+                    
+                    
+                </li>
+            
+                <li class="index-item method">
+                    <a href="#method_embed">embed</a>
 
                     
                     
@@ -260,6 +294,20 @@
             
                 <li class="index-item method">
                     <a href="#method_head">head</a>
+
+                    
+                    
+                </li>
+            
+                <li class="index-item method">
+                    <a href="#method_namespace">namespace</a>
+
+                    
+                    
+                </li>
+            
+                <li class="index-item method">
+                    <a href="#method_param">param</a>
 
                     
                     
@@ -288,6 +336,13 @@
             
                 <li class="index-item method">
                     <a href="#method_then">then</a>
+
+                    
+                    
+                </li>
+            
+                <li class="index-item method">
+                    <a href="#method_version">version</a>
 
                     
                     
@@ -336,7 +391,7 @@
             
         
         
-        <a href="../files/lib_shared_wp-request.js.html#l26"><code>lib&#x2F;shared&#x2F;wp-request.js:26</code></a>
+        <a href="../files/lib_shared_wp-request.js.html#l32"><code>lib&#x2F;shared&#x2F;wp-request.js:32</code></a>
         
         </p>
 
@@ -348,6 +403,61 @@
     <div class="extended-detail">
         <div class="description">
             <p>Configuration options for the request such as the endpoint for the invoking WP instance</p>
+
+        </div>
+
+        
+            <p class="default"><strong>Default:</strong> <span class="default-value">{}</span></p>
+        
+
+        
+
+        
+    </div>
+</div>
+
+        
+            <a name="property__params" class="anchor-link"></a>
+<div class="property item private">
+    <h3 class="name"><code>_params</code>
+    <span class="type">Object</span>
+
+    
+
+    
+        <span class="flag private">private</span>
+    
+
+    
+
+    
+
+    </h3>
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/lib_shared_wp-request.js.html#l42"><code>lib&#x2F;shared&#x2F;wp-request.js:42</code></a>
+        
+        </p>
+
+        
+
+        
+    </div>
+
+    <div class="extended-detail">
+        <div class="description">
+            <p>A hash of query parameters
+This is used to store the values for supported query parameters like ?_embed</p>
 
         </div>
 
@@ -390,7 +500,7 @@
             
         
         
-        <a href="../files/lib_shared_wp-request.js.html#l47"><code>lib&#x2F;shared&#x2F;wp-request.js:47</code></a>
+        <a href="../files/lib_shared_wp-request.js.html#l64"><code>lib&#x2F;shared&#x2F;wp-request.js:64</code></a>
         
         </p>
 
@@ -445,7 +555,7 @@
             
         
         
-        <a href="../files/lib_shared_wp-request.js.html#l36"><code>lib&#x2F;shared&#x2F;wp-request.js:36</code></a>
+        <a href="../files/lib_shared_wp-request.js.html#l53"><code>lib&#x2F;shared&#x2F;wp-request.js:53</code></a>
         
         </p>
 
@@ -500,7 +610,7 @@ Individual endpoint handlers specify their own subset of supported methods</p>
             
         
         
-        <a href="../files/lib_shared_wp-request.js.html#l58"><code>lib&#x2F;shared&#x2F;wp-request.js:58</code></a>
+        <a href="../files/lib_shared_wp-request.js.html#l75"><code>lib&#x2F;shared&#x2F;wp-request.js:75</code></a>
         
         </p>
 
@@ -585,7 +695,7 @@ Individual endpoint handlers specify their own subset of supported methods</p>
             
         
         
-        <a href="../files/lib_shared_wp-request.js.html#l15"><code>lib&#x2F;shared&#x2F;wp-request.js:15</code></a>
+        <a href="../files/lib_shared_wp-request.js.html#l21"><code>lib&#x2F;shared&#x2F;wp-request.js:21</code></a>
         
         </p>
 
@@ -748,7 +858,7 @@ Individual endpoint handlers specify their own subset of supported methods</p>
             
         
         
-        <a href="../files/lib_shared_wp-request.js.html#l320"><code>lib&#x2F;shared&#x2F;wp-request.js:320</code></a>
+        <a href="../files/lib_shared_wp-request.js.html#l512"><code>lib&#x2F;shared&#x2F;wp-request.js:512</code></a>
         
         </p>
 
@@ -881,7 +991,7 @@ Individual endpoint handlers specify their own subset of supported methods</p>
             
         
         
-        <a href="../files/lib_shared_wp-request.js.html#l267"><code>lib&#x2F;shared&#x2F;wp-request.js:267</code></a>
+        <a href="../files/lib_shared_wp-request.js.html#l452"><code>lib&#x2F;shared&#x2F;wp-request.js:452</code></a>
         
         </p>
 
@@ -984,7 +1094,7 @@ Individual endpoint handlers specify their own subset of supported methods</p>
             
         
         
-        <a href="../files/lib_shared_wp-request.js.html#l287"><code>lib&#x2F;shared&#x2F;wp-request.js:287</code></a>
+        <a href="../files/lib_shared_wp-request.js.html#l472"><code>lib&#x2F;shared&#x2F;wp-request.js:472</code></a>
         
         </p>
 
@@ -1019,6 +1129,99 @@ Individual endpoint handlers specify their own subset of supported methods</p>
             </div>
         
 
+        
+    </div>
+</div>
+
+        
+            <a name="method__renderQuery" class="anchor-link"></a>
+<div class="method item private">
+    <h3 class="name"><code>_renderQuery</code>
+
+    
+        <span class="paren">()</span>
+    
+
+    
+        <span class="returns-inline">
+            <span class="type">String</span>
+        </span>
+    
+
+    
+
+    
+        <span class="flag private">private</span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    </h3>
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/lib_shared_wp-request.js.html#l321"><code>lib&#x2F;shared&#x2F;wp-request.js:321</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="extended-detail">
+
+        <div class="description">
+            <p>Process the endpoint query&#39;s filter objects into a valid query string.
+Nested objects and Array properties are rendered with indexed array syntax.</p>
+
+        </div>
+
+        
+
+        
+            <div class="returns">
+                <h4>Returns:</h4>
+
+                <div class="returns-description">
+                    
+                        
+                            <span class="type">String</span>:
+                        
+                        <p>A query string representing the specified filter parameters</p>
+
+                    
+                </div>
+            </div>
+        
+
+        
+            <div class="example">
+                <h4>Example:</h4>
+
+                <div class="example-content">
+                    <pre class="code prettyprint"><code>_renderQuery({ p1: &#39;val1&#39;, p2: &#39;val2&#39; });  // ?p1=val1&amp;p2=val2
+_renderQuery({ obj: { prop: &#39;val&#39; } });    // ?obj[prop]=val
+_renderQuery({ arr: [ &#39;val1&#39;, &#39;val2&#39; ] }); // ?arr[0]=val1&amp;arr[1]=val2</code></pre>
+
+                </div>
+            </div>
         
     </div>
 </div>
@@ -1065,7 +1268,7 @@ Individual endpoint handlers specify their own subset of supported methods</p>
             
         
         
-        <a href="../files/lib_shared_wp-request.js.html#l302"><code>lib&#x2F;shared&#x2F;wp-request.js:302</code></a>
+        <a href="../files/lib_shared_wp-request.js.html#l494"><code>lib&#x2F;shared&#x2F;wp-request.js:494</code></a>
         
         </p>
 
@@ -1115,7 +1318,7 @@ Individual endpoint handlers specify their own subset of supported methods</p>
             
                 <li class="arg">
                     
-                        <code class="optional">[username]</code>
+                        <code class="optional">[usrOrObj]</code>
                     
                 </li>
             
@@ -1162,7 +1365,7 @@ Individual endpoint handlers specify their own subset of supported methods</p>
             
         
         
-        <a href="../files/lib_shared_wp-request.js.html#l357"><code>lib&#x2F;shared&#x2F;wp-request.js:357</code></a>
+        <a href="../files/lib_shared_wp-request.js.html#l579"><code>lib&#x2F;shared&#x2F;wp-request.js:579</code></a>
         
         </p>
 
@@ -1187,15 +1390,17 @@ Individual endpoint handlers specify their own subset of supported methods</p>
                 
                     <li class="param">
                         
-                            <code class="param-name optional">[username]</code>
-                            <span class="type">String</span>
+                            <code class="param-name optional">[usrOrObj]</code>
+                            <span class="type">String | Object</span>
                             <span class="flag optional" title="This parameter is optional.">optional</span>
                         
 
                         
 
                         <div class="param-description">
-                            <p>A username string for basic authentication</p>
+                            <p>A username string for basic authentication,
+                                  or an object with &#39;username&#39; and &#39;password&#39;
+                                  string properties</p>
 
                         </div>
 
@@ -1212,7 +1417,8 @@ Individual endpoint handlers specify their own subset of supported methods</p>
                         
 
                         <div class="param-description">
-                            <p>A user password string for basic authentication</p>
+                            <p>A user password string for basic authentication
+                                  (ignored if usrOrObj is an object)</p>
 
                         </div>
 
@@ -1257,6 +1463,122 @@ Individual endpoint handlers specify their own subset of supported methods</p>
 </div>
 
         
+            <a name="method_context" class="anchor-link"></a>
+<div class="method item">
+    <h3 class="name"><code>context</code>
+
+    
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code>context</code>
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
+    
+
+    
+        <span class="returns-inline">
+            <span class="type"><a href="../classes/WPRequest.html" class="crosslink">WPRequest</a></span>
+        </span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <span class="flag chainable">chainable</span>
+    
+
+    
+
+    </h3>
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/lib_shared_wp-request.js.html#l410"><code>lib&#x2F;shared&#x2F;wp-request.js:410</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="extended-detail">
+
+        <div class="description">
+            <p>Set the context of the request. Used primarily to expose private values on a request
+object, by setting the context to &quot;edit&quot;.</p>
+
+        </div>
+
+        
+            <div class="params">
+                <h4>Parameters:</h4>
+
+                <ul class="params-list">
+                
+                    <li class="param">
+                        
+                            <code class="param-name">context</code>
+                            <span class="type">String</span>
+                        
+
+                        
+
+                        <div class="param-description">
+                            <p>The context to set on the request</p>
+
+                        </div>
+
+                        
+                    </li>
+                
+                </ul>
+            </div>
+        
+
+        
+            <div class="returns">
+                <h4>Returns:</h4>
+
+                <div class="returns-description">
+                    
+                        
+                            <span class="type"><a href="../classes/WPRequest.html" class="crosslink">WPRequest</a></span>:
+                        
+                        <p>The WPRequest instance (for chaining)</p>
+
+                    
+                </div>
+            </div>
+        
+
+        
+    </div>
+</div>
+
+        
             <a name="method_delete" class="anchor-link"></a>
 <div class="method item">
     <h3 class="name"><code>delete</code>
@@ -1264,6 +1586,12 @@ Individual endpoint handlers specify their own subset of supported methods</p>
     
         <div class="args">
             <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code class="optional">[data]</code>
+                    
+                </li>
             
                 <li class="arg">
                     
@@ -1308,7 +1636,7 @@ Individual endpoint handlers specify their own subset of supported methods</p>
             
         
         
-        <a href="../files/lib_shared_wp-request.js.html#l449"><code>lib&#x2F;shared&#x2F;wp-request.js:449</code></a>
+        <a href="../files/lib_shared_wp-request.js.html#l678"><code>lib&#x2F;shared&#x2F;wp-request.js:678</code></a>
         
         </p>
 
@@ -1332,6 +1660,23 @@ Individual endpoint handlers specify their own subset of supported methods</p>
                 
                     <li class="param">
                         
+                            <code class="param-name optional">[data]</code>
+                            <span class="type">Object</span>
+                            <span class="flag optional" title="This parameter is optional.">optional</span>
+                        
+
+                        
+
+                        <div class="param-description">
+                            <p>Data to send along with the DELETE request</p>
+
+                        </div>
+
+                        
+                    </li>
+                
+                    <li class="param">
+                        
                             <code class="param-name optional">[callback]</code>
                             <span class="type">Function</span>
                             <span class="flag optional" title="This parameter is optional.">optional</span>
@@ -1344,38 +1689,6 @@ Individual endpoint handlers specify their own subset of supported methods</p>
 
                         </div>
 
-                        
-                            <ul class="params-list">
-                                
-                                <li class="param">
-                                    
-                                        <code class="param-name">err</code>
-                                        <span class="type">Error | Object</span>
-                                    
-
-                                    <div class="param-description">
-                                        <p>Any errors encountered during the request</p>
-
-                                    </div>
-
-                                    
-                                </li>
-                                
-                                <li class="param">
-                                    
-                                        <code class="param-name">result</code>
-                                        <span class="type">Object</span>
-                                    
-
-                                    <div class="param-description">
-                                        <p>The body of the server response</p>
-
-                                    </div>
-
-                                    
-                                </li>
-                                
-                            </ul>
                         
                     </li>
                 
@@ -1393,6 +1706,168 @@ Individual endpoint handlers specify their own subset of supported methods</p>
                             <span class="type">Promise</span>:
                         
                         <p>A promise to the results of the HTTP request</p>
+
+                    
+                </div>
+            </div>
+        
+
+        
+    </div>
+</div>
+
+        
+            <a name="method_edit" class="anchor-link"></a>
+<div class="method item">
+    <h3 class="name"><code>edit</code>
+
+    
+        <span class="paren">()</span>
+    
+
+    
+        <span class="returns-inline">
+            <span class="type"><a href="../classes/WPRequest.html" class="crosslink">WPRequest</a></span>
+        </span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <span class="flag chainable">chainable</span>
+    
+
+    
+
+    </h3>
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/lib_shared_wp-request.js.html#l427"><code>lib&#x2F;shared&#x2F;wp-request.js:427</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="extended-detail">
+
+        <div class="description">
+            <p>Convenience wrapper for <code>.context( &#39;edit&#39; )</code></p>
+
+        </div>
+
+        
+
+        
+            <div class="returns">
+                <h4>Returns:</h4>
+
+                <div class="returns-description">
+                    
+                        
+                            <span class="type"><a href="../classes/WPRequest.html" class="crosslink">WPRequest</a></span>:
+                        
+                        <p>The WPRequest instance (for chaining)</p>
+
+                    
+                </div>
+            </div>
+        
+
+        
+    </div>
+</div>
+
+        
+            <a name="method_embed" class="anchor-link"></a>
+<div class="method item">
+    <h3 class="name"><code>embed</code>
+
+    
+        <span class="paren">()</span>
+    
+
+    
+        <span class="returns-inline">
+            <span class="type"><a href="../classes/WPRequest.html" class="crosslink">WPRequest</a></span>
+        </span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <span class="flag chainable">chainable</span>
+    
+
+    
+
+    </h3>
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/lib_shared_wp-request.js.html#l438"><code>lib&#x2F;shared&#x2F;wp-request.js:438</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="extended-detail">
+
+        <div class="description">
+            <p>Return embedded resources as part of the response payload.</p>
+
+        </div>
+
+        
+
+        
+            <div class="returns">
+                <h4>Returns:</h4>
+
+                <div class="returns-description">
+                    
+                        
+                            <span class="type"><a href="../classes/WPRequest.html" class="crosslink">WPRequest</a></span>:
+                        
+                        <p>The WPRequest instance (for chaining)</p>
 
                     
                 </div>
@@ -1455,7 +1930,7 @@ Individual endpoint handlers specify their own subset of supported methods</p>
             
         
         
-        <a href="../files/lib_shared_wp-request.js.html#l394"><code>lib&#x2F;shared&#x2F;wp-request.js:394</code></a>
+        <a href="../files/lib_shared_wp-request.js.html#l629"><code>lib&#x2F;shared&#x2F;wp-request.js:629</code></a>
         
         </p>
 
@@ -1491,38 +1966,6 @@ Individual endpoint handlers specify their own subset of supported methods</p>
 
                         </div>
 
-                        
-                            <ul class="params-list">
-                                
-                                <li class="param">
-                                    
-                                        <code class="param-name">err</code>
-                                        <span class="type">Error | Object</span>
-                                    
-
-                                    <div class="param-description">
-                                        <p>Any errors encountered during the request</p>
-
-                                    </div>
-
-                                    
-                                </li>
-                                
-                                <li class="param">
-                                    
-                                        <code class="param-name">result</code>
-                                        <span class="type">Object</span>
-                                    
-
-                                    <div class="param-description">
-                                        <p>The body of the server response</p>
-
-                                    </div>
-
-                                    
-                                </li>
-                                
-                            </ul>
                         
                     </li>
                 
@@ -1602,7 +2045,7 @@ Individual endpoint handlers specify their own subset of supported methods</p>
             
         
         
-        <a href="../files/lib_shared_wp-request.js.html#l465"><code>lib&#x2F;shared&#x2F;wp-request.js:465</code></a>
+        <a href="../files/lib_shared_wp-request.js.html#l697"><code>lib&#x2F;shared&#x2F;wp-request.js:697</code></a>
         
         </p>
 
@@ -1639,38 +2082,6 @@ Individual endpoint handlers specify their own subset of supported methods</p>
                         </div>
 
                         
-                            <ul class="params-list">
-                                
-                                <li class="param">
-                                    
-                                        <code class="param-name">err</code>
-                                        <span class="type">Error | Object</span>
-                                    
-
-                                    <div class="param-description">
-                                        <p>Any errors encountered during the request</p>
-
-                                    </div>
-
-                                    
-                                </li>
-                                
-                                <li class="param">
-                                    
-                                        <code class="param-name">result</code>
-                                        <span class="type">Object</span>
-                                    
-
-                                    <div class="param-description">
-                                        <p>The headers from the server response</p>
-
-                                    </div>
-
-                                    
-                                </li>
-                                
-                            </ul>
-                        
                     </li>
                 
                 </ul>
@@ -1687,6 +2098,285 @@ Individual endpoint handlers specify their own subset of supported methods</p>
                             <span class="type">Promise</span>:
                         
                         <p>A promise to the header results of the HTTP request</p>
+
+                    
+                </div>
+            </div>
+        
+
+        
+    </div>
+</div>
+
+        
+            <a name="method_namespace" class="anchor-link"></a>
+<div class="method item">
+    <h3 class="name"><code>namespace</code>
+
+    
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code>namespace</code>
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
+    
+
+    
+        <span class="returns-inline">
+            <span class="type"><a href="../classes/WPRequest.html" class="crosslink">WPRequest</a></span>
+        </span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <span class="flag chainable">chainable</span>
+    
+
+    
+
+    </h3>
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/lib_shared_wp-request.js.html#l549"><code>lib&#x2F;shared&#x2F;wp-request.js:549</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="extended-detail">
+
+        <div class="description">
+            <p>Set the namespace of the request, e.g. to specify the API root for routes
+registered by wp core (&quot;wp&quot;) or by any given plugin. Any previously-set
+namespace will be overwritten by subsequent calls to the method.</p>
+
+        </div>
+
+        
+            <div class="params">
+                <h4>Parameters:</h4>
+
+                <ul class="params-list">
+                
+                    <li class="param">
+                        
+                            <code class="param-name">namespace</code>
+                            <span class="type">String</span>
+                        
+
+                        
+
+                        <div class="param-description">
+                            <p>A namespace string, e.g. &quot;wp&quot;</p>
+
+                        </div>
+
+                        
+                    </li>
+                
+                </ul>
+            </div>
+        
+
+        
+            <div class="returns">
+                <h4>Returns:</h4>
+
+                <div class="returns-description">
+                    
+                        
+                            <span class="type"><a href="../classes/WPRequest.html" class="crosslink">WPRequest</a></span>:
+                        
+                        <p>The WPRequest instance (for chaining)</p>
+
+                    
+                </div>
+            </div>
+        
+
+        
+    </div>
+</div>
+
+        
+            <a name="method_param" class="anchor-link"></a>
+<div class="method item">
+    <h3 class="name"><code>param</code>
+
+    
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code>props</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code class="optional">[value]</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code class="optional">[merge]</code>
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
+    
+
+    
+        <span class="returns-inline">
+            <span class="type"><a href="../classes/WPRequest.html" class="crosslink">WPRequest</a></span>
+        </span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <span class="flag chainable">chainable</span>
+    
+
+    
+
+    </h3>
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/lib_shared_wp-request.js.html#l355"><code>lib&#x2F;shared&#x2F;wp-request.js:355</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="extended-detail">
+
+        <div class="description">
+            <p>Set a parameter to render into the final query URI.</p>
+
+        </div>
+
+        
+            <div class="params">
+                <h4>Parameters:</h4>
+
+                <ul class="params-list">
+                
+                    <li class="param">
+                        
+                            <code class="param-name">props</code>
+                            <span class="type">String | Object</span>
+                        
+
+                        
+
+                        <div class="param-description">
+                            <p>The name of the parameter to set, or an object containing
+                             parameter keys and their corresponding values</p>
+
+                        </div>
+
+                        
+                    </li>
+                
+                    <li class="param">
+                        
+                            <code class="param-name optional">[value]</code>
+                            <span class="type">String | Number | Array</span>
+                            <span class="flag optional" title="This parameter is optional.">optional</span>
+                        
+
+                        
+
+                        <div class="param-description">
+                            <p>The value of the parameter being set</p>
+
+                        </div>
+
+                        
+                    </li>
+                
+                    <li class="param">
+                        
+                            <code class="param-name optional">[merge]</code>
+                            <span class="type">Boolean</span>
+                            <span class="flag optional" title="This parameter is optional.">optional</span>
+                        
+
+                        
+
+                        <div class="param-description">
+                            <p>Whether to merge the value (true) or replace it (false, default)</p>
+
+                        </div>
+
+                        
+                    </li>
+                
+                </ul>
+            </div>
+        
+
+        
+            <div class="returns">
+                <h4>Returns:</h4>
+
+                <div class="returns-description">
+                    
+                        
+                            <span class="type"><a href="../classes/WPRequest.html" class="crosslink">WPRequest</a></span>:
+                        
+                        <p>The WPRequest instance (for chaining)</p>
 
                     
                 </div>
@@ -1755,7 +2445,7 @@ Individual endpoint handlers specify their own subset of supported methods</p>
             
         
         
-        <a href="../files/lib_shared_wp-request.js.html#l411"><code>lib&#x2F;shared&#x2F;wp-request.js:411</code></a>
+        <a href="../files/lib_shared_wp-request.js.html#l644"><code>lib&#x2F;shared&#x2F;wp-request.js:644</code></a>
         
         </p>
 
@@ -1807,38 +2497,6 @@ Individual endpoint handlers specify their own subset of supported methods</p>
 
                         </div>
 
-                        
-                            <ul class="params-list">
-                                
-                                <li class="param">
-                                    
-                                        <code class="param-name">err</code>
-                                        <span class="type">Error | Object</span>
-                                    
-
-                                    <div class="param-description">
-                                        <p>Any errors encountered during the request</p>
-
-                                    </div>
-
-                                    
-                                </li>
-                                
-                                <li class="param">
-                                    
-                                        <code class="param-name">result</code>
-                                        <span class="type">Object</span>
-                                    
-
-                                    <div class="param-description">
-                                        <p>The body of the server response</p>
-
-                                    </div>
-
-                                    
-                                </li>
-                                
-                            </ul>
                         
                     </li>
                 
@@ -1924,7 +2582,7 @@ Individual endpoint handlers specify their own subset of supported methods</p>
             
         
         
-        <a href="../files/lib_shared_wp-request.js.html#l430"><code>lib&#x2F;shared&#x2F;wp-request.js:430</code></a>
+        <a href="../files/lib_shared_wp-request.js.html#l661"><code>lib&#x2F;shared&#x2F;wp-request.js:661</code></a>
         
         </p>
 
@@ -1976,38 +2634,6 @@ Individual endpoint handlers specify their own subset of supported methods</p>
 
                         </div>
 
-                        
-                            <ul class="params-list">
-                                
-                                <li class="param">
-                                    
-                                        <code class="param-name">err</code>
-                                        <span class="type">Error | Object</span>
-                                    
-
-                                    <div class="param-description">
-                                        <p>Any errors encountered during the request</p>
-
-                                    </div>
-
-                                    
-                                </li>
-                                
-                                <li class="param">
-                                    
-                                        <code class="param-name">result</code>
-                                        <span class="type">Object</span>
-                                    
-
-                                    <div class="param-description">
-                                        <p>The body of the server response</p>
-
-                                    </div>
-
-                                    
-                                </li>
-                                
-                            </ul>
                         
                     </li>
                 
@@ -2087,7 +2713,7 @@ Individual endpoint handlers specify their own subset of supported methods</p>
             
         
         
-        <a href="../files/lib_shared_wp-request.js.html#l118"><code>lib&#x2F;shared&#x2F;wp-request.js:118</code></a>
+        <a href="../files/lib_shared_wp-request.js.html#l135"><code>lib&#x2F;shared&#x2F;wp-request.js:135</code></a>
         
         </p>
 
@@ -2210,7 +2836,7 @@ result is a paged collection.</p>
             
         
         
-        <a href="../files/lib_shared_wp-request.js.html#l481"><code>lib&#x2F;shared&#x2F;wp-request.js:481</code></a>
+        <a href="../files/lib_shared_wp-request.js.html#l711"><code>lib&#x2F;shared&#x2F;wp-request.js:711</code></a>
         
         </p>
 
@@ -2281,6 +2907,123 @@ result is a paged collection.</p>
                             <span class="type">Promise</span>:
                         
                         <p>A promise to the results of the HTTP request</p>
+
+                    
+                </div>
+            </div>
+        
+
+        
+    </div>
+</div>
+
+        
+            <a name="method_version" class="anchor-link"></a>
+<div class="method item">
+    <h3 class="name"><code>version</code>
+
+    
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code>version</code>
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
+    
+
+    
+        <span class="returns-inline">
+            <span class="type"><a href="../classes/WPRequest.html" class="crosslink">WPRequest</a></span>
+        </span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <span class="flag chainable">chainable</span>
+    
+
+    
+
+    </h3>
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/lib_shared_wp-request.js.html#l564"><code>lib&#x2F;shared&#x2F;wp-request.js:564</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="extended-detail">
+
+        <div class="description">
+            <p>Set the version of the request, e.g. to specify that &quot;v2&quot; of the wordpress
+API routes should be used. Any previously-set version will be overwritten by
+subsequent calls to the method.</p>
+
+        </div>
+
+        
+            <div class="params">
+                <h4>Parameters:</h4>
+
+                <ul class="params-list">
+                
+                    <li class="param">
+                        
+                            <code class="param-name">version</code>
+                            <span class="type">String</span>
+                        
+
+                        
+
+                        <div class="param-description">
+                            <p>An API version identifier string, e.g. &quot;v2&quot;</p>
+
+                        </div>
+
+                        
+                    </li>
+                
+                </ul>
+            </div>
+        
+
+        
+            <div class="returns">
+                <h4>Returns:</h4>
+
+                <div class="returns-description">
+                    
+                        
+                            <span class="type"><a href="../classes/WPRequest.html" class="crosslink">WPRequest</a></span>:
+                        
+                        <p>The WPRequest instance (for chaining)</p>
 
                     
                 </div>
