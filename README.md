@@ -38,7 +38,7 @@ The REST API client requires Node.js version 0.10 or above.
 The module is a constructor, so you can create an instance of the API client bound to the endpoint for your WordPress install:
 ```javascript
 var WP = require( 'wordpress-rest-api' );
-var wp = new WP({ endpoint: 'http://src.wordpress-develop.dev' });
+var wp = new WP({ endpoint: 'http://src.wordpress-develop.dev/wp-json' });
 ```
 Once an instance is constructed, you can chain off of it to construct a specific request. (Think of it as a query-builder for WordPress!)
 
