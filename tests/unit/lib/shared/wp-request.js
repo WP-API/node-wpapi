@@ -33,8 +33,6 @@ describe( 'WPRequest', function() {
 		it( 'should define a _supportedMethods array', function() {
 			var _supportedMethods = request._supportedMethods.sort().join( '|' );
 			expect( _supportedMethods ).to.equal( 'delete|get|head|post|put' );
-			expect( request._path ).to.deep.equal( {} );
-			expect( request._template ).to.equal( '' );
 		});
 
 	});
@@ -135,17 +133,30 @@ describe( 'WPRequest', function() {
 
 		it( 'will set a query parameter value', function() {
 			request.param( 'key', 'value' );
-			expect( request._params ).to.have.property( 'key' );
-			expect( request._params.key ).to.equal( 'value' );
+			expect( request._renderQuery() ).to.equal( '?key=value' );
+		});
+
+		it( 'will unset a query parameter value if called with empty string', function() {
+			request.param( 'key', 'value' );
+			expect( request._renderQuery() ).to.equal( '?key=value' );
+			request.param( 'key', 'value' );
+			request.param( 'key', '' );
+			expect( request._renderQuery() ).to.equal( '' );
+		});
+
+		it( 'will unset a query parameter value if called with null', function() {
+			request.param( 'key', 'value' );
+			expect( request._renderQuery() ).to.equal( '?key=value' );
+			request.param( 'key', 'value' );
+			request.param( 'key', null );
+			expect( request._renderQuery() ).to.equal( '' );
 		});
 
 		it( 'should set the internal _params hash', function() {
 			request.param( 'type', 'some_cpt' );
-			expect( request._params ).to.have.property( 'type' );
-			expect( request._params.type ).to.equal( 'some_cpt' );
+			expect( request._renderQuery() ).to.equal( '?type=some_cpt' );
 			request.param( 'context', 'edit' );
-			expect( request._params ).to.have.property( 'context' );
-			expect( request._params.context ).to.equal( 'edit' );
+			expect( request._renderQuery() ).to.equal( '?context=edit&type=some_cpt' );
 		});
 
 		it( 'should set parameters by passing a hash object', function() {
@@ -153,10 +164,7 @@ describe( 'WPRequest', function() {
 				page: 309,
 				context: 'view'
 			});
-			expect( request._params ).to.have.property( 'page' );
-			expect( request._params.page ).to.equal( 309 );
-			expect( request._params ).to.have.property( 'context' );
-			expect( request._params.context ).to.equal( 'view' );
+			expect( request._renderQuery() ).to.equal( '?context=view&page=309' );
 		});
 
 		it( 'should merge provided values if merge is set to true', function() {
@@ -167,9 +175,9 @@ describe( 'WPRequest', function() {
 
 		it( 'should merge, de-dupe & sort array values', function() {
 			request.param( 'type', [ 'post', 'page', 'post' ] );
-			expect( request._params.type ).to.deep.equal( [ 'page', 'post' ] );
+			expect( request._renderQuery() ).to.equal( '?type%5B%5D=page&type%5B%5D=post' );
 			request.param( 'type', [ 'page', 'cpt_item' ], true );
-			expect( request._params.type ).to.deep.equal( [ 'cpt_item', 'page', 'post' ] );
+			expect( request._renderQuery() ).to.equal( '?type%5B%5D=cpt_item&type%5B%5D=page&type%5B%5D=post' );
 		});
 
 	});

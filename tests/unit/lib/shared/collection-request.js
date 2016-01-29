@@ -33,7 +33,6 @@ describe( 'CollectionRequest', function() {
 			expect( request._filters ).to.deep.equal( {} );
 			expect( request._taxonomyFilters ).to.deep.equal( {} );
 			expect( request._params ).to.deep.equal( {} );
-			expect( request._path ).to.deep.equal( {} );
 			expect( request._template ).to.equal( '' );
 		});
 
@@ -338,6 +337,11 @@ describe( 'CollectionRequest', function() {
 		});
 
 		describe( 'search()', function() {
+
+			it( 'should do nothing if no search string is provided', function() {
+				request.search( '' );
+				expect( request._renderQuery() ).to.equal( '' );
+			});
 
 			it( 'should set the "s" filter property on the request object', function() {
 				request.search( 'Some search string' );
