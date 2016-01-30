@@ -225,25 +225,7 @@ The following methods are shortcuts for filtering the requested collection down 
 
 ### Custom Post Types
 
-In addition to the filters described above, the `posts()` request method provides a chaining method `type()` which can be used to target your query at one or more custom post types:
-```javascript
-// Find items for a specific CPT
-wp.posts().type( 'your_cpt' )...
-
-// Retrieve both your own CPT, and the native "post" type
-wp.posts().type([ 'your_cpt', 'post' ])...
-```
-If you are building an application that relies very heavily on custom types, you may find yourself wanting a convenience method for requesting your own custom type. The method `registerType` can be used to define a convenience method of that sort:
-```javascript
-// Defines a CPT handler `events()` on the current WP instance
-wp.events = wp.registerType( 'event_cpt' );
-```
-`wp.events()`` can now be used to specify requests for that custom post type quickly:
-```javascript
-wp.events().then(function( eventItems ) {
-  // Do something with the returned collection of event objects
-});
-```
+Support for Custom Post Types has been removed temporarily, but will be reinstated soon once the client supports the new custom post handling changes introduced in the new v2 API betas.
 
 ## Embedding data
 

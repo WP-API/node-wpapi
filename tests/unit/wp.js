@@ -62,48 +62,6 @@ describe( 'wp', function() {
 
 	});
 
-	describe( '.registerType()', function() {
-
-		it( 'is defined', function() {
-			expect( site ).to.have.property( 'registerType' );
-			expect( site.registerType ).to.be.a( 'function' );
-		});
-
-		it( 'returns a function that creates new PostsRequest instances', function() {
-			var requestMethod = site.registerType( 'some_cpt' );
-			expect( requestMethod ).to.be.a( 'function' );
-			var request = requestMethod();
-			expect( request instanceof PostsRequest ).to.be.true;
-		});
-
-		it( 'binds the returned PostsRequest to the provided post type(s)', function() {
-			var requestMethod = site.registerType( 'cpt_name' );
-			var request = requestMethod();
-			expect( request ).to.have.property( '_params' );
-			expect( request._params ).to.have.property( 'type' );
-			expect( request._params.type ).to.equal( 'cpt_name' );
-
-			// Try with multiple post types
-			var postsAndCPTs = site.registerType([ 'cpt1', 'cpt2', 'posts' ]);
-			request = postsAndCPTs();
-			expect( request._params.type ).to.deep.equal([ 'cpt1', 'cpt2', 'posts' ]);
-		});
-
-		it( 'inherits options from the parent WP instance', function() {
-			var wp = new WP({
-				endpoint: 'http://website.com',
-				custom: 'option value'
-			});
-			var requestMethod = wp.registerType( 'cat_breeds' );
-			var request = requestMethod();
-			expect( request._options ).to.have.property( 'endpoint' );
-			expect( request._options.endpoint ).to.equal( 'http://website.com/' );
-			expect( request._options ).to.have.property( 'custom' );
-			expect( request._options.custom ).to.equal( 'option value' );
-		});
-
-	});
-
 	describe( '.url()', function() {
 
 		it( 'is defined', function() {
