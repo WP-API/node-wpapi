@@ -37,7 +37,7 @@ describe( 'wp.types', function() {
 			expect( types._filters ).to.deep.equal( {} );
 			expect( types._path ).to.deep.equal( {} );
 			expect( types._params ).to.deep.equal( {} );
-			expect( types._template ).to.equal( 'posts/types(/:type)' );
+			expect( types._template ).to.equal( 'types(/:type)' );
 			expect( _supportedMethods ).to.equal( 'get|head' );
 		});
 
@@ -74,12 +74,12 @@ describe( 'wp.types', function() {
 
 		it( 'should create the URL for retrieving all types', function() {
 			var url = types._renderURI();
-			expect( url ).to.equal( '/wp-json/wp/v2/posts/types' );
+			expect( url ).to.equal( '/wp-json/wp/v2/types' );
 		});
 
 		it( 'should create the URL for retrieving a specific term', function() {
 			var url = types.type( 'some_type' )._renderURI();
-			expect( url ).to.equal( '/wp-json/wp/v2/posts/types/some_type' );
+			expect( url ).to.equal( '/wp-json/wp/v2/types/some_type' );
 		});
 
 	});

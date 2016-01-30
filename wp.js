@@ -203,7 +203,7 @@ WP.prototype.tags = function() {
 };
 
 /**
- * Start a request against the `/posts/types` endpoint
+ * Start a request against the `/types` endpoint
  *
  * @method types
  * @param {Object} [options] An options hash for a new TypesRequest
