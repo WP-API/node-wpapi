@@ -66,59 +66,26 @@ describe( 'WPRequest', function() {
 		});
 
 		it( 'prefixes any provided template', function() {
+			request._template = 'face';
+			request.namespace( 'nose' );
+			expect( request._renderPath() ).to.equal( 'nose/face' );
+		});
+
+		it( 'can accept & set a namespace in the (:domain/:version) format', function() {
 			request._template = 'template';
-			request.namespace( 'ns' );
-			expect( request._renderPath() ).to.equal( 'ns/template' );
+			request.namespace( 'ns/v3' );
+			expect( request._renderPath() ).to.equal( 'ns/v3/template' );
 		});
 
 		it( 'can be removed (to use the legacy api v1) with an empty string', function() {
 			request._template = 'template';
-			request.namespace( 'wp' ).namespace( '' );
+			request.namespace( 'windows/xp' ).namespace( '' );
 			expect( request._renderPath() ).to.equal( 'template' );
 		});
 
 		it( 'can be removed (to use the legacy api v1) by omitting arguments', function() {
 			request._template = 'template';
-			request.namespace( 'wp' ).namespace();
-			expect( request._renderPath() ).to.equal( 'template' );
-		});
-
-	});
-
-	describe( 'version', function() {
-
-		it( 'is defined', function() {
-			expect( request ).to.have.property( 'version' );
-			expect( request.version ).to.be.a( 'function' );
-		});
-
-		it( 'sets a value that is prepended to the path', function() {
-			request.version( 'v8' );
-			expect( request._renderPath() ).to.equal( 'v8' );
-		});
-
-		it( 'prefixes the provided template', function()  {
-			request._template = 'template';
-			request.version( 'v8' );
-			expect( request._renderPath() ).to.equal( 'v8/template' );
-		});
-
-		it( 'prefixes any provided namespace', function()  {
-			request._template = 'template';
-			request.namespace( 'ns' );
-			request.version( 'v8' );
-			expect( request._renderPath() ).to.equal( 'ns/v8/template' );
-		});
-
-		it( 'can be removed (to use the legacy api v1) with an empty string', function() {
-			request._template = 'template';
-			request.version( 'v2' ).version( '' );
-			expect( request._renderPath() ).to.equal( 'template' );
-		});
-
-		it( 'can be removed (to use the legacy api v1) by omitting arguments', function() {
-			request._template = 'template';
-			request.version( 'v2' ).version();
+			request.namespace( 'wordpress/95' ).namespace();
 			expect( request._renderPath() ).to.equal( 'template' );
 		});
 
