@@ -17,6 +17,12 @@
  */
 var extend = require( 'node.extend' );
 
+var generateEndpointFactories = require( './lib/parse-route-string' );
+
+var endpointFactories = generateEndpointFactories;
+
+console.log( endpointFactories );
+
 var defaults = {
 	username: '',
 	password: ''
@@ -103,11 +109,7 @@ WP.prototype.comments = function( options ) {
  * @param {Object} [options] An options hash for a new MediaRequest
  * @return {MediaRequest} A MediaRequest instance
  */
-WP.prototype.media = function( options ) {
-	options = options || {};
-	options = extend( options, this._options );
-	return new MediaRequest( options );
-};
+WP.prototype.media = endpointFactories.media;
 
 /**
  * Start a request against the `/pages` endpoint
@@ -119,7 +121,7 @@ WP.prototype.media = function( options ) {
 WP.prototype.pages = function( options ) {
 	options = options || {};
 	options = extend( options, this._options );
-	return new PagesRequest( options );
+	return new PagesRequest( options ).setPathPart( 0, 'pages' );
 };
 
 /**
@@ -132,7 +134,7 @@ WP.prototype.pages = function( options ) {
 WP.prototype.posts = function( options ) {
 	options = options || {};
 	options = extend( options, this._options );
-	return new PostsRequest( options );
+	return new PostsRequest( options ).setPathPart( 0, 'posts' );
 };
 
 /**
@@ -226,7 +228,7 @@ WP.prototype.tags = function() {
 WP.prototype.types = function( options ) {
 	options = options || {};
 	options = extend( options, this._options );
-	return new TypesRequest( options );
+	return new TypesRequest( options ).setPathPart( 0, 'types' );
 };
 
 /**
@@ -239,7 +241,7 @@ WP.prototype.types = function( options ) {
 WP.prototype.users = function( options ) {
 	options = options || {};
 	options = extend( options, this._options );
-	return new UsersRequest( options );
+	return new UsersRequest( options ).setPathPart( 0, 'users' );
 };
 
 /**
@@ -280,7 +282,7 @@ WP.prototype.root = function( relativePath, collection ) {
 	var request = collection ? new CollectionRequest( options ) : new WPRequest( options );
 
 	// Set the path template to the string passed in
-	request._template = relativePath;
+	request._path = { '0': relativePath };
 
 	return request;
 };
