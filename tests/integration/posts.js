@@ -349,8 +349,8 @@ describe( 'integration: posts()', function() {
 			return wp.posts().auth( credentials ).id( id ).delete();
 		}).then(function( response ) {
 			expect( response ).to.be.an( 'object' );
-			expect( response ).to.have.property( 'trashed' );
-			expect( response.trashed ).to.equal( true );
+			// DELETE action returns the post object
+			expect( response.id ).to.equal( id );
 			// Query for the post: expect this to fail, since it is trashed and
 			// the unauthenticated user does not have permissions to see it
 			return wp.posts().id( id );
@@ -364,8 +364,15 @@ describe( 'integration: posts()', function() {
 			});
 		}).then(function( response ) {
 			expect( response ).to.be.an( 'object' );
-			expect( response ).to.have.property( 'deleted' );
-			expect( response.deleted ).to.equal( true );
+			// DELETE action returns the post object
+			expect( response.id ).to.equal( id );
+			// Query for the post, with auth: expect this to fail, since it is not
+			// just trashed but now deleted permanently
+			return wp.posts().auth( credentials ).id( id );
+		}).catch(function( error ) {
+			expect( error ).to.be.an( 'object' );
+			expect( error ).to.have.property( 'status' );
+			expect( error.status ).to.equal( 404 );
 			return SUCCESS;
 		});
 		return expect( prom ).to.eventually.equal( SUCCESS );
