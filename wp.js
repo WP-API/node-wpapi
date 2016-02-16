@@ -83,6 +83,47 @@ WP.site = function( endpoint ) {
 };
 
 /**
+ * Create a factory method for requests against an arbitrary endpoint base
+ *
+ * @example
+ *
+ *     wp.myPluginResources = wp.endpoint({
+ *       base: 'resources',
+ *       namespace: 'myplugin/v2'
+ *     });
+ *     wp.myPluginResources().get().then( // ...
+ *     wp.myPluginResources().id( 7 ).then( // ...
+ *
+ * @method endpoint
+ * @param {Object} [options] An options hash for a new MediaRequest
+ * @return {MediaRequest} A MediaRequest instance
+ */
+WP.prototype.endpoint = function( options ) {
+	var base = typeof options === 'string' ? options : options && options.base || '';
+	var namespace = options && options.namespace;
+	var instance = this;
+
+	if ( ! base || typeof base !== 'string' ) {
+		throw new Error( 'options hash must contain an endpoint base string' );
+	}
+
+	// Return a factory method that will create a configured CollectionRequest
+	return function( options ) {
+		options = options || {};
+		options = extend( options, instance._options );
+
+		var collectionRequest = new CollectionRequest( options );
+
+		// Naively assume that any post endpoint will take an ID property to retrieve
+		// a specific resource from what we are assuming to be a collection
+		collectionRequest._template = base + '(/:id)';
+		collectionRequest.id = require( './lib/path/numeric-id' );
+
+		return collectionRequest.namespace( namespace );
+	};
+};
+
+/**
  * Start a request against the `/media` endpoint
  *
  * @method media

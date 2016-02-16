@@ -200,4 +200,72 @@ describe( 'wp', function() {
 
 	});
 
+	describe( 'endpoint()', function() {
+
+		it( 'is a function', function() {
+			expect( site ).to.have.property( 'endpoint' );
+			expect( site.endpoint ).to.be.a( 'function' );
+		});
+
+		it( 'returns an endpoint factory function', function() {
+			var endpoint = site.endpoint({
+				base: 'resources',
+				namespace: 'ns/v1'
+			});
+			expect( endpoint ).to.be.a( 'function' );
+		});
+
+		it( 'supports a string shorthand', function() {
+			var endpoint = site.endpoint( 'ns/v1/resources' );
+			expect( endpoint ).to.be.a( 'function' );
+		});
+
+		it( 'requires a base property', function() {
+			expect(function() {
+				site.endpoint({
+					namespace: 'no/base'
+				});
+			}).to.throw;
+		});
+
+		describe( 'factory method', function() {
+
+			it( 'returns CollectionRequest instances', function() {
+				var pathRequest = site.endpoint({
+					base: 'resources',
+					namespace: 'ns/v1'
+				})();
+				expect( pathRequest instanceof CollectionRequest ).to.be.true;
+			});
+
+			it( 'returns a correctly-configured request instance', function() {
+				var endpoint = site.endpoint({
+					base: 'resources',
+					namespace: 'ns/v1'
+				});
+				expect( endpoint()._renderURI() ).to.equal( 'endpoint/url/ns/v1/resources' );
+			});
+
+			it( 'returns a correctly-configured request instance when using the string shorthand', function() {
+				var endpoint = site.endpoint( 'ns/v1/resources' );
+				expect( endpoint()._renderURI() ).to.equal( 'endpoint/url/ns/v1/resources' );
+			});
+
+			it( 'permits accessing sub-resources by ID', function() {
+				var endpoint = site.endpoint({
+					base: 'resources',
+					namespace: 'ns/v1'
+				});
+				expect( endpoint().id( 2501 )._renderURI() ).to.equal( 'endpoint/url/ns/v1/resources/2501' );
+			});
+
+			it( 'permits accessing sub-resources by ID when using the string shorthand', function() {
+				var endpoint = site.endpoint( 'ns/v1/resources' );
+				expect( endpoint().id( 2501 )._renderURI() ).to.equal( 'endpoint/url/ns/v1/resources/2501' );
+			});
+
+		});
+
+	});
+
 });
