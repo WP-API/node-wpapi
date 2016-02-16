@@ -180,6 +180,21 @@ describe( 'integration: posts()', function() {
 
 	describe( 'filter methods', function() {
 
+		describe( 'slug', function() {
+
+			it( 'can be used to return only posts with the specified slug', function() {
+				var prom = wp.posts().slug( 'template-excerpt-generated' ).get().then(function( posts ) {
+					expect( posts.length ).to.equal( 1 );
+					expect( getTitles( posts ) ).to.deep.equal([
+						'Template: Excerpt (Generated)'
+					]);
+					return SUCCESS;
+				});
+				return expect( prom ).to.eventually.equal( SUCCESS );
+			});
+
+		});
+
 		describe( 'tag', function() {
 
 			it( 'can be used to return only posts with a provided tag', function() {

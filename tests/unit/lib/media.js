@@ -33,8 +33,6 @@ describe( 'wp.media', function() {
 		});
 
 		it( 'should intitialize instance properties', function() {
-			expect( media._filters ).to.deep.equal( {} );
-			expect( media._taxonomyFilters ).to.deep.equal( {} );
 			expect( media._path ).to.deep.equal( {} );
 			expect( media._params ).to.deep.equal( {} );
 			expect( media._template ).to.equal( 'media(/:id)' );

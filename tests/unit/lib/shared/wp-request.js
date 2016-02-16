@@ -98,6 +98,11 @@ describe( 'WPRequest', function() {
 			expect( request.param ).to.be.a( 'function' );
 		});
 
+		it( 'will have no effect if called without any arguments', function() {
+			request.param();
+			expect( request._renderQuery() ).to.equal( '' );
+		});
+
 		it( 'will set a query parameter value', function() {
 			request.param( 'key', 'value' );
 			expect( request._renderQuery() ).to.equal( '?key=value' );
@@ -116,6 +121,16 @@ describe( 'WPRequest', function() {
 			expect( request._renderQuery() ).to.equal( '?key=value' );
 			request.param( 'key', 'value' );
 			request.param( 'key', null );
+			expect( request._renderQuery() ).to.equal( '' );
+		});
+
+		it( 'will have no effect if called with no value', function() {
+			request.param( 'key' );
+			expect( request._renderQuery() ).to.equal( '' );
+		});
+
+		it( 'will have no effect if called with an empty object', function() {
+			request.param({});
 			expect( request._renderQuery() ).to.equal( '' );
 		});
 

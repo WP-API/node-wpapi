@@ -7,6 +7,7 @@ chai.use( require( 'sinon-chai' ) );
 
 var CollectionRequest = require( '../../../../lib/shared/collection-request' );
 var WPRequest = require( '../../../../lib/shared/wp-request' );
+var filterMixins = require( '../../../../lib/mixins/filters' );
 
 describe( 'CollectionRequest', function() {
 
@@ -302,11 +303,11 @@ describe( 'CollectionRequest', function() {
 
 		describe( 'category()', function() {
 
-			it( 'delegates to taxonomy()', function() {
-				sinon.stub( request, 'taxonomy' );
+			it( 'delegates to taxonomy() mixin', function() {
+				sinon.stub( filterMixins, 'taxonomy' );
 				request.category( 'news' );
-				expect( request.taxonomy ).to.have.been.calledWith( 'category', 'news' );
-				request.taxonomy.restore();
+				expect( filterMixins.taxonomy ).to.have.been.calledWith( 'category', 'news' );
+				filterMixins.taxonomy.restore();
 			});
 
 			it( 'should be chainable, and accumulates values', function() {
@@ -320,11 +321,11 @@ describe( 'CollectionRequest', function() {
 
 		describe( 'tag()', function() {
 
-			it( 'delegates to taxonomy()', function() {
-				sinon.stub( request, 'taxonomy' );
+			it( 'delegates to taxonomy() mixin', function() {
+				sinon.stub( filterMixins, 'taxonomy' );
 				request.tag( 'the-good-life' );
-				expect( request.taxonomy ).to.have.been.calledWith( 'tag', 'the-good-life' );
-				request.taxonomy.restore();
+				expect( filterMixins.taxonomy ).to.have.been.calledWith( 'tag', 'the-good-life' );
+				filterMixins.taxonomy.restore();
 			});
 
 			it( 'should be chainable, and accumulates values', function() {

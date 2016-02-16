@@ -34,7 +34,6 @@ describe( 'wp.types', function() {
 
 		it( 'should intitialize instance properties', function() {
 			var _supportedMethods = types._supportedMethods.sort().join( '|' );
-			expect( types._filters ).to.deep.equal( {} );
 			expect( types._path ).to.deep.equal( {} );
 			expect( types._params ).to.deep.equal( {} );
 			expect( types._template ).to.equal( 'types(/:type)' );

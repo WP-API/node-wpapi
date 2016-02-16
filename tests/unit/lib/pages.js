@@ -33,8 +33,6 @@ describe( 'wp.pages', function() {
 		});
 
 		it( 'should intitialize instance properties', function() {
-			expect( pages._filters ).to.deep.equal( {} );
-			expect( pages._taxonomyFilters ).to.deep.equal( {} );
 			expect( pages._path ).to.deep.equal( {} );
 			expect( pages._params ).to.deep.equal( {} );
 			expect( pages._template ).to.equal( 'pages(/:id)(/:action)(/:commentId)' );

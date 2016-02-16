@@ -33,8 +33,6 @@ describe( 'wp.posts', function() {
 		});
 
 		it( 'should intitialize instance properties', function() {
-			expect( posts._filters ).to.deep.equal( {} );
-			expect( posts._taxonomyFilters ).to.deep.equal( {} );
 			expect( posts._path ).to.deep.equal( {} );
 			expect( posts._template ).to.equal( 'posts(/:id)(/:action)(/:actionId)' );
 			var _supportedMethods = posts._supportedMethods.sort().join( '|' );

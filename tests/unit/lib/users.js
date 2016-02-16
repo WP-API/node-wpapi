@@ -38,7 +38,6 @@ describe( 'wp.users', function() {
 		});
 
 		it( 'should initialize instance properties', function() {
-			expect( users._filters ).to.deep.equal( {} );
 			expect( users._path ).to.deep.equal( {} );
 			expect( users._params ).to.deep.equal( {} );
 			var _supportedMethods = users._supportedMethods.sort().join( '|' );
