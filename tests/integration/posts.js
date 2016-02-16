@@ -378,4 +378,33 @@ describe( 'integration: posts()', function() {
 		return expect( prom ).to.eventually.equal( SUCCESS );
 	});
 
+	// Callback context
+
+	it( 'can GET posts with a context-bound callback', function( done ) {
+		function Ctor() {}
+		Ctor.prototype.setState = function( state ) {
+			this.state = state;
+		};
+		Ctor.prototype.request = function( cb ) {
+			var self = this;
+			wp.posts().get(function( err, data ) {
+				expect( err ).to.be.null;
+
+				// Context is maintained
+				expect( this ).to.equal( self );
+				this.setState({
+					data: data
+				});
+
+				expect( this ).to.have.property( 'state' );
+				expect( this.state ).to.be.an( 'object' );
+				expect( this.state ).to.have.property( 'data' );
+				expect( this.state.data ).to.be.an( 'array' );
+				expect( this.state.data.length ).to.equal( 10 );
+				cb();
+			}.bind( this ) );
+		};
+		( new Ctor() ).request( done );
+	});
+
 });
