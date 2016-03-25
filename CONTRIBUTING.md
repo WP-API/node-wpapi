@@ -7,7 +7,7 @@ This document outlines some of the best practices and conventions used within th
 
 ## Best Practices for Commits
 
-You should always run `npm test` before committing, to identify any syntax, style or unit test errors in your branch.
+You should always run `npm test` before committing, to identify any syntax, style or unit test errors in your branch.  See "Testing" below for more details about setting up the environment for running the tests.
 
 #### Commit Granularity
 
@@ -75,7 +75,13 @@ We prefer `camelCase` variable and function names, and `UpperCamelCase` construc
 
 ## Testing
 
-Run the existing tests with `npm run mocha` (or `grunt test`, if you have the Grunt command-line interface installed).
+The tests are broken down into a unit test suite and an integration test suite.  You should ensure that your changes pass all tests in both suites.
+
+The unit tests can be run without any additional setup with `npm run test:unit`, but running more comprehensive tests (e.g. `npm test`, `npm run mocha`, etc.) requires additional work as described below in Integration Tests.
+
+### Integration Tests
+
+In order to run the integration tests you will need to run a WP REST API as described in [wpapi-vagrant-varietal](https://github.com/kadamwhite/wpapi-vagrant-varietal).  Full instructions are provided there and once runninng the integration tests will pass (you can test these specifically by running `npm test:integration`).
 
 ### Adding Tests
 
