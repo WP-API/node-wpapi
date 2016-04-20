@@ -28,6 +28,7 @@ var PagesRequest = require( './lib/pages' );
 var PostsRequest = require( './lib/posts' );
 var TaxonomiesRequest = require( './lib/taxonomies' );
 var MenusRequest = require( './lib/menus' );
+var MenusLocationRequest = require( './lib/menu-locations' );
 var TypesRequest = require( './lib/types' );
 var UsersRequest = require( './lib/users' );
 var CollectionRequest = require( './lib/shared/collection-request' );
@@ -217,9 +218,9 @@ WP.prototype.types = function( options ) {
 };
 
 /**
- * Start a request against the `/posts/types` endpoint
+ * Start a request against the `/wp-api-menus/v2/menus/id` endpoint
  *
- * @method types
+ * @method id
  * @param {Object} [options] An options hash for a new MenusRequest
  * @return {MenusRequest} A TypesRequest instance
  */
@@ -228,6 +229,20 @@ WP.prototype.menus = function( options ) {
 	options = extend( options, this._options );
 	return new MenusRequest( options );
 };
+
+/**
+ * Start a request against the `/wp-api-menus/v2/menu-locations/location` endpoint
+ *
+ * @method location
+ * @param {Object} [options] An options hash for a new MenusRequest
+ * @return {MenusRequest} A TypesRequest instance
+ */
+WP.prototype.menuLocations = function( options ) {
+	options = options || {};
+	options = extend( options, this._options );
+	return new MenusLocationRequest( options );
+};
+
 /**
  * Start a request against the `/users` endpoint
  *
