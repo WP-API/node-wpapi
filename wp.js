@@ -27,6 +27,7 @@ var MediaRequest = require( './lib/media' );
 var PagesRequest = require( './lib/pages' );
 var PostsRequest = require( './lib/posts' );
 var TaxonomiesRequest = require( './lib/taxonomies' );
+var MenusRequest = require( './lib/menus' );
 var TypesRequest = require( './lib/types' );
 var UsersRequest = require( './lib/users' );
 var CollectionRequest = require( './lib/shared/collection-request' );
@@ -203,7 +204,7 @@ WP.prototype.tags = function() {
 };
 
 /**
- * Start a request against the `/types` endpoint
+ * Start a request against the `/posts/types` endpoint
  *
  * @method types
  * @param {Object} [options] An options hash for a new TypesRequest
@@ -216,6 +217,18 @@ WP.prototype.types = function( options ) {
 };
 
 /**
+ * Start a request against the `/posts/types` endpoint
+ *
+ * @method types
+ * @param {Object} [options] An options hash for a new TypesRequest
+ * @return {TypesRequest} A TypesRequest instance
+ */
+WP.prototype.menus = function( options ) {
+	options = options || {};
+	options = extend( options, this._options );
+	return new MenusRequest( options );
+};
+/**
  * Start a request against the `/users` endpoint
  *
  * @method users
@@ -226,6 +239,36 @@ WP.prototype.users = function( options ) {
 	options = options || {};
 	options = extend( options, this._options );
 	return new UsersRequest( options );
+};
+
+/**
+ * Define a method to handle specific custom post types.
+ *
+ * @example
+ * If your site had an events custom type with name `event_cpt`, you could create a convenience
+ * method for querying events and store it on the WP instance.
+ *
+ * Create the WP instance, define the custom endpoint handler, and save it to `wp.events`:
+ *
+ *     var wp = new WP({ endpoint: 'http://some-website.com/wp-json' });
+ *     wp.events = wp.registerType( 'event_cpt' );
+ *
+ * You can now call `wp.events()` to trigger event post requests
+ *
+ *     wp.events().get()... // equivalent to wp.posts().type( 'event_cpt' ).get()...
+ *
+ * `registerType()` just returns a function, so there's no requirement to store it as a property
+ * on the WP instance; however, following the above pattern is likely to be the most useful.
+ *
+ * @method registerType
+ * @param {String|Array} type A string or array of post type names
+ * @return {Function} A function to create PostsRequests pre-bound to the provided types
+ */
+WP.prototype.registerType = function( type ) {
+	var options = extend( {}, this._options );
+	return function() {
+		return new PostsRequest( options ).type( type );
+	};
 };
 
 /**
