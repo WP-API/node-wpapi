@@ -220,8 +220,8 @@ WP.prototype.types = function( options ) {
  * Start a request against the `/posts/types` endpoint
  *
  * @method types
- * @param {Object} [options] An options hash for a new TypesRequest
- * @return {TypesRequest} A TypesRequest instance
+ * @param {Object} [options] An options hash for a new MenusRequest
+ * @return {MenusRequest} A TypesRequest instance
  */
 WP.prototype.menus = function( options ) {
 	options = options || {};
