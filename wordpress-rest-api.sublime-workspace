@@ -1,0 +1,2283 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"alpha",
+				"alphaNumericSort"
+			],
+			[
+				"cat",
+				"categories"
+			],
+			[
+				"chilc",
+				"childCat2"
+			],
+			[
+				"chiC",
+				"childCat1"
+			],
+			[
+				"cate",
+				"categories"
+			],
+			[
+				"updated",
+				"updatedPost"
+			],
+			[
+				"upd",
+				"updatedPost"
+			],
+			[
+				"titles",
+				"getTitles"
+			],
+			[
+				"tot",
+				"timeout	setTimeout function"
+			],
+			[
+				"action",
+				"actionId"
+			],
+			[
+				"query",
+				"queryString"
+			],
+			[
+				"que",
+				"queryString"
+			],
+			[
+				"quer",
+				"queryString"
+			],
+			[
+				"strin",
+				"stringify"
+			],
+			[
+				"parsed",
+				"parsedResult"
+			],
+			[
+				"par",
+				"parsedNext"
+			],
+			[
+				"resp",
+				"response"
+			],
+			[
+				"sand",
+				"SandboxedRequest"
+			],
+			[
+				"exp",
+				"expectedNextLink"
+			],
+			[
+				"ex",
+				"expectedPrevLink"
+			],
+			[
+				"res",
+				"resourceUrl"
+			],
+			[
+				"req",
+				"requestUrl"
+			],
+			[
+				"pag",
+				"paginatedResult"
+			],
+			[
+				"tax",
+				"taxonomyName"
+			],
+			[
+				"use",
+				"username"
+			],
+			[
+				"_re",
+				"_renderURI"
+			],
+			[
+				"WP",
+				"WPRequest"
+			],
+			[
+				"Co",
+				"CollectionRequest"
+			],
+			[
+				"requ",
+				"requestMethod"
+			],
+			[
+				"endpoi",
+				"endpoint"
+			],
+			[
+				"_p",
+				"_options"
+			],
+			[
+				"path",
+				"pathRequest"
+			],
+			[
+				"post",
+				"posts"
+			],
+			[
+				"prepa",
+				"prepareParameters"
+			],
+			[
+				"expec",
+				"expectedURI"
+			],
+			[
+				"current",
+				"currentVal"
+			],
+			[
+				"_ren",
+				"_renderPath"
+			],
+			[
+				"_path",
+				"_pathStr"
+			],
+			[
+				"inst",
+				"instanceof"
+			],
+			[
+				"get",
+				"getNormalizedColor"
+			],
+			[
+				"cent",
+				"centerpointTimeout"
+			],
+			[
+				"clear",
+				"clearTimeout"
+			],
+			[
+				"clea",
+				"clearScreenTimeout"
+			],
+			[
+				"r",
+				"rgbToColorArray"
+			],
+			[
+				"random",
+				"randomRGBA"
+			],
+			[
+				"rando",
+				"randomColor"
+			],
+			[
+				"dire",
+				"directory"
+			],
+			[
+				"direc",
+				"directories"
+			],
+			[
+				"get_taxon",
+				"get_taxonomy_term"
+			],
+			[
+				"taxon",
+				"taxonomy_types"
+			],
+			[
+				"obje",
+				"object_type"
+			],
+			[
+				"publc",
+				"public_taxonomies"
+			],
+			[
+				"public",
+				"public_taxonomies"
+			],
+			[
+				"assert",
+				"assertEquals"
+			],
+			[
+				"asser",
+				"assertEquals"
+			],
+			[
+				"json",
+				"json_ensure_response"
+			],
+			[
+				"trunc",
+				"truncatedContent"
+			],
+			[
+				"trun",
+				"truncatedContent"
+			],
+			[
+				"library-",
+				"library-archive"
+			],
+			[
+				"backgrou",
+				"background-size"
+			],
+			[
+				"wordpress",
+				"wordpress-importer"
+			],
+			[
+				"so",
+				"societyofgrownups"
+			],
+			[
+				"node",
+				"node_modules"
+			],
+			[
+				"conf",
+				"conf"
+			],
+			[
+				"respo",
+				"respond-from"
+			],
+			[
+				"unc",
+				"uncategorizedTopic"
+			],
+			[
+				"posts",
+				"posts_per_archive_page"
+			],
+			[
+				"article",
+				"articleRoute"
+			],
+			[
+				"http",
+				"httpMock"
+			],
+			[
+				"proto",
+				"prototype"
+			],
+			[
+				"default",
+				"defaultQueryParams"
+			],
+			[
+				"handle",
+				"handleError"
+			],
+			[
+				"temp",
+				"tempToClass"
+			],
+			[
+				"late",
+				"latestTweet"
+			],
+			[
+				"latest",
+				"latestPost"
+			],
+			[
+				"lat",
+				"latestTweet"
+			],
+			[
+				"arti",
+				"article-intro"
+			],
+			[
+				"symb",
+				"symbol-white"
+			],
+			[
+				"proc",
+				"processResponse"
+			],
+			[
+				"jscs",
+				"jscsPlugin"
+			],
+			[
+				"p",
+				"PluginError"
+			],
+			[
+				"issue",
+				"issuesByFile"
+			],
+			[
+				"isu",
+				"issueFilePattern"
+			],
+			[
+				"jshi",
+				"jshintrcPath"
+			],
+			[
+				"jsh",
+				"jshint-stylish"
+			],
+			[
+				"bu",
+				"buildTarget"
+			],
+			[
+				"swa",
+				"swapBasePath"
+			],
+			[
+				"confi",
+				"configuration"
+			],
+			[
+				"proce",
+				"processingInstance"
+			],
+			[
+				"compie",
+				"compileFormCtlAndDigest"
+			],
+			[
+				"BoutiqueC",
+				"BoutiqueContextATS"
+			],
+			[
+				"Bout",
+				"BoutiqueContextATS"
+			],
+			[
+				"getB",
+				"getBoutiquePromise"
+			],
+			[
+				"comp",
+				"compileFormCtlAndDigest"
+			],
+			[
+				"productContex",
+				"productContextsPromise"
+			],
+			[
+				"shipp",
+				"shippingUpcharges"
+			],
+			[
+				"purchaseO",
+				"thisPurchaseOrders"
+			],
+			[
+				"skuA",
+				"skuAttrNameMap"
+			],
+			[
+				"skuAt",
+				"skuAttrDisplayMap"
+			],
+			[
+				"skuAttr",
+				"skuAttrNameMap"
+			],
+			[
+				"poI",
+				"poItemsPromise"
+			],
+			[
+				"butt",
+				"buttonReverse"
+			],
+			[
+				"limit",
+				"limitInputLength"
+			],
+			[
+				"makeMoc",
+				"makeMockSku"
+			],
+			[
+				"noge",
+				"nogetpkStringified"
+			],
+			[
+				"bouti",
+				"boutiqueContext"
+			],
+			[
+				"pard",
+				"parsedPGCs"
+			],
+			[
+				"tracing",
+				"trackingModel"
+			],
+			[
+				"tracki",
+				"trackingModel"
+			],
+			[
+				"parsePr",
+				"parseProductGroupContext"
+			],
+			[
+				"defa",
+				"defaultProductTemplate"
+			],
+			[
+				"produc",
+				"productContext"
+			],
+			[
+				"serialize",
+				"serializeProductContext"
+			],
+			[
+				"mbc",
+				"mbcTrackingModelParser"
+			],
+			[
+				"productGr",
+				"productGroupContext"
+			],
+			[
+				"productC",
+				"productContext"
+			],
+			[
+				"productCont",
+				"productContextsByGroup"
+			],
+			[
+				"producg",
+				"productGroupContext"
+			],
+			[
+				"produC",
+				"productContextList"
+			],
+			[
+				"string",
+				"stringifyProductContexts"
+			],
+			[
+				"producG",
+				"productGroupContext"
+			],
+			[
+				"seral",
+				"serializedProductContexts"
+			],
+			[
+				"toQu",
+				"toQueryResultObject"
+			],
+			[
+				"retai",
+				"retailRange"
+			],
+			[
+				"ms",
+				"product.msrpRange"
+			],
+			[
+				"shi",
+				"product.shippingUpchargeRange"
+			],
+			[
+				"msr",
+				"msrps"
+			],
+			[
+				"update",
+				"updateRange"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "tests/integration/categories.js",
+			"settings":
+			{
+				"buffer_size": 12125,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "package.json",
+			"settings":
+			{
+				"buffer_size": 1982,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "tests/integration/posts.js",
+			"settings":
+			{
+				"buffer_size": 12874,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "lib/taxonomies.js",
+			"settings":
+			{
+				"buffer_size": 4642,
+				"line_ending": "Unix"
+			}
+		}
+	],
+	"build_system": "Packages/JSHint/JSHint.sublime-build",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 392.0,
+		"last_filter": "sort",
+		"selected_items":
+		[
+			[
+				"sort",
+				"Sort Lines"
+			],
+			[
+				"js",
+				"Set Syntax: JavaScript"
+			],
+			[
+				"ind",
+				"Indent JSON"
+			],
+			[
+				"json",
+				"Set Syntax: JSON"
+			],
+			[
+				"form",
+				"Format: Javascript"
+			],
+			[
+				"previe",
+				"Markdown Preview: Preview in Browser"
+			],
+			[
+				"insta",
+				"Package Control: Install Package"
+			],
+			[
+				"list",
+				"Package Control: List Packages"
+			],
+			[
+				"instal",
+				"Package Control: Install Package"
+			],
+			[
+				"install",
+				"Package Control: Install Package"
+			],
+			[
+				"wrap",
+				"Word Wrap: Toggle"
+			],
+			[
+				"blame",
+				"Git: Blame"
+			],
+			[
+				"preview",
+				"Markdown Preview: Preview in Browser"
+			],
+			[
+				"previ",
+				"Markdown Preview: Preview in Browser"
+			],
+			[
+				"lower",
+				"Convert Case: Lower Case"
+			],
+			[
+				"upp",
+				"Convert Case: Upper Case"
+			],
+			[
+				"package",
+				"Package Control: Enable Package"
+			],
+			[
+				"bash",
+				"Set Syntax: Shell Script (Bash)"
+			],
+			[
+				"shell",
+				"Set Syntax: Shell Script (Bash)"
+			],
+			[
+				"ssh",
+				"Set Syntax: HTML"
+			],
+			[
+				"markd",
+				"Set Syntax: Markdown"
+			],
+			[
+				"php",
+				"Set Syntax: PHP"
+			],
+			[
+				"github",
+				"Markdown Preview: Github Flavored Markdown: Preview in Browser"
+			],
+			[
+				"sh",
+				"Set Syntax: Shell Script (Bash)"
+			],
+			[
+				"lowe",
+				"Convert Case: Lower Case"
+			],
+			[
+				"java",
+				"Set Syntax: JavaScript"
+			],
+			[
+				"oreview",
+				"Markdown Preview: Github Flavored Markdown: Preview in Browser"
+			],
+			[
+				"markdow",
+				"Set Syntax: Markdown"
+			],
+			[
+				"html",
+				"Set Syntax: HTML"
+			],
+			[
+				"prev",
+				"Markdown Preview: Github Flavored Markdown: Preview in Browser"
+			],
+			[
+				"mark",
+				"Set Syntax: Markdown"
+			],
+			[
+				"styl",
+				"Set Syntax: Stylus"
+			],
+			[
+				"color",
+				"Color picker"
+			],
+			[
+				"packali",
+				"Package Control: List Packages"
+			],
+			[
+				"gist",
+				"Gist: Open Gist"
+			],
+			[
+				"handle",
+				"Set Syntax: Handlebars"
+			],
+			[
+				"upper",
+				"Convert Case: Upper Case"
+			],
+			[
+				"gith",
+				"Markdown Preview: Github Flavored Markdown: Preview in Browser"
+			],
+			[
+				"bla",
+				"Git: Blame"
+			],
+			[
+				"markdown",
+				"Set Syntax: Markdown"
+			],
+			[
+				"blamer",
+				"Markdown Preview: Github Flavored Markdown: Export HTML in Sublime Text"
+			],
+			[
+				"packlis",
+				"Package Control: List Packages"
+			],
+			[
+				"markdo",
+				"Set Syntax: Markdown"
+			],
+			[
+				"fo",
+				"Format: Javascript"
+			],
+			[
+				"forma",
+				"Format: Javascript"
+			],
+			[
+				"text",
+				"Set Syntax: Plain Text"
+			],
+			[
+				"txt",
+				"Set Syntax: TeX Math"
+			],
+			[
+				"javas",
+				"Set Syntax: JavaScript"
+			],
+			[
+				"blae",
+				"Git: Blame"
+			],
+			[
+				"ena",
+				"Package Control: Enable Package"
+			],
+			[
+				"disab",
+				"Package Control: Disable Package"
+			],
+			[
+				"disable",
+				"Package Control: Disable Package"
+			],
+			[
+				"sor",
+				"Sort Lines"
+			],
+			[
+				"remove",
+				"Package Control: Remove Package"
+			],
+			[
+				"packare",
+				"Package Control: Remove Package"
+			],
+			[
+				"mar",
+				"Set Syntax: Markdown Extended"
+			],
+			[
+				"inst",
+				"Package Control: Install Package"
+			],
+			[
+				"prevprev",
+				"Markdown Preview: Python Markdown: Preview in Browser"
+			],
+			[
+				"prevpre",
+				"Markdown Preview: Python Markdown: Preview in Browser"
+			],
+			[
+				"uper",
+				"Convert Case: Upper Case"
+			],
+			[
+				"packains",
+				"Package Control: Install Package"
+			],
+			[
+				"packag",
+				"Package Control: Remove Package"
+			],
+			[
+				"a",
+				"AngularJS: Rebuild Search Index"
+			],
+			[
+				"enable",
+				"Package Control: Enable Package"
+			],
+			[
+				"packaena",
+				"Package Control: Enable Package"
+			],
+			[
+				"packalis",
+				"Package Control: List Packages"
+			],
+			[
+				"lorem",
+				"Snippet: Lorem ipsum"
+			],
+			[
+				"toggle tra",
+				"Trailing Spaces: Toggle Trailing Spaces Highlighting"
+			],
+			[
+				"traili",
+				"Trailing Spaces: Toggle Trailing Spaces Highlighting"
+			],
+			[
+				"format",
+				"Format: Javascript"
+			],
+			[
+				"jaa",
+				"Set Syntax: JavaScript"
+			],
+			[
+				"prett",
+				"HTMLPrettify"
+			],
+			[
+				"pretti",
+				"HTMLPrettify"
+			],
+			[
+				"tidy",
+				"TidyHTML"
+			],
+			[
+				"t",
+				"TidyHTML"
+			],
+			[
+				"trail",
+				"Trailing Spaces: Delete Trailing Spaces"
+			],
+			[
+				"htm",
+				"Set Syntax: HTML"
+			],
+			[
+				"disa",
+				"Package Control: Disable Package"
+			],
+			[
+				"blam",
+				"Git: Blame"
+			],
+			[
+				"subli",
+				"SublimeLinter: Show Error List"
+			],
+			[
+				"error",
+				"SublimeLinter: Show Error List"
+			],
+			[
+				"strips",
+				"Trailing Spaces: Delete Trailing Spaces"
+			],
+			[
+				"s",
+				"Sort Lines"
+			],
+			[
+				"SORT",
+				"Sort Lines"
+			],
+			[
+				"packdis",
+				"Package Control: Disable Package"
+			],
+			[
+				"wra",
+				"Word Wrap: Toggle"
+			],
+			[
+				"packen",
+				"Package Control: Enable Package"
+			],
+			[
+				"packaen",
+				"Package Control: Enable Package"
+			],
+			[
+				"packa",
+				"Package Control: Upgrade/Overwrite All Packages"
+			],
+			[
+				"pacli",
+				"Package Control: List Packages"
+			],
+			[
+				"packdi",
+				"Package Control: Disable Package"
+			],
+			[
+				"paremo",
+				"Package Control: Remove Package"
+			],
+			[
+				"sublime",
+				"Preferences: SublimeLinter Settings – User"
+			],
+			[
+				"reveal",
+				"File: Reveal"
+			],
+			[
+				"project",
+				"Project: Edit"
+			],
+			[
+				"pac",
+				"Package Control: List Packages"
+			],
+			[
+				"settings",
+				"Preferences: Settings - Default"
+			],
+			[
+				"proje",
+				"Project: Save As"
+			],
+			[
+				"projec",
+				"Project: Save As"
+			],
+			[
+				"delete",
+				"Markdown Preview: export HTML in Sublime Text"
+			],
+			[
+				"jshin",
+				"JSHint"
+			],
+			[
+				"jshi",
+				"JSHint"
+			],
+			[
+				"jshint",
+				"JSHint"
+			],
+			[
+				"hint",
+				"JSHint"
+			],
+			[
+				"setti",
+				"Preferences: Settings - User"
+			]
+		],
+		"width": 584.0
+	},
+	"console":
+	{
+		"height": 125.0,
+		"history":
+		[
+			"import urllib.request,os,hashlib; h = '7183a2d3e96f11eeadd761d777e62404' + 'e330c659d4bb41d3bdf022e94cab3cd0'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( 'http://sublime.wbond.net/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); print('Error validating download (got %s instead of %s), please try manual install' % (dh, h)) if dh != h else open(os.path.join( ipp, pf), 'wb' ).write(by)"
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/Users/kadam/gh/kadamwhite/wordpress-rest-api",
+		"/Users/kadam/gh/kadamwhite/wordpress-rest-api/tests"
+	],
+	"file_history":
+	[
+		"/Users/kadam/gh/kadamwhite/wordpress-rest-api/.git/COMMIT_EDITMSG",
+		"/Users/kadam/gh/kadamwhite/wordpress-rest-api/lib/shared/collection-request.js",
+		"/Users/kadam/gh/kadamwhite/wordpress-rest-api/tests/unit/lib/taxonomies.js",
+		"/Users/kadam/gh/kadamwhite/wordpress-rest-api/test.js",
+		"/Users/kadam/gh/kadamwhite/wordpress-rest-api/tests/unit/lib/shared/collection-request.js",
+		"/Users/kadam/gh/kadamwhite/wordpress-rest-api/lib/shared/wp-request.js",
+		"/Users/kadam/Library/Application Support/Sublime Text 3/Packages/User/Preferences.sublime-settings",
+		"/Users/kadam/gh/kadamwhite/ghostpress/README.md",
+		"/Users/kadam/gh/kadamwhite/wordpress-rest-api/tests/unit/wp.js",
+		"/Users/kadam/gh/kadamwhite/wordpress-rest-api/lib/taxonomies.js",
+		"/Users/kadam/gh/kadamwhite/wordpress-rest-api/tests/integration/tags.js",
+		"/Users/kadam/gh/kadamwhite/ghostpress/config.yml",
+		"/Users/kadam/gh/kadamwhite/wordpress-rest-api/tests/unit/lib/shared/wp-request.js",
+		"/Users/kadam/gh/kadamwhite/wordpress-rest-api/wp.js",
+		"/Users/kadam/gh/kadamwhite/wordpress-rest-api/tests/integration/categories.js",
+		"/Users/kadam/gh/kadamwhite/ghostpress/themes/README.md",
+		"/Users/kadam/gh/kadamwhite/wordpress-rest-api/node_modules/superagent/lib/node/index.js",
+		"/Users/kadam/Music/Dance/README.md",
+		"/Users/kadam/gh/kadamwhite/wordpress-rest-api/package.json",
+		"/Users/kadam/gh/kadamwhite/wordpress-rest-api/lib/shared/alphanumeric-sort.js",
+		"/Users/kadam/gh/kadamwhite/wordpress-rest-api/node_modules/lodash/dist/lodash.js",
+		"/Users/kadam/gh/kadamwhite/wordpress-rest-api/tests/unit/lib/media.js",
+		"/Users/kadam/gh/kadamwhite/wordpress-rest-api/Gruntfile.js",
+		"/Users/kadam/gh/kadamwhite/wordpress-rest-api/tests/unit/lib/pages.js",
+		"/Users/kadam/gh/kadamwhite/wordpress-rest-api/tests/unit/lib/posts.js",
+		"/Users/kadam/gh/kadamwhite/wordpress-rest-api/.jscsrc",
+		"/Users/kadam/gh/kadamwhite/wordpress-rest-api/tests/unit/lib/types.js",
+		"/Users/kadam/gh/kadamwhite/wordpress-rest-api/tests/unit/lib/users.js",
+		"/Users/kadam/gh/kadamwhite/wordpress-rest-api/README.md",
+		"/Users/kadam/gh/kadamwhite/wordpress-rest-api/tests/integration/taxonomies.js",
+		"/Users/kadam/gh/kadamwhite/wordpress-rest-api/lib/posts.js",
+		"/Users/kadam/gh/kadamwhite/wordpress-rest-api/lib/pages.js",
+		"/Users/kadam/gh/kadamwhite/wordpress-rest-api/tests/integration/posts.js",
+		"/Users/kadam/gh/kadamwhite/wordpress-rest-api/.travis.yml",
+		"/Users/kadam/gh/kadamwhite/mbtapi/package.json",
+		"/Users/kadam/gh/kadamwhite/wordpress-rest-api/.git/rebase-merge/git-rebase-todo",
+		"/Users/kadam/gh/kadamwhite/wordpress-rest-api/wordpress-rest-api.sublime-project",
+		"/Users/kadam/gh/kadamwhite/wordpress-rest-api/coverage/lcov-report/lib/shared/collection-request.js.html",
+		"/Users/kadam/Desktop/people.csv",
+		"/Users/kadam/Desktop/wp api talk outline.md",
+		"/Users/kadam/Desktop/wp-api bugs and potential bugs.md",
+		"/Users/kadam/Desktop/browser links while working on wp-api talk.md",
+		"/Users/kadam/gh/kadamwhite/wordpress-rest-api/untitled.js",
+		"/Users/kadam/gh/kadamwhite/wordpress-rest-api/tests/lib/shared/collection-request.js",
+		"/Users/kadam/gh/kadamwhite/wordpress-rest-api/tests/lib/shared/wp-request.js",
+		"/Users/kadam/gh/kadamwhite/wordpress-rest-api/tests/lib/posts.js",
+		"/Users/kadam/gh/kadamwhite/wordpress-rest-api/coverage/coverage.json",
+		"/Users/kadam/gh/kadamwhite/wordpress-rest-api/.gitignore",
+		"/Users/kadam/gh/kadamwhite/wordpress-rest-api/lib/var/public-query-vars.js",
+		"/Users/kadam/gh/kadamwhite/wordpress-rest-api/lib/var/private-query-vars.js",
+		"/Users/kadam/gh/kadamwhite/wordpress-rest-api/lib/var/README.md",
+		"/Users/kadam/gh/kadamwhite/wordpress-rest-api/.editorconfig",
+		"/Users/kadam/gh/kadamwhite/wordpress-rest-api/docs-theme/assets/index.html",
+		"/Users/kadam/month.js",
+		"/Users/kadam/Desktop/DVD Checklist.md",
+		"/Users/kadam/dev/github/kadamwhite/wordpress-rest-api/lib/shared/collection-request.js",
+		"/Users/kadam/dev/github/kadamwhite/wordpress-rest-api/.jscsrc",
+		"/Users/kadam/dev/github/kadamwhite/wordpress-rest-api/lib/shared/wp-request.js",
+		"/Users/kadam/dev/github/kadamwhite/wordpress-rest-api/README.md",
+		"/Users/kadam/Library/Application Support/Sublime Text 3/Packages/User/Default (OSX).sublime-keymap",
+		"/Users/kadam/dev/github/kadamwhite/wordpress-rest-api/lib/posts.js",
+		"/Users/kadam/dev/github/kadamwhite/wordpress-rest-api/tests/lib/posts.js",
+		"/Users/kadam/dev/github/kadamwhite/wordpress-rest-api/tests/lib/shared/collection-request.js",
+		"/Users/kadam/dev/github/kadamwhite/wordpress-rest-api/lib/taxonomies.js",
+		"/Users/kadam/dev/github/kadamwhite/wordpress-rest-api/lib/users.js",
+		"/Users/kadam/dev/github/kadamwhite/wordpress-rest-api/test.js",
+		"/Users/kadam/dev/github/kadamwhite/wordpress-rest-api/tests/lib/taxonomies.js",
+		"/Users/kadam/dev/github/kadamwhite/wordpress-rest-api/package.json",
+		"/Users/kadam/dev/github/kadamwhite/wordpress-rest-api/tests/lib/shared/wp-request.js",
+		"/Users/kadam/dev/github/kadamwhite/wordpress-rest-api/docs-theme/partials/events.handlebars",
+		"/Users/kadam/dev/github/kadamwhite/wordpress-rest-api/wp.js",
+		"/Users/kadam/dev/github/kadamwhite/pre.txt",
+		"/Users/kadam/Downloads/bug repro/double.js",
+		"/Users/kadam/dev/github/kadamwhite/wordpress-rest-api/tests/mocks/mock-superagent.js",
+		"/Users/kadam/dev/github/kadamwhite/wordpress-rest-api/.git/COMMIT_EDITMSG",
+		"/Users/kadam/dev/github/kadamwhite/wordpress-rest-api/.git/rebase-merge/git-rebase-todo",
+		"/Users/kadam/dev/github/kadamwhite/wordpress-rest-api/tests/lib/users.js",
+		"/Users/kadam/dev/github/kadamwhite/wordpress-rest-api/lib/pages.js",
+		"/Users/kadam/dev/github/kadamwhite/wordpress-rest-api/lib/var/README.md",
+		"/Users/kadam/dev/github/kadamwhite/wordpress-rest-api/LICENSE",
+		"/Users/kadam/dev/github/kadamwhite/wordpress-rest-api/docs-theme/partials/files.handlebars",
+		"/Users/kadam/dev/github/kadamwhite/wordpress-rest-api/lib/shared/paginate.js",
+		"/Users/kadam/dev/github/kadamwhite/wordpress-rest-api/tests/lib/shared/paginate.js",
+		"/Users/kadam/Desktop/pagination-woes.md",
+		"/Users/kadam/dev/github/kadamwhite/wordpress-rest-api/tests/wp.js",
+		"/Users/kadam/dev/github/kadamwhite/wordpress-rest-api/tests/lib/pages.js",
+		"/Users/kadam/bocoup/mm/sogpress/.git/COMMIT_EDITMSG",
+		"/Users/kadam/Library/Application Support/Sublime Text 2/Packages/User/Preferences.sublime-settings",
+		"/Users/kadam/dev/github/kadamwhite/wordpress-rest-api/tests/lib/media.js",
+		"/Users/kadam/dev/github/kadamwhite/wordpress-rest-api/lib/media.js",
+		"/Users/kadam/dev/github/kadamwhite/wordpress-rest-api/Gruntfile.js",
+		"/Users/kadam/dev/github/kadamwhite/wordpress-rest-api/tests/lib/types.js",
+		"/Users/kadam/dev/github/kadamwhite/wordpress-rest-api/lib/types.js",
+		"/Users/kadam/dev/github/kadamwhite/wordpress-rest-api/lib/var/public-query-vars.js",
+		"/Users/kadam/dev/github/kadamwhite/wordpress-rest-api/lib/shared/filter-utils.js",
+		"/Users/kadam/dev/github/kadamwhite/wordpress-rest-api/tests/lib/WPRequest.js",
+		"/Users/kadam/dev/github/kadamwhite/wordpress-rest-api/lib/var/inherit.js",
+		"/Users/kadam/dev/github/kadamwhite/wordpress-rest-api/lib/WPRequest.js",
+		"/Users/kadam/dev/github/kadamwhite/wordpress-rest-api/array-testing.js",
+		"/Users/kadam/dev/github/kadamwhite/wordpress-rest-api/lib/array-testing.js",
+		"/Users/kadam/dev/github/kadamwhite/wordpress-rest-api/wordpress-rest-api.sublime-project",
+		"/Users/kadam/dev/github/kadamwhite/wordpress-rest-api/lib/shared/filters.js",
+		"/Users/kadam/dev/github/kadamwhite/wordpress-rest-api/tests/lib/shared/filters.js",
+		"/Users/kadam/dev/github/kadamwhite/wordpress-rest-api/.jshintrc",
+		"/Users/kadam/dev/github/kadamwhite/wordpress-rest-api/lib/var/private-query-vars.js",
+		"/Users/kadam/dev/github/kadamwhite/wordpress-rest-api/npm-debug.log",
+		"/Users/kadam/.bash_profile",
+		"/Users/kadam/dev/github/kadamwhite/wordpress-rest-api/CONTRIBUTING.md",
+		"/Users/kadam/bocoup/mm/repo/package.json",
+		"/Users/kadam/dev/vm/www/wordpress-develop/package.json",
+		"/Users/kadam/dev/github/kadamwhite/wordpress-rest-api/.gitignore",
+		"/Users/kadam/dev/github/kadamwhite/wordpress-rest-api/index.js",
+		"/Users/kadam/dev/github/kadamwhite/wordpress-rest-api/libs/taxonomies.js",
+		"/Users/kadam/dev/github/kadamwhite/wordpress-rest-api/libs/posts.js",
+		"/Users/kadam/dev/github/kadamwhite/wordpress-rest-api/libs/users.js",
+		"/Users/kadam/dev/github/kadamwhite/wordpress-rest-api/libs/wpQuery.js",
+		"/Users/kadam/dev/github/kadamwhite/wordpress-rest-api/test/url-generation.js",
+		"/Users/kadam/dev/github/kadamwhite/node-wp-api/.git/COMMIT_EDITMSG",
+		"/Users/kadam/dev/github/kadamwhite/node-wp-api/test/mocha.opts",
+		"/Users/kadam/dev/github/kadamwhite/wpapi-vagrant-varietal/.git/COMMIT_EDITMSG",
+		"/Users/kadam/dev/github/kadamwhite/p5.js/.git/info/exclude",
+		"/Users/kadam/dev/vm/www/wordpress-default/wp-content/plugins/js-plugin-boilerplate/README.md",
+		"/Users/kadam/dev/github/kadamwhite/talks/2014/modular-javascript/index.html",
+		"/Users/kadam/dev/github/kadamwhite/talks/index.html",
+		"/Users/kadam/dev/github/kadamwhite/talks/css/custom.css",
+		"/Users/kadam/dev/github/kadamwhite/test",
+		"/Users/kadam/dev/github/kadamwhite/tes",
+		"/Users/kadam/dev/vm/www/wordpress-default/wp-content/plugins/js-plugin-boilerplate/.git/COMMIT_EDITMSG"
+	],
+	"find":
+	{
+		"height": 35.0
+	},
+	"find_in_files":
+	{
+		"height": 93.0,
+		"where_history":
+		[
+			"",
+			"/Users/kadam/gh/kadamwhite/wordpress-rest-api/tests",
+			"",
+			"/Users/kadam/gh/kadamwhite/wordpress-rest-api/tests",
+			"",
+			"*.js",
+			"",
+			"*.styl",
+			"*.hbs",
+			"*.styl",
+			"*.js",
+			"",
+			"*.styl",
+			"",
+			"*.js",
+			"",
+			"*.styl",
+			"*.hbs",
+			"*.styl",
+			"*.hbs",
+			"",
+			"*.styl",
+			"",
+			"*.styl",
+			"",
+			"*.js",
+			"",
+			"*.js",
+			"",
+			"*.hbs",
+			"",
+			"*.styl",
+			"*.hbs",
+			"*.js",
+			"",
+			"*.styl",
+			"*.hbs",
+			"*.styl",
+			"",
+			"/Users/kadam/bocoup/mm/repo/client/src, *.styl",
+			"/Users/kadam/bocoup/mm/repo/client/src",
+			"/Users/kadam/bocoup/mm/repo/client/src/style",
+			"/Users/kadam/bocoup/mm/repo/client, -gumby.js, -mailchimp.js, -din_next_medium_condensed/*",
+			"/Users/kadam/bocoup/mm/repo/client, -gumby.js, -mailchimp.js, -din_next_medium_condensed",
+			"/Users/kadam/bocoup/mm/repo/client, -gumby.js, -mailchimp.js",
+			"/Users/kadam/bocoup/mm/repo/client/src, -gumby.js, -mailchimp.js",
+			"/Users/kadam/bocoup/mm/repo/client/src, -gumby.js",
+			"/Users/kadam/bocoup/mm/repo/client/src",
+			"/Users/kadam/bocoup/mm/repo/client/src/style",
+			"",
+			"/Users/kadam/bocoup/projects/ruelala/rue_buildout/src/rue-storemanager/rue/tests/unit",
+			"/Users/kadam/bocoup/projects/ruelala/rue_buildout/src/rue-storemanager/rue/",
+			"/Users/kadam/bocoup/projects/ruelala/rue_buildout/src/rue-storemanager/rue/static/app",
+			"",
+			"*spec.js",
+			"",
+			"*.html",
+			"*.js",
+			"*.py",
+			"*.js",
+			"",
+			"/Users/kadam/bocoup/projects/ruelala/rue_buildout/src/rue-storemanager/rue/static/app/products",
+			"/Users/kadam/bocoup/projects/ruelala/rue_buildout/src/rue-storemanager/rue/static/app",
+			"",
+			"*.html",
+			"",
+			"*Spec*",
+			"",
+			"*Spec*",
+			"",
+			"*Spec*.js",
+			"*Spec.js",
+			"",
+			"*slick*.js",
+			"",
+			"*slick*js",
+			"",
+			"*Spec*.js",
+			"",
+			"<open files>",
+			"",
+			"<open files>",
+			"",
+			"<open files>",
+			"",
+			"<open files>",
+			"",
+			"<open files>",
+			"",
+			"<open files>",
+			"",
+			"<open files>",
+			"",
+			"/Users/kadam/bocoup/projects/rue_buildout/src/rue-storemanager, -/Users/kadam/bocoup/projects/rue_buildout/src/rue-storemanager/rue/site_media/*",
+			"/Users/kadam/bocoup/projects/rue_buildout/src/rue-storemanager",
+			"/Users/kadam/bocoup/projects/rue_buildout/src/rue-storemanager/rue/static/",
+			"/Users/kadam/bocoup/projects/rue_buildout/src/rue-storemanager/rue/static/css",
+			"/Users/kadam/bocoup/projects/rue_buildout/src/rue-storemanager/rue/static/less",
+			"/Users/kadam/bocoup/projects/rue_buildout/src/rue-storemanager/rue/static/app",
+			"/Users/kadam/bocoup/projects/rue_buildout/src/rue-storemanager/rue/static",
+			"/Users/kadam/bocoup/projects/rue_buildout/src/rue-storemanager/rue/static/less",
+			"/Users/kadam/bocoup/projects/rue_buildout/src/rue-storemanager/rue/less",
+			"/Users/kadam/bocoup/projects/rue_buildout/src/rue-storemanager/rue/static",
+			"/Users/kadam/bocoup/projects/rue_buildout/src/rue-storemanager/rue/static/app",
+			"/Users/kadam/bocoup/projects/rue_buildout/src/rue-storemanager/rue/static/",
+			"/Users/kadam/bocoup/projects/rue_buildout/src/rue-storemanager/rue/static/less",
+			"/Users/kadam/bocoup/projects/rue_buildout/src/rue-storemanager/rue/static",
+			"",
+			"/Users/kadam/bocoup/projects/rue_buildout/src/rue-storemanager/rue/static/",
+			"/Users/kadam/bocoup/projects/rue_buildout/src/rue-storemanager/rue/static/app",
+			"",
+			"*.less",
+			""
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"#",
+			"name",
+			"_filters",
+			"name\\(\\)",
+			"name",
+			"403",
+			"te a post when authenticate",
+			"403",
+			"term",
+			"_checkMethodSupport",
+			"console",
+			"console.log",
+			"console",
+			"console.log",
+			"renderURI",
+			"renderQuery",
+			"()`.\n",
+			"runInContext",
+			"_\\.",
+			"_",
+			"alphaNumericSort",
+			"alphaNu",
+			"CollectionRequest",
+			"prepareTaxonomies",
+			"_renderQuery",
+			"params",
+			"embed",
+			"\\t",
+			"perPage",
+			"category",
+			"childCat1",
+			"String\\|Number",
+			"String|Number",
+			"Number|String",
+			"parent",
+			"categories",
+			"category",
+			"cat",
+			"parent",
+			"category",
+			"categories",
+			"selectedCategory",
+			"categories",
+			"\\.only",
+			"slug",
+			"selectedCategory",
+			"category",
+			"slug",
+			"categories",
+			"selectedCategory",
+			"category",
+			"id",
+			"should intitialize instance prop",
+			"\\( \\{\\} \\)",
+			"ld intitialize instance",
+			"taxonomies",
+			"a specific taxonomy",
+			"taxonomies(/:taxonomy)(/:action)(/:term)",
+			"taxonomies/post_tag/terms",
+			"jscsrc",
+			"only",
+			"categories",
+			"4",
+			"post",
+			"posts",
+			"getTitles",
+			"expectedResults.titles",
+			";\n",
+			"expectedResults",
+			"name",
+			"posts",
+			"only",
+			"category",
+			"slug",
+			"taxonomies",
+			"render",
+			"taxonomy",
+			"chainable",
+			"taxonomy",
+			"_pathValidators",
+			"taxonomyName",
+			"term",
+			"action",
+			"\\s+$",
+			"posts",
+			"WPRequest",
+			"name",
+			"POST",
+			"delete",
+			"put",
+			"data",
+			"console",
+			"delete",
+			"response",
+			"raw",
+			"updatedPost",
+			"createdPost",
+			"rendered",
+			"username",
+			"\\.auth",
+			"auth",
+			"createdPost",
+			"title",
+			"eventually",
+			"console",
+			"success",
+			"perPage",
+			"count",
+			"PUT",
+			"put",
+			"set",
+			"post",
+			"data",
+			"agent",
+			"Promise",
+			"console",
+			"_.object",
+			"\\_\\.object",
+			"_\\.object",
+			"_.\\object",
+			"\\t",
+			"%5D",
+			"%5B",
+			"\\.get\\(\\)",
+			"replay",
+			"_filters",
+			"post_",
+			"category"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": true,
+		"replace_history":
+		[
+			"  ",
+			"({})",
+			"tags",
+			"expectedResults.names",
+			"",
+			",",
+			"]",
+			"[",
+			";console.log( prom._renderURI() );prom = prom.get()",
+			" ",
+			"require( '../\\1",
+			"require( '\\1lib",
+			"\\n<",
+			"~/",
+			"site",
+			"ollection-request",
+			"to.deep.equal( {} )",
+			"collection-request",
+			"/shared/wp-request",
+			"CollectionMethods",
+			"\\n",
+			"%5D",
+			"%5B",
+			"_path",
+			"_template",
+			"_pathValidators",
+			"types",
+			"var ",
+			"\\n",
+			"_renderQuery",
+			"_renderQueryString",
+			"_renderPath",
+			"_renderURI",
+			"_getURI",
+			"} )",
+			"if (",
+			"});",
+			"\"",
+			"'",
+			"&#60;",
+			"&#62;",
+			"'",
+			"< ",
+			" >",
+			"&lt;",
+			"",
+			": \\1",
+			" ",
+			"\\n",
+			"{{{",
+			"name=\"\\1\"></state>",
+			"', ",
+			"'",
+			"require('",
+			"\\n\\1",
+			"\\n\\n\\1 \\2\\t\\t",
+			"\\n\\n\\1 \\2",
+			"\\n\\n\\1 \\2\\n",
+			"* ",
+			"",
+			"&amp; ",
+			"    ",
+			"  ",
+			"----",
+			"    ",
+			"  ",
+			"----",
+			"  ",
+			"'",
+			"",
+			"  ",
+			"client/",
+			"/client/",
+			",\n",
+			"buildTarget",
+			"  ",
+			"buildTarget",
+			"\"beginner mode\"",
+			"'",
+			"z",
+			"Z",
+			"    ",
+			"?w=\\1\" width=\"90\"",
+			"?w=150\" width=\"150\"",
+			"    ",
+			">(mm)<",
+			"</em>",
+			"<em>",
+			"",
+			"    ",
+			"\\2 - \\1",
+			"\\2\\t\\t\\t\\1",
+			"\\1\\t\\t\\t\\2",
+			"\\1\\t\\t\\2",
+			" ",
+			"h4>",
+			"</p>\\n</li>",
+			"\\n<p>",
+			"”**",
+			"” ",
+			" “",
+			"    ",
+			"\\n",
+			",\\n",
+			"'",
+			"<%-",
+			"MockProductService",
+			"\\n",
+			"indexed 0\\1 ",
+			"function(",
+			"   ",
+			"    ",
+			"\\nresourceUri",
+			"scope",
+			"\\n",
+			"-",
+			"",
+			"    ",
+			"MerchandisingProductListCtl",
+			"    ",
+			"        ",
+			"$modal",
+			"\\n",
+			"\\n\\t\\t\\t",
+			"",
+			"\\n\\n",
+			"mocks.SkuPrice",
+			"mocks.PurchaseOrderItem"
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 0,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "tests/integration/categories.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 12125,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								11601,
+								11601
+							]
+						],
+						"settings":
+						{
+							"editorconfig": true,
+							"ensure_newline_at_eof_on_save": true,
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": false,
+							"trim_trailing_white_space_on_save": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 7146.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "package.json",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1982,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								139,
+								139
+							]
+						],
+						"settings":
+						{
+							"editorconfig": true,
+							"ensure_newline_at_eof_on_save": true,
+							"syntax": "Packages/Seti_UI/icons/Langs/npm JSON.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "tests/integration/posts.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 12874,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								12466,
+								12466
+							]
+						],
+						"settings":
+						{
+							"editorconfig": true,
+							"ensure_newline_at_eof_on_save": true,
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": false,
+							"trim_trailing_white_space_on_save": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 8412.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "lib/taxonomies.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 4642,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								4585,
+								4585
+							]
+						],
+						"settings":
+						{
+							"editorconfig": true,
+							"ensure_newline_at_eof_on_save": true,
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": false,
+							"trim_trailing_white_space_on_save": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 3551.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 24.0
+	},
+	"input":
+	{
+		"height": 33.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.exec":
+	{
+		"height": 112.0
+	},
+	"output.find_results":
+	{
+		"height": 100.0
+	},
+	"pinned_build_system": "",
+	"project": "wordpress-rest-api.sublime-project",
+	"replace":
+	{
+		"height": 44.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"pa",
+				"package.json"
+			],
+			[
+				"wpr",
+				"lib/shared/wp-request.js"
+			],
+			[
+				"tes",
+				"test.js"
+			],
+			[
+				"pack",
+				"package.json"
+			],
+			[
+				"colle",
+				"tests/unit/lib/shared/collection-request.js"
+			],
+			[
+				"al",
+				"lib/shared/alphanumeric-sort.js"
+			],
+			[
+				"colre",
+				"tests/unit/lib/shared/collection-request.js"
+			],
+			[
+				"testwpr",
+				"tests/unit/lib/shared/wp-request.js"
+			],
+			[
+				"coll",
+				"lib/shared/collection-request.js"
+			],
+			[
+				"wpre",
+				"tests/unit/lib/shared/wp-request.js"
+			],
+			[
+				"test",
+				"test.js"
+			],
+			[
+				"lib/ta",
+				"lib/taxonomies.js"
+			],
+			[
+				"jscs",
+				".jscsrc"
+			],
+			[
+				"grunt",
+				"Gruntfile.js"
+			],
+			[
+				"wp.js",
+				"wp.js"
+			],
+			[
+				"taxon",
+				"lib/taxonomies.js"
+			],
+			[
+				"page",
+				"lib/pages.js"
+			],
+			[
+				"collre",
+				"lib/shared/collection-request.js"
+			],
+			[
+				"posts",
+				"lib/posts.js"
+			],
+			[
+				"colr",
+				"lib/shared/collection-request.js"
+			],
+			[
+				"collr",
+				"lib/shared/collection-request.js"
+			],
+			[
+				"rea",
+				"README.md"
+			],
+			[
+				"pakc",
+				"package.json"
+			],
+			[
+				"tescolr",
+				"tests/lib/shared/collection-request.js"
+			],
+			[
+				"post",
+				"lib/posts.js"
+			],
+			[
+				"gu",
+				"Gruntfile.js"
+			],
+			[
+				"git",
+				".gitignore"
+			],
+			[
+				"packa",
+				"package.json"
+			],
+			[
+				"html",
+				"docs-theme/assets/index.html"
+			],
+			[
+				"telibshawp",
+				"tests/lib/shared/wp-request.js"
+			],
+			[
+				"wp-re",
+				"lib/shared/wp-request.js"
+			],
+			[
+				"tespost",
+				"tests/lib/posts.js"
+			],
+			[
+				"read",
+				"README.md"
+			],
+			[
+				"mocksu",
+				"tests/mocks/mock-superagent.js"
+			],
+			[
+				"wp",
+				"wp.js"
+			],
+			[
+				"tesjs",
+				"test.js"
+			],
+			[
+				"pagin",
+				"/Users/kadam/dev/github/kadamwhite/wordpress-rest-api/lib/shared/paginate.js"
+			],
+			[
+				"test.j",
+				"test.js"
+			],
+			[
+				"collere",
+				"lib/shared/collection-request.js"
+			],
+			[
+				"tesposts",
+				"tests/lib/posts.js"
+			],
+			[
+				"teswpre",
+				"tests/lib/shared/wp-request.js"
+			],
+			[
+				"collec",
+				"lib/shared/collection-request.js"
+			],
+			[
+				"testpag",
+				"tests/lib/pages.js"
+			],
+			[
+				"wp-r",
+				"lib/shared/wp-request.js"
+			],
+			[
+				"test.js",
+				"test.js"
+			],
+			[
+				"users",
+				"lib/users.js"
+			],
+			[
+				"tax",
+				"tests/lib/taxonomies.js"
+			],
+			[
+				"pages",
+				"tests/lib/pages.js"
+			],
+			[
+				"tepos",
+				"tests/lib/posts.js"
+			],
+			[
+				"testcolor",
+				"p5.js/node_modules/grunt-contrib-nodeunit/node_modules/nodeunit/node_modules/tap/node_modules/difflet/example/colors.js"
+			],
+			[
+				"pelem",
+				"p5.js/src/dom/pelement.js"
+			],
+			[
+				"plugin",
+				"plugin.php"
+			],
+			[
+				"plug",
+				"plugin.php"
+			],
+			[
+				"class-pos",
+				"lib/class-wp-json-posts.php"
+			],
+			[
+				"class",
+				"lib/class-wp-json-customposttype.php"
+			],
+			[
+				"class-",
+				"lib/class-wp-json-posts.php"
+			],
+			[
+				"user",
+				"docs/routes/users.md"
+			],
+			[
+				"types",
+				"vm/wordpress/content/plugins/sog-types/types.php"
+			],
+			[
+				"article",
+				"server/views/blog-article.hbs"
+			],
+			[
+				"help",
+				"server/views/helpers.js"
+			],
+			[
+				"sociesty",
+				"client/src/style/society/society.styl"
+			],
+			[
+				"socie",
+				"bin/society.js"
+			],
+			[
+				"soci",
+				"client/src/style/society/society.styl"
+			],
+			[
+				"tag",
+				"server/routes/blog/tag.js"
+			],
+			[
+				"blogst",
+				"client/src/style/society/pages/blog.styl"
+			],
+			[
+				"install",
+				"vm/wordpress/install.sh"
+			],
+			[
+				"cms",
+				"server/services/cms/cms_format_query.js"
+			],
+			[
+				"cms_s",
+				"server/services/cms_service.js"
+			],
+			[
+				"app",
+				"server/app.js"
+			],
+			[
+				"yml",
+				"vm/wordpress/wp-cli.yml"
+			],
+			[
+				"giti",
+				".gitignore"
+			],
+			[
+				"wordpress.sh",
+				"vm/wordpress/install.sh"
+			],
+			[
+				"wordpre",
+				"vm/conf/db/wordpress.sql"
+			],
+			[
+				"uninst",
+				"vm/wordpress/uninstall.sh"
+			],
+			[
+				"logi",
+				"client/src/style/society/pages/login.styl"
+			],
+			[
+				"cmd",
+				"lib/cmd.js"
+			],
+			[
+				"articl",
+				"server/routes/blog/article.js"
+			],
+			[
+				"event",
+				"server/views/events.hbs"
+			],
+			[
+				"config",
+				"config/defaults/society.yml"
+			],
+			[
+				"deploy",
+				"deploy/gulp_local.js"
+			],
+			[
+				"home",
+				"server/views/home.hbs"
+			],
+			[
+				"society",
+				"client/src/style/society/society.styl"
+			],
+			[
+				"mix",
+				"client/src/style/society/mixins.styl"
+			],
+			[
+				"login",
+				"client/src/style/society/pages/login.styl"
+			],
+			[
+				"he",
+				"server/views/helpers.js"
+			],
+			[
+				"blog",
+				"server/views/blog.hbs"
+			],
+			[
+				"blogj",
+				"server/routes/blog/article.js"
+			],
+			[
+				"helpe",
+				"server/views/helpers.js"
+			],
+			[
+				"blost",
+				"client/src/style/society/pages/blog.styl"
+			],
+			[
+				"blo",
+				"server/views/blog.hbs"
+			],
+			[
+				"helper",
+				"server/views/helpers.js"
+			],
+			[
+				"mixi",
+				"client/src/style/society/mixins.styl"
+			],
+			[
+				"teas",
+				"client/src/style/teaser.styl"
+			],
+			[
+				"app.s",
+				"client/src/style/app.styl"
+			],
+			[
+				"hel",
+				"client/src/style/imports/helpers.styl"
+			],
+			[
+				"base",
+				"client/src/style/imports/base.styl"
+			],
+			[
+				"hbs",
+				"server/views/home.hbs"
+			],
+			[
+				"format",
+				"server/services/cms/cms_format_query.js"
+			],
+			[
+				"routeblog",
+				"server/routes/blog/article.js"
+			],
+			[
+				"supe",
+				"test/mocks/superagent-mock.js"
+			],
+			[
+				"super",
+				"test/mocks/superagent-mock.js"
+			],
+			[
+				"twise",
+				"test/unit/services/twitter_service_test.js"
+			],
+			[
+				"twitt",
+				"server/services/twitter_service.js"
+			],
+			[
+				"pacjson",
+				"package.json"
+			],
+			[
+				"twitter",
+				"test/unit/services/twitter_service_test.js"
+			],
+			[
+				"blogh",
+				"server/views/blog.hbs"
+			],
+			[
+				"twee",
+				"server/services/twitter_service.js"
+			],
+			[
+				"locat",
+				"server/routes/location.js"
+			],
+			[
+				"server/js",
+				"server/services/event_service.js"
+			],
+			[
+				"index",
+				"server/routes/index.js"
+			],
+			[
+				"app.",
+				"client/src/style/app.styl"
+			],
+			[
+				"requires",
+				"server/views/partials/require_config.hbs"
+			],
+			[
+				"homehb",
+				"server/views/home.hbs"
+			],
+			[
+				"homep",
+				"client/src/js/homepage.js"
+			],
+			[
+				"direc",
+				"documentation/directories.md"
+			],
+			[
+				"middlewa",
+				"server/middleware/twitter.js"
+			],
+			[
+				"replay",
+				"server/setup/replay.js"
+			],
+			[
+				"art",
+				"server/routes/blog/article.js"
+			],
+			[
+				"confi",
+				"config/defaults/society.yml"
+			],
+			[
+				"twi",
+				"test/unit/services/twitter_service_test.js"
+			],
+			[
+				"jshint",
+				".jshintrc"
+			],
+			[
+				"homepjs",
+				"client/src/js/homepage.js"
+			],
+			[
+				"societsty",
+				"client/src/style/imports/society/society.styl"
+			],
+			[
+				"so",
+				"client/src/style/imports/society/society.styl"
+			],
+			[
+				"homepa",
+				"client/src/style/imports/society/homepage.styl"
+			],
+			[
+				"blogs",
+				"client/src/style/imports/society/blog.styl"
+			],
+			[
+				"socisos",
+				"client/src/style/imports/society/society.styl"
+			],
+			[
+				"styl",
+				"client/src/style/imports/base.styl"
+			]
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 500.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 380.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+		"xdebug":
+		{
+			"hide_conflict": false
+		}
+	},
+	"show_minimap": true,
+	"show_open_files": true,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 217.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}

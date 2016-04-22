@@ -1,0 +1,17 @@
+{
+	"folders":
+	[
+		{
+			"path": "/Users/kadam/gh/kadamwhite/wordpress-rest-api",
+			"folder_exclude_patterns": [
+				"coverage",
+				"docs",
+				"docs-theme/assets/vendor",
+				"node_modules"
+			],
+			"file_exclude_patterns": [
+				"*.sublime-workspace"
+			]
+		}
+	]
+}
