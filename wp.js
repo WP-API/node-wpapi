@@ -23,6 +23,7 @@ var defaults = {
 };
 
 // Pull in request module constructors
+var CommentsRequest = require( './lib/comments' );
 var MediaRequest = require( './lib/media' );
 var PagesRequest = require( './lib/pages' );
 var PostsRequest = require( './lib/posts' );
@@ -80,6 +81,19 @@ function WP( options ) {
  */
 WP.site = function( endpoint ) {
 	return new WP({ endpoint: endpoint });
+};
+
+/**
+ * Start a request against the `/comments` endpoint
+ *
+ * @method comments
+ * @param {Object} [options] An options hash for a new CommentsRequest
+ * @return {CommentsRequest} A CommentsRequest instance
+ */
+WP.prototype.comments = function( options ) {
+	options = options || {};
+	options = extend( options, this._options );
+	return new CommentsRequest( options );
 };
 
 /**
