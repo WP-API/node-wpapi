@@ -317,7 +317,7 @@ describe( 'integration: categories()', function() {
 			var prom = wp.posts().perPage( 1 ).embed().get().then(function( posts ) {
 				var post = posts[ 0 ];
 				// Find the categories for this post
-				postCategories = _.findWhere( post._embedded['https://api.w.org/term'], function( terms ) {
+				postCategories = _.findWhere( post._embedded['wp:term'], function( terms ) {
 					if ( terms.length && terms[ 0 ].taxonomy === 'category' ) {
 						return true;
 					}
