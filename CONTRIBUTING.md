@@ -5,6 +5,39 @@ WordPress is a community effort, as is the WP-API; this client library should be
 
 This document outlines some of the best practices and conventions used within this project, with links to the libraries and tools we use for testing, syntax checking, and so on.
 
+## Testing
+
+New features in this library should be accompanied by unit tests demonstrating that they work as intended. If you are not familiar with testing in JavaScript, don't let that stop you from submitting a PR&mdash;we'll work with you to get them added, and can help advise on what types of tests will be most appropriate.
+
+Our tests are broken down into a unit test suite, and an integration test suite. When you add a feature, you should ensure that your changes pass all tests in both suites. And if you find a bug, a test demonstrating that bug is just as useful as a patch that actually solves the problem!
+
+The unit tests can be run without any additional setup with `npm run test:unit`, but running more comprehensive tests (e.g. `npm test`, `npm run mocha`, etc.) requires additional work as described below in Integration Tests.
+
+### Integration Tests
+
+In order to run the integration tests you will need to run a local WP REST API instance in a virtual machine as described in [wpapi-vagrant-varietal](https://github.com/kadamwhite/wpapi-vagrant-varietal).  Full instructions are provided there, and once that VM is running the integration tests will pass. (You can run the integration suite specifically with the command `npm test:integration`).
+
+### Adding Tests
+
+Adding new code, or submitting a pull request? If it does something, it should have tests! Under the hood we use [Mocha](visionmedia.github.io/mocha/) to run our tests, and write our assertions using [Chai's "expect" BDD syntax](http://chaijs.com/api/bdd/), *e.g.*:
+```javascript
+expect( wp._options.endpoint ).to.equal( 'http://some.url.com/wp-json/' );
+```
+
+**If you are uncomfortable or unfamiliar with writing unit tests, you should feel free to submit a pull request without them!** We'll work with you in the PR comments to walk you through how to test the code.
+
+#### This Function Is Totally Not A Spy
+
+We use [Sinon.js](sinonjs.org/docs/) for [spying on](sinonjs.org/docs/#spies) and [stubbing](http://sinonjs.org/docs/#stubs) functionality. Sinon assertions should also be written with the BDD style, which is enabled via [sinon-chai](https://www.npmjs.org/package/sinon-chai):
+```javascript
+expect( mockAgent.get ).to.have.been.calledWith( 'url/' );
+```
+See the [existing test files](https://github.com/kadamwhite/wordpress-rest-api/tree/master/tests) for more examples.
+
+#### Mocking Dependencies
+
+When testing code that uses 3rd-party modules, mocks may be injected for those dependencies by using the [sandboxed-module](https://www.npmjs.org/package/sandboxed-module) package. See the [WPRequest tests](https://github.com/kadamwhite/wordpress-rest-api/blob/master/tests/lib/WPRequest.js) for example usage.
+
 ## Best Practices for Commits
 
 You should always run `npm test` before committing, to identify any syntax, style or unit test errors in your branch.  See "Testing" below for more details about setting up the environment for running the tests.
@@ -72,37 +105,6 @@ We prefer `camelCase` variable and function names, and `UpperCamelCase` construc
 ```javascript
 /*jshint -W106 */// Disable underscore_case warnings in this file
 ```
-
-## Testing
-
-The tests are broken down into a unit test suite and an integration test suite.  You should ensure that your changes pass all tests in both suites.
-
-The unit tests can be run without any additional setup with `npm run test:unit`, but running more comprehensive tests (e.g. `npm test`, `npm run mocha`, etc.) requires additional work as described below in Integration Tests.
-
-### Integration Tests
-
-In order to run the integration tests you will need to run a WP REST API as described in [wpapi-vagrant-varietal](https://github.com/kadamwhite/wpapi-vagrant-varietal).  Full instructions are provided there and once runninng the integration tests will pass (you can test these specifically by running `npm test:integration`).
-
-### Adding Tests
-
-Adding new code, or submitting a pull request? If it does something, it should have tests! Under the hood we use [Mocha](visionmedia.github.io/mocha/) to run our tests, and write our assertions using [Chai's "expect" BDD syntax](http://chaijs.com/api/bdd/), *e.g.*:
-```javascript
-expect( wp._options.endpoint ).to.equal( 'http://some.url.com/wp-json/' );
-```
-
-**If you are uncomfortable or unfamiliar with writing unit tests, you should feel free to submit a pull request without them!** We'll work with you in the PR comments to walk you through how to test the code.
-
-#### This Function Is Totally Not A Spy
-
-We use [Sinon.js](sinonjs.org/docs/) for [spying on](sinonjs.org/docs/#spies) and [stubbing](http://sinonjs.org/docs/#stubs) functionality. Sinon assertions should also be written with the BDD style, which is enabled via [sinon-chai](https://www.npmjs.org/package/sinon-chai):
-```javascript
-expect( mockAgent.get ).to.have.been.calledWith( 'url/' );
-```
-See the [existing test files](https://github.com/kadamwhite/wordpress-rest-api/tree/master/tests) for more examples.
-
-#### Mocking Dependencies
-
-When testing code that uses 3rd-party modules, mocks may be injected for those dependencies by using the [sandboxed-module](https://www.npmjs.org/package/sandboxed-module) package. See the [WPRequest tests](https://github.com/kadamwhite/wordpress-rest-api/blob/master/tests/lib/WPRequest.js) for example usage.
 
 ## Documentation
 
