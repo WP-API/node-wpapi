@@ -17,7 +17,7 @@
  */
 var extend = require( 'node.extend' );
 
-var generateEndpointFactories = require( './lib/parse-route-string' );
+var generateEndpointFactories = require( './lib/util/parse-route-string' );
 
 var endpointFactories = generateEndpointFactories;
 
