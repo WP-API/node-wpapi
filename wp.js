@@ -17,9 +17,12 @@
  */
 var extend = require( 'node.extend' );
 
+// All valid routes in API v2 beta 11
+var routes = require( './lib/data/endpoint-response.json' ).routes;
+var buildRouteTree = require( './lib/util/build-route-tree' );
+var routesByNamespace = buildRouteTree( routes );
 var generateEndpointFactories = require( './lib/util/parse-route-string' );
-
-var endpointFactories = generateEndpointFactories;
+var endpointFactories = generateEndpointFactories( 'wp/v2', routesByNamespace[ 'wp/v2' ] );
 
 console.log( endpointFactories );
 
@@ -109,7 +112,11 @@ WP.prototype.comments = function( options ) {
  * @param {Object} [options] An options hash for a new MediaRequest
  * @return {MediaRequest} A MediaRequest instance
  */
-WP.prototype.media = endpointFactories.media;
+WP.prototype.media = function( options ) {
+	options = options || {};
+	options = extend( options, this._options );
+	return new MediaRequest( options );
+};
 
 /**
  * Start a request against the `/pages` endpoint
