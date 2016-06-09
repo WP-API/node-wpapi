@@ -1,94 +1,10 @@
-var extend = require( 'node.extend' );
+'use strict';
+
 module.exports = function( grunt ) {
-	'use strict';
-
-	// Reusable file globbing
-	var files = {
-		grunt: [ 'Gruntfile.js' ],
-		lib: [ 'wp.js', 'lib/**/*.js' ],
-		tests: [ 'tests/**/*.js' ]
-	};
-
-	// Reusable JSHintRC options
-	var jshintrc = grunt.file.readJSON( '.jshintrc' );
-
-	// Load tasks.
-	require( 'load-grunt-tasks' )( grunt );
 
 	grunt.initConfig({
 
 		pkg: grunt.file.readJSON( 'package.json' ),
-
-		jscs: {
-			options: {
-				config: '.jscsrc',
-				reporter: require( 'jscs-stylish' ).path
-			},
-			grunt: {
-				src: files.grunt
-			},
-			lib: {
-				src: files.lib
-			},
-			tests: {
-				options: {
-					maximumLineLength: {
-						// Longer max line length in test files
-						value: 150,
-						tabSize: 2,
-						allowUrlComments: true,
-						allowRegex: true
-					}
-				},
-				src: files.tests
-			}
-		},
-
-		jshint: {
-			options: {
-				reporter: require( 'jshint-stylish' )
-			},
-			grunt: {
-				options: jshintrc,
-				src: files.grunt
-			},
-			lib: {
-				options: jshintrc,
-				src: files.lib
-			},
-			tests: {
-				options: extend({
-					globals: {
-						'beforeEach': false,
-						'describe': false,
-						'it': false
-					}
-				}, jshintrc ),
-				src: files.tests
-			}
-		},
-
-		// Simplemocha is only used for the watch task:
-		// `npm test` runs mocha via its CLI
-		simplemocha: {
-			tests: {
-				src: files.tests,
-				options: {
-					reporter: 'nyan'
-				}
-			}
-		},
-
-		watch: {
-			lib: {
-				files: files.lib,
-				tasks: [ 'jscs:lib', 'jshint:lib', 'simplemocha' ]
-			},
-			tests: {
-				files: files.tests,
-				tasks: [ 'jscs:tests', 'jshint:tests', 'simplemocha' ]
-			}
-		},
 
 		yuidoc: {
 			compile: {
@@ -109,8 +25,8 @@ module.exports = function( grunt ) {
 
 	});
 
-	grunt.registerTask( 'lint', [ 'jshint', 'jscs' ] );
-	grunt.registerTask( 'test', [ 'simplemocha' ] );
+	// Load tasks
+	grunt.loadNpmTasks( 'grunt-contrib-yuidoc' );
+
 	grunt.registerTask( 'docs', [ 'yuidoc' ] );
-	grunt.registerTask( 'default', [ 'lint', 'test' ] );
 };

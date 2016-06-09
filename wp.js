@@ -248,7 +248,7 @@ WP.prototype.users = function( options ) {
  * the endpoint specified during WP object instantiation.
  *
  * @example
- * Generate a request to the explicit URL "http://your.website.com/wp-json/some/custom/path" (yeah, we wish ;)
+ * Generate a request to the explicit URL "http://your.website.com/wp-json/some/custom/path"
  *
  *     wp.url( 'http://your.website.com/wp-json/some/custom/path' ).get()...
  *
