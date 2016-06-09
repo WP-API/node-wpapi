@@ -19,7 +19,7 @@ var extend = require( 'node.extend' );
 
 // All valid routes in API v2 beta 11
 var routes = require( './lib/data/endpoint-response.json' ).routes;
-var buildRouteTree = require( './lib/util/build-route-tree' );
+var buildRouteTree = require( './lib/util/route-tree' ).build;
 var routesByNamespace = buildRouteTree( routes );
 var generateEndpointFactories = require( './lib/util/parse-route-string' );
 var endpointFactories = generateEndpointFactories( 'wp/v2', routesByNamespace[ 'wp/v2' ] );
