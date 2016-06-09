@@ -14,7 +14,7 @@
 	"requireDotNotation": true,
 	"requireBlocksOnNewline": 1,
 	"maximumLineLength": {
-		"value": 100,
+		"value": 150,
 		"tabSize": 2,
 		"allowUrlComments": true,
 		"allowRegex": true
