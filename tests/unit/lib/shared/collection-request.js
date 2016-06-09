@@ -1,5 +1,5 @@
 'use strict';
-/*jshint -W106 */// Disable underscore_case warnings in this file b/c WP uses them
+/* eslint camelcase: 0 */// Disable underscore_case warnings in this file b/c WP uses them
 var chai = require( 'chai' );
 var expect = chai.expect;
 var sinon = require( 'sinon' );
