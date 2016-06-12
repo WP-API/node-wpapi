@@ -1,20 +1,14 @@
 {
 	"boss": true,
-	"camelcase": true,
 	"curly": true,
 	"eqeqeq": true,
 	"eqnull": true,
 	"expr": true,
-	"immed": true,
 	"noarg": true,
-	"onevar": true,
-	"quotmark": "single",
-	"strict": true,
-	"trailing": true,
+	"strict": "global",
 	"undef": true,
 	"unused": true,
 
-	"esnext": true,
 	"node": true,
 
 	"globals": {
