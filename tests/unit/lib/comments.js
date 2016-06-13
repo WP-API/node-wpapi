@@ -1,26 +1,29 @@
 'use strict';
 var expect = require( 'chai' ).expect;
 
+var WP = require( '../../../wp' );
 var CommentsRequest = require( '../../../lib/comments' );
 var CollectionRequest = require( '../../../lib/shared/collection-request' );
 var WPRequest = require( '../../../lib/shared/wp-request' );
 
-describe( 'wp.comments', function() {
+describe.only( 'wp.comments', function() {
+	var site;
+	var comments;
+
+	beforeEach(function() {
+		site = WP.site( '/wp-json' );
+		comments = site.comments();
+		// comments = new CommentsRequest();
+	});
 
 	describe( 'constructor', function() {
 
-		var comments;
-
-		beforeEach(function() {
-			comments = new CommentsRequest();
-		});
-
-		it( 'should create a CommentsRequest instance', function() {
-			expect( comments instanceof CommentsRequest ).to.be.true;
+		it( 'should create a CollectionRequest instance', function() {
+			expect( comments instanceof CollectionRequest ).to.be.true;
 		});
 
 		it( 'should set any passed-in options', function() {
-			comments = new CommentsRequest({
+			comments = site.comments({
 				booleanProp: true,
 				strProp: 'Some string'
 			});
@@ -28,15 +31,12 @@ describe( 'wp.comments', function() {
 			expect( comments._options.strProp ).to.equal( 'Some string' );
 		});
 
-		it( 'should default _options to {}', function() {
+		it.skip( 'should default _options to {}', function() {
 			expect( comments._options ).to.deep.equal( {} );
 		});
 
-		it( 'should intitialize instance properties', function() {
-			expect( comments._path ).to.deep.equal( {} );
-			expect( comments._template ).to.equal( 'comments(/:id)' );
-			var _supportedMethods = comments._supportedMethods.sort().join( '|' );
-			expect( _supportedMethods ).to.equal( 'get|head|post' );
+		it( 'should initialize the base path component', function() {
+			expect( comments._path ).to.deep.equal( { '0': 'comments' } );
 		});
 
 		it( 'should inherit CommentsRequest from CollectionRequest', function() {
@@ -70,29 +70,21 @@ describe( 'wp.comments', function() {
 
 	describe( 'query methods', function() {
 
-		var comments;
-
-		beforeEach(function() {
-			comments = new CommentsRequest();
-			comments._options = {
-				endpoint: '/wp-json/'
-			};
-		});
-
 		it( 'provides a method to set the ID', function() {
 			expect( comments ).to.have.property( 'id' );
 			expect( comments.id ).to.be.a( 'function' );
 			comments.id( 314159 );
-			expect( comments._path ).to.have.property( 'id' );
-			expect( comments._path.id ).to.equal( 314159 );
+			expect( comments._renderURI() ).to.equal( '/wp-json/wp/v2/comments/314159' );
 		});
 
-		it( 'parses ID parameters into integers', function() {
+		it( 'accepts ID parameters as strings', function() {
 			comments.id( '8' );
-			expect( comments._path ).to.have.property( 'id' );
-			expect( comments._path.id ).to.equal( 8 );
+			expect( comments._renderURI() ).to.equal( '/wp-json/wp/v2/comments/8' );
+		});
+
+		it( 'converts ID parameters into integers', function() {
 			comments.id( 4.019 );
-			expect( comments._path.id ).to.equal( 4 );
+			expect( comments._renderURI() ).to.equal( '/wp-json/wp/v2/comments/4' );
 		});
 
 		it( 'should update the supported methods when setting ID', function() {
@@ -104,15 +96,6 @@ describe( 'wp.comments', function() {
 	});
 
 	describe( 'URL Generation', function() {
-
-		var comments;
-
-		beforeEach(function() {
-			comments = new CommentsRequest();
-			comments._options = {
-				endpoint: '/wp-json/'
-			};
-		});
 
 		it( 'should create the URL for retrieving all comments', function() {
 			var path = comments._renderURI();
@@ -137,11 +120,10 @@ describe( 'wp.comments', function() {
 		});
 
 		it( 'should restrict template changes to a single instance', function() {
-			comments._template = 'path/with/comment/nr/:id';
-			var newComments = new CommentsRequest();
-			newComments._options.endpoint = 'endpoint/url/';
+			comments.id( 2 );
+			var newComments = site.comments();
 			var path = newComments.id( 3 )._renderURI();
-			expect( path ).to.equal( 'endpoint/url/wp/v2/comments/3' );
+			expect( path ).to.equal( '/wp-json/wp/v2/comments/3' );
 		});
 
 	});

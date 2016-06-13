@@ -4,7 +4,7 @@ var expect = require( 'chai' ).expect;
 var routeTree = require( '../../../../lib/util/route-tree' );
 var endpointResponse = require( '../../../../lib/data/endpoint-response.json' );
 
-describe.only( 'route-tree utility', function() {
+describe( 'route-tree utility', function() {
 
 	describe( '.build()', function() {
 		var tree;
