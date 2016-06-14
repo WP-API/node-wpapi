@@ -1,26 +1,27 @@
 'use strict';
 var expect = require( 'chai' ).expect;
 
-var TaxonomiesRequest = require( '../../../lib/taxonomies' );
+var WP = require( '../../../wp' );
 var CollectionRequest = require( '../../../lib/shared/collection-request' );
 var WPRequest = require( '../../../lib/shared/wp-request' );
 
 describe( 'wp.taxonomies', function() {
+	var site;
+	var taxonomies;
+
+	beforeEach(function() {
+		site = new WP({
+			endpoint: '/wp-json',
+			username: 'foouser',
+			password: 'barpass'
+		});
+		taxonomies = site.taxonomies();
+	});
 
 	describe( 'constructor', function() {
 
-		var taxonomies;
-
-		beforeEach(function() {
-			taxonomies = new TaxonomiesRequest();
-		});
-
-		it( 'should create a TaxonomiesRequest instance', function() {
-			expect( taxonomies instanceof TaxonomiesRequest ).to.be.true;
-		});
-
 		it( 'should set any passed-in options', function() {
-			taxonomies = new TaxonomiesRequest({
+			taxonomies = site.taxonomies({
 				booleanProp: true,
 				strProp: 'Some string'
 			});
@@ -28,19 +29,24 @@ describe( 'wp.taxonomies', function() {
 			expect( taxonomies._options.strProp ).to.equal( 'Some string' );
 		});
 
-		it( 'should default _options to {}', function() {
-			expect( taxonomies._options ).to.deep.equal( {} );
+		it( 'should initialize _options to the site defaults', function() {
+			expect( taxonomies._options ).to.deep.equal({
+				endpoint: '/wp-json/',
+				username: 'foouser',
+				password: 'barpass'
+			});
 		});
 
-		it( 'should intitialize instance properties', function() {
-			var _supportedMethods = taxonomies._supportedMethods.sort().join( '|' );
-			expect( taxonomies._path ).to.deep.equal({ collection: 'taxonomies' });
-			expect( taxonomies._params ).to.deep.equal( {} );
-			expect( taxonomies._template ).to.equal( '(:collection)(/:term)' );
-			expect( _supportedMethods ).to.equal( 'get|head' );
+		it( 'should initialize the base path component', function() {
+			expect( taxonomies._renderURI() ).to.equal( '/wp-json/wp/v2/taxonomies' );
 		});
 
-		it( 'should inherit PostsRequest from CollectionRequest', function() {
+		it( 'should set a default _supportedMethods array', function() {
+			expect( taxonomies ).to.have.property( '_supportedMethods' );
+			expect( taxonomies._supportedMethods ).to.be.an( 'array' );
+		});
+
+		it( 'should inherit TaxonomiesRequest from CollectionRequest', function() {
 			expect( taxonomies instanceof CollectionRequest ).to.be.true;
 			expect( taxonomies instanceof WPRequest ).to.be.true;
 		});
@@ -58,35 +64,29 @@ describe( 'wp.taxonomies', function() {
 
 	});
 
-	describe( 'URL Generation', function() {
+	describe( 'path part setters', function() {
 
-		var taxonomies;
+		describe( '.taxonomy()', function() {
 
-		beforeEach(function() {
-			taxonomies = new TaxonomiesRequest();
-			taxonomies._options = {
-				endpoint: '/wp-json/'
-			};
+			it( 'provides a method to set the taxonomy', function() {
+				expect( taxonomies ).to.have.property( 'taxonomy' );
+				expect( taxonomies.taxonomy ).to.be.a( 'function' );
+			});
+
 		});
 
-		it( 'should create the URL for retrieving a specific collection', function() {
-			var url = taxonomies.collection( 'taxonomies' )._renderURI();
+	});
+
+	describe( 'URL Generation', function() {
+
+		it( 'should create the URL for retrieving all taxonomies', function() {
+			var url = taxonomies._renderURI();
 			expect( url ).to.equal( '/wp-json/wp/v2/taxonomies' );
 		});
 
 		it( 'should create the URL for retrieving a specific taxonomy', function() {
-			var url = taxonomies.collection( 'taxonomies' ).term( 'my-tax' )._renderURI();
-			expect( url ).to.equal( '/wp-json/wp/v2/taxonomies/my-tax' );
-		});
-
-		it( 'should create the URL for retrieving taxonomies with a shared parent', function() {
-			var url = taxonomies.collection( 'categories' ).parent( 42 )._renderURI();
-			expect( url ).to.equal( '/wp-json/wp/v2/categories?parent=42' );
-		});
-
-		it( 'should permit specifying the parent for a collection of terms', function() {
-			var url = taxonomies.collection( 'categories' ).forPost( 1234 )._renderURI();
-			expect( url ).to.equal( '/wp-json/wp/v2/categories?post=1234' );
+			var url = taxonomies.taxonomy( 'category' )._renderURI();
+			expect( url ).to.equal( '/wp-json/wp/v2/taxonomies/category' );
 		});
 
 	});
