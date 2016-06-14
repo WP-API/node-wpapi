@@ -2,25 +2,23 @@
 var expect = require( 'chai' ).expect;
 
 var WP = require( '../../../wp' );
-var CommentsRequest = require( '../../../lib/comments' );
 var CollectionRequest = require( '../../../lib/shared/collection-request' );
 var WPRequest = require( '../../../lib/shared/wp-request' );
 
-describe.only( 'wp.comments', function() {
+describe( 'wp.comments', function() {
 	var site;
 	var comments;
 
 	beforeEach(function() {
-		site = WP.site( '/wp-json' );
+		site = new WP({
+			endpoint: '/wp-json',
+			username: 'foouser',
+			password: 'barpass'
+		});
 		comments = site.comments();
-		// comments = new CommentsRequest();
 	});
 
 	describe( 'constructor', function() {
-
-		it( 'should create a CollectionRequest instance', function() {
-			expect( comments instanceof CollectionRequest ).to.be.true;
-		});
 
 		it( 'should set any passed-in options', function() {
 			comments = site.comments({
@@ -31,12 +29,21 @@ describe.only( 'wp.comments', function() {
 			expect( comments._options.strProp ).to.equal( 'Some string' );
 		});
 
-		it.skip( 'should default _options to {}', function() {
-			expect( comments._options ).to.deep.equal( {} );
+		it( 'should initialize _options to the site defaults', function() {
+			expect( comments._options ).to.deep.equal({
+				endpoint: '/wp-json/',
+				username: 'foouser',
+				password: 'barpass'
+			});
 		});
 
 		it( 'should initialize the base path component', function() {
 			expect( comments._path ).to.deep.equal( { '0': 'comments' } );
+		});
+
+		it( 'should set a default _supportedMethods array', function() {
+			expect( comments ).to.have.property( '_supportedMethods' );
+			expect( comments._supportedMethods ).to.be.an( 'array' );
 		});
 
 		it( 'should inherit CommentsRequest from CollectionRequest', function() {
@@ -57,17 +64,6 @@ describe.only( 'wp.comments', function() {
 
 	});
 
-	describe( '_pathValidators', function() {
-
-		it( 'defines validators for id and action', function() {
-			var comments = new CommentsRequest();
-			expect( comments._pathValidators ).to.deep.equal({
-				id: /^\d+$/
-			});
-		});
-
-	});
-
 	describe( 'query methods', function() {
 
 		it( 'provides a method to set the ID', function() {
@@ -82,15 +78,10 @@ describe.only( 'wp.comments', function() {
 			expect( comments._renderURI() ).to.equal( '/wp-json/wp/v2/comments/8' );
 		});
 
-		it( 'converts ID parameters into integers', function() {
-			comments.id( 4.019 );
-			expect( comments._renderURI() ).to.equal( '/wp-json/wp/v2/comments/4' );
-		});
-
 		it( 'should update the supported methods when setting ID', function() {
 			comments.id( 8 );
 			var _supportedMethods = comments._supportedMethods.sort().join( '|' );
-			expect( _supportedMethods ).to.equal( 'delete|get|head|post|put' );
+			expect( _supportedMethods ).to.equal( 'delete|get|head|patch|post|put' );
 		});
 
 	});
@@ -107,23 +98,39 @@ describe.only( 'wp.comments', function() {
 			expect( path ).to.equal( '/wp-json/wp/v2/comments/1337' );
 		});
 
-		it( 'throws an error if an invalid ID is specified', function() {
+		it( 'does not throw an error if a valid numeric ID is specified', function() {
 			expect(function numberPassesValidation() {
-				comments._path = { id: 8 };
-				comments._renderPath();
+				comments.id( 8 );
+				comments.validatePath();
 			}).not.to.throw();
+		});
 
-			expect(function stringFailsValidation() {
-				comments._path = { id: 'wombat' };
-				comments._renderPath();
+		it( 'does not throw an error if a valid numeric ID is specified as a string', function() {
+			expect( function numberAsStringPassesValidation() {
+				comments.id( '8' );
+				comments.validatePath();
+			}).not.to.throw();
+		});
+
+		it( 'throws an error if a non-integer numeric string ID is specified', function() {
+			expect( function nonIntegerNumberAsStringFailsValidation() {
+				comments.id( 4.019 );
+				comments.validatePath();
 			}).to.throw();
 		});
 
-		it( 'should restrict template changes to a single instance', function() {
+		it( 'throws an error if a non-numeric string ID is specified', function() {
+			expect(function stringFailsValidation() {
+				comments.id( 'wombat' );
+				comments.validatePath();
+			}).to.throw();
+		});
+
+		it( 'should restrict path changes to a single instance', function() {
 			comments.id( 2 );
-			var newComments = site.comments();
-			var path = newComments.id( 3 )._renderURI();
-			expect( path ).to.equal( '/wp-json/wp/v2/comments/3' );
+			var newComments = site.comments().id( 3 );
+			expect( comments._renderURI() ).to.equal( '/wp-json/wp/v2/comments/2' );
+			expect( newComments._renderURI() ).to.equal( '/wp-json/wp/v2/comments/3' );
 		});
 
 	});
