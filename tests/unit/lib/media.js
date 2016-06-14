@@ -2,7 +2,6 @@
 var expect = require( 'chai' ).expect;
 
 var WP = require( '../../../wp' );
-var CollectionRequest = require( '../../../lib/shared/collection-request' );
 var WPRequest = require( '../../../lib/shared/wp-request' );
 
 describe( 'wp.media', function() {
@@ -46,8 +45,7 @@ describe( 'wp.media', function() {
 			expect( media._supportedMethods ).to.be.an( 'array' );
 		});
 
-		it( 'should inherit MediaRequest from CollectionRequest', function() {
-			expect( media instanceof CollectionRequest ).to.be.true;
+		it( 'should inherit MediaRequest from WPRequest', function() {
 			expect( media instanceof WPRequest ).to.be.true;
 		});
 

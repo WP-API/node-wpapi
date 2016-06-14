@@ -29,7 +29,6 @@ var defaults = {
 };
 
 // Pull in base module constructors
-var CollectionRequest = require( './lib/shared/collection-request' );
 var WPRequest = require( './lib/shared/wp-request' );
 
 /**
@@ -118,13 +117,13 @@ WP.prototype.url = function( url ) {
  *
  * @method root
  * @param {String} [relativePath] An endpoint-relative path to which to bind the request
- * @return {CollectionRequest|WPRequest} A request object
+ * @return {WPRequest} A request object
  */
 WP.prototype.root = function( relativePath ) {
 	relativePath = relativePath || '';
 	var options = extend( {}, this._options );
 	// Request should be
-	var request = new CollectionRequest( options );
+	var request = new WPRequest( options );
 
 	// Set the path template to the string passed in
 	request._path = { '0': relativePath };

@@ -2,7 +2,6 @@
 var expect = require( 'chai' ).expect;
 
 var WP = require( '../../../wp' );
-var CollectionRequest = require( '../../../lib/shared/collection-request' );
 var WPRequest = require( '../../../lib/shared/wp-request' );
 
 describe( 'wp.pages', function() {
@@ -46,22 +45,8 @@ describe( 'wp.pages', function() {
 			expect( pages._supportedMethods ).to.be.an( 'array' );
 		});
 
-		it( 'should inherit PagesRequest from CollectionRequest', function() {
-			expect( pages instanceof CollectionRequest ).to.be.true;
+		it( 'should inherit PagesRequest from WPRequest', function() {
 			expect( pages instanceof WPRequest ).to.be.true;
-		});
-
-		it( 'should inherit prototype methods from both ancestors', function() {
-			// Spot-check from CollectionRequest:
-			expect( pages ).to.have.property( 'filter' );
-			expect( pages.filter ).to.be.a( 'function' );
-			expect( pages ).to.have.property( 'param' );
-			expect( pages.param ).to.be.a( 'function' );
-			// From WPRequest:
-			expect( pages ).to.have.property( 'get' );
-			expect( pages.get ).to.be.a( 'function' );
-			expect( pages ).to.have.property( '_renderURI' );
-			expect( pages._renderURI ).to.be.a( 'function' );
 		});
 
 	});

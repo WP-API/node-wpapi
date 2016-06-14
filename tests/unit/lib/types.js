@@ -2,7 +2,6 @@
 var expect = require( 'chai' ).expect;
 
 var WP = require( '../../../wp' );
-var CollectionRequest = require( '../../../lib/shared/collection-request' );
 var WPRequest = require( '../../../lib/shared/wp-request' );
 
 describe( 'wp.types', function() {
@@ -46,8 +45,7 @@ describe( 'wp.types', function() {
 			expect( types._supportedMethods ).to.be.an( 'array' );
 		});
 
-		it( 'should inherit PostsRequest from CollectionRequest', function() {
-			expect( types instanceof CollectionRequest ).to.be.true;
+		it( 'should inherit PostsRequest from WPRequest', function() {
 			expect( types instanceof WPRequest ).to.be.true;
 		});
 

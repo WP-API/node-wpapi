@@ -4,7 +4,6 @@ var expect = require( 'chai' ).expect;
 var WP = require( '../../' );
 
 // Constructors, for use with instanceof checks
-var CollectionRequest = require( '../../lib/shared/collection-request' );
 var WPRequest = require( '../../lib/shared/wp-request' );
 
 describe( 'wp', function() {
@@ -110,10 +109,9 @@ describe( 'wp', function() {
 			expect( request._renderURI() ).to.equal( 'http://my.site.com/wp-json/custom/endpoint' );
 		});
 
-		it( 'creates a CollectionRequest object', function() {
+		it( 'creates a WPRequest object', function() {
 			var pathRequest = site.root( 'some/collection/endpoint' );
 			expect( pathRequest instanceof WPRequest ).to.be.true;
-			expect( pathRequest instanceof CollectionRequest ).to.be.true;
 		});
 
 		it( 'inherits options from the parent WP instance', function() {
