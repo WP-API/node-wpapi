@@ -51,19 +51,6 @@ describe( 'wp.types', function() {
 			expect( types instanceof WPRequest ).to.be.true;
 		});
 
-		it( 'should inherit prototype methods from both ancestors', function() {
-			// Spot-check from CollectionRequest:
-			expect( types ).to.have.property( 'filter' );
-			expect( types.filter ).to.be.a( 'function' );
-			expect( types ).to.have.property( 'param' );
-			expect( types.param ).to.be.a( 'function' );
-			// From WPRequest:
-			expect( types ).to.have.property( 'get' );
-			expect( types.get ).to.be.a( 'function' );
-			expect( types ).to.have.property( '_renderURI' );
-			expect( types._renderURI ).to.be.a( 'function' );
-		});
-
 	});
 
 	describe( 'URL Generation', function() {

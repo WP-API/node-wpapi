@@ -208,6 +208,20 @@ describe( 'mixins: filter', function() {
 				expect( getQueryStr( result ) ).to.equal( 'filter[tag]=cat' );
 			});
 
+			it( 'de-dupes the taxonomy list when called with an array', function() {
+				req.taxonomy( 'post_tag', [
+					'disclosure',
+					'alunageorge',
+					'disclosure',
+					'lorde',
+					'lorde',
+					'clean-bandit'
+				]);
+				expect( req._taxonomyFilters ).to.deep.equal({
+					tag: [ 'alunageorge', 'clean-bandit', 'disclosure', 'lorde' ]
+				});
+			});
+
 			it( 'supports setting an array of string terms', function() {
 				// TODO: Multiple terms may be deprecated by API!
 				var result = req.taxonomy( 'tag', [ 'a', 'b' ] );
