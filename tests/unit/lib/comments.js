@@ -5,7 +5,7 @@ var WP = require( '../../../wp' );
 var CollectionRequest = require( '../../../lib/shared/collection-request' );
 var WPRequest = require( '../../../lib/shared/wp-request' );
 
-describe( 'wp.comments', function() {
+describe.only( 'wp.comments', function() {
 	var site;
 	var comments;
 
@@ -38,7 +38,7 @@ describe( 'wp.comments', function() {
 		});
 
 		it( 'should initialize the base path component', function() {
-			expect( comments._path ).to.deep.equal( { '0': 'comments' } );
+			expect( comments._renderURI() ).to.equal( '/wp-json/wp/v2/comments' );
 		});
 
 		it( 'should set a default _supportedMethods array', function() {
@@ -64,24 +64,31 @@ describe( 'wp.comments', function() {
 
 	});
 
-	describe( 'query methods', function() {
+	describe( 'path part setters', function() {
 
-		it( 'provides a method to set the ID', function() {
-			expect( comments ).to.have.property( 'id' );
-			expect( comments.id ).to.be.a( 'function' );
-			comments.id( 314159 );
-			expect( comments._renderURI() ).to.equal( '/wp-json/wp/v2/comments/314159' );
-		});
+		describe( '.id()', function() {
 
-		it( 'accepts ID parameters as strings', function() {
-			comments.id( '8' );
-			expect( comments._renderURI() ).to.equal( '/wp-json/wp/v2/comments/8' );
-		});
+			it( 'provides a method to set the ID', function() {
+				expect( comments ).to.have.property( 'id' );
+				expect( comments.id ).to.be.a( 'function' );
+			});
 
-		it( 'should update the supported methods when setting ID', function() {
-			comments.id( 8 );
-			var _supportedMethods = comments._supportedMethods.sort().join( '|' );
-			expect( _supportedMethods ).to.equal( 'delete|get|head|patch|post|put' );
+			it( 'should set the ID value in the path', function() {
+				comments.id( 314159 );
+				expect( comments._renderURI() ).to.equal( '/wp-json/wp/v2/comments/314159' );
+			});
+
+			it( 'accepts ID parameters as strings', function() {
+				comments.id( '8' );
+				expect( comments._renderURI() ).to.equal( '/wp-json/wp/v2/comments/8' );
+			});
+
+			it( 'should update the supported methods when setting ID', function() {
+				comments.id( 8 );
+				var _supportedMethods = comments._supportedMethods.sort().join( '|' );
+				expect( _supportedMethods ).to.equal( 'delete|get|head|patch|post|put' );
+			});
+
 		});
 
 	});

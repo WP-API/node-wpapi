@@ -1,30 +1,27 @@
 'use strict';
 var expect = require( 'chai' ).expect;
 
-var MediaRequest = require( '../../../lib/media' );
+var WP = require( '../../../wp' );
 var CollectionRequest = require( '../../../lib/shared/collection-request' );
 var WPRequest = require( '../../../lib/shared/wp-request' );
 
 describe( 'wp.media', function() {
-
+	var site;
 	var media;
 
 	beforeEach(function() {
-		media = new MediaRequest();
+		site = new WP({
+			endpoint: '/wp-json',
+			username: 'foouser',
+			password: 'barpass'
+		});
+		media = site.media();
 	});
 
 	describe( 'constructor', function() {
 
-		it( 'should create a MediaRequest instance', function() {
-			expect( media instanceof MediaRequest ).to.be.true;
-		});
-
-		it( 'should default _options to {}', function() {
-			expect( media._options ).to.deep.equal( {} );
-		});
-
 		it( 'should set any passed-in options', function() {
-			media = new MediaRequest({
+			media = site.media({
 				booleanProp: true,
 				strProp: 'Some string'
 			});
@@ -32,27 +29,26 @@ describe( 'wp.media', function() {
 			expect( media._options.strProp ).to.equal( 'Some string' );
 		});
 
-		it( 'should intitialize instance properties', function() {
-			expect( media._path ).to.deep.equal( {} );
-			expect( media._params ).to.deep.equal( {} );
-			expect( media._template ).to.equal( 'media(/:id)' );
-			var _supportedMethods = media._supportedMethods.sort().join( '|' );
-			expect( _supportedMethods ).to.equal( 'get|head|post' );
+		it( 'should initialize _options to the site defaults', function() {
+			expect( media._options ).to.deep.equal({
+				endpoint: '/wp-json/',
+				username: 'foouser',
+				password: 'barpass'
+			});
+		});
+
+		it( 'should initialize the base path component', function() {
+			expect( media._renderURI() ).to.equal( '/wp-json/wp/v2/media' );
+		});
+
+		it( 'should set a default _supportedMethods array', function() {
+			expect( media ).to.have.property( '_supportedMethods' );
+			expect( media._supportedMethods ).to.be.an( 'array' );
 		});
 
 		it( 'should inherit MediaRequest from CollectionRequest', function() {
 			expect( media instanceof CollectionRequest ).to.be.true;
 			expect( media instanceof WPRequest ).to.be.true;
-		});
-
-	});
-
-	describe( '_pathValidators', function() {
-
-		it( 'has a validator for the "id" property', function() {
-			expect( media._pathValidators ).to.deep.equal({
-				id: /^\d+$/
-			});
 		});
 
 	});
@@ -64,34 +60,38 @@ describe( 'wp.media', function() {
 			expect( media.id ).to.be.a( 'function' );
 		});
 
-		it( 'should set the ID value in the template', function() {
+		it( 'should set the ID value in the path', function() {
 			media.id( 8 );
-			expect( media._path ).to.have.property( 'id' );
-			expect( media._path.id ).to.equal( 8 );
+			expect( media._renderURI() ).to.equal( '/wp-json/wp/v2/media/8' );
 		});
 
 		it( 'should update the supported methods', function() {
 			media.id( 8 );
 			var _supportedMethods = media._supportedMethods.sort().join( '|' );
-			expect( _supportedMethods ).to.equal( 'delete|get|head|post|put' );
+			expect( _supportedMethods ).to.equal( 'delete|get|head|patch|post|put' );
 		});
 
-		it( 'replaces values on successive calls', function() {
-			media.id( 8 ).id( 3 );
-			expect( media._path.id ).to.equal( 3 );
+		it( 'throws an error on successive calls', function() {
+			expect(function successiveCallsThrowsError() {
+				media.id( 8 ).id( 3 );
+			}).to.throw();
+		});
+
+		it( 'passes validation when called with a number', function() {
+			expect(function numberPassesValidation() {
+				media.id( 8 )._renderPath();
+			}).not.to.throw();
+		});
+
+		it( 'passes validation when called with a number formatted as a string', function() {
+			expect(function numberAsStringPassesValidation() {
+				media.id( '9' )._renderPath();
+			}).not.to.throw();
 		});
 
 		it( 'causes a validation error when called with a non-number', function() {
-			expect(function numberPassesValidation() {
-				media._path = { id: 8 };
-				media._renderPath();
-				media._path.id = '9';
-				media._renderPath();
-			}).not.to.throw();
-
 			expect(function stringFailsValidation() {
-				media._path = { id: 'wombat' };
-				media._renderPath();
+				media.id( 'wombat' )._renderPath();
 			}).to.throw();
 		});
 
@@ -99,25 +99,19 @@ describe( 'wp.media', function() {
 
 	describe( 'url generation', function() {
 
-		beforeEach(function() {
-			media._options = {
-				endpoint: 'http://some-site.com/wp-json/'
-			};
-		});
-
 		it( 'should create the URL for the media collection', function() {
 			var uri = media._renderURI();
-			expect( uri ).to.equal( 'http://some-site.com/wp-json/wp/v2/media' );
+			expect( uri ).to.equal( '/wp-json/wp/v2/media' );
 		});
 
 		it( 'can paginate the media collection responses', function() {
 			var uri = media.page( 4 )._renderURI();
-			expect( uri ).to.equal( 'http://some-site.com/wp-json/wp/v2/media?page=4' );
+			expect( uri ).to.equal( '/wp-json/wp/v2/media?page=4' );
 		});
 
 		it( 'should create the URL for a specific media object', function() {
 			var uri = media.id( 1492 )._renderURI();
-			expect( uri ).to.equal( 'http://some-site.com/wp-json/wp/v2/media/1492' );
+			expect( uri ).to.equal( '/wp-json/wp/v2/media/1492' );
 		});
 
 	});

@@ -38,7 +38,7 @@ describe( 'wp.posts', function() {
 		});
 
 		it( 'should initialize the base path component', function() {
-			expect( posts._path ).to.deep.equal( { '0': 'posts' } );
+			expect( posts._renderURI() ).to.equal( '/wp-json/wp/v2/posts' );
 		});
 
 		it( 'should set a default _supportedMethods array', function() {
@@ -66,70 +66,74 @@ describe( 'wp.posts', function() {
 
 	});
 
-	describe( 'query methods', function() {
+	describe( 'path part setters', function() {
 
-		it( 'provides a method to set the ID', function() {
-			expect( posts ).to.have.property( 'id' );
-			expect( posts.id ).to.be.a( 'function' );
-			posts.id( 314159 );
-			expect( posts._renderURI() ).to.equal( '/wp-json/wp/v2/posts/314159' );
+		describe( '.id()', function() {
+
+			it( 'provides a method to set the ID', function() {
+				expect( posts ).to.have.property( 'id' );
+				expect( posts.id ).to.be.a( 'function' );
+			});
+
+			it( 'should set the ID value in the path', function() {
+				posts.id( 314159 );
+				expect( posts._renderURI() ).to.equal( '/wp-json/wp/v2/posts/314159' );
+			});
+
+			it( 'accepts ID parameters as strings', function() {
+				posts.id( '8' );
+				expect( posts._renderURI() ).to.equal( '/wp-json/wp/v2/posts/8' );
+			});
+
+			it( 'should update the supported methods when setting ID', function() {
+				posts.id( 8 );
+				var _supportedMethods = posts._supportedMethods.sort().join( '|' );
+				expect( _supportedMethods ).to.equal( 'delete|get|head|patch|post|put' );
+			});
+
 		});
 
-		it( 'accepts ID parameters as strings', function() {
-			posts.id( '8' );
-			expect( posts._renderURI() ).to.equal( '/wp-json/wp/v2/posts/8' );
-		});
+		describe.skip( '.meta()', function() {
 
-		it( 'should update the supported methods when setting ID', function() {
-			posts.id( 8 );
-			var _supportedMethods = posts._supportedMethods.sort().join( '|' );
-			expect( _supportedMethods ).to.equal( 'delete|get|head|patch|post|put' );
-		});
+			it( 'is defined', function() {
+				expect( posts ).to.have.property( 'meta' );
+				expect( posts.meta ).to.be.a( 'function' );
+			});
 
-		it.skip( 'provides a method to get the meta values for a post', function() {
-			expect( posts ).to.have.property( 'meta' );
-			expect( posts.meta ).to.be.a( 'function' );
-			posts.id( 3 ).meta();
-			expect( posts._path ).to.have.property( 'action' );
-			expect( posts._path.action ).to.equal( 'meta' );
-		});
+			it( 'provides a method to get the meta values for a post', function() {
+				posts.id( 3 ).meta();
+				expect( posts._renderURI() ).to.equal( '/wp-json/wp/v2/posts/3/meta' );
+			});
 
-		it.skip( 'should force authentication when querying posts/id/meta', function() {
-			posts.id( 1337 ).meta();
-			expect( posts._options ).to.have.property( 'auth' );
-			expect( posts._options.auth ).to.be.true;
-		});
+			it( 'should force authentication when querying posts/id/meta', function() {
+				posts.id( 1337 ).meta();
+				expect( posts._options ).to.have.property( 'auth' );
+				expect( posts._options.auth ).to.be.true;
+			});
 
-		it.skip( 'should update the supported methods when querying for meta', function() {
-			posts.id( 1066 ).meta();
-			var _supportedMethods = posts._supportedMethods.sort().join( '|' );
-			expect( _supportedMethods ).to.equal( 'get|head|post' );
-		});
+			it( 'should update the supported methods when querying for meta', function() {
+				posts.id( 1066 ).meta();
+				var _supportedMethods = posts._supportedMethods.sort().join( '|' );
+				expect( _supportedMethods ).to.equal( 'get|head|post' );
+			});
 
-		it.skip( 'provides a method to get specific post meta objects by ID', function() {
-			posts.id( 3 ).meta( 5 );
-			expect( posts._path ).to.have.property( 'actionId' );
-			expect( posts._path.actionId ).to.equal( 5 );
-		});
+			it( 'provides a method to get specific post meta objects by ID', function() {
+				posts.id( 3 ).meta( 5 );
+				expect( posts._renderURI() ).to.equal( '/wp-json/wp/v2/posts/3/meta/5' );
+			});
 
-		it.skip( 'parses meta ID parameters into integers', function() {
-			posts.id( 3 ).meta( '4' );
-			expect( posts._path ).to.have.property( 'actionId' );
-			expect( posts._path.actionId ).to.equal( 4 );
-			posts.id( 3 ).meta( 3.14159 );
-			expect( posts._path.actionId ).to.equal( 3 );
-		});
+			it( 'should force authentication when querying posts/id/meta/:id', function() {
+				posts.id( 7331 ).meta( 7 );
+				expect( posts._options ).to.have.property( 'auth' );
+				expect( posts._options.auth ).to.be.true;
+			});
 
-		it.skip( 'should force authentication when querying posts/id/meta/:id', function() {
-			posts.id( 7331 ).meta( 7 );
-			expect( posts._options ).to.have.property( 'auth' );
-			expect( posts._options.auth ).to.be.true;
-		});
+			it( 'should update the supported methods when querying for meta', function() {
+				posts.id( 1066 ).meta( 2501 );
+				var _supportedMethods = posts._supportedMethods.sort().join( '|' );
+				expect( _supportedMethods ).to.equal( 'delete|get|head|post|put' );
+			});
 
-		it.skip( 'should update the supported methods when querying for meta', function() {
-			posts.id( 1066 ).meta( 2501 );
-			var _supportedMethods = posts._supportedMethods.sort().join( '|' );
-			expect( _supportedMethods ).to.equal( 'delete|get|head|post|put' );
 		});
 
 	});
