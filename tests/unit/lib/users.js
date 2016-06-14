@@ -1,24 +1,27 @@
 'use strict';
 var expect = require( 'chai' ).expect;
 
-var UsersRequest = require( '../../../lib/users' );
+var WP = require( '../../../wp' );
+var CollectionRequest = require( '../../../lib/shared/collection-request' );
+var WPRequest = require( '../../../lib/shared/wp-request' );
 
 describe( 'wp.users', function() {
-
+	var site;
 	var users;
+
+	beforeEach(function() {
+		site = new WP({
+			endpoint: '/wp-json',
+			username: 'foouser',
+			password: 'barpass'
+		});
+		users = site.users();
+	});
 
 	describe( 'constructor', function() {
 
-		beforeEach(function() {
-			users = new UsersRequest();
-		});
-
-		it( 'should create a UsersRequest instance', function() {
-			expect( users instanceof UsersRequest ).to.be.true;
-		});
-
 		it( 'should set any passed-in options', function() {
-			users = new UsersRequest({
+			users = site.users({
 				booleanProp: true,
 				strProp: 'Some string'
 			});
@@ -26,22 +29,26 @@ describe( 'wp.users', function() {
 			expect( users._options.strProp ).to.equal( 'Some string' );
 		});
 
-		it( 'should force authentication', function() {
-			expect( users._options ).to.have.property( 'auth' );
-			expect( users._options.auth ).to.be.true;
-		});
-
-		it( 'should default _options to { auth: true }', function() {
+		it( 'should initialize _options to the site defaults', function() {
 			expect( users._options ).to.deep.equal({
-				auth: true
+				endpoint: '/wp-json/',
+				username: 'foouser',
+				password: 'barpass'
 			});
 		});
 
-		it( 'should initialize instance properties', function() {
-			expect( users._path ).to.deep.equal( {} );
-			expect( users._params ).to.deep.equal( {} );
-			var _supportedMethods = users._supportedMethods.sort().join( '|' );
-			expect( _supportedMethods ).to.equal( 'get|head|post' );
+		it( 'should initialize the base path component', function() {
+			expect( users._renderURI() ).to.equal( '/wp-json/wp/v2/users' );
+		});
+
+		it( 'should set a default _supportedMethods array', function() {
+			expect( users ).to.have.property( '_supportedMethods' );
+			expect( users._supportedMethods ).to.be.an( 'array' );
+		});
+
+		it( 'should inherit UsersRequest from CollectionRequest', function() {
+			expect( users instanceof CollectionRequest ).to.be.true;
+			expect( users instanceof WPRequest ).to.be.true;
 		});
 
 		it( 'should inherit prototype methods from both ancestors', function() {
@@ -57,55 +64,30 @@ describe( 'wp.users', function() {
 
 	});
 
-	describe( '_pathValidators', function() {
-
-		it( 'has a validator for the "id" property', function() {
-			var users = new UsersRequest();
-			expect( users._pathValidators ).to.deep.equal({
-				id: /(^\d+$|^me$)/
-			});
-		});
-
-	});
-
 	describe( '.me()', function() {
 
 		it( 'sets the path to users/me', function() {
-			var users = new UsersRequest();
-			users._options = {
-				endpoint: 'url/endpoint'
-			};
 			users.me();
-			expect( users._path ).to.have.property( 'id' );
-			expect( users._path.id ).to.equal( 'me' );
+			expect( users._renderURI() ).to.equal( '/wp-json/wp/v2/users/me' );
 		});
 
 	});
 
 	describe( '.id()', function() {
 
+		it( 'should be defined', function() {
+			expect( users ).to.have.property( 'id' );
+			expect( users.id ).to.be.a( 'function' );
+		});
+
 		it( 'sets the path ID to the passed-in value', function() {
-			var users = new UsersRequest();
-			users._options = {
-				endpoint: 'url/endpoint'
-			};
 			users.id( 2501 );
-			expect( users._path ).to.have.property( 'id' );
-			expect( users._path.id ).to.equal( 2501 );
+			expect( users._renderURI() ).to.equal( '/wp-json/wp/v2/users/2501' );
 		});
 
 	});
 
 	describe( 'prototype._renderURI', function() {
-
-		var users;
-
-		beforeEach(function() {
-			users = new UsersRequest();
-			users._options = {
-				endpoint: '/wp-json/'
-			};
-		});
 
 		it( 'should create the URL for retrieving all users', function() {
 			var url = users._renderURI();
@@ -114,16 +96,14 @@ describe( 'wp.users', function() {
 
 		it( 'should create the URL for retrieving the current user', function() {
 			var url = users.me()._renderURI();
-			var _supportedMethods = users._supportedMethods.sort().join( '|' );
 			expect( url ).to.equal( '/wp-json/wp/v2/users/me' );
-			expect( _supportedMethods ).to.equal( 'get|head' );
 		});
 
 		it( 'should create the URL for retrieving a specific user by ID', function() {
 			var url = users.id( 1337 )._renderURI();
 			var _supportedMethods = users._supportedMethods.sort().join( '|' );
 			expect( url ).to.equal( '/wp-json/wp/v2/users/1337' );
-			expect( _supportedMethods ).to.equal( 'delete|get|head|post|put' );
+			expect( _supportedMethods ).to.equal( 'delete|get|head|patch|post|put' );
 		});
 
 	});
