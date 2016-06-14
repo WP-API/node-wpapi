@@ -1,26 +1,27 @@
 'use strict';
 var expect = require( 'chai' ).expect;
 
-var TypesRequest = require( '../../../lib/types' );
+var WP = require( '../../../wp' );
 var CollectionRequest = require( '../../../lib/shared/collection-request' );
 var WPRequest = require( '../../../lib/shared/wp-request' );
 
 describe( 'wp.types', function() {
+	var site;
+	var types;
+
+	beforeEach(function() {
+		site = new WP({
+			endpoint: '/wp-json',
+			username: 'foouser',
+			password: 'barpass'
+		});
+		types = site.types();
+	});
 
 	describe( 'constructor', function() {
 
-		var types;
-
-		beforeEach(function() {
-			types = new TypesRequest();
-		});
-
-		it( 'should create a TypesRequest instance', function() {
-			expect( types instanceof TypesRequest ).to.be.true;
-		});
-
 		it( 'should set any passed-in options', function() {
-			types = new TypesRequest({
+			types = site.types({
 				booleanProp: true,
 				strProp: 'Some string'
 			});
@@ -28,16 +29,21 @@ describe( 'wp.types', function() {
 			expect( types._options.strProp ).to.equal( 'Some string' );
 		});
 
-		it( 'should default _options to {}', function() {
-			expect( types._options ).to.deep.equal( {} );
+		it( 'should initialize _options to the site defaults', function() {
+			expect( types._options ).to.deep.equal({
+				endpoint: '/wp-json/',
+				username: 'foouser',
+				password: 'barpass'
+			});
 		});
 
-		it( 'should intitialize instance properties', function() {
-			var _supportedMethods = types._supportedMethods.sort().join( '|' );
-			expect( types._path ).to.deep.equal( {} );
-			expect( types._params ).to.deep.equal( {} );
-			expect( types._template ).to.equal( 'types(/:type)' );
-			expect( _supportedMethods ).to.equal( 'get|head' );
+		it( 'should initialize the base path component', function() {
+			expect( types._renderURI() ).to.equal( '/wp-json/wp/v2/types' );
+		});
+
+		it( 'should set a default _supportedMethods array', function() {
+			expect( types ).to.have.property( '_supportedMethods' );
+			expect( types._supportedMethods ).to.be.an( 'array' );
 		});
 
 		it( 'should inherit PostsRequest from CollectionRequest', function() {
@@ -61,15 +67,6 @@ describe( 'wp.types', function() {
 	});
 
 	describe( 'URL Generation', function() {
-
-		var types;
-
-		beforeEach(function() {
-			types = new TypesRequest();
-			types._options = {
-				endpoint: '/wp-json/'
-			};
-		});
 
 		it( 'should create the URL for retrieving all types', function() {
 			var url = types._renderURI();
