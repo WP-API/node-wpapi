@@ -5,7 +5,7 @@ var WP = require( '../../../wp' );
 var CollectionRequest = require( '../../../lib/shared/collection-request' );
 var WPRequest = require( '../../../lib/shared/wp-request' );
 
-describe.only( 'wp.comments', function() {
+describe( 'wp.comments', function() {
 	var site;
 	var comments;
 

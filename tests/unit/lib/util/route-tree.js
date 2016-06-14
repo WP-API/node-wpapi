@@ -83,7 +83,7 @@ describe( 'route-tree utility', function() {
 				expect( routeTree ).to.have.property( 'level' );
 				expect( routeTree.level ).to.equal( 0 );
 				expect( routeTree ).to.have.property( 'methods' );
-				expect( routeTree.methods ).to.deep.equal([ 'get', 'post' ]);
+				expect( routeTree.methods.sort().join( '|' ) ).to.equal( 'get|head|post' );
 				expect( routeTree ).to.have.property( 'namedGroup' );
 				expect( routeTree.namedGroup ).to.equal( false );
 				expect( routeTree ).to.have.property( 'names' );

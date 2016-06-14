@@ -173,7 +173,7 @@ describe( 'integration: categories()', function() {
 
 	});
 
-	describe( 'term()', function() {
+	describe( 'id()', function() {
 
 		it( 'can be used to access an individual category term', function() {
 			var selectedCategory;
@@ -181,7 +181,7 @@ describe( 'integration: categories()', function() {
 				// Pick one of the categories
 				selectedCategory = categories[ 3 ];
 				// Query for that category directly
-				return wp.categories().term( selectedCategory.id );
+				return wp.categories().id( selectedCategory.id );
 			}).then(function( category ) {
 				expect( category ).to.be.an( 'object' );
 				expect( category ).to.have.property( 'id' );

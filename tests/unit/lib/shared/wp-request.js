@@ -65,28 +65,19 @@ describe( 'WPRequest', function() {
 			expect( request._renderPath() ).to.equal( 'ns' );
 		});
 
-		it( 'prefixes any provided template', function() {
-			request._template = 'face';
-			request.namespace( 'nose' );
-			expect( request._renderPath() ).to.equal( 'nose/face' );
-		});
-
 		it( 'can accept & set a namespace in the (:domain/:version) format', function() {
-			request._template = 'template';
 			request.namespace( 'ns/v3' );
-			expect( request._renderPath() ).to.equal( 'ns/v3/template' );
+			expect( request._renderPath() ).to.equal( 'ns/v3' );
 		});
 
 		it( 'can be removed (to use the legacy api v1) with an empty string', function() {
-			request._template = 'template';
 			request.namespace( 'windows/xp' ).namespace( '' );
-			expect( request._renderPath() ).to.equal( 'template' );
+			expect( request._renderPath() ).to.equal( '' );
 		});
 
 		it( 'can be removed (to use the legacy api v1) by omitting arguments', function() {
-			request._template = 'template';
 			request.namespace( 'wordpress/95' ).namespace();
-			expect( request._renderPath() ).to.equal( 'template' );
+			expect( request._renderPath() ).to.equal( '' );
 		});
 
 	});

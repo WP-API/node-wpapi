@@ -30,8 +30,8 @@ describe( 'integration: taxonomies()', function() {
 		return expect( prom ).to.eventually.equal( SUCCESS );
 	});
 
-	it( 'can be chained with a term() call to fetch the category taxonomy', function() {
-		var prom = wp.taxonomies().term( 'category' ).get().then(function( category ) {
+	it( 'can be chained with a taxonomy() call to fetch the category taxonomy', function() {
+		var prom = wp.taxonomies().taxonomy( 'category' ).get().then(function( category ) {
 			expect( category ).to.be.an( 'object' );
 			expect( category ).to.have.property( 'slug' );
 			expect( category.slug ).to.equal( 'category' );
@@ -42,43 +42,8 @@ describe( 'integration: taxonomies()', function() {
 		return expect( prom ).to.eventually.equal( SUCCESS );
 	});
 
-	it( 'can be chained with a term() call to fetch the post_tag taxonomy', function() {
-		var prom = wp.taxonomies().term( 'post_tag' ).get().then(function( tag ) {
-			expect( tag ).to.be.an( 'object' );
-			expect( tag ).to.have.property( 'slug' );
-			expect( tag.slug ).to.equal( 'post_tag' );
-			expect( tag ).to.have.property( 'hierarchical' );
-			expect( tag.hierarchical ).to.equal( false );
-			return SUCCESS;
-		});
-		return expect( prom ).to.eventually.equal( SUCCESS );
-	});
-
-});
-
-describe( 'integration: taxonomy()', function() {
-	var wp;
-
-	beforeEach(function() {
-		wp = new WP({
-			endpoint: 'http://wpapi.loc/wp-json'
-		});
-	});
-
-	it( 'can be used to directly retrieve the category taxonomy object', function() {
-		var prom = wp.taxonomy( 'category' ).get().then(function( category ) {
-			expect( category ).to.be.an( 'object' );
-			expect( category ).to.have.property( 'slug' );
-			expect( category.slug ).to.equal( 'category' );
-			expect( category ).to.have.property( 'hierarchical' );
-			expect( category.hierarchical ).to.equal( true );
-			return SUCCESS;
-		});
-		return expect( prom ).to.eventually.equal( SUCCESS );
-	});
-
-	it( 'can be used to directly retrieve the post_tag taxonomy object', function() {
-		var prom = wp.taxonomy( 'post_tag' ).get().then(function( tag ) {
+	it( 'can be chained with a taxonomy() call to fetch the post_tag taxonomy', function() {
+		var prom = wp.taxonomies().taxonomy( 'post_tag' ).get().then(function( tag ) {
 			expect( tag ).to.be.an( 'object' );
 			expect( tag ).to.have.property( 'slug' );
 			expect( tag.slug ).to.equal( 'post_tag' );
