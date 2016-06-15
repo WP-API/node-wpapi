@@ -4,7 +4,7 @@ var expect = require( 'chai' ).expect;
 var inherit = require( 'util' ).inherits;
 
 var filterMixins = require( '../../../../lib/mixins/filters' );
-var WPRequest = require( '../../../../lib/shared/wp-request' );
+var WPRequest = require( '../../../../lib/constructors/wp-request' );
 
 describe( 'mixins: filter', function() {
 	var Req;
@@ -206,6 +206,20 @@ describe( 'mixins: filter', function() {
 			it( 'de-duplicates taxonomy terms (will only set a term once)', function() {
 				var result = req.taxonomy( 'tag', 'cat' ).taxonomy( 'tag', 'cat' );
 				expect( getQueryStr( result ) ).to.equal( 'filter[tag]=cat' );
+			});
+
+			it( 'de-dupes the taxonomy list when called with an array', function() {
+				req.taxonomy( 'post_tag', [
+					'disclosure',
+					'alunageorge',
+					'disclosure',
+					'lorde',
+					'lorde',
+					'clean-bandit'
+				]);
+				expect( req._taxonomyFilters ).to.deep.equal({
+					tag: [ 'alunageorge', 'clean-bandit', 'disclosure', 'lorde' ]
+				});
 			});
 
 			it( 'supports setting an array of string terms', function() {

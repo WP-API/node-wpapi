@@ -4,7 +4,7 @@ var expect = require( 'chai' ).expect;
 var inherit = require( 'util' ).inherits;
 
 var parameterMixins = require( '../../../../lib/mixins/parameters' );
-var WPRequest = require( '../../../../lib/shared/wp-request' );
+var WPRequest = require( '../../../../lib/constructors/wp-request' );
 
 describe( 'mixins: parameters', function() {
 	var Req;
@@ -57,6 +57,11 @@ describe( 'mixins: parameters', function() {
 				expect( getQueryStr( result ) ).to.equal( 'page=7' );
 			});
 
+			it( 'should be chainable and replace values when called multiple times', function() {
+				var result = req.page( 71 ).page( 2 );
+				expect( getQueryStr( result ) ).to.equal( 'page=2' );
+			});
+
 		});
 
 		describe( '.perPage()', function() {
@@ -85,6 +90,11 @@ describe( 'mixins: parameters', function() {
 			it( 'sets the "per_page" query parameter when provided a value', function() {
 				var result = req.perPage( 7 );
 				expect( getQueryStr( result ) ).to.equal( 'per_page=7' );
+			});
+
+			it( 'should be chainable and replace values when called multiple times', function() {
+				var result = req.perPage( 71 ).perPage( 2 );
+				expect( getQueryStr( result ) ).to.equal( 'per_page=2' );
 			});
 
 		});
@@ -230,8 +240,19 @@ describe( 'mixins: parameters', function() {
 		});
 
 		it( 'sets the "author_name" filter when provided a string value', function() {
-			var result = req.author( 'han-solo' );
-			expect( getQueryStr( result ) ).to.equal( 'filter[author_name]=han-solo' );
+			var result = req.author( 'jamesagarfield' );
+			expect( getQueryStr( result ) ).to.equal( 'filter[author_name]=jamesagarfield' );
+		});
+
+		it( 'is chainable, and replaces author_name values on subsequent calls', function() {
+			var result = req.author( 'fforde' ).author( 'bronte' );
+			expect( result ).to.equal( req );
+			expect( getQueryStr( result ) ).to.equal( 'filter[author_name]=bronte' );
+		});
+
+		it( 'is chainable, and replaces author ID values on subsequent calls', function() {
+			var result = req.author( 1847 );
+			expect( getQueryStr( result ) ).to.equal( 'author=1847' );
 		});
 
 		it( 'unsets author when called with an empty string', function() {

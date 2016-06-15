@@ -1,4 +1,3 @@
-'use strict';
 /**
  * A WP REST API client for Node.js
  *
@@ -15,23 +14,22 @@
  * @beta
  })
  */
+'use strict';
+
 var extend = require( 'node.extend' );
+
+// All valid routes in API v2 beta 11
+var routes = require( './lib/data/endpoint-response.json' ).routes;
+var buildRouteTree = require( './lib/route-tree' ).build;
+var generateEndpointFactories = require( './lib/endpoint-factories' ).generate;
 
 var defaults = {
 	username: '',
 	password: ''
 };
 
-// Pull in request module constructors
-var CommentsRequest = require( './lib/comments' );
-var MediaRequest = require( './lib/media' );
-var PagesRequest = require( './lib/pages' );
-var PostsRequest = require( './lib/posts' );
-var TaxonomiesRequest = require( './lib/taxonomies' );
-var TypesRequest = require( './lib/types' );
-var UsersRequest = require( './lib/users' );
-var CollectionRequest = require( './lib/shared/collection-request' );
-var WPRequest = require( './lib/shared/wp-request' );
+// Pull in base module constructors
+var WPRequest = require( './lib/constructors/wp-request' );
 
 /**
  * The base constructor for the WP API service
@@ -65,6 +63,15 @@ function WP( options ) {
 	return this;
 }
 
+// Auto-generate default endpoint factories
+var routesByNamespace = buildRouteTree( routes );
+var endpointFactories = generateEndpointFactories( 'wp/v2', routesByNamespace[ 'wp/v2' ] );
+
+// Apply all auto-generated endpoint factories to the WP object prototype
+Object.keys( endpointFactories ).forEach(function( methodName ) {
+	WP.prototype[ methodName ] = endpointFactories[ methodName ];
+});
+
 /**
  * Convenience method for making a new WP instance
  *
@@ -81,165 +88,6 @@ function WP( options ) {
  */
 WP.site = function( endpoint ) {
 	return new WP({ endpoint: endpoint });
-};
-
-/**
- * Start a request against the `/comments` endpoint
- *
- * @method comments
- * @param {Object} [options] An options hash for a new CommentsRequest
- * @return {CommentsRequest} A CommentsRequest instance
- */
-WP.prototype.comments = function( options ) {
-	options = options || {};
-	options = extend( options, this._options );
-	return new CommentsRequest( options );
-};
-
-/**
- * Start a request against the `/media` endpoint
- *
- * @method media
- * @param {Object} [options] An options hash for a new MediaRequest
- * @return {MediaRequest} A MediaRequest instance
- */
-WP.prototype.media = function( options ) {
-	options = options || {};
-	options = extend( options, this._options );
-	return new MediaRequest( options );
-};
-
-/**
- * Start a request against the `/pages` endpoint
- *
- * @method pages
- * @param {Object} [options] An options hash for a new PagesRequest
- * @return {PagesRequest} A PagesRequest instance
- */
-WP.prototype.pages = function( options ) {
-	options = options || {};
-	options = extend( options, this._options );
-	return new PagesRequest( options );
-};
-
-/**
- * Start a request against the `/posts` endpoint
- *
- * @method posts
- * @param {Object} [options] An options hash for a new PostsRequest
- * @return {PostsRequest} A PostsRequest instance
- */
-WP.prototype.posts = function( options ) {
-	options = options || {};
-	options = extend( options, this._options );
-	return new PostsRequest( options );
-};
-
-/**
- * Start a request for a taxonomy or taxonomy term collection
- *
- * @method taxonomies
- * @param {Object} [options] An options hash for a new TaxonomiesRequest
- * @return {TaxonomiesRequest} A TaxonomiesRequest instance
- */
-WP.prototype.taxonomies = function( options ) {
-	options = options || {};
-	options = extend( options, this._options );
-	return new TaxonomiesRequest( options );
-};
-
-/**
- * Start a request for a specific taxonomy object
- *
- * It is slightly unintuitive to consider the name of a taxonomy a "term," as is
- * needed in order to retrieve the taxonomy object from the .taxonomies() method.
- * This convenience method lets you create a `TaxonomiesRequest` object that is
- * bound to the provided taxonomy name, without having to utilize the "term" method.
- *
- * @example
- * If your site uses two custom taxonomies, book_genre and book_publisher, before you would
- * have had to request these terms using the verbose form:
- *
- *     wp.taxonomies().term( 'book_genre' )
- *     wp.taxonomies().term( 'book_publisher' )
- *
- * Using `.taxonomy()`, the same query can be achieved much more succinctly:
- *
- *     wp.taxonomy( 'book_genre' )
- *     wp.taxonomy( 'book_publisher' )
- *
- * @method taxonomy
- * @param {String} taxonomyName The name of the taxonomy to request
- * @return {TaxonomiesRequest} A TaxonomiesRequest object bound to the value of taxonomyName
- */
-WP.prototype.taxonomy = function( taxonomyName ) {
-	var options = extend( {}, this._options );
-	return new TaxonomiesRequest( options ).term( taxonomyName );
-};
-
-/**
- * Request a list of category terms
- *
- * This is a shortcut method to retrieve the terms for the "category" taxonomy
- *
- * @example
- * These are equivalent:
- *
- *     wp.taxonomies().collection( 'categories' )
- *     wp.categories()
- *
- * @method categories
- * @return {TaxonomiesRequest} A TaxonomiesRequest object bound to the categories collection
- */
-WP.prototype.categories = function() {
-	var options = extend( {}, this._options );
-	return new TaxonomiesRequest( options ).collection( 'categories' );
-};
-
-/**
- * Request a list of post_tag terms
- *
- * This is a shortcut method to interact with the collection of terms for the
- * "post_tag" taxonomy.
- *
- * @example
- * These are equivalent:
- *
- *     wp.taxonomies().collection( 'tags' )
- *     wp.tags()
- *
- * @method tags
- * @return {TaxonomiesRequest} A TaxonomiesRequest object bound to the tags collection
- */
-WP.prototype.tags = function() {
-	var options = extend( {}, this._options );
-	return new TaxonomiesRequest( options ).collection( 'tags' );
-};
-
-/**
- * Start a request against the `/types` endpoint
- *
- * @method types
- * @param {Object} [options] An options hash for a new TypesRequest
- * @return {TypesRequest} A TypesRequest instance
- */
-WP.prototype.types = function( options ) {
-	options = options || {};
-	options = extend( options, this._options );
-	return new TypesRequest( options );
-};
-
-/**
- * Start a request against the `/users` endpoint
- *
- * @method users
- * @param {Object} [options] An options hash for a new UsersRequest
- * @return {UsersRequest} A UsersRequest instance
- */
-WP.prototype.users = function( options ) {
-	options = options || {};
-	options = extend( options, this._options );
-	return new UsersRequest( options );
 };
 
 /**
@@ -269,18 +117,16 @@ WP.prototype.url = function( url ) {
  *
  * @method root
  * @param {String} [relativePath] An endpoint-relative path to which to bind the request
- * @param {Boolean} [collection] Whether to return a CollectionRequest or a vanilla WPRequest
- * @return {CollectionRequest|WPRequest} A request object
+ * @return {WPRequest} A request object
  */
-WP.prototype.root = function( relativePath, collection ) {
+WP.prototype.root = function( relativePath ) {
 	relativePath = relativePath || '';
-	collection = collection || false;
 	var options = extend( {}, this._options );
 	// Request should be
-	var request = collection ? new CollectionRequest( options ) : new WPRequest( options );
+	var request = new WPRequest( options );
 
 	// Set the path template to the string passed in
-	request._template = relativePath;
+	request._path = { '0': relativePath };
 
 	return request;
 };

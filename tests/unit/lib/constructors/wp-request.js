@@ -5,7 +5,8 @@ chai.use( require( 'sinon-chai' ) );
 var sinon = require( 'sinon' );
 var sandbox = require( 'sandboxed-module' );
 
-var WPRequest = require( '../../../../lib/shared/wp-request' );
+var WPRequest = require( '../../../../lib/constructors/wp-request' );
+var filterMixins = require( '../../../../lib/mixins/filters' );
 
 describe( 'WPRequest', function() {
 
@@ -37,6 +38,65 @@ describe( 'WPRequest', function() {
 
 	});
 
+	describe( '_renderQuery()', function() {
+
+		beforeEach(function() {
+			Object.keys( filterMixins ).forEach(function( mixin ) {
+				if ( ! request[ mixin ] ) {
+					request[ mixin ] = filterMixins[ mixin ];
+				}
+			});
+		});
+
+		it( 'properly parses taxonomy filters', function() {
+			request._taxonomyFilters = {
+				tag: [ 'clouds ', 'islands' ],
+				custom_tax: [ 7 ]
+			};
+			var query = request._renderQuery();
+			// Filters should be in alpha order, to support caching requests
+			expect( query ).to
+				.equal( '?filter%5Bcustom_tax%5D=7&filter%5Btag%5D=clouds%2Bislands' );
+		});
+
+		it( 'lower-cases taxonomy terms', function() {
+			request._taxonomyFilters = {
+				tag: [ 'Diamond-Dust' ]
+			};
+			var query = request._renderQuery();
+			expect( query ).to.equal( '?filter%5Btag%5D=diamond-dust' );
+		});
+
+		it( 'properly parses regular filters', function() {
+			request._filters = {
+				post_status: 'publish', s: 'Some search string'
+			};
+			var query = request._renderQuery();
+			expect( query ).to
+				.equal( '?filter%5Bpost_status%5D=publish&filter%5Bs%5D=Some%20search%20string' );
+		});
+
+		it( 'properly parses array filters', function() {
+			request._filters = { post__in: [ 0, 1 ] };
+			var query = request._renderQuery();
+			expect( query ).to
+				.equal( '?filter%5Bpost__in%5D%5B%5D=0&filter%5Bpost__in%5D%5B%5D=1' );
+		});
+
+		it( 'correctly merges taxonomy and regular filters & renders them in order', function() {
+			request._taxonomyFilters = {
+				cat: [ 7, 10 ]
+			};
+			request._filters = {
+				name: 'some-slug'
+			};
+			var query = request._renderQuery();
+			// Filters should be in alpha order, to support caching requests
+			expect( query ).to.equal( '?filter%5Bcat%5D=7%2B10&filter%5Bname%5D=some-slug' );
+		});
+
+	});
+
 	describe( '_checkMethodSupport', function() {
 
 		it( 'should return true when called with a supported method', function() {
@@ -51,7 +111,7 @@ describe( 'WPRequest', function() {
 			}).to.throw();
 		});
 
-	}); // constructor
+	});
 
 	describe( 'namespace', function() {
 
@@ -65,28 +125,19 @@ describe( 'WPRequest', function() {
 			expect( request._renderPath() ).to.equal( 'ns' );
 		});
 
-		it( 'prefixes any provided template', function() {
-			request._template = 'face';
-			request.namespace( 'nose' );
-			expect( request._renderPath() ).to.equal( 'nose/face' );
-		});
-
 		it( 'can accept & set a namespace in the (:domain/:version) format', function() {
-			request._template = 'template';
 			request.namespace( 'ns/v3' );
-			expect( request._renderPath() ).to.equal( 'ns/v3/template' );
+			expect( request._renderPath() ).to.equal( 'ns/v3' );
 		});
 
 		it( 'can be removed (to use the legacy api v1) with an empty string', function() {
-			request._template = 'template';
 			request.namespace( 'windows/xp' ).namespace( '' );
-			expect( request._renderPath() ).to.equal( 'template' );
+			expect( request._renderPath() ).to.equal( '' );
 		});
 
 		it( 'can be removed (to use the legacy api v1) by omitting arguments', function() {
-			request._template = 'template';
 			request.namespace( 'wordpress/95' ).namespace();
-			expect( request._renderPath() ).to.equal( 'template' );
+			expect( request._renderPath() ).to.equal( '' );
 		});
 
 	});
@@ -160,6 +211,72 @@ describe( 'WPRequest', function() {
 			expect( request._renderQuery() ).to.equal( '?type%5B%5D=page&type%5B%5D=post' );
 			request.param( 'type', [ 'page', 'cpt_item' ], true );
 			expect( request._renderQuery() ).to.equal( '?type%5B%5D=cpt_item&type%5B%5D=page&type%5B%5D=post' );
+		});
+
+	});
+
+	describe( 'parameter convenience methods', function() {
+
+		describe( 'context', function() {
+
+			beforeEach(function() {
+				request = new WPRequest({
+					endpoint: '/'
+				});
+			});
+
+			it( 'should be defined', function() {
+				expect( request ).to.have.property( 'context' );
+				expect( request.context ).to.be.a( 'function' );
+			});
+
+			it( 'wraps .param()', function() {
+				sinon.stub( request, 'param' );
+				request.context( 'view' );
+				expect( request.param ).to.have.been.calledWith( 'context', 'view' );
+			});
+
+			it( 'should map to the "context=VALUE" query parameter', function() {
+				var path = request.context( 'edit' )._renderURI();
+				expect( path ).to.equal( '/?context=edit' );
+			});
+
+			it( 'should replace values when called multiple times', function() {
+				var path = request.context( 'edit' ).context( 'view' )._renderURI();
+				expect( path ).to.equal( '/?context=view' );
+			});
+
+			it( 'should provide a .edit() shortcut for .context( "edit" )', function() {
+				sinon.spy( request, 'context' );
+				request.edit();
+				expect( request.context ).to.have.been.calledWith( 'edit' );
+				expect( request._renderURI() ).to.equal( '/?context=edit' );
+			});
+
+			it( 'should force authentication when called with "edit"', function() {
+				request.edit();
+				expect( request._options ).to.have.property( 'auth' );
+				expect( request._options.auth ).to.be.true;
+			});
+
+		});
+
+		describe( 'embed()', function() {
+
+			it( 'should be a function', function() {
+				expect( request ).to.have.property( 'embed' );
+				expect( request.embed ).to.be.a( 'function' );
+			});
+
+			it( 'should set the "_embed" parameter', function() {
+				request.embed();
+				expect( request._params._embed ).to.equal( true );
+			});
+
+			it( 'should be chainable', function() {
+				expect( request.embed() ).to.equal( request );
+			});
+
 		});
 
 	});
@@ -288,7 +405,7 @@ describe( 'WPRequest', function() {
 
 		beforeEach(function() {
 			mockAgent = new MockAgent();
-			SandboxedRequest = sandbox.require( '../../../../lib/shared/wp-request', {
+			SandboxedRequest = sandbox.require( '../../../../lib/constructors/wp-request', {
 				requires: {
 					'superagent': mockAgent
 				}

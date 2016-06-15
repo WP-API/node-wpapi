@@ -9,7 +9,7 @@ chai.use( require( 'chai-as-promised' ) );
 var expect = chai.expect;
 
 var WP = require( '../../' );
-var WPRequest = require( '../../lib/shared/wp-request.js' );
+var WPRequest = require( '../../lib/constructors/wp-request.js' );
 
 // Define some arrays to use ensuring the returned data is what we expect
 // it to be (e.g. an array of the names from tags on the first page)
@@ -177,7 +177,7 @@ describe( 'integration: tags()', function() {
 
 	});
 
-	describe( 'term()', function() {
+	describe( 'id()', function() {
 
 		it( 'can be used to access an individual tag term', function() {
 			var selectedTag;
@@ -185,7 +185,7 @@ describe( 'integration: tags()', function() {
 				// Pick one of the tags
 				selectedTag = tags[ 3 ];
 				// Query for that tag directly
-				return wp.tags().term( selectedTag.id );
+				return wp.tags().id( selectedTag.id );
 			}).then(function( tag ) {
 				expect( tag ).to.be.an( 'object' );
 				expect( tag ).to.have.property( 'id' );

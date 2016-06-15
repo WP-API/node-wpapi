@@ -3,15 +3,8 @@ var expect = require( 'chai' ).expect;
 
 var WP = require( '../../' );
 
-// Other constructors, for use with instanceof checks
-var MediaRequest = require( '../../lib/media' );
-var PagesRequest = require( '../../lib/pages' );
-var PostsRequest = require( '../../lib/posts' );
-var TaxonomiesRequest = require( '../../lib/taxonomies' );
-var TypesRequest = require( '../../lib/types' );
-var UsersRequest = require( '../../lib/users' );
-var CollectionRequest = require( '../../lib/shared/collection-request' );
-var WPRequest = require( '../../lib/shared/wp-request' );
+// Constructors, for use with instanceof checks
+var WPRequest = require( '../../lib/constructors/wp-request' );
 
 describe( 'wp', function() {
 
@@ -97,35 +90,28 @@ describe( 'wp', function() {
 
 	describe( '.root()', function() {
 
+		beforeEach(function() {
+			site = new WP({ endpoint: 'http://my.site.com/wp-json' });
+		});
+
 		it( 'is defined', function() {
 			expect( site ).to.have.property( 'root' );
 			expect( site.root ).to.be.a( 'function' );
 		});
 
 		it( 'creates a get request against the root endpoint', function() {
-			site._options.endpoint = 'http://my.site.com/wp-json/';
 			var request = site.root();
 			expect( request._renderURI() ).to.equal( 'http://my.site.com/wp-json/' );
 		});
 
-		it( 'takes a "path" property to query a root-relative path', function() {
-			site._options.endpoint = 'http://my.site.com/wp-json/';
+		it( 'takes a "path" argument to query a root-relative path', function() {
 			var request = site.root( 'custom/endpoint' );
 			expect( request._renderURI() ).to.equal( 'http://my.site.com/wp-json/custom/endpoint' );
 		});
 
-		it( 'creates a basic WPRequest if "collection" is unspecified or "false"', function() {
-			var pathRequest = site.root( 'some/relative/root' );
-			expect( pathRequest._template ).to.equal( 'some/relative/root' );
+		it( 'creates a WPRequest object', function() {
+			var pathRequest = site.root( 'some/collection/endpoint' );
 			expect( pathRequest instanceof WPRequest ).to.be.true;
-			expect( pathRequest instanceof CollectionRequest ).to.be.false;
-		});
-
-		it( 'creates a CollectionRequest object if "collection" is "true"', function() {
-			var pathRequest = site.root( 'some/collection/endpoint', true );
-			expect( pathRequest._template ).to.equal( 'some/collection/endpoint' );
-			expect( pathRequest instanceof WPRequest ).to.be.true;
-			expect( pathRequest instanceof CollectionRequest ).to.be.true;
 		});
 
 		it( 'inherits options from the parent WP instance', function() {
@@ -145,57 +131,43 @@ describe( 'wp', function() {
 	describe( 'endpoint accessors', function() {
 
 		it( 'defines a media endpoint handler', function() {
-			var media = site.media();
-			expect( media instanceof MediaRequest ).to.be.true;
+			expect( site ).to.have.property( 'media' );
+			expect( site.media ).to.be.a( 'function' );
 		});
 
 		it( 'defines a pages endpoint handler', function() {
-			var posts = site.pages();
-			expect( posts instanceof PagesRequest ).to.be.true;
+			expect( site ).to.have.property( 'pages' );
+			expect( site.pages ).to.be.a( 'function' );
 		});
 
 		it( 'defines a posts endpoint handler', function() {
-			var posts = site.posts();
-			expect( posts instanceof PostsRequest ).to.be.true;
+			expect( site ).to.have.property( 'posts' );
+			expect( site.posts ).to.be.a( 'function' );
 		});
 
 		it( 'defines a taxonomies endpoint handler', function() {
-			var posts = site.taxonomies();
-			expect( posts instanceof TaxonomiesRequest ).to.be.true;
+			expect( site ).to.have.property( 'taxonomies' );
+			expect( site.taxonomies ).to.be.a( 'function' );
+		});
+
+		it( 'defines a categories endpoint handler', function() {
+			expect( site ).to.have.property( 'categories' );
+			expect( site.categories ).to.be.a( 'function' );
+		});
+
+		it( 'defines a tags endpoint handler', function() {
+			expect( site ).to.have.property( 'tags' );
+			expect( site.tags ).to.be.a( 'function' );
 		});
 
 		it( 'defines a types endpoint handler', function() {
-			var posts = site.types();
-			expect( posts instanceof TypesRequest ).to.be.true;
+			expect( site ).to.have.property( 'types' );
+			expect( site.types ).to.be.a( 'function' );
 		});
 
 		it( 'defines a users endpoint handler', function() {
-			var posts = site.users();
-			expect( posts instanceof UsersRequest ).to.be.true;
-		});
-
-	});
-
-	describe( 'taxonomy shortcut handlers', function() {
-
-		it( 'defines a .categories() shortcut for the category terms collection', function() {
-			var categories = site.categories();
-			expect( categories instanceof TaxonomiesRequest ).to.be.true;
-			expect( categories._renderURI() ).to
-				.equal( 'endpoint/url/wp/v2/categories' );
-		});
-
-		it( 'defines a .tags() shortcut for the tag terms collection', function() {
-			var tags = site.tags();
-			expect( tags instanceof TaxonomiesRequest ).to.be.true;
-			expect( tags._renderURI() ).to.equal( 'endpoint/url/wp/v2/tags' );
-		});
-
-		it( 'defines a generic .taxonomy() handler for arbitrary taxonomy objects', function() {
-			var taxRequest = site.taxonomy( 'my_custom_tax' );
-			expect( taxRequest instanceof TaxonomiesRequest ).to.be.true;
-			var uri = taxRequest._renderURI();
-			expect( uri ).to.equal( 'endpoint/url/wp/v2/taxonomies/my_custom_tax' );
+			expect( site ).to.have.property( 'users' );
+			expect( site.users ).to.be.a( 'function' );
 		});
 
 	});

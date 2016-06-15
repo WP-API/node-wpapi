@@ -9,7 +9,7 @@ chai.use( require( 'chai-as-promised' ) );
 var expect = chai.expect;
 
 var WP = require( '../../' );
-var WPRequest = require( '../../lib/shared/wp-request.js' );
+var WPRequest = require( '../../lib/constructors/wp-request.js' );
 
 // Define some arrays to use ensuring the returned data is what we expect
 // it to be (e.g. an array of the titles from posts on the first page)
