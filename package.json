@@ -23,10 +23,11 @@
     "wordpress"
   ],
   "scripts": {
+    "download-endpoint-json": "node ./lib/data/generate-endpoint-response-json",
     "docs": "grunt yuidoc",
     "jshint": "jshint --reporter=node_modules/jshint-stylish/index.js Gruntfile.js wp.js lib tests",
     "jscs": "jscs Gruntfile.js wp.js lib tests --reporter node_modules/jscs-stylish/jscs-stylish.js",
-    "lint": "npm run jshint && npm run jscs",
+    "lint": "npm run jshint && npm run jscs || true",
     "mocha": "_mocha tests --recursive --reporter=nyan",
     "watch": "grunt watch",
     "test:all": "_mocha tests --recursive --reporter=nyan",
@@ -60,6 +61,7 @@
     "jshint": "^2.9.2",
     "jshint-stylish": "^2.2.0",
     "load-grunt-tasks": "^0.6.0",
+    "minimist": "^1.2.0",
     "mocha": "^1.21.5",
     "sandboxed-module": "^1.0.3",
     "sinon": "^1.17.2",
