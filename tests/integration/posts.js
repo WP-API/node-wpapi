@@ -8,6 +8,9 @@ var SUCCESS = 'success';
 chai.use( require( 'chai-as-promised' ) );
 var expect = chai.expect;
 
+/*jshint -W079 */// Suppress warning about redefiniton of `Promise`
+var Promise = require( 'bluebird' );
+
 var WP = require( '../../' );
 var WPRequest = require( '../../lib/constructors/wp-request.js' );
 
@@ -361,7 +364,15 @@ describe( 'integration: posts()', function() {
 			expect( post.title ).to.have.property( 'rendered' );
 			expect( post.title.rendered ).to.equal( 'Updated Title' );
 			// Re-authenticate & delete (trash) this post
-			return wp.posts().auth( credentials ).id( id ).delete();
+			// Use a callback to exercise that part of the functionality
+			return new Promise(function( resolve, reject ) {
+				wp.posts().auth( credentials ).id( id ).delete(function( err, data ) {
+					if ( err ) {
+						return reject( err );
+					}
+					resolve( data );
+				});
+			});
 		}).then(function( response ) {
 			expect( response ).to.be.an( 'object' );
 			// DELETE action returns the post object

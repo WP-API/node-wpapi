@@ -13,6 +13,7 @@
 
 	"globals": {
 		"beforeEach": false,
+		"afterEach": false,
 		"describe": false,
 		"it": false
 	}

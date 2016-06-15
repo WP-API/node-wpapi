@@ -3,20 +3,28 @@ A WordPress REST API client for JavaScript
 
 This is a client for the [WordPress REST API](http://wp-api.org/). It is **under active development**, and should be considered beta software. More features are in progress, and **[issues](https://github.com/kadamwhite/wordpress-rest-api/issues)** are welcome if you find something that doesn't work!
 
-**`wordpress-rest-api` is designed to work with [WP-API](https://github.com/WP-API/WP-API) v2 beta 11 or higher.** If you use a prior version of the beta, some commands will not work.
+**`wordpress-rest-api` is designed to work with [WP-API](https://github.com/WP-API/WP-API) v2 beta 11 or higher.** If you use a prior version of the beta, some commands will not work. The latest beta is always recommended!
 
 [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/kadamwhite/wordpress-rest-api?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 [![Build Status](https://api.travis-ci.org/kadamwhite/wordpress-rest-api.png?branch=master)](https://travis-ci.org/kadamwhite/wordpress-rest-api)
 
 **Index**:
-[Purpose](#purpose) &bull;
-[Installation](#installation) &bull;
-[Using The Client](#using-the-client) &bull;
-[Authentication](#authentication) &bull;
-[API Documentation](#api-documentation) &bull;
-[Issues](#issues) &bull;
-[Contributing](#contributing)
+
+- [Purpose](#purpose)
+- [Installation](#installation)
+- [Using The Client](#using-the-client)
+  - [Creating Posts](#creating-posts)
+  - [Updating Posts](#updating-posts)
+  - [Requesting Different Resources](#requesting-different-resources)
+  - [Filtering Collections](#filtering-collections)
+  - [Custom Routes](#custom-routes)
+  - [Embedding Data](#embedding-data)
+  - [Paginated Collections](#working-with-paged-response-data)
+  - [Authentication](#authentication)
+- [API Documentation](#api-documentation)
+- [Issues](#issues)
+- [Contributing](#contributing)
 
 ## Purpose
 
@@ -223,9 +231,47 @@ The following methods are shortcuts for filtering the requested collection down 
 * `.month( month )`: find items published in the specified month, designated by the month index (1&ndash;12) or name (*e.g.* "February")
 * `.day( day )`: find items published on the specified day
 
-### Custom Post Types
+### Custom Routes
 
-Support for Custom Post Types has been removed temporarily, but will be reinstated soon once the client supports the new custom post handling changes introduced in the new v2 API betas.
+Support for Custom Post Types is provided via the `.registerRoute` method. This method returns a handler function which can be assigned to your site instance as a method, and takes the [same namespace and route string arguments as `rest_register_route`](http://v2.wp-api.org/extending/adding/#bare-basics):
+
+```js
+var site = new WP({ endpoint: 'http://www.yoursite.com/wp-json' });
+site.myCustomResource = site.registerRoute( 'myplugin/v1', '/author/(?P<id>)' );
+site.myCustomResource().id( 17 ); // => myplugin/v1/author/17
+```
+
+The string `(?P<id>)` indicates that a level of the route for this resource is a dynamic property named ID. By default, properties identified in this fashion will not have any inherent validation. This is designed to give developers the flexibility to pass in anything, with the caveat that only valid IDs will be accepted on the WordPress end.
+
+You might notice that in the example from the official WP-API documentation, a pattern is specified with a different format: this is a [regular expression](http://www.regular-expressions.info/tutorial.html) designed to validate the values that may be used for this capture group.
+```js
+var site = new WP({ endpoint: 'http://www.yoursite.com/wp-json' });
+site.myCustomResource = site.registerRoute( 'myplugin/v1', '/author/(?P<id>\\d+)' );
+site.myCustomResource().id( 7 ); // => myplugin/v1/author/7
+site.myCustomResource().id( 'foo' ); // => Error: Invalid path component: foo does not match (?P<a>\d+)
+```
+Adding the regular expression pattern (as a string) enabled validation for this component. In this case, the `\\d+` will cause only _numeric_ values to be accepted.
+
+**NOTE THE DOUBLE-SLASHES** in the route definition here, however: `'/author/(?P<id>\\d+)'` This is a JavaScript string, where `\` _must_ be written as `\\` to be parsed properly. A single backslash will break the route's validation.
+
+Each named group in the route will be converted into a named setter method on the route handler, as in `.id()` in the example above: that name is taken from the `<id>` in the route string.
+
+The route string `'pages/(?P<parentPage>[\d]+)/revisions/(?P<id>[\d]+)'` would create the setters `.parentPage()` and `id()`, permitting any permutation of the provided URL to be created.
+
+To permit custom parameter support methods on custom endpoints, a configuration object may be passed to the `registerRoute` method with a `mixins` property defining any functions to add:
+
+```js
+site.handler = site.registerRoute( 'myplugin/v1', 'collection/(?P<id>)', {
+    mixins: {
+        myParam: function( val ) {
+            return this.param( 'my_param', val );
+        }
+    }
+});
+```
+This permits a developer to extend an endpoint with arbitrary parameters in the same manner as is done for the automatically-generated built-in route handlers.
+
+Auto-discovery of all available routes will be supported in the near future, as will re-utilizing existing mixins (like `.search()`) on custom routes.
 
 ## Embedding data
 

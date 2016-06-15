@@ -131,4 +131,7 @@ WP.prototype.root = function( relativePath ) {
 	return request;
 };
 
+// Apply the registerRoute method to the prototype
+WP.prototype.registerRoute = require( './lib/wp-register-route' );
+
 module.exports = WP;
