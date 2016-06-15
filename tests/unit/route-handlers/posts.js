@@ -2,7 +2,7 @@
 var expect = require( 'chai' ).expect;
 
 var WP = require( '../../../wp' );
-var WPRequest = require( '../../../lib/shared/wp-request' );
+var WPRequest = require( '../../../lib/constructors/wp-request' );
 
 describe( 'wp.posts', function() {
 	var site;

@@ -1,8 +1,8 @@
 'use strict';
 var expect = require( 'chai' ).expect;
 
-var routeTree = require( '../../../../lib/util/route-tree' );
-var endpointResponse = require( '../../../../lib/data/endpoint-response.json' );
+var routeTree = require( '../../../lib/route-tree' );
+var endpointResponse = require( '../../../lib/data/endpoint-response.json' );
 
 describe( 'route-tree utility', function() {
 

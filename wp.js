@@ -20,8 +20,8 @@ var extend = require( 'node.extend' );
 
 // All valid routes in API v2 beta 11
 var routes = require( './lib/data/endpoint-response.json' ).routes;
-var buildRouteTree = require( './lib/util/route-tree' ).build;
-var generateEndpointFactories = require( './lib/util/parse-route-string' );
+var buildRouteTree = require( './lib/route-tree' ).build;
+var generateEndpointFactories = require( './lib/endpoint-factories' ).generate;
 
 var defaults = {
 	username: '',
@@ -29,7 +29,7 @@ var defaults = {
 };
 
 // Pull in base module constructors
-var WPRequest = require( './lib/shared/wp-request' );
+var WPRequest = require( './lib/constructors/wp-request' );
 
 /**
  * The base constructor for the WP API service

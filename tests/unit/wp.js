@@ -4,7 +4,7 @@ var expect = require( 'chai' ).expect;
 var WP = require( '../../' );
 
 // Constructors, for use with instanceof checks
-var WPRequest = require( '../../lib/shared/wp-request' );
+var WPRequest = require( '../../lib/constructors/wp-request' );
 
 describe( 'wp', function() {
 

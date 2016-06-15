@@ -10,7 +10,7 @@ var expect = chai.expect;
 var _ = require( 'lodash' );
 
 var WP = require( '../../' );
-var WPRequest = require( '../../lib/shared/wp-request.js' );
+var WPRequest = require( '../../lib/constructors/wp-request.js' );
 
 // Define some arrays to use ensuring the returned data is what we expect
 // it to be (e.g. an array of the names from categories on the first page)

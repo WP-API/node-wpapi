@@ -4,7 +4,7 @@ var expect = require( 'chai' ).expect;
 var inherit = require( 'util' ).inherits;
 
 var filterMixins = require( '../../../../lib/mixins/filters' );
-var WPRequest = require( '../../../../lib/shared/wp-request' );
+var WPRequest = require( '../../../../lib/constructors/wp-request' );
 
 describe( 'mixins: filter', function() {
 	var Req;
