@@ -96,6 +96,8 @@ wp.posts().post({
 })
 ```
 
+This will work in the same manner for resources other than `post`: you can see the list of required data parameters for each resource on the [WP REST API Documentation Website](http://v2.wp-api.org/reference/).
+
 ### Updating Posts
 
 To create posts, use the `.put()` method on a single-item query to PUT a data object to the server (PUT is the HTTP "verb" equivalent for "update"):
@@ -119,6 +121,8 @@ wp.posts().id( 2501 ).post({
 })
 ```
 
+This will work in the same manner for resources other than `post`: you can see the list of required data parameters for each resource on the [WP REST API Documentation Website](http://v2.wp-api.org/reference/).
+
 ### Requesting Different Resources
 
 A WP instance object provides the following basic request methods:
@@ -137,34 +141,38 @@ Additional querying methods provided, by endpoint:
 * **posts**
     - `wp.posts()`: get a collection of posts (default query)
     - `wp.posts().id( n )`: get the post with ID *n*
-    - `wp.posts().id( n ).comments()`: get all comments for post with ID *n*
-    - `wp.posts().id( n ).comment( i )`: get a comment with the ID *i* from post with ID *n*
     - `wp.posts().id( n ).revisions()`: get a collection of revisions for the post with ID *n*
-    - `wp.posts().type( type_name )`: get posts of custom type *type_name*
-    - *There is currently no support for querying post meta values*
+    - `wp.posts().id( n ).revisions( rn )`: get revision *rn* for the post with ID *n*
 * **pages**
     - `wp.pages()`: get a collection of page items
     - `wp.pages().id( n )`: get the page with numeric ID *n*
     - `wp.pages().path( 'path/str' )`: get the page with the root-relative URL path `path/str`
-    - `wp.pages().id( n ).comments()`: get all comments for page with ID *n*
-    - `wp.pages().id( n ).comment( i )`: get a comment with the ID *i* from page with ID *n*
     - `wp.pages().id( n ).revisions()`: get a collection of revisions for the page with ID *n*
+    - `wp.pages().id( n ).revisions( rn )`: get revision *rn* for the page with ID *n*
+* **comments**
+    - `wp.comments()`: get a collection of all public comments
+    - `wp.comments().id( n )`: get the comment with ID *n*
 * **taxonomies**
     - `wp.taxonomies()`: retrieve all registered taxonomies
     - `wp.taxonomies().taxonomy( 'taxonomy_name' )`: get a specific taxonomy object with name *taxonomy_name*
     - `wp.taxonomies().taxonomy( 'taxonomy_name' ).terms()`: get all terms for taxonomy *taxonomy_name*
     - `wp.taxonomies().taxonomy( 'taxonomy_name' ).term( termIdentifier )`: get the term with slug or ID *termIdentifier* from the taxonomy *taxonomy_name*
-    - **shortcut methods**: These methods enable concisely querying taxonomy endpoint sub-resources
-        - `wp.categories()`: shortcut method to retrieve the terms collection for the "category" taxonomy
-        - `wp.tags()`: shortcut method to retrieve the terms collection for the "post_tag" taxonomy
-        - `wp.taxonomy( 'tax_name' )`: shortcut method to retrieve the taxonomy object corresponding to the provided taxonomy name (equivalent to calling `wp.taxonomies().taxonomy( 'tax_name' )`)
+* **categories**
+    - `wp.categories()`: retrieve all registered categories
+    - `wp.categories().id( n )`: get a specific category object with id *n*
+* **tags**
+    - `wp.tags()`: retrieve all registered tags
+    - `wp.tags().id( n )`: get a specific tag object with id *n*
 * **types**
     - `wp.types()`: get a collection of all registered public post types
     - `wp.types().type( 'cpt_name' )`: get the object for the custom post type with the name *cpt_name*
+* **statuses**
+    - `wp.statuses()`: get a collection of all registered public post statuses (if the query is authenticated&mdash;will just display "published" if unauthenticated)
+    - `wp.statuses().status( 'slug' )`: get the object for the status with the slug *slug*
 * **users**
     - `wp.users()`: get a collection of registered users
-    - `wp.users().me()`: get the authenticated user record
-    - `wp.users().id( n )`: get the user with ID *n*
+    - `wp.users().id( n )`: get the user with ID *n* (does not require authentication if that user is a published author within the blog)
+    - `wp.users().me()`: get the authenticated user's record
 * **media**
     - `wp.media()`: get a collection of media objects (attachments)
     - `wp.media().id( n )`: get media object with ID *n*
