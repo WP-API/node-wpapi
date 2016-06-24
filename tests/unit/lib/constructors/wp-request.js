@@ -322,6 +322,19 @@ describe( 'WPRequest', function() {
 			expect( request._options.auth ).to.be.true;
 		});
 
+		it( 'does not set username/password if they are not provided as string values', function() {
+			expect( request._options ).not.to.have.property( 'username' );
+			expect( request._options ).not.to.have.property( 'password' );
+			request.auth({
+				username: 123,
+				password: false
+			});
+			expect( request._options ).not.to.have.property( 'username' );
+			expect( request._options ).not.to.have.property( 'password' );
+			expect( request._options ).to.have.property( 'auth' );
+			expect( request._options.auth ).to.be.true;
+		});
+
 	}); // auth
 
 	describe( '._auth', function() {
@@ -834,4 +847,43 @@ describe( 'WPRequest', function() {
 		}); // Pagination
 
 	}); // Request methods
+
+	describe( 'deprecated request methods', function() {
+
+		describe( '.post()', function() {
+
+			it( 'is a function', function() {
+				expect( request ).to.have.property( 'post' );
+				expect( request.post ).to.be.a( 'function' );
+			});
+
+			it( 'proxies to ._httpPost', function() {
+				sinon.stub( request, '_httpPost' );
+				function cb() {}
+				request.post( 'foo', cb );
+				expect( request._httpPost ).to.have.been.calledWith( 'foo', cb );
+				request._httpPost.restore();
+			});
+
+		});
+
+		describe( '.put()', function() {
+
+			it( 'is a function', function() {
+				expect( request ).to.have.property( 'put' );
+				expect( request.put ).to.be.a( 'function' );
+			});
+
+			it( 'proxies to ._httpPut', function() {
+				sinon.stub( request, '_httpPut' );
+				function cb() {}
+				request.put( 'foo', cb );
+				expect( request._httpPut ).to.have.been.calledWith( 'foo', cb );
+				request._httpPut.restore();
+			});
+
+		});
+
+	}); // Deprecated request methods
+
 });

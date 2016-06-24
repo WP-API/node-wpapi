@@ -114,10 +114,10 @@ describe( 'integration: posts()', function() {
 			return expect( prom ).to.eventually.equal( SUCCESS );
 		});
 
-		it( 'include the total number of posts', function() {
-			var prom = wp.posts().get().then(function( posts ) {
-				expect( posts._paging ).to.have.property( 'total' );
-				expect( posts._paging.total ).to.equal( '38' );
+		it( 'include the total number of posts: use .headers() for coverage reasons', function() {
+			var prom = wp.posts().headers().then(function( postHeadersResponse ) {
+				expect( postHeadersResponse ).to.have.property( 'x-wp-total' );
+				expect( postHeadersResponse[ 'x-wp-total' ] ).to.equal( '38' );
 				return SUCCESS;
 			});
 			return expect( prom ).to.eventually.equal( SUCCESS );
@@ -301,8 +301,8 @@ describe( 'integration: posts()', function() {
 		return expect( prom ).to.eventually.equal( SUCCESS );
 	});
 
-	it( 'cannot POST (create) without authentication', function() {
-		var prom = wp.posts().post({
+	it( 'cannot create (POST) without authentication', function() {
+		var prom = wp.posts().create({
 			title: 'New Post 2501',
 			content: 'Some Content'
 		}).catch(function( err ) {
@@ -314,11 +314,11 @@ describe( 'integration: posts()', function() {
 		return expect( prom ).to.eventually.equal( SUCCESS );
 	});
 
-	it( 'cannot PUT (update) without authentication', function() {
+	it( 'cannot update (PUT) without authentication', function() {
 		var id;
 		var prom = wp.posts().perPage( 1 ).get().then(function( posts ) {
 			id = posts[ 0 ].id;
-			return wp.posts().id( id ).put({
+			return wp.posts().id( id ).update({
 				title: 'New Post 2501',
 				content: 'Some Content'
 			});
@@ -333,7 +333,7 @@ describe( 'integration: posts()', function() {
 
 	it( 'can create, update & delete a post when authenticated', function() {
 		var id;
-		var prom = wp.posts().auth( credentials ).post({
+		var prom = wp.posts().auth( credentials ).create({
 			title: 'New Post 2501',
 			content: 'Some Content'
 		}).then(function( createdPost ) {
@@ -347,7 +347,7 @@ describe( 'integration: posts()', function() {
 			expect( createdPost ).to.have.property( 'content' );
 			expect( createdPost.content ).to.have.property( 'raw' );
 			expect( createdPost.content.raw ).to.equal( 'Some Content' );
-			return wp.posts().auth( credentials ).id( id ).put({
+			return wp.posts().auth( credentials ).id( id ).update({
 				title: 'Updated Title',
 				status: 'publish'
 			});

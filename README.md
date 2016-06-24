@@ -125,9 +125,11 @@ site.namespace( 'myplugin/v1' ).authors()...
 
 To create a slimmed JSON file dedicated to this particular purpose, see the Node script [lib/data/generate-endpoint-request.js](lib/data/generate-endpoint-request.js), which will let you download and save an endpoint response to your local project.
 
+In addition to retrieving the specified resource with `.get()`, you can also `.create()`, `.update()` and `.delete()` resources:
+
 ### Creating Posts
 
-To create posts, use the `.post()` method on a query to POST a data object to the server (POST is the HTTP "verb" equivalent for "create"):
+To create posts, use the `.create()` method on a query to POST (the HTTP verb for "create") a data object to the server:
 
 ```js
 // You must authenticate to be able to POST (create) a post
@@ -137,7 +139,7 @@ var wp = new WP({
     username: 'someusername',
     password: 'password'
 });
-wp.posts().post({
+wp.posts().create({
     // "title" and "content" are the only required properties
     title: 'Your Post Title',
     content: 'Your post content',
@@ -155,7 +157,7 @@ This will work in the same manner for resources other than `post`: you can see t
 
 ### Updating Posts
 
-To create posts, use the `.put()` method on a single-item query to PUT a data object to the server (PUT is the HTTP "verb" equivalent for "update"):
+To create posts, use the `.update()` method on a single-item query to PUT (the HTTP verb for "update") a data object to the server:
 
 ```js
 // You must authenticate to be able to PUT (update) a post
@@ -166,7 +168,7 @@ var wp = new WP({
     password: 'password'
 });
 // .id() must be used to specify the post we are updating
-wp.posts().id( 2501 ).post({
+wp.posts().id( 2501 ).update({
     // Update the title
     title: 'A Better Title',
     // Set the post live (assuming it was "draft" before)
@@ -183,13 +185,18 @@ This will work in the same manner for resources other than `post`: you can see t
 A WP instance object provides the following basic request methods:
 
 * `wp.posts()...`: Request items from the `/posts` endpoints
-* `wp.taxonomies()...`: Generate a request against the `/taxonomies` endpoints
 * `wp.pages()...`: Start a request for the `/pages` endpoints
-* `wp.users()...`: Get resources within the `/users` endpoints
 * `wp.types()...`: Get Post Type collections and objects from the `/types` endpoints
+* `wp.comments()...`: Start a request for the `/comments` endpoints
+* `wp.taxonomies()...`: Generate a request against the `/taxonomies` endpoints
+* `wp.tags()...`: Get or create tags with the `/tags` endpoint
+* `wp.categories()...`: Get or create categories with the `/categories` endpoint
+* `wp.statuses()...`: Get the available statuses within the `/statuses` endpoint
+* `wp.statuses()...`: Get resources within the `/statuses` endpoints
+* `wp.users()...`: Get resources within the `/users` endpoints
 * `wp.media()...`: Get Media collections and objects from the `/media` endpoints
 
-All of these methods return a customizable request object. The request object can be further refined with chaining methods, and/or sent to the server via `.get()`, `.post()`, `.put()`, `.delete()`, `.head()`, or `.then()`. (Not all endpoints support all methods; for example, you cannot POST or PUT records on `/types`, as these are defined in WordPress plugin or theme code.)
+All of these methods return a customizable request object. The request object can be further refined with chaining methods, and/or sent to the server via `.get()`, `.create()`, `.update()`, `.delete()`, `.headers()`, or `.then()`. (Not all endpoints support all methods; for example, you cannot POST or PUT records on `/types`, as these are defined in WordPress plugin or theme code.)
 
 Additional querying methods provided, by endpoint:
 
