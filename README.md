@@ -14,6 +14,7 @@ This is a client for the [WordPress REST API](http://wp-api.org/). It is **under
 - [Purpose](#purpose)
 - [Installation](#installation)
 - [Using The Client](#using-the-client)
+  - [Auto-discovery](#auto-discovery)
   - [Creating Posts](#creating-posts)
   - [Updating Posts](#updating-posts)
   - [Requesting Different Resources](#requesting-different-resources)
@@ -69,6 +70,60 @@ wp.posts().then(function( data ) {
     // handle error
 });
 ```
+The `wp` object will have endpoint handler methods for every endpoint that ships with the default WordPress REST API plugin.
+
+### Auto-Discovery
+
+It is also possible to leverage the [capability discovery](http://v2.wp-api.org/guide/discovery/) features of the API to automatically detect and add setter methods for your custom routes, or routes added by plugins.
+
+To utilize the auto-discovery functionality, call `WP.discover()` with a URL within a WordPress REST API-enabled site:
+```js
+var apiPromise = WP.discover( 'http://my-site.com' );
+```
+If auto-discovery succeeds this method returns a promise that will be resolved with a WP client instance object configured specifically for your site. You can use that promise as the queue that your client instance is ready, then use the client normally within the `.then` callback.
+
+**Custom Routes** will be detected by this process, and registered on the client. To prevent name conflicts, only routes in the `wp/v2` namespace will be bound to your instance object itself. The rest can be accessed through the `.namespace` method on the WP instance, as demonstrated below.
+
+```js
+apiPromise.then(function( site ) {
+    // If default routes were detected, they are now available
+    site.posts().then(function( posts ) {
+        console.log( posts );
+    }); // etc
+
+    // If custom routes were detected, they can be accessed via .namespace()
+    site.namespace( 'myplugin/v1' ).authors()
+        .then(function( authors ) { /* ... */ });
+
+    // Namespaces can be saved out to variables:
+    var myplugin = site.namespace( 'myplugin/v1' );
+    myplugin.authors()
+        .id( 7 )
+        .then(function( author ) { /* ... */ });
+});
+```
+
+### Bootstrapping
+
+If you are building an application designed to interface with a specific site, it is possible to sidestep the additional asynchronous HTTP calls that are needed to bootstrap the client through auto-discovery. You can download the root API response, *i.e.* the JSON response when you hit the root endpoint such as `your-site.com/wp-json`, and save that JSON file locally; then, in
+your application code, just require in that JSON file and pass the routes property into the `WP` constructor or the `WP.site` method.
+
+Note that you must specify the endpoint URL as normal when using this approach.
+
+```js
+var apiRootJSON = require( './my-endpoint-response.json' );
+var site = new WP({
+    endpoint: 'http://my-site.com/wp-json',
+    routes: apiRootJSON.routes
+});
+
+// site is now ready to be used with all methods defined in the
+// my-endpoint-response.json file, with no need to wait for a Promise.
+
+site.namespace( 'myplugin/v1' ).authors()...
+```
+
+To create a slimmed JSON file dedicated to this particular purpose, see the Node script [lib/data/generate-endpoint-request.js](lib/data/generate-endpoint-request.js), which will let you download and save an endpoint response to your local project.
 
 ### Creating Posts
 
