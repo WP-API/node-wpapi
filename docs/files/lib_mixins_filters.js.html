@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>lib/mixins/filters.js - wordpress-rest-api</title>
+    <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
+    <link rel="shortcut icon" type="image/png" href="../assets/favicon.png">
+    <script src="../assets/vendor/yui-min.js"></script>
+</head>
+<body>
+
+<div id="doc">
+    <header class="main-header">
+        <div class="content">
+            <div class="project-title">
+                    <h1 class="project-name">wordpress-rest-api</h1> <span class="project-version">0.8.0</span>
+                    <p class="description">A client for interacting with the WordPress REST API</p>
+            </div>
+            <ul class="jump-links">
+                <li><a href="#index" class="index-jump-link">index</a></li>
+                <li><a href="#top" class="top-jump-link">top</a></li>
+            </ul>
+        </div>
+    </header>
+    <div id="bd" class="main-body">
+
+        <div id="docs-sidebar" class="sidebar apidocs">
+            <div id="api-list">
+                <div id="api-tabview" class="tabview">
+                    <ul class="tabs">
+                        <li><a href="#api-classes">Classes</a></li>
+                        <li><a href="#api-modules">Modules</a></li>
+                    </ul>
+            
+                    <div id="api-tabview-filter">
+                        <input type="search" id="api-filter" placeholder="Type to filter APIs">
+                    </div>
+            
+                    <div id="api-tabview-panel">
+                        <ul id="api-classes" class="apis classes">
+                            <li><a class="type" href="../classes/wp.html">wp</a></li>
+                            <li><a class="type" href="../classes/WP.html">WP</a></li>
+                            <li><a class="type" href="../classes/WPRequest.html">WPRequest</a></li>
+                        </ul>
+            
+                        <ul id="api-modules" class="apis modules">
+                            <li><a class="module" href="../modules/autodiscovery.html">autodiscovery</a></li>
+                            <li><a class="module" href="../modules/filters.html">filters</a></li>
+                            <li><a class="module" href="../modules/parseRouteString.html">parseRouteString</a></li>
+                            <li><a class="module" href="../modules/WP.html">WP</a></li>
+                            <li><a class="module" href="../modules/WPRequest.html">WPRequest</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="docs-main" class="apidocs">
+            <div class="content container">
+                <h1 class="file-heading">File: lib/mixins/filters.js</h1>
+                
+                <div class="file">
+                    <pre class="code prettyprint linenums">
+                &#x27;use strict&#x27;;
+                /**
+                 * Filter methods that can be mixed in to a request constructor&#x27;s prototype to
+                 * allow that request to take advantage of the &#x60;?filter[]=&#x60; aliases for WP_Query
+                 * parameters for collection endpoints. These are most relevant to posts, pages
+                 * and CPTs.
+                 *
+                 * @module filters
+                 */
+                var _ = require( &#x27;lodash&#x27; );
+                var extend = require( &#x27;node.extend&#x27; );
+                var alphaNumericSort = require( &#x27;../util/alphanumeric-sort&#x27; );
+                
+                var filterMixins = {};
+                
+                // Filter Methods
+                // ==============
+                
+                /**
+                 * Specify key-value pairs by which to filter the API results (commonly used
+                 * to retrieve only posts meeting certain criteria, such as posts within a
+                 * particular category or by a particular author).
+                 *
+                 * @example
+                 *     // Set a single property:
+                 *     wp.filter( &#x27;post_type&#x27;, &#x27;cpt_event&#x27; )...
+                 *
+                 *     // Set multiple properties at once:
+                 *     wp.filter({
+                 *         post_status: &#x27;publish&#x27;,
+                 *         category_name: &#x27;news&#x27;
+                 *     })...
+                 *
+                 *     // Chain calls to .filter():
+                 *     wp.filter( &#x27;post_status&#x27;, &#x27;publish&#x27; ).filter( &#x27;category_name&#x27;, &#x27;news&#x27; )...
+                 *
+                 * @method filter
+                 * @chainable
+                 * @param {String|Object} props A filter property name string, or object of name/value pairs
+                 * @param {String|Number|Array} [value] The value(s) corresponding to the provided filter property
+                 * @return The request instance (for chaining)
+                 */
+                filterMixins.filter = function( props, value ) {
+                	/* jshint validthis:true */
+                
+                	if ( ! props || _.isString( props ) &amp;&amp; typeof value === &#x27;undefined&#x27; ) {
+                		// We have no filter to set, or no value to set for that filter
+                		return this;
+                	}
+                
+                	// convert the property name string &#x60;props&#x60; and value &#x60;value&#x60; into an object
+                	if ( _.isString( props ) ) {
+                		props = _.zipObject([[ props, value ]]);
+                	}
+                
+                	this._filters = extend( this._filters, props );
+                
+                	return this;
+                };
+                
+                /**
+                 * Restrict the query results to posts matching one or more taxonomy terms.
+                 *
+                 * @method taxonomy
+                 * @chainable
+                 * @param {String} taxonomy The name of the taxonomy to filter by
+                 * @param {String|Number|Array} term A string or integer, or array thereof, representing terms
+                 * @return The request instance (for chaining)
+                 */
+                filterMixins.taxonomy = function( taxonomy, term ) {
+                	/* jshint validthis:true */
+                	var termIsArray = _.isArray( term );
+                	var termIsNumber = termIsArray ?
+                		term.reduce(function( allAreNumbers, term ) {
+                			return allAreNumbers &amp;&amp; _.isNumber( term );
+                		}, true ) :
+                		_.isNumber( term );
+                	var termIsString = termIsArray ?
+                		term.reduce(function( allAreStrings, term ) {
+                			return allAreStrings &amp;&amp; _.isString( term );
+                		}, true ) :
+                		_.isString( term );
+                	var taxonomyTerms;
+                
+                	if ( ! termIsString &amp;&amp; ! termIsNumber ) {
+                		throw new Error( &#x27;term must be a number, string, or array of numbers or strings&#x27; );
+                	}
+                
+                	if ( taxonomy === &#x27;category&#x27; ) {
+                		if ( termIsString ) {
+                			// Query param for filtering by category slug is &quot;category_name&quot;
+                			taxonomy = &#x27;category_name&#x27;;
+                		} else {
+                			// The boolean check above ensures that if taxonomy === &#x27;category&#x27; and
+                			// term is not a string, then term must be a number and therefore an ID:
+                			// Query param for filtering by category ID is &quot;cat&quot;
+                			taxonomy = &#x27;cat&#x27;;
+                		}
+                	} else if ( taxonomy === &#x27;post_tag&#x27; ) {
+                		// tag is used in place of post_tag in the public query variables
+                		taxonomy = &#x27;tag&#x27;;
+                	}
+                
+                	// Ensure the taxonomy filters object is available
+                	this._taxonomyFilters = this._taxonomyFilters || {};
+                
+                	// Ensure there&#x27;s an array of terms available for this taxonomy
+                	taxonomyTerms = ( this._taxonomyFilters[ taxonomy ] || [] )
+                		// Insert the provided terms into the specified taxonomy&#x27;s terms array
+                		.concat( term )
+                		// Sort array
+                		.sort( alphaNumericSort );
+                
+                	// De-dupe
+                	this._taxonomyFilters[ taxonomy ] = _.unique( taxonomyTerms, true );
+                
+                	return this;
+                };
+                
+                /**
+                 * Convenience wrapper for &#x60;.taxonomy( &#x27;category&#x27;, ... )&#x60;.
+                 *
+                 * @method category
+                 * @chainable
+                 * @param {String|Number|Array} category A string or integer, or array thereof, representing terms
+                 * @return The request instance (for chaining)
+                 */
+                filterMixins.category = function( category ) {
+                	/* jshint validthis:true */
+                	return filterMixins.taxonomy.call( this, &#x27;category&#x27;, category );
+                };
+                
+                /**
+                 * Convenience wrapper for &#x60;.taxonomy( &#x27;tag&#x27;, ... )&#x60;.
+                 *
+                 * @method tag
+                 * @chainable
+                 * @param {String|Number|Array} tag A tag term string or array of tag term strings
+                 * @return The request instance (for chaining)
+                 */
+                filterMixins.tag = function( tag ) {
+                	/* jshint validthis:true */
+                	return filterMixins.taxonomy.call( this, &#x27;tag&#x27;, tag );
+                };
+                
+                /**
+                 * Query for posts published in a given year.
+                 *
+                 * @method year
+                 * @chainable
+                 * @param {Number} year integer representation of year requested
+                 * @returns The request instance (for chaining)
+                 */
+                filterMixins.year = function( year ) {
+                	/* jshint validthis:true */
+                	return filterMixins.filter.call( this, &#x27;year&#x27;, year );
+                };
+                
+                /**
+                 * Query for posts published in a given month, either by providing the number
+                 * of the requested month (e.g. 3), or the month&#x27;s name as a string (e.g. &quot;March&quot;)
+                 *
+                 * @method month
+                 * @chainable
+                 * @param {Number|String} month Integer for month (1) or month string (&quot;January&quot;)
+                 * @returns The request instance (for chaining)
+                 */
+                filterMixins.month = function( month ) {
+                	/* jshint validthis:true */
+                	var monthDate;
+                	if ( _.isString( month ) ) {
+                		// Append a arbitrary day and year to the month to parse the string into a Date
+                		monthDate = new Date( Date.parse( month + &#x27; 1, 2012&#x27; ) );
+                
+                		// If the generated Date is NaN, then the passed string is not a valid month
+                		if ( isNaN( monthDate ) ) {
+                			return this;
+                		}
+                
+                		// JS Dates are 0 indexed, but the WP API requires a 1-indexed integer
+                		month = monthDate.getMonth() + 1;
+                	}
+                
+                	// If month is a Number, add the monthnum filter to the request
+                	if ( _.isNumber( month ) ) {
+                		return filterMixins.filter.call( this, &#x27;monthnum&#x27;, month );
+                	}
+                
+                	return this;
+                };
+                
+                /**
+                 * Add the day filter into the request to retrieve posts for a given day
+                 *
+                 * @method day
+                 * @chainable
+                 * @param {Number} day Integer representation of the day requested
+                 * @returns The request instance (for chaining)
+                 */
+                filterMixins.day = function( day ) {
+                	/* jshint validthis:true */
+                	return filterMixins.filter.call( this, &#x27;day&#x27;, day );
+                };
+                
+                /**
+                 * Specify that we are requesting a page by its path (specific to Page resources)
+                 *
+                 * @method path
+                 * @chainable
+                 * @param {String} path The root-relative URL path for a page
+                 * @returns The request instance (for chaining)
+                 */
+                filterMixins.path = function( path ) {
+                	/* jshint validthis:true */
+                	return filterMixins.filter.call( this, &#x27;pagename&#x27;, path );
+                };
+                
+                module.exports = filterMixins;
+                
+                    </pre>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<script src="../assets/vendor/prettify/prettify-min.js"></script>
+<script>prettyPrint();</script>
+<script src="../assets/vendor/jquery.min.js"></script>
+<script src="../assets/js/jquery-offscreen-trigger.js"></script>
+<script src="../assets/js/yui-prettify.js"></script>
+<script src="../assets/../api.js"></script>
+<script src="../assets/js/api-filter.js"></script>
+<script src="../assets/js/api-list.js"></script>
+<script src="../assets/js/api-search.js"></script>
+<script src="../assets/js/apidocs.js"></script>
+</body>
+</html>

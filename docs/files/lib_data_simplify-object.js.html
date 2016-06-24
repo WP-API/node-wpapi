@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>WP - wordpress-rest-api</title>
+    <title>lib/data/simplify-object.js - wordpress-rest-api</title>
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
     <link rel="shortcut icon" type="image/png" href="../assets/favicon.png">
@@ -58,68 +58,67 @@
 
         <div id="docs-main" class="apidocs">
             <div class="content container">
-                <h1>WP Module</h1>
-                <div class="box clearfix meta">
+                <h1 class="file-heading">File: lib/data/simplify-object.js</h1>
                 
+                <div class="file">
+                    <pre class="code prettyprint linenums">
+                &#x27;use strict&#x27;;
                 
-                        <div class="foundat">
-                            Defined in: <a href="../files/wp.js.html#l44"><code>wp.js:44</code></a>
-                        </div>
+                /**
+                 * Walk through the keys and values of a provided object, removing any properties
+                 * which would be inessential to the generation of the route tree used to deduce
+                 * route handlers from a &#x60;wp-json/&#x60; root API endpoint. This module is not used by
+                 * the wordpress-rest-api module itself, but is rather a dependency of the script
+                 * that is used to create the &#x60;endpoint-response.json&#x60; file that is shipped along
+                 * with this module for use in generating the &quot;default&quot; routes.
+                 *
+                 * @param {*} obj An arbitrary JS value, probably an object
+                 * @returns {*} The passed-in value, with non-essential args properties and all
+                 * _links properties removes.
+                 */
+                function simplifyObject( obj ) {
+                	// Pass through falsy values, Dates and RegExp values without modification
+                	if ( ! obj || obj instanceof Date || obj instanceof RegExp ) {
+                		return obj;
+                	}
                 
-                </div>
+                	// Map arrays through simplifyObject
+                	if ( Array.isArray( obj ) ) {
+                		return obj.map( simplifyObject );
+                	}
                 
+                	// Reduce through objects to run each property through simplifyObject
+                	if ( typeof obj === &#x27;object&#x27; ) {
+                		return Object.keys( obj ).reduce(function( newObj, key ) {
+                			// Omit _links objects entirely
+                			if ( key === &#x27;_links&#x27; ) {
+                				return newObj;
+                			}
                 
-                <div class="box intro">
-                    <p>A WP REST API client for Node.js</p>
+                			// If the key is &quot;args&quot;, omit all keys of second-level descendants
+                			// other than &quot;required&quot;
+                			if ( key === &#x27;args&#x27; ) {
+                				newObj.args = Object.keys( obj.args ).reduce(function( slimArgs, arg ) {
+                					slimArgs[ arg ] = {
+                						required: obj.args[ arg ].required
+                					};
+                					return slimArgs;
+                				}, {});
+                			} else {
+                				// Pass all other objects through simplifyObject
+                				newObj[ key ] = simplifyObject( obj[ key ] );
+                			}
+                			return newObj;
+                		}, {});
+                	}
                 
-                </div>
+                	// All other types pass through without modification
+                	return obj;
+                }
                 
-                    <div class="example">
-                        <h4>Example:</h4>
-                        <div class="example-content">
-                            <pre class="code prettyprint"><code>var wp = new WP({ endpoint: 'http://src.wordpress-develop.dev/wp-json' });
-                wp.posts().then(function( posts ) {
-                    console.log( posts );
-                }).catch(function( err ) {
-                    console.error( err );
-                });</code></pre>
+                module.exports = simplifyObject;
                 
-                        </div>
-                    </div>
-                
-                <div class="yui3-g">
-                    <div class="yui3-u-1-2">
-                            <p>This module provides the following classes:</p>
-                
-                            <ul class="module-classes">
-                                <li class="module-class">
-                                    <a href="../classes/WP.html">
-                                        WP
-                                    </a>
-                                </li>
-                                <li class="module-class">
-                                    <a href="../classes/WPRequest.html">
-                                        WPRequest
-                                    </a>
-                                </li>
-                            </ul>
-                    </div>
-                
-                    <div class="yui3-u-1-2">
-                            <p>This module is a rollup of the following modules:</p>
-                
-                            <ul class="module-submodules">
-                                <li class="module-submodule">
-                                    <a href="../modules/WPRequest.html">
-                                        WPRequest
-                                    </a>
-                
-                                    <div class="module-submodule-description">
-                                        WPRequest is the base API request object constructor
-                                    </div>
-                                </li>
-                            </ul>
-                    </div>
+                    </pre>
                 </div>
             </div>
         </div>

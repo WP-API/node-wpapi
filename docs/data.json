@@ -2,30 +2,12 @@
     "project": {
         "name": "wordpress-rest-api",
         "description": "A client for interacting with the WordPress REST API",
-        "version": "0.6.0",
+        "version": "0.8.0",
         "url": "https://github.com/kadamwhite/wordpress-rest-api"
     },
     "files": {
-        "lib/shared/alphanumeric-sort.js": {
-            "name": "lib/shared/alphanumeric-sort.js",
-            "modules": {},
-            "classes": {},
-            "fors": {},
-            "namespaces": {}
-        },
-        "lib/shared/collection-request.js": {
-            "name": "lib/shared/collection-request.js",
-            "modules": {
-                "CollectionRequest": 1
-            },
-            "classes": {
-                "CollectionRequest": 1
-            },
-            "fors": {},
-            "namespaces": {}
-        },
-        "lib/shared/wp-request.js": {
-            "name": "lib/shared/wp-request.js",
+        "lib/constructors/wp-request.js": {
+            "name": "lib/constructors/wp-request.js",
             "modules": {
                 "WPRequest": 1
             },
@@ -35,82 +17,108 @@
             "fors": {},
             "namespaces": {}
         },
-        "lib/var/private-query-vars.js": {
-            "name": "lib/var/private-query-vars.js",
+        "lib/data/generate-endpoint-response-json.js": {
+            "name": "lib/data/generate-endpoint-response-json.js",
             "modules": {},
             "classes": {},
             "fors": {},
             "namespaces": {}
         },
-        "lib/var/public-query-vars.js": {
-            "name": "lib/var/public-query-vars.js",
+        "lib/data/simplify-object.js": {
+            "name": "lib/data/simplify-object.js",
             "modules": {},
             "classes": {},
             "fors": {},
             "namespaces": {}
         },
-        "lib/media.js": {
-            "name": "lib/media.js",
+        "lib/mixins/filters.js": {
+            "name": "lib/mixins/filters.js",
             "modules": {
-                "MediaRequest": 1
+                "filters": 1
             },
-            "classes": {
-                "MediaRequest": 1
-            },
+            "classes": {},
             "fors": {},
             "namespaces": {}
         },
-        "lib/pages.js": {
-            "name": "lib/pages.js",
-            "modules": {
-                "PagesRequest": 1
-            },
-            "classes": {
-                "PagesRequest": 1
-            },
+        "lib/mixins/index.js": {
+            "name": "lib/mixins/index.js",
+            "modules": {},
+            "classes": {},
             "fors": {},
             "namespaces": {}
         },
-        "lib/posts.js": {
-            "name": "lib/posts.js",
-            "modules": {
-                "PostsRequest": 1
-            },
-            "classes": {
-                "PostsRequest": 1
-            },
+        "lib/mixins/parameters.js": {
+            "name": "lib/mixins/parameters.js",
+            "modules": {},
+            "classes": {},
             "fors": {},
             "namespaces": {}
         },
-        "lib/taxonomies.js": {
-            "name": "lib/taxonomies.js",
-            "modules": {
-                "TaxonomiesRequest": 1
-            },
-            "classes": {
-                "TaxonomiesRequest": 1
-            },
+        "lib/util/alphanumeric-sort.js": {
+            "name": "lib/util/alphanumeric-sort.js",
+            "modules": {},
+            "classes": {},
             "fors": {},
             "namespaces": {}
         },
-        "lib/types.js": {
-            "name": "lib/types.js",
-            "modules": {
-                "TypesRequest": 1
-            },
-            "classes": {
-                "TypesRequest": 1
-            },
+        "lib/util/named-group-regexp.js": {
+            "name": "lib/util/named-group-regexp.js",
+            "modules": {},
+            "classes": {},
             "fors": {},
             "namespaces": {}
         },
-        "lib/users.js": {
-            "name": "lib/users.js",
+        "lib/autodiscovery.js": {
+            "name": "lib/autodiscovery.js",
             "modules": {
-                "UsersRequest": 1
+                "autodiscovery": 1
             },
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "lib/endpoint-factories.js": {
+            "name": "lib/endpoint-factories.js",
+            "modules": {
+                "parseRouteString": 1
+            },
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "lib/endpoint-request.js": {
+            "name": "lib/endpoint-request.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "lib/path-part-setter.js": {
+            "name": "lib/path-part-setter.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "lib/resource-handler-spec.js": {
+            "name": "lib/resource-handler-spec.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "lib/route-tree.js": {
+            "name": "lib/route-tree.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "lib/wp-register-route.js": {
+            "name": "lib/wp-register-route.js",
+            "modules": {},
             "classes": {
-                "UsersRequest": 1
+                "wp": 1
             },
             "fors": {},
             "namespaces": {}
@@ -131,56 +139,28 @@
         "WP": {
             "name": "WP",
             "submodules": {
-                "CollectionRequest": 1,
-                "WPRequest": 1,
-                "MediaRequest": 1,
-                "PagesRequest": 1,
-                "PostsRequest": 1,
-                "TaxonomiesRequest": 1,
-                "TypesRequest": 1,
-                "UsersRequest": 1
+                "WPRequest": 1
             },
+            "elements": {},
             "classes": {
-                "CollectionRequest": 1,
                 "WPRequest": 1,
-                "MediaRequest": 1,
-                "PagesRequest": 1,
-                "PostsRequest": 1,
-                "TaxonomiesRequest": 1,
-                "TypesRequest": 1,
-                "UsersRequest": 1,
                 "WP": 1
             },
             "fors": {},
             "namespaces": {},
             "tag": "main",
             "file": "wp.js",
-            "line": 35,
+            "line": 44,
             "description": "A WP REST API client for Node.js",
             "example": [
                 "\n    var wp = new WP({ endpoint: 'http://src.wordpress-develop.dev/wp-json' });\n    wp.posts().then(function( posts ) {\n        console.log( posts );\n    }).catch(function( err ) {\n        console.error( err );\n    });"
             ],
             "itemtype": "main"
         },
-        "CollectionRequest": {
-            "name": "CollectionRequest",
-            "submodules": {},
-            "classes": {
-                "CollectionRequest": 1
-            },
-            "fors": {},
-            "is_submodule": 1,
-            "namespaces": {},
-            "module": "WP",
-            "namespace": "",
-            "file": "lib/shared/collection-request.js",
-            "line": 15,
-            "beta": 1,
-            "description": "CollectionRequest extends WPRequest with properties & methods for filtering collections\nvia query parameters. It is the base constructor for most top-level WP instance methods."
-        },
         "WPRequest": {
             "name": "WPRequest",
             "submodules": {},
+            "elements": {},
             "classes": {
                 "WPRequest": 1
             },
@@ -189,158 +169,51 @@
             "namespaces": {},
             "module": "WP",
             "namespace": "",
-            "file": "lib/shared/wp-request.js",
-            "line": 21,
+            "file": "lib/constructors/wp-request.js",
+            "line": 20,
             "beta": 1,
             "description": "WPRequest is the base API request object constructor"
         },
-        "MediaRequest": {
-            "name": "MediaRequest",
+        "filters": {
+            "name": "filters",
             "submodules": {},
-            "classes": {
-                "MediaRequest": 1
-            },
+            "elements": {},
+            "classes": {},
             "fors": {},
-            "is_submodule": 1,
             "namespaces": {},
-            "module": "WP",
-            "namespace": "",
-            "file": "lib/media.js",
-            "line": 10,
-            "beta": 1,
-            "description": "MediaRequest extends CollectionRequest to handle the /media API endpoint"
+            "tag": "module",
+            "file": "lib/mixins/filters.js",
+            "line": 2,
+            "description": "Filter methods that can be mixed in to a request constructor's prototype to\nallow that request to take advantage of the `?filter[]=` aliases for WP_Query\nparameters for collection endpoints. These are most relevant to posts, pages\nand CPTs."
         },
-        "PagesRequest": {
-            "name": "PagesRequest",
+        "autodiscovery": {
+            "name": "autodiscovery",
             "submodules": {},
-            "classes": {
-                "PagesRequest": 1
-            },
+            "elements": {},
+            "classes": {},
             "fors": {},
-            "is_submodule": 1,
             "namespaces": {},
-            "module": "WP",
-            "namespace": "",
-            "file": "lib/pages.js",
-            "line": 10,
-            "beta": 1,
-            "description": "PagesRequest extends CollectionRequest to handle the /posts API endpoint"
+            "tag": "module",
+            "file": "lib/autodiscovery.js",
+            "line": 1,
+            "description": "Utility methods used to query a site in order to discover its available\nAPI endpoints"
         },
-        "PostsRequest": {
-            "name": "PostsRequest",
+        "parseRouteString": {
+            "name": "parseRouteString",
             "submodules": {},
+            "elements": {},
             "classes": {
-                "PostsRequest": 1
+                "wp": 1
             },
             "fors": {},
-            "is_submodule": 1,
             "namespaces": {},
-            "module": "WP",
-            "namespace": "",
-            "file": "lib/posts.js",
-            "line": 11,
-            "beta": 1,
-            "description": "PostsRequest extends CollectionRequest to handle the /posts API endpoint"
-        },
-        "TaxonomiesRequest": {
-            "name": "TaxonomiesRequest",
-            "submodules": {},
-            "classes": {
-                "TaxonomiesRequest": 1
-            },
-            "fors": {},
-            "is_submodule": 1,
-            "namespaces": {},
-            "module": "WP",
-            "namespace": "",
-            "file": "lib/taxonomies.js",
-            "line": 10,
-            "beta": 1,
-            "description": "TaxonomiesRequest extends CollectionRequest to handle the /taxonomies API endpoint"
-        },
-        "TypesRequest": {
-            "name": "TypesRequest",
-            "submodules": {},
-            "classes": {
-                "TypesRequest": 1
-            },
-            "fors": {},
-            "is_submodule": 1,
-            "namespaces": {},
-            "module": "WP",
-            "namespace": "",
-            "file": "lib/types.js",
-            "line": 10,
-            "beta": 1,
-            "description": "TypesRequest extends CollectionRequest to handle the /taxonomies API endpoint"
-        },
-        "UsersRequest": {
-            "name": "UsersRequest",
-            "submodules": {},
-            "classes": {
-                "UsersRequest": 1
-            },
-            "fors": {},
-            "is_submodule": 1,
-            "namespaces": {},
-            "module": "WP",
-            "namespace": "",
-            "file": "lib/users.js",
-            "line": 10,
-            "beta": 1,
-            "description": "UsersRequest extends CollectionRequest to handle the `/users` API endpoint. The `/users`\nendpoint responds with a 401 error without authentication, so `users()` forces basic auth."
+            "tag": "module",
+            "file": "lib/wp-register-route.js",
+            "line": 8,
+            "description": "Take a WP route string (with PCRE named capture groups), such as"
         }
     },
     "classes": {
-        "CollectionRequest": {
-            "name": "CollectionRequest",
-            "shortname": "CollectionRequest",
-            "classitems": [],
-            "plugins": [],
-            "extensions": [],
-            "plugin_for": [],
-            "extension_for": [
-                "PagesRequest",
-                "PostsRequest",
-                "TaxonomiesRequest",
-                "TypesRequest",
-                "UsersRequest"
-            ],
-            "module": "WP",
-            "submodule": "CollectionRequest",
-            "namespace": "",
-            "file": "lib/shared/collection-request.js",
-            "line": 15,
-            "description": "CollectionRequest extends WPRequest with properties & methods for filtering collections\nvia query parameters. It is the base constructor for most top-level WP instance methods.",
-            "is_constructor": 1,
-            "extends": "WPRequest",
-            "params": [
-                {
-                    "name": "options",
-                    "description": "A hash of options for the CollectionRequest instance",
-                    "type": "Object",
-                    "props": [
-                        {
-                            "name": "endpoint",
-                            "description": "The endpoint URI for the invoking WP instance",
-                            "type": "String"
-                        },
-                        {
-                            "name": "username",
-                            "description": "A username for authenticating API requests",
-                            "type": "String",
-                            "optional": true
-                        },
-                        {
-                            "name": "password",
-                            "description": "A password for authenticating API requests",
-                            "type": "String",
-                            "optional": true
-                        }
-                    ]
-                }
-            ]
-        },
         "WPRequest": {
             "name": "WPRequest",
             "shortname": "WPRequest",
@@ -348,12 +221,14 @@
             "plugins": [],
             "extensions": [],
             "plugin_for": [],
-            "extension_for": [],
+            "extension_for": [
+                "WP"
+            ],
             "module": "WP",
             "submodule": "WPRequest",
             "namespace": "",
-            "file": "lib/shared/wp-request.js",
-            "line": 21,
+            "file": "lib/constructors/wp-request.js",
+            "line": 20,
             "description": "WPRequest is the base API request object constructor",
             "is_constructor": 1,
             "params": [
@@ -383,269 +258,56 @@
                 }
             ]
         },
-        "MediaRequest": {
-            "name": "MediaRequest",
-            "shortname": "MediaRequest",
+        "wp": {
+            "name": "wp",
+            "shortname": "wp",
             "classitems": [],
             "plugins": [],
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
-            "module": "WP",
-            "submodule": "MediaRequest",
+            "module": "parseRouteString",
             "namespace": "",
-            "file": "lib/media.js",
-            "line": 10,
-            "description": "MediaRequest extends CollectionRequest to handle the /media API endpoint",
-            "is_constructor": 1,
-            "extends": "CollectionRequest",
+            "file": "lib/wp-register-route.js",
+            "line": 8,
+            "description": "Create and return a handler for an arbitrary WP REST API endpoint.\n\nThe first two parameters mirror `register_rest_route` in the REST API\ncodebase:",
+            "itemtype": "method",
             "params": [
                 {
+                    "name": "namespace",
+                    "description": "A namespace string, e.g. 'myplugin/v1'",
+                    "type": "String"
+                },
+                {
+                    "name": "restBase",
+                    "description": "A REST route string, e.g. '/author/(?P<id>\\d+)'",
+                    "type": "String"
+                },
+                {
                     "name": "options",
-                    "description": "A hash of options for the MediaRequest instance",
+                    "description": "An (optional) options object",
                     "type": "Object",
+                    "optional": true,
                     "props": [
                         {
-                            "name": "endpoint",
-                            "description": "The endpoint URI for the invoking WP instance",
-                            "type": "String"
-                        },
-                        {
-                            "name": "username",
-                            "description": "A username for authenticating API requests",
-                            "type": "String",
+                            "name": "mixins",
+                            "description": "A hash of functions to apply as mixins",
+                            "type": "Object",
                             "optional": true
                         },
                         {
-                            "name": "password",
-                            "description": "A password for authenticating API requests",
-                            "type": "String",
+                            "name": "methods",
+                            "description": "An array of methods to whitelist (on the leaf node only)",
+                            "type": "String[]",
                             "optional": true
                         }
                     ]
                 }
-            ]
-        },
-        "PagesRequest": {
-            "name": "PagesRequest",
-            "shortname": "PagesRequest",
-            "classitems": [],
-            "plugins": [],
-            "extensions": [],
-            "plugin_for": [],
-            "extension_for": [],
-            "module": "WP",
-            "submodule": "PagesRequest",
-            "namespace": "",
-            "file": "lib/pages.js",
-            "line": 10,
-            "description": "PagesRequest extends CollectionRequest to handle the /posts API endpoint",
-            "is_constructor": 1,
-            "extends": "CollectionRequest",
-            "params": [
-                {
-                    "name": "options",
-                    "description": "A hash of options for the PagesRequest instance",
-                    "type": "Object",
-                    "props": [
-                        {
-                            "name": "endpoint",
-                            "description": "The endpoint URI for the invoking WP instance",
-                            "type": "String"
-                        },
-                        {
-                            "name": "username",
-                            "description": "A username for authenticating API requests",
-                            "type": "String",
-                            "optional": true
-                        },
-                        {
-                            "name": "password",
-                            "description": "A password for authenticating API requests",
-                            "type": "String",
-                            "optional": true
-                        }
-                    ]
-                }
-            ]
-        },
-        "PostsRequest": {
-            "name": "PostsRequest",
-            "shortname": "PostsRequest",
-            "classitems": [],
-            "plugins": [],
-            "extensions": [],
-            "plugin_for": [],
-            "extension_for": [
-                "WP"
             ],
-            "module": "WP",
-            "submodule": "PostsRequest",
-            "namespace": "",
-            "file": "lib/posts.js",
-            "line": 11,
-            "description": "PostsRequest extends CollectionRequest to handle the /posts API endpoint",
-            "is_constructor": 1,
-            "extends": "CollectionRequest",
-            "params": [
-                {
-                    "name": "options",
-                    "description": "A hash of options for the PostsRequest instance",
-                    "type": "Object",
-                    "props": [
-                        {
-                            "name": "endpoint",
-                            "description": "The endpoint URI for the invoking WP instance",
-                            "type": "String"
-                        },
-                        {
-                            "name": "username",
-                            "description": "A username for authenticating API requests",
-                            "type": "String",
-                            "optional": true
-                        },
-                        {
-                            "name": "password",
-                            "description": "A password for authenticating API requests",
-                            "type": "String",
-                            "optional": true
-                        }
-                    ]
-                }
-            ]
-        },
-        "TaxonomiesRequest": {
-            "name": "TaxonomiesRequest",
-            "shortname": "TaxonomiesRequest",
-            "classitems": [],
-            "plugins": [],
-            "extensions": [],
-            "plugin_for": [],
-            "extension_for": [
-                "WP"
-            ],
-            "module": "WP",
-            "submodule": "TaxonomiesRequest",
-            "namespace": "",
-            "file": "lib/taxonomies.js",
-            "line": 10,
-            "description": "TaxonomiesRequest extends CollectionRequest to handle the /taxonomies API endpoint",
-            "is_constructor": 1,
-            "extends": "CollectionRequest",
-            "params": [
-                {
-                    "name": "options",
-                    "description": "A hash of options for the TaxonomiesRequest instance",
-                    "type": "Object",
-                    "props": [
-                        {
-                            "name": "endpoint",
-                            "description": "The endpoint URI for the invoking WP instance",
-                            "type": "String"
-                        },
-                        {
-                            "name": "username",
-                            "description": "A username for authenticating API requests",
-                            "type": "String",
-                            "optional": true
-                        },
-                        {
-                            "name": "password",
-                            "description": "A password for authenticating API requests",
-                            "type": "String",
-                            "optional": true
-                        }
-                    ]
-                }
-            ]
-        },
-        "TypesRequest": {
-            "name": "TypesRequest",
-            "shortname": "TypesRequest",
-            "classitems": [],
-            "plugins": [],
-            "extensions": [],
-            "plugin_for": [],
-            "extension_for": [],
-            "module": "WP",
-            "submodule": "TypesRequest",
-            "namespace": "",
-            "file": "lib/types.js",
-            "line": 10,
-            "description": "TypesRequest extends CollectionRequest to handle the /taxonomies API endpoint",
-            "is_constructor": 1,
-            "extends": "CollectionRequest",
-            "params": [
-                {
-                    "name": "options",
-                    "description": "A hash of options for the TypesRequest instance",
-                    "type": "Object",
-                    "props": [
-                        {
-                            "name": "endpoint",
-                            "description": "The endpoint URI for the invoking WP instance",
-                            "type": "String"
-                        },
-                        {
-                            "name": "username",
-                            "description": "A username for authenticating API requests",
-                            "type": "String",
-                            "optional": true
-                        },
-                        {
-                            "name": "password",
-                            "description": "A password for authenticating API requests",
-                            "type": "String",
-                            "optional": true
-                        }
-                    ]
-                }
-            ]
-        },
-        "UsersRequest": {
-            "name": "UsersRequest",
-            "shortname": "UsersRequest",
-            "classitems": [],
-            "plugins": [],
-            "extensions": [],
-            "plugin_for": [],
-            "extension_for": [
-                "WP"
-            ],
-            "module": "WP",
-            "submodule": "UsersRequest",
-            "namespace": "",
-            "file": "lib/users.js",
-            "line": 10,
-            "description": "UsersRequest extends CollectionRequest to handle the `/users` API endpoint. The `/users`\nendpoint responds with a 401 error without authentication, so `users()` forces basic auth.",
-            "is_constructor": 1,
-            "extends": "CollectionRequest",
-            "params": [
-                {
-                    "name": "options",
-                    "description": "A hash of options for the UsersRequest instance",
-                    "type": "Object",
-                    "props": [
-                        {
-                            "name": "endpoint",
-                            "description": "The endpoint URI for the invoking WP instance",
-                            "type": "String"
-                        },
-                        {
-                            "name": "username",
-                            "description": "A username for authenticating API requests",
-                            "type": "String",
-                            "optional": true
-                        },
-                        {
-                            "name": "password",
-                            "description": "A password for authenticating API requests",
-                            "type": "String",
-                            "optional": true
-                        }
-                    ]
-                }
-            ]
+            "return": {
+                "description": "An endpoint handler factory function for the\nspecified route",
+                "type": "Function"
+            }
         },
         "WP": {
             "name": "WP",
@@ -658,13 +320,11 @@
             "module": "WP",
             "namespace": "",
             "file": "wp.js",
-            "line": 35,
+            "line": 44,
             "description": "The base constructor for the WP API service",
             "is_constructor": 1,
             "uses": [
-                "PostsRequest",
-                "TaxonomiesRequest",
-                "UsersRequest"
+                "WPRequest"
             ],
             "params": [
                 {
@@ -688,458 +348,23 @@
                             "description": "A WP-API Basic Auth password",
                             "type": "String",
                             "optional": true
+                        },
+                        {
+                            "name": "routes",
+                            "description": "A dictionary of API routes with which to\n                                   bootstrap the WP instance: the instance will\n                                   be initialized with default routes only\n                                   if this property is omitted",
+                            "type": "Object",
+                            "optional": true
                         }
                     ]
                 }
             ]
         }
     },
+    "elements": {},
     "classitems": [
         {
-            "file": "lib/shared/alphanumeric-sort.js",
-            "line": 3,
-            "description": "Utility function for sorting arrays of numbers or strings.",
-            "params": [
-                {
-                    "name": "a",
-                    "description": "The first comparator operand",
-                    "type": "String|Number"
-                },
-                {
-                    "name": "a",
-                    "description": "The second comparator operand",
-                    "type": "String|Number"
-                }
-            ],
-            "return": {
-                "description": "-1 if the values are backwards, 1 if they're ordered, and 0 if they're the same"
-            },
-            "class": "CollectionRequest"
-        },
-        {
-            "file": "lib/shared/collection-request.js",
-            "line": 33,
-            "description": "Configuration options for the request such as the endpoint for the invoking WP instance",
-            "itemtype": "property",
-            "name": "_options",
-            "type": "Object",
-            "access": "private",
-            "tagname": "",
-            "default": "{}",
-            "class": "CollectionRequest",
-            "module": "WP",
-            "submodule": "CollectionRequest"
-        },
-        {
-            "file": "lib/shared/collection-request.js",
-            "line": 42,
-            "description": "A hash of filter values to parse into the final request URI",
-            "itemtype": "property",
-            "name": "_filters",
-            "type": "Object",
-            "access": "private",
-            "tagname": "",
-            "default": "{}",
-            "class": "CollectionRequest",
-            "module": "WP",
-            "submodule": "CollectionRequest"
-        },
-        {
-            "file": "lib/shared/collection-request.js",
-            "line": 51,
-            "description": "A hash of taxonomy terms to parse into the final request URI",
-            "itemtype": "property",
-            "name": "_taxonomyFilters",
-            "type": "Object",
-            "access": "private",
-            "tagname": "",
-            "default": "{}",
-            "class": "CollectionRequest",
-            "module": "WP",
-            "submodule": "CollectionRequest"
-        },
-        {
-            "file": "lib/shared/collection-request.js",
-            "line": 60,
-            "description": "A hash of non-filter query parameters\nThis is used to store the query values for Type, Page & Context",
-            "itemtype": "property",
-            "name": "_params",
-            "type": "Object",
-            "access": "private",
-            "tagname": "",
-            "default": "{}",
-            "class": "CollectionRequest",
-            "module": "WP",
-            "submodule": "CollectionRequest"
-        },
-        {
-            "file": "lib/shared/collection-request.js",
-            "line": 71,
-            "description": "A hash of values to assemble into the API request path",
-            "itemtype": "property",
-            "name": "_path",
-            "type": "Object",
-            "access": "private",
-            "tagname": "",
-            "default": "{}",
-            "class": "CollectionRequest",
-            "module": "WP",
-            "submodule": "CollectionRequest"
-        },
-        {
-            "file": "lib/shared/collection-request.js",
-            "line": 81,
-            "description": "The URL template that will be used to assemble endpoint paths",
-            "itemtype": "property",
-            "name": "_template",
-            "type": "String",
-            "access": "private",
-            "tagname": "",
-            "default": "''",
-            "class": "CollectionRequest",
-            "module": "WP",
-            "submodule": "CollectionRequest"
-        },
-        {
-            "file": "lib/shared/collection-request.js",
-            "line": 91,
-            "description": "An array of supported methods; to be overridden by descendent constructors",
-            "itemtype": "property",
-            "name": "_supportedMethods",
-            "type": "Array",
-            "access": "private",
-            "tagname": "",
-            "default": "[ 'head', 'get', 'put', 'post', 'delete' ]",
-            "class": "CollectionRequest",
-            "module": "WP",
-            "submodule": "CollectionRequest"
-        },
-        {
-            "file": "lib/shared/collection-request.js",
-            "line": 106,
-            "description": "Utility function for sorting arrays of numbers or strings.",
-            "params": [
-                {
-                    "name": "a",
-                    "description": "The first comparator operand",
-                    "type": "String|Number"
-                },
-                {
-                    "name": "a",
-                    "description": "The second comparator operand",
-                    "type": "String|Number"
-                }
-            ],
-            "return": {
-                "description": "-1 if the values are backwards, 1 if they're ordered, and 0 if they're the same"
-            },
-            "class": "CollectionRequest",
-            "module": "WP",
-            "submodule": "CollectionRequest"
-        },
-        {
-            "file": "lib/shared/collection-request.js",
-            "line": 126,
-            "description": "Set the pagination of a request. Use in conjunction with `.perPage()` for explicit\npagination handling. (The number of pages in a response can be retrieved from the\nresponse's `_paging.totalPages` property.)",
-            "itemtype": "method",
-            "name": "page",
-            "chainable": 1,
-            "params": [
-                {
-                    "name": "pageNumber",
-                    "description": "The page number of results to retrieve",
-                    "type": "Number"
-                }
-            ],
-            "return": {
-                "description": "The CollectionRequest instance (for chaining)",
-                "type": "CollectionRequest"
-            },
-            "class": "CollectionRequest",
-            "module": "WP",
-            "submodule": "CollectionRequest"
-        },
-        {
-            "file": "lib/shared/collection-request.js",
-            "line": 140,
-            "description": "Set the number of items to be returned in a page of responses.",
-            "itemtype": "method",
-            "name": "perPage",
-            "chainable": 1,
-            "params": [
-                {
-                    "name": "itemsPerPage",
-                    "description": "The number of items to return in one page of results",
-                    "type": "Number"
-                }
-            ],
-            "return": {
-                "description": "The CollectionRequest instance (for chaining)",
-                "type": "CollectionRequest"
-            },
-            "class": "CollectionRequest",
-            "module": "WP",
-            "submodule": "CollectionRequest"
-        },
-        {
-            "file": "lib/shared/collection-request.js",
-            "line": 152,
-            "description": "Specify key-value pairs by which to filter the API results (commonly used\nto retrieve only posts meeting certain criteria, such as posts within a\nparticular category or by a particular author).",
-            "example": [
-                "\n    // Set a single property:\n    wp.filter( 'post_type', 'cpt_event' )...\n\n    // Set multiple properties at once:\n    wp.filter({\n        post_status: 'publish',\n        category_name: 'news'\n    })...\n\n    // Chain calls to .filter():\n    wp.filter( 'post_status', 'publish' ).filter( 'category_name', 'news' )..."
-            ],
-            "itemtype": "method",
-            "name": "filter",
-            "chainable": 1,
-            "params": [
-                {
-                    "name": "props",
-                    "description": "A filter property name string, or object of name/value pairs",
-                    "type": "String|Object"
-                },
-                {
-                    "name": "value",
-                    "description": "The value(s) corresponding to the provided filter property",
-                    "type": "String|Number|Array",
-                    "optional": true
-                }
-            ],
-            "return": {
-                "description": "The CollectionRequest instance (for chaining)",
-                "type": "CollectionRequest"
-            },
-            "class": "CollectionRequest",
-            "module": "WP",
-            "submodule": "CollectionRequest"
-        },
-        {
-            "file": "lib/shared/collection-request.js",
-            "line": 187,
-            "description": "Restrict the query results to posts matching one or more taxonomy terms.",
-            "itemtype": "method",
-            "name": "taxonomy",
-            "chainable": 1,
-            "params": [
-                {
-                    "name": "taxonomy",
-                    "description": "The name of the taxonomy to filter by",
-                    "type": "String"
-                },
-                {
-                    "name": "term",
-                    "description": "A string or integer, or array thereof, representing terms",
-                    "type": "String|Number|Array"
-                }
-            ],
-            "return": {
-                "description": "The CollectionRequest instance (for chaining)",
-                "type": "CollectionRequest"
-            },
-            "class": "CollectionRequest",
-            "module": "WP",
-            "submodule": "CollectionRequest"
-        },
-        {
-            "file": "lib/shared/collection-request.js",
-            "line": 238,
-            "description": "Convenience wrapper for `.taxonomy( 'category', ... )`.",
-            "itemtype": "method",
-            "name": "category",
-            "chainable": 1,
-            "params": [
-                {
-                    "name": "category",
-                    "description": "A string or integer, or array thereof, representing terms",
-                    "type": "String|Number|Array"
-                }
-            ],
-            "return": {
-                "description": "The CollectionRequest instance (for chaining)",
-                "type": "CollectionRequest"
-            },
-            "class": "CollectionRequest",
-            "module": "WP",
-            "submodule": "CollectionRequest"
-        },
-        {
-            "file": "lib/shared/collection-request.js",
-            "line": 250,
-            "description": "Convenience wrapper for `.taxonomy( 'tag', ... )`.",
-            "itemtype": "method",
-            "name": "tag",
-            "chainable": 1,
-            "params": [
-                {
-                    "name": "tag",
-                    "description": "A tag term string or array of tag term strings",
-                    "type": "String|Number|Array"
-                }
-            ],
-            "return": {
-                "description": "The CollectionRequest instance (for chaining)",
-                "type": "CollectionRequest"
-            },
-            "class": "CollectionRequest",
-            "module": "WP",
-            "submodule": "CollectionRequest"
-        },
-        {
-            "file": "lib/shared/collection-request.js",
-            "line": 262,
-            "description": "Filter results to those matching the specified search terms.",
-            "itemtype": "method",
-            "name": "search",
-            "params": [
-                {
-                    "name": "searchString",
-                    "description": "A string to search for within post content",
-                    "type": "String"
-                }
-            ],
-            "return": {
-                "description": "The CollectionRequest instance (for chaining)",
-                "type": "CollectionRequest"
-            },
-            "class": "CollectionRequest",
-            "module": "WP",
-            "submodule": "CollectionRequest"
-        },
-        {
-            "file": "lib/shared/collection-request.js",
-            "line": 273,
-            "description": "Query for posts by a specific author.\nThis method will replace any previous 'author' query parameters that had been set.",
-            "itemtype": "method",
-            "name": "author",
-            "chainable": 1,
-            "params": [
-                {
-                    "name": "author",
-                    "description": "The nicename or ID for a particular author",
-                    "type": "String|Number"
-                }
-            ],
-            "return": {
-                "description": "The CollectionRequest instance (for chaining)",
-                "type": "CollectionRequest"
-            },
-            "class": "CollectionRequest",
-            "module": "WP",
-            "submodule": "CollectionRequest"
-        },
-        {
-            "file": "lib/shared/collection-request.js",
-            "line": 294,
-            "description": "Query a collection for members with a specific slug.",
-            "itemtype": "method",
-            "name": "slug",
-            "chainable": 1,
-            "params": [
-                {
-                    "name": "slug",
-                    "description": "A post slug (slug), e.g. \"hello-world\"",
-                    "type": "String"
-                }
-            ],
-            "return": {
-                "description": "The CollectionRequest instance (for chaining)",
-                "type": "CollectionRequest"
-            },
-            "class": "CollectionRequest",
-            "module": "WP",
-            "submodule": "CollectionRequest"
-        },
-        {
-            "file": "lib/shared/collection-request.js",
-            "line": 306,
-            "description": "Alias for .slug()",
-            "itemtype": "method",
-            "name": "name",
-            "alias": "slug",
-            "chainable": 1,
-            "params": [
-                {
-                    "name": "slug",
-                    "description": "A post name (slug), e.g. \"hello-world\"",
-                    "type": "String"
-                }
-            ],
-            "return": {
-                "description": "The CollectionRequest instance (for chaining)",
-                "type": "CollectionRequest"
-            },
-            "class": "CollectionRequest",
-            "module": "WP",
-            "submodule": "CollectionRequest"
-        },
-        {
-            "file": "lib/shared/collection-request.js",
-            "line": 319,
-            "description": "Query for posts published in a given year.",
-            "itemtype": "method",
-            "name": "year",
-            "chainable": 1,
-            "params": [
-                {
-                    "name": "year",
-                    "description": "integer representation of year requested",
-                    "type": "Number"
-                }
-            ],
-            "return": {
-                "description": "The CollectionRequest instance (for chaining)",
-                "type": "CollectionRequest"
-            },
-            "class": "CollectionRequest",
-            "module": "WP",
-            "submodule": "CollectionRequest"
-        },
-        {
-            "file": "lib/shared/collection-request.js",
-            "line": 331,
-            "description": "Query for posts published in a given month, either by providing the number\nof the requested month (e.g. 3), or the month's name as a string (e.g. \"March\")",
-            "itemtype": "method",
-            "name": "month",
-            "chainable": 1,
-            "params": [
-                {
-                    "name": "month",
-                    "description": "Integer for month (1) or month string (\"January\")",
-                    "type": "Number|String"
-                }
-            ],
-            "return": {
-                "description": "The PostsRequest instance (for chaining)",
-                "type": "CollectionRequest"
-            },
-            "class": "CollectionRequest",
-            "module": "WP",
-            "submodule": "CollectionRequest"
-        },
-        {
-            "file": "lib/shared/collection-request.js",
-            "line": 363,
-            "description": "Add the day filter into the request to retrieve posts for a given day",
-            "itemtype": "method",
-            "name": "day",
-            "chainable": 1,
-            "params": [
-                {
-                    "name": "day",
-                    "description": "Integer representation of the day requested",
-                    "type": "Number"
-                }
-            ],
-            "return": {
-                "description": "The CollectionRequest instance (for chaining)",
-                "type": "CollectionRequest"
-            },
-            "class": "CollectionRequest",
-            "module": "WP",
-            "submodule": "CollectionRequest"
-        },
-        {
-            "file": "lib/shared/wp-request.js",
-            "line": 32,
+            "file": "lib/constructors/wp-request.js",
+            "line": 31,
             "description": "Configuration options for the request such as the endpoint for the invoking WP instance",
             "itemtype": "property",
             "name": "_options",
@@ -1152,8 +377,8 @@
             "submodule": "WPRequest"
         },
         {
-            "file": "lib/shared/wp-request.js",
-            "line": 42,
+            "file": "lib/constructors/wp-request.js",
+            "line": 41,
             "description": "A hash of query parameters\nThis is used to store the values for supported query parameters like ?_embed",
             "itemtype": "property",
             "name": "_params",
@@ -1166,8 +391,8 @@
             "submodule": "WPRequest"
         },
         {
-            "file": "lib/shared/wp-request.js",
-            "line": 53,
+            "file": "lib/constructors/wp-request.js",
+            "line": 52,
             "description": "Methods supported by this API request instance:\nIndividual endpoint handlers specify their own subset of supported methods",
             "itemtype": "property",
             "name": "_supportedMethods",
@@ -1180,8 +405,8 @@
             "submodule": "WPRequest"
         },
         {
-            "file": "lib/shared/wp-request.js",
-            "line": 64,
+            "file": "lib/constructors/wp-request.js",
+            "line": 63,
             "description": "A hash of values to assemble into the API request path\n(This will be overwritten by each specific endpoint handler constructor)",
             "itemtype": "property",
             "name": "_path",
@@ -1194,36 +419,22 @@
             "submodule": "WPRequest"
         },
         {
-            "file": "lib/shared/wp-request.js",
-            "line": 75,
-            "description": "The URL template that will be used to assemble endpoint paths\n(This will be overwritten by each specific endpoint handler constructor)",
-            "itemtype": "property",
-            "name": "_template",
-            "type": "String",
-            "access": "private",
-            "tagname": "",
-            "default": "''",
+            "file": "lib/constructors/wp-request.js",
+            "line": 78,
             "class": "WPRequest",
             "module": "WP",
             "submodule": "WPRequest"
         },
         {
-            "file": "lib/shared/wp-request.js",
-            "line": 90,
+            "file": "lib/constructors/wp-request.js",
+            "line": 81,
             "class": "WPRequest",
             "module": "WP",
             "submodule": "WPRequest"
         },
         {
-            "file": "lib/shared/wp-request.js",
-            "line": 93,
-            "class": "WPRequest",
-            "module": "WP",
-            "submodule": "WPRequest"
-        },
-        {
-            "file": "lib/shared/wp-request.js",
-            "line": 98,
+            "file": "lib/constructors/wp-request.js",
+            "line": 86,
             "description": "If fn is a function, return it; else, return a no-op function",
             "params": [
                 {
@@ -1241,8 +452,8 @@
             "submodule": "WPRequest"
         },
         {
-            "file": "lib/shared/wp-request.js",
-            "line": 108,
+            "file": "lib/constructors/wp-request.js",
+            "line": 96,
             "description": "Submit the provided superagent request object, invoke a callback (if it was\nprovided), and return a promise to the response from the HTTP request.",
             "params": [
                 {
@@ -1257,7 +468,7 @@
                 },
                 {
                     "name": "transform",
-                    "description": "A function to transform the result data (optional)",
+                    "description": "A function to transform the result data",
                     "type": "Function"
                 }
             ],
@@ -1270,8 +481,8 @@
             "submodule": "WPRequest"
         },
         {
-            "file": "lib/shared/wp-request.js",
-            "line": 135,
+            "file": "lib/constructors/wp-request.js",
+            "line": 122,
             "description": "Return the body of the request, augmented with pagination information if the\nresult is a paged collection.",
             "itemtype": "method",
             "name": "returnBody",
@@ -1293,8 +504,8 @@
             "submodule": "WPRequest"
         },
         {
-            "file": "lib/shared/wp-request.js",
-            "line": 151,
+            "file": "lib/constructors/wp-request.js",
+            "line": 138,
             "description": "Extract and return the headers property from a superagent response object",
             "params": [
                 {
@@ -1312,33 +523,9 @@
             "submodule": "WPRequest"
         },
         {
-            "file": "lib/shared/wp-request.js",
-            "line": 161,
-            "description": "Check path parameter values against validation regular expressions",
-            "params": [
-                {
-                    "name": "pathValues",
-                    "description": "A hash of path placeholder keys and their corresponding values",
-                    "type": "Object"
-                },
-                {
-                    "name": "validators",
-                    "description": "A hash of placeholder keys to validation regexes",
-                    "type": "Object"
-                }
-            ],
-            "return": {
-                "description": "Returns pathValues if all validation passes (else will throw)",
-                "type": "Object"
-            },
-            "class": "WPRequest",
-            "module": "WP",
-            "submodule": "WPRequest"
-        },
-        {
-            "file": "lib/shared/wp-request.js",
-            "line": 192,
-            "description": "Process arrays of taxonomy terms into query parameters.\nAll terms listed in the arrays will be required (AND behavior).\n\nThis method will not be called with any values unless we are handling\na CollectionRequest or one of its descendants; however, since parameter\nhandling (and therefore `_renderQuery()`) are part of WPRequest itself,\nthis helper method lives here alongside the code where it is used.",
+            "file": "lib/constructors/wp-request.js",
+            "line": 148,
+            "description": "Process arrays of taxonomy terms into query parameters.\nAll terms listed in the arrays will be required (AND behavior).\n\nThis method will not be called with any values unless we are handling\nan endpoint with the filter mixin; however, since parameter handling\n(and therefore `_renderQuery()`) are part of WPRequest itself, this\nhelper method lives here alongside the code where it is used.",
             "example": [
                 "\n    prepareTaxonomies({\n        tag: [ 'tag1 ', 'tag2' ], // by term slug\n        cat: [ 7 ] // by term ID\n    }) === {\n        tag: 'tag1+tag2',\n        cat: '7'\n    }"
             ],
@@ -1358,8 +545,54 @@
             "submodule": "WPRequest"
         },
         {
-            "file": "lib/shared/wp-request.js",
-            "line": 232,
+            "file": "lib/constructors/wp-request.js",
+            "line": 185,
+            "description": "Return an object with any properties with undefined, null or empty string\nvalues removed.",
+            "example": [
+                "\n\n    populated({\n      a: 'a',\n      b: '',\n      c: null\n    }); // { a: 'a' }"
+            ],
+            "params": [
+                {
+                    "name": "obj",
+                    "description": "An object of key/value pairs",
+                    "type": "Object"
+                }
+            ],
+            "return": {
+                "description": "That object with all empty values removed",
+                "type": "Object"
+            },
+            "class": "WPRequest",
+            "module": "WP",
+            "submodule": "WPRequest"
+        },
+        {
+            "file": "lib/constructors/wp-request.js",
+            "line": 213,
+            "description": "Assert whether a provided URL component is \"valid\" by checking it against\nan array of registered path component validator methods for that level of\nthe URL path.",
+            "params": [
+                {
+                    "name": "levelDefinitions",
+                    "description": "An array of Level Definition objects",
+                    "type": "Object[]"
+                },
+                {
+                    "name": "levelContents",
+                    "description": "The URL path string that has been specified\n                                   for use on the provided level",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "Whether the provided input matches any of the provided\nlevel validation functions",
+                "type": "Boolean"
+            },
+            "class": "WPRequest",
+            "module": "WP",
+            "submodule": "WPRequest"
+        },
+        {
+            "file": "lib/constructors/wp-request.js",
+            "line": 252,
             "description": "Combine the API endpoint root URI and link URI into a valid request URL.\nEndpoints are generally a full path to the JSON API's root endpoint, such\nas `website.com/wp-json`: the link headers, however, are returned as root-\nrelative paths. Concatenating these would generate a URL such as\n`website.com/wp-json/wp-json/posts?page=2`: we must intelligently merge the\nURI strings in order to generate a valid new request URL.",
             "params": [
                 {
@@ -1382,8 +615,8 @@
             "submodule": "WPRequest"
         },
         {
-            "file": "lib/shared/wp-request.js",
-            "line": 258,
+            "file": "lib/constructors/wp-request.js",
+            "line": 278,
             "description": "If the response is not paged, return the body as-is. If pagination\ninformation is present in the response headers, parse those headers into\na custom `_paging` property on the response body. `_paging` contains links\nto the previous and next pages in the collection, as well as metadata\nabout the size and number of pages in the collection.\n\nThe structure of the `_paging` property is as follows:\n\n- `total` {Integer} The total number of records in the collection\n- `totalPages` {Integer} The number of pages available\n- `links` {Object} The parsed \"links\" headers, separated into individual URI strings\n- `next` {WPRequest} A WPRequest object bound to the \"next\" page (if page exists)\n- `prev` {WPRequest} A WPRequest object bound to the \"previous\" page (if page exists)",
             "params": [
                 {
@@ -1406,8 +639,8 @@
             "submodule": "WPRequest"
         },
         {
-            "file": "lib/shared/wp-request.js",
-            "line": 321,
+            "file": "lib/constructors/wp-request.js",
+            "line": 341,
             "description": "Process the endpoint query's filter objects into a valid query string.\nNested objects and Array properties are rendered with indexed array syntax.",
             "example": [
                 "\n    _renderQuery({ p1: 'val1', p2: 'val2' });  // ?p1=val1&p2=val2\n    _renderQuery({ obj: { prop: 'val' } });    // ?obj[prop]=val\n    _renderQuery({ arr: [ 'val1', 'val2' ] }); // ?arr[0]=val1&arr[1]=val2"
@@ -1425,8 +658,50 @@
             "submodule": "WPRequest"
         },
         {
-            "file": "lib/shared/wp-request.js",
-            "line": 355,
+            "file": "lib/constructors/wp-request.js",
+            "line": 375,
+            "description": "Set a component of the resource URL itself (as opposed to a query parameter)\n\nIf a path component has already been set at this level, throw an error:\nrequests are meant to be transient, so any re-writing of a previously-set\npath part value is likely to be a mistake.",
+            "itemtype": "method",
+            "name": "setPathPart",
+            "chainable": 1,
+            "params": [
+                {
+                    "name": "level",
+                    "description": "A \"level\" of the path to set, e.g. \"1\" or \"2\"",
+                    "type": "Number|String"
+                },
+                {
+                    "name": "val",
+                    "description": "The value to set at that path part level",
+                    "type": "Number|String"
+                }
+            ],
+            "return": {
+                "description": "The WPRequest instance (for chaining)",
+                "type": "WPRequest"
+            },
+            "class": "WPRequest",
+            "module": "WP",
+            "submodule": "WPRequest"
+        },
+        {
+            "file": "lib/constructors/wp-request.js",
+            "line": 397,
+            "description": "Validate whether the specified path parts are valid for this endpoint\n\n\"Path parts\" are non-query-string URL segments, like \"some\" \"path\" in the URL\n`mydomain.com/some/path?and=a&query=string&too`. Because a well-formed path\nis necessary to execute a successful API request, we throw an error if the\nuser has omitted a value (such as `/some/[missing component]/url`) or has\nprovided a path part value that does not match the regular expression the\nAPI uses to goven that segment.",
+            "itemtype": "method",
+            "name": "validatePath",
+            "chainable": 1,
+            "return": {
+                "description": "The WPRequest instance (for chaining), if no errors were found",
+                "type": "WPRequest"
+            },
+            "class": "WPRequest",
+            "module": "WP",
+            "submodule": "WPRequest"
+        },
+        {
+            "file": "lib/constructors/wp-request.js",
+            "line": 452,
             "description": "Set a parameter to render into the final query URI.",
             "itemtype": "method",
             "name": "param",
@@ -1459,8 +734,8 @@
             "submodule": "WPRequest"
         },
         {
-            "file": "lib/shared/wp-request.js",
-            "line": 410,
+            "file": "lib/constructors/wp-request.js",
+            "line": 513,
             "description": "Set the context of the request. Used primarily to expose private values on a request\nobject, by setting the context to \"edit\".",
             "itemtype": "method",
             "name": "context",
@@ -1481,8 +756,8 @@
             "submodule": "WPRequest"
         },
         {
-            "file": "lib/shared/wp-request.js",
-            "line": 427,
+            "file": "lib/constructors/wp-request.js",
+            "line": 530,
             "description": "Convenience wrapper for `.context( 'edit' )`",
             "itemtype": "method",
             "name": "edit",
@@ -1496,8 +771,8 @@
             "submodule": "WPRequest"
         },
         {
-            "file": "lib/shared/wp-request.js",
-            "line": 438,
+            "file": "lib/constructors/wp-request.js",
+            "line": 541,
             "description": "Return embedded resources as part of the response payload.",
             "itemtype": "method",
             "name": "embed",
@@ -1511,8 +786,8 @@
             "submodule": "WPRequest"
         },
         {
-            "file": "lib/shared/wp-request.js",
-            "line": 452,
+            "file": "lib/constructors/wp-request.js",
+            "line": 555,
             "description": "Verify that the current request object supports a given HTTP verb",
             "access": "private",
             "tagname": "",
@@ -1533,8 +808,8 @@
             "submodule": "WPRequest"
         },
         {
-            "file": "lib/shared/wp-request.js",
-            "line": 472,
+            "file": "lib/constructors/wp-request.js",
+            "line": 575,
             "description": "Validate & assemble a path string from the request object's _path",
             "access": "private",
             "tagname": "",
@@ -1549,8 +824,8 @@
             "submodule": "WPRequest"
         },
         {
-            "file": "lib/shared/wp-request.js",
-            "line": 494,
+            "file": "lib/constructors/wp-request.js",
+            "line": 608,
             "description": "Parse the request's instance properties into a WordPress API request URI",
             "access": "private",
             "tagname": "",
@@ -1565,8 +840,8 @@
             "submodule": "WPRequest"
         },
         {
-            "file": "lib/shared/wp-request.js",
-            "line": 512,
+            "file": "lib/constructors/wp-request.js",
+            "line": 626,
             "description": "Conditionally set basic authentication on a server request object",
             "itemtype": "method",
             "name": "_auth",
@@ -1594,16 +869,16 @@
             "submodule": "WPRequest"
         },
         {
-            "file": "lib/shared/wp-request.js",
-            "line": 549,
-            "description": "Set the namespace of the request, e.g. to specify the API root for routes\nregistered by wp core (\"wp\") or by any given plugin. Any previously-set\nnamespace will be overwritten by subsequent calls to the method.",
+            "file": "lib/constructors/wp-request.js",
+            "line": 663,
+            "description": "Set the namespace of the request, e.g. to specify the API root for routes\nregistered by wp core v2 (\"wp/v2\") or by any given plugin. Any previously-\nset namespace will be overwritten by subsequent calls to the method.",
             "itemtype": "method",
             "name": "namespace",
             "chainable": 1,
             "params": [
                 {
                     "name": "namespace",
-                    "description": "A namespace string, e.g. \"wp\"",
+                    "description": "A namespace string, e.g. \"wp/v2\"",
                     "type": "String"
                 }
             ],
@@ -1616,30 +891,8 @@
             "submodule": "WPRequest"
         },
         {
-            "file": "lib/shared/wp-request.js",
-            "line": 564,
-            "description": "Set the version of the request, e.g. to specify that \"v2\" of the wordpress\nAPI routes should be used. Any previously-set version will be overwritten by\nsubsequent calls to the method.",
-            "itemtype": "method",
-            "name": "version",
-            "chainable": 1,
-            "params": [
-                {
-                    "name": "version",
-                    "description": "An API version identifier string, e.g. \"v2\"",
-                    "type": "String"
-                }
-            ],
-            "return": {
-                "description": "The WPRequest instance (for chaining)",
-                "type": "WPRequest"
-            },
-            "class": "WPRequest",
-            "module": "WP",
-            "submodule": "WPRequest"
-        },
-        {
-            "file": "lib/shared/wp-request.js",
-            "line": 579,
+            "file": "lib/constructors/wp-request.js",
+            "line": 678,
             "description": "Set a requst to use authentication, and optionally provide auth credentials",
             "example": [
                 "\nIf auth credentials were already specified when the WP instance was created, calling\n`.auth` on the request chain will set that request to use the existing credentials:\n\n    request.auth().get...\n\nAlternatively, a username & password can be explicitly passed into `.auth`:\n\n    request.auth( 'username', 'password' ).get..."
@@ -1670,8 +923,159 @@
             "submodule": "WPRequest"
         },
         {
-            "file": "lib/shared/wp-request.js",
-            "line": 629,
+            "file": "lib/constructors/wp-request.js",
+            "line": 728,
+            "itemtype": "method",
+            "name": "_httpGet",
+            "async": 1,
+            "access": "private",
+            "tagname": "",
+            "params": [
+                {
+                    "name": "callback",
+                    "description": "A callback to invoke with the results of the GET request",
+                    "type": "Function",
+                    "optional": true
+                }
+            ],
+            "return": {
+                "description": "A promise to the results of the HTTP request",
+                "type": "Promise"
+            },
+            "class": "WPRequest",
+            "module": "WP",
+            "submodule": "WPRequest"
+        },
+        {
+            "file": "lib/constructors/wp-request.js",
+            "line": 744,
+            "description": "Invoke an HTTP \"POST\" request against the provided endpoint",
+            "itemtype": "method",
+            "name": "_httpPost",
+            "async": 1,
+            "access": "private",
+            "tagname": "",
+            "params": [
+                {
+                    "name": "data",
+                    "description": "The data for the POST request",
+                    "type": "Object"
+                },
+                {
+                    "name": "callback",
+                    "description": "A callback to invoke with the results of the POST request",
+                    "type": "Function",
+                    "optional": true
+                }
+            ],
+            "return": {
+                "description": "A promise to the results of the HTTP request",
+                "type": "Promise"
+            },
+            "class": "WPRequest",
+            "module": "WP",
+            "submodule": "WPRequest"
+        },
+        {
+            "file": "lib/constructors/wp-request.js",
+            "line": 763,
+            "itemtype": "method",
+            "name": "_httpPut",
+            "async": 1,
+            "access": "private",
+            "tagname": "",
+            "params": [
+                {
+                    "name": "data",
+                    "description": "The data for the PUT request",
+                    "type": "Object"
+                },
+                {
+                    "name": "callback",
+                    "description": "A callback to invoke with the results of the PUT request",
+                    "type": "Function",
+                    "optional": true
+                }
+            ],
+            "return": {
+                "description": "A promise to the results of the HTTP request",
+                "type": "Promise"
+            },
+            "class": "WPRequest",
+            "module": "WP",
+            "submodule": "WPRequest"
+        },
+        {
+            "file": "lib/constructors/wp-request.js",
+            "line": 781,
+            "itemtype": "method",
+            "name": "_httpDelete",
+            "async": 1,
+            "access": "private",
+            "tagname": "",
+            "params": [
+                {
+                    "name": "data",
+                    "description": "Data to send along with the DELETE request",
+                    "type": "Object",
+                    "optional": true
+                },
+                {
+                    "name": "callback",
+                    "description": "A callback to invoke with the results of the DELETE request",
+                    "type": "Function",
+                    "optional": true
+                }
+            ],
+            "return": {
+                "description": "A promise to the results of the HTTP request",
+                "type": "Promise"
+            },
+            "class": "WPRequest",
+            "module": "WP",
+            "submodule": "WPRequest"
+        },
+        {
+            "file": "lib/constructors/wp-request.js",
+            "line": 801,
+            "itemtype": "method",
+            "name": "_httpHead",
+            "async": 1,
+            "access": "private",
+            "tagname": "",
+            "params": [
+                {
+                    "name": "callback",
+                    "description": "A callback to invoke with the results of the HEAD request",
+                    "type": "Function",
+                    "optional": true
+                }
+            ],
+            "return": {
+                "description": "A promise to the header results of the HTTP request",
+                "type": "Promise"
+            },
+            "class": "WPRequest",
+            "module": "WP",
+            "submodule": "WPRequest"
+        },
+        {
+            "file": "lib/constructors/wp-request.js",
+            "line": 819,
+            "class": "WPRequest",
+            "module": "WP",
+            "submodule": "WPRequest"
+        },
+        {
+            "file": "lib/constructors/wp-request.js",
+            "line": 824,
+            "class": "WPRequest",
+            "module": "WP",
+            "submodule": "WPRequest"
+        },
+        {
+            "file": "lib/constructors/wp-request.js",
+            "line": 829,
             "itemtype": "method",
             "name": "get",
             "async": 1,
@@ -1692,10 +1096,34 @@
             "submodule": "WPRequest"
         },
         {
-            "file": "lib/shared/wp-request.js",
-            "line": 644,
+            "file": "lib/constructors/wp-request.js",
+            "line": 839,
+            "description": "Create a HEAD request against a site",
             "itemtype": "method",
-            "name": "post",
+            "name": "headers",
+            "async": 1,
+            "params": [
+                {
+                    "name": "callback",
+                    "description": "A callback to invoke with the results of the HEAD request",
+                    "type": "Function",
+                    "optional": true
+                }
+            ],
+            "return": {
+                "description": "A promise to the header results of the HTTP request",
+                "type": "Promise"
+            },
+            "class": "WPRequest",
+            "module": "WP",
+            "submodule": "WPRequest"
+        },
+        {
+            "file": "lib/constructors/wp-request.js",
+            "line": 850,
+            "description": "Invoke an HTTP \"POST\" request against the provided endpoint\n\nThis is the public interface creating for POST requests",
+            "itemtype": "method",
+            "name": "create",
             "async": 1,
             "params": [
                 {
@@ -1719,11 +1147,13 @@
             "submodule": "WPRequest"
         },
         {
-            "file": "lib/shared/wp-request.js",
-            "line": 661,
+            "file": "lib/constructors/wp-request.js",
+            "line": 865,
             "itemtype": "method",
-            "name": "put",
+            "name": "_httpPut",
             "async": 1,
+            "access": "private",
+            "tagname": "",
             "params": [
                 {
                     "name": "data",
@@ -1746,8 +1176,8 @@
             "submodule": "WPRequest"
         },
         {
-            "file": "lib/shared/wp-request.js",
-            "line": 678,
+            "file": "lib/constructors/wp-request.js",
+            "line": 877,
             "itemtype": "method",
             "name": "delete",
             "async": 1,
@@ -1774,30 +1204,8 @@
             "submodule": "WPRequest"
         },
         {
-            "file": "lib/shared/wp-request.js",
-            "line": 697,
-            "itemtype": "method",
-            "name": "head",
-            "async": 1,
-            "params": [
-                {
-                    "name": "callback",
-                    "description": "A callback to invoke with the results of the HEAD request",
-                    "type": "Function",
-                    "optional": true
-                }
-            ],
-            "return": {
-                "description": "A promise to the header results of the HTTP request",
-                "type": "Promise"
-            },
-            "class": "WPRequest",
-            "module": "WP",
-            "submodule": "WPRequest"
-        },
-        {
-            "file": "lib/shared/wp-request.js",
-            "line": 711,
+            "file": "lib/constructors/wp-request.js",
+            "line": 888,
             "description": "Calling .then on a query chain will invoke the query as a GET and return a promise",
             "itemtype": "method",
             "name": "then",
@@ -1825,698 +1233,172 @@
             "submodule": "WPRequest"
         },
         {
-            "file": "lib/var/private-query-vars.js",
-            "line": 2,
-            "description": "Sorted list of private WP_Query variables, requiring authentication\nThis may be used for a whitelist soon, but at present please consider it\nto be simply documentation.\n\nDocumentation:\n\n- WP_Query parameters: http://codex.wordpress.org/Class_Reference/WP_Query\n- Private query variables: WordPress core, wp-includes/class-wp.php",
-            "class": "MediaRequest",
+            "file": "lib/data/generate-endpoint-response-json.js",
+            "line": 6,
+            "description": "To avoid requiring that auto-discovery be utilized every time the API client\nis initialized, this library ships with a built-in route definition from a\nvanilla WordPress REST API installation. That file may be updated by\ninstalling the API plugin on a clean WP development instance, with no other\nplugins running, and downloading the JSON output from `yourwpsite.com/wp-json/`\ninto the \"endpoint-response.json\" file in this directory.\n\nThat file can also be generated by running this script against the same live\nWP REST API instance to download that same file, the difference being that,\nif the `endpoint-response.json` file is downloaded through this script, it\nwill be run through the `simplifyObject` utility to cut out about 1/3 of the\nbytes of the response by removing properties that do not effect route generation.\n\nThis script is NOT intended to be a dependency of any part of wp.js, and is\nprovided purely as a utility for upgrading the built-in copy of the endpoint\nresponse JSON file that is used to bootstrap the default route handlers.",
+            "example": [
+                "\n\n    # Invoke directly, run against default endpoint (details below)\n    ./generate-endpoint-response-json.js\n\n    # Invoke with `node` CLI, run against default endpoint\n    node ./generate-endpoint-response-json --endpoint=http://my-site.com/wp-json\n\nThis script runs against http://wpapi.loc/wp-json by default, but it can be\nrun against an arbitrary WordPress REST API endpoint by passing the --endpoint\nargument on the CLI:",
+                "\n\n    # Invoke directly, run against an arbitrary WordPress API root\n    ./generate-endpoint-response-json.js --endpoint=http://my-site.com/wp-json\n\n    # Invoke with `node` CLI, run against an arbitrary WordPress API root\n    node ./generate-endpoint-response-json --endpoint=http://my-site.com/wp-json\n\nEither form will update the `endpoint-response.json` file in this directory,\nproviding that the endpoint data is downloaded successfully.\n\nThis script also has some utility for downloading a custom JSON file for your\nown WP REST API-enabled site, so that you can bootstrap your own routes without\nincurring an HTTP request. To output to a different directory than the default\n(which is this directory, `lib/data/`), pass an --output argument on the CLI:",
+                "\n\n    # Output to your current working directory\n    ./path/to/this/dir/generate-endpoint-response-json.js --output=.\n\n    # Output to an arbitrary absolute path\n    ./path/to/this/dir/generate-endpoint-response-json.js --output=/home/mordor/output.json\n\nThese command-line flags may be combined, and you will usually want to use\n--endpoint alongside --output to download your own JSON into your own directory."
+            ],
+            "class": "wp",
             "module": "WP"
         },
         {
-            "file": "lib/var/public-query-vars.js",
-            "line": 2,
-            "description": "Sorted list of publicly-exposed WP_Query variables\nThis may be used for a whitelist soon, but at present please consider it\nto be simply documentation.\n\nDocumentation:\n\n- WP_Query parameters: http://codex.wordpress.org/Class_Reference/WP_Query\n- Public query variables: http://codex.wordpress.org/WordPress_Query_Vars",
-            "class": "MediaRequest",
+            "file": "lib/data/simplify-object.js",
+            "line": 3,
+            "description": "Walk through the keys and values of a provided object, removing any properties\nwhich would be inessential to the generation of the route tree used to deduce\nroute handlers from a `wp-json/` root API endpoint. This module is not used by\nthe wordpress-rest-api module itself, but is rather a dependency of the script\nthat is used to create the `endpoint-response.json` file that is shipped along\nwith this module for use in generating the \"default\" routes.",
+            "params": [
+                {
+                    "name": "obj",
+                    "description": "An arbitrary JS value, probably an object",
+                    "type": "*"
+                }
+            ],
+            "return": {
+                "description": "The passed-in value, with non-essential args properties and all\n_links properties removes.",
+                "type": "*"
+            },
+            "class": "wp",
             "module": "WP"
         },
         {
-            "file": "lib/media.js",
-            "line": 22,
-            "description": "Configuration options for the request such as the endpoint for the invoking WP instance",
-            "itemtype": "property",
-            "name": "_options",
-            "type": "Object",
-            "access": "private",
-            "tagname": "",
-            "default": "{}",
-            "class": "MediaRequest",
-            "module": "WP",
-            "submodule": "MediaRequest"
-        },
-        {
-            "file": "lib/media.js",
-            "line": 31,
-            "description": "A hash of filter values to parse into the final request URI",
-            "itemtype": "property",
-            "name": "_filters",
-            "type": "Object",
-            "access": "private",
-            "tagname": "",
-            "default": "{}",
-            "class": "MediaRequest",
-            "module": "WP",
-            "submodule": "MediaRequest"
-        },
-        {
-            "file": "lib/media.js",
-            "line": 40,
-            "description": "A hash of taxonomy terms to parse into the final request URI",
-            "itemtype": "property",
-            "name": "_taxonomyFilters",
-            "type": "Object",
-            "access": "private",
-            "tagname": "",
-            "default": "{}",
-            "class": "MediaRequest",
-            "module": "WP",
-            "submodule": "MediaRequest"
-        },
-        {
-            "file": "lib/media.js",
-            "line": 49,
-            "description": "A hash of non-filter query parameters",
-            "itemtype": "property",
-            "name": "_params",
-            "type": "Object",
-            "access": "private",
-            "tagname": "",
-            "default": "{}",
-            "class": "MediaRequest",
-            "module": "WP",
-            "submodule": "MediaRequest"
-        },
-        {
-            "file": "lib/media.js",
-            "line": 59,
-            "description": "A hash of values to assemble into the API request path",
-            "itemtype": "property",
-            "name": "_path",
-            "type": "Object",
-            "access": "private",
-            "tagname": "",
-            "default": "{}",
-            "class": "MediaRequest",
-            "module": "WP",
-            "submodule": "MediaRequest"
-        },
-        {
-            "file": "lib/media.js",
-            "line": 69,
-            "description": "The URL template that will be used to assemble endpoint paths",
-            "itemtype": "property",
-            "name": "_template",
-            "type": "String",
-            "access": "protected",
-            "tagname": "",
-            "default": "'media(/:id)'",
-            "class": "MediaRequest",
-            "module": "WP",
-            "submodule": "MediaRequest"
-        },
-        {
-            "file": "lib/media.js",
-            "line": 79,
-            "itemtype": "property",
-            "name": "_supportedMethods",
-            "type": "Array",
-            "access": "private",
-            "tagname": "",
-            "default": "[ 'head', 'get', 'post' ]",
-            "class": "MediaRequest",
-            "module": "WP",
-            "submodule": "MediaRequest"
-        },
-        {
-            "file": "lib/media.js",
-            "line": 93,
-            "description": "A hash table of path keys and regex validators for those path elements",
-            "itemtype": "property",
-            "name": "_pathValidators",
-            "type": "Object",
-            "access": "private",
-            "tagname": "",
-            "class": "MediaRequest",
-            "module": "WP",
-            "submodule": "MediaRequest"
-        },
-        {
-            "file": "lib/media.js",
-            "line": 102,
-            "description": "ID must be an integer or \"me\"",
-            "itemtype": "property",
-            "name": "_pathValidators.id",
-            "type": "{RegExp}",
-            "class": "MediaRequest",
-            "module": "WP",
-            "submodule": "MediaRequest"
-        },
-        {
-            "file": "lib/media.js",
-            "line": 111,
-            "itemtype": "method",
-            "name": "id",
-            "chainable": 1,
-            "params": [
-                {
-                    "name": "id",
-                    "description": "The integer ID of a media record",
-                    "type": "Number"
-                }
+            "file": "lib/mixins/filters.js",
+            "line": 19,
+            "description": "Specify key-value pairs by which to filter the API results (commonly used\nto retrieve only posts meeting certain criteria, such as posts within a\nparticular category or by a particular author).",
+            "example": [
+                "\n    // Set a single property:\n    wp.filter( 'post_type', 'cpt_event' )...\n\n    // Set multiple properties at once:\n    wp.filter({\n        post_status: 'publish',\n        category_name: 'news'\n    })...\n\n    // Chain calls to .filter():\n    wp.filter( 'post_status', 'publish' ).filter( 'category_name', 'news' )..."
             ],
-            "return": {
-                "description": "The MediaRequest instance (for chaining)",
-                "type": "MediaRequest"
-            },
-            "class": "MediaRequest",
-            "module": "WP",
-            "submodule": "MediaRequest"
-        },
-        {
-            "file": "lib/pages.js",
-            "line": 22,
-            "description": "Configuration options for the request such as the endpoint for the invoking WP instance",
-            "itemtype": "property",
-            "name": "_options",
-            "type": "Object",
-            "access": "private",
-            "tagname": "",
-            "default": "{}",
-            "class": "PagesRequest",
-            "module": "WP",
-            "submodule": "PagesRequest"
-        },
-        {
-            "file": "lib/pages.js",
-            "line": 31,
-            "description": "A hash of filter values to parse into the final request URI",
-            "itemtype": "property",
-            "name": "_filters",
-            "type": "Object",
-            "access": "private",
-            "tagname": "",
-            "default": "{}",
-            "class": "PagesRequest",
-            "module": "WP",
-            "submodule": "PagesRequest"
-        },
-        {
-            "file": "lib/pages.js",
-            "line": 40,
-            "description": "A hash of taxonomy terms to parse into the final request URI",
-            "itemtype": "property",
-            "name": "_taxonomyFilters",
-            "type": "Object",
-            "access": "private",
-            "tagname": "",
-            "default": "{}",
-            "class": "PagesRequest",
-            "module": "WP",
-            "submodule": "PagesRequest"
-        },
-        {
-            "file": "lib/pages.js",
-            "line": 49,
-            "description": "A hash of non-filter query parameters",
-            "itemtype": "property",
-            "name": "_params",
-            "type": "Object",
-            "access": "private",
-            "tagname": "",
-            "default": "{}",
-            "class": "PagesRequest",
-            "module": "WP",
-            "submodule": "PagesRequest"
-        },
-        {
-            "file": "lib/pages.js",
-            "line": 59,
-            "description": "A hash of values to assemble into the API request path",
-            "itemtype": "property",
-            "name": "_path",
-            "type": "Object",
-            "access": "private",
-            "tagname": "",
-            "default": "{}",
-            "class": "PagesRequest",
-            "module": "WP",
-            "submodule": "PagesRequest"
-        },
-        {
-            "file": "lib/pages.js",
-            "line": 69,
-            "description": "The URL template that will be used to assemble endpoint paths",
-            "itemtype": "property",
-            "name": "_template",
-            "type": "String",
-            "access": "private",
-            "tagname": "",
-            "default": "'pages(/:id)(/:action)(/:commentId)'",
-            "class": "PagesRequest",
-            "module": "WP",
-            "submodule": "PagesRequest"
-        },
-        {
-            "file": "lib/pages.js",
-            "line": 79,
-            "itemtype": "property",
-            "name": "_supportedMethods",
-            "type": "Array",
-            "access": "private",
-            "tagname": "",
-            "default": "[ 'head', 'get', 'post' ]",
-            "class": "PagesRequest",
-            "module": "WP",
-            "submodule": "PagesRequest"
-        },
-        {
-            "file": "lib/pages.js",
-            "line": 93,
-            "description": "A hash table of path keys and regex validators for those path elements",
-            "itemtype": "property",
-            "name": "_pathValidators",
-            "type": "Object",
-            "access": "private",
-            "tagname": "",
-            "class": "PagesRequest",
-            "module": "WP",
-            "submodule": "PagesRequest"
-        },
-        {
-            "file": "lib/pages.js",
-            "line": 104,
-            "description": "Action must be 'comments' or 'revisions'",
-            "itemtype": "property",
-            "name": "_pathValidators.action",
-            "type": "{RegExp}",
-            "access": "private",
-            "tagname": "",
-            "class": "PagesRequest",
-            "module": "WP",
-            "submodule": "PagesRequest"
-        },
-        {
-            "file": "lib/pages.js",
-            "line": 113,
-            "description": "Comment ID must be an integer",
-            "itemtype": "property",
-            "name": "_pathValidators.commentId",
-            "type": "{RegExp}",
-            "access": "private",
-            "tagname": "",
-            "class": "PagesRequest",
-            "module": "WP",
-            "submodule": "PagesRequest"
-        },
-        {
-            "file": "lib/pages.js",
-            "line": 123,
-            "description": "Specify a post ID to query",
             "itemtype": "method",
-            "name": "id",
-            "chainable": 1,
-            "return": {
-                "description": "The PagesRequest instance (for chaining)",
-                "type": "PagesRequest"
-            },
-            "class": "PagesRequest",
-            "module": "WP",
-            "submodule": "PagesRequest"
-        },
-        {
-            "file": "lib/pages.js",
-            "line": 138,
-            "description": "Specify that we are getting the comments for a specific page",
-            "itemtype": "method",
-            "name": "comments",
-            "chainable": 1,
-            "return": {
-                "description": "The PagesRequest instance (for chaining)",
-                "type": "PagesRequest"
-            },
-            "class": "PagesRequest",
-            "module": "WP",
-            "submodule": "PagesRequest"
-        },
-        {
-            "file": "lib/pages.js",
-            "line": 152,
-            "description": "Specify a particular comment to retrieve\n(forces action \"comments\")",
-            "itemtype": "method",
-            "name": "comment",
+            "name": "filter",
             "chainable": 1,
             "params": [
                 {
-                    "name": "id",
-                    "description": "The ID of the comment to retrieve",
-                    "type": "Number"
-                }
-            ],
-            "return": {
-                "description": "",
-                "type": "PagesRequest"
-            },
-            "class": "PagesRequest",
-            "module": "WP",
-            "submodule": "PagesRequest"
-        },
-        {
-            "file": "lib/pages.js",
-            "line": 169,
-            "description": "Specify that we are requesting the revisions for a specific post (forces basic auth)",
-            "itemtype": "method",
-            "name": "revisions",
-            "chainable": 1,
-            "return": {
-                "description": "The PagesRequest instance (for chaining)",
-                "type": "PagesRequest"
-            },
-            "class": "PagesRequest",
-            "module": "WP",
-            "submodule": "PagesRequest"
-        },
-        {
-            "file": "lib/pages.js",
-            "line": 183,
-            "description": "Specify that we are requesting a page by its path",
-            "itemtype": "method",
-            "name": "path",
-            "chainable": 1,
-            "params": [
+                    "name": "props",
+                    "description": "A filter property name string, or object of name/value pairs",
+                    "type": "String|Object"
+                },
                 {
-                    "name": "path",
-                    "description": "The root-relative URL path for a page",
-                    "type": "String"
-                }
-            ],
-            "return": {
-                "description": "The PagesRequest instance (for chaining)",
-                "type": "PagesRequest"
-            },
-            "class": "PagesRequest",
-            "module": "WP",
-            "submodule": "PagesRequest"
-        },
-        {
-            "file": "lib/posts.js",
-            "line": 23,
-            "description": "Configuration options for the request such as the endpoint for the invoking WP instance",
-            "itemtype": "property",
-            "name": "_options",
-            "type": "Object",
-            "access": "private",
-            "tagname": "",
-            "default": "{}",
-            "class": "PostsRequest",
-            "module": "WP",
-            "submodule": "PostsRequest"
-        },
-        {
-            "file": "lib/posts.js",
-            "line": 32,
-            "description": "A hash of filter values to parse into the final request URI",
-            "itemtype": "property",
-            "name": "_filters",
-            "type": "Object",
-            "access": "private",
-            "tagname": "",
-            "default": "{}",
-            "class": "PostsRequest",
-            "module": "WP",
-            "submodule": "PostsRequest"
-        },
-        {
-            "file": "lib/posts.js",
-            "line": 41,
-            "description": "A hash of taxonomy terms to parse into the final request URI",
-            "itemtype": "property",
-            "name": "_taxonomyFilters",
-            "type": "Object",
-            "access": "private",
-            "tagname": "",
-            "default": "{}",
-            "class": "PostsRequest",
-            "module": "WP",
-            "submodule": "PostsRequest"
-        },
-        {
-            "file": "lib/posts.js",
-            "line": 50,
-            "description": "A hash of non-filter query parameters",
-            "itemtype": "property",
-            "name": "_params",
-            "type": "Object",
-            "access": "private",
-            "tagname": "",
-            "default": "{}",
-            "class": "PostsRequest",
-            "module": "WP",
-            "submodule": "PostsRequest"
-        },
-        {
-            "file": "lib/posts.js",
-            "line": 60,
-            "description": "A hash of values to assemble into the API request path",
-            "itemtype": "property",
-            "name": "_path",
-            "type": "Object",
-            "access": "private",
-            "tagname": "",
-            "default": "{}",
-            "class": "PostsRequest",
-            "module": "WP",
-            "submodule": "PostsRequest"
-        },
-        {
-            "file": "lib/posts.js",
-            "line": 70,
-            "description": "The URL template that will be used to assemble endpoint paths",
-            "itemtype": "property",
-            "name": "_template",
-            "type": "String",
-            "access": "private",
-            "tagname": "",
-            "default": "'posts(/:id)(/:action)(/:actionId)'",
-            "class": "PostsRequest",
-            "module": "WP",
-            "submodule": "PostsRequest"
-        },
-        {
-            "file": "lib/posts.js",
-            "line": 80,
-            "itemtype": "property",
-            "name": "_supportedMethods",
-            "type": "Array",
-            "access": "private",
-            "tagname": "",
-            "default": "[ 'head', 'get', 'post' ]",
-            "class": "PostsRequest",
-            "module": "WP",
-            "submodule": "PostsRequest"
-        },
-        {
-            "file": "lib/posts.js",
-            "line": 94,
-            "description": "A hash table of path keys and regex validators for those path elements",
-            "itemtype": "property",
-            "name": "_pathValidators",
-            "type": "Object",
-            "access": "private",
-            "tagname": "",
-            "class": "PostsRequest",
-            "module": "WP",
-            "submodule": "PostsRequest"
-        },
-        {
-            "file": "lib/posts.js",
-            "line": 103,
-            "description": "ID must be an integer",
-            "itemtype": "property",
-            "name": "_pathValidators.id",
-            "type": "{RegExp}",
-            "class": "PostsRequest",
-            "module": "WP",
-            "submodule": "PostsRequest"
-        },
-        {
-            "file": "lib/posts.js",
-            "line": 111,
-            "description": "Action must be one of 'meta', 'comments', or 'revisions'",
-            "itemtype": "property",
-            "name": "_pathValidators.action",
-            "type": "{RegExp}",
-            "class": "PostsRequest",
-            "module": "WP",
-            "submodule": "PostsRequest"
-        },
-        {
-            "file": "lib/posts.js",
-            "line": 120,
-            "description": "Specify a post ID to query",
-            "itemtype": "method",
-            "name": "id",
-            "chainable": 1,
-            "params": [
-                {
-                    "name": "id",
-                    "description": "The ID of a post to retrieve",
-                    "type": "Number"
-                }
-            ],
-            "return": {
-                "description": "The PostsRequest instance (for chaining)",
-                "type": "PostsRequest"
-            },
-            "class": "PostsRequest",
-            "module": "WP",
-            "submodule": "PostsRequest"
-        },
-        {
-            "file": "lib/posts.js",
-            "line": 135,
-            "description": "Specify that we are retrieving Post Meta (forces basic auth)\n\nEither return a collection of all meta objects for the specified post,\nor (if a meta ID was provided) return the requested meta object.",
-            "itemtype": "method",
-            "name": "meta",
-            "chainable": 1,
-            "params": [
-                {
-                    "name": "metaId",
-                    "description": "ID of a specific meta property to retrieve",
-                    "type": "Number",
+                    "name": "value",
+                    "description": "The value(s) corresponding to the provided filter property",
+                    "type": "String|Number|Array",
                     "optional": true
                 }
             ],
             "return": {
-                "description": "The PostsRequest instance (for chainin)",
-                "type": "PostsRequest"
+                "description": "The request instance (for chaining)"
             },
-            "class": "PostsRequest",
-            "module": "WP",
-            "submodule": "PostsRequest"
+            "class": "wp",
+            "module": "filters"
         },
         {
-            "file": "lib/posts.js",
-            "line": 158,
-            "description": "Specify that we are getting the comments for a specific post",
+            "file": "lib/mixins/filters.js",
+            "line": 61,
+            "description": "Restrict the query results to posts matching one or more taxonomy terms.",
             "itemtype": "method",
-            "name": "comments",
-            "chainable": 1,
-            "return": {
-                "description": "The PostsRequest instance (for chaining)",
-                "type": "PostsRequest"
-            },
-            "class": "PostsRequest",
-            "module": "WP",
-            "submodule": "PostsRequest"
-        },
-        {
-            "file": "lib/posts.js",
-            "line": 171,
-            "description": "Specify a particular comment to retrieve\n(forces action \"comments\")",
-            "itemtype": "method",
-            "name": "comment",
+            "name": "taxonomy",
             "chainable": 1,
             "params": [
                 {
-                    "name": "id",
-                    "description": "The ID of the comment to retrieve",
-                    "type": "Number"
+                    "name": "taxonomy",
+                    "description": "The name of the taxonomy to filter by",
+                    "type": "String"
+                },
+                {
+                    "name": "term",
+                    "description": "A string or integer, or array thereof, representing terms",
+                    "type": "String|Number|Array"
                 }
             ],
             "return": {
-                "description": "",
-                "type": "PostsRequest"
+                "description": "The request instance (for chaining)"
             },
-            "class": "PostsRequest",
-            "module": "WP",
-            "submodule": "PostsRequest"
+            "class": "wp",
+            "module": "filters"
         },
         {
-            "file": "lib/posts.js",
-            "line": 188,
-            "description": "Query a collection of posts for posts of a specific type",
+            "file": "lib/mixins/filters.js",
+            "line": 120,
+            "description": "Convenience wrapper for `.taxonomy( 'category', ... )`.",
             "itemtype": "method",
-            "name": "type",
+            "name": "category",
+            "chainable": 1,
             "params": [
                 {
-                    "name": "type",
-                    "description": "A string or array of strings specifying post types to query",
-                    "type": "String|Array"
+                    "name": "category",
+                    "description": "A string or integer, or array thereof, representing terms",
+                    "type": "String|Number|Array"
                 }
             ],
-            "chainable": 1,
             "return": {
-                "description": "The PostsRequest instance (for chaining)",
-                "type": "PostsRequest"
+                "description": "The request instance (for chaining)"
             },
-            "class": "PostsRequest",
-            "module": "WP",
-            "submodule": "PostsRequest"
+            "class": "wp",
+            "module": "filters"
         },
         {
-            "file": "lib/posts.js",
-            "line": 201,
-            "description": "Specify that we are requesting the revisions for a specific post (forces basic auth)",
+            "file": "lib/mixins/filters.js",
+            "line": 133,
+            "description": "Convenience wrapper for `.taxonomy( 'tag', ... )`.",
             "itemtype": "method",
-            "name": "revisions",
+            "name": "tag",
             "chainable": 1,
+            "params": [
+                {
+                    "name": "tag",
+                    "description": "A tag term string or array of tag term strings",
+                    "type": "String|Number|Array"
+                }
+            ],
             "return": {
-                "description": "The PostsRequest instance (for chaining)",
-                "type": "PostsRequest"
+                "description": "The request instance (for chaining)"
             },
-            "class": "PostsRequest",
-            "module": "WP",
-            "submodule": "PostsRequest"
+            "class": "wp",
+            "module": "filters"
         },
         {
-            "file": "lib/posts.js",
-            "line": 215,
-            "itemtype": "method",
-            "name": "statuses",
-            "chainable": 1,
-            "return": {
-                "description": "The PostsRequest instance (for chaining)",
-                "type": "PostsRequest"
-            },
-            "class": "PostsRequest",
-            "module": "WP",
-            "submodule": "PostsRequest"
-        },
-        {
-            "file": "lib/posts.js",
-            "line": 227,
-            "description": "Adds the Year filter into the request to retrieve posts for a given year",
+            "file": "lib/mixins/filters.js",
+            "line": 146,
+            "description": "Query for posts published in a given year.",
             "itemtype": "method",
             "name": "year",
             "chainable": 1,
             "params": [
                 {
                     "name": "year",
-                    "description": "Integer representation of year requested",
+                    "description": "integer representation of year requested",
                     "type": "Number"
                 }
             ],
             "return": {
-                "description": "The PostsRequest instance (for chaining)",
-                "type": "PostsRequest"
+                "description": "The request instance (for chaining)"
             },
-            "class": "PostsRequest",
-            "module": "WP",
-            "submodule": "PostsRequest"
+            "class": "wp",
+            "module": "filters"
         },
         {
-            "file": "lib/posts.js",
-            "line": 239,
-            "description": "Add the monthnum filter into the request to retrieve posts for a given month\n\nFilters posts by a given month in either Integer or String Format.",
+            "file": "lib/mixins/filters.js",
+            "line": 159,
+            "description": "Query for posts published in a given month, either by providing the number\nof the requested month (e.g. 3), or the month's name as a string (e.g. \"March\")",
             "itemtype": "method",
             "name": "month",
             "chainable": 1,
             "params": [
                 {
                     "name": "month",
-                    "description": "Integer for month or month string (\"january\")",
+                    "description": "Integer for month (1) or month string (\"January\")",
                     "type": "Number|String"
                 }
             ],
             "return": {
-                "description": "The PostsRequest instance (for chaining)",
-                "type": "PostsRequest"
+                "description": "The request instance (for chaining)"
             },
-            "class": "PostsRequest",
-            "module": "WP",
-            "submodule": "PostsRequest"
+            "class": "wp",
+            "module": "filters"
         },
         {
-            "file": "lib/posts.js",
-            "line": 267,
+            "file": "lib/mixins/filters.js",
+            "line": 192,
             "description": "Add the day filter into the request to retrieve posts for a given day",
             "itemtype": "method",
             "name": "day",
@@ -2529,146 +1411,165 @@
                 }
             ],
             "return": {
-                "description": "The PostsRequest instance (for chaining)",
-                "type": "PostsRequest"
+                "description": "The request instance (for chaining)"
             },
-            "class": "PostsRequest",
-            "module": "WP",
-            "submodule": "PostsRequest"
+            "class": "wp",
+            "module": "filters"
         },
         {
-            "file": "lib/taxonomies.js",
-            "line": 22,
-            "description": "Configuration options for the request such as the endpoint for the invoking WP instance",
-            "itemtype": "property",
-            "name": "_options",
-            "type": "Object",
-            "access": "private",
-            "tagname": "",
-            "default": "{}",
-            "class": "TaxonomiesRequest",
-            "module": "WP",
-            "submodule": "TaxonomiesRequest"
+            "file": "lib/mixins/filters.js",
+            "line": 205,
+            "description": "Specify that we are requesting a page by its path (specific to Page resources)",
+            "itemtype": "method",
+            "name": "path",
+            "chainable": 1,
+            "params": [
+                {
+                    "name": "path",
+                    "description": "The root-relative URL path for a page",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "The request instance (for chaining)"
+            },
+            "class": "wp",
+            "module": "filters"
         },
         {
-            "file": "lib/taxonomies.js",
-            "line": 31,
-            "description": "A hash of filter values to parse into the final request URI",
-            "itemtype": "property",
-            "name": "_filters",
-            "type": "Object",
-            "access": "private",
-            "tagname": "",
-            "default": "{}",
-            "class": "TaxonomiesRequest",
-            "module": "WP",
-            "submodule": "TaxonomiesRequest"
+            "file": "lib/mixins/index.js",
+            "line": 1,
+            "description": "This module defines a mapping between supported GET request query parameter\narguments and their corresponding mixin, if available.",
+            "class": "wp",
+            "module": "filters"
         },
         {
-            "file": "lib/taxonomies.js",
-            "line": 40,
-            "description": "A hash of non-filter query parameters",
-            "itemtype": "property",
-            "name": "_params",
-            "type": "Object",
-            "access": "private",
-            "tagname": "",
-            "default": "{}",
-            "class": "TaxonomiesRequest",
-            "module": "WP",
-            "submodule": "TaxonomiesRequest"
+            "file": "lib/mixins/parameters.js",
+            "line": 21,
+            "description": "Set the pagination of a request. Use in conjunction with `.perPage()` for explicit\npagination handling. (The number of pages in a response can be retrieved from the\nresponse's `_paging.totalPages` property.)",
+            "itemtype": "method",
+            "name": "page",
+            "chainable": 1,
+            "params": [
+                {
+                    "name": "pageNumber",
+                    "description": "The page number of results to retrieve",
+                    "type": "Number"
+                }
+            ],
+            "return": {
+                "description": "The request instance (for chaining)"
+            },
+            "class": "wp",
+            "module": "filters"
         },
         {
-            "file": "lib/taxonomies.js",
-            "line": 50,
-            "description": "A hash of values to assemble into the API request path\n\nDefault to requesting the taxonomies \"collection\" (dictionary of publicly-\nregistered taxonomies) if no other collection is specified",
-            "itemtype": "property",
-            "name": "_path",
-            "type": "Object",
-            "access": "private",
-            "tagname": "",
-            "default": "{}",
-            "class": "TaxonomiesRequest",
-            "module": "WP",
-            "submodule": "TaxonomiesRequest"
+            "file": "lib/mixins/parameters.js",
+            "line": 36,
+            "description": "Set the number of items to be returned in a page of responses.",
+            "itemtype": "method",
+            "name": "perPage",
+            "chainable": 1,
+            "params": [
+                {
+                    "name": "itemsPerPage",
+                    "description": "The number of items to return in one page of results",
+                    "type": "Number"
+                }
+            ],
+            "return": {
+                "description": "The request instance (for chaining)"
+            },
+            "class": "wp",
+            "module": "filters"
         },
         {
-            "file": "lib/taxonomies.js",
-            "line": 63,
-            "description": "The URL template that will be used to assemble endpoint paths\n\nThere is no path validation for taxonomies requests: terms can be numeric\n(categories) or strings (tags), and the list of registered collections is\nnot fixed (it can be augmented or modified through plugin and theme behavior).",
-            "itemtype": "property",
-            "name": "_template",
-            "type": "String",
-            "access": "private",
-            "tagname": "",
-            "default": "'(:collection)(/:term)'",
-            "class": "TaxonomiesRequest",
-            "module": "WP",
-            "submodule": "TaxonomiesRequest"
+            "file": "lib/mixins/parameters.js",
+            "line": 52,
+            "description": "Query a collection for members with a specific slug.",
+            "itemtype": "method",
+            "name": "slug",
+            "chainable": 1,
+            "params": [
+                {
+                    "name": "slug",
+                    "description": "A post slug (slug), e.g. \"hello-world\"",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "The request instance (for chaining)"
+            },
+            "class": "wp",
+            "module": "filters"
         },
         {
-            "file": "lib/taxonomies.js",
-            "line": 77,
-            "itemtype": "property",
-            "name": "_supportedMethods",
-            "type": "Array",
-            "access": "private",
-            "tagname": "",
-            "default": "[ 'head', 'get' ]",
-            "class": "TaxonomiesRequest",
-            "module": "WP",
-            "submodule": "TaxonomiesRequest"
+            "file": "lib/mixins/parameters.js",
+            "line": 65,
+            "description": "Alias for .slug()",
+            "itemtype": "method",
+            "name": "name",
+            "alias": "slug",
+            "chainable": 1,
+            "params": [
+                {
+                    "name": "slug",
+                    "description": "A post name (slug), e.g. \"hello-world\"",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "The request instance (for chaining)"
+            },
+            "class": "wp",
+            "module": "filters"
         },
         {
-            "file": "lib/taxonomies.js",
+            "file": "lib/mixins/parameters.js",
+            "line": 79,
+            "description": "Filter results to those matching the specified search terms.",
+            "itemtype": "method",
+            "name": "search",
+            "chainable": 1,
+            "params": [
+                {
+                    "name": "searchString",
+                    "description": "A string to search for within post content",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "The request instance (for chaining)"
+            },
+            "class": "wp",
+            "module": "filters"
+        },
+        {
+            "file": "lib/mixins/parameters.js",
             "line": 92,
-            "description": "Specify the name of the taxonomy collection to query\n\nThe collections will not be a strict match to defined taxonomies: *e.g.*, to\nget the list of terms for the taxonomy \"category,\"  you must specify the\ncollection name \"categories\" (similarly, specify \"tags\" to get a list of terms\nfor the \"post_tag\" taxonomy).\n\nTo get the dictionary of all available taxonomies, specify the collection\n\"taxonomy\" (slight misnomer: this case will return an object, not the array\nthat would usually be expected with a \"collection\" request).",
+            "description": "Query for posts by a specific author.\nThis method will replace any previous 'author' query parameters that had been set.\n\nNote that this method will either set the \"author\" top-level query parameter,\nor else the \"author_name\" filter parameter: this is irregular as most parameter\nhelper methods either set a top level parameter or a filter, not both.",
             "itemtype": "method",
-            "name": "collection",
+            "name": "author",
             "chainable": 1,
             "params": [
                 {
-                    "name": "taxonomyCollection",
-                    "description": "The name of the taxonomy collection to query",
-                    "type": "String"
+                    "name": "author",
+                    "description": "The nicename or ID for a particular author",
+                    "type": "String|Number"
                 }
             ],
             "return": {
-                "description": "The TaxonomiesRequest instance (for chaining)",
-                "type": "TaxonomiesRequest"
+                "description": "The request instance (for chaining)"
             },
-            "class": "TaxonomiesRequest",
-            "module": "WP",
-            "submodule": "TaxonomiesRequest"
+            "class": "wp",
+            "module": "filters"
         },
         {
-            "file": "lib/taxonomies.js",
-            "line": 115,
-            "description": "Specify a taxonomy term to request",
-            "itemtype": "method",
-            "name": "term",
-            "chainable": 1,
-            "params": [
-                {
-                    "name": "term",
-                    "description": "The ID or slug of the term to request",
-                    "type": "String"
-                }
-            ],
-            "return": {
-                "description": "The TaxonomiesRequest instance (for chaining)",
-                "type": "TaxonomiesRequest"
-            },
-            "class": "TaxonomiesRequest",
-            "module": "WP",
-            "submodule": "TaxonomiesRequest"
-        },
-        {
-            "file": "lib/taxonomies.js",
-            "line": 129,
+            "file": "lib/mixins/parameters.js",
+            "line": 125,
             "description": "Search for hierarchical taxonomy terms that are children of the parent term\nindicated by the provided term ID",
             "example": [
-                "\n\n    wp.categories().parent( 42 ).then(function( categories ) {\n      console.log( 'all of these categories are sub-items of cat ID#42:' );\n      console.log( categories );\n    });"
+                "\n\n    wp.pages().parent( 3 ).then(function( pages ) {\n      // console.log( 'all of these pages are nested below page ID#3:' );\n      // console.log( pages );\n    });\n\n    wp.categories().parent( 42 ).then(function( categories ) {\n      console.log( 'all of these categories are sub-items of cat ID#42:' );\n      console.log( categories );\n    });"
             ],
             "itemtype": "method",
             "name": "parent",
@@ -2681,17 +1582,15 @@
                 }
             ],
             "return": {
-                "description": "The TaxonomiesRequest instance (for chaining)",
-                "type": "TaxonomiesRequest"
+                "description": "The request instance (for chaining)"
             },
-            "class": "TaxonomiesRequest",
-            "module": "WP",
-            "submodule": "TaxonomiesRequest"
+            "class": "wp",
+            "module": "filters"
         },
         {
-            "file": "lib/taxonomies.js",
+            "file": "lib/mixins/parameters.js",
             "line": 151,
-            "description": "Specify the post for which to retrieve terms",
+            "description": "Specify the post for which to retrieve terms (relevant for *e.g.* taxonomy\nand comment collection endpoints). `forPost` is used to avoid conflicting\nwith the `.post()` method, which corresponds to the HTTP POST action.",
             "itemtype": "method",
             "name": "forPost",
             "chainable": 1,
@@ -2703,266 +1602,311 @@
                 }
             ],
             "return": {
-                "description": "The TaxonomiesRequest instance (for chaining)",
-                "type": "TaxonomiesRequest"
+                "description": "The request instance (for chaining)"
             },
-            "class": "TaxonomiesRequest",
-            "module": "WP",
-            "submodule": "TaxonomiesRequest"
+            "class": "wp",
+            "module": "filters"
         },
         {
-            "file": "lib/types.js",
-            "line": 22,
-            "description": "Configuration options for the request such as the endpoint for the invoking WP instance",
-            "itemtype": "property",
-            "name": "_options",
-            "type": "Object",
-            "access": "private",
-            "tagname": "",
-            "default": "{}",
-            "class": "TypesRequest",
-            "module": "WP",
-            "submodule": "TypesRequest"
-        },
-        {
-            "file": "lib/types.js",
-            "line": 31,
-            "description": "A hash of filter values to parse into the final request URI",
-            "itemtype": "property",
-            "name": "_filters",
-            "type": "Object",
-            "access": "private",
-            "tagname": "",
-            "default": "{}",
-            "class": "TypesRequest",
-            "module": "WP",
-            "submodule": "TypesRequest"
-        },
-        {
-            "file": "lib/types.js",
-            "line": 40,
-            "description": "A hash of non-filter query parameters",
-            "itemtype": "property",
-            "name": "_params",
-            "type": "Object",
-            "access": "private",
-            "tagname": "",
-            "default": "{}",
-            "class": "TypesRequest",
-            "module": "WP",
-            "submodule": "TypesRequest"
-        },
-        {
-            "file": "lib/types.js",
-            "line": 50,
-            "description": "A hash of values to assemble into the API request path",
-            "itemtype": "property",
-            "name": "_path",
-            "type": "Object",
-            "access": "private",
-            "tagname": "",
-            "default": "{}",
-            "class": "TypesRequest",
-            "module": "WP",
-            "submodule": "TypesRequest"
-        },
-        {
-            "file": "lib/types.js",
-            "line": 60,
-            "description": "The URL template that will be used to assemble request URI paths",
-            "itemtype": "property",
-            "name": "_template",
-            "type": "String",
-            "access": "private",
-            "tagname": "",
-            "default": "'posts/types(/:type)'",
-            "class": "TypesRequest",
-            "module": "WP",
-            "submodule": "TypesRequest"
-        },
-        {
-            "file": "lib/types.js",
-            "line": 70,
-            "itemtype": "property",
-            "name": "_supportedMethods",
-            "type": "Array",
-            "access": "private",
-            "tagname": "",
-            "default": "[ 'head', 'get' ]",
-            "class": "TypesRequest",
-            "module": "WP",
-            "submodule": "TypesRequest"
-        },
-        {
-            "file": "lib/types.js",
-            "line": 85,
-            "description": "Specify the name of the type to query",
-            "itemtype": "method",
-            "name": "type",
-            "chainable": 1,
+            "file": "lib/util/alphanumeric-sort.js",
+            "line": 3,
+            "description": "Utility function for sorting arrays of numbers or strings.",
             "params": [
                 {
-                    "name": "typeName",
-                    "description": "The name of the type to query",
+                    "name": "a",
+                    "description": "The first comparator operand",
+                    "type": "String|Number"
+                },
+                {
+                    "name": "a",
+                    "description": "The second comparator operand",
+                    "type": "String|Number"
+                }
+            ],
+            "return": {
+                "description": "-1 if the values are backwards, 1 if they're ordered, and 0 if they're the same"
+            },
+            "class": "wp",
+            "module": "filters"
+        },
+        {
+            "file": "lib/util/named-group-regexp.js",
+            "line": 3,
+            "description": "Regular Expression to identify a capture group in PCRE formats\n`(?<name>regex)`, `(?'name'regex)` or `(?P<name>regex)` (see\nregular-expressions.info/refext.html); RegExp is built as a string\nto enable more detailed annotation.",
+            "type": "{RegExp}",
+            "class": "wp",
+            "module": "filters"
+        },
+        {
+            "file": "lib/autodiscovery.js",
+            "line": 31,
+            "description": "Fetch the headers for a URL and inspect them to attempt to locate an API\nendpoint header. Return a promise that will be resolved with a string, or\nrejected if no such header can be located.",
+            "params": [
+                {
+                    "name": "url",
+                    "description": "An arbitrary URL within an API-enabled WordPress site",
+                    "type": "String"
+                },
+                {
+                    "name": "useGET",
+                    "description": "Whether to use GET or HEAD to read the URL, to enable\n                          the method to upgrade to a full GET request if a HEAD\n                          request initially fails.",
+                    "type": "Boolean",
+                    "optional": true
+                }
+            ],
+            "return": {
+                "description": "A promise to the string containing the API endpoint URL",
+                "type": "Promise"
+            },
+            "class": "wp",
+            "module": "autodiscovery"
+        },
+        {
+            "file": "lib/autodiscovery.js",
+            "line": 75,
+            "description": "Function to be called with the API url, once we have found one",
+            "params": [
+                {
+                    "name": "linkUrl",
+                    "description": "The href of the <link> pointing to the API root",
                     "type": "String"
                 }
             ],
             "return": {
-                "description": "The TypesRequest instance (for chaining)",
-                "type": "TypesRequest"
+                "description": "Promise that resolves once the API root has been inspected",
+                "type": "Promise"
             },
-            "class": "TypesRequest",
-            "module": "WP",
-            "submodule": "TypesRequest"
+            "class": "wp",
+            "module": "autodiscovery"
         },
         {
-            "file": "lib/users.js",
-            "line": 23,
-            "description": "Configuration options for the request such as the endpoint for the invoking WP instance",
-            "itemtype": "property",
-            "name": "_options",
-            "type": "Object",
-            "access": "private",
-            "tagname": "",
-            "default": "{}",
-            "class": "UsersRequest",
-            "module": "WP",
-            "submodule": "UsersRequest"
-        },
-        {
-            "file": "lib/users.js",
-            "line": 32,
-            "description": "A hash of filter values to parse into the final request URI",
-            "itemtype": "property",
-            "name": "_filters",
-            "type": "Object",
-            "access": "private",
-            "tagname": "",
-            "default": "{}",
-            "class": "UsersRequest",
-            "module": "WP",
-            "submodule": "UsersRequest"
-        },
-        {
-            "file": "lib/users.js",
-            "line": 41,
-            "description": "A hash of non-filter query parameters",
-            "itemtype": "property",
-            "name": "_params",
-            "type": "Object",
-            "access": "private",
-            "tagname": "",
-            "default": "{}",
-            "class": "UsersRequest",
-            "module": "WP",
-            "submodule": "UsersRequest"
-        },
-        {
-            "file": "lib/users.js",
-            "line": 51,
-            "description": "A hash of values to assemble into the API request path",
-            "itemtype": "property",
-            "name": "_path",
-            "type": "Object",
-            "access": "private",
-            "tagname": "",
-            "default": "{}",
-            "class": "UsersRequest",
-            "module": "WP",
-            "submodule": "UsersRequest"
-        },
-        {
-            "file": "lib/users.js",
-            "line": 61,
-            "description": "The URL template that will be used to assemble endpoint paths",
-            "itemtype": "property",
-            "name": "_template",
-            "type": "String",
-            "access": "protected",
-            "tagname": "",
-            "default": "'users(/:id)'",
-            "class": "UsersRequest",
-            "module": "WP",
-            "submodule": "UsersRequest"
-        },
-        {
-            "file": "lib/users.js",
-            "line": 71,
-            "itemtype": "property",
-            "name": "_supportedMethods",
-            "type": "Array",
-            "access": "private",
-            "tagname": "",
-            "default": "[ 'head', 'get', 'post' ]",
-            "class": "UsersRequest",
-            "module": "WP",
-            "submodule": "UsersRequest"
-        },
-        {
-            "file": "lib/users.js",
-            "line": 88,
-            "description": "A hash table of path keys and regex validators for those path elements",
-            "itemtype": "property",
-            "name": "_pathValidators",
-            "type": "Object",
-            "access": "private",
-            "tagname": "",
-            "class": "UsersRequest",
-            "module": "WP",
-            "submodule": "UsersRequest"
-        },
-        {
-            "file": "lib/users.js",
-            "line": 97,
-            "description": "ID must be an integer or \"me\"",
-            "itemtype": "property",
-            "name": "_pathValidators.id",
-            "type": "{RegExp}",
-            "class": "UsersRequest",
-            "module": "WP",
-            "submodule": "UsersRequest"
-        },
-        {
-            "file": "lib/users.js",
-            "line": 106,
-            "itemtype": "method",
-            "name": "me",
-            "chainable": 1,
-            "return": {
-                "description": "The UsersRequest instance (for chaining)",
-                "type": "UsersRequest"
-            },
-            "class": "UsersRequest",
-            "module": "WP",
-            "submodule": "UsersRequest"
-        },
-        {
-            "file": "lib/users.js",
-            "line": 118,
-            "itemtype": "method",
-            "name": "id",
-            "chainable": 1,
+            "file": "lib/endpoint-factories.js",
+            "line": 11,
+            "description": "Given an array of route definitions and a specific namespace for those routes,\nrecurse through the node tree representing all possible routes within the\nprovided namespace to define path value setters (and corresponding property\nvalidators) for all possible variants of each resource's API endpoints.",
             "params": [
                 {
-                    "name": "id",
-                    "description": "The integer ID of a user record",
-                    "type": "Number"
+                    "name": "namespace",
+                    "description": "The namespace string for these routes",
+                    "type": "String"
+                },
+                {
+                    "name": "routesByNamespace",
+                    "description": "A dictionary of namespace - route definition\n                                  object pairs as generated from buildRouteTree,\n                                  where each route definition object is a dictionary\n                                  keyed by route definition strings",
+                    "type": "Object"
                 }
             ],
             "return": {
-                "description": "The UsersRequest instance (for chaining)",
-                "type": "UsersRequest"
+                "description": "A dictionary of endpoint request handler factories",
+                "type": "Object"
             },
-            "class": "UsersRequest",
-            "module": "WP",
-            "submodule": "UsersRequest"
+            "class": "wp",
+            "module": "parseRouteString"
+        },
+        {
+            "file": "lib/endpoint-request.js",
+            "line": 13,
+            "description": "Semi-private instance property specifying the available URL path options\nfor this endpoint request handler, keyed by ascending whole numbers.",
+            "itemtype": "property",
+            "name": "_levels",
+            "type": "{object}",
+            "access": "private",
+            "tagname": "",
+            "class": "wp",
+            "module": "parseRouteString"
+        },
+        {
+            "file": "lib/path-part-setter.js",
+            "line": 3,
+            "description": "Return a function to set part of the request URL path.\n\nPath part setter methods may be either dynamic (*i.e.* may represent a\n\"named group\") or non-dynamic (representing a static part of the URL, which\nis usually a collection endpoint of some sort). Which type of function is\nreturned depends on whether a given route has one or many sub-resources.",
+            "params": [
+                {
+                    "name": "node",
+                    "description": "[description]",
+                    "type": "[type]"
+                }
+            ],
+            "return": {
+                "description": "[description]",
+                "type": "[type]"
+            },
+            "class": "wp",
+            "module": "parseRouteString"
+        },
+        {
+            "file": "lib/path-part-setter.js",
+            "line": 30,
+            "description": "Set a dymanic (named-group) path part of a query URL.",
+            "example": [
+                "\n\n    // id() is a dynamic path part setter:\n    wp.posts().id( 7 ); // Get posts/7"
+            ],
+            "chainable": 1,
+            "params": [
+                {
+                    "name": "val",
+                    "description": "The path part value to set",
+                    "type": "String|Number"
+                }
+            ],
+            "return": {
+                "description": "The handler instance (for chaining)",
+                "type": "Object"
+            },
+            "class": "wp",
+            "module": "parseRouteString"
+        },
+        {
+            "file": "lib/path-part-setter.js",
+            "line": 51,
+            "description": "Set a non-dymanic (non-named-group) path part of a query URL, and\nset the value of a subresource if an input value is provided and\nexactly one named-group child node exists.",
+            "example": [
+                "\n\n    // revisions() is a non-dynamic path part setter:\n    wp.posts().id( 4 ).revisions();       // Get posts/4/revisions\n    wp.posts().id( 4 ).revisions( 1372 ); // Get posts/4/revisions/1372"
+            ],
+            "chainable": 1,
+            "params": [
+                {
+                    "name": "val",
+                    "description": "The path part value to set (if provided)\n                              for a subresource within this resource",
+                    "type": "String|Number",
+                    "optional": true
+                }
+            ],
+            "return": {
+                "description": "The handler instance (for chaining)",
+                "type": "Object"
+            },
+            "class": "wp",
+            "module": "parseRouteString"
+        },
+        {
+            "file": "lib/resource-handler-spec.js",
+            "line": 41,
+            "description": "Walk the tree of a specific resource node to create the setter methods\n\nThe API we want to produce from the node tree looks like this:\n\n    wp.posts();                        /wp/v2/posts\n    wp.posts().id( 7 );                /wp/v2/posts/7\n    wp.posts().id( 7 ).revisions();    /wp/v2/posts/7/revisions\n    wp.posts().id( 7 ).revisions( 8 ); /wp/v2/posts/7/revisions/8\n\n^ That last one's the tricky one: we can deduce that this parameter is \"id\", but\nthat param will already be taken by the post ID, so sub-collections have to be\nset up as `.revisions()` to get the collection, and `.revisions( id )` to get a\nspecific resource.",
+            "params": [
+                {
+                    "name": "node",
+                    "description": "A node object",
+                    "type": "Object",
+                    "props": [
+                        {
+                            "name": "children",
+                            "description": "An object of child nodes\n// @return {isLeaf} A boolean indicating whether the processed node is a leaf",
+                            "type": "Object",
+                            "optional": true
+                        }
+                    ]
+                }
+            ],
+            "class": "wp",
+            "module": "parseRouteString"
+        },
+        {
+            "file": "lib/resource-handler-spec.js",
+            "line": 72,
+            "description": "Create a node handler specification object from a route definition object",
+            "params": [
+                {
+                    "name": "routeDefinition",
+                    "description": "A route definition object",
+                    "type": "Object"
+                },
+                {
+                    "name": "resource",
+                    "description": "The string key of the resource for which to create a handler",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "A handler spec object with _path, _levels and _setters properties",
+                "type": "Object"
+            },
+            "class": "wp",
+            "module": "parseRouteString"
+        },
+        {
+            "file": "lib/route-tree.js",
+            "line": 6,
+            "description": "Method to use when reducing route components array.",
+            "itemtype": "method",
+            "name": "_reduceRouteComponents",
+            "access": "private",
+            "tagname": "",
+            "params": [
+                {
+                    "name": "routeObj",
+                    "description": "A route definition object (set via .bind partial application)",
+                    "type": "Object"
+                },
+                {
+                    "name": "topLevel",
+                    "description": "The top-level route tree object for this set of routes (set\n                             via .bind partial application)",
+                    "type": "Object"
+                },
+                {
+                    "name": "parentLevel",
+                    "description": "The memo object, which is mutated as the reducer adds\n                             a new level handler for each level in the route",
+                    "type": "Object"
+                },
+                {
+                    "name": "component",
+                    "description": "The string defining this route component",
+                    "type": "String"
+                },
+                {
+                    "name": "idx",
+                    "description": "The index of this component within the components array",
+                    "type": "Number"
+                },
+                {
+                    "name": "components",
+                    "description": "The array of all components",
+                    "type": "String[]"
+                }
+            ],
+            "return": {
+                "description": "The child object of the level being reduced",
+                "type": "Object"
+            },
+            "class": "wp",
+            "module": "parseRouteString"
+        },
+        {
+            "file": "lib/route-tree.js",
+            "line": 132,
+            "itemtype": "method",
+            "name": "_reduceRouteTree",
+            "access": "private",
+            "tagname": "",
+            "params": [
+                {
+                    "name": "routes",
+                    "description": "An array of route objects (set via .bind partial application)",
+                    "type": "Object[]"
+                },
+                {
+                    "name": "namespaces",
+                    "description": "The memo object that becomes a dictionary mapping API\n                              namespaces to an object of the namespace's routes",
+                    "type": "Object"
+                },
+                {
+                    "name": "route",
+                    "description": "The string key of a route in `routes`",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "The namespaces dictionary memo object",
+                "type": "Object"
+            },
+            "class": "wp",
+            "module": "parseRouteString"
         },
         {
             "file": "wp.js",
-            "line": 67,
+            "line": 81,
             "description": "Convenience method for making a new WP instance",
             "example": [
-                "\nThese are equivalent:\n\n    var wp = new WP({ endpoint: 'http://my.blog.url/wp-json' });\n    var wp = WP.site( 'http://my.blog.url/wp-json' );"
+                "\nThese are equivalent:\n\n    var wp = new WP({ endpoint: 'http://my.blog.url/wp-json' });\n    var wp = WP.site( 'http://my.blog.url/wp-json' );\n\n`WP.site` can take an optional API root response JSON object to use when\nbootstrapping the client's endpoint handler methods: if no second parameter\nis provided, the client instance is assumed to be using the default API\nwith no additional plugins and is initialized with handlers for only those\ndefault API routes.",
+                "\nThese are equivalent:\n\n    // {...} means the JSON output of http://my.blog.url/wp-json\n    var wp = new WP({\n      endpoint: 'http://my.blog.url/wp-json',\n      json: {...}\n    });\n    var wp = WP.site( 'http://my.blog.url/wp-json', {...} );"
             ],
             "itemtype": "method",
             "name": "site",
@@ -2972,6 +1916,11 @@
                     "name": "endpoint",
                     "description": "The URI for a WP-API endpoint",
                     "type": "String"
+                },
+                {
+                    "name": "routes",
+                    "description": "The \"routes\" object from the JSON object returned\n                         from the root API endpoint of a WP site, which should\n                         be a dictionary of route definition objects keyed by\n                         the route's regex pattern",
+                    "type": "Object"
                 }
             ],
             "return": {
@@ -2983,214 +1932,10 @@
         },
         {
             "file": "wp.js",
-            "line": 85,
-            "description": "Start a request against the `/media` endpoint",
-            "itemtype": "method",
-            "name": "media",
-            "params": [
-                {
-                    "name": "options",
-                    "description": "An options hash for a new MediaRequest",
-                    "type": "Object",
-                    "optional": true
-                }
-            ],
-            "return": {
-                "description": "A MediaRequest instance",
-                "type": "MediaRequest"
-            },
-            "class": "WP",
-            "module": "WP"
-        },
-        {
-            "file": "wp.js",
-            "line": 98,
-            "description": "Start a request against the `/pages` endpoint",
-            "itemtype": "method",
-            "name": "pages",
-            "params": [
-                {
-                    "name": "options",
-                    "description": "An options hash for a new PagesRequest",
-                    "type": "Object",
-                    "optional": true
-                }
-            ],
-            "return": {
-                "description": "A PagesRequest instance",
-                "type": "PagesRequest"
-            },
-            "class": "WP",
-            "module": "WP"
-        },
-        {
-            "file": "wp.js",
-            "line": 111,
-            "description": "Start a request against the `/posts` endpoint",
-            "itemtype": "method",
-            "name": "posts",
-            "params": [
-                {
-                    "name": "options",
-                    "description": "An options hash for a new PostsRequest",
-                    "type": "Object",
-                    "optional": true
-                }
-            ],
-            "return": {
-                "description": "A PostsRequest instance",
-                "type": "PostsRequest"
-            },
-            "class": "WP",
-            "module": "WP"
-        },
-        {
-            "file": "wp.js",
-            "line": 124,
-            "description": "Start a request for a taxonomy or taxonomy term collection",
-            "itemtype": "method",
-            "name": "taxonomies",
-            "params": [
-                {
-                    "name": "options",
-                    "description": "An options hash for a new TaxonomiesRequest",
-                    "type": "Object",
-                    "optional": true
-                }
-            ],
-            "return": {
-                "description": "A TaxonomiesRequest instance",
-                "type": "TaxonomiesRequest"
-            },
-            "class": "WP",
-            "module": "WP"
-        },
-        {
-            "file": "wp.js",
-            "line": 137,
-            "description": "Start a request for a specific taxonomy object\n\nIt is slightly unintuitive to consider the name of a taxonomy a \"term,\" as is\nneeded in order to retrieve the taxonomy object from the .taxonomies() method.\nThis convenience method lets you create a `TaxonomiesRequest` object that is\nbound to the provided taxonomy name, without having to utilize the \"term\" method.",
-            "example": [
-                "\nIf your site uses two custom taxonomies, book_genre and book_publisher, before you would\nhave had to request these terms using the verbose form:\n\n    wp.taxonomies().term( 'book_genre' )\n    wp.taxonomies().term( 'book_publisher' )\n\nUsing `.taxonomy()`, the same query can be achieved much more succinctly:\n\n    wp.taxonomy( 'book_genre' )\n    wp.taxonomy( 'book_publisher' )"
-            ],
-            "itemtype": "method",
-            "name": "taxonomy",
-            "params": [
-                {
-                    "name": "taxonomyName",
-                    "description": "The name of the taxonomy to request",
-                    "type": "String"
-                }
-            ],
-            "return": {
-                "description": "A TaxonomiesRequest object bound to the value of taxonomyName",
-                "type": "TaxonomiesRequest"
-            },
-            "class": "WP",
-            "module": "WP"
-        },
-        {
-            "file": "wp.js",
-            "line": 166,
-            "description": "Request a list of category terms\n\nThis is a shortcut method to retrieve the terms for the \"category\" taxonomy",
-            "example": [
-                "\nThese are equivalent:\n\n    wp.taxonomies().collection( 'categories' )\n    wp.categories()"
-            ],
-            "itemtype": "method",
-            "name": "categories",
-            "return": {
-                "description": "A TaxonomiesRequest object bound to the categories collection",
-                "type": "TaxonomiesRequest"
-            },
-            "class": "WP",
-            "module": "WP"
-        },
-        {
-            "file": "wp.js",
-            "line": 185,
-            "description": "Request a list of post_tag terms\n\nThis is a shortcut method to interact with the collection of terms for the\n\"post_tag\" taxonomy.",
-            "example": [
-                "\nThese are equivalent:\n\n    wp.taxonomies().collection( 'tags' )\n    wp.tags()"
-            ],
-            "itemtype": "method",
-            "name": "tags",
-            "return": {
-                "description": "A TaxonomiesRequest object bound to the tags collection",
-                "type": "TaxonomiesRequest"
-            },
-            "class": "WP",
-            "module": "WP"
-        },
-        {
-            "file": "wp.js",
-            "line": 205,
-            "description": "Start a request against the `/posts/types` endpoint",
-            "itemtype": "method",
-            "name": "types",
-            "params": [
-                {
-                    "name": "options",
-                    "description": "An options hash for a new TypesRequest",
-                    "type": "Object",
-                    "optional": true
-                }
-            ],
-            "return": {
-                "description": "A TypesRequest instance",
-                "type": "TypesRequest"
-            },
-            "class": "WP",
-            "module": "WP"
-        },
-        {
-            "file": "wp.js",
-            "line": 218,
-            "description": "Start a request against the `/users` endpoint",
-            "itemtype": "method",
-            "name": "users",
-            "params": [
-                {
-                    "name": "options",
-                    "description": "An options hash for a new UsersRequest",
-                    "type": "Object",
-                    "optional": true
-                }
-            ],
-            "return": {
-                "description": "A UsersRequest instance",
-                "type": "UsersRequest"
-            },
-            "class": "WP",
-            "module": "WP"
-        },
-        {
-            "file": "wp.js",
-            "line": 231,
-            "description": "Define a method to handle specific custom post types.",
-            "example": [
-                "\nIf your site had an events custom type with name `event_cpt`, you could create a convenience\nmethod for querying events and store it on the WP instance.\n\nCreate the WP instance, define the custom endpoint handler, and save it to `wp.events`:\n\n    var wp = new WP({ endpoint: 'http://some-website.com/wp-json' });\n    wp.events = wp.registerType( 'event_cpt' );\n\nYou can now call `wp.events()` to trigger event post requests\n\n    wp.events().get()... // equivalent to wp.posts().type( 'event_cpt' ).get()...\n\n`registerType()` just returns a function, so there's no requirement to store it as a property\non the WP instance; however, following the above pattern is likely to be the most useful."
-            ],
-            "itemtype": "method",
-            "name": "registerType",
-            "params": [
-                {
-                    "name": "type",
-                    "description": "A string or array of post type names",
-                    "type": "String|Array"
-                }
-            ],
-            "return": {
-                "description": "A function to create PostsRequests pre-bound to the provided types",
-                "type": "Function"
-            },
-            "class": "WP",
-            "module": "WP"
-        },
-        {
-            "file": "wp.js",
-            "line": 261,
+            "line": 122,
             "description": "Generate a request against a completely arbitrary endpoint, with no assumptions about\nor mutation of path, filtering, or query parameters. This request is not restricted to\nthe endpoint specified during WP object instantiation.",
             "example": [
-                "\nGenerate a request to the explicit URL \"http://your.website.com/wp-json/some/custom/path\" (yeah, we wish ;)\n\n    wp.url( 'http://your.website.com/wp-json/some/custom/path' ).get()..."
+                "\nGenerate a request to the explicit URL \"http://your.website.com/wp-json/some/custom/path\"\n\n    wp.url( 'http://your.website.com/wp-json/some/custom/path' ).get()..."
             ],
             "itemtype": "method",
             "name": "url",
@@ -3210,7 +1955,7 @@
         },
         {
             "file": "wp.js",
-            "line": 282,
+            "line": 143,
             "description": "Generate a query against an arbitrary path on the current endpoint. This is useful for\nrequesting resources at custom WP-API endpoints, such as WooCommerce's `/products`.",
             "itemtype": "method",
             "name": "root",
@@ -3220,17 +1965,74 @@
                     "description": "An endpoint-relative path to which to bind the request",
                     "type": "String",
                     "optional": true
-                },
-                {
-                    "name": "collection",
-                    "description": "Whether to return a CollectionRequest or a vanilla WPRequest",
-                    "type": "Boolean",
-                    "optional": true
                 }
             ],
             "return": {
                 "description": "A request object",
-                "type": "CollectionRequest|WPRequest"
+                "type": "WPRequest"
+            },
+            "class": "WP",
+            "module": "WP"
+        },
+        {
+            "file": "wp.js",
+            "line": 168,
+            "description": "Deduce request methods from a provided API root JSON response object's\nroutes dictionary, and assign those methods to the current instance. If\nno routes dictionary is provided then the instance will be bootstrapped\nwith route handlers for the default API endpoints only.\n\nThis method is called automatically during WP instance creation.",
+            "itemtype": "method",
+            "name": "bootstrap",
+            "chainable": 1,
+            "params": [
+                {
+                    "name": "routes",
+                    "description": "The \"routes\" object from the JSON object returned\n                       from the root API endpoint of a WP site, which should\n                       be a dictionary of route definition objects keyed by\n                       the route's regex pattern",
+                    "type": "Object"
+                }
+            ],
+            "return": {
+                "description": "The bootstrapped WP client instance (for chaining or assignment)",
+                "type": "WP"
+            },
+            "class": "WP",
+            "module": "WP"
+        },
+        {
+            "file": "wp.js",
+            "line": 234,
+            "description": "Access API endpoint handlers from a particular API namespace object",
+            "example": [
+                "\n\n    wp.namespace( 'myplugin/v1' ).author()...\n\n    // Default WP endpoint handlers are assigned to the wp instance itself.\n    // These are equivalent:\n    wp.namespace( 'wp/v2' ).posts()...\n    wp.posts()..."
+            ],
+            "params": [
+                {
+                    "name": "namespace",
+                    "description": "A namespace string",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "An object of route endpoint handler methods for the\nroutes within the specified namespace",
+                "type": "Object"
+            },
+            "class": "WP",
+            "module": "WP"
+        },
+        {
+            "file": "wp.js",
+            "line": 257,
+            "description": "Take an arbitrary WordPress site, deduce the WP REST API root endpoint, query\nthat endpoint, and parse the response JSON. Use the returned JSON response\nto instantiate a WP instance bound to the provided site.",
+            "itemtype": "method",
+            "name": "discover",
+            "static": 1,
+            "params": [
+                {
+                    "name": "url",
+                    "description": "A URL within a WP endpoint",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "A promise that resolves to a configured WP instance bound\nto the deduced endpoint, or rejected if an endpoint is not found or the\nlibrary is unable to parse the provided endpoint.",
+                "type": "Promise"
             },
             "class": "WP",
             "module": "WP"
@@ -3238,92 +2040,180 @@
     ],
     "warnings": [
         {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " lib/constructors/wp-request.js:213"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " lib/constructors/wp-request.js:252"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " lib/constructors/wp-request.js:278"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " lib/constructors/wp-request.js:397"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " lib/data/simplify-object.js:3"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " lib/mixins/filters.js:146"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " lib/mixins/filters.js:159"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " lib/mixins/filters.js:192"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " lib/mixins/filters.js:205"
+        },
+        {
             "message": "unknown tag: alias",
-            "line": " lib/shared/collection-request.js:306"
+            "line": " lib/mixins/parameters.js:65"
         },
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " lib/shared/collection-request.js:319"
+            "line": " lib/autodiscovery.js:31"
         },
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " lib/shared/collection-request.js:331"
+            "line": " lib/endpoint-factories.js:11"
         },
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " lib/shared/collection-request.js:363"
+            "line": " lib/path-part-setter.js:3"
         },
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " lib/shared/wp-request.js:232"
+            "line": " lib/resource-handler-spec.js:72"
         },
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " lib/shared/wp-request.js:258"
+            "line": " lib/route-tree.js:6"
         },
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " lib/posts.js:227"
+            "line": " lib/route-tree.js:132"
         },
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " lib/posts.js:239"
+            "line": " lib/wp-register-route.js:8"
         },
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " lib/posts.js:267"
-        },
-        {
-            "message": "Missing item type\nUtility function for sorting arrays of numbers or strings.",
-            "line": " lib/shared/alphanumeric-sort.js:3"
-        },
-        {
-            "message": "Missing item type\nUtility function for sorting arrays of numbers or strings.",
-            "line": " lib/shared/collection-request.js:106"
+            "line": " wp.js:234"
         },
         {
             "message": "Missing item type",
-            "line": " lib/shared/wp-request.js:90"
+            "line": " lib/constructors/wp-request.js:78"
         },
         {
             "message": "Missing item type",
-            "line": " lib/shared/wp-request.js:93"
+            "line": " lib/constructors/wp-request.js:81"
         },
         {
             "message": "Missing item type\nIf fn is a function, return it; else, return a no-op function",
-            "line": " lib/shared/wp-request.js:98"
+            "line": " lib/constructors/wp-request.js:86"
         },
         {
             "message": "Missing item type\nSubmit the provided superagent request object, invoke a callback (if it was\nprovided), and return a promise to the response from the HTTP request.",
-            "line": " lib/shared/wp-request.js:108"
+            "line": " lib/constructors/wp-request.js:96"
         },
         {
             "message": "Missing item type\nExtract and return the headers property from a superagent response object",
-            "line": " lib/shared/wp-request.js:151"
+            "line": " lib/constructors/wp-request.js:138"
         },
         {
-            "message": "Missing item type\nCheck path parameter values against validation regular expressions",
-            "line": " lib/shared/wp-request.js:161"
+            "message": "Missing item type\nProcess arrays of taxonomy terms into query parameters.\nAll terms listed in the arrays will be required (AND behavior).\n\nThis method will not be called with any values unless we are handling\nan endpoint with the filter mixin; however, since parameter handling\n(and therefore `_renderQuery()`) are part of WPRequest itself, this\nhelper method lives here alongside the code where it is used.",
+            "line": " lib/constructors/wp-request.js:148"
         },
         {
-            "message": "Missing item type\nProcess arrays of taxonomy terms into query parameters.\nAll terms listed in the arrays will be required (AND behavior).\n\nThis method will not be called with any values unless we are handling\na CollectionRequest or one of its descendants; however, since parameter\nhandling (and therefore `_renderQuery()`) are part of WPRequest itself,\nthis helper method lives here alongside the code where it is used.",
-            "line": " lib/shared/wp-request.js:192"
+            "message": "Missing item type\nReturn an object with any properties with undefined, null or empty string\nvalues removed.",
+            "line": " lib/constructors/wp-request.js:185"
+        },
+        {
+            "message": "Missing item type\nAssert whether a provided URL component is \"valid\" by checking it against\nan array of registered path component validator methods for that level of\nthe URL path.",
+            "line": " lib/constructors/wp-request.js:213"
         },
         {
             "message": "Missing item type\nCombine the API endpoint root URI and link URI into a valid request URL.\nEndpoints are generally a full path to the JSON API's root endpoint, such\nas `website.com/wp-json`: the link headers, however, are returned as root-\nrelative paths. Concatenating these would generate a URL such as\n`website.com/wp-json/wp-json/posts?page=2`: we must intelligently merge the\nURI strings in order to generate a valid new request URL.",
-            "line": " lib/shared/wp-request.js:232"
+            "line": " lib/constructors/wp-request.js:252"
         },
         {
             "message": "Missing item type\nIf the response is not paged, return the body as-is. If pagination\ninformation is present in the response headers, parse those headers into\na custom `_paging` property on the response body. `_paging` contains links\nto the previous and next pages in the collection, as well as metadata\nabout the size and number of pages in the collection.\n\nThe structure of the `_paging` property is as follows:\n\n- `total` {Integer} The total number of records in the collection\n- `totalPages` {Integer} The number of pages available\n- `links` {Object} The parsed \"links\" headers, separated into individual URI strings\n- `next` {WPRequest} A WPRequest object bound to the \"next\" page (if page exists)\n- `prev` {WPRequest} A WPRequest object bound to the \"previous\" page (if page exists)",
-            "line": " lib/shared/wp-request.js:258"
+            "line": " lib/constructors/wp-request.js:278"
         },
         {
-            "message": "Missing item type\nSorted list of private WP_Query variables, requiring authentication\nThis may be used for a whitelist soon, but at present please consider it\nto be simply documentation.\n\nDocumentation:\n\n- WP_Query parameters: http://codex.wordpress.org/Class_Reference/WP_Query\n- Private query variables: WordPress core, wp-includes/class-wp.php",
-            "line": " lib/var/private-query-vars.js:2"
+            "message": "Missing item type",
+            "line": " lib/constructors/wp-request.js:819"
         },
         {
-            "message": "Missing item type\nSorted list of publicly-exposed WP_Query variables\nThis may be used for a whitelist soon, but at present please consider it\nto be simply documentation.\n\nDocumentation:\n\n- WP_Query parameters: http://codex.wordpress.org/Class_Reference/WP_Query\n- Public query variables: http://codex.wordpress.org/WordPress_Query_Vars",
-            "line": " lib/var/public-query-vars.js:2"
+            "message": "Missing item type",
+            "line": " lib/constructors/wp-request.js:824"
+        },
+        {
+            "message": "Missing item type\nTo avoid requiring that auto-discovery be utilized every time the API client\nis initialized, this library ships with a built-in route definition from a\nvanilla WordPress REST API installation. That file may be updated by\ninstalling the API plugin on a clean WP development instance, with no other\nplugins running, and downloading the JSON output from `yourwpsite.com/wp-json/`\ninto the \"endpoint-response.json\" file in this directory.\n\nThat file can also be generated by running this script against the same live\nWP REST API instance to download that same file, the difference being that,\nif the `endpoint-response.json` file is downloaded through this script, it\nwill be run through the `simplifyObject` utility to cut out about 1/3 of the\nbytes of the response by removing properties that do not effect route generation.\n\nThis script is NOT intended to be a dependency of any part of wp.js, and is\nprovided purely as a utility for upgrading the built-in copy of the endpoint\nresponse JSON file that is used to bootstrap the default route handlers.",
+            "line": " lib/data/generate-endpoint-response-json.js:6"
+        },
+        {
+            "message": "Missing item type\nWalk through the keys and values of a provided object, removing any properties\nwhich would be inessential to the generation of the route tree used to deduce\nroute handlers from a `wp-json/` root API endpoint. This module is not used by\nthe wordpress-rest-api module itself, but is rather a dependency of the script\nthat is used to create the `endpoint-response.json` file that is shipped along\nwith this module for use in generating the \"default\" routes.",
+            "line": " lib/data/simplify-object.js:3"
+        },
+        {
+            "message": "Missing item type\nThis module defines a mapping between supported GET request query parameter\narguments and their corresponding mixin, if available.",
+            "line": " lib/mixins/index.js:1"
+        },
+        {
+            "message": "Missing item type\nUtility function for sorting arrays of numbers or strings.",
+            "line": " lib/util/alphanumeric-sort.js:3"
+        },
+        {
+            "message": "Missing item type\nRegular Expression to identify a capture group in PCRE formats\n`(?<name>regex)`, `(?'name'regex)` or `(?P<name>regex)` (see\nregular-expressions.info/refext.html); RegExp is built as a string\nto enable more detailed annotation.",
+            "line": " lib/util/named-group-regexp.js:3"
+        },
+        {
+            "message": "Missing item type\nFetch the headers for a URL and inspect them to attempt to locate an API\nendpoint header. Return a promise that will be resolved with a string, or\nrejected if no such header can be located.",
+            "line": " lib/autodiscovery.js:31"
+        },
+        {
+            "message": "Missing item type\nFunction to be called with the API url, once we have found one",
+            "line": " lib/autodiscovery.js:75"
+        },
+        {
+            "message": "Missing item type\nGiven an array of route definitions and a specific namespace for those routes,\nrecurse through the node tree representing all possible routes within the\nprovided namespace to define path value setters (and corresponding property\nvalidators) for all possible variants of each resource's API endpoints.",
+            "line": " lib/endpoint-factories.js:11"
+        },
+        {
+            "message": "Missing item type\nReturn a function to set part of the request URL path.\n\nPath part setter methods may be either dynamic (*i.e.* may represent a\n\"named group\") or non-dynamic (representing a static part of the URL, which\nis usually a collection endpoint of some sort). Which type of function is\nreturned depends on whether a given route has one or many sub-resources.",
+            "line": " lib/path-part-setter.js:3"
+        },
+        {
+            "message": "Missing item type\nSet a dymanic (named-group) path part of a query URL.",
+            "line": " lib/path-part-setter.js:30"
+        },
+        {
+            "message": "Missing item type\nSet a non-dymanic (non-named-group) path part of a query URL, and\nset the value of a subresource if an input value is provided and\nexactly one named-group child node exists.",
+            "line": " lib/path-part-setter.js:51"
+        },
+        {
+            "message": "Missing item type\nWalk the tree of a specific resource node to create the setter methods\n\nThe API we want to produce from the node tree looks like this:\n\n    wp.posts();                        /wp/v2/posts\n    wp.posts().id( 7 );                /wp/v2/posts/7\n    wp.posts().id( 7 ).revisions();    /wp/v2/posts/7/revisions\n    wp.posts().id( 7 ).revisions( 8 ); /wp/v2/posts/7/revisions/8\n\n^ That last one's the tricky one: we can deduce that this parameter is \"id\", but\nthat param will already be taken by the post ID, so sub-collections have to be\nset up as `.revisions()` to get the collection, and `.revisions( id )` to get a\nspecific resource.",
+            "line": " lib/resource-handler-spec.js:41"
+        },
+        {
+            "message": "Missing item type\nCreate a node handler specification object from a route definition object",
+            "line": " lib/resource-handler-spec.js:72"
+        },
+        {
+            "message": "Missing item type\nAccess API endpoint handlers from a particular API namespace object",
+            "line": " wp.js:234"
         }
     ]
 }

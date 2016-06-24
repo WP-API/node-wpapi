@@ -1,62 +1,32 @@
 YUI.add("yuidoc-meta", function(Y) {
    Y.YUIDoc = { meta: {
     "classes": [
-        "CollectionRequest",
-        "MediaRequest",
-        "PagesRequest",
-        "PostsRequest",
-        "TaxonomiesRequest",
-        "TypesRequest",
-        "UsersRequest",
         "WP",
-        "WPRequest"
+        "WPRequest",
+        "wp"
     ],
     "modules": [
-        "CollectionRequest",
-        "MediaRequest",
-        "PagesRequest",
-        "PostsRequest",
-        "TaxonomiesRequest",
-        "TypesRequest",
-        "UsersRequest",
         "WP",
-        "WPRequest"
+        "WPRequest",
+        "autodiscovery",
+        "filters",
+        "parseRouteString"
     ],
     "allModules": [
         {
-            "displayName": "CollectionRequest",
-            "name": "CollectionRequest",
-            "description": "CollectionRequest extends WPRequest with properties & methods for filtering collections\nvia query parameters. It is the base constructor for most top-level WP instance methods."
+            "displayName": "autodiscovery",
+            "name": "autodiscovery",
+            "description": "Utility methods used to query a site in order to discover its available\nAPI endpoints"
         },
         {
-            "displayName": "MediaRequest",
-            "name": "MediaRequest",
-            "description": "MediaRequest extends CollectionRequest to handle the /media API endpoint"
+            "displayName": "filters",
+            "name": "filters",
+            "description": "Filter methods that can be mixed in to a request constructor's prototype to\nallow that request to take advantage of the `?filter[]=` aliases for WP_Query\nparameters for collection endpoints. These are most relevant to posts, pages\nand CPTs."
         },
         {
-            "displayName": "PagesRequest",
-            "name": "PagesRequest",
-            "description": "PagesRequest extends CollectionRequest to handle the /posts API endpoint"
-        },
-        {
-            "displayName": "PostsRequest",
-            "name": "PostsRequest",
-            "description": "PostsRequest extends CollectionRequest to handle the /posts API endpoint"
-        },
-        {
-            "displayName": "TaxonomiesRequest",
-            "name": "TaxonomiesRequest",
-            "description": "TaxonomiesRequest extends CollectionRequest to handle the /taxonomies API endpoint"
-        },
-        {
-            "displayName": "TypesRequest",
-            "name": "TypesRequest",
-            "description": "TypesRequest extends CollectionRequest to handle the /taxonomies API endpoint"
-        },
-        {
-            "displayName": "UsersRequest",
-            "name": "UsersRequest",
-            "description": "UsersRequest extends CollectionRequest to handle the `/users` API endpoint. The `/users`\nendpoint responds with a 401 error without authentication, so `users()` forces basic auth."
+            "displayName": "parseRouteString",
+            "name": "parseRouteString",
+            "description": "Take a WP route string (with PCRE named capture groups), such as"
         },
         {
             "displayName": "WP",
@@ -68,6 +38,7 @@ YUI.add("yuidoc-meta", function(Y) {
             "name": "WPRequest",
             "description": "WPRequest is the base API request object constructor"
         }
-    ]
+    ],
+    "elements": []
 } };
 });

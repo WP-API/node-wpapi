@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>WP - wordpress-rest-api</title>
+    <title>lib/util/named-group-regexp.js - wordpress-rest-api</title>
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
     <link rel="shortcut icon" type="image/png" href="../assets/favicon.png">
@@ -58,68 +58,37 @@
 
         <div id="docs-main" class="apidocs">
             <div class="content container">
-                <h1>WP Module</h1>
-                <div class="box clearfix meta">
+                <h1 class="file-heading">File: lib/util/named-group-regexp.js</h1>
                 
+                <div class="file">
+                    <pre class="code prettyprint linenums">
+                &#x27;use strict&#x27;;
                 
-                        <div class="foundat">
-                            Defined in: <a href="../files/wp.js.html#l44"><code>wp.js:44</code></a>
-                        </div>
+                /**
+                 * Regular Expression to identify a capture group in PCRE formats
+                 * &#x60;(?&lt;name&gt;regex)&#x60;, &#x60;(?&#x27;name&#x27;regex)&#x60; or &#x60;(?P&lt;name&gt;regex)&#x60; (see
+                 * regular-expressions.info/refext.html); RegExp is built as a string
+                 * to enable more detailed annotation.
+                 *
+                 * @type {RegExp}
+                 */
+                module.exports = new RegExp([
+                	// Capture group start
+                	&#x27;\\(\\?&#x27;,
+                	// Capture group name begins either &#x60;P&lt;&#x60;, &#x60;&lt;&#x60; or &#x60;&#x27;&#x60;
+                	&#x27;(?:P&lt;|&lt;|\&#x27;)&#x27;,
+                	// Everything up to the next &#x60;&gt;&#x60;&#x60; or &#x60;&#x27;&#x60; (depending) will be the capture group name
+                	&#x27;([^&gt;\&#x27;]+)&#x27;,
+                	// Capture group end
+                	&#x27;[&gt;\&#x27;]&#x27;,
+                	// Get everything up to the end of the capture group: this is the RegExp used
+                	// when matching URLs to this route, which we can use for validation purposes.
+                	&#x27;([^\\)]*)&#x27;,
+                	// Capture group end
+                	&#x27;\\)&#x27;
+                ].join( &#x27;&#x27; ) );
                 
-                </div>
-                
-                
-                <div class="box intro">
-                    <p>A WP REST API client for Node.js</p>
-                
-                </div>
-                
-                    <div class="example">
-                        <h4>Example:</h4>
-                        <div class="example-content">
-                            <pre class="code prettyprint"><code>var wp = new WP({ endpoint: 'http://src.wordpress-develop.dev/wp-json' });
-                wp.posts().then(function( posts ) {
-                    console.log( posts );
-                }).catch(function( err ) {
-                    console.error( err );
-                });</code></pre>
-                
-                        </div>
-                    </div>
-                
-                <div class="yui3-g">
-                    <div class="yui3-u-1-2">
-                            <p>This module provides the following classes:</p>
-                
-                            <ul class="module-classes">
-                                <li class="module-class">
-                                    <a href="../classes/WP.html">
-                                        WP
-                                    </a>
-                                </li>
-                                <li class="module-class">
-                                    <a href="../classes/WPRequest.html">
-                                        WPRequest
-                                    </a>
-                                </li>
-                            </ul>
-                    </div>
-                
-                    <div class="yui3-u-1-2">
-                            <p>This module is a rollup of the following modules:</p>
-                
-                            <ul class="module-submodules">
-                                <li class="module-submodule">
-                                    <a href="../modules/WPRequest.html">
-                                        WPRequest
-                                    </a>
-                
-                                    <div class="module-submodule-description">
-                                        WPRequest is the base API request object constructor
-                                    </div>
-                                </li>
-                            </ul>
-                    </div>
+                    </pre>
                 </div>
             </div>
         </div>

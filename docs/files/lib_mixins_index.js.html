@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>WP - wordpress-rest-api</title>
+    <title>lib/mixins/index.js - wordpress-rest-api</title>
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
     <link rel="shortcut icon" type="image/png" href="../assets/favicon.png">
@@ -58,68 +58,34 @@
 
         <div id="docs-main" class="apidocs">
             <div class="content container">
-                <h1>WP Module</h1>
-                <div class="box clearfix meta">
+                <h1 class="file-heading">File: lib/mixins/index.js</h1>
                 
+                <div class="file">
+                    <pre class="code prettyprint linenums">
+                /**
+                 * This module defines a mapping between supported GET request query parameter
+                 * arguments and their corresponding mixin, if available.
+                 */
+                &#x27;use strict&#x27;;
                 
-                        <div class="foundat">
-                            Defined in: <a href="../files/wp.js.html#l44"><code>wp.js:44</code></a>
-                        </div>
+                var filterMixins = require( &#x27;./filters&#x27; );
+                var parameterMixins = require( &#x27;./parameters&#x27; );
                 
-                </div>
+                // &#x60;.context&#x60;, &#x60;.embed&#x60;, and &#x60;.edit&#x60; (a shortcut for &#x60;context(edit, true)&#x60;) are
+                // supported by default in WPRequest, as is the base &#x60;.param&#x60; method. Any GET
+                // argument parameters not covered here must be set directly by using &#x60;.param&#x60;.
+                module.exports = {
+                	author: { author: parameterMixins.author },
+                	filter: filterMixins,
+                	page: { page: parameterMixins.page },
+                	parent: { parent: parameterMixins.parent },
+                	per_page: { perPage: parameterMixins.perPage },
+                	post: { forPost: parameterMixins.forPost },
+                	search: { search: parameterMixins.search },
+                	slug: { slug: parameterMixins.slug, name: parameterMixins.name }
+                };
                 
-                
-                <div class="box intro">
-                    <p>A WP REST API client for Node.js</p>
-                
-                </div>
-                
-                    <div class="example">
-                        <h4>Example:</h4>
-                        <div class="example-content">
-                            <pre class="code prettyprint"><code>var wp = new WP({ endpoint: 'http://src.wordpress-develop.dev/wp-json' });
-                wp.posts().then(function( posts ) {
-                    console.log( posts );
-                }).catch(function( err ) {
-                    console.error( err );
-                });</code></pre>
-                
-                        </div>
-                    </div>
-                
-                <div class="yui3-g">
-                    <div class="yui3-u-1-2">
-                            <p>This module provides the following classes:</p>
-                
-                            <ul class="module-classes">
-                                <li class="module-class">
-                                    <a href="../classes/WP.html">
-                                        WP
-                                    </a>
-                                </li>
-                                <li class="module-class">
-                                    <a href="../classes/WPRequest.html">
-                                        WPRequest
-                                    </a>
-                                </li>
-                            </ul>
-                    </div>
-                
-                    <div class="yui3-u-1-2">
-                            <p>This module is a rollup of the following modules:</p>
-                
-                            <ul class="module-submodules">
-                                <li class="module-submodule">
-                                    <a href="../modules/WPRequest.html">
-                                        WPRequest
-                                    </a>
-                
-                                    <div class="module-submodule-description">
-                                        WPRequest is the base API request object constructor
-                                    </div>
-                                </li>
-                            </ul>
-                    </div>
+                    </pre>
                 </div>
             </div>
         </div>

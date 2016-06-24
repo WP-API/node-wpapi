@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>lib/route-tree.js - wordpress-rest-api</title>
+    <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
+    <link rel="shortcut icon" type="image/png" href="../assets/favicon.png">
+    <script src="../assets/vendor/yui-min.js"></script>
+</head>
+<body>
+
+<div id="doc">
+    <header class="main-header">
+        <div class="content">
+            <div class="project-title">
+                    <h1 class="project-name">wordpress-rest-api</h1> <span class="project-version">0.8.0</span>
+                    <p class="description">A client for interacting with the WordPress REST API</p>
+            </div>
+            <ul class="jump-links">
+                <li><a href="#index" class="index-jump-link">index</a></li>
+                <li><a href="#top" class="top-jump-link">top</a></li>
+            </ul>
+        </div>
+    </header>
+    <div id="bd" class="main-body">
+
+        <div id="docs-sidebar" class="sidebar apidocs">
+            <div id="api-list">
+                <div id="api-tabview" class="tabview">
+                    <ul class="tabs">
+                        <li><a href="#api-classes">Classes</a></li>
+                        <li><a href="#api-modules">Modules</a></li>
+                    </ul>
+            
+                    <div id="api-tabview-filter">
+                        <input type="search" id="api-filter" placeholder="Type to filter APIs">
+                    </div>
+            
+                    <div id="api-tabview-panel">
+                        <ul id="api-classes" class="apis classes">
+                            <li><a class="type" href="../classes/wp.html">wp</a></li>
+                            <li><a class="type" href="../classes/WP.html">WP</a></li>
+                            <li><a class="type" href="../classes/WPRequest.html">WPRequest</a></li>
+                        </ul>
+            
+                        <ul id="api-modules" class="apis modules">
+                            <li><a class="module" href="../modules/autodiscovery.html">autodiscovery</a></li>
+                            <li><a class="module" href="../modules/filters.html">filters</a></li>
+                            <li><a class="module" href="../modules/parseRouteString.html">parseRouteString</a></li>
+                            <li><a class="module" href="../modules/WP.html">WP</a></li>
+                            <li><a class="module" href="../modules/WPRequest.html">WPRequest</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="docs-main" class="apidocs">
+            <div class="content container">
+                <h1 class="file-heading">File: lib/route-tree.js</h1>
+                
+                <div class="file">
+                    <pre class="code prettyprint linenums">
+                &#x27;use strict&#x27;;
+                
+                var namedGroupRegexp = require( &#x27;./util/named-group-regexp&#x27; );
+                var ensure = require( &#x27;./util/ensure&#x27; );
+                
+                /**
+                 * Method to use when reducing route components array.
+                 *
+                 * @method _reduceRouteComponents
+                 * @private
+                 * @param {object} routeObj     A route definition object (set via .bind partial application)
+                 * @param {object} topLevel     The top-level route tree object for this set of routes (set
+                 *                              via .bind partial application)
+                 * @param {object} parentLevel  The memo object, which is mutated as the reducer adds
+                 *                              a new level handler for each level in the route
+                 * @param {string} component    The string defining this route component
+                 * @param {number} idx          The index of this component within the components array
+                 * @param {string[]} components The array of all components
+                 * @returns {object} The child object of the level being reduced
+                 */
+                function reduceRouteComponents( routeObj, topLevel, parentLevel, component, idx, components ) {
+                	// Check to see if this component is a dynamic URL segment (i.e. defined by
+                	// a named capture group regular expression). namedGroup will be &#x60;null&#x60; if
+                	// the regexp does not match, or else an array defining the RegExp match, e.g.
+                	// [
+                	//   &#x27;P&lt;id&gt;[\\d]+)&#x27;,
+                	//   &#x27;id&#x27;, // Name of the group
+                	//   &#x27;[\\d]+&#x27;, // regular expression for this URL segment&#x27;s contents
+                	//   index: 15,
+                	//   input: &#x27;/wp/v2/posts/(?P&lt;id&gt;[\\d]+)&#x27;
+                	// ]
+                	var namedGroup = component.match( namedGroupRegexp );
+                	// Pull out references to the relevant indices of the match, for utility:
+                	// &#x60;null&#x60; checking is necessary in case the component did not match the RE,
+                	// hence the &#x60;namedGroup &amp;&amp;&#x60;.
+                	var groupName = namedGroup &amp;&amp; namedGroup[ 1 ];
+                	var groupPattern = namedGroup &amp;&amp; namedGroup[ 2 ];
+                
+                	// When branching based on a dynamic capture group we used the group&#x27;s RE
+                	// pattern as the unique identifier: this is done because the same group
+                	// could be assigned different names in different endpoint handlers, e.g.
+                	// &quot;id&quot; for posts/:id vs &quot;parent_id&quot; for posts/:parent_id/revisions.
+                	//
+                	// There is an edge case where groupPattern will be &quot;&quot; if we are registering
+                	// a custom route via &#x60;.registerRoute&#x60; that does not include parameter
+                	// validation. In this case we assume the groupName is sufficiently unique,
+                	// and fall back to &#x60;|| groupName&#x60; for the levelKey string.
+                	var levelKey = namedGroup ? groupPattern : component || groupName;
+                
+                	// Level name, on the other hand, would take its value from the group&#x27;s name
+                	var levelName = namedGroup ? groupName : component;
+                
+                	// Check whether we have a preexisting node at this level of the tree, and
+                	// create a new level object if not
+                	var currentLevel = parentLevel[ levelKey ] || {
+                		namedGroup: namedGroup ? true : false,
+                		level: idx,
+                		names: []
+                	};
+                
+                	// A level&#x27;s &quot;name&quot; corresponds to the list of strings which could describe
+                	// an endpoint&#x27;s component setter functions: &quot;id&quot;, &quot;revisions&quot;, etc.
+                	if ( currentLevel.names.indexOf( levelName ) &lt; 0 ) {
+                		currentLevel.names.push( levelName );
+                	}
+                
+                	// Set the component, so that the validator can throw the appropriate error
+                	currentLevel.component = component;
+                
+                	// A level&#x27;s validate method is called to check whether a value being set
+                	// on the request URL is of the proper type for the location in which it
+                	// is specified. If a group pattern was found, the validator checks whether
+                	// the input string exactly matches the group pattern.
+                	var groupPatternRE = groupPattern === &#x27;&#x27; ?
+                		// If groupPattern is an empty string, accept any input without validation
+                		/.*/ :
+                		// Otherwise, validate against the group pattern or the component string
+                		new RegExp( groupPattern ? &#x27;^&#x27; + groupPattern + &#x27;$&#x27; : component, &#x27;i&#x27; );
+                
+                	// Only one validate function is maintained for each node, because each node
+                	// is defined either by a string literal or by a specific regular expression.
+                	currentLevel.validate = function( input ) {
+                		return groupPatternRE.test( input );
+                	};
+                
+                	// Check to see whether to expect more nodes within this branch of the tree,
+                	if ( components[ idx + 1 ] ) {
+                		// and create a &quot;children&quot; object to hold those nodes if necessary
+                		currentLevel.children = currentLevel.children || {};
+                	} else {
+                		// At leaf nodes, specify the method capabilities of this endpoint
+                		currentLevel.methods = routeObj.methods ? routeObj.methods.map(function( str ) {
+                			return str.toLowerCase();
+                		}) : [];
+                		// Ensure HEAD is included whenever GET is supported: the API automatically
+                		// adds support for HEAD if you have GET
+                		if ( currentLevel.methods.indexOf( &#x27;get&#x27; ) &gt; -1 &amp;&amp; currentLevel.methods.indexOf( &#x27;head&#x27; ) === -1 ) {
+                			currentLevel.methods.push( &#x27;head&#x27; );
+                		}
+                
+                		// At leaf nodes also flag (at the top level) what arguments are
+                		// available to GET requests, so that we may automatically apply the
+                		// appropriate parameter mixins
+                		if ( routeObj.endpoints ) {
+                			topLevel._getArgs = topLevel._getArgs || {};
+                			routeObj.endpoints.forEach(function( endpoint ) {
+                				// endpoint.methods will be an array of methods like &#x60;[ &#x27;GET&#x27; ]&#x60;: we
+                				// only care about GET for this exercise. Validating POST and PUT args
+                				// could be useful but is currently deemed to be out-of-scope.
+                				endpoint.methods.forEach(function( method ) {
+                					if ( method.toLowerCase() === &#x27;get&#x27; ) {
+                						Object.keys( endpoint.args ).forEach(function( argKey ) {
+                							// For each argument, store whether it is required or not
+                							topLevel._getArgs[ argKey ] = endpoint.args[ argKey ].required;
+                						});
+                					}
+                				});
+                			});
+                		}
+                
+                		// // Label node with the title of this endpoint&#x27;s resource, if available
+                		// if ( routeObj.schema &amp;&amp; routeObj.schema.title ) {
+                		// 	currentLevel.title = routeObj.schema.title;
+                		// }
+                	}
+                
+                	// Return the child node object as the new &quot;level&quot;
+                	parentLevel[ levelKey ] = currentLevel;
+                	return currentLevel.children;
+                }
+                
+                /**
+                 *
+                 * @method _reduceRouteTree
+                 * @private
+                 * @param {object[]} routes     An array of route objects (set via .bind partial application)
+                 * @param {object}   namespaces The memo object that becomes a dictionary mapping API
+                 *                              namespaces to an object of the namespace&#x27;s routes
+                 * @param {string}   route      The string key of a route in &#x60;routes&#x60;
+                 * @returns {object} The namespaces dictionary memo object
+                 */
+                function reduceRouteTree( routes, namespaces, route ) {
+                	var routeObj = routes[ route ];
+                	var nsForRoute = routeObj.namespace;
+                
+                	// Strip the namespace from the route string (all routes should have the
+                	// format &#x60;/namespace/other/stuff&#x60;) @TODO: Validate this assumption
+                	var routeString = route.replace( &#x27;/&#x27; + nsForRoute + &#x27;/&#x27;, &#x27;&#x27; );
+                	var routeComponents = routeString.split( &#x27;/&#x27; );
+                
+                	// Do not make a namespace group for the API root
+                	// Do not add the namespace root to its own group
+                	// Do not take any action if routeString is empty
+                	if ( ! nsForRoute || &#x27;/&#x27; + nsForRoute === route || ! routeString ) {
+                		return namespaces;
+                	}
+                
+                	// Ensure that the namespace object for this namespace exists
+                	ensure( namespaces, nsForRoute, {} );
+                
+                	// Get a local reference to namespace object
+                	var ns = namespaces[ nsForRoute ];
+                
+                	// The first element of the route tells us what type of resource this route
+                	// is for, e.g. &quot;posts&quot; or &quot;comments&quot;: we build one handler per resource
+                	// type, so we group like resource paths together.
+                	var resource = routeComponents[0];
+                
+                	// @TODO: This code above currently precludes baseless routes, e.g.
+                	// myplugin/v2/(?P&lt;resource&gt;\w+) -- should those be supported?
+                
+                	// Create an array to represent this resource, and ensure it is assigned
+                	// to the namespace object. The array will structure the &quot;levels&quot; (path
+                	// components and subresource types) of this resource&#x27;s endpoint handler.
+                	ensure( ns, resource, {} );
+                	var levels = ns[ resource ];
+                
+                	// Recurse through the route components, mutating levels with information about
+                	// each child node encountered while walking through the routes tree and what
+                	// arguments (parameters) are available for GET requests to this endpoint.
+                	routeComponents.reduce( reduceRouteComponents.bind( null, routeObj, levels ), levels );
+                
+                	return namespaces;
+                }
+                
+                function buildRouteTree( routes ) {
+                	return Object.keys( routes ).reduce( reduceRouteTree.bind( null, routes ), {} );
+                }
+                
+                module.exports = {
+                	build: buildRouteTree
+                };
+                
+                    </pre>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<script src="../assets/vendor/prettify/prettify-min.js"></script>
+<script>prettyPrint();</script>
+<script src="../assets/vendor/jquery.min.js"></script>
+<script src="../assets/js/jquery-offscreen-trigger.js"></script>
+<script src="../assets/js/yui-prettify.js"></script>
+<script src="../assets/../api.js"></script>
+<script src="../assets/js/api-filter.js"></script>
+<script src="../assets/js/api-list.js"></script>
+<script src="../assets/js/api-search.js"></script>
+<script src="../assets/js/apidocs.js"></script>
+</body>
+</html>
