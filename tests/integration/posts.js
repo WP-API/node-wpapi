@@ -7,6 +7,7 @@ var SUCCESS = 'success';
 // actually run.
 chai.use( require( 'chai-as-promised' ) );
 var expect = chai.expect;
+var sinon = require( 'sinon' );
 
 /*jshint -W079 */// Suppress warning about redefiniton of `Promise`
 var Promise = require( 'bluebird' );
@@ -69,11 +70,20 @@ function getTitles( posts ) {
 
 describe( 'integration: posts()', function() {
 	var wp;
+	var sinonSandbox;
 
 	beforeEach(function() {
+		// Stub warn to suppress notice about overwriting deprecated .post method
+		sinonSandbox = sinon.sandbox.create();
+		sinonSandbox.stub( global.console, 'warn' );
 		wp = new WP({
 			endpoint: 'http://wpapi.loc/wp-json'
 		});
+	});
+
+	afterEach(function() {
+		// Restore sandbox
+		sinonSandbox.restore();
 	});
 
 	it( 'can be used to retrieve a list of recent posts', function() {
@@ -278,7 +288,7 @@ describe( 'integration: posts()', function() {
 			id = posts[ 0 ].id;
 			return wp.posts().id( id ).delete();
 		}).catch(function( err ) {
-			expect( err ).to.be.an( 'object' );
+			expect( err ).to.be.an.instanceOf( Error );
 			expect( err ).to.have.property( 'status' );
 			expect( err.status ).to.equal( 401 );
 			// Ensure that the post was NOT deleted by querying for it again
@@ -296,7 +306,7 @@ describe( 'integration: posts()', function() {
 			title: 'New Post 2501',
 			content: 'Some Content'
 		}).catch(function( err ) {
-			expect( err ).to.be.an( 'object' );
+			expect( err ).to.be.an.instanceOf( Error );
 			expect( err ).to.have.property( 'status' );
 			expect( err.status ).to.equal( 401 );
 			return SUCCESS;
@@ -313,7 +323,7 @@ describe( 'integration: posts()', function() {
 				content: 'Some Content'
 			});
 		}).catch(function( err ) {
-			expect( err ).to.be.an( 'object' );
+			expect( err ).to.be.an.instanceOf( Error );
 			expect( err ).to.have.property( 'status' );
 			expect( err.status ).to.equal( 401 );
 			return SUCCESS;
@@ -381,7 +391,7 @@ describe( 'integration: posts()', function() {
 			// the unauthenticated user does not have permissions to see it
 			return wp.posts().id( id );
 		}).catch(function( error ) {
-			expect( error ).to.be.an( 'object' );
+			expect( error ).to.be.an.instanceOf( Error );
 			expect( error ).to.have.property( 'status' );
 			expect( error.status ).to.equal( 403 );
 			// Re-authenticate & permanently delete this post
@@ -396,7 +406,7 @@ describe( 'integration: posts()', function() {
 			// just trashed but now deleted permanently
 			return wp.posts().auth( credentials ).id( id );
 		}).catch(function( error ) {
-			expect( error ).to.be.an( 'object' );
+			expect( error ).to.be.an.instanceOf( Error );
 			expect( error ).to.have.property( 'status' );
 			expect( error.status ).to.equal( 404 );
 			return SUCCESS;

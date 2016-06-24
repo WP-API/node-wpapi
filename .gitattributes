@@ -1,1 +1,1 @@
-*.json -diff
+./**/*.json -diff
