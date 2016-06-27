@@ -72,6 +72,14 @@ wp.posts().then(function( data ) {
 ```
 The `wp` object will have endpoint handler methods for every endpoint that ships with the default WordPress REST API plugin.
 
+### Self-signed (Insecure) HTTPS Certificates
+
+In a case where you would want to connect to a HTTPS WordPress installation that has a self-signed certificate (insecure), you will need to force a connection by placing the following line before you make any `wp` calls.
+
+```javascript
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+```
+
 ### Auto-Discovery
 
 It is also possible to leverage the [capability discovery](http://v2.wp-api.org/guide/discovery/) features of the API to automatically detect and add setter methods for your custom routes, or routes added by plugins.
