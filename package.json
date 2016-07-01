@@ -3,19 +3,19 @@
     "name": "K.Adam White",
     "url": "http://www.kadamwhite.com"
   },
-  "name": "wordpress-rest-api",
+  "name": "wpapi",
   "version": "0.8.0",
   "description": "A client for interacting with the WordPress REST API",
   "main": "wp.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/kadamwhite/wordpress-rest-api.git"
+    "url": "https://github.com/wp-api/node-wpapi.git"
   },
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/kadamwhite/wordpress-rest-api/issues"
+    "url": "https://github.com/wp-api/node-wpapi/issues"
   },
-  "homepage": "https://github.com/kadamwhite/wordpress-rest-api",
+  "homepage": "https://github.com/wp-api/node-wpapi",
   "keywords": [
     "api",
     "client",

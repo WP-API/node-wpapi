@@ -4,4 +4,4 @@ This project currently uses the ["Friendly" YUIDoc Theme](https://github.com/Krx
 
 Thanks to Krxtopher for giving us a leg up on the default YUIDoc theme!
 
-If you encounter any issues using our documentation (or if you'd like to propose a different theme), please open an [issue](https://github.com/kadamwhite/wordpress-rest-api/issues). Thanks!
+If you encounter any issues using our documentation (or if you'd like to propose a different theme), please open an [issue](https://github.com/wp-api/node-wpapi/issues). Thanks!

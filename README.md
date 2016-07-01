@@ -1,13 +1,13 @@
 A WordPress REST API client for JavaScript
 ==========================================
 
-This is a client for the [WordPress REST API](http://wp-api.org/). It is **under active development**, and should be considered beta software. More features are in progress, and **[issues](https://github.com/kadamwhite/wordpress-rest-api/issues)** are welcome if you find something that doesn't work!
+This is a client for the [WordPress REST API](http://wp-api.org/). It is **under active development**, and should be considered beta software. More features are in progress, and **[issues](https://github.com/wp-api/node-wpapi/issues)** are welcome if you find something that doesn't work!
 
-**`wordpress-rest-api` is designed to work with [WP-API](https://github.com/WP-API/WP-API) v2 beta 11 or higher.** If you use a prior version of the beta, some commands will not work. The latest beta is always recommended!
+**`wpapi` is designed to work with [WP-API](https://github.com/WP-API/WP-API) v2 beta 11 or higher.** If you use a prior version of the beta, some commands will not work. The latest beta is always recommended!
 
-[![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/kadamwhite/wordpress-rest-api?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/wp-api/node-wpapi?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-[![Build Status](https://api.travis-ci.org/kadamwhite/wordpress-rest-api.png?branch=master)](https://travis-ci.org/kadamwhite/wordpress-rest-api)
+[![Build Status](https://api.travis-ci.org/wp-api/node-wpapi.png?branch=master)](https://travis-ci.org/wp-api/node-wpapi)
 
 **Index**:
 
@@ -35,11 +35,11 @@ This library is designed to make it easy for your [Node.js](http://nodejs.org) a
 
 To use the library, install it with [npm](http://npmjs.org):
 ```bash
-npm install --save wordpress-rest-api
+npm install --save wpapi
 ```
 Then, within your application's script files, `require` the module to gain access to it:
 ```javascript
-var WP = require( 'wordpress-rest-api' );
+var WP = require( 'wpapi' );
 ```
 
 The REST API client requires Node.js version 0.10 or above.
@@ -48,7 +48,7 @@ The REST API client requires Node.js version 0.10 or above.
 
 The module is a constructor, so you can create an instance of the API client bound to the endpoint for your WordPress install:
 ```javascript
-var WP = require( 'wordpress-rest-api' );
+var WP = require( 'wpapi' );
 var wp = new WP({ endpoint: 'http://src.wordpress-develop.dev/wp-json' });
 ```
 Once an instance is constructed, you can chain off of it to construct a specific request. (Think of it as a query-builder for WordPress!)
@@ -479,7 +479,7 @@ add_action( 'wp_enqueue_scripts', 'my_enqueue_scripts' );
 And then use this nonce when initializing the library:
 
 ```javascript
-var WP = require( 'wordpress-rest-api' );
+var WP = require( 'wpapi' );
 var wp = new WP({
     endpoint: window.WP_API_Settings.endpoint,
     nonce: window.WP_API_Settings.nonce
@@ -494,12 +494,12 @@ More robust authentication methods will hopefully be added; we would welcome con
 
 ## API Documentation
 
-In addition to the above getting-started guide, we have automatically-generated [API documentation](http://kadamwhite.github.io/wordpress-rest-api). More user-oriented documentation, including a more in-depth overview of available endpoint and filter methods, will be added to this README in the near future.
+In addition to the above getting-started guide, we have automatically-generated [API documentation](http://wp-api.github.io/node-wpapi). More user-oriented documentation, including a more in-depth overview of available endpoint and filter methods, will be added to this README in the near future.
 
 
 ## Issues
 
-If you identify any errors in this module, or have an idea for an improvement, please [open an issue](https://github.com/kadamwhite/wordpress-rest-api/issues). We're excited to see what the community thinks of this project, and we would love your input!
+If you identify any errors in this module, or have an idea for an improvement, please [open an issue](https://github.com/wp-api/node-wpapi/issues). We're excited to see what the community thinks of this project, and we would love your input!
 
 ## Contributing
 

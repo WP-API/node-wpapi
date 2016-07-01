@@ -32,11 +32,11 @@ We use [Sinon.js](sinonjs.org/docs/) for [spying on](sinonjs.org/docs/#spies) an
 ```javascript
 expect( mockAgent.get ).to.have.been.calledWith( 'url/' );
 ```
-See the [existing test files](https://github.com/kadamwhite/wordpress-rest-api/tree/master/tests) for more examples.
+See the [existing test files](https://github.com/wp-api/node-wpapi/tree/master/tests) for more examples.
 
 #### Mocking Dependencies
 
-When testing code that uses 3rd-party modules, mocks may be injected for those dependencies by using the [sandboxed-module](https://www.npmjs.org/package/sandboxed-module) package. See the [WPRequest tests](https://github.com/kadamwhite/wordpress-rest-api/blob/master/tests/lib/WPRequest.js) for example usage.
+When testing code that uses 3rd-party modules, mocks may be injected for those dependencies by using the [sandboxed-module](https://www.npmjs.org/package/sandboxed-module) package. See the [WPRequest tests](https://github.com/wp-api/node-wpapi/blob/master/tests/lib/WPRequest.js) for example usage.
 
 ## Best Practices for Commits
 
@@ -119,7 +119,7 @@ To generate the docs yourself, run `npm run docs` (aliased to `grunt yuidoc`).
 Internally, we try to use the following branch naming scheme to keep things organized:
 
 * **feature/feature-name**: New features & enhancements (optionally, "feature/feature-name-[Github Issue/PR #]")
-* **bug/bug-name-[Github Issue #]**: Bug fixes: these should always have a corresponding [GH issue](https://github.com/kadamwhite/wordpress-rest-api/issues).
+* **bug/bug-name-[Github Issue #]**: Bug fixes: these should always have a corresponding [GH issue](https://github.com/wp-api/node-wpapi/issues).
 * **refactor/feature-name**: Architectural changes, refactoring
 * **build/feature-name**: Features relating to the build process, Gruntfile, linting or testing process, NPM package, *etcetera*
 * **docs/feature-name**: Documentation, README, contributing guide, fleshing out inline doc blocks; anything in the repository that's authored to be human-readable
