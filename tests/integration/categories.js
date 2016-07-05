@@ -7,7 +7,6 @@ var SUCCESS = 'success';
 // actually run.
 chai.use( require( 'chai-as-promised' ) );
 var expect = chai.expect;
-var _ = require( 'lodash' );
 
 var WP = require( '../../' );
 var WPRequest = require( '../../lib/constructors/wp-request.js' );
@@ -317,9 +316,9 @@ describe( 'integration: categories()', function() {
 			var prom = wp.posts().perPage( 1 ).embed().get().then(function( posts ) {
 				var post = posts[ 0 ];
 				// Find the categories for this post
-				postCategories = _.findWhere( post._embedded['wp:term'], function( terms ) {
+				post._embedded['wp:term'].forEach(function( terms ) {
 					if ( terms.length && terms[ 0 ].taxonomy === 'category' ) {
-						return true;
+						postCategories = terms;
 					}
 				});
 				var postId = post.id;
