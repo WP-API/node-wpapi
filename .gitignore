@@ -33,3 +33,6 @@ index.html
 
 # Webstorm config folder
 .idea
+
+# Built files (for use in browser)
+browser/

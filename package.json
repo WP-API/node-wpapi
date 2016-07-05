@@ -64,11 +64,13 @@
     "jscs-stylish": "^0.3.1",
     "jshint": "^2.9.2",
     "jshint-stylish": "^2.2.0",
+    "json-loader": "^0.5.4",
     "load-grunt-tasks": "^3.5.0",
     "minimist": "^1.2.0",
     "mocha": "^2.5.3",
     "sandboxed-module": "^2.0.3",
     "sinon": "^1.17.4",
-    "sinon-chai": "^2.8.0"
+    "sinon-chai": "^2.8.0",
+    "webpack": "^1.13.1"
   }
 }
