@@ -11,7 +11,7 @@ var expect = chai.expect;
 var sinon = require( 'sinon' );
 
 /*jshint -W079 */// Suppress warning about redefiniton of `Promise`
-var Promise = require( 'bluebird' );
+var Promise = require( 'es6-promise' ).Promise;
 
 var WP = require( '../../' );
 var WPRequest = require( '../../lib/constructors/wp-request.js' );

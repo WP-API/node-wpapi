@@ -4,7 +4,7 @@ var expect = chai.expect;
 chai.use( require( 'chai-as-promised' ) );
 
 /*jshint -W079 */// Suppress warning about redefiniton of `Promise`
-var Promise = require( 'bluebird' );
+var Promise = require( 'es6-promise' ).Promise;
 
 var autodiscovery = require( '../../../lib/autodiscovery' );
 

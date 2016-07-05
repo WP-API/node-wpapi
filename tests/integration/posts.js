@@ -10,7 +10,7 @@ var expect = chai.expect;
 var sinon = require( 'sinon' );
 
 /*jshint -W079 */// Suppress warning about redefiniton of `Promise`
-var Promise = require( 'bluebird' );
+var Promise = require( 'es6-promise' ).Promise;
 
 var WP = require( '../../' );
 var WPRequest = require( '../../lib/constructors/wp-request.js' );
@@ -301,15 +301,17 @@ describe( 'integration: posts()', function() {
 		return expect( prom ).to.eventually.equal( SUCCESS );
 	});
 
-	it( 'cannot create (POST) without authentication', function() {
-		var prom = wp.posts().create({
-			title: 'New Post 2501',
-			content: 'Some Content'
-		}).catch(function( err ) {
-			expect( err ).to.be.an.instanceOf( Error );
-			expect( err ).to.have.property( 'status' );
-			expect( err.status ).to.equal( 401 );
-			return SUCCESS;
+	it( 'cannot create (POST) without authentication (also tests callback-mode errors)', function() {
+		var prom = new Promise(function( resolve, reject ) {
+			wp.posts().create({
+				title: 'New Post 2501',
+				content: 'Some Content'
+			}, function( err ) {
+				expect( err ).to.be.an.instanceOf( Error );
+				expect( err ).to.have.property( 'status' );
+				expect( err.status ).to.equal( 401 );
+				resolve( SUCCESS );
+			});
 		});
 		return expect( prom ).to.eventually.equal( SUCCESS );
 	});
