@@ -199,7 +199,6 @@ A WP instance object provides the following basic request methods:
 * `wp.taxonomies()...`: Generate a request against the `/taxonomies` endpoints
 * `wp.tags()...`: Get or create tags with the `/tags` endpoint
 * `wp.categories()...`: Get or create categories with the `/categories` endpoint
-* `wp.statuses()...`: Get the available statuses within the `/statuses` endpoint
 * `wp.statuses()...`: Get resources within the `/statuses` endpoints
 * `wp.users()...`: Get resources within the `/users` endpoints
 * `wp.media()...`: Get Media collections and objects from the `/media` endpoints
