@@ -1,0 +1,15 @@
+# Logs
+logs
+*.log
+pids
+*.pid
+*.seed
+.idea
+*.sublime-*
+_gh_issues/
+coverage
+docs-theme/
+docs/
+index.html
+test.js
+test/
