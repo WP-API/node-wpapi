@@ -3,7 +3,7 @@ A WordPress REST API client for JavaScript
 
 This is a client for the [WordPress REST API](http://wp-api.org/). It is **under active development**, and should be considered beta software. More features are in progress, and **[issues](https://github.com/wp-api/node-wpapi/issues)** are welcome if you find something that doesn't work!
 
-**`wpapi` is designed to work with [WP-API](https://github.com/WP-API/WP-API) v2 beta 11 or higher.** If you use a prior version of the beta, some commands will not work. The latest beta is always recommended!
+**`wpapi` is designed to work with [WP-API](https://github.com/WP-API/WP-API) v2 beta 1 or higher.** If you use a prior version of the beta, some commands will not work. The latest beta is always recommended!
 
 [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/wp-api/node-wpapi?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
@@ -42,7 +42,9 @@ Then, within your application's script files, `require` the module to gain acces
 var WP = require( 'wpapi' );
 ```
 
-The REST API client requires Node.js version 0.10 or above.
+This library requires Node.js version 0.12 or above; 4.0 or higher is recommended.
+
+This library is designed to work in the browser as well, via a build system such as Browserify or Webpack; alternatively, the files in the `browser/` folder of the [release archives](https://github.com/WP-API/node-wpapi/releases) are pre-built UMD modules that can be added to a page using a regular `<script>` tag _or_ required via AMD or CommonJS module systems. In the absence of a module system, the UMD modules will export the browser global variable `WPAPI`, which can be used in place of `require( 'wpapi' )` in the examples below.
 
 ## Using The Client
 
