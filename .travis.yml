@@ -1,8 +1,9 @@
 language: node_js
 script: "npm run test:ci"
 node_js:
+  - "node"
+  - "6"
   - "5"
   - "4"
-  - "0.12"
 # Opt-in to travis container infrastructure
 sudo: false
