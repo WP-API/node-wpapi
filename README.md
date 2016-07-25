@@ -19,6 +19,7 @@ This is a client for the [WordPress REST API](http://wp-api.org/). It is **under
   - [Updating Posts](#updating-posts)
   - [Requesting Different Resources](#requesting-different-resources)
   - [Filtering Collections](#filtering-collections)
+  - [Uploading Media](#uploading-media)
   - [Custom Routes](#custom-routes)
   - [Embedding Data](#embedding-data)
   - [Paginated Collections](#working-with-paged-response-data)
@@ -309,6 +310,43 @@ The following methods are shortcuts for filtering the requested collection down 
 * `.year( year )`: find items published in the specified year
 * `.month( month )`: find items published in the specified month, designated by the month index (1&ndash;12) or name (*e.g.* "February")
 * `.day( day )`: find items published on the specified day
+
+### Uploading Media
+
+Files may be uploaded to the WordPress media library by creating a media record using the `.media()` collection handler.
+
+If you wish to associate a newly-uploaded media record to a specific post, you must use two calls: one to first upload the file, then another to associate it with a post. Example code:
+
+```js
+wp.media()
+    // Specify a path to the file you want to upload
+    .file( '/path/to/the/image.jpg' )
+    .create({
+        title: 'My awesome image',
+        alt_text: 'an image of something awesome',
+        caption: 'This is the caption text',
+        description: 'More explanatory information'
+    })
+    .then(function( response ) {
+        // Your media is now uploaded: let's associate it with a post
+        var newImageId = response.id;
+        return wp.media().id( newImageId ).update({
+            post: associatedPostId
+        });
+    })
+    .then(function( response ) {
+        console.log( 'Media ID #' + response.id );
+        console.log( 'is now associated with Post ID #' + response.post );
+    });
+```
+
+If you are uploading media from the client side, you can pass a reference to a file input's file list entry in place of the file path:
+
+```js
+wp.media()
+    .file( document.getElementById( 'file-input' ).files[0] )
+    .create()...
+```
 
 ### Custom Routes
 
