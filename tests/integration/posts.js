@@ -307,6 +307,9 @@ describe( 'integration: posts()', function() {
 				title: 'New Post 2501',
 				content: 'Some Content'
 			}, function( err ) {
+				if ( ! err ) {
+					reject();
+				}
 				expect( err ).to.be.an.instanceOf( Error );
 				expect( err ).to.have.property( 'status' );
 				expect( err.status ).to.equal( 401 );
