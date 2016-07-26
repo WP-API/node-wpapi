@@ -23,6 +23,7 @@
     "wordpress"
   ],
   "scripts": {
+    "build": "webpack && webpack --config webpack.config.minified.js",
     "download-endpoint-json": "node ./lib/data/generate-endpoint-response-json",
     "docs": "grunt yuidoc",
     "jshint": "jshint --reporter=node_modules/jshint-stylish/index.js Gruntfile.js wp.js lib tests",
