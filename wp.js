@@ -69,7 +69,7 @@ function WP( options ) {
 
 	this._options = extend( {}, defaults, options );
 
-	if ( ! this._options.endpoint ) {
+	if ( typeof this._options.endpoint !== 'string' ) {
 		throw new Error( 'options hash must contain an API endpoint URL string' );
 	}
 
