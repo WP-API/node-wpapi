@@ -32,6 +32,18 @@ describe( 'wp', function() {
 			}).to.throw();
 		});
 
+		it( 'throws an error if a non-string endpoint is provided', function() {
+			expect(function() {
+				new WP({ endpoint: 42 });
+			}).to.throw();
+			expect(function() {
+				new WP({ endpoint: [] });
+			}).to.throw();
+			expect(function() {
+				new WP({ endpoint: { lob: 'ster' } });
+			}).to.throw();
+		});
+
 		it( 'sets options on an instance variable', function() {
 			var wp = new WP({
 				endpoint: 'http://some.url.com/wp-json',
