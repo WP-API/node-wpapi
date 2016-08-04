@@ -70,20 +70,11 @@ function getTitles( posts ) {
 
 describe( 'integration: posts()', function() {
 	var wp;
-	var sinonSandbox;
 
 	beforeEach(function() {
-		// Stub warn to suppress notice about overwriting deprecated .post method
-		sinonSandbox = sinon.sandbox.create();
-		sinonSandbox.stub( global.console, 'warn' );
 		wp = new WP({
 			endpoint: 'http://wpapi.loc/wp-json'
 		});
-	});
-
-	afterEach(function() {
-		// Restore sandbox
-		sinonSandbox.restore();
 	});
 
 	it( 'can be used to retrieve a list of recent posts', function() {

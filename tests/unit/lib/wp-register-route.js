@@ -1,8 +1,6 @@
 'use strict';
 var chai = require( 'chai' );
 var expect = chai.expect;
-chai.use( require( 'sinon-chai' ) );
-var sinon = require( 'sinon' );
 
 var WPRequest = require( '../../../lib/constructors/wp-request' );
 var registerRoute = require( '../../../lib/wp-register-route' );
@@ -90,31 +88,19 @@ describe( 'wp.registerRoute', function() {
 
 	// custom route example for wp-api.org
 	describe( 'handler for route with capture group named identically to existing method', function() {
-		var sinonSandbox;
 		var handler;
 
 		beforeEach(function() {
-			// Stub warn BEFORE we call registerRoute()
-			sinonSandbox = sinon.sandbox.create();
-			sinonSandbox.stub( global.console, 'warn' );
-
 			var factory = registerRoute( 'ns', '/route/(?P<param>)' );
 			handler = factory({
 				endpoint: '/'
 			});
 		});
 
-		afterEach(function() {
-			// Restore sandbox
-			sinonSandbox.restore();
-		});
-
-		it( 'overwrites the preexisting method, but logs a warning', function() {
-			// expect( handler.param ).to.equal( WPRequest.prototype.param );
+		it( 'does not overwrite preexisting methods', function() {
+			expect( handler.param ).to.equal( WPRequest.prototype.param );
 			expect( handler.param( 'foo', 'bar' )._renderURI() ).to.equal( '/ns/route?foo=bar' );
 			expect( handler.param( 'foo', 'bar' )._renderURI() ).not.to.equal( '/ns/route/foo' );
-			expect( console.warn ).to.have.been.calledWith( 'Warning: method .param() is already defined!' );
-			expect( console.warn ).to.have.been.calledWith( 'Cannot overwrite .route().param() method' );
 		});
 
 	});
