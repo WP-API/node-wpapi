@@ -67,7 +67,6 @@ describe( 'wp.registerRoute', function() {
 
 	});
 
-	// custom route example for wp-api.org
 	describe( 'handler for /a/(?P<snake_cased_path_setter>\\d+)', function() {
 		var handler;
 
@@ -86,7 +85,24 @@ describe( 'wp.registerRoute', function() {
 
 	});
 
-	// custom route example for wp-api.org
+	describe( 'handler for /a/(?P<camelCasedPathSetter>\\d+)', function() {
+		var handler;
+
+		beforeEach(function() {
+			var factory = registerRoute( 'ns', '/a/(?P<camelCasedPathSetter>\\d+)' );
+			handler = factory({
+				endpoint: '/'
+			});
+		});
+
+		it( 'does not mutate the setter name', function() {
+			expect( handler ).not.to.have.property( 'camelcasedpathsetter' );
+			expect( handler ).to.have.property( 'camelCasedPathSetter' );
+			expect( handler.camelCasedPathSetter ).to.be.a( 'function' );
+		});
+
+	});
+
 	describe( 'handler for route with capture group named identically to existing method', function() {
 		var handler;
 
@@ -101,6 +117,50 @@ describe( 'wp.registerRoute', function() {
 			expect( handler.param ).to.equal( WPRequest.prototype.param );
 			expect( handler.param( 'foo', 'bar' )._renderURI() ).to.equal( '/ns/route?foo=bar' );
 			expect( handler.param( 'foo', 'bar' )._renderURI() ).not.to.equal( '/ns/route/foo' );
+		});
+
+	});
+
+	describe( 'handler for consecutive dynamic route segments', function() {
+		var handler;
+
+		beforeEach(function() {
+			var factory = registerRoute( 'ns', '/resource/(?P<part1>\\d+)/(?P<part2>\\d+)' );
+			handler = factory({
+				endpoint: '/'
+			});
+		});
+
+		describe( 'part1 method', function() {
+
+			it( 'is defined', function() {
+				expect( handler ).to.have.property( 'part1' );
+			});
+
+			it( 'is a function', function() {
+				expect( handler.part1 ).to.be.a( 'function' );
+			});
+
+			it( 'sets the part1 component of the path', function() {
+				expect( handler.part1( 12 )._renderURI() ).to.equal( '/ns/resource/12' );
+			});
+
+		});
+
+		describe( 'part2 method', function() {
+
+			it( 'is defined', function() {
+				expect( handler ).to.have.property( 'part2' );
+			});
+
+			it( 'is a function', function() {
+				expect( handler.part2 ).to.be.a( 'function' );
+			});
+
+			it( 'sets the part2 component of the path', function() {
+				expect( handler.part1( 12 ).part2( 34 )._renderURI() ).to.equal( '/ns/resource/12/34' );
+			});
+
 		});
 
 	});

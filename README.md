@@ -388,7 +388,24 @@ site.handler = site.registerRoute( 'myplugin/v1', 'collection/(?P<id>)', {
 ```
 This permits a developer to extend an endpoint with arbitrary parameters in the same manner as is done for the automatically-generated built-in route handlers.
 
-Auto-discovery of all available routes will be supported in the near future, as will re-utilizing existing mixins (like `.search()`) on custom routes.
+Re-utilizing existing mixins (like `.search()`) on custom routes will be supported in the near future.
+
+#### Setter method naming for named route components
+
+In the example above, registering the route string `'/author/(?P<id>\\d+)'` results in the creation of an `.id()` method on the resulting resource handler:
+
+```js
+site.myCustomResource().id( 7 ); // => myplugin/v1/author/7
+```
+
+If a named route component (e.g. `(?P<id>\\d+)`, above) is in `snake_case`, then that setter will be converted to camelCase instead, as with `some_part` below:
+
+```js
+site.myCustomResource = site.registerRoute( 'myplugin/v1', '/resource/(?P<some_part>\\d+)' );
+site.myCustomResource().somePart( 7 ); // => myplugin/v1/resource/7
+```
+
+Non-snake_cased route parameter names will be unaffected.
 
 ## Embedding data
 

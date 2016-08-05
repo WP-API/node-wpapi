@@ -7,7 +7,6 @@ var SUCCESS = 'success';
 // actually run.
 chai.use( require( 'chai-as-promised' ) );
 var expect = chai.expect;
-var sinon = require( 'sinon' );
 
 /*jshint -W079 */// Suppress warning about redefiniton of `Promise`
 var Promise = require( 'es6-promise' ).Promise;
