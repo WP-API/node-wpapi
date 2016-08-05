@@ -402,6 +402,45 @@ describe( 'WPRequest', function() {
 
 	}); // ._auth
 
+	describe( 'file()', function() {
+
+		it( 'method exists', function() {
+			expect( request ).to.have.property( 'file' );
+			expect( request.file ).to.be.a( 'function' );
+		});
+
+		it( 'will have no effect if called without any arguments', function() {
+			request.file();
+			expect( request._attachment ).to.be.undefined;
+		});
+
+		it( 'will set a file path to upload', function() {
+			request.file( '/some/file.jpg' );
+			expect( request._attachment ).to.equal( '/some/file.jpg' );
+		});
+
+		it( 'will replace previously-set file paths if called multiple times', function() {
+			request.file( '/some/file.jpg' ).file( '/some/other/file.jpg' );
+			expect( request._attachment ).to.equal( '/some/other/file.jpg' );
+		});
+
+		it( 'will clear out previously-set paths if called again without any arguments', function() {
+			request.file( '/some/file.jpg' ).file();
+			expect( request._attachment ).to.be.undefined;
+		});
+
+		it( 'will set an attachment name to use for the provided file', function() {
+			request.file( '/some/file.jpg', 'cat_picture.jpg' );
+			expect( request._attachmentName ).to.equal( 'cat_picture.jpg' );
+		});
+
+		it( 'will clear out previously-set name if called again without a name', function() {
+			request.file( '/some/file.jpg', 'cat_picture.jpg' ).file( '/some/other/file.jpg' );
+			expect( request._attachmentName ).to.be.undefined;
+		});
+
+	});
+
 	// Skipping tests until (a) the lodash v. sandboxed-module conflict can be
 	// diagnosed and resolved, and/or (b) these tests can be modified so that
 	// they test the external interface: right now we are testing our integration
