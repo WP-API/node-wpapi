@@ -12,4 +12,4 @@ docs-theme/
 docs/
 index.html
 test.js
-test/
+tests/
