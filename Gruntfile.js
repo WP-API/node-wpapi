@@ -21,11 +21,20 @@ module.exports = function( grunt ) {
 					tabtospace: 2
 				}
 			}
+		},
+
+		zip: {
+			bundle: {
+				cwd: 'browser',
+				src: [ 'browser/**/*' ],
+				dest: 'documentation/wpapi-<%= pkg.version %>.zip'
+			}
 		}
 
 	});
 
 	grunt.loadNpmTasks( 'grunt-contrib-yuidoc' );
+	grunt.loadNpmTasks( 'grunt-zip' );
 
 	grunt.registerTask( 'docs', [ 'yuidoc' ] );
 };

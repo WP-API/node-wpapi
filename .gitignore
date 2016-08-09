@@ -31,6 +31,9 @@ test.js
 docs/
 index.html
 
+# Dynamic content within Jekyll documentation site
+documentation/*.zip
+
 # Webstorm config folder
 .idea
 
