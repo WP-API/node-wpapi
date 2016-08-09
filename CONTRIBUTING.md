@@ -1,5 +1,4 @@
-Contributing
-============
+# Contributing
 
 WordPress is a community effort, as is the WP-API; this client library should be, too. We welcome contributions, however big or small!
 
@@ -63,10 +62,14 @@ Commit messages should follow the standard laid out in the git manual; that is, 
 
     Further paragraphs come after blank lines.
 
-     - Bullet points are okay, too
+    - Bullet points are okay, too
 
-     - Typically a hyphen or asterisk is used for the bullet, preceded by a
-       single space, with blank lines in between, but conventions vary here
+    - Typically a hyphen or asterisk is used for the bullet, preceded by a
+      single space, with blank lines in between, but conventions vary
+
+    If the commit relates to an issue -- and most commits should -- you
+    can reference the issue with "For #X" or "Fixes #X", where X is the
+    number of the github issue.
 
 #### Commit & Pull Request Process
 
@@ -76,7 +79,7 @@ We rebase feature branches onto master when merging in order to maintain a linea
 
 ## Code Syntax & Style
 
-We use [JSCS](https://www.npmjs.org/package/jscs) to enforce a basic set of code style guidelines, and [JSHint](http://jshint.com/) to guard against syntax errors. To run them both execute `npm run lint` (or `grunt jscs jshint`, if you have the Grunt command-line tool installed).
+We use [JSCS](https://www.npmjs.org/package/jscs) to enforce a basic set of code style guidelines, and [JSHint](http://jshint.com/) to guard against syntax errors. To run them both execute `npm run lint`; they will also be run every time you execute `npm test`.
 
 JSCS is a useful tool for enforcing a code style, but isn't flexible enough to cover all guidelines. Note our standard for spacing within function parentheses, which is not enforced mechanically but will be evaluated manually when reviewing pull requests:
 ```javascript

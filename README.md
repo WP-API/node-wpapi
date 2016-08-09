@@ -1,7 +1,7 @@
 A WordPress REST API client for JavaScript
 ==========================================
 
-This is a client for the [WordPress REST API](http://wp-api.org/). It is **under active development**, and should be considered beta software. More features are in progress, and **[issues](https://github.com/wp-api/node-wpapi/issues)** are welcome if you find something that doesn't work!
+This is a client for the [WordPress REST API](http://v2.wp-api.org/). It is **under active development**, and should be considered beta software. More features are in progress, and **[issues](https://github.com/wp-api/node-wpapi/issues)** are welcome if you find something that doesn't work!
 
 **`wpapi` is designed to work with [WP-API](https://github.com/WP-API/WP-API) v2 beta 1 or higher.** If you use a prior version of the beta, some commands will not work. The latest beta is always recommended!
 
@@ -11,9 +11,9 @@ This is a client for the [WordPress REST API](http://wp-api.org/). It is **under
 
 **Index**:
 
-- [Purpose](#purpose)
+- [About](#about)
 - [Installation](#installation)
-- [Using The Client](#using-the-client)
+- [Using the Client](#using-the-client)
   - [Auto-discovery](#auto-discovery)
   - [Creating Posts](#creating-posts)
   - [Updating Posts](#updating-posts)
@@ -21,35 +21,51 @@ This is a client for the [WordPress REST API](http://wp-api.org/). It is **under
   - [Filtering Collections](#filtering-collections)
   - [Uploading Media](#uploading-media)
   - [Custom Routes](#custom-routes)
-  - [Embedding Data](#embedding-data)
-  - [Paginated Collections](#working-with-paged-response-data)
-  - [Authentication](#authentication)
+- [Embedding Data](#embedding-data)
+- [Paginated Collections](#working-with-paged-response-data)
+- [Authentication](#authentication)
 - [API Documentation](#api-documentation)
 - [Issues](#issues)
 - [Contributing](#contributing)
 
-## Purpose
+## About
 
-This library is designed to make it easy for your [Node.js](http://nodejs.org) application to request specific resources from a WordPress install. It uses a query builder-style syntax to let you craft the request being made to the WP-API endpoints, then returns the API server's response to your application as a JavaScript object.
+`node-wpapi` makes it easy for your JavaScript application to request specific resources from a [WordPress](https://wordpress.org) website. It uses a query builder-style syntax to let you craft the request being made to [WordPress REST API](http://v2.wp-api.org) endpoints, then returns the API's response to your application as a JavaScript object. And don't let the name fool you: `node-wpapi` works just as well in the browser as it does on the server!
+
+This library is maintained by K. Adam White at [Bocoup](https://bocoup.com), with contributions from a [great community](https://github.com/WP-API/node-wpapi/graphs/contributors) of WordPress and JavaScript developers.
+
+To get started, `npm install wpapi` or [download the browser build](https://wp-api.github.io/node-wpapi/wpapi.zip) and check out "Installation" and "Using the Client" below.
 
 ## Installation
 
-To use the library, install it with [npm](http://npmjs.org):
+`node-wpapi` works both on the server or in the browser.
+
+### Install with NPM
+
+To use the library from Node, install it with [npm](http://npmjs.org):
+
 ```bash
 npm install --save wpapi
 ```
+
 Then, within your application's script files, `require` the module to gain access to it:
+
 ```javascript
 var WP = require( 'wpapi' );
 ```
 
-This library requires Node.js version 0.12 or above; 4.0 or higher is recommended.
+This library requires Node.js version 0.12 or above; 4.0 or higher is highly recommended.
 
-This library is designed to work in the browser as well, via a build system such as Browserify or Webpack; alternatively, the files in the `browser/` folder of the [release archives](https://github.com/WP-API/node-wpapi/releases) are pre-built UMD modules that can be added to a page using a regular `<script>` tag _or_ required via AMD or CommonJS module systems. In the absence of a module system, the UMD modules will export the browser global variable `WPAPI`, which can be used in place of `require( 'wpapi' )` in the examples below.
+This library is designed to work in the browser as well, via a build system such as Browserify or Webpack; just install the package and `require( 'wpapi' )` from your application code.
 
-## Using The Client
+### Download the UMD Bundle
+
+Alternatively, you may download a [ZIP archive of the bundled library code](https://wp-api.github.io/node-wpapi/wpapi.zip). These files are UMD modules, which may be included directly on a page using a regular `<script>` tag _or_ required via AMD or CommonJS module systems. In the absence of a module system, the UMD modules will export the browser global variable `WPAPI`, which can be used in place of `require( 'wpapi' )` to access the library from your code.
+
+## Using the Client
 
 The module is a constructor, so you can create an instance of the API client bound to the endpoint for your WordPress install:
+
 ```javascript
 var WP = require( 'wpapi' );
 var wp = new WP({ endpoint: 'http://src.wordpress-develop.dev/wp-json' });
@@ -57,6 +73,7 @@ var wp = new WP({ endpoint: 'http://src.wordpress-develop.dev/wp-json' });
 Once an instance is constructed, you can chain off of it to construct a specific request. (Think of it as a query-builder for WordPress!)
 
 We support requesting posts using either a callback-style or promise-style syntax:
+
 ```javascript
 // Callbacks
 wp.posts().get(function( err, data ) {
@@ -88,6 +105,7 @@ process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 It is also possible to leverage the [capability discovery](http://v2.wp-api.org/guide/discovery/) features of the API to automatically detect and add setter methods for your custom routes, or routes added by plugins.
 
 To utilize the auto-discovery functionality, call `WP.discover()` with a URL within a WordPress REST API-enabled site:
+
 ```js
 var apiPromise = WP.discover( 'http://my-site.com' );
 ```
@@ -256,6 +274,7 @@ For security reasons, methods like `.revisions()` and `.users()` require the req
 Queries against collection endpoints (like `wp.posts()`, which maps to `endpoint/posts/`) can be filtered to specify a subset of posts to return. Many of the WP_Query values are available by default, including `tag`, `author_name`, `page_id`, etc; even more parameters are available to filter byif you authenticate with the API using either [Basic Auth](https://github.com/WP-API/Basic-Auth) or [OAuth](https://github.com/WP-API/OAuth1). You can continue to chain properties until you call `.then`, `.get`, `.post`, `.put`, or `.delete` on the request chain.
 
 Example queries:
+
 ```javascript
 // All posts belonging to author with nicename "jadenbeirne"
 wp.posts().filter( 'author_name', 'jadenbeirne' ).get();
@@ -361,6 +380,7 @@ site.myCustomResource().id( 17 ); // => myplugin/v1/author/17
 The string `(?P<id>)` indicates that a level of the route for this resource is a dynamic property named ID. By default, properties identified in this fashion will not have any inherent validation. This is designed to give developers the flexibility to pass in anything, with the caveat that only valid IDs will be accepted on the WordPress end.
 
 You might notice that in the example from the official WP-API documentation, a pattern is specified with a different format: this is a [regular expression](http://www.regular-expressions.info/tutorial.html) designed to validate the values that may be used for this capture group.
+
 ```js
 var site = new WP({ endpoint: 'http://www.yoursite.com/wp-json' });
 site.myCustomResource = site.registerRoute( 'myplugin/v1', '/author/(?P<id>\\d+)' );
@@ -407,9 +427,9 @@ site.myCustomResource().somePart( 7 ); // => myplugin/v1/resource/7
 
 Non-snake_cased route parameter names will be unaffected.
 
-## Embedding data
+## Embedding Data
 
-**Note: This section applies only to the WP-API v2 betas and above**; the initial 1.0 release of the API embedded data by default.
+_**Note:** This section applies only to the WP-API v2 betas and above; the initial 1.0 release of the API embedded data by default._
 
 Data types in WordPress are interrelated: A post has an author, some number of tags, some number of categories, *etc*. By default, the API responses will provide pointers to these related objects, but will not embed the full resources: so, for example, the `"author"` property would come back as just the author's ID, *e.g.* `"author": 4`.
 
@@ -420,6 +440,7 @@ To request that the API respond with embedded data, simply call `.embed()` as pa
 `wp.posts().id( 2501 ).embed()`...
 
 This will include an `._embedded` object in the response JSON, which contains all of those embeddable objects:
+
 ```js
 {
     "_embedded": {
@@ -440,20 +461,24 @@ For more on working with embedded data, [check out the WP-API documentation](htt
 
 ## Working with Paged Response Data
 
-WordPress sites can have a lot of content&mdash;far more than you'd want to pull down in a single request. The API endpoints default to providing a limited number of items per request, the same way that a WordPress site will default to 10 posts per page in archive views. The number of objects you can get back can be adjusted by calling the `perPage` method, but many servers will return a 502 error if too much information is requested in one batch.
+WordPress sites can have a lot of content&mdash;far more than you'd want to pull down in a single request. The API endpoints default to providing a limited number of items per request, the same way that a WordPress site will default to 10 posts per page in archive views. The number of objects you can get back can be adjusted by calling the `perPage` method, but `perPage` is capped at 100 items per request for performance reasons. To work around these restrictions, the API provides headers so the API will frequently have to return your posts  be unable to fit all of your posts in a single query.
 
-To work around these restrictions, paginated collection responses are augmented with a `_paging` property. That property contains some useful metadata:
+### Using Pagination Headers
 
-- `total`: The total number of records matching the provided query
-- `totalPages`: The number of pages available (`total` / `perPage`)
-- `next`: A WPRequest object pre-bound to the next page of results
-- `prev`: A WPRequest object pre-bound to the previous page of results
-- `links`: an object containing the parsed `link` HTTP header data (when present)
+Paginated collection responses are augmented with a `_paging` property derived from the collection's pagination headers. That `_paging` property on the response object contains some useful metadata:
+
+- `.total`: The total number of records matching the provided query
+- `.totalPages`: The number of pages available (`total` / `perPage`)
+- `.next`: A WPRequest object pre-bound to the next page of results
+- `.prev`: A WPRequest object pre-bound to the previous page of results
+- `.links`: an object containing the parsed `link` HTTP header data (when present)
 
 The existence of the `_paging.links.prev` and `_paging.links.next` properties can be used as flags to conditionally show or hide your paging UI, if necessary, as they will only be present when an adjacent page of results is available.
 
-You can use the `next` and `prev` properties to traverse an entire collection, should you so choose. For example, this snippet will recursively request the next page and concatenate it with existing results, in order to build up an array of every post on your site:
+You can use the `next` and `prev` properties to traverse an entire collection, should you so choose. For example, this snippet will recursively request the next page of posts and concatenate it with existing results, in order to build up an array of every post on your site:
+
 ```javascript
+var _ = require( 'lodash' );
 getAll( request ) {
   return request.then(function( response ) {
     if ( ! response._paging || ! response._paging.next ) {
@@ -474,17 +499,28 @@ getAll( wp.posts() ).then(function( allPosts ) { /* ... */ });
 
 Be aware that this sort of unbounded recursion can take a **very long time**: if you use this technique in your application, we strongly recommend caching the response objects in a local database rather than re-requesting from the WP remote every time you need them.
 
-You can also use a `.page(pagenumber)` method on calls that support pagination to directly get that page.
+Depending on the amount of content in your site loading all posts into memory may also exceed Node's available memory, causing an exception. If this occurs, try to work with smaller subsets of your data at a time.
+
+### Requesting a Specific Page
+
+You can also use a `.page(pagenumber)` method on calls that support pagination to directly get that page. For example, to set the API to return 5 posts on every page of results, and to get the third page of results (posts 11 through 15), you would write
+
+```js
+wp.posts().perPage( 5 ).page( 3 ).then(/* ... */);
+```
 
 ## Authentication
 
-You must be authenticated with WordPress to create, edit or delete resources via the API. Some WP-API endpoints additionally require authentication for GET requsts in cases where the data being requested could be considered private: examples include any of the `/users` endpoints, requests where the `context` query parameter is `true`, and `/revisions` for posts and pages, among others.
+You must be authenticated with WordPress to create, edit or delete resources via the API. Some WP-API endpoints additionally require authentication for GET requests in cases where the data being requested could be considered private: examples include any of the `/users` endpoints, requests where the `context` query parameter is `true`, and `/revisions` for posts and pages, among others.
+
+### Basic Authentication
 
 This library currently supports [basic HTTP authentication](http://en.wikipedia.org/wiki/Basic_access_authentication). To authenticate with your WordPress install,
 
 1. Download and install the [Basic Authentication handler plugin](https://github.com/WP-API/Basic-Auth) on your target WordPress site. *(Note that the basic auth handler is not curently available through the plugin repository: you must install it manually.)*
 2. Activate the plugin.
 3. Specify the username and password of an authorized user (a user that can edit_posts) when instantiating the WP request object:
+
 ```javascript
 var wp = new WP({
     endpoint: 'http://www.website.com/wp-json',
@@ -500,11 +536,13 @@ As an example, `wp.users().me()` will automatically enable authentication to per
 ### Manually forcing authentication
 
 Because authentication may not always be set when needed, an `.auth()` method is provided which can enable authentication for any request chain:
+
 ```javascript
 // This will authenticate the GET to /posts/id/817
 wp.posts().id( 817 ).auth().get(...
 ```
 This `.auth` method can also be used to manually specify a username and a password as part of a request chain:
+
 ```javascript
 // Use username "mcurie" and password "nobel" for this request
 wp.posts().id( 817 ).auth( 'mcurie', 'nobel' ).get(...
@@ -514,6 +552,7 @@ This will override any previously-set username or password values.
 **Authenticate all requests for a WP instance**
 
 It is possible to make all requests from a WP instance use authentication by setting the `auth` option to `true` on instantiation:
+
 ```javascript
 var wp = new WP({
     endpoint: // ...
@@ -523,7 +562,13 @@ var wp = new WP({
 });
 ```
 
-### Cookie authentication
+#### SECURITY WARNING
+
+Please be aware that basic authentication sends your username and password over the wire, in plain text. **We only recommend using basic authentication in production if you are securing your requests with SSL.**
+
+More robust authentication methods will hopefully be added; we would welcome contributions in this area!
+
+### Cookie Authentication
 
 When the library is loaded from the frontend of the WP-site you are querying against, you can utilize the build in [Cookie authentication](http://wp-api.org/guides/authentication.html) supported by WP REST API.
 
@@ -550,15 +595,9 @@ var wp = new WP({
 });
 ```
 
-#### SECURITY WARNING
-
-Please be aware that basic authentication sends your username and password over the wire, in plain text. **We only recommend using basic authentication in production if you are securing your requests with SSL.**
-
-More robust authentication methods will hopefully be added; we would welcome contributions in this area!
-
 ## API Documentation
 
-In addition to the above getting-started guide, we have automatically-generated [API documentation](http://wp-api.github.io/node-wpapi). More user-oriented documentation, including a more in-depth overview of available endpoint and filter methods, will be added to this README in the near future.
+In addition to the above getting-started guide, we have automatically-generated [API documentation](http://wp-api.github.io/node-wpapi).
 
 
 ## Issues
