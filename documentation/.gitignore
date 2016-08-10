@@ -3,6 +3,5 @@ _site
 .jekyll-metadata
 
 *.lock
-css/
 
 api-reference/
