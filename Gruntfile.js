@@ -10,7 +10,14 @@ module.exports = function( grunt ) {
 			generated_api_docs: [ 'documentation/api-reference' ],
 			generated_pages: [ 'documentation/*.md' ],
 			generated_index: [ 'documentation/index.html' ],
-			generated_zip: [ 'documentation/*.zip' ]
+			generated_zip: [ 'documentation/*.zip' ],
+			leftover_pages_from_docs_branch: [
+				'./Gemfile.lock',
+				'./_site/',
+				'./api-reference/',
+				'./css/',
+				'./index.html.combyne'
+			]
 		},
 
 		yuidoc: {
