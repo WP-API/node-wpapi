@@ -15,7 +15,7 @@ combyne.settings.delimiters = {
 };
 
 // Paths
-const projectRoot = path.join( __dirname, '..' );
+const projectRoot = path.join( __dirname, '../..' );
 const docsDir = path.join( projectRoot, 'documentation' );
 const readmePath = path.join( projectRoot, 'README.md' );
 const contributingPath = path.join( projectRoot, 'CONTRIBUTING.md' );
@@ -40,24 +40,13 @@ const SKIP_SECTIONS = SKIP_SECTION_LINKS.concat([
 	'contributing'
 ]);
 
-const promiseHash = promiseObj => {
-	const keys = Object.keys( promiseObj );
-	const promiseArr = keys.map( key => promiseObj[ key ] );
-	return Promise.all( promiseArr ).then( results => {
-		return keys.reduce(( obj, key, idx ) => {
-			obj[ key ] = results[ idx ];
-			return obj;
-		}, {} );
-	});
-}
-
 const pad = ( num, digits ) => {
 	let str = '' + parseInt( num, 10 );
 	while ( str.length < digits ) {
 		str = '0' + str;
 	}
 	return str;
-}
+};
 
 const titleToSlug = title => title
 	.toLowerCase()
@@ -95,7 +84,7 @@ const getContents = entry => {
 };
 
 // Promise-based File System helpers
-const readFile = sourcePath => new Promise(( resolve, reject ) => {
+const readFile = sourcePath => new Promise( ( resolve, reject ) => {
 	fs.readFile( sourcePath, ( err, contents ) => {
 		if ( err ) {
 			return reject( err );
@@ -106,7 +95,7 @@ const readFile = sourcePath => new Promise(( resolve, reject ) => {
 	});
 });
 
-const writeFile = ( outputPath, fileContents ) => new Promise(( resolve, reject ) => {
+const writeFile = ( outputPath, fileContents ) => new Promise( ( resolve, reject ) => {
 	fs.writeFile( outputPath, fileContents, ( err, result ) => {
 		if ( err ) {
 			return reject( err );
@@ -160,8 +149,8 @@ const readmeOutput = readFile( readmePath ).then( contents => {
 
 	entries.forEach( entry => entry.contents = getContents( entry ) );
 
-	return entries.reduce(( previous, entry, idx ) => {
-		return previous.then(() => {
+	return entries.reduce( ( previous, entry, idx ) => {
+		return previous.then( () => {
 			const outputPath = path.join( docsDir, `${ pad( idx, 2 ) }-${ entry.slug }.md` );
 
 			return SKIP_SECTIONS.indexOf( entry.slug ) === -1 ?
@@ -173,7 +162,7 @@ const readmeOutput = readFile( readmePath ).then( contents => {
 
 // Create the contributor guide (runs after the README files are processed in
 // order to overwrite the "contributing" README section, if present)
-const contributingOutput = readmeOutput.then(() => copyFile( contributingPath, 'Contributing' ) );
+const contributingOutput = readmeOutput.then( () => copyFile( contributingPath, 'Contributing' ) );
 
 // Create the license page
 const licenseOutput = copyFile( licensePath, 'License' );
@@ -186,7 +175,7 @@ const indexOutput = readmeOutput.then( entries => {
 	});
 	return readFile( indexTemplatePath ).then( fileTemplate => {
 		const outputPath = path.join( docsDir, 'index.html' );
-		const templateContext = entries.reduce(( context, entry ) => {
+		const templateContext = entries.reduce( ( context, entry ) => {
 			const isAboutPage = entry.slug === 'about';
 			if ( isAboutPage ) {
 				context.aboutContents = kramed( entry.tokens.join( '' ) );
@@ -198,7 +187,7 @@ const indexOutput = readmeOutput.then( entries => {
 			aboutContents: null,
 			readmeSections: []
 		});
-		const fileContents = combyne( fileTemplate ).render( templateContext )
+		const fileContents = combyne( fileTemplate ).render( templateContext );
 		return writeFile( outputPath, fileContents );
 	});
 });
