@@ -8,8 +8,8 @@ description: > # this means to ignore newlines until "baseurl:"
   within your WordPress database, and more.
 
 # Domain Configuration
-baseurl: "" # the subpath of your site, e.g. /blog
-url: "http://wp-api.org/node-wpapi" # the base hostname & protocol for your site
+baseurl: "/node-wpapi" # the subpath of your site, e.g. /blog
+url: "http://wp-api.org" # the base hostname & protocol for your site
 
 # Social Media
 github_username:  wp-api/node-wpapi
