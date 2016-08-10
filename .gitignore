@@ -4,6 +4,8 @@
 
 # Files that belong to the main source code branches:
 docs-theme/
+documentation/
+build/
 lib/
 tests/
 .jscsrc
@@ -24,6 +26,5 @@ pids
 lib-cov
 coverage
 .grunt
-build/Release
 node_modules
 test.js
