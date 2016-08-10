@@ -26,7 +26,12 @@ if ( argv.install || argv.i ) {
   server.on( 'error', err => console.error( err ) );
 } else {
   // Start the server in local dev mode
-  const server = spawn( 'bundle', [ 'exec', 'jekyll', 'serve', '--baseurl', '' ], {
+  const bundleOptions = [ 'exec', 'jekyll', 'serve', '--baseurl', '' ];
+  if ( argv.host ) {
+    bundleOptions.push( '--host', argv.host );
+  }
+
+  const server = spawn( 'bundle', bundleOptions, {
     cwd: docsDir,
     stdio: 'inherit'
   });
