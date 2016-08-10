@@ -8,7 +8,7 @@ layout: default
 
   <<< aboutContents >>>
 
-  <h2 class="page-heading">Contents</h2>
+  <h2 class="page-heading">Readme Contents</h2>
 
   <ol class="post-list">
   <%each readmeSections as section %>
@@ -16,6 +16,17 @@ layout: default
       <a class="post-link" href="{{ "/<< section.slug >>" | prepend: site.baseurl }}"><<<
         section.title
       >>></a>
+      <%if section.hasSubheadings %>
+      <ul>
+      <%each section.subheadings as subhed %>
+        <li>
+          <a class="post-sublink" href="{{ "/<< subhed.slug >>" | prepend: site.baseurl }}"><<<
+            subhed.title
+          >>></a>
+        </li>
+      <%endeach%>
+      </ul>
+      <%endif%>
     </li>
   <%endeach%>
   </ol>

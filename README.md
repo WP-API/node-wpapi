@@ -30,7 +30,7 @@ This is a client for the [WordPress REST API](http://v2.wp-api.org/). It is **un
 
 ## About
 
-`node-wpapi` makes it easy for your application to request specific resources from a [WordPress](https://wordpress.org) website. It uses a query builder-style syntax to let you craft the request being made to [WordPress REST API](http://v2.wp-api.org) endpoints, then returns the API's response to your application as a JavaScript object. And don't let the name fool you: `node-wpapi` works just as well in the browser as it does on the server!
+`node-wpapi` makes it easy for your JavaScript application to request specific resources from a [WordPress](https://wordpress.org) website. It uses a query builder-style syntax to let you craft the request being made to [WordPress REST API](http://v2.wp-api.org) endpoints, then returns the API's response to your application as a JavaScript object. And don't let the name fool you: `node-wpapi` works just as well in the browser as it does on the server!
 
 This library is maintained by K. Adam White at [Bocoup](https://bocoup.com), with contributions from a [great community](https://github.com/WP-API/node-wpapi/graphs/contributors) of WordPress and JavaScript developers.
 

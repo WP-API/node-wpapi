@@ -133,6 +133,14 @@ const readmeOutput = readFile( readmePath ).then( contents => {
 
 		if ( level > README_SPLIT_LEVEL ) {
 			entry.tokens.push( token );
+
+			if ( level === README_SPLIT_LEVEL + 1 ) {
+				entry.subheadings.push({
+					slug: `${ entry.slug }#${ titleToSlug( token ) }`,
+					title: getTitle( token ),
+					level: level
+				});
+			}
 			continue;
 		}
 
@@ -141,6 +149,7 @@ const readmeOutput = readFile( readmePath ).then( contents => {
 			slug: titleToSlug( token ),
 			title: getTitle( token ),
 			level: level,
+			subheadings: [],
 			tokens: []
 		};
 
@@ -180,6 +189,7 @@ const indexOutput = readmeOutput.then( entries => {
 			if ( isAboutPage ) {
 				context.aboutContents = kramed( entry.tokens.join( '' ) );
 			} else if ( SKIP_SECTION_LINKS.indexOf( entry.slug ) === -1 ) {
+				entry.hasSubheadings = entry.subheadings && entry.subheadings.length;
 				context.readmeSections.push( entry );
 			}
 			return context;

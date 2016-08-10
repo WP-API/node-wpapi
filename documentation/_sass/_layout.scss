@@ -170,7 +170,7 @@
     font-size: 20px;
 }
 
-.post-list {
+ul.post-list {
     margin-left: 0;
     list-style: none;
 }
@@ -182,9 +182,12 @@
 
 .post-link {
     display: block;
-    // font-size: 24px;
 }
 
+.post-sublink {
+    display: block;
+    font-size: 0.9em;
+}
 
 
 /**
