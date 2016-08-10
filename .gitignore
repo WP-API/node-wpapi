@@ -32,7 +32,10 @@ docs/
 index.html
 
 # Dynamic content within Jekyll documentation site
+documentation/*.md
 documentation/*.zip
+documentation/index.html
+*.ignore
 
 # Webstorm config folder
 .idea

@@ -1,0 +1,40 @@
+---
+layout: default
+---
+
+<div class="home">
+
+  <h2 class="page-heading">About {{ site.library_title }}</h2>
+
+  <<< aboutContents >>>
+
+  <h2 class="page-heading">Contents</h2>
+
+  <ol class="post-list">
+  <%each readmeSections as section %>
+    <li>
+      <a class="post-link" href="{{ "/<< section.slug >>" | prepend: site.baseurl }}"><<<
+        section.title
+      >>></a>
+    </li>
+  <%endeach%>
+  </ol>
+
+  <%--
+  <h2 class="page-heading">Guides</h1>
+
+  <ul class="post-list">
+    {% for post in site.posts %}
+      <li>
+        <span class="post-meta">{{ post.date | date: "%b %-d, %Y" }}</span>
+        <a class="post-link" href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
+      </li>
+    {% endfor %}
+  </ul>
+  --%>
+
+  <%--
+  <p class="rss-subscribe">subscribe <a href="{{ "/feed.xml" | prepend: site.baseurl }}">via RSS</a></p>
+  --%>
+
+</div>

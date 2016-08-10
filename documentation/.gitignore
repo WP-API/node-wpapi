@@ -4,3 +4,5 @@ _site
 
 *.lock
 css/
+
+api-reference/

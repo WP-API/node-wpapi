@@ -1,5 +1,6 @@
 # Global Content
 title: A JavaScript Client for the WordPress REST API
+library_title: node-wpapi
 description: > # this means to ignore newlines until "baseurl:"
   Node-WPAPI is a flexible, fluent client for the WordPress REST API
   that works both on the server and in the browser. It lets you easily
