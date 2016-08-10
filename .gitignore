@@ -16,7 +16,6 @@ package.json
 README.md
 wp.js
 
-
 # Files that are excluded in the .gitignore on master (because if we don't need
 # them there we probably don't need them here either, excepting docs/):
 logs
@@ -28,3 +27,16 @@ coverage
 .grunt
 node_modules
 test.js
+*.ignore
+
+# Jekyll .gitignore from master:
+_site
+.sass-cache
+.jekyll-metadata
+
+*.lock
+css/
+
+# Files important only to the generation of the site:
+*.combyne
+docs-tmp/
