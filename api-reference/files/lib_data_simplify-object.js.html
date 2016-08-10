@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>lib/data/simplify-object.js - wpapi</title>
+    <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
+    <link rel="shortcut icon" type="image/png" href="../assets/favicon.png">
+    <script src="../assets/vendor/yui-min.js"></script>
+</head>
+<body>
+
+<div id="doc">
+    <header class="main-header">
+        <div class="content">
+            <div class="project-title">
+                    <h1 class="project-name">wpapi</h1> <span class="project-version">0.9.1</span>
+                    <p class="description">A client for interacting with the WordPress REST API</p>
+            </div>
+            <ul class="jump-links">
+                <li><a href="#index" class="index-jump-link">index</a></li>
+                <li><a href="#top" class="top-jump-link">top</a></li>
+            </ul>
+        </div>
+    </header>
+    <div id="bd" class="main-body">
+
+        <div id="docs-sidebar" class="sidebar apidocs">
+            <div id="api-list">
+                <div id="api-tabview" class="tabview">
+                    <ul class="tabs">
+                        <li><a href="#api-classes">Classes</a></li>
+                        <li><a href="#api-modules">Modules</a></li>
+                    </ul>
+            
+                    <div id="api-tabview-filter">
+                        <input type="search" id="api-filter" placeholder="Type to filter APIs">
+                    </div>
+            
+                    <div id="api-tabview-panel">
+                        <ul id="api-classes" class="apis classes">
+                            <li><a class="type" href="../classes/wp.html">wp</a></li>
+                            <li><a class="type" href="../classes/WP.html">WP</a></li>
+                            <li><a class="type" href="../classes/WPRequest.html">WPRequest</a></li>
+                        </ul>
+            
+                        <ul id="api-modules" class="apis modules">
+                            <li><a class="module" href="../modules/autodiscovery.html">autodiscovery</a></li>
+                            <li><a class="module" href="../modules/filters.html">filters</a></li>
+                            <li><a class="module" href="../modules/parseRouteString.html">parseRouteString</a></li>
+                            <li><a class="module" href="../modules/WP.html">WP</a></li>
+                            <li><a class="module" href="../modules/WPRequest.html">WPRequest</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="docs-main" class="apidocs">
+            <div class="content container">
+                <h1 class="file-heading">File: lib/data/simplify-object.js</h1>
+                
+                <div class="file">
+                    <pre class="code prettyprint linenums">
+                &#x27;use strict&#x27;;
+                
+                var _reduce = require( &#x27;lodash.reduce&#x27; );
+                
+                /**
+                 * Walk through the keys and values of a provided object, removing any properties
+                 * which would be inessential to the generation of the route tree used to deduce
+                 * route handlers from a &#x60;wp-json/&#x60; root API endpoint. This module is not used by
+                 * the wpapi module itself, but is rather a dependency of the script that is used
+                 * to create the &#x60;endpoint-response.json&#x60; file that is shipped along with this
+                 * module for use in generating the &quot;default&quot; routes.
+                 *
+                 * @param {*} obj An arbitrary JS value, probably an object
+                 * @returns {*} The passed-in value, with non-essential args properties and all
+                 * _links properties removes.
+                 */
+                function simplifyObject( obj ) {
+                	// Pass through falsy values, Dates and RegExp values without modification
+                	if ( ! obj || obj instanceof Date || obj instanceof RegExp ) {
+                		return obj;
+                	}
+                
+                	// Map arrays through simplifyObject
+                	if ( Array.isArray( obj ) ) {
+                		return obj.map( simplifyObject );
+                	}
+                
+                	// Reduce through objects to run each property through simplifyObject
+                	if ( typeof obj === &#x27;object&#x27; ) {
+                		return _reduce( obj, function( newObj, val, key ) {
+                			// Omit _links objects entirely
+                			if ( key === &#x27;_links&#x27; ) {
+                				return newObj;
+                			}
+                
+                			// If the key is &quot;args&quot;, omit all keys of second-level descendants
+                			// other than &quot;required&quot;
+                			if ( key === &#x27;args&#x27; ) {
+                				newObj.args = _reduce( val, function( slimArgs, argVal, argKey ) {
+                					slimArgs[ argKey ] = {
+                						required: argVal.required
+                					};
+                					return slimArgs;
+                				}, {});
+                			} else {
+                				// Pass all other objects through simplifyObject
+                				newObj[ key ] = simplifyObject( obj[ key ] );
+                			}
+                			return newObj;
+                		}, {});
+                	}
+                
+                	// All other types pass through without modification
+                	return obj;
+                }
+                
+                module.exports = simplifyObject;
+                
+                    </pre>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<script src="../assets/vendor/prettify/prettify-min.js"></script>
+<script>prettyPrint();</script>
+<script src="../assets/vendor/jquery.min.js"></script>
+<script src="../assets/js/jquery-offscreen-trigger.js"></script>
+<script src="../assets/js/yui-prettify.js"></script>
+<script src="../assets/../api.js"></script>
+<script src="../assets/js/api-filter.js"></script>
+<script src="../assets/js/api-list.js"></script>
+<script src="../assets/js/api-search.js"></script>
+<script src="../assets/js/apidocs.js"></script>
+</body>
+</html>

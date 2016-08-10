@@ -1,39 +1,100 @@
-<!doctype html>
-<html>
-    <head>
-        <title>Redirector</title>
-        <meta http-equiv="refresh" content="0;url=./docs/modules/WP.html">
-        <style type="text/css">
-            body {
-                margin: 0;
-                padding: 0;
-                background: #f3f3f3;
-            }
-            a {
-                display: block;
-                margin: 5em auto 0;
-                max-width: 500px;
-                padding: 4em 2em;
-                font-family: 'Helvetica Nueue', Helvetica, Arial, sans-serif;
-                font-size: 1em;
-                font-style: italic;
-                font-weight: bold;
-                text-decoration: none;
-                text-align: center;
-                color: #4183c4;
-                background: white;
-                border-radius: 0.3em;
-            }
-            a span {
-                padding: 1em;
-                border: 1px solid #dddddd;
-                border-radius: 0.5em;
-            }
-        </style>
-    </head>
-    <body>
-        <a href="./docs/modules/WP.html">
-            <span>Click here to load the documentation</span>
-        </a>
-    </body>
-</html>
+---
+layout: default
+---
+
+<div class="home">
+
+  <h2 class="page-heading">About {{ site.library_title }}</h2>
+
+  <p><code>node-wpapi</code> makes it easy for your JavaScript application to request specific resources from a <a href="https://wordpress.org">WordPress</a> website. It uses a query builder-style syntax to let you craft the request being made to <a href="http://v2.wp-api.org">WordPress REST API</a> endpoints, then returns the API&#39;s response to your application as a JavaScript object. And don&#39;t let the name fool you: <code>node-wpapi</code> works just as well in the browser as it does on the server!</p>
+<p>This library is maintained by K. Adam White at <a href="https://bocoup.com">Bocoup</a>, with contributions from a <a href="https://github.com/WP-API/node-wpapi/graphs/contributors">great community</a> of WordPress and JavaScript developers.</p>
+<p>To get started, <code>npm install wpapi</code> or <a href="https://wp-api.github.io/node-wpapi/wpapi.zip">download the browser build</a> and check out &quot;Installation&quot; and &quot;Using the Client&quot; below.</p>
+
+
+  <h2 class="page-heading">Readme Contents</h2>
+
+  <ol class="post-list">
+    <li>
+      <a class="post-link" href="{{ "/installation" | prepend: site.baseurl }}">Installation</a>
+      <ul>
+        <li>
+          <a class="post-sublink" href="{{ "/installation#install-with-npm" | prepend: site.baseurl }}">Install with NPM</a>
+        </li>
+        <li>
+          <a class="post-sublink" href="{{ "/installation#download-the-umd-bundle" | prepend: site.baseurl }}">Download the UMD Bundle</a>
+        </li>
+      </ul>
+    </li>
+    <li>
+      <a class="post-link" href="{{ "/using-the-client" | prepend: site.baseurl }}">Using the Client</a>
+      <ul>
+        <li>
+          <a class="post-sublink" href="{{ "/using-the-client#self-signed-insecure-https-certificates" | prepend: site.baseurl }}">Self-signed (Insecure) HTTPS Certificates</a>
+        </li>
+        <li>
+          <a class="post-sublink" href="{{ "/using-the-client#auto-discovery" | prepend: site.baseurl }}">Auto-Discovery</a>
+        </li>
+        <li>
+          <a class="post-sublink" href="{{ "/using-the-client#bootstrapping" | prepend: site.baseurl }}">Bootstrapping</a>
+        </li>
+        <li>
+          <a class="post-sublink" href="{{ "/using-the-client#creating-posts" | prepend: site.baseurl }}">Creating Posts</a>
+        </li>
+        <li>
+          <a class="post-sublink" href="{{ "/using-the-client#updating-posts" | prepend: site.baseurl }}">Updating Posts</a>
+        </li>
+        <li>
+          <a class="post-sublink" href="{{ "/using-the-client#requesting-different-resources" | prepend: site.baseurl }}">Requesting Different Resources</a>
+        </li>
+        <li>
+          <a class="post-sublink" href="{{ "/using-the-client#filtering-collections" | prepend: site.baseurl }}">Filtering Collections</a>
+        </li>
+        <li>
+          <a class="post-sublink" href="{{ "/using-the-client#uploading-media" | prepend: site.baseurl }}">Uploading Media</a>
+        </li>
+        <li>
+          <a class="post-sublink" href="{{ "/using-the-client#custom-routes" | prepend: site.baseurl }}">Custom Routes</a>
+        </li>
+      </ul>
+    </li>
+    <li>
+      <a class="post-link" href="{{ "/embedding-data" | prepend: site.baseurl }}">Embedding Data</a>
+    </li>
+    <li>
+      <a class="post-link" href="{{ "/working-with-paged-response-data" | prepend: site.baseurl }}">Working with Paged Response Data</a>
+      <ul>
+        <li>
+          <a class="post-sublink" href="{{ "/working-with-paged-response-data#using-pagination-headers" | prepend: site.baseurl }}">Using Pagination Headers</a>
+        </li>
+        <li>
+          <a class="post-sublink" href="{{ "/working-with-paged-response-data#requesting-a-specific-page" | prepend: site.baseurl }}">Requesting a Specific Page</a>
+        </li>
+      </ul>
+    </li>
+    <li>
+      <a class="post-link" href="{{ "/authentication" | prepend: site.baseurl }}">Authentication</a>
+      <ul>
+        <li>
+          <a class="post-sublink" href="{{ "/authentication#basic-authentication" | prepend: site.baseurl }}">Basic Authentication</a>
+        </li>
+        <li>
+          <a class="post-sublink" href="{{ "/authentication#manually-forcing-authentication" | prepend: site.baseurl }}">Manually forcing authentication</a>
+        </li>
+        <li>
+          <a class="post-sublink" href="{{ "/authentication#cookie-authentication" | prepend: site.baseurl }}">Cookie Authentication</a>
+        </li>
+      </ul>
+    </li>
+    <li>
+      <a class="post-link" href="{{ "/issues" | prepend: site.baseurl }}">Issues</a>
+    </li>
+    <li>
+      <a class="post-link" href="{{ "/contributing" | prepend: site.baseurl }}">Contributing</a>
+    </li>
+    <li>
+      <a class="post-link" href="{{ "/api-reference/modules/WP.html" | prepend: site.baseurl }}">API Documentation</a>
+    </li>
+  </ol>
+
+
+</div>

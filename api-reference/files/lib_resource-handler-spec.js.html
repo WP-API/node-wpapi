@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>lib/resource-handler-spec.js - wpapi</title>
+    <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
+    <link rel="shortcut icon" type="image/png" href="../assets/favicon.png">
+    <script src="../assets/vendor/yui-min.js"></script>
+</head>
+<body>
+
+<div id="doc">
+    <header class="main-header">
+        <div class="content">
+            <div class="project-title">
+                    <h1 class="project-name">wpapi</h1> <span class="project-version">0.9.1</span>
+                    <p class="description">A client for interacting with the WordPress REST API</p>
+            </div>
+            <ul class="jump-links">
+                <li><a href="#index" class="index-jump-link">index</a></li>
+                <li><a href="#top" class="top-jump-link">top</a></li>
+            </ul>
+        </div>
+    </header>
+    <div id="bd" class="main-body">
+
+        <div id="docs-sidebar" class="sidebar apidocs">
+            <div id="api-list">
+                <div id="api-tabview" class="tabview">
+                    <ul class="tabs">
+                        <li><a href="#api-classes">Classes</a></li>
+                        <li><a href="#api-modules">Modules</a></li>
+                    </ul>
+            
+                    <div id="api-tabview-filter">
+                        <input type="search" id="api-filter" placeholder="Type to filter APIs">
+                    </div>
+            
+                    <div id="api-tabview-panel">
+                        <ul id="api-classes" class="apis classes">
+                            <li><a class="type" href="../classes/wp.html">wp</a></li>
+                            <li><a class="type" href="../classes/WP.html">WP</a></li>
+                            <li><a class="type" href="../classes/WPRequest.html">WPRequest</a></li>
+                        </ul>
+            
+                        <ul id="api-modules" class="apis modules">
+                            <li><a class="module" href="../modules/autodiscovery.html">autodiscovery</a></li>
+                            <li><a class="module" href="../modules/filters.html">filters</a></li>
+                            <li><a class="module" href="../modules/parseRouteString.html">parseRouteString</a></li>
+                            <li><a class="module" href="../modules/WP.html">WP</a></li>
+                            <li><a class="module" href="../modules/WPRequest.html">WPRequest</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="docs-main" class="apidocs">
+            <div class="content container">
+                <h1 class="file-heading">File: lib/resource-handler-spec.js</h1>
+                
+                <div class="file">
+                    <pre class="code prettyprint linenums">
+                &#x27;use strict&#x27;;
+                
+                var createPathPartSetter = require( &#x27;./path-part-setter&#x27; ).create;
+                
+                function addLevelOption( levelsObj, level, obj ) {
+                	levelsObj[ level ] = levelsObj[ level ] || [];
+                	levelsObj[ level ].push( obj );
+                }
+                
+                function assignSetterFnForNode( handler, node ) {
+                	var setterFn;
+                
+                	// For each node, add its handler to the relevant &quot;level&quot; representation
+                	addLevelOption( handler._levels, node.level, {
+                		component: node.component,
+                		validate: node.validate,
+                		methods: node.methods
+                	});
+                
+                	// First level is set implicitly, no dedicated setter needed
+                	if ( node.level &gt; 0 ) {
+                
+                		setterFn = createPathPartSetter( node );
+                
+                		node.names.forEach(function( name ) {
+                			// Convert from snake_case to camelCase
+                			var setterFnName = name
+                				.replace( /_\w/g, function( match ) {
+                					return match.replace( &#x27;_&#x27;, &#x27;&#x27; ).toUpperCase();
+                				});
+                
+                			// Don&#x27;t overwrite previously-set methods
+                			if ( ! handler._setters[ setterFnName ] ) {
+                				handler._setters[ setterFnName ] = setterFn;
+                			}
+                		});
+                	}
+                }
+                
+                /**
+                 * Walk the tree of a specific resource node to create the setter methods
+                 *
+                 * The API we want to produce from the node tree looks like this:
+                 *
+                 *     wp.posts();                        /wp/v2/posts
+                 *     wp.posts().id( 7 );                /wp/v2/posts/7
+                 *     wp.posts().id( 7 ).revisions();    /wp/v2/posts/7/revisions
+                 *     wp.posts().id( 7 ).revisions( 8 ); /wp/v2/posts/7/revisions/8
+                 *
+                 * ^ That last one&#x27;s the tricky one: we can deduce that this parameter is &quot;id&quot;, but
+                 * that param will already be taken by the post ID, so sub-collections have to be
+                 * set up as &#x60;.revisions()&#x60; to get the collection, and &#x60;.revisions( id )&#x60; to get a
+                 * specific resource.
+                 *
+                 * @param  {Object} node            A node object
+                 * @param  {Object} [node.children] An object of child nodes
+                 * // @return {isLeaf} A boolean indicating whether the processed node is a leaf
+                 */
+                function extractSetterFromNode( handler, node ) {
+                
+                	assignSetterFnForNode( handler, node );
+                
+                	if ( node.children ) {
+                		// Recurse down to this node&#x27;s children
+                		Object.keys( node.children ).forEach(function( key ) {
+                			extractSetterFromNode( handler, node.children[ key ] );
+                		});
+                	}
+                }
+                
+                /**
+                 * Create a node handler specification object from a route definition object
+                 *
+                 * @param {object} routeDefinition A route definition object
+                 * @param {string} resource The string key of the resource for which to create a handler
+                 * @returns {object} A handler spec object with _path, _levels and _setters properties
+                 */
+                function createNodeHandlerSpec( routeDefinition, resource ) {
+                
+                	var handler = {
+                		// A &quot;path&quot; is an ordered (by key) set of values composed into the final URL
+                		_path: {
+                			&#x27;0&#x27;: resource
+                		},
+                
+                		// A &quot;level&quot; is a level-keyed object representing the valid options for
+                		// one level of the resource URL
+                		_levels: {},
+                
+                		// Objects that hold methods and properties which will be copied to
+                		// instances of this endpoint&#x27;s handler
+                		_setters: {},
+                
+                		// Arguments (query parameters) that may be set in GET requests to endpoints
+                		// nested within this resource route tree, used to determine the mixins to
+                		// add to the request handler
+                		_getArgs: routeDefinition._getArgs
+                	};
+                
+                	// Walk the tree
+                	Object.keys( routeDefinition ).forEach(function( routeDefProp ) {
+                		if ( routeDefProp !== &#x27;_getArgs&#x27; ) {
+                			extractSetterFromNode( handler, routeDefinition[ routeDefProp ] );
+                		}
+                	});
+                
+                	return handler;
+                }
+                
+                module.exports = {
+                	create: createNodeHandlerSpec
+                };
+                
+                    </pre>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<script src="../assets/vendor/prettify/prettify-min.js"></script>
+<script>prettyPrint();</script>
+<script src="../assets/vendor/jquery.min.js"></script>
+<script src="../assets/js/jquery-offscreen-trigger.js"></script>
+<script src="../assets/js/yui-prettify.js"></script>
+<script src="../assets/../api.js"></script>
+<script src="../assets/js/api-filter.js"></script>
+<script src="../assets/js/api-list.js"></script>
+<script src="../assets/js/api-search.js"></script>
+<script src="../assets/js/apidocs.js"></script>
+</body>
+</html>

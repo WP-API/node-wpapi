@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>lib/endpoint-factories.js - wpapi</title>
+    <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
+    <link rel="shortcut icon" type="image/png" href="../assets/favicon.png">
+    <script src="../assets/vendor/yui-min.js"></script>
+</head>
+<body>
+
+<div id="doc">
+    <header class="main-header">
+        <div class="content">
+            <div class="project-title">
+                    <h1 class="project-name">wpapi</h1> <span class="project-version">0.9.1</span>
+                    <p class="description">A client for interacting with the WordPress REST API</p>
+            </div>
+            <ul class="jump-links">
+                <li><a href="#index" class="index-jump-link">index</a></li>
+                <li><a href="#top" class="top-jump-link">top</a></li>
+            </ul>
+        </div>
+    </header>
+    <div id="bd" class="main-body">
+
+        <div id="docs-sidebar" class="sidebar apidocs">
+            <div id="api-list">
+                <div id="api-tabview" class="tabview">
+                    <ul class="tabs">
+                        <li><a href="#api-classes">Classes</a></li>
+                        <li><a href="#api-modules">Modules</a></li>
+                    </ul>
+            
+                    <div id="api-tabview-filter">
+                        <input type="search" id="api-filter" placeholder="Type to filter APIs">
+                    </div>
+            
+                    <div id="api-tabview-panel">
+                        <ul id="api-classes" class="apis classes">
+                            <li><a class="type" href="../classes/wp.html">wp</a></li>
+                            <li><a class="type" href="../classes/WP.html">WP</a></li>
+                            <li><a class="type" href="../classes/WPRequest.html">WPRequest</a></li>
+                        </ul>
+            
+                        <ul id="api-modules" class="apis modules">
+                            <li><a class="module" href="../modules/autodiscovery.html">autodiscovery</a></li>
+                            <li><a class="module" href="../modules/filters.html">filters</a></li>
+                            <li><a class="module" href="../modules/parseRouteString.html">parseRouteString</a></li>
+                            <li><a class="module" href="../modules/WP.html">WP</a></li>
+                            <li><a class="module" href="../modules/WPRequest.html">WPRequest</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="docs-main" class="apidocs">
+            <div class="content container">
+                <h1 class="file-heading">File: lib/endpoint-factories.js</h1>
+                
+                <div class="file">
+                    <pre class="code prettyprint linenums">
+                &#x27;use strict&#x27;;
+                /**
+                 * Take a WP route string (with PCRE named capture groups), such as
+                 * @module parseRouteString
+                 */
+                
+                var _reduce = require( &#x27;lodash.reduce&#x27; );
+                var extend = require( &#x27;node.extend&#x27; );
+                var createResourceHandlerSpec = require( &#x27;./resource-handler-spec&#x27; ).create;
+                var createEndpointRequest = require( &#x27;./endpoint-request&#x27; ).create;
+                
+                /**
+                 * Given an array of route definitions and a specific namespace for those routes,
+                 * recurse through the node tree representing all possible routes within the
+                 * provided namespace to define path value setters (and corresponding property
+                 * validators) for all possible variants of each resource&#x27;s API endpoints.
+                 *
+                 * @param {string} namespace         The namespace string for these routes
+                 * @param {object} routesByNamespace A dictionary of namespace - route definition
+                 *                                   object pairs as generated from buildRouteTree,
+                 *                                   where each route definition object is a dictionary
+                 *                                   keyed by route definition strings
+                 * @returns {object} A dictionary of endpoint request handler factories
+                 */
+                function generateEndpointFactories( routesByNamespace ) {
+                
+                	return _reduce( routesByNamespace, function( namespaces, routeDefinitions, namespace ) {
+                
+                		// Create
+                		namespaces[ namespace ] = _reduce( routeDefinitions, function( handlers, routeDef, resource ) {
+                
+                			var handlerSpec = createResourceHandlerSpec( routeDef, resource );
+                
+                			var EndpointRequest = createEndpointRequest( handlerSpec, resource, namespace );
+                
+                			// &quot;handler&quot; object is now fully prepared; create the factory method that
+                			// will instantiate and return a handler instance
+                			handlers[ resource ] = function( options ) {
+                				options = options || {};
+                				options = extend( options, this._options );
+                				return new EndpointRequest( options );
+                			};
+                
+                			// Expose the constructor as a property on the factory function, so that
+                			// auto-generated endpoint request constructors may be further customized
+                			// when needed
+                			handlers[ resource ].Ctor = EndpointRequest;
+                
+                			return handlers;
+                		}, {} );
+                
+                		return namespaces;
+                	}, {} );
+                }
+                
+                module.exports = {
+                	generate: generateEndpointFactories
+                };
+                
+                    </pre>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<script src="../assets/vendor/prettify/prettify-min.js"></script>
+<script>prettyPrint();</script>
+<script src="../assets/vendor/jquery.min.js"></script>
+<script src="../assets/js/jquery-offscreen-trigger.js"></script>
+<script src="../assets/js/yui-prettify.js"></script>
+<script src="../assets/../api.js"></script>
+<script src="../assets/js/api-filter.js"></script>
+<script src="../assets/js/api-list.js"></script>
+<script src="../assets/js/api-search.js"></script>
+<script src="../assets/js/apidocs.js"></script>
+</body>
+</html>

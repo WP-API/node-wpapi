@@ -35,7 +35,6 @@ _site
 .jekyll-metadata
 
 *.lock
-css/
 
 # Files important only to the generation of the site:
 *.combyne

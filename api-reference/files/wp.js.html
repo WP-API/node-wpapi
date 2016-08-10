@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>wp.js - wpapi</title>
+    <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
+    <link rel="shortcut icon" type="image/png" href="../assets/favicon.png">
+    <script src="../assets/vendor/yui-min.js"></script>
+</head>
+<body>
+
+<div id="doc">
+    <header class="main-header">
+        <div class="content">
+            <div class="project-title">
+                    <h1 class="project-name">wpapi</h1> <span class="project-version">0.9.1</span>
+                    <p class="description">A client for interacting with the WordPress REST API</p>
+            </div>
+            <ul class="jump-links">
+                <li><a href="#index" class="index-jump-link">index</a></li>
+                <li><a href="#top" class="top-jump-link">top</a></li>
+            </ul>
+        </div>
+    </header>
+    <div id="bd" class="main-body">
+
+        <div id="docs-sidebar" class="sidebar apidocs">
+            <div id="api-list">
+                <div id="api-tabview" class="tabview">
+                    <ul class="tabs">
+                        <li><a href="#api-classes">Classes</a></li>
+                        <li><a href="#api-modules">Modules</a></li>
+                    </ul>
+            
+                    <div id="api-tabview-filter">
+                        <input type="search" id="api-filter" placeholder="Type to filter APIs">
+                    </div>
+            
+                    <div id="api-tabview-panel">
+                        <ul id="api-classes" class="apis classes">
+                            <li><a class="type" href="../classes/wp.html">wp</a></li>
+                            <li><a class="type" href="../classes/WP.html">WP</a></li>
+                            <li><a class="type" href="../classes/WPRequest.html">WPRequest</a></li>
+                        </ul>
+            
+                        <ul id="api-modules" class="apis modules">
+                            <li><a class="module" href="../modules/autodiscovery.html">autodiscovery</a></li>
+                            <li><a class="module" href="../modules/filters.html">filters</a></li>
+                            <li><a class="module" href="../modules/parseRouteString.html">parseRouteString</a></li>
+                            <li><a class="module" href="../modules/WP.html">WP</a></li>
+                            <li><a class="module" href="../modules/WPRequest.html">WPRequest</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="docs-main" class="apidocs">
+            <div class="content container">
+                <h1 class="file-heading">File: wp.js</h1>
+                
+                <div class="file">
+                    <pre class="code prettyprint linenums">
+                /**
+                 * A WP REST API client for Node.js
+                 *
+                 * @example
+                 *     var wp = new WP({ endpoint: &#x27;http://src.wordpress-develop.dev/wp-json&#x27; });
+                 *     wp.posts().then(function( posts ) {
+                 *         console.log( posts );
+                 *     }).catch(function( err ) {
+                 *         console.error( err );
+                 *     });
+                 *
+                 * @module WP
+                 * @main WP
+                 * @beta
+                 })
+                 */
+                &#x27;use strict&#x27;;
+                
+                var _reduce = require( &#x27;lodash.reduce&#x27; );
+                var extend = require( &#x27;node.extend&#x27; );
+                
+                // All valid routes in API v2 beta 11
+                var defaultRoutes = require( &#x27;./lib/data/endpoint-response.json&#x27; ).routes;
+                var buildRouteTree = require( &#x27;./lib/route-tree&#x27; ).build;
+                var generateEndpointFactories = require( &#x27;./lib/endpoint-factories&#x27; ).generate;
+                
+                // The default endpoint factories will be lazy-loaded by parsing the default
+                // route tree data if a default-mode WP instance is created (i.e. one that
+                // is to be bootstrapped with the handlers for all of the built-in routes)
+                var defaultEndpointFactories;
+                
+                var defaults = {
+                	username: &#x27;&#x27;,
+                	password: &#x27;&#x27;
+                };
+                
+                var apiDefaultNamespace = &#x27;wp/v2&#x27;;
+                
+                // Pull in autodiscovery methods
+                var autodiscovery = require( &#x27;./lib/autodiscovery&#x27; );
+                
+                // Pull in base module constructors
+                var WPRequest = require( &#x27;./lib/constructors/wp-request&#x27; );
+                
+                /**
+                 * The base constructor for the WP API service
+                 *
+                 * @class WP
+                 * @constructor
+                 * @uses WPRequest
+                 * @param {Object} options An options hash to configure the instance
+                 * @param {String} options.endpoint The URI for a WP-API endpoint
+                 * @param {String} [options.username] A WP-API Basic Auth username
+                 * @param {String} [options.password] A WP-API Basic Auth password
+                 * @param {Object} [options.routes]   A dictionary of API routes with which to
+                 *                                    bootstrap the WP instance: the instance will
+                 *                                    be initialized with default routes only
+                 *                                    if this property is omitted
+                 */
+                function WP( options ) {
+                
+                	// Enforce &#x60;new&#x60;
+                	if ( this instanceof WP === false ) {
+                		return new WP( options );
+                	}
+                
+                	// Dictionary to be filled by handlers for default namespaces
+                	this._ns = {};
+                
+                	this._options = extend( {}, defaults, options );
+                
+                	if ( typeof this._options.endpoint !== &#x27;string&#x27; ) {
+                		throw new Error( &#x27;options hash must contain an API endpoint URL string&#x27; );
+                	}
+                
+                	// Ensure trailing slash on endpoint URI
+                	this._options.endpoint = this._options.endpoint.replace( /\/?$/, &#x27;/&#x27; );
+                
+                	return this.bootstrap( options &amp;&amp; options.routes );
+                }
+                
+                /**
+                 * Convenience method for making a new WP instance
+                 *
+                 * @example
+                 * These are equivalent:
+                 *
+                 *     var wp = new WP({ endpoint: &#x27;http://my.blog.url/wp-json&#x27; });
+                 *     var wp = WP.site( &#x27;http://my.blog.url/wp-json&#x27; );
+                 *
+                 * &#x60;WP.site&#x60; can take an optional API root response JSON object to use when
+                 * bootstrapping the client&#x27;s endpoint handler methods: if no second parameter
+                 * is provided, the client instance is assumed to be using the default API
+                 * with no additional plugins and is initialized with handlers for only those
+                 * default API routes.
+                 *
+                 * @example
+                 * These are equivalent:
+                 *
+                 *     // {...} means the JSON output of http://my.blog.url/wp-json
+                 *     var wp = new WP({
+                 *       endpoint: &#x27;http://my.blog.url/wp-json&#x27;,
+                 *       json: {...}
+                 *     });
+                 *     var wp = WP.site( &#x27;http://my.blog.url/wp-json&#x27;, {...} );
+                 *
+                 * @method site
+                 * @static
+                 * @param {String} endpoint The URI for a WP-API endpoint
+                 * @param {Object} routes   The &quot;routes&quot; object from the JSON object returned
+                 *                          from the root API endpoint of a WP site, which should
+                 *                          be a dictionary of route definition objects keyed by
+                 *                          the route&#x27;s regex pattern
+                 * @return {WP} A new WP instance, bound to the provided endpoint
+                 */
+                WP.site = function( endpoint, routes ) {
+                	return new WP({
+                		endpoint: endpoint,
+                		routes: routes
+                	});
+                };
+                
+                /**
+                 * Generate a request against a completely arbitrary endpoint, with no assumptions about
+                 * or mutation of path, filtering, or query parameters. This request is not restricted to
+                 * the endpoint specified during WP object instantiation.
+                 *
+                 * @example
+                 * Generate a request to the explicit URL &quot;http://your.website.com/wp-json/some/custom/path&quot;
+                 *
+                 *     wp.url( &#x27;http://your.website.com/wp-json/some/custom/path&#x27; ).get()...
+                 *
+                 * @method url
+                 * @param {String} url The URL to request
+                 * @return {WPRequest} A WPRequest object bound to the provided URL
+                 */
+                WP.prototype.url = function( url ) {
+                	var options = extend( {}, this._options, {
+                		endpoint: url
+                	});
+                	return new WPRequest( options );
+                };
+                
+                /**
+                 * Generate a query against an arbitrary path on the current endpoint. This is useful for
+                 * requesting resources at custom WP-API endpoints, such as WooCommerce&#x27;s &#x60;/products&#x60;.
+                 *
+                 * @method root
+                 * @param {String} [relativePath] An endpoint-relative path to which to bind the request
+                 * @return {WPRequest} A request object
+                 */
+                WP.prototype.root = function( relativePath ) {
+                	relativePath = relativePath || &#x27;&#x27;;
+                	var options = extend( {}, this._options );
+                	// Request should be
+                	var request = new WPRequest( options );
+                
+                	// Set the path template to the string passed in
+                	request._path = { &#x27;0&#x27;: relativePath };
+                
+                	return request;
+                };
+                
+                WP.prototype.auth = WPRequest.prototype.auth;
+                
+                // Apply the registerRoute method to the prototype
+                WP.prototype.registerRoute = require( &#x27;./lib/wp-register-route&#x27; );
+                
+                /**
+                 * Deduce request methods from a provided API root JSON response object&#x27;s
+                 * routes dictionary, and assign those methods to the current instance. If
+                 * no routes dictionary is provided then the instance will be bootstrapped
+                 * with route handlers for the default API endpoints only.
+                 *
+                 * This method is called automatically during WP instance creation.
+                 *
+                 * @method bootstrap
+                 * @chainable
+                 * @param {Object} routes The &quot;routes&quot; object from the JSON object returned
+                 *                        from the root API endpoint of a WP site, which should
+                 *                        be a dictionary of route definition objects keyed by
+                 *                        the route&#x27;s regex pattern
+                 * @return {WP} The bootstrapped WP client instance (for chaining or assignment)
+                 */
+                WP.prototype.bootstrap = function( routes ) {
+                	var routesByNamespace;
+                	var endpointFactoriesByNamespace;
+                
+                	if ( ! routes ) {
+                		// Auto-generate default endpoint factories if they are not already available
+                		if ( ! defaultEndpointFactories ) {
+                			routesByNamespace = buildRouteTree( defaultRoutes );
+                			defaultEndpointFactories = generateEndpointFactories( routesByNamespace );
+                		}
+                		endpointFactoriesByNamespace = defaultEndpointFactories;
+                	} else {
+                		routesByNamespace = buildRouteTree( routes );
+                		endpointFactoriesByNamespace = generateEndpointFactories( routesByNamespace );
+                	}
+                
+                	// For each namespace for which routes were identified, store the generated
+                	// route handlers on the WP instance&#x27;s private _ns dictionary. These namespaced
+                	// handler methods can be accessed by calling &#x60;.namespace( str )&#x60; on the
+                	// client instance and passing a registered namespace string.
+                	// Handlers for default (wp/v2) routes will also be assigned to the WP client
+                	// instance object itself, for brevity.
+                	return _reduce( endpointFactoriesByNamespace, function( wpInstance, endpointFactories, namespace ) {
+                
+                		// Set (or augment) the route handler factories for this namespace.
+                		wpInstance._ns[ namespace ] = _reduce( endpointFactories, function( nsHandlers, handlerFn, methodName ) {
+                			nsHandlers[ methodName ] = handlerFn;
+                			return nsHandlers;
+                		}, wpInstance._ns[ namespace ] || {
+                			// Create all namespace dictionaries with a direct reference to the main WP
+                			// instance&#x27;s _options property so that things like auth propagate properly
+                			_options: wpInstance._options
+                		} );
+                
+                		// For the default namespace, e.g. &quot;wp/v2&quot; at the time this comment was
+                		// written, ensure all methods are assigned to the root client object itself
+                		// in addition to the private _ns dictionary: this is done so that these
+                		// methods can be called with e.g. &#x60;wp.posts()&#x60; and not the more verbose
+                		// &#x60;wp.namespace( &#x27;wp/v2&#x27; ).posts()&#x60;.
+                		if ( namespace === apiDefaultNamespace ) {
+                			Object.keys( wpInstance._ns[ namespace ] ).forEach(function( methodName ) {
+                				wpInstance[ methodName ] = wpInstance._ns[ namespace ][ methodName ];
+                			});
+                		}
+                
+                		return wpInstance;
+                	}, this );
+                };
+                
+                /**
+                 * Access API endpoint handlers from a particular API namespace object
+                 *
+                 * @example
+                 *
+                 *     wp.namespace( &#x27;myplugin/v1&#x27; ).author()...
+                 *
+                 *     // Default WP endpoint handlers are assigned to the wp instance itself.
+                 *     // These are equivalent:
+                 *     wp.namespace( &#x27;wp/v2&#x27; ).posts()...
+                 *     wp.posts()...
+                 *
+                 * @param {string} namespace A namespace string
+                 * @returns {Object} An object of route endpoint handler methods for the
+                 * routes within the specified namespace
+                 */
+                WP.prototype.namespace = function( namespace ) {
+                	if ( ! this._ns[ namespace ] ) {
+                		throw new Error( &#x27;Error: namespace &#x27; + namespace + &#x27; is not recognized&#x27; );
+                	}
+                	return this._ns[ namespace ];
+                };
+                
+                /**
+                 * Take an arbitrary WordPress site, deduce the WP REST API root endpoint, query
+                 * that endpoint, and parse the response JSON. Use the returned JSON response
+                 * to instantiate a WP instance bound to the provided site.
+                 *
+                 * @method discover
+                 * @static
+                 * @param {string} url A URL within a WP endpoint
+                 * @return {Promise} A promise that resolves to a configured WP instance bound
+                 * to the deduced endpoint, or rejected if an endpoint is not found or the
+                 * library is unable to parse the provided endpoint.
+                 */
+                WP.discover = function( url ) {
+                	// local placeholder for API root URL
+                	var endpoint;
+                
+                	return autodiscovery.getAPIRootFromURL( url )
+                		.then( autodiscovery.locateAPIRootHeader )
+                		.then(function( apiRootURL ) {
+                			// Set the function-scope variable that will be used to instantiate
+                			// the bound WP instance, then pass the URL on
+                			endpoint = apiRootURL;
+                			return apiRootURL;
+                		})
+                		.then( autodiscovery.getRootResponseJSON )
+                		.then(function( apiRootJSON ) {
+                			// Instantiate &amp; bootstrap with the discovered methods
+                			return new WP({
+                				endpoint: endpoint,
+                				routes: apiRootJSON.routes
+                			});
+                		})
+                		.catch(function( err ) {
+                			console.error( &#x27;Autodiscovery failed&#x27; );
+                			console.error( err );
+                			if ( endpoint ) {
+                				console.warn( &#x27;Endpoint detected, proceeding despite error...&#x27; );
+                				console.warn( &#x27;Binding to &#x27; + endpoint + &#x27; and assuming default routes&#x27; );
+                				return new WP.site( endpoint );
+                			}
+                			return null;
+                		});
+                };
+                
+                module.exports = WP;
+                
+                    </pre>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<script src="../assets/vendor/prettify/prettify-min.js"></script>
+<script>prettyPrint();</script>
+<script src="../assets/vendor/jquery.min.js"></script>
+<script src="../assets/js/jquery-offscreen-trigger.js"></script>
+<script src="../assets/js/yui-prettify.js"></script>
+<script src="../assets/../api.js"></script>
+<script src="../assets/js/api-filter.js"></script>
+<script src="../assets/js/api-list.js"></script>
+<script src="../assets/js/api-search.js"></script>
+<script src="../assets/js/apidocs.js"></script>
+</body>
+</html>

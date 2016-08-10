@@ -1,0 +1,1027 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>lib/constructors/wp-request.js - wpapi</title>
+    <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
+    <link rel="shortcut icon" type="image/png" href="../assets/favicon.png">
+    <script src="../assets/vendor/yui-min.js"></script>
+</head>
+<body>
+
+<div id="doc">
+    <header class="main-header">
+        <div class="content">
+            <div class="project-title">
+                    <h1 class="project-name">wpapi</h1> <span class="project-version">0.9.1</span>
+                    <p class="description">A client for interacting with the WordPress REST API</p>
+            </div>
+            <ul class="jump-links">
+                <li><a href="#index" class="index-jump-link">index</a></li>
+                <li><a href="#top" class="top-jump-link">top</a></li>
+            </ul>
+        </div>
+    </header>
+    <div id="bd" class="main-body">
+
+        <div id="docs-sidebar" class="sidebar apidocs">
+            <div id="api-list">
+                <div id="api-tabview" class="tabview">
+                    <ul class="tabs">
+                        <li><a href="#api-classes">Classes</a></li>
+                        <li><a href="#api-modules">Modules</a></li>
+                    </ul>
+            
+                    <div id="api-tabview-filter">
+                        <input type="search" id="api-filter" placeholder="Type to filter APIs">
+                    </div>
+            
+                    <div id="api-tabview-panel">
+                        <ul id="api-classes" class="apis classes">
+                            <li><a class="type" href="../classes/wp.html">wp</a></li>
+                            <li><a class="type" href="../classes/WP.html">WP</a></li>
+                            <li><a class="type" href="../classes/WPRequest.html">WPRequest</a></li>
+                        </ul>
+            
+                        <ul id="api-modules" class="apis modules">
+                            <li><a class="module" href="../modules/autodiscovery.html">autodiscovery</a></li>
+                            <li><a class="module" href="../modules/filters.html">filters</a></li>
+                            <li><a class="module" href="../modules/parseRouteString.html">parseRouteString</a></li>
+                            <li><a class="module" href="../modules/WP.html">WP</a></li>
+                            <li><a class="module" href="../modules/WPRequest.html">WPRequest</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="docs-main" class="apidocs">
+            <div class="content container">
+                <h1 class="file-heading">File: lib/constructors/wp-request.js</h1>
+                
+                <div class="file">
+                    <pre class="code prettyprint linenums">
+                &#x27;use strict&#x27;;
+                /**
+                 * @module WP
+                 * @submodule WPRequest
+                 * @beta
+                 */
+                
+                /*jshint -W079 */// Suppress warning about redefiniton of &#x60;Promise&#x60;
+                var Promise = require( &#x27;es6-promise&#x27; ).Promise;
+                var agent = require( &#x27;superagent&#x27; );
+                var parseLinkHeader = require( &#x27;li&#x27; ).parse;
+                var url = require( &#x27;url&#x27; );
+                var qs = require( &#x27;qs&#x27; );
+                var _reduce = require( &#x27;lodash.reduce&#x27; );
+                var _union = require( &#x27;lodash.union&#x27; );
+                var _unique = require( &#x27;lodash.uniq&#x27; );
+                var extend = require( &#x27;node.extend&#x27; );
+                
+                var alphaNumericSort = require( &#x27;../util/alphanumeric-sort&#x27; );
+                var keyValToObj = require( &#x27;../util/key-val-to-obj&#x27; );
+                
+                /**
+                 * WPRequest is the base API request object constructor
+                 *
+                 * @class WPRequest
+                 * @constructor
+                 * @param {Object} options A hash of options for the WPRequest instance
+                 * @param {String} options.endpoint The endpoint URI for the invoking WP instance
+                 * @param {String} [options.username] A username for authenticating API requests
+                 * @param {String} [options.password] A password for authenticating API requests
+                 */
+                function WPRequest( options ) {
+                	/**
+                	 * Configuration options for the request such as the endpoint for the invoking WP instance
+                	 *
+                	 * @property _options
+                	 * @type Object
+                	 * @private
+                	 * @default {}
+                	 */
+                	this._options = options || {};
+                
+                	/**
+                	 * A hash of query parameters
+                	 * This is used to store the values for supported query parameters like ?_embed
+                	 *
+                	 * @property _params
+                	 * @type Object
+                	 * @private
+                	 * @default {}
+                	 */
+                	this._params = {};
+                
+                	/**
+                	 * Methods supported by this API request instance:
+                	 * Individual endpoint handlers specify their own subset of supported methods
+                	 *
+                	 * @property _supportedMethods
+                	 * @type Array
+                	 * @private
+                	 * @default [ &#x27;head&#x27;, &#x27;get&#x27;, &#x27;put&#x27;, &#x27;post&#x27;, &#x27;delete&#x27; ]
+                	 */
+                	this._supportedMethods = [ &#x27;head&#x27;, &#x27;get&#x27;, &#x27;put&#x27;, &#x27;post&#x27;, &#x27;delete&#x27; ];
+                
+                	/**
+                	 * A hash of values to assemble into the API request path
+                	 * (This will be overwritten by each specific endpoint handler constructor)
+                	 *
+                	 * @property _path
+                	 * @type Object
+                	 * @private
+                	 * @default {}
+                	 */
+                	this._path = {};
+                }
+                
+                // Private helper methods
+                // ======================
+                
+                /** Identity function for use within invokeAndPromisify() */
+                function identity( value ) {
+                	return value;
+                }
+                
+                /**
+                 * Submit the provided superagent request object, invoke a callback (if it was
+                 * provided), and return a promise to the response from the HTTP request.
+                 *
+                 * @param {Object} request A superagent request object
+                 * @param {Function} callback A callback function (optional)
+                 * @param {Function} transform A function to transform the result data
+                 * @return {Promise} A promise to the superagent request
+                 */
+                function invokeAndPromisify( request, callback, transform ) {
+                
+                	return new Promise(function( resolve, reject ) {
+                		// Fire off the result
+                		request.end(function( err, result ) {
+                
+                			// Return the results as a promise
+                			if ( err || result.error ) {
+                				reject( err || result.error );
+                			} else {
+                				resolve( result );
+                			}
+                		});
+                	}).then( transform ).then(function( result ) {
+                		// If a node-style callback was provided, call it, but also return the
+                		// result value for use via the returned Promise
+                		if ( callback &amp;&amp; typeof callback === &#x27;function&#x27; ) {
+                			callback( null, result );
+                		}
+                		return result;
+                	}, function( err ) {
+                		// If a callback was provided, ensure it is called with the error; otherwise
+                		// re-throw the error so that it can be handled by a Promise .catch or .then
+                		if ( callback &amp;&amp; typeof callback === &#x27;function&#x27; ) {
+                			callback( err );
+                		} else {
+                			throw err;
+                		}
+                	});
+                }
+                
+                /**
+                 * Return the body of the request, augmented with pagination information if the
+                 * result is a paged collection.
+                 *
+                 * @method returnBody
+                 * @private
+                 * @param result {Object} The results from the HTTP request
+                 * @return {Object} The &quot;body&quot; property of the result, conditionally augmented with
+                 *                  pagination information if the result is a partial collection.
+                 */
+                function returnBody( result ) {
+                	/* jshint validthis:true */
+                	var endpoint = this._options.endpoint;
+                	return paginateResponse( result, endpoint ).body;
+                }
+                
+                /**
+                 * Extract and return the headers property from a superagent response object
+                 *
+                 * @param {Object} result The results from the HTTP request
+                 * @return {Object} The &quot;headers&quot; property of the result
+                 */
+                function returnHeaders( result ) {
+                	return result.headers;
+                }
+                
+                /**
+                 * Process arrays of taxonomy terms into query parameters.
+                 * All terms listed in the arrays will be required (AND behavior).
+                 *
+                 * This method will not be called with any values unless we are handling
+                 * an endpoint with the filter mixin; however, since parameter handling
+                 * (and therefore &#x60;_renderQuery()&#x60;) are part of WPRequest itself, this
+                 * helper method lives here alongside the code where it is used.
+                 *
+                 * @example
+                 *     prepareTaxonomies({
+                 *         tag: [ &#x27;tag1 &#x27;, &#x27;tag2&#x27; ], // by term slug
+                 *         cat: [ 7 ] // by term ID
+                 *     }) === {
+                 *         tag: &#x27;tag1+tag2&#x27;,
+                 *         cat: &#x27;7&#x27;
+                 *     }
+                 *
+                 * @param {Object} taxonomyFilters An object of taxonomy term arrays, keyed by taxonomy name
+                 * @return {Object} An object of prepareFilters-ready query arg and query param value pairs
+                 */
+                function prepareTaxonomies( taxonomyFilters ) {
+                	if ( ! taxonomyFilters ) {
+                		return {};
+                	}
+                
+                	return _reduce( taxonomyFilters, function( result, terms, key ) {
+                		// Trim whitespace and concatenate multiple terms with +
+                		result[ key ] = terms.map(function( term ) {
+                			// Coerce term into a string so that trim() won&#x27;t fail
+                			return ( term + &#x27;&#x27; ).trim().toLowerCase();
+                		}).join( &#x27;+&#x27; );
+                
+                		return result;
+                	}, {});
+                }
+                
+                /**
+                 * Return an object with any properties with undefined, null or empty string
+                 * values removed.
+                 *
+                 * @example
+                 *
+                 *     populated({
+                 *       a: &#x27;a&#x27;,
+                 *       b: &#x27;&#x27;,
+                 *       c: null
+                 *     }); // { a: &#x27;a&#x27; }
+                 *
+                 * @param  {Object} obj An object of key/value pairs
+                 * @return {Object}     That object with all empty values removed
+                 */
+                function populated( obj ) {
+                	if ( ! obj ) {
+                		return obj;
+                	}
+                	return _reduce( obj, function( values, val, key ) {
+                		if ( val !== undefined &amp;&amp; val !== null &amp;&amp; val !== &#x27;&#x27; ) {
+                			values[ key ] = val;
+                		}
+                		return values;
+                	}, {});
+                }
+                
+                /**
+                 * Assert whether a provided URL component is &quot;valid&quot; by checking it against
+                 * an array of registered path component validator methods for that level of
+                 * the URL path.
+                 *
+                 * @param {object[]} levelDefinitions An array of Level Definition objects
+                 * @param {string}   levelContents    The URL path string that has been specified
+                 *                                    for use on the provided level
+                 * @returns {boolean} Whether the provided input matches any of the provided
+                 * level validation functions
+                 */
+                function validatePathLevel( levelDefinitions, levelContents ) {
+                	// One &quot;level&quot; may have multiple options, as a route tree is a branching
+                	// structure. We consider a level &quot;valid&quot; if the provided levelContents
+                	// match any of the available validators.
+                	var valid = levelDefinitions.reduce(function( anyOptionValid, levelOption ) {
+                		if ( ! levelOption.validate ) {
+                			// If there is no validator function, the level is implicitly valid
+                			return true;
+                		}
+                		return anyOptionValid || levelOption.validate( levelContents );
+                	}, false );
+                
+                	if ( ! valid ) {
+                		throw new Error([
+                			&#x27;Invalid path component:&#x27;,
+                			levelContents,
+                			// awkward pluralization support:
+                			&#x27;does not match&#x27; + ( levelDefinitions.length &gt; 1 ? &#x27; any of&#x27; : &#x27;&#x27; ),
+                			levelDefinitions.reduce(function( components, levelOption ) {
+                				return components.concat( levelOption.component );
+                			}, [] ).join( &#x27;, &#x27; )
+                		].join( &#x27; &#x27; ) );
+                	}
+                }
+                
+                // Pagination-Related Helpers
+                // ==========================
+                
+                /**
+                 * Combine the API endpoint root URI and link URI into a valid request URL.
+                 * Endpoints are generally a full path to the JSON API&#x27;s root endpoint, such
+                 * as &#x60;website.com/wp-json&#x60;: the link headers, however, are returned as root-
+                 * relative paths. Concatenating these would generate a URL such as
+                 * &#x60;website.com/wp-json/wp-json/posts?page=2&#x60;: we must intelligently merge the
+                 * URI strings in order to generate a valid new request URL.
+                 *
+                 * @param endpoint {String} The endpoint URL for the REST API root
+                 * @param linkPath {String} A root-relative link path to an API request
+                 * @returns {String} The full URL path to the provided link
+                 */
+                function mergeUrl( endpoint, linkPath ) {
+                	var request = url.parse( endpoint );
+                	linkPath = url.parse( linkPath, true );
+                
+                	// Overwrite relevant request URL object properties with the link&#x27;s values:
+                	// Setting these three values from the link will ensure proper URL generation
+                	request.query = linkPath.query;
+                	request.search = linkPath.search;
+                	request.pathname = linkPath.pathname;
+                
+                	// Reassemble and return the merged URL
+                	return url.format( request );
+                }
+                
+                /**
+                 * If the response is not paged, return the body as-is. If pagination
+                 * information is present in the response headers, parse those headers into
+                 * a custom &#x60;_paging&#x60; property on the response body. &#x60;_paging&#x60; contains links
+                 * to the previous and next pages in the collection, as well as metadata
+                 * about the size and number of pages in the collection.
+                 *
+                 * The structure of the &#x60;_paging&#x60; property is as follows:
+                 *
+                 * - &#x60;total&#x60; {Integer} The total number of records in the collection
+                 * - &#x60;totalPages&#x60; {Integer} The number of pages available
+                 * - &#x60;links&#x60; {Object} The parsed &quot;links&quot; headers, separated into individual URI strings
+                 * - &#x60;next&#x60; {WPRequest} A WPRequest object bound to the &quot;next&quot; page (if page exists)
+                 * - &#x60;prev&#x60; {WPRequest} A WPRequest object bound to the &quot;previous&quot; page (if page exists)
+                 *
+                 * @param result {Object} The response object from the HTTP request
+                 * @param endpoint {String} The base URL of the requested API endpoint
+                 * @returns {Object} The body of the HTTP request, conditionally augmented with
+                 *                   pagination metadata
+                 */
+                function paginateResponse( result, endpoint ) {
+                	if ( ! result.headers || ! result.headers[ &#x27;x-wp-totalpages&#x27; ] ) {
+                		// No headers: return as-is
+                		return result;
+                	}
+                
+                	var totalPages = result.headers[ &#x27;x-wp-totalpages&#x27; ];
+                
+                	if ( ! totalPages || totalPages === &#x27;0&#x27; ) {
+                		// No paging: return as-is
+                		return result;
+                	}
+                
+                	// Decode the link header object
+                	var links = result.headers.link ? parseLinkHeader( result.headers.link ) : {};
+                
+                	// Store pagination data from response headers on the response collection
+                	result.body._paging = {
+                		total: result.headers[ &#x27;x-wp-total&#x27; ],
+                		totalPages: totalPages,
+                		links: links
+                	};
+                
+                	// Create a WPRequest instance pre-bound to the &quot;next&quot; page, if available
+                	if ( links.next ) {
+                		result.body._paging.next = new WPRequest({
+                			endpoint: mergeUrl( endpoint, links.next )
+                		});
+                	}
+                
+                	// Create a WPRequest instance pre-bound to the &quot;prev&quot; page, if available
+                	if ( links.prev ) {
+                		result.body._paging.prev = new WPRequest({
+                			endpoint: mergeUrl( endpoint, links.prev )
+                		});
+                	}
+                
+                	return result;
+                }
+                
+                // Prototype Methods
+                // =================
+                
+                /**
+                 * Process the endpoint query&#x27;s filter objects into a valid query string.
+                 * Nested objects and Array properties are rendered with indexed array syntax.
+                 *
+                 * @example
+                 *     _renderQuery({ p1: &#x27;val1&#x27;, p2: &#x27;val2&#x27; });  // ?p1=val1&amp;p2=val2
+                 *     _renderQuery({ obj: { prop: &#x27;val&#x27; } });    // ?obj[prop]=val
+                 *     _renderQuery({ arr: [ &#x27;val1&#x27;, &#x27;val2&#x27; ] }); // ?arr[0]=val1&amp;arr[1]=val2
+                 *
+                 * @private
+                 *
+                 * @method _renderQuery
+                 * @return {String} A query string representing the specified filter parameters
+                 */
+                WPRequest.prototype._renderQuery = function() {
+                	// Build the full query parameters object
+                	var queryParams = extend( {}, populated( this._params ) );
+                
+                	// Prepare any taxonomies and merge with other filter values
+                	var taxonomies = prepareTaxonomies( this._taxonomyFilters );
+                	queryParams.filter = extend( {}, populated( this._filters ), taxonomies );
+                
+                	// Parse query parameters object into a query string, sorting the object
+                	// properties by alphabetical order (consistent property ordering can make
+                	// for easier caching of request URIs)
+                	var queryString = qs.stringify( queryParams, { arrayFormat: &#x27;brackets&#x27; } )
+                		.split( &#x27;&amp;&#x27; )
+                		.sort()
+                		.join( &#x27;&amp;&#x27; );
+                
+                	// Prepend a &quot;?&quot; if a query is present, and return
+                	return ( queryString === &#x27;&#x27; ) ? &#x27;&#x27; : &#x27;?&#x27; + queryString;
+                };
+                
+                /**
+                 * Set a component of the resource URL itself (as opposed to a query parameter)
+                 *
+                 * If a path component has already been set at this level, throw an error:
+                 * requests are meant to be transient, so any re-writing of a previously-set
+                 * path part value is likely to be a mistake.
+                 *
+                 * @method setPathPart
+                 * @chainable
+                 * @param {Number|String} level A &quot;level&quot; of the path to set, e.g. &quot;1&quot; or &quot;2&quot;
+                 * @param {Number|String} val   The value to set at that path part level
+                 * @return {WPRequest} The WPRequest instance (for chaining)
+                 */
+                WPRequest.prototype.setPathPart = function( level, val ) {
+                	if ( this._path[ level ] ) {
+                		throw new Error( &#x27;Cannot overwrite value &#x27; + this._path[ level ] );
+                	}
+                	this._path[ level ] = val;
+                
+                	return this;
+                };
+                
+                /**
+                 * Validate whether the specified path parts are valid for this endpoint
+                 *
+                 * &quot;Path parts&quot; are non-query-string URL segments, like &quot;some&quot; &quot;path&quot; in the URL
+                 * &#x60;mydomain.com/some/path?and=a&amp;query=string&amp;too&#x60;. Because a well-formed path
+                 * is necessary to execute a successful API request, we throw an error if the
+                 * user has omitted a value (such as &#x60;/some/[missing component]/url&#x60;) or has
+                 * provided a path part value that does not match the regular expression the
+                 * API uses to goven that segment.
+                 *
+                 * @method validatePath
+                 * @chainable
+                 * @returns {WPRequest} The WPRequest instance (for chaining), if no errors were found
+                 */
+                WPRequest.prototype.validatePath = function() {
+                	// Iterate through all _specified_ levels of this endpoint
+                	var specifiedLevels = Object.keys( this._path )
+                		.map(function( level ) {
+                			return parseInt( level, 10 );
+                		})
+                		.filter(function( pathPartKey ) {
+                			return ! isNaN( pathPartKey );
+                		});
+                
+                	var maxLevel = Math.max.apply( null, specifiedLevels );
+                
+                	// Ensure that all necessary levels are specified
+                	var path = [];
+                	var valid = true;
+                
+                	for ( var level = 0; level &lt;= maxLevel; level++ ) {
+                
+                		if ( ! this._levels || ! this._levels[ level ] ) {
+                			continue;
+                		}
+                
+                		if ( this._path[ level ] ) {
+                			// Validate the provided path level against all available path validators
+                			validatePathLevel( this._levels[ level ], this._path[ level ] );
+                
+                			// Add the path value to the array
+                			path.push( this._path[ level ] );
+                		} else {
+                			path.push( &#x27; ??? &#x27; );
+                			valid = false;
+                		}
+                	}
+                
+                	if ( ! valid ) {
+                		throw new Error( &#x27;Incomplete URL! Missing component: &#x27; + path.join( &#x27;/&#x27; ) );
+                	}
+                
+                	return this;
+                };
+                
+                /**
+                 * Set a parameter to render into the final query URI.
+                 *
+                 * @method param
+                 * @chainable
+                 * @param {String|Object} props The name of the parameter to set, or an object containing
+                 *                              parameter keys and their corresponding values
+                 * @param {String|Number|Array} [value] The value of the parameter being set
+                 * @param {Boolean} [merge] Whether to merge the value (true) or replace it (false, default)
+                 * @return {WPRequest} The WPRequest instance (for chaining)
+                 */
+                WPRequest.prototype.param = function( props, value, merge ) {
+                	merge = merge || false;
+                
+                	if ( ! props || typeof props === &#x27;string&#x27; &amp;&amp; value === undefined ) {
+                		// We have no property to set, or no value to set for that property
+                		return this;
+                	}
+                
+                	// We can use the same iterator function below to handle explicit key-value
+                	// pairs if we convert them into to an object we can iterate over:
+                	if ( typeof props === &#x27;string&#x27; ) {
+                		props = keyValToObj( props, value );
+                	}
+                
+                	// Iterate through the properties
+                	Object.keys( props ).forEach(function( key ) {
+                		var value = props[ key ];
+                		var currentVal = this._params[ key ];
+                
+                		// Simple case: setting for the first time, or not merging
+                		if ( ! currentVal || ! merge ) {
+                
+                			// Arrays should be de-duped and sorted
+                			if ( Array.isArray( value ) ) {
+                				value = _unique( value ).sort( alphaNumericSort );
+                			}
+                
+                			// Set the value
+                			this._params[ key ] = value;
+                
+                			// Continue
+                			return;
+                		}
+                
+                		// value and currentVal must both be arrays in order to merge
+                		if ( ! Array.isArray( currentVal ) ) {
+                			currentVal = [ currentVal ];
+                		}
+                
+                		if ( ! Array.isArray( value ) ) {
+                			value = [ value ];
+                		}
+                
+                		// Concat the new values onto the old (and sort)
+                		this._params[ key ] = _union( currentVal, value ).sort( alphaNumericSort );
+                	}.bind( this ));
+                
+                	return this;
+                };
+                
+                /**
+                 * Set the context of the request. Used primarily to expose private values on a request
+                 * object, by setting the context to &quot;edit&quot;.
+                 *
+                 * @method context
+                 * @chainable
+                 * @param {String} context The context to set on the request
+                 * @return {WPRequest} The WPRequest instance (for chaining)
+                 */
+                WPRequest.prototype.context = function( context ) {
+                	if ( context === &#x27;edit&#x27; ) {
+                		// Force basic authentication for edit context
+                		this.auth();
+                	}
+                	return this.param( &#x27;context&#x27;, context );
+                };
+                
+                /**
+                 * Convenience wrapper for &#x60;.context( &#x27;edit&#x27; )&#x60;
+                 *
+                 * @method edit
+                 * @chainable
+                 * @return {WPRequest} The WPRequest instance (for chaining)
+                 */
+                WPRequest.prototype.edit = function() {
+                	return this.context( &#x27;edit&#x27; );
+                };
+                
+                /**
+                 * Return embedded resources as part of the response payload.
+                 *
+                 * @method embed
+                 * @chainable
+                 * @return {WPRequest} The WPRequest instance (for chaining)
+                 */
+                WPRequest.prototype.embed = function() {
+                	return this.param( &#x27;_embed&#x27;, true );
+                };
+                
+                // HTTP Transport Prototype Methods
+                // ================================
+                
+                /**
+                 * Verify that the current request object supports a given HTTP verb
+                 *
+                 * @private
+                 *
+                 * @method _checkMethodSupport
+                 * @param {String} method An HTTP method to check (&#x27;get&#x27;, &#x27;post&#x27;, etc)
+                 * @return true iff the method is within this._supportedMethods
+                 */
+                WPRequest.prototype._checkMethodSupport = function( method ) {
+                	if ( this._supportedMethods.indexOf( method.toLowerCase() ) === -1 ) {
+                		throw new Error(
+                			&#x27;Unsupported method; supported methods are: &#x27; +
+                			this._supportedMethods.join( &#x27;, &#x27; )
+                		);
+                	}
+                
+                	return true;
+                };
+                
+                /**
+                 * Validate &amp; assemble a path string from the request object&#x27;s _path
+                 *
+                 * @private
+                 *
+                 * @method _renderPath
+                 * @return {String} The rendered path
+                 */
+                WPRequest.prototype._renderPath = function() {
+                	// Call validatePath: if the provided path components are not well-formed,
+                	// an error will be thrown
+                	this.validatePath();
+                
+                	var pathParts = this._path;
+                	var orderedPathParts = Object.keys( pathParts )
+                		.sort(function( a, b ) {
+                			var intA = parseInt( a, 10 );
+                			var intB = parseInt( b, 10 );
+                			return intA - intB;
+                		})
+                		.map(function( pathPartKey ) {
+                			return pathParts[ pathPartKey ];
+                		});
+                
+                	// Combine all parts of the path together, filtered to omit any components
+                	// that are unspecified or empty strings, to create the full path template
+                	var path = [
+                		this._namespace
+                	].concat( orderedPathParts ).filter( identity ).join( &#x27;/&#x27; );
+                
+                	return path;
+                };
+                
+                /**
+                 * Parse the request&#x27;s instance properties into a WordPress API request URI
+                 *
+                 * @private
+                 *
+                 * @method _renderURI
+                 * @return {String} The URI for the HTTP request to be sent
+                 */
+                WPRequest.prototype._renderURI = function() {
+                	// Render the path to a string
+                	var path = this._renderPath();
+                
+                	// Render the query string
+                	var queryStr = this._renderQuery();
+                
+                	return this._options.endpoint + path + queryStr;
+                };
+                
+                /**
+                 * Conditionally set basic authentication on a server request object
+                 *
+                 * @method _auth
+                 * @private
+                 * @param {Object} request A superagent request object
+                 * @param {Boolean} forceAuthentication whether to force authentication on the request
+                 * @param {Object} A superagent request object, conditionally configured to use basic auth
+                 */
+                WPRequest.prototype._auth = function( request, forceAuthentication ) {
+                	// If we&#x27;re not supposed to authenticate, don&#x27;t even start
+                	if ( ! forceAuthentication &amp;&amp; ! this._options.auth &amp;&amp; ! this._options.nonce ) {
+                		return request;
+                	}
+                
+                	// Enable nonce in options for Cookie authentication http://wp-api.org/guides/authentication.html
+                	if ( this._options.nonce ) {
+                		request.set( &#x27;X-WP-Nonce&#x27;, this._options.nonce );
+                		return request;
+                	}
+                
+                	// Retrieve the username &amp; password from the request options if they weren&#x27;t provided
+                	var username = username || this._options.username;
+                	var password = password || this._options.password;
+                
+                	// If no username or no password, can&#x27;t authenticate
+                	if ( ! username || ! password ) {
+                		return request;
+                	}
+                
+                	// Can authenticate: set basic auth parameters on the request
+                	return request.auth( username, password );
+                };
+                
+                // Chaining methods
+                // ================
+                
+                /**
+                 * Set the namespace of the request, e.g. to specify the API root for routes
+                 * registered by wp core v2 (&quot;wp/v2&quot;) or by any given plugin. Any previously-
+                 * set namespace will be overwritten by subsequent calls to the method.
+                 *
+                 * @method namespace
+                 * @chainable
+                 * @param {String} namespace A namespace string, e.g. &quot;wp/v2&quot;
+                 * @return {WPRequest} The WPRequest instance (for chaining)
+                 */
+                WPRequest.prototype.namespace = function( namespace ) {
+                	this._namespace = namespace;
+                	return this;
+                };
+                
+                /**
+                 * Set a requst to use authentication, and optionally provide auth credentials
+                 *
+                 * @example
+                 * If auth credentials were already specified when the WP instance was created, calling
+                 * &#x60;.auth&#x60; on the request chain will set that request to use the existing credentials:
+                 *
+                 *     request.auth().get...
+                 *
+                 * Alternatively, a username &amp; password can be explicitly passed into &#x60;.auth&#x60;:
+                 *
+                 *     request.auth( &#x27;username&#x27;, &#x27;password&#x27; ).get...
+                 *
+                 * @method auth
+                 * @chainable
+                 * @param {String|Object} [usrOrObj] A username string for basic authentication,
+                 *                                   or an object with &#x27;username&#x27; and &#x27;password&#x27;
+                 *                                   string properties
+                 * @param {String}        [password] A user password string for basic authentication
+                 *                                   (ignored if usrOrObj is an object)
+                 * @return {WPRequest} The WPRequest instance (for chaining)
+                 */
+                WPRequest.prototype.auth = function( usrOrObj, password ) {
+                	if ( typeof usrOrObj === &#x27;object&#x27; ) {
+                		if ( typeof usrOrObj.username === &#x27;string&#x27; ) {
+                			this._options.username = usrOrObj.username;
+                		}
+                
+                		if ( typeof usrOrObj.password === &#x27;string&#x27; ) {
+                			this._options.password = usrOrObj.password;
+                		}
+                	} else {
+                		if ( typeof usrOrObj === &#x27;string&#x27; ) {
+                			this._options.username = usrOrObj;
+                		}
+                
+                		if ( typeof password === &#x27;string&#x27; ) {
+                			this._options.password = password;
+                		}
+                	}
+                
+                	// Set the &quot;auth&quot; options flag that will force authentication on this request
+                	this._options.auth = true;
+                
+                	return this;
+                };
+                
+                /**
+                 * Specify a file or a file buffer to attach to the request, for use when
+                 * creating a new Media item
+                 *
+                 * @example within a server context
+                 *
+                 *     wp.media()
+                 *       // Pass .file() the file system path to a file to upload
+                 *       .file( &#x27;/path/to/file.jpg&#x27; )
+                 *       .create({})...
+                 *
+                 * @example within a browser context
+                 *
+                 *     wp.media()
+                 *       // Pass .file() the file reference from an HTML file input
+                 *       .file( document.querySelector( &#x27;input[type=&quot;file&quot;]&#x27; ).files[0] )
+                 *       .create({})...
+                 *
+                 * @method file
+                 * @param {string|object} file   A path to a file (in Node) or an file object
+                 *                               (Node or Browser) to attach to the request
+                 * @param {string}        [name] An (optional) filename to use for the file
+                 * @returns {[type]} [description]
+                 */
+                WPRequest.prototype.file = function( file, name ) {
+                	this._attachment = file;
+                	// Explicitly set to undefined if not provided, to override any previously-
+                	// set attachment name property that might exist from a prior &#x60;.file()&#x60; call
+                	this._attachmentName = name ? name : undefined;
+                	return this;
+                };
+                
+                // HTTP Methods: Private HTTP-verb versions
+                // ========================================
+                
+                /**
+                 * @method _httpGet
+                 * @async
+                 * @private
+                 * @param {Function} [callback] A callback to invoke with the results of the GET request
+                 * @return {Promise} A promise to the results of the HTTP request
+                 */
+                WPRequest.prototype._httpGet = function( callback ) {
+                	this._checkMethodSupport( &#x27;get&#x27; );
+                	var url = this._renderURI();
+                
+                	var request = this._auth( agent.get( url ) );
+                
+                	return invokeAndPromisify( request, callback, returnBody.bind( this ) );
+                };
+                
+                /**
+                 * Invoke an HTTP &quot;POST&quot; request against the provided endpoint
+                 * @method _httpPost
+                 * @async
+                 * @private
+                 * @param {Object} data The data for the POST request
+                 * @param {Function} [callback] A callback to invoke with the results of the POST request
+                 * @return {Promise} A promise to the results of the HTTP request
+                 */
+                WPRequest.prototype._httpPost = function( data, callback ) {
+                	this._checkMethodSupport( &#x27;post&#x27; );
+                	var url = this._renderURI();
+                	data = data || {};
+                	var request = this._auth( agent.post( url ), true );
+                
+                	if ( this._attachment ) {
+                		// Data must be form-encoded alongside image attachment
+                		request = _reduce( data, function( req, value, key ) {
+                			return req.field( key, value );
+                		}, request.attach( &#x27;file&#x27;, this._attachment, this._attachmentName ) );
+                	} else {
+                		request = request.send( data );
+                	}
+                
+                	return invokeAndPromisify( request, callback, returnBody.bind( this ) );
+                };
+                
+                /**
+                 * @method _httpPut
+                 * @async
+                 * @private
+                 * @param {Object} data The data for the PUT request
+                 * @param {Function} [callback] A callback to invoke with the results of the PUT request
+                 * @return {Promise} A promise to the results of the HTTP request
+                 */
+                WPRequest.prototype._httpPut = function( data, callback ) {
+                	this._checkMethodSupport( &#x27;put&#x27; );
+                	var url = this._renderURI();
+                	data = data || {};
+                
+                	var request = this._auth( agent.put( url ), true ).send( data );
+                
+                	return invokeAndPromisify( request, callback, returnBody.bind( this ) );
+                };
+                
+                /**
+                 * @method _httpDelete
+                 * @async
+                 * @private
+                 * @param {Object} [data] Data to send along with the DELETE request
+                 * @param {Function} [callback] A callback to invoke with the results of the DELETE request
+                 * @return {Promise} A promise to the results of the HTTP request
+                 */
+                WPRequest.prototype._httpDelete = function( data, callback ) {
+                	if ( ! callback &amp;&amp; typeof data === &#x27;function&#x27; ) {
+                		callback = data;
+                		data = null;
+                	}
+                	this._checkMethodSupport( &#x27;delete&#x27; );
+                	var url = this._renderURI();
+                	var request = this._auth( agent.del( url ), true ).send( data );
+                
+                	return invokeAndPromisify( request, callback, returnBody.bind( this ) );
+                };
+                
+                /**
+                 * @method _httpHead
+                 * @async
+                 * @private
+                 * @param {Function} [callback] A callback to invoke with the results of the HEAD request
+                 * @return {Promise} A promise to the header results of the HTTP request
+                 */
+                WPRequest.prototype._httpHead = function( callback ) {
+                	this._checkMethodSupport( &#x27;head&#x27; );
+                	var url = this._renderURI();
+                	var request = this._auth( agent.head( url ) );
+                
+                	return invokeAndPromisify( request, callback, returnHeaders );
+                };
+                
+                // HTTP Methods: Public Interface
+                // ==============================
+                
+                /** @deprecated Use .create() */
+                WPRequest.prototype.post = function( data, callback ) {
+                	return this._httpPost( data, callback );
+                };
+                
+                /** @deprecated Use .update() */
+                WPRequest.prototype.put = function( data, callback ) {
+                	return this._httpPut( data, callback );
+                };
+                
+                /**
+                 * @method get
+                 * @async
+                 * @param {Function} [callback] A callback to invoke with the results of the GET request
+                 * @return {Promise} A promise to the results of the HTTP request
+                 */
+                WPRequest.prototype.get = function( callback ) {
+                	return this._httpGet( callback );
+                };
+                
+                /**
+                 * Create a HEAD request against a site
+                 * @method headers
+                 * @async
+                 * @param {Function} [callback] A callback to invoke with the results of the HEAD request
+                 * @return {Promise} A promise to the header results of the HTTP request
+                 */
+                WPRequest.prototype.headers = function( callback ) {
+                	return this._httpHead( callback );
+                };
+                
+                /**
+                 * Invoke an HTTP &quot;POST&quot; request against the provided endpoint
+                 *
+                 * This is the public interface creating for POST requests
+                 *
+                 * @method create
+                 * @async
+                 * @param {Object} data The data for the POST request
+                 * @param {Function} [callback] A callback to invoke with the results of the POST request
+                 * @return {Promise} A promise to the results of the HTTP request
+                 */
+                WPRequest.prototype.create = function( data, callback ) {
+                	return this._httpPost( data, callback );
+                };
+                
+                /**
+                 * @method _httpPut
+                 * @async
+                 * @private
+                 * @param {Object} data The data for the PUT request
+                 * @param {Function} [callback] A callback to invoke with the results of the PUT request
+                 * @return {Promise} A promise to the results of the HTTP request
+                 */
+                WPRequest.prototype.update = function( data, callback ) {
+                	return this._httpPut( data, callback );
+                };
+                
+                /**
+                 * @method delete
+                 * @async
+                 * @param {Object} [data] Data to send along with the DELETE request
+                 * @param {Function} [callback] A callback to invoke with the results of the DELETE request
+                 * @return {Promise} A promise to the results of the HTTP request
+                 */
+                WPRequest.prototype.delete = function( data, callback ) {
+                	return this._httpDelete( data, callback );
+                };
+                
+                /**
+                 * Calling .then on a query chain will invoke the query as a GET and return a promise
+                 *
+                 * @method then
+                 * @async
+                 * @param {Function} [successCallback] A callback to handle the data returned from the GET request
+                 * @param {Function} [failureCallback] A callback to handle any errors encountered by the request
+                 * @return {Promise} A promise to the results of the HTTP request
+                 */
+                WPRequest.prototype.then = function( successCallback, failureCallback ) {
+                	return this._httpGet().then( successCallback, failureCallback );
+                };
+                
+                module.exports = WPRequest;
+                
+                    </pre>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<script src="../assets/vendor/prettify/prettify-min.js"></script>
+<script>prettyPrint();</script>
+<script src="../assets/vendor/jquery.min.js"></script>
+<script src="../assets/js/jquery-offscreen-trigger.js"></script>
+<script src="../assets/js/yui-prettify.js"></script>
+<script src="../assets/../api.js"></script>
+<script src="../assets/js/api-filter.js"></script>
+<script src="../assets/js/api-list.js"></script>
+<script src="../assets/js/api-search.js"></script>
+<script src="../assets/js/apidocs.js"></script>
+</body>
+</html>
