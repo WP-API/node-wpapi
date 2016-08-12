@@ -18,3 +18,4 @@ twitter_username: kadamwhite
 
 # Build settings
 markdown: kramdown
+exclude: ["*.combyne"]

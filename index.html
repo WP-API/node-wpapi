@@ -11,90 +11,115 @@ layout: default
 <p>To get started, <code>npm install wpapi</code> or <a href="https://wp-api.github.io/node-wpapi/wpapi.zip">download the browser build</a> and check out &quot;Installation&quot; and &quot;Using the Client&quot; below.</p>
 
 
-  <h2 class="page-heading">Readme Contents</h2>
+  <section>
 
-  <ol class="post-list">
-    <li>
-      <a class="post-link" href="{{ "/installation" | prepend: site.baseurl }}">Installation</a>
-      <ul>
+    <h2 class="page-heading">Readme &amp; Getting Started</h2>
+
+    <ol class="post-list">
+      <li>
+        <a class="post-link" href="{{ "/<< section.slug >>" | prepend: site.baseurl }}">Installation</a>
+        <ul>
+          <li>
+            <a class="post-sublink" href="{{ "/installation#install-with-npm" | prepend: site.baseurl }}">Install with NPM</a>
+          </li>
+          <li>
+            <a class="post-sublink" href="{{ "/installation#download-the-umd-bundle" | prepend: site.baseurl }}">Download the UMD Bundle</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a class="post-link" href="{{ "/<< section.slug >>" | prepend: site.baseurl }}">Using the Client</a>
+        <ul>
+          <li>
+            <a class="post-sublink" href="{{ "/using-the-client#self-signed-insecure-https-certificates" | prepend: site.baseurl }}">Self-signed (Insecure) HTTPS Certificates</a>
+          </li>
+          <li>
+            <a class="post-sublink" href="{{ "/using-the-client#auto-discovery" | prepend: site.baseurl }}">Auto-Discovery</a>
+          </li>
+          <li>
+            <a class="post-sublink" href="{{ "/using-the-client#bootstrapping" | prepend: site.baseurl }}">Bootstrapping</a>
+          </li>
+          <li>
+            <a class="post-sublink" href="{{ "/using-the-client#creating-posts" | prepend: site.baseurl }}">Creating Posts</a>
+          </li>
+          <li>
+            <a class="post-sublink" href="{{ "/using-the-client#updating-posts" | prepend: site.baseurl }}">Updating Posts</a>
+          </li>
+          <li>
+            <a class="post-sublink" href="{{ "/using-the-client#requesting-different-resources" | prepend: site.baseurl }}">Requesting Different Resources</a>
+          </li>
+          <li>
+            <a class="post-sublink" href="{{ "/using-the-client#filtering-collections" | prepend: site.baseurl }}">Filtering Collections</a>
+          </li>
+          <li>
+            <a class="post-sublink" href="{{ "/using-the-client#uploading-media" | prepend: site.baseurl }}">Uploading Media</a>
+          </li>
+          <li>
+            <a class="post-sublink" href="{{ "/using-the-client#custom-routes" | prepend: site.baseurl }}">Custom Routes</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a class="post-link" href="{{ "/<< section.slug >>" | prepend: site.baseurl }}">Embedding Data</a>
+      </li>
+      <li>
+        <a class="post-link" href="{{ "/<< section.slug >>" | prepend: site.baseurl }}">Working with Paged Response Data</a>
+        <ul>
+          <li>
+            <a class="post-sublink" href="{{ "/working-with-paged-response-data#using-pagination-headers" | prepend: site.baseurl }}">Using Pagination Headers</a>
+          </li>
+          <li>
+            <a class="post-sublink" href="{{ "/working-with-paged-response-data#requesting-a-specific-page" | prepend: site.baseurl }}">Requesting a Specific Page</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a class="post-link" href="{{ "/<< section.slug >>" | prepend: site.baseurl }}">Authentication</a>
+        <ul>
+          <li>
+            <a class="post-sublink" href="{{ "/authentication#basic-authentication" | prepend: site.baseurl }}">Basic Authentication</a>
+          </li>
+          <li>
+            <a class="post-sublink" href="{{ "/authentication#manually-forcing-authentication" | prepend: site.baseurl }}">Manually forcing authentication</a>
+          </li>
+          <li>
+            <a class="post-sublink" href="{{ "/authentication#cookie-authentication" | prepend: site.baseurl }}">Cookie Authentication</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a class="post-link" href="{{ "/<< section.slug >>" | prepend: site.baseurl }}">Issues</a>
+      </li>
+      <li>
+        <a class="post-link" href="{{ "/<< section.slug >>" | prepend: site.baseurl }}">Contributing</a>
+      </li>
+      <li>
+        <a class="post-link" href="{{ "/<< section.slug >>" | prepend: site.baseurl }}">API Documentation</a>
+      </li>
+    </ol>
+
+  </section>
+
+  <section>
+    <h2 class="page-heading">User Guides</h1>
+
+    <p>Don't see the topic you're looking for? <a href="https://github.com/WP-API/node-wpapi/issues">Open an issue</a> to request a guide, or <a href="https://github.com/WP-API/node-wpapi/tree/master/documentation/_posts">submit your own</a> with a pull request!
+
+    <ul class="post-list">
+      {% for post in site.posts %}
         <li>
-          <a class="post-sublink" href="{{ "/installation#install-with-npm" | prepend: site.baseurl }}">Install with NPM</a>
+          <span class="post-meta">{{ post.date | date: "%b %-d, %Y" }}</span>
+          <span class="post-link">
+            <a href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
+            by
+            {% if post.author_web %}<a href="{{ post.author_web }}">{% endif %}
+              {{ post.author }}
+            {% if post.author_web %}</a>{% endif %}
+          </span>
         </li>
-        <li>
-          <a class="post-sublink" href="{{ "/installation#download-the-umd-bundle" | prepend: site.baseurl }}">Download the UMD Bundle</a>
-        </li>
-      </ul>
-    </li>
-    <li>
-      <a class="post-link" href="{{ "/using-the-client" | prepend: site.baseurl }}">Using the Client</a>
-      <ul>
-        <li>
-          <a class="post-sublink" href="{{ "/using-the-client#self-signed-insecure-https-certificates" | prepend: site.baseurl }}">Self-signed (Insecure) HTTPS Certificates</a>
-        </li>
-        <li>
-          <a class="post-sublink" href="{{ "/using-the-client#auto-discovery" | prepend: site.baseurl }}">Auto-Discovery</a>
-        </li>
-        <li>
-          <a class="post-sublink" href="{{ "/using-the-client#bootstrapping" | prepend: site.baseurl }}">Bootstrapping</a>
-        </li>
-        <li>
-          <a class="post-sublink" href="{{ "/using-the-client#creating-posts" | prepend: site.baseurl }}">Creating Posts</a>
-        </li>
-        <li>
-          <a class="post-sublink" href="{{ "/using-the-client#updating-posts" | prepend: site.baseurl }}">Updating Posts</a>
-        </li>
-        <li>
-          <a class="post-sublink" href="{{ "/using-the-client#requesting-different-resources" | prepend: site.baseurl }}">Requesting Different Resources</a>
-        </li>
-        <li>
-          <a class="post-sublink" href="{{ "/using-the-client#filtering-collections" | prepend: site.baseurl }}">Filtering Collections</a>
-        </li>
-        <li>
-          <a class="post-sublink" href="{{ "/using-the-client#uploading-media" | prepend: site.baseurl }}">Uploading Media</a>
-        </li>
-        <li>
-          <a class="post-sublink" href="{{ "/using-the-client#custom-routes" | prepend: site.baseurl }}">Custom Routes</a>
-        </li>
-      </ul>
-    </li>
-    <li>
-      <a class="post-link" href="{{ "/embedding-data" | prepend: site.baseurl }}">Embedding Data</a>
-    </li>
-    <li>
-      <a class="post-link" href="{{ "/working-with-paged-response-data" | prepend: site.baseurl }}">Working with Paged Response Data</a>
-      <ul>
-        <li>
-          <a class="post-sublink" href="{{ "/working-with-paged-response-data#using-pagination-headers" | prepend: site.baseurl }}">Using Pagination Headers</a>
-        </li>
-        <li>
-          <a class="post-sublink" href="{{ "/working-with-paged-response-data#requesting-a-specific-page" | prepend: site.baseurl }}">Requesting a Specific Page</a>
-        </li>
-      </ul>
-    </li>
-    <li>
-      <a class="post-link" href="{{ "/authentication" | prepend: site.baseurl }}">Authentication</a>
-      <ul>
-        <li>
-          <a class="post-sublink" href="{{ "/authentication#basic-authentication" | prepend: site.baseurl }}">Basic Authentication</a>
-        </li>
-        <li>
-          <a class="post-sublink" href="{{ "/authentication#manually-forcing-authentication" | prepend: site.baseurl }}">Manually forcing authentication</a>
-        </li>
-        <li>
-          <a class="post-sublink" href="{{ "/authentication#cookie-authentication" | prepend: site.baseurl }}">Cookie Authentication</a>
-        </li>
-      </ul>
-    </li>
-    <li>
-      <a class="post-link" href="{{ "/issues" | prepend: site.baseurl }}">Issues</a>
-    </li>
-    <li>
-      <a class="post-link" href="{{ "/contributing" | prepend: site.baseurl }}">Contributing</a>
-    </li>
-    <li>
-      <a class="post-link" href="{{ "/api-reference/modules/WP.html" | prepend: site.baseurl }}">API Documentation</a>
-    </li>
-  </ol>
+      {% endfor %}
+    </ul>
+  </section>
 
 
 </div>
