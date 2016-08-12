@@ -6,12 +6,12 @@ const kramed = require( 'kramed' );
 const combyne = require( 'combyne' );
 combyne.settings.delimiters = {
 	// Avoid conflict with Jekyll template delimiters
-	START_RAW: '<<<',
-	END_RAW: '>>>',
-	START_PROP: '<<',
-	END_PROP: '>>',
-	START_EXPR: '<%',
-	END_EXPR: '%>'
+	START_RAW: '[{{{',
+	END_RAW: '}}}]',
+	START_PROP: '[{{',
+	END_PROP: '}}]',
+	START_EXPR: '[{%',
+	END_EXPR: '%}]'
 };
 
 // Paths

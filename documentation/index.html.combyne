@@ -6,46 +6,58 @@ layout: default
 
   <h2 class="page-heading">About {{ site.library_title }}</h2>
 
-  <<< aboutContents >>>
+  [{{{ aboutContents }}}]
 
-  <h2 class="page-heading">Readme Contents</h2>
+  <section>
 
-  <ol class="post-list">
-  <%each readmeSections as section %>
-    <li>
-      <a class="post-link" href="{{ "/<< section.slug >>" | prepend: site.baseurl }}"><<<
-        section.title
-      >>></a>
-      <%if section.hasSubheadings %>
-      <ul>
-      <%each section.subheadings as subhed %>
-        <li>
-          <a class="post-sublink" href="{{ "/<< subhed.slug >>" | prepend: site.baseurl }}"><<<
-            subhed.title
-          >>></a>
-        </li>
-      <%endeach%>
-      </ul>
-      <%endif%>
-    </li>
-  <%endeach%>
-  </ol>
+    <h2 class="page-heading">Readme &amp; Getting Started</h2>
 
-  <%--
-  <h2 class="page-heading">Guides</h1>
-
-  <ul class="post-list">
-    {% for post in site.posts %}
+    <ol class="post-list">
+    [{%each readmeSections as section %}]
       <li>
-        <span class="post-meta">{{ post.date | date: "%b %-d, %Y" }}</span>
-        <a class="post-link" href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
+        <a class="post-link" href="{{ "/<< section.slug >>" | prepend: site.baseurl }}">[{{{
+          section.title
+        }}}]</a>
+        [{%if section.hasSubheadings %}]
+        <ul>
+        [{%each section.subheadings as subhed %}]
+          <li>
+            <a class="post-sublink" href="{{ "/[{{ subhed.slug }}]" | prepend: site.baseurl }}">[{{{
+              subhed.title
+            }}}]</a>
+          </li>
+        [{%endeach%}]
+        </ul>
+        [{%endif%}]
       </li>
-    {% endfor %}
-  </ul>
-  --%>
+    [{%endeach%}]
+    </ol>
 
-  <%--
+  </section>
+
+  <section>
+    <h2 class="page-heading">User Guides</h1>
+
+    <p>Don't see the topic you're looking for? <a href="https://github.com/WP-API/node-wpapi/issues">Open an issue</a> to request a guide, or <a href="https://github.com/WP-API/node-wpapi/tree/master/documentation/_posts">submit your own</a> with a pull request!
+
+    <ul class="post-list">
+      {% for post in site.posts %}
+        <li>
+          <span class="post-meta">{{ post.date | date: "%b %-d, %Y" }}</span>
+          <span class="post-link">
+            <a href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
+            by
+            {% if post.author_web %}<a href="{{ post.author_web }}">{% endif %}
+              {{ post.author }}
+            {% if post.author_web %}</a>{% endif %}
+          </span>
+        </li>
+      {% endfor %}
+    </ul>
+  </section>
+
+  [{%--
   <p class="rss-subscribe">subscribe <a href="{{ "/feed.xml" | prepend: site.baseurl }}">via RSS</a></p>
-  --%>
+  --%}]
 
 </div>
