@@ -76,6 +76,7 @@
     "load-grunt-tasks": "^3.5.0",
     "minimist": "^1.2.0",
     "mocha": "^2.5.3",
+    "prompt": "^1.0.0",
     "sandboxed-module": "^2.0.3",
     "sinon": "^1.17.4",
     "sinon-chai": "^2.8.0",
