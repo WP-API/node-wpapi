@@ -1,4 +1,5 @@
 'use strict';
+var path = require( 'path' );
 var chai = require( 'chai' );
 // Variable to use as our "success token" in promise assertions
 var SUCCESS = 'success';
@@ -7,6 +8,7 @@ var SUCCESS = 'success';
 // actually run.
 chai.use( require( 'chai-as-promised' ) );
 var expect = chai.expect;
+var httpTestUtils = require( '../http-test-utils' );
 
 /*jshint -W079 */// Suppress warning about redefiniton of `Promise`
 var Promise = require( 'es6-promise' ).Promise;
@@ -401,6 +403,114 @@ describe( 'integration: posts()', function() {
 			// just trashed but now deleted permanently
 			return wp.posts().auth( credentials ).id( id );
 		}).catch(function( error ) {
+			expect( error ).to.be.an.instanceOf( Error );
+			expect( error ).to.have.property( 'status' );
+			expect( error.status ).to.equal( 404 );
+			return SUCCESS;
+		});
+		return expect( prom ).to.eventually.equal( SUCCESS );
+	});
+
+	it( 'can create a post with tags, categories and featured media', function() {
+		var id;
+		var mediaId;
+		var filePath = path.join( __dirname, 'assets/emilygarfield-untitled.jpg' );
+		// Helper function
+		function ascById( a, b ) {
+			return a.id - b.id;
+		}
+		var categories = [];
+		var tags = [];
+		var tagsAndPromises = Promise.all([
+			wp.categories().get(),
+			wp.tags().get()
+		]).then(function( results ) {
+			// Array to Object
+			return {
+				categories: results[ 0 ],
+				tags: results[ 1 ]
+			};
+		});
+		var prom = tagsAndPromises.then(function( results ) {
+			// Pick two tags and a category to assign to our new post
+			tags.push( results.tags[ 1 ], results.tags[ 4 ] );
+			categories.push( results.categories[ 3 ] );
+			tags.sort( ascById );
+			categories.sort( ascById );
+
+			// In this act we create the post, assigning the tags & categories
+			return wp.posts().auth( credentials ).create({
+				title: 'New Post with Tags & Categories',
+				content: 'This post has a featured image, too',
+				status: 'publish',
+				categories: categories.map(function( cat ) { return cat.id; }),
+				tags: tags.map(function( tag ) { return tag.id; })
+			});
+		}).then(function( newPost ) {
+			id = newPost.id;
+			// Now, upload the media we want to feature and associate with the new post
+			return wp.media().auth( credentials ).file( filePath ).create({
+				post: id
+			});
+		}).then(function( media ) {
+			mediaId = media.id;
+			// Assign the post the associated featured media
+			return wp.posts().auth( credentials ).id( id ).update({
+				featured_media: mediaId
+			});
+		}).then(function() {
+			// Re-fetch the post with embedded content to validate all is set correctly
+			return wp.posts().id( id ).embed().get();
+		}).then(function( post ) {
+			// Assert that the post got formed correctly
+			// Validate featured image
+			expect( post._embedded ).to.have.property( 'wp:featuredmedia' );
+			expect( post._embedded[ 'wp:featuredmedia' ].length ).to.equal( 1 );
+			var media = post._embedded[ 'wp:featuredmedia' ][ 0 ];
+			expect( media.id ).to.equal( mediaId );
+			expect( media.slug ).to.equal( 'emilygarfield-untitled' );
+			expect( media.source_url ).to.match( /emilygarfield-untitled.jpg$/ );
+			// Validate tags & categories
+			expect( post._embedded ).to.have.property( 'wp:term' );
+			var terms = post._embedded[ 'wp:term' ];
+			expect( terms.length ).to.equal( 2 );
+			// Validate all categories are present and accounted for
+			terms.filter(function( collection ) {
+				return collection[ 0 ].taxonomy === 'category';
+			})[ 0 ].sort( ascById ).forEach(function( cat, idx ) {
+				expect( cat.id ).to.equal( categories[ idx ].id );
+				expect( cat.name ).to.equal( categories[ idx ].name );
+			});
+			// Validate all tags are present and accounted for
+			terms.filter(function( collection ) {
+				return collection[ 0 ].taxonomy === 'post_tag';
+			})[ 0 ].sort( ascById ).forEach(function( tag, idx ) {
+				expect( tag.id ).to.equal( tags[ idx ].id );
+				expect( tag.name ).to.equal( tags[ idx ].name );
+			});
+		}).then(function() {
+			// Clean up after ourselves: remove media
+			return wp.media().auth( credentials ).id( mediaId ).delete({
+				force: true
+			});
+		}).then(function() {
+			// Query for the media, with auth: expect this to fail, since it is gone
+			return wp.media().auth( credentials ).id( mediaId );
+		}).catch(function( error ) {
+			httpTestUtils.rethrowIfChaiError( error );
+			expect( error ).to.be.an.instanceOf( Error );
+			expect( error ).to.have.property( 'status' );
+			expect( error.status ).to.equal( 404 );
+		}).then(function() {
+			// Clean up after ourselves: remove post
+			return wp.posts().auth( credentials ).id( id ).delete({
+				force: true
+			});
+		}).then(function() {
+			// Query for the post, with auth: expect this to fail, since it is gone
+			return wp.posts().auth( credentials ).id( id );
+		}).catch(function( error ) {
+			httpTestUtils.rethrowIfChaiError( error );
 			expect( error ).to.be.an.instanceOf( Error );
 			expect( error ).to.have.property( 'status' );
 			expect( error.status ).to.equal( 404 );
