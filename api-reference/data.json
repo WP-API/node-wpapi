@@ -6,6 +6,13 @@
         "url": "https://github.com/wp-api/node-wpapi"
     },
     "files": {
+        "build/scripts/release-docs.js": {
+            "name": "build/scripts/release-docs.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
         "lib/constructors/wp-request.js": {
             "name": "lib/constructors/wp-request.js",
             "modules": {
@@ -369,6 +376,79 @@
     },
     "elements": {},
     "classitems": [
+        {
+            "file": "build/scripts/release-docs.js",
+            "line": 32,
+            "description": "Helper method to request yes/no confirmation from the user, with some",
+            "access": "private",
+            "tagname": "",
+            "return": {
+                "description": "A promise that will resolve with a boolean true/false\nindicating whether assent was given",
+                "type": "Promise"
+            },
+            "class": "WPRequest"
+        },
+        {
+            "file": "build/scripts/release-docs.js",
+            "line": 50,
+            "description": "Get the list of files in a directory, either as a list of file and subdir\nnames or a list of absolute file system paths",
+            "access": "private",
+            "tagname": "",
+            "params": [
+                {
+                    "name": "inputDir",
+                    "description": "The file system path to the directory to read",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "A promise to the string array of file names",
+                "type": "Promise"
+            },
+            "class": "WPRequest"
+        },
+        {
+            "file": "build/scripts/release-docs.js",
+            "line": 70,
+            "description": "Spawn a shell command, pipe its output to the parent process's stdio, and\nreturn a promise that will resolve or reject when the subprocess completes",
+            "access": "private",
+            "tagname": "",
+            "params": [
+                {
+                    "name": "commandStr",
+                    "description": "A string containing a shell command to run",
+                    "type": "String"
+                },
+                {
+                    "name": "otherArgs",
+                    "description": "Array of additional string arguments, so that\nquoted arguments with spaces like github commit messages will not be broken",
+                    "type": "String[]",
+                    "optional": true
+                }
+            ],
+            "return": {
+                "description": "A promise that will resolve if the command executes\nsuccessfully or reject if it errors",
+                "type": "Promise"
+            },
+            "class": "WPRequest"
+        },
+        {
+            "file": "build/scripts/release-docs.js",
+            "line": 104,
+            "description": "Helper function that takes in an array of functions that return promises,\nthen executes those functions sequentially to execute each action",
+            "params": [
+                {
+                    "name": "arrOfFnsReturningPromises",
+                    "description": "An array of functions",
+                    "type": "Function[]"
+                }
+            ],
+            "return": {
+                "description": "A promise that will resolve once all the promises\nreturned by that function successfully complete",
+                "type": "Promise"
+            },
+            "class": "WPRequest"
+        },
         {
             "file": "lib/constructors/wp-request.js",
             "line": 33,
@@ -2078,6 +2158,22 @@
     "warnings": [
         {
             "message": "replacing incorrect tag: returns with return",
+            "line": " build/scripts/release-docs.js:32"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " build/scripts/release-docs.js:50"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " build/scripts/release-docs.js:70"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " build/scripts/release-docs.js:104"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
             "line": " lib/constructors/wp-request.js:215"
         },
         {
@@ -2155,6 +2251,22 @@
         {
             "message": "replacing incorrect tag: returns with return",
             "line": " wp.js:234"
+        },
+        {
+            "message": "Missing item type\nHelper method to request yes/no confirmation from the user, with some",
+            "line": " build/scripts/release-docs.js:32"
+        },
+        {
+            "message": "Missing item type\nGet the list of files in a directory, either as a list of file and subdir\nnames or a list of absolute file system paths",
+            "line": " build/scripts/release-docs.js:50"
+        },
+        {
+            "message": "Missing item type\nSpawn a shell command, pipe its output to the parent process's stdio, and\nreturn a promise that will resolve or reject when the subprocess completes",
+            "line": " build/scripts/release-docs.js:70"
+        },
+        {
+            "message": "Missing item type\nHelper function that takes in an array of functions that return promises,\nthen executes those functions sequentially to execute each action",
+            "line": " build/scripts/release-docs.js:104"
         },
         {
             "message": "Missing item type",
