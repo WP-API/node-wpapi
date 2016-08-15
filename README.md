@@ -329,6 +329,8 @@ The following methods are shortcuts for filtering the requested collection down 
 * `.year( year )`: find items published in the specified year
 * `.month( month )`: find items published in the specified month, designated by the month index (1&ndash;12) or name (*e.g.* "February")
 * `.day( day )`: find items published on the specified day
+* `.before( date )`: find items published before the specified date (string or Date object)
+* `.after( date )`: find items published after the specified date (string or Date object)
 
 ### Uploading Media
 

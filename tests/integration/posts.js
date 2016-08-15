@@ -270,6 +270,31 @@ describe( 'integration: posts()', function() {
 
 		});
 
+		describe( 'before', function() {
+
+			it( 'can be used to return only posts from before a certain date', function() {
+				var prom = wp.posts().before( '2013-01-08' ).then(function( posts ) {
+					expect( posts[0].title.rendered ).to.equal( 'Markup: Title With Special Characters' );
+					return SUCCESS;
+				});
+				return expect( prom ).to.eventually.equal( SUCCESS );
+			});
+
+		});
+
+		describe( 'after', function() {
+
+			it( 'can be used to return only posts from after a certain date', function() {
+				var prom = wp.posts().after( '2013-01-08' ).then(function( posts ) {
+					expect( posts.length ).to.equal( 3 );
+					expect( getTitles( posts ) ).to.deep.equal( expectedResults.titles.page1.slice( 0, 3 ) );
+					return SUCCESS;
+				});
+				return expect( prom ).to.eventually.equal( SUCCESS );
+			});
+
+		});
+
 	});
 
 	// Post creation, update & deletion suites

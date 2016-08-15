@@ -101,6 +101,86 @@ describe( 'mixins: parameters', function() {
 
 	});
 
+	describe( 'date parameters', function() {
+
+		describe( '.before()', function() {
+
+			beforeEach(function() {
+				Req.prototype.before = parameterMixins.before;
+			});
+
+			it( 'mixin method is defined', function() {
+				expect( parameterMixins ).to.have.property( 'before' );
+			});
+
+			it( 'is a function', function() {
+				expect( parameterMixins.before ).to.be.a( 'function' );
+			});
+
+			it( 'supports chaining', function() {
+				expect( req.before( '1933-11-01' ) ).to.equal( req );
+			});
+
+			it( 'throws an error when called with a missing or invalid time', function() {
+				expect(function() {
+					req.before();
+				}).to.throw( 'Invalid time value' );
+			});
+
+			it( 'sets the "before" query parameter as an ISO 8601 Date', function() {
+				var result = req.before( '2016-07-01' );
+				expect( getQueryStr( result ) ).to.equal( 'before=2016-07-01T00:00:00.000Z' );
+			});
+
+			it( 'sets the "before" query parameter when provided a Date object', function() {
+				var date = new Date( 1986, 2, 22 );
+				var result = req.before( date );
+				// use .match and regex to avoid time zone-induced false negatives
+				expect( getQueryStr( result ) ).to.match( /^before=1986-03-22T\d{2}:\d{2}:\d{2}.\d{3}Z$/ );
+			});
+
+		});
+
+		describe( '.after()', function() {
+
+			beforeEach(function() {
+				Req.prototype.after = parameterMixins.after;
+			});
+
+			it( 'mixin method is defined', function() {
+				expect( parameterMixins ).to.have.property( 'after' );
+			});
+
+			it( 'is a function', function() {
+				expect( parameterMixins.after ).to.be.a( 'function' );
+			});
+
+			it( 'supports chaining', function() {
+				expect( req.after( '1992-04-22' ) ).to.equal( req );
+			});
+
+			it( 'throws an error when called with a missing or invalid time', function() {
+				expect(function() {
+					req.after();
+				}).to.throw( 'Invalid time value' );
+			});
+
+			it( 'sets the "after" query parameter when provided a value', function() {
+				var result = req.after( '2016-03-22' );
+				expect( getQueryStr( result ) ).to.equal( 'after=2016-03-22T00:00:00.000Z' );
+			});
+
+			it( 'sets the "after" query parameter when provided a Date object', function() {
+				var date = new Date( 1987, 11, 7 );
+				var result = req.after( date );
+				// use .match and regex to avoid time zone-induced false negatives
+				expect( getQueryStr( result ) ).to.match( /^after=1987-12-07T\d{2}:\d{2}:\d{2}.\d{3}Z$/ );
+			});
+
+		});
+
+	});
+
 	describe( 'name parameters', function() {
 
 		describe( '.slug()', function() {
