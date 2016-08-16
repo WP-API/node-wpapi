@@ -180,6 +180,10 @@ describe( 'mixins: filter', function() {
 				expect(function() { req.taxonomy( 'cat', [ 'foo', 7 ] ); }).to.throw();
 			});
 
+			it( 'does not error if term is an array of numbers and string numbers', function() {
+				expect(function() { req.taxonomy( 'cat', [ 7, '11' ] ); }).not.to.throw();
+			});
+
 		});
 
 		describe( 'filter name aliasing behavior', function() {
@@ -286,6 +290,16 @@ describe( 'mixins: filter', function() {
 		it( 'sets the "cat" filter for categories where the term is a number', function() {
 			var result = req.category( 7 );
 			expect( getQueryStr( result ) ).to.equal( 'filter[cat]=7' );
+		});
+
+		it( 'sets the "cat" filter for categories where the term is a string of a number', function() {
+			var result = req.category( '7' );
+			expect( getQueryStr( result ) ).to.equal( 'filter[cat]=7' );
+		});
+
+		it( 'sets the "cat" filter for categories where the term is a string of a negative number', function() {
+			var result = req.category( '-7' );
+			expect( getQueryStr( result ) ).to.equal( 'filter[cat]=-7' );
 		});
 
 	});

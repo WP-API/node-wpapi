@@ -268,6 +268,23 @@ describe( 'integration: posts()', function() {
 				return expect( prom ).to.eventually.equal( SUCCESS );
 			});
 
+			it( 'can be used to filter out one category of posts from the response', function() {
+				var prom = wp.categories().slug( 'markup' ).then(function( categories ) {
+					var markupCatId = categories[ 0 ].id;
+					return wp.posts().category( -markupCatId ).perPage( 5 );
+				}).then(function( posts ) {
+					expect( getTitles( posts ) ).to.deep.equal([
+						'Template: Featured Image (Vertical)',
+						'Template: Featured Image (Horizontal)',
+						'Template: More Tag',
+						'Template: Excerpt (Defined)',
+						'Template: Excerpt (Generated)'
+					]);
+					return SUCCESS;
+				});
+				return expect( prom ).to.eventually.equal( SUCCESS );
+			});
+
 		});
 
 		describe( 'before', function() {
