@@ -481,21 +481,21 @@ You can use the `next` and `prev` properties to traverse an entire collection, s
 
 ```javascript
 var _ = require( 'lodash' );
-getAll( request ) {
-  return request.then(function( response ) {
-    if ( ! response._paging || ! response._paging.next ) {
-      return response;
+
+function getAll(request, responses = [], page = 1) {
+  return request.page(page).then(function (response) {
+    const totalPages = Number(response._paging.totalPages);
+
+    responses.push(response);
+
+    if (response._paging && page < totalPages) {
+      return getAll(request, responses, ++page);
     }
-    // Request the next page and return both responses as one collection
-    return Promise.all([
-      response,
-      getAll( response._paging.next )
-    ]).then(function( responses ) {
-      return _.flatten( responses );
-    });
+
+    return _.flatten(responses);
   });
 }
-// Kick off the request
+
 getAll( wp.posts() ).then(function( allPosts ) { /* ... */ });
 ```
 
