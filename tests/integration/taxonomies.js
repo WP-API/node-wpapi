@@ -20,37 +20,45 @@ describe( 'integration: taxonomies()', function() {
 	});
 
 	it( 'can be used to retrieve a dictionary of registered taxonomies', function() {
-		var prom = wp.taxonomies().get().then(function( taxonomies ) {
-			expect( taxonomies ).to.be.an( 'object' );
-			expect( Object.keys( taxonomies ).length ).to.equal( 2 );
-			expect( taxonomies ).to.have.property( 'category' );
-			expect( taxonomies ).to.have.property( 'post_tag' );
-			return SUCCESS;
-		});
+		var prom = wp.taxonomies()
+			.get()
+			.then(function( taxonomies ) {
+				expect( taxonomies ).to.be.an( 'object' );
+				expect( Object.keys( taxonomies ).length ).to.equal( 2 );
+				expect( taxonomies ).to.have.property( 'category' );
+				expect( taxonomies ).to.have.property( 'post_tag' );
+				return SUCCESS;
+			});
 		return expect( prom ).to.eventually.equal( SUCCESS );
 	});
 
 	it( 'can be chained with a taxonomy() call to fetch the category taxonomy', function() {
-		var prom = wp.taxonomies().taxonomy( 'category' ).get().then(function( category ) {
-			expect( category ).to.be.an( 'object' );
-			expect( category ).to.have.property( 'slug' );
-			expect( category.slug ).to.equal( 'category' );
-			expect( category ).to.have.property( 'hierarchical' );
-			expect( category.hierarchical ).to.equal( true );
-			return SUCCESS;
-		});
+		var prom = wp.taxonomies()
+			.taxonomy( 'category' )
+			.get()
+			.then(function( category ) {
+				expect( category ).to.be.an( 'object' );
+				expect( category ).to.have.property( 'slug' );
+				expect( category.slug ).to.equal( 'category' );
+				expect( category ).to.have.property( 'hierarchical' );
+				expect( category.hierarchical ).to.equal( true );
+				return SUCCESS;
+			});
 		return expect( prom ).to.eventually.equal( SUCCESS );
 	});
 
 	it( 'can be chained with a taxonomy() call to fetch the post_tag taxonomy', function() {
-		var prom = wp.taxonomies().taxonomy( 'post_tag' ).get().then(function( tag ) {
-			expect( tag ).to.be.an( 'object' );
-			expect( tag ).to.have.property( 'slug' );
-			expect( tag.slug ).to.equal( 'post_tag' );
-			expect( tag ).to.have.property( 'hierarchical' );
-			expect( tag.hierarchical ).to.equal( false );
-			return SUCCESS;
-		});
+		var prom = wp.taxonomies()
+			.taxonomy( 'post_tag' )
+			.get()
+			.then(function( tag ) {
+				expect( tag ).to.be.an( 'object' );
+				expect( tag ).to.have.property( 'slug' );
+				expect( tag.slug ).to.equal( 'post_tag' );
+				expect( tag ).to.have.property( 'hierarchical' );
+				expect( tag.hierarchical ).to.equal( false );
+				return SUCCESS;
+			});
 		return expect( prom ).to.eventually.equal( SUCCESS );
 	});
 

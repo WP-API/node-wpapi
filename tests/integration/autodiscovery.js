@@ -50,57 +50,68 @@ describe( 'integration: discover()', function() {
 	});
 
 	it( 'eventually returns a configured WP instance', function() {
-		var prom = apiPromise.then(function( result ) {
-			expect( result ).to.be.an.instanceOf( WP );
-			expect( result.namespace( 'wp/v2' ) ).to.be.an( 'object' );
-			expect( result.posts ).to.be.a( 'function' );
-			expect( result.posts() ).to.be.an.instanceOf( WPRequest );
-			return SUCCESS;
-		});
+		var prom = apiPromise
+			.then(function( result ) {
+				expect( result ).to.be.an.instanceOf( WP );
+				expect( result.namespace( 'wp/v2' ) ).to.be.an( 'object' );
+				expect( result.posts ).to.be.a( 'function' );
+				expect( result.posts() ).to.be.an.instanceOf( WPRequest );
+				return SUCCESS;
+			});
 		return expect( prom ).to.eventually.equal( SUCCESS );
 	});
 
 	it( 'auto-binds to the detected endpoint on the provided site', function() {
-		var prom = apiPromise.then(function( site ) {
-			expect( site.posts()._renderURI() ).to.equal( 'http://wpapi.loc/wp-json/wp/v2/posts' );
-			return SUCCESS;
-		});
+		var prom = apiPromise
+			.then(function( site ) {
+				expect( site.posts()._renderURI() ).to.equal( 'http://wpapi.loc/wp-json/wp/v2/posts' );
+				return SUCCESS;
+			});
 		return expect( prom ).to.eventually.equal( SUCCESS );
 	});
 
 	it( 'can correctly instantiate requests against the detected and bound site', function() {
-		var prom = apiPromise.then(function( site ) {
-			return site.posts();
-		}).then(function( posts ) {
-			expect( getTitles( posts )[ 0 ] ).to.equal( expectedResults.firstPostTitle );
-			return SUCCESS;
-		});
+		var prom = apiPromise
+			.then(function( site ) {
+				return site.posts();
+			})
+			.then(function( posts ) {
+				expect( getTitles( posts )[ 0 ] ).to.equal( expectedResults.firstPostTitle );
+				return SUCCESS;
+			});
 		return expect( prom ).to.eventually.equal( SUCCESS );
 	});
 
 	describe( 'can authenticate', function() {
 
 		it( 'requests against the detected and bound site', function() {
-			var prom = apiPromise.then(function( site ) {
-				return site.auth( credentials );
-			}).then(function( site ) {
-				return site.users().me();
-			}).then(function( user ) {
-				expect( user ).to.be.an( 'object' );
-				expect( user.slug ).to.equal( credentials.username );
-				return SUCCESS;
-			});
+			var prom = apiPromise
+				.then(function( site ) {
+					return site.auth( credentials );
+				})
+				.then(function( site ) {
+					return site.users().me();
+				})
+				.then(function( user ) {
+					expect( user ).to.be.an( 'object' );
+					expect( user.slug ).to.equal( credentials.username );
+					return SUCCESS;
+				});
 			return expect( prom ).to.eventually.equal( SUCCESS );
 		});
 
 		it( 'one-off requests against the detected and bound site', function() {
-			var prom = apiPromise.then(function( site ) {
-				return site.users().auth( credentials ).me();
-			}).then(function( user ) {
-				expect( user ).to.be.an( 'object' );
-				expect( user.slug ).to.equal( credentials.username );
-				return SUCCESS;
-			});
+			var prom = apiPromise
+				.then(function( site ) {
+					return site.users()
+						.auth( credentials )
+						.me();
+				})
+				.then(function( user ) {
+					expect( user ).to.be.an( 'object' );
+					expect( user.slug ).to.equal( credentials.username );
+					return SUCCESS;
+				});
 			return expect( prom ).to.eventually.equal( SUCCESS );
 		});
 

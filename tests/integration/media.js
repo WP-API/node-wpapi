@@ -79,105 +79,133 @@ describe( 'integration: media()', function() {
 	});
 
 	it( 'an be used to retrieve a list of media items', function() {
-		var prom = wp.media().get().then(function( media ) {
-			expect( media ).to.be.an( 'array' );
-			expect( media.length ).to.equal( 10 );
-			return SUCCESS;
-		});
+		var prom = wp.media()
+			.get()
+			.then(function( media ) {
+				expect( media ).to.be.an( 'array' );
+				expect( media.length ).to.equal( 10 );
+				return SUCCESS;
+			});
 		return expect( prom ).to.eventually.equal( SUCCESS );
 	});
 
 	it( 'fetches the 10 most recent media by default', function() {
-		var prom = wp.media().get().then(function( media ) {
-			expect( getTitles( media ) ).to.deep.equal( expectedResults.titles.page1 );
-			return SUCCESS;
-		});
+		var prom = wp.media()
+			.get()
+			.then(function( media ) {
+				expect( getTitles( media ) ).to.deep.equal( expectedResults.titles.page1 );
+				return SUCCESS;
+			});
 		return expect( prom ).to.eventually.equal( SUCCESS );
 	});
 
 	describe( 'paging properties', function() {
 
 		it( 'are exposed as _paging on the response array', function() {
-			var prom = wp.media().get().then(function( media ) {
-				expect( media ).to.have.property( '_paging' );
-				expect( media._paging ).to.be.an( 'object' );
-				return SUCCESS;
-			});
+			var prom = wp.media()
+				.get()
+				.then(function( media ) {
+					expect( media ).to.have.property( '_paging' );
+					expect( media._paging ).to.be.an( 'object' );
+					return SUCCESS;
+				});
 			return expect( prom ).to.eventually.equal( SUCCESS );
 		});
 
 		it( 'include the total number of media: use .headers() for coverage reasons', function() {
-			var prom = wp.media().headers().then(function( postHeadersResponse ) {
-				expect( postHeadersResponse ).to.have.property( 'x-wp-total' );
-				expect( postHeadersResponse[ 'x-wp-total' ] ).to.equal( '39' );
-				return SUCCESS;
-			});
+			var prom = wp.media()
+				.headers()
+				.then(function( postHeadersResponse ) {
+					expect( postHeadersResponse ).to.have.property( 'x-wp-total' );
+					expect( postHeadersResponse[ 'x-wp-total' ] ).to.equal( '39' );
+					return SUCCESS;
+				});
 			return expect( prom ).to.eventually.equal( SUCCESS );
 		});
 
 		it( 'include the total number of pages available', function() {
-			var prom = wp.media().get().then(function( media ) {
-				expect( media._paging ).to.have.property( 'totalPages' );
-				expect( media._paging.totalPages ).to.equal( '4' );
-				return SUCCESS;
-			});
+			var prom = wp.media()
+				.get()
+				.then(function( media ) {
+					expect( media._paging ).to.have.property( 'totalPages' );
+					expect( media._paging.totalPages ).to.equal( '4' );
+					return SUCCESS;
+				});
 			return expect( prom ).to.eventually.equal( SUCCESS );
 		});
 
 		it( 'provides a bound WPRequest for the next page as .next', function() {
-			var prom = wp.media().get().then(function( media ) {
-				expect( media._paging ).to.have.property( 'next' );
-				expect( media._paging.next ).to.be.an( 'object' );
-				expect( media._paging.next ).to.be.an.instanceOf( WPRequest );
-				expect( media._paging.next._options.endpoint ).to
-					.equal( 'http://wpapi.loc/wp-json/wp/v2/media?page=2' );
-				// Get last page & ensure "next" no longer appears
-				return wp.media().page( media._paging.totalPages ).get().then(function( media ) {
-					expect( media._paging ).not.to.have.property( 'next' );
-					expect( getTitles( media ) ).to.deep.equal( expectedResults.titles.page4 );
-					return SUCCESS;
+			var prom = wp.media()
+				.get()
+				.then(function( media ) {
+					expect( media._paging ).to.have.property( 'next' );
+					expect( media._paging.next ).to.be.an( 'object' );
+					expect( media._paging.next ).to.be.an.instanceOf( WPRequest );
+					expect( media._paging.next._options.endpoint ).to
+						.equal( 'http://wpapi.loc/wp-json/wp/v2/media?page=2' );
+					// Get last page & ensure "next" no longer appears
+					return wp.media()
+						.page( media._paging.totalPages )
+						.get()
+						.then(function( media ) {
+							expect( media._paging ).not.to.have.property( 'next' );
+							expect( getTitles( media ) ).to.deep.equal( expectedResults.titles.page4 );
+							return SUCCESS;
+						});
 				});
-			});
 			return expect( prom ).to.eventually.equal( SUCCESS );
 		});
 
 		it( 'allows access to the next page of results via .next', function() {
-			var prom = wp.media().get().then(function( media ) {
-				return media._paging.next.get().then(function( media ) {
-					expect( media ).to.be.an( 'array' );
-					expect( media.length ).to.equal( 10 );
-					expect( getTitles( media ) ).to.deep.equal( expectedResults.titles.page2 );
-					return SUCCESS;
+			var prom = wp.media()
+				.get()
+				.then(function( media ) {
+					return media._paging.next
+						.get()
+						.then(function( media ) {
+							expect( media ).to.be.an( 'array' );
+							expect( media.length ).to.equal( 10 );
+							expect( getTitles( media ) ).to.deep.equal( expectedResults.titles.page2 );
+							return SUCCESS;
+						});
 				});
-			});
 			return expect( prom ).to.eventually.equal( SUCCESS );
 		});
 
 		it( 'provides a bound WPRequest for the previous page as .prev', function() {
-			var prom = wp.media().get().then(function( media ) {
-				expect( media._paging ).not.to.have.property( 'prev' );
-				return media._paging.next.get().then(function( media ) {
-					expect( media._paging ).to.have.property( 'prev' );
-					expect( media._paging.prev ).to.be.an( 'object' );
-					expect( media._paging.prev ).to.be.an.instanceOf( WPRequest );
-					expect( media._paging.prev._options.endpoint ).to
-						.equal( 'http://wpapi.loc/wp-json/wp/v2/media?page=1' );
-					return SUCCESS;
+			var prom = wp.media()
+				.get()
+				.then(function( media ) {
+					expect( media._paging ).not.to.have.property( 'prev' );
+					return media._paging.next
+						.get()
+						.then(function( media ) {
+							expect( media._paging ).to.have.property( 'prev' );
+							expect( media._paging.prev ).to.be.an( 'object' );
+							expect( media._paging.prev ).to.be.an.instanceOf( WPRequest );
+							expect( media._paging.prev._options.endpoint ).to
+								.equal( 'http://wpapi.loc/wp-json/wp/v2/media?page=1' );
+							return SUCCESS;
+						});
 				});
-			});
 			return expect( prom ).to.eventually.equal( SUCCESS );
 		});
 
 		it( 'allows access to the previous page of results via .prev', function() {
-			var prom = wp.media().page( 2 ).get().then(function( media ) {
-				expect( getTitles( media ) ).to.deep.equal( expectedResults.titles.page2 );
-				return media._paging.prev.get().then(function( media ) {
-					expect( media ).to.be.an( 'array' );
-					expect( media.length ).to.equal( 10 );
-					expect( getTitles( media ) ).to.deep.equal( expectedResults.titles.page1 );
-					return SUCCESS;
+			var prom = wp.media()
+				.page( 2 )
+				.get()
+				.then(function( media ) {
+					expect( getTitles( media ) ).to.deep.equal( expectedResults.titles.page2 );
+					return media._paging.prev
+						.get()
+						.then(function( media ) {
+							expect( media ).to.be.an( 'array' );
+							expect( media.length ).to.equal( 10 );
+							expect( getTitles( media ) ).to.deep.equal( expectedResults.titles.page1 );
+							return SUCCESS;
+						});
 				});
-			});
 			return expect( prom ).to.eventually.equal( SUCCESS );
 		});
 
@@ -186,45 +214,58 @@ describe( 'integration: media()', function() {
 	describe( 'without authentication', function() {
 
 		it( 'cannot POST', function() {
-			var prom = wp.media().file( filePath ).create({
-				title: 'Media File',
-				content: 'Some Content'
-			}).catch(function( err ) {
-				expect( err ).to.be.an.instanceOf( Error );
-				expect( err ).to.have.property( 'status' );
-				expect( err.status ).to.equal( 401 );
-				return SUCCESS;
-			});
+			var prom = wp.media()
+				.file( filePath )
+				.create({
+					title: 'Media File',
+					content: 'Some Content'
+				})
+				.catch(function( err ) {
+					expect( err ).to.be.an.instanceOf( Error );
+					expect( err ).to.have.property( 'status' );
+					expect( err.status ).to.equal( 401 );
+					return SUCCESS;
+				});
 			return expect( prom ).to.eventually.equal( SUCCESS );
 		});
 
 		it( 'cannot PUT', function() {
-			var prom = wp.media().perPage( 1 ).then(function( media ) {
-				var id = media[ 0 ].id;
-				return wp.media().id( id ).update({
-					title: 'New Title'
+			var prom = wp.media()
+				.perPage( 1 )
+				.get()
+				.then(function( media ) {
+					var id = media[ 0 ].id;
+					return wp.media()
+						.id( id )
+						.update({
+							title: 'New Title'
+						});
+				})
+				.catch(function( err ) {
+					expect( err ).to.be.an.instanceOf( Error );
+					expect( err ).to.have.property( 'status' );
+					expect( err.status ).to.equal( 401 );
+					return SUCCESS;
 				});
-			}).catch(function( err ) {
-				expect( err ).to.be.an.instanceOf( Error );
-				expect( err ).to.have.property( 'status' );
-				expect( err.status ).to.equal( 401 );
-				return SUCCESS;
-			});
 			return expect( prom ).to.eventually.equal( SUCCESS );
 		});
 
 		it( 'cannot DELETE', function() {
-			var prom = wp.media().perPage( 1 ).then(function( media ) {
-				var id = media[ 0 ].id;
-				return wp.media().id( id ).delete({
-					force: true
+			var prom = wp.media()
+				.perPage( 1 )
+				.get()
+				.then(function( media ) {
+					var id = media[ 0 ].id;
+					return wp.media().id( id ).delete({
+						force: true
+					});
+				})
+				.catch(function( err ) {
+					expect( err ).to.be.an.instanceOf( Error );
+					expect( err ).to.have.property( 'status' );
+					expect( err.status ).to.equal( 401 );
+					return SUCCESS;
 				});
-			}).catch(function( err ) {
-				expect( err ).to.be.an.instanceOf( Error );
-				expect( err ).to.have.property( 'status' );
-				expect( err.status ).to.equal( 401 );
-				return SUCCESS;
-			});
 			return expect( prom ).to.eventually.equal( SUCCESS );
 		});
 
