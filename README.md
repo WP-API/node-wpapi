@@ -295,7 +295,7 @@ To get the URI of the resource _without_ making a request, call `.toString()` at
 var uriString = wp.posts().id( 7 ).embed().toString();
 ```
 
-As the name implies `.toString()` is not a chaining method, and will return a string containing the full URI; this can then be used with alternative HTTP transports like `request`, Node's native `http`, `fetch`, or even jQuery.
+As the name implies `.toString()` is not a chaining method, and will return a string containing the full URI; this can then be used with alternative HTTP transports like `request`, Node's native `http`, `fetch`, or jQuery.
 
 ### Filtering Collections
 
