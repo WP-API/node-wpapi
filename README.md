@@ -132,6 +132,22 @@ apiPromise.then(function( site ) {
 });
 ```
 
+#### Authenticating with Auto-Discovery
+
+While using `WP.discover( url )` to generate the handler for your site gets you up and running quickly, it does not provide the same level of customization as instantiating your own `new WP` object. In order to specify authentication configuration when using autodiscovery, chain a `.then` onto the initial discovery query to call the `.auth` method on the returned site object with the relevant credentials (username & password, nonce, etc):
+
+```js
+var apiPromise = WP.discover( 'http://my-site.com' ).then(function( site ) {
+    return site.auth({
+        username: 'admin',
+        password: 'always use secure passwords'
+    });
+});
+apiPromise.then(function( site ) {
+    // site is now configured to use authentication
+})
+```
+
 ### Bootstrapping
 
 If you are building an application designed to interface with a specific site, it is possible to sidestep the additional asynchronous HTTP calls that are needed to bootstrap the client through auto-discovery. You can download the root API response, *i.e.* the JSON response when you hit the root endpoint such as `your-site.com/wp-json`, and save that JSON file locally; then, in

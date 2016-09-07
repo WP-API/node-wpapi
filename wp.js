@@ -161,6 +161,33 @@ WP.prototype.root = function( relativePath ) {
 	return request;
 };
 
+/**
+ * Set the authentication to use for a WP site handler instance. Accepts basic
+ * HTTP authentication credentials (string username & password) or a Nonce (for
+ * cookie authentication) by default; may be overloaded to accept OAuth credentials
+ * in the future.
+ *
+ * @example Basic Authentication
+ *
+ *     site.auth({
+ *       username: 'admin',
+ *       password: 'securepass55'
+ *     })...
+ *
+ * @example Cookie/Nonce Authentication
+ *
+ *     site.auth({
+ *       nonce: 'somenonce'
+ *     })...
+ *
+ * @method auth
+ * @chainable
+ * @param {Object} credentials            An authentication credentials object
+ * @param {String} [credentials.username] A WP-API Basic HTTP Authentication username
+ * @param {String} [credentials.password] A WP-API Basic HTTP Authentication password
+ * @param {String} [credentials.nonce]    A WP nonce for use with cookie authentication
+ * @return {WP} The WP site handler instance, for chaining
+ */
 WP.prototype.auth = WPRequest.prototype.auth;
 
 // Apply the registerRoute method to the prototype

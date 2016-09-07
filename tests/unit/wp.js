@@ -330,6 +330,44 @@ describe( 'wp', function() {
 			expect( site._options.auth ).to.be.true;
 		});
 
+		it( 'can update previously-set usernames and passwords', function() {
+			site.auth({
+				username: 'user1',
+				password: 'pass1'
+			}).auth({
+				username: 'admin',
+				password: 'sandwich'
+			});
+			expect( site._options ).to.have.property( 'username' );
+			expect( site._options ).to.have.property( 'password' );
+			expect( site._options.username ).to.equal( 'admin' );
+			expect( site._options.password ).to.equal( 'sandwich' );
+			expect( site._options ).to.have.property( 'auth' );
+			expect( site._options.auth ).to.be.true;
+		});
+
+		it( 'sets the nonce when provided in an object', function() {
+			site.auth({
+				nonce: 'somenonce'
+			});
+			expect( site._options ).to.have.property( 'nonce' );
+			expect( site._options.nonce ).to.equal( 'somenonce' );
+			expect( site._options ).to.have.property( 'auth' );
+			expect( site._options.auth ).to.be.true;
+		});
+
+		it( 'can update nonce credentials', function() {
+			site.auth({
+				nonce: 'somenonce'
+			}).auth({
+				nonce: 'refreshednonce'
+			});
+			expect( site._options ).to.have.property( 'nonce' );
+			expect( site._options.nonce ).to.equal( 'refreshednonce' );
+			expect( site._options ).to.have.property( 'auth' );
+			expect( site._options.auth ).to.be.true;
+		});
+
 		it( 'passes authentication status to all subsequently-instantiated handlers', function() {
 			site.auth({
 				username: 'user',

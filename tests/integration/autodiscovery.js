@@ -31,6 +31,11 @@ function getTitles( posts ) {
 	});
 }
 
+var credentials = {
+	username: 'apiuser',
+	password: 'password'
+};
+
 describe( 'integration: discover()', function() {
 	var apiPromise;
 	var sinonSandbox;
@@ -79,6 +84,34 @@ describe( 'integration: discover()', function() {
 			return SUCCESS;
 		});
 		return expect( prom ).to.eventually.equal( SUCCESS );
+	});
+
+	describe( 'can authenticate', function() {
+
+		it( 'requests against the detected and bound site', function() {
+			var prom = apiPromise.then(function( site ) {
+				return site.auth( credentials );
+			}).then(function( site ) {
+				return site.users().me();
+			}).then(function( user ) {
+				expect( user ).to.be.an( 'object' );
+				expect( user.slug ).to.equal( credentials.username );
+				return SUCCESS;
+			});
+			return expect( prom ).to.eventually.equal( SUCCESS );
+		});
+
+		it( 'one-off requests against the detected and bound site', function() {
+			var prom = apiPromise.then(function( site ) {
+				return site.users().auth( credentials ).me();
+			}).then(function( user ) {
+				expect( user ).to.be.an( 'object' );
+				expect( user.slug ).to.equal( credentials.username );
+				return SUCCESS;
+			});
+			return expect( prom ).to.eventually.equal( SUCCESS );
+		});
+
 	});
 
 	describe( 'rejection states', function() {
