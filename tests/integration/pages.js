@@ -11,6 +11,10 @@ var expect = chai.expect;
 var WP = require( '../../' );
 var WPRequest = require( '../../lib/constructors/wp-request.js' );
 
+// Inspecting the titles of the returned posts arrays is an easy way to
+// validate that the right page of results was returned
+var getTitles = require( './helpers/get-rendered-prop' ).bind( null, 'title' );
+
 // Define some arrays to use ensuring the returned data is what we expect
 // it to be (e.g. an array of the titles from pages on the first page)
 var expectedResults = {
@@ -39,14 +43,6 @@ var expectedResults = {
 		]
 	}
 };
-
-// Inspecting the titles of the returned pages arrays is an easy way to
-// validate that the right page of results was returned
-function getTitles( pages ) {
-	return pages.map(function( post ) {
-		return post.title.rendered;
-	});
-}
 
 describe( 'integration: pages()', function() {
 	var wp;

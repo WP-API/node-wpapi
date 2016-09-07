@@ -13,23 +13,15 @@ var Promise = require( 'es6-promise' ).Promise;
 var path = require( 'path' );
 var _reduce = require( 'lodash.reduce' );
 var _unique = require( 'lodash.uniq' );
-var httpTestUtils = require( '../http-test-utils' );
+var httpTestUtils = require( './helpers/http-test-utils' );
 
 var WP = require( '../../' );
 var WPRequest = require( '../../lib/constructors/wp-request.js' );
 
-var credentials = {
-	username: 'apiuser',
-	password: 'password'
-};
-
-// Inspecting the titles of the returned media arrays is an easy way to
+// Inspecting the titles of the returned posts arrays is an easy way to
 // validate that the right page of results was returned
-function getTitles( media ) {
-	return media.map(function( item ) {
-		return item.title.rendered;
-	});
-}
+var getTitles = require( './helpers/get-rendered-prop' ).bind( null, 'title' );
+var credentials = require( './helpers/constants' ).credentials;
 
 var filePath = path.join( __dirname, 'assets/emilygarfield-untitled.jpg' );
 
@@ -75,11 +67,15 @@ var expectedResults = {
 
 describe( 'integration: media()', function() {
 	var wp;
+	var authenticated;
 
 	beforeEach(function() {
 		wp = new WP({
 			endpoint: 'http://wpapi.loc/wp-json'
 		});
+		authenticated = new WP({
+			endpoint: 'http://wpapi.loc/wp-json'
+		}).auth( credentials );
 	});
 
 	it( 'an be used to retrieve a list of media items', function() {
@@ -239,8 +235,7 @@ describe( 'integration: media()', function() {
 		var imageUrl;
 
 		// CREATE
-		var prom = wp.media()
-			.auth( credentials )
+		var prom = authenticated.media()
 			.file( filePath, 'ehg-conduits.jpg' )
 			.create({
 				title: 'Untitled',
@@ -257,8 +252,7 @@ describe( 'integration: media()', function() {
 			})
 			// UPDATE
 			.then(function() {
-				return wp.media()
-					.auth( credentials )
+				return authenticated.media()
 					.id( id )
 					.update({
 						title: 'Conduits Series',
@@ -294,8 +288,7 @@ describe( 'integration: media()', function() {
 			.then(function() {
 				// Attempt to delete media: expect this to fail, since media does not
 				// support being trashed and can only be permanently removed
-				return wp.media()
-					.auth( credentials )
+				return authenticated.media()
 					.id( id )
 					.delete();
 			})
@@ -305,8 +298,7 @@ describe( 'integration: media()', function() {
 				expect( error ).to.have.property( 'status' );
 				expect( error.status ).to.equal( 501 );
 				// Now permanently delete this media
-				return wp.media()
-					.auth( credentials )
+				return authenticated.media()
 					.id( id )
 					.delete({
 						force: true

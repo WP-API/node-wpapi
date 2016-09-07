@@ -8,13 +8,18 @@ var SUCCESS = 'success';
 // actually run.
 chai.use( require( 'chai-as-promised' ) );
 var expect = chai.expect;
-var httpTestUtils = require( '../http-test-utils' );
+var httpTestUtils = require( './helpers/http-test-utils' );
 
 /*jshint -W079 */// Suppress warning about redefiniton of `Promise`
 var Promise = require( 'es6-promise' ).Promise;
 
 var WP = require( '../../' );
 var WPRequest = require( '../../lib/constructors/wp-request.js' );
+
+// Inspecting the titles of the returned posts arrays is an easy way to
+// validate that the right page of results was returned
+var getTitles = require( './helpers/get-rendered-prop' ).bind( null, 'title' );
+var credentials = require( './helpers/constants' ).credentials;
 
 // Define some arrays to use ensuring the returned data is what we expect
 // it to be (e.g. an array of the titles from posts on the first page)
@@ -56,26 +61,17 @@ var expectedResults = {
 	}
 };
 
-var credentials = {
-	username: 'apiuser',
-	password: 'password'
-};
-
-// Inspecting the titles of the returned posts arrays is an easy way to
-// validate that the right page of results was returned
-function getTitles( posts ) {
-	return posts.map(function( post ) {
-		return post.title.rendered;
-	});
-}
-
 describe( 'integration: posts()', function() {
 	var wp;
+	var authenticated;
 
 	beforeEach(function() {
 		wp = new WP({
 			endpoint: 'http://wpapi.loc/wp-json'
 		});
+		authenticated = new WP({
+			endpoint: 'http://wpapi.loc/wp-json'
+		}).auth( credentials );
 	});
 
 	it( 'can be used to retrieve a list of recent posts', function() {
@@ -355,7 +351,7 @@ describe( 'integration: posts()', function() {
 
 	it( 'can create, update & delete a post when authenticated', function() {
 		var id;
-		var prom = wp.posts().auth( credentials ).create({
+		var prom = authenticated.posts().create({
 			title: 'New Post 2501',
 			content: 'Some Content'
 		}).then(function( createdPost ) {
@@ -369,7 +365,7 @@ describe( 'integration: posts()', function() {
 			expect( createdPost ).to.have.property( 'content' );
 			expect( createdPost.content ).to.have.property( 'raw' );
 			expect( createdPost.content.raw ).to.equal( 'Some Content' );
-			return wp.posts().auth( credentials ).id( id ).update({
+			return authenticated.posts().id( id ).update({
 				title: 'Updated Title',
 				status: 'publish'
 			});
@@ -398,7 +394,7 @@ describe( 'integration: posts()', function() {
 			// Re-authenticate & delete (trash) this post
 			// Use a callback to exercise that part of the functionality
 			return new Promise(function( resolve, reject ) {
-				wp.posts().auth( credentials ).id( id ).delete(function( err, data ) {
+				authenticated.posts().id( id ).delete(function( err, data ) {
 					if ( err ) {
 						return reject( err );
 					}
@@ -417,7 +413,7 @@ describe( 'integration: posts()', function() {
 			expect( error ).to.have.property( 'status' );
 			expect( error.status ).to.equal( 403 );
 			// Re-authenticate & permanently delete this post
-			return wp.posts().auth( credentials ).id( id ).delete({
+			return authenticated.posts().id( id ).delete({
 				force: true
 			});
 		}).then(function( response ) {
@@ -426,7 +422,7 @@ describe( 'integration: posts()', function() {
 			expect( response.id ).to.equal( id );
 			// Query for the post, with auth: expect this to fail, since it is not
 			// just trashed but now deleted permanently
-			return wp.posts().auth( credentials ).id( id );
+			return authenticated.posts().id( id );
 		}).catch(function( error ) {
 			expect( error ).to.be.an.instanceOf( Error );
 			expect( error ).to.have.property( 'status' );
@@ -464,7 +460,7 @@ describe( 'integration: posts()', function() {
 			categories.sort( ascById );
 
 			// In this act we create the post, assigning the tags & categories
-			return wp.posts().auth( credentials ).create({
+			return authenticated.posts().create({
 				title: 'New Post with Tags & Categories',
 				content: 'This post has a featured image, too',
 				status: 'publish',
@@ -474,13 +470,13 @@ describe( 'integration: posts()', function() {
 		}).then(function( newPost ) {
 			id = newPost.id;
 			// Now, upload the media we want to feature and associate with the new post
-			return wp.media().auth( credentials ).file( filePath ).create({
+			return authenticated.media().file( filePath ).create({
 				post: id
 			});
 		}).then(function( media ) {
 			mediaId = media.id;
 			// Assign the post the associated featured media
-			return wp.posts().auth( credentials ).id( id ).update({
+			return authenticated.posts().id( id ).update({
 				featured_media: mediaId
 			});
 		}).then(function() {
@@ -493,8 +489,8 @@ describe( 'integration: posts()', function() {
 			expect( post._embedded[ 'wp:featuredmedia' ].length ).to.equal( 1 );
 			var media = post._embedded[ 'wp:featuredmedia' ][ 0 ];
 			expect( media.id ).to.equal( mediaId );
-			expect( media.slug ).to.equal( 'emilygarfield-untitled' );
-			expect( media.source_url ).to.match( /emilygarfield-untitled.jpg$/ );
+			expect( media.slug ).to.match( /emilygarfield-untitled/ );
+			expect( media.source_url ).to.match( /emilygarfield-untitled(?:-\d*).jpg$/ );
 			// Validate tags & categories
 			expect( post._embedded ).to.have.property( 'wp:term' );
 			var terms = post._embedded[ 'wp:term' ];
@@ -515,12 +511,12 @@ describe( 'integration: posts()', function() {
 			});
 		}).then(function() {
 			// Clean up after ourselves: remove media
-			return wp.media().auth( credentials ).id( mediaId ).delete({
+			return authenticated.media().id( mediaId ).delete({
 				force: true
 			});
 		}).then(function() {
 			// Query for the media, with auth: expect this to fail, since it is gone
-			return wp.media().auth( credentials ).id( mediaId );
+			return authenticated.media().id( mediaId );
 		}).catch(function( error ) {
 			httpTestUtils.rethrowIfChaiError( error );
 			expect( error ).to.be.an.instanceOf( Error );
@@ -528,12 +524,12 @@ describe( 'integration: posts()', function() {
 			expect( error.status ).to.equal( 404 );
 		}).then(function() {
 			// Clean up after ourselves: remove post
-			return wp.posts().auth( credentials ).id( id ).delete({
+			return authenticated.posts().id( id ).delete({
 				force: true
 			});
 		}).then(function() {
 			// Query for the post, with auth: expect this to fail, since it is gone
-			return wp.posts().auth( credentials ).id( id );
+			return authenticated.posts().id( id );
 		}).catch(function( error ) {
 			httpTestUtils.rethrowIfChaiError( error );
 			expect( error ).to.be.an.instanceOf( Error );

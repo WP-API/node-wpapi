@@ -11,6 +11,10 @@ var expect = chai.expect;
 var WP = require( '../../' );
 var WPRequest = require( '../../lib/constructors/wp-request.js' );
 
+// Inspecting the names of the returned categories is an easy way to validate
+// that the right page of results was returned
+var getNames = require( './helpers/get-prop' ).bind( null, 'name' );
+
 // Define some arrays to use ensuring the returned data is what we expect
 // it to be (e.g. an array of the names from categories on the first page)
 var expectedResults = {
@@ -48,14 +52,6 @@ var expectedResults = {
 		]
 	}
 };
-
-// Inspecting the titles of the returned categories arrays is an easy way to
-// validate that the right page of results was returned
-function getNames( categories ) {
-	return categories.map(function( category ) {
-		return category.name;
-	});
-}
 
 describe( 'integration: categories()', function() {
 	var wp;

@@ -17,23 +17,15 @@ var WP = require( '../../' );
 var WPRequest = require( '../../lib/constructors/wp-request.js' );
 var autodiscovery = require( '../../lib/autodiscovery' );
 
+// Inspecting the titles of the returned posts arrays is an easy way to
+// validate that the right page of results was returned
+var getTitles = require( './helpers/get-rendered-prop' ).bind( null, 'title' );
+var credentials = require( './helpers/constants' ).credentials;
+
 // Define some arrays to use ensuring the returned data is what we expect
 // it to be (e.g. an array of the titles from posts on the first page)
 var expectedResults = {
 	firstPostTitle: 'Markup: HTML Tags and Formatting'
-};
-
-// Inspecting the titles of the returned posts arrays is an easy way to
-// validate that the right page of results was returned
-function getTitles( posts ) {
-	return posts.map(function( post ) {
-		return post.title.rendered;
-	});
-}
-
-var credentials = {
-	username: 'apiuser',
-	password: 'password'
 };
 
 describe( 'integration: discover()', function() {

@@ -11,6 +11,10 @@ var expect = chai.expect;
 var WP = require( '../../' );
 var WPRequest = require( '../../lib/constructors/wp-request.js' );
 
+// Inspecting the names of the returned terms is an easy way to validate
+// that the right page of results was returned
+var getNames = require( './helpers/get-prop' ).bind( null, 'name' );
+
 // Define some arrays to use ensuring the returned data is what we expect
 // it to be (e.g. an array of the names from tags on the first page)
 var expectedResults = {
@@ -53,14 +57,6 @@ var expectedResults = {
 		]
 	}
 };
-
-// Inspecting the titles of the returned tags arrays is an easy way to
-// validate that the right page of results was returned
-function getNames( tags ) {
-	return tags.map(function( category ) {
-		return category.name;
-	});
-}
 
 describe( 'integration: tags()', function() {
 	var wp;
