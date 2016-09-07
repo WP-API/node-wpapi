@@ -400,12 +400,12 @@ describe( 'mixins: filter', function() {
 			});
 
 			it( 'returns without setting any filter if an invalid month string is provided', function() {
-				var result = req.month( 'Not a month' )._renderURI();
+				var result = req.month( 'Not a month' ).toString();
 				expect( result.match( /filter/ ) ).to.equal( null );
 			});
 
 			it( 'returns without setting any filter if an invalid argument is provided', function() {
-				var result = req.month( [ 'arrrr', 'i', 'be', 'an', 'array!' ] )._renderURI();
+				var result = req.month( [ 'arrrr', 'i', 'be', 'an', 'array!' ] ).toString();
 				expect( result.match( /filter/ ) ).to.equal( null );
 			});
 

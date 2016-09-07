@@ -37,7 +37,7 @@ describe( 'wp.pages', function() {
 		});
 
 		it( 'should initialize the base path component', function() {
-			expect( pages._renderURI() ).to.equal( '/wp-json/wp/v2/pages' );
+			expect( pages.toString() ).to.equal( '/wp-json/wp/v2/pages' );
 		});
 
 		it( 'should set a default _supportedMethods array', function() {
@@ -56,20 +56,20 @@ describe( 'wp.pages', function() {
 		it( 'should restrict path changes to a single instance', function() {
 			pages.id( 2 );
 			var newPages = site.pages().id( 3 ).revisions();
-			expect( pages._renderURI() ).to.equal( '/wp-json/wp/v2/pages/2' );
-			expect( newPages._renderURI() ).to.equal( '/wp-json/wp/v2/pages/3/revisions' );
+			expect( pages.toString() ).to.equal( '/wp-json/wp/v2/pages/2' );
+			expect( newPages.toString() ).to.equal( '/wp-json/wp/v2/pages/3/revisions' );
 		});
 
 		describe( 'page collections', function() {
 
 			it( 'should create the URL for retrieving all pages', function() {
-				expect( pages._renderURI() ).to.equal( '/wp-json/wp/v2/pages' );
+				expect( pages.toString() ).to.equal( '/wp-json/wp/v2/pages' );
 			});
 
 			it( 'should provide filtering methods', function() {
 				expect( pages ).to.have.property( 'filter' );
 				expect( pages.filter ).to.be.a( 'function' );
-				var path = pages.filter( 'name', 'some-slug' )._renderURI();
+				var path = pages.filter( 'name', 'some-slug' ).toString();
 				expect( path ).to.equal( '/wp-json/wp/v2/pages?filter%5Bname%5D=some-slug' );
 			});
 
@@ -83,7 +83,7 @@ describe( 'wp.pages', function() {
 			});
 
 			it( 'should create the URL for retrieving a specific post', function() {
-				var path = pages.id( 1337 )._renderURI();
+				var path = pages.id( 1337 ).toString();
 				expect( path ).to.equal( '/wp-json/wp/v2/pages/1337' );
 			});
 
@@ -103,7 +103,7 @@ describe( 'wp.pages', function() {
 			});
 
 			it( 'should create the URL for retrieving a post by path', function() {
-				var path = pages.path( 'nested/page' )._renderURI();
+				var path = pages.path( 'nested/page' ).toString();
 				expect( path ).to
 					.equal( '/wp-json/wp/v2/pages?filter%5Bpagename%5D=nested%2Fpage' );
 			});
@@ -124,7 +124,7 @@ describe( 'wp.pages', function() {
 			});
 
 			it( 'should create the URL for a page\'s comments collection', function() {
-				var path = pages.id( 1337 ).comments()._renderURI();
+				var path = pages.id( 1337 ).comments().toString();
 				expect( path ).to.equal( '/wp-json/wp/v2/pages/1337/comments' );
 			});
 
@@ -135,7 +135,7 @@ describe( 'wp.pages', function() {
 			});
 
 			it( 'should create the URL for retrieving a specific comment', function() {
-				var path = pages.id( 1337 ).comments().comment( 9001 )._renderURI();
+				var path = pages.id( 1337 ).comments().comment( 9001 ).toString();
 				expect( path ).to.equal( '/wp-json/wp/v2/pages/1337/comments/9001' );
 			});
 
@@ -146,7 +146,7 @@ describe( 'wp.pages', function() {
 			});
 
 			it( 'should force action "comments" when calling .comment()', function() {
-				var path = pages.id( 1337 ).comment( 9002 )._renderURI();
+				var path = pages.id( 1337 ).comment( 9002 ).toString();
 				expect( path ).to.equal( '/wp-json/wp/v2/pages/1337/comments/9002' );
 			});
 
@@ -160,7 +160,7 @@ describe( 'wp.pages', function() {
 			});
 
 			it( 'should create the URL for retrieving the revisions for a specific post', function() {
-				var path = pages.id( 1337 ).revisions()._renderURI();
+				var path = pages.id( 1337 ).revisions().toString();
 				expect( path ).to.equal( '/wp-json/wp/v2/pages/1337/revisions' );
 			});
 

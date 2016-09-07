@@ -37,7 +37,7 @@ describe( 'wp.comments', function() {
 		});
 
 		it( 'should initialize the base path component', function() {
-			expect( comments._renderURI() ).to.equal( '/wp-json/wp/v2/comments' );
+			expect( comments.toString() ).to.equal( '/wp-json/wp/v2/comments' );
 		});
 
 		it( 'should set a default _supportedMethods array', function() {
@@ -62,12 +62,12 @@ describe( 'wp.comments', function() {
 
 			it( 'should set the ID value in the path', function() {
 				comments.id( 314159 );
-				expect( comments._renderURI() ).to.equal( '/wp-json/wp/v2/comments/314159' );
+				expect( comments.toString() ).to.equal( '/wp-json/wp/v2/comments/314159' );
 			});
 
 			it( 'accepts ID parameters as strings', function() {
 				comments.id( '8' );
-				expect( comments._renderURI() ).to.equal( '/wp-json/wp/v2/comments/8' );
+				expect( comments.toString() ).to.equal( '/wp-json/wp/v2/comments/8' );
 			});
 
 			it( 'should update the supported methods when setting ID', function() {
@@ -83,12 +83,12 @@ describe( 'wp.comments', function() {
 	describe( 'URL Generation', function() {
 
 		it( 'should create the URL for retrieving all comments', function() {
-			var path = comments._renderURI();
+			var path = comments.toString();
 			expect( path ).to.equal( '/wp-json/wp/v2/comments' );
 		});
 
 		it( 'should create the URL for retrieving a specific comment', function() {
-			var path = comments.id( 1337 )._renderURI();
+			var path = comments.id( 1337 ).toString();
 			expect( path ).to.equal( '/wp-json/wp/v2/comments/1337' );
 		});
 
@@ -123,8 +123,8 @@ describe( 'wp.comments', function() {
 		it( 'should restrict path changes to a single instance', function() {
 			comments.id( 2 );
 			var newComments = site.comments().id( 3 );
-			expect( comments._renderURI() ).to.equal( '/wp-json/wp/v2/comments/2' );
-			expect( newComments._renderURI() ).to.equal( '/wp-json/wp/v2/comments/3' );
+			expect( comments.toString() ).to.equal( '/wp-json/wp/v2/comments/2' );
+			expect( newComments.toString() ).to.equal( '/wp-json/wp/v2/comments/3' );
 		});
 
 	});

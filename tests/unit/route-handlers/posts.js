@@ -37,7 +37,7 @@ describe( 'wp.posts', function() {
 		});
 
 		it( 'should initialize the base path component', function() {
-			expect( posts._renderURI() ).to.equal( '/wp-json/wp/v2/posts' );
+			expect( posts.toString() ).to.equal( '/wp-json/wp/v2/posts' );
 		});
 
 		it( 'should set a default _supportedMethods array', function() {
@@ -62,12 +62,12 @@ describe( 'wp.posts', function() {
 
 			it( 'should set the ID value in the path', function() {
 				posts.id( 314159 );
-				expect( posts._renderURI() ).to.equal( '/wp-json/wp/v2/posts/314159' );
+				expect( posts.toString() ).to.equal( '/wp-json/wp/v2/posts/314159' );
 			});
 
 			it( 'accepts ID parameters as strings', function() {
 				posts.id( '8' );
-				expect( posts._renderURI() ).to.equal( '/wp-json/wp/v2/posts/8' );
+				expect( posts.toString() ).to.equal( '/wp-json/wp/v2/posts/8' );
 			});
 
 			it( 'should update the supported methods when setting ID', function() {
@@ -87,7 +87,7 @@ describe( 'wp.posts', function() {
 
 			it( 'provides a method to get the meta values for a post', function() {
 				posts.id( 3 ).meta();
-				expect( posts._renderURI() ).to.equal( '/wp-json/wp/v2/posts/3/meta' );
+				expect( posts.toString() ).to.equal( '/wp-json/wp/v2/posts/3/meta' );
 			});
 
 			it( 'should force authentication when querying posts/id/meta', function() {
@@ -104,7 +104,7 @@ describe( 'wp.posts', function() {
 
 			it( 'provides a method to get specific post meta objects by ID', function() {
 				posts.id( 3 ).meta( 5 );
-				expect( posts._renderURI() ).to.equal( '/wp-json/wp/v2/posts/3/meta/5' );
+				expect( posts.toString() ).to.equal( '/wp-json/wp/v2/posts/3/meta/5' );
 			});
 
 			it( 'should force authentication when querying posts/id/meta/:id', function() {
@@ -126,12 +126,12 @@ describe( 'wp.posts', function() {
 	describe( 'URL Generation', function() {
 
 		it( 'should create the URL for retrieving all posts', function() {
-			var path = posts._renderURI();
+			var path = posts.toString();
 			expect( path ).to.equal( '/wp-json/wp/v2/posts' );
 		});
 
 		it( 'should create the URL for retrieving a specific post', function() {
-			var path = posts.id( 1337 )._renderURI();
+			var path = posts.id( 1337 ).toString();
 			expect( path ).to.equal( '/wp-json/wp/v2/posts/1337' );
 		});
 
@@ -164,30 +164,30 @@ describe( 'wp.posts', function() {
 		});
 
 		it.skip( 'should create the URL for retrieving all meta for a specific post', function() {
-			var path = posts.id( 1337 ).meta()._renderURI();
+			var path = posts.id( 1337 ).meta().toString();
 			expect( path ).to.equal( '/wp-json/wp/v2/posts/1337/meta' );
 		});
 
 		it.skip( 'should create the URL for retrieving a specific meta item', function() {
-			var path = posts.id( 1337 ).meta( 2001 )._renderURI();
+			var path = posts.id( 1337 ).meta( 2001 ).toString();
 			expect( path ).to.equal( '/wp-json/wp/v2/posts/1337/meta/2001' );
 		});
 
 		it( 'should create the URL for retrieving the revisions for a specific post', function() {
-			var path = posts.id( 1337 ).revisions()._renderURI();
+			var path = posts.id( 1337 ).revisions().toString();
 			expect( path ).to.equal( '/wp-json/wp/v2/posts/1337/revisions' );
 		});
 
 		it( 'should create the URL for retrieving a specific revision item', function() {
-			var path = posts.id( 1337 ).revisions( 2001 )._renderURI();
+			var path = posts.id( 1337 ).revisions( 2001 ).toString();
 			expect( path ).to.equal( '/wp-json/wp/v2/posts/1337/revisions/2001' );
 		});
 
 		it( 'should restrict path changes to a single instance', function() {
 			posts.id( 2 );
 			var newPosts = site.posts().id( 3 ).revisions();
-			expect( posts._renderURI() ).to.equal( '/wp-json/wp/v2/posts/2' );
-			expect( newPosts._renderURI() ).to.equal( '/wp-json/wp/v2/posts/3/revisions' );
+			expect( posts.toString() ).to.equal( '/wp-json/wp/v2/posts/2' );
+			expect( newPosts.toString() ).to.equal( '/wp-json/wp/v2/posts/3/revisions' );
 		});
 
 	});

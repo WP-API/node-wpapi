@@ -42,11 +42,11 @@ describe( 'wp.registerRoute', function() {
 		});
 
 		it( 'renders a route prefixed with the provided namespace', function() {
-			expect( handler._renderURI().match( /myplugin\/v1/ ) ).to.be.ok;
+			expect( handler.toString().match( /myplugin\/v1/ ) ).to.be.ok;
 		});
 
 		it( 'sets the /authors/ path part automatically', function() {
-			expect( handler._renderURI() ).to.equal( '/myplugin/v1/author' );
+			expect( handler.toString() ).to.equal( '/myplugin/v1/author' );
 		});
 
 		describe( '.id() method', function() {
@@ -60,7 +60,7 @@ describe( 'wp.registerRoute', function() {
 			});
 
 			it( 'sets the ID component of the path', function() {
-				expect( handler.id( 3263827 )._renderURI() ).to.equal( '/myplugin/v1/author/3263827' );
+				expect( handler.id( 3263827 ).toString() ).to.equal( '/myplugin/v1/author/3263827' );
 			});
 
 		});
@@ -115,8 +115,8 @@ describe( 'wp.registerRoute', function() {
 
 		it( 'does not overwrite preexisting methods', function() {
 			expect( handler.param ).to.equal( WPRequest.prototype.param );
-			expect( handler.param( 'foo', 'bar' )._renderURI() ).to.equal( '/ns/route?foo=bar' );
-			expect( handler.param( 'foo', 'bar' )._renderURI() ).not.to.equal( '/ns/route/foo' );
+			expect( handler.param( 'foo', 'bar' ).toString() ).to.equal( '/ns/route?foo=bar' );
+			expect( handler.param( 'foo', 'bar' ).toString() ).not.to.equal( '/ns/route/foo' );
 		});
 
 	});
@@ -142,7 +142,7 @@ describe( 'wp.registerRoute', function() {
 			});
 
 			it( 'sets the part1 component of the path', function() {
-				expect( handler.part1( 12 )._renderURI() ).to.equal( '/ns/resource/12' );
+				expect( handler.part1( 12 ).toString() ).to.equal( '/ns/resource/12' );
 			});
 
 		});
@@ -158,7 +158,7 @@ describe( 'wp.registerRoute', function() {
 			});
 
 			it( 'sets the part2 component of the path', function() {
-				expect( handler.part1( 12 ).part2( 34 )._renderURI() ).to.equal( '/ns/resource/12/34' );
+				expect( handler.part1( 12 ).part2( 34 ).toString() ).to.equal( '/ns/resource/12/34' );
 			});
 
 		});
@@ -194,11 +194,11 @@ describe( 'wp.registerRoute', function() {
 		});
 
 		it( 'can set URL query parameters', function() {
-			expect( handler.foo()._renderURI() ).to.equal( '/myplugin/v1/author?foo=true' );
+			expect( handler.foo().toString() ).to.equal( '/myplugin/v1/author?foo=true' );
 		});
 
 		it( 'can set dynamic URL query parameter values', function() {
-			expect( handler.bar( '1138' )._renderURI() ).to.equal( '/myplugin/v1/author?bar=1138' );
+			expect( handler.bar( '1138' ).toString() ).to.equal( '/myplugin/v1/author?bar=1138' );
 		});
 
 		it( 'will not overwrite existing endpoint handler prototype methods', function() {
@@ -211,7 +211,7 @@ describe( 'wp.registerRoute', function() {
 			});
 			var result = factory({
 				endpoint: '/'
-			}).id( 7 )._renderURI();
+			}).id( 7 ).toString();
 			expect( result ).not.to.equal( '/myplugin/v1/author?id=as_a_param' );
 			expect( result ).to.equal( '/myplugin/v1/author/7' );
 		});
@@ -229,24 +229,24 @@ describe( 'wp.registerRoute', function() {
 		});
 
 		it( 'sets the first static level of the route automatically', function() {
-			expect( handler._renderURI() ).to.equal( '/wp/v2/pages' );
+			expect( handler.toString() ).to.equal( '/wp/v2/pages' );
 		});
 
 		it( 'permits the first dynamic level of the route to be set with .parent', function() {
-			expect( handler.parent( 79 )._renderURI() ).to.equal( '/wp/v2/pages/79' );
+			expect( handler.parent( 79 ).toString() ).to.equal( '/wp/v2/pages/79' );
 		});
 
 		it( 'permits the second static level of the route to be set with .revisions', function() {
-			expect( handler.parent( 79 ).revisions()._renderURI() ).to.equal( '/wp/v2/pages/79/revisions' );
+			expect( handler.parent( 79 ).revisions().toString() ).to.equal( '/wp/v2/pages/79/revisions' );
 		});
 
 		it( 'permits the second dynamic level of the route to be set with .id', function() {
-			expect( handler.parent( 79 ).revisions().id( 97 )._renderURI() ).to.equal( '/wp/v2/pages/79/revisions/97' );
+			expect( handler.parent( 79 ).revisions().id( 97 ).toString() ).to.equal( '/wp/v2/pages/79/revisions/97' );
 		});
 
 		it( 'throws an error if the parts of the route provided are not contiguous', function() {
 			expect(function() {
-				handler.parent( 101 ).id( 102 )._renderURI();
+				handler.parent( 101 ).id( 102 ).toString();
 			}).to.throw();
 		});
 
@@ -261,9 +261,9 @@ describe( 'wp.registerRoute', function() {
 				endpoint: '/'
 			});
 			expect(function() {
-				handler.a( 'foo' )._renderURI();
+				handler.a( 'foo' ).toString();
 			}).to.throw;
-			expect( handler.a( 'foo_100' )._renderURI() ).to.equal( '/myplugin/one/foo_100' );
+			expect( handler.a( 'foo_100' ).toString() ).to.equal( '/myplugin/one/foo_100' );
 		});
 
 		it( 'can be bypassed if no regex is provided for a capture group', function() {
@@ -272,9 +272,9 @@ describe( 'wp.registerRoute', function() {
 				endpoint: '/'
 			});
 			expect(function() {
-				handler.a( 'foo' ).two().b( 1000 )._renderURI();
+				handler.a( 'foo' ).two().b( 1000 ).toString();
 			}).not.to.throw;
-			expect( handler.a( 'foo' ).two( 1000 )._renderURI() ).to.equal( '/myplugin/one/foo/two/1000' );
+			expect( handler.a( 'foo' ).two( 1000 ).toString() ).to.equal( '/myplugin/one/foo/two/1000' );
 		});
 
 	});
@@ -384,7 +384,7 @@ describe( 'wp.registerRoute', function() {
 
 		it( 'can be passed in to the factory method', function() {
 			var factory = registerRoute( 'myplugin', 'myroute' );
-			expect( factory({ endpoint: '/wp-yaml/' })._renderURI() ).to.equal( '/wp-yaml/myplugin/myroute' );
+			expect( factory({ endpoint: '/wp-yaml/' }).toString() ).to.equal( '/wp-yaml/myplugin/myroute' );
 		});
 
 		it( 'correctly defaults to the containing object\'s _options, if present', function() {
@@ -394,7 +394,7 @@ describe( 'wp.registerRoute', function() {
 					endpoint: '/foo/'
 				}
 			};
-			expect( obj.factory()._renderURI() ).to.equal( '/foo/myplugin/myroute' );
+			expect( obj.factory().toString() ).to.equal( '/foo/myplugin/myroute' );
 		});
 
 	});

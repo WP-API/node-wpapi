@@ -37,7 +37,7 @@ describe( 'wp.media', function() {
 		});
 
 		it( 'should initialize the base path component', function() {
-			expect( media._renderURI() ).to.equal( '/wp-json/wp/v2/media' );
+			expect( media.toString() ).to.equal( '/wp-json/wp/v2/media' );
 		});
 
 		it( 'should set a default _supportedMethods array', function() {
@@ -60,7 +60,7 @@ describe( 'wp.media', function() {
 
 		it( 'should set the ID value in the path', function() {
 			media.id( 8 );
-			expect( media._renderURI() ).to.equal( '/wp-json/wp/v2/media/8' );
+			expect( media.toString() ).to.equal( '/wp-json/wp/v2/media/8' );
 		});
 
 		it( 'should update the supported methods', function() {
@@ -98,17 +98,17 @@ describe( 'wp.media', function() {
 	describe( 'url generation', function() {
 
 		it( 'should create the URL for the media collection', function() {
-			var uri = media._renderURI();
+			var uri = media.toString();
 			expect( uri ).to.equal( '/wp-json/wp/v2/media' );
 		});
 
 		it( 'can paginate the media collection responses', function() {
-			var uri = media.page( 4 )._renderURI();
+			var uri = media.page( 4 ).toString();
 			expect( uri ).to.equal( '/wp-json/wp/v2/media?page=4' );
 		});
 
 		it( 'should create the URL for a specific media object', function() {
-			var uri = media.id( 1492 )._renderURI();
+			var uri = media.id( 1492 ).toString();
 			expect( uri ).to.equal( '/wp-json/wp/v2/media/1492' );
 		});
 

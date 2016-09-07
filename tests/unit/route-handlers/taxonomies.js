@@ -37,7 +37,7 @@ describe( 'wp.taxonomies', function() {
 		});
 
 		it( 'should initialize the base path component', function() {
-			expect( taxonomies._renderURI() ).to.equal( '/wp-json/wp/v2/taxonomies' );
+			expect( taxonomies.toString() ).to.equal( '/wp-json/wp/v2/taxonomies' );
 		});
 
 		it( 'should set a default _supportedMethods array', function() {
@@ -67,12 +67,12 @@ describe( 'wp.taxonomies', function() {
 	describe( 'URL Generation', function() {
 
 		it( 'should create the URL for retrieving all taxonomies', function() {
-			var url = taxonomies._renderURI();
+			var url = taxonomies.toString();
 			expect( url ).to.equal( '/wp-json/wp/v2/taxonomies' );
 		});
 
 		it( 'should create the URL for retrieving a specific taxonomy', function() {
-			var url = taxonomies.taxonomy( 'category' )._renderURI();
+			var url = taxonomies.taxonomy( 'category' ).toString();
 			expect( url ).to.equal( '/wp-json/wp/v2/taxonomies/category' );
 		});
 

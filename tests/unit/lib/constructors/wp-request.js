@@ -237,12 +237,12 @@ describe( 'WPRequest', function() {
 			});
 
 			it( 'should map to the "context=VALUE" query parameter', function() {
-				var path = request.context( 'edit' )._renderURI();
+				var path = request.context( 'edit' ).toString();
 				expect( path ).to.equal( '/?context=edit' );
 			});
 
 			it( 'should replace values when called multiple times', function() {
-				var path = request.context( 'edit' ).context( 'view' )._renderURI();
+				var path = request.context( 'edit' ).context( 'view' ).toString();
 				expect( path ).to.equal( '/?context=view' );
 			});
 
@@ -250,7 +250,7 @@ describe( 'WPRequest', function() {
 				sinon.spy( request, 'context' );
 				request.edit();
 				expect( request.context ).to.have.been.calledWith( 'edit' );
-				expect( request._renderURI() ).to.equal( '/?context=edit' );
+				expect( request.toString() ).to.equal( '/?context=edit' );
 			});
 
 			it( 'should force authentication when called with "edit"', function() {
@@ -437,6 +437,26 @@ describe( 'WPRequest', function() {
 		it( 'will clear out previously-set name if called again without a name', function() {
 			request.file( '/some/file.jpg', 'cat_picture.jpg' ).file( '/some/other/file.jpg' );
 			expect( request._attachmentName ).to.be.undefined;
+		});
+
+	});
+
+	describe( 'toString()', function() {
+
+		beforeEach(function() {
+			request = new WPRequest({
+				endpoint: 'http://blogoblog.com/wp-json'
+			});
+		});
+
+		it( 'renders the URL to a string', function() {
+			var str = request.param( 'a', 7 ).param( 'b', [ 1, 2 ] ).toString();
+			expect( str ).to.equal( 'http://blogoblog.com/wp-json?a=7&b%5B%5D=1&b%5B%5D=2' );
+		});
+
+		it( 'exhibits normal toString() behavior via coercion', function() {
+			var str = '' + request.param( 'a', 7 ).param( 'b', [ 1, 2 ] );
+			expect( str ).to.equal( 'http://blogoblog.com/wp-json?a=7&b%5B%5D=1&b%5B%5D=2' );
 		});
 
 	});

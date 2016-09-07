@@ -88,7 +88,7 @@ describe( 'wp', function() {
 			expect( site ).not.to.have.property( 'comments' );
 			expect( site.posts() ).not.to.have.property( 'id' );
 			expect( site.posts().filter ).to.be.a( 'function' );
-			expect( site.posts()._renderURI() ).to.equal( 'endpoint/url/wp/v2/posts' );
+			expect( site.posts().toString() ).to.equal( 'endpoint/url/wp/v2/posts' );
 		});
 
 	});
@@ -194,7 +194,7 @@ describe( 'wp', function() {
 			var thingHandler = site.customendpoint();
 			expect( thingHandler ).to.have.property( 'thing' );
 			expect( thingHandler.thing ).to.be.a( 'function' );
-			expect( thingHandler.thing( 'foobar' )._renderURI() ).to.equal( 'endpoint/url/wp/v2/customendpoint/foobar' );
+			expect( thingHandler.thing( 'foobar' ).toString() ).to.equal( 'endpoint/url/wp/v2/customendpoint/foobar' );
 		});
 
 		it( 'assigns any mixins for detected GET arguments for custom namespace handlers', function() {
@@ -231,7 +231,7 @@ describe( 'wp', function() {
 
 		it( 'maps requests directly onto the provided URL', function() {
 			var request = site.url( 'http://some.url.com/wp-json?filter[name]=some-slug' );
-			var path = request._renderURI();
+			var path = request.toString();
 			expect( path ).to.equal( 'http://some.url.com/wp-json?filter[name]=some-slug' );
 		});
 
@@ -262,12 +262,12 @@ describe( 'wp', function() {
 
 		it( 'creates a get request against the root endpoint', function() {
 			var request = site.root();
-			expect( request._renderURI() ).to.equal( 'http://my.site.com/wp-json/' );
+			expect( request.toString() ).to.equal( 'http://my.site.com/wp-json/' );
 		});
 
 		it( 'takes a "path" argument to query a root-relative path', function() {
 			var request = site.root( 'custom/endpoint' );
-			expect( request._renderURI() ).to.equal( 'http://my.site.com/wp-json/custom/endpoint' );
+			expect( request.toString() ).to.equal( 'http://my.site.com/wp-json/custom/endpoint' );
 		});
 
 		it( 'creates a WPRequest object', function() {

@@ -37,7 +37,7 @@ describe( 'wp.types', function() {
 		});
 
 		it( 'should initialize the base path component', function() {
-			expect( types._renderURI() ).to.equal( '/wp-json/wp/v2/types' );
+			expect( types.toString() ).to.equal( '/wp-json/wp/v2/types' );
 		});
 
 		it( 'should set a default _supportedMethods array', function() {
@@ -54,12 +54,12 @@ describe( 'wp.types', function() {
 	describe( 'URL Generation', function() {
 
 		it( 'should create the URL for retrieving all types', function() {
-			var url = types._renderURI();
+			var url = types.toString();
 			expect( url ).to.equal( '/wp-json/wp/v2/types' );
 		});
 
 		it( 'should create the URL for retrieving a specific term', function() {
-			var url = types.type( 'some_type' )._renderURI();
+			var url = types.type( 'some_type' ).toString();
 			expect( url ).to.equal( '/wp-json/wp/v2/types/some_type' );
 		});
 

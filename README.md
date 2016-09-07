@@ -90,7 +90,9 @@ wp.posts().then(function( data ) {
     // handle error
 });
 ```
-The `wp` object will have endpoint handler methods for every endpoint that ships with the default WordPress REST API plugin.
+The `wp` object has endpoint handler methods for every endpoint that ships with the default WordPress REST API plugin.
+
+Once you have used the chaining methods to describe a resource, you may call `.create()`, `.get()`, `.update()` or `.delete()`  to send the API request to create, read, update or delete content within WordPress. These methods are documented in further detail below.
 
 ### Self-signed (Insecure) HTTPS Certificates
 
@@ -284,6 +286,16 @@ Additional querying methods provided, by endpoint:
     - `wp.media().id( n )`: get media object with ID *n*
 
 For security reasons, methods like `.revisions()` and `.users()` require the request to be authenticated.
+
+#### toString()
+
+To get the URI of the resource _without_ making a request, call `.toString()` at the end of a query chain:
+
+```js
+var uriString = wp.posts().id( 7 ).embed().toString();
+```
+
+As the name implies `.toString()` is not a chaining method, and will return a string containing the full URI; this can then be used with alternative HTTP transports like `request`, Node's native `http`, `fetch`, or even jQuery.
 
 ### Filtering Collections
 

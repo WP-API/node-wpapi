@@ -64,7 +64,7 @@ describe( 'integration: discover()', function() {
 	it( 'auto-binds to the detected endpoint on the provided site', function() {
 		var prom = apiPromise
 			.then(function( site ) {
-				expect( site.posts()._renderURI() ).to.equal( 'http://wpapi.loc/wp-json/wp/v2/posts' );
+				expect( site.posts().toString() ).to.equal( 'http://wpapi.loc/wp-json/wp/v2/posts' );
 				return SUCCESS;
 			});
 		return expect( prom ).to.eventually.equal( SUCCESS );
@@ -185,7 +185,7 @@ describe( 'integration: discover()', function() {
 			autodiscovery.getRootResponseJSON.throws();
 			var prom = WP.discover()
 				.then(function( result ) {
-					expect( result.root( '' )._renderURI() ).to.equal( 'http://we.made.it/to/mozarts/house/' );
+					expect( result.root( '' ).toString() ).to.equal( 'http://we.made.it/to/mozarts/house/' );
 					return SUCCESS;
 				});
 			return expect( prom ).to.eventually.equal( SUCCESS );
