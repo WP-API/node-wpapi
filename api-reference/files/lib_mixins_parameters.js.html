@@ -14,7 +14,7 @@
     <header class="main-header">
         <div class="content">
             <div class="project-title">
-                    <h1 class="project-name">wpapi</h1> <span class="project-version">0.9.1</span>
+                    <h1 class="project-name">wpapi</h1> <span class="project-version">0.9.2</span>
                     <p class="description">A client for interacting with the WordPress REST API</p>
             </div>
             <ul class="jump-links">
@@ -224,6 +224,51 @@
                 parameterMixins.forPost = function( postId ) {
                 	/* jshint validthis:true */
                 	return this.param( &#x27;post&#x27;, postId );
+                };
+                
+                // Date Methods
+                // ============
+                
+                /**
+                 * Retrieve only records published before a specified date
+                 *
+                 * @example Provide an ISO 8601-compliant date string
+                 *
+                 *     wp.posts().before(&#x27;2016-03-22&#x27;)...
+                 *
+                 * @example Provide a JavaScript Date object
+                 *
+                 *     wp.posts().before( new Date( 2016, 03, 22 ) )...
+                 *
+                 * @method before
+                 * @chainable
+                 * @param {String|Date} date An ISO 8601-compliant date string, or Date object
+                 * @return The request instance (for chaining)
+                 */
+                parameterMixins.before = function( date ) {
+                	/* jshint validthis:true */
+                	return this.param( &#x27;before&#x27;, new Date( date ).toISOString() );
+                };
+                
+                /**
+                 * Retrieve only records published after a specified date
+                 *
+                 * @example Provide an ISO 8601-compliant date string
+                 *
+                 *     wp.posts().after(&#x27;1986-03-22&#x27;)...
+                 *
+                 * @example Provide a JavaScript Date object
+                 *
+                 *     wp.posts().after( new Date( 1986, 03, 22 ) )...
+                 *
+                 * @method after
+                 * @chainable
+                 * @param {String|Date} date An ISO 8601-compliant date string, or Date object
+                 * @return The request instance (for chaining)
+                 */
+                parameterMixins.after = function( date ) {
+                	/* jshint validthis:true */
+                	return this.param( &#x27;after&#x27;, new Date( date ).toISOString() );
                 };
                 
                 module.exports = parameterMixins;

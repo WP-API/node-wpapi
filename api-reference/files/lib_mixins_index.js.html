@@ -14,7 +14,7 @@
     <header class="main-header">
         <div class="content">
             <div class="project-title">
-                    <h1 class="project-name">wpapi</h1> <span class="project-version">0.9.1</span>
+                    <h1 class="project-name">wpapi</h1> <span class="project-version">0.9.2</span>
                     <p class="description">A client for interacting with the WordPress REST API</p>
             </div>
             <ul class="jump-links">
@@ -75,7 +75,9 @@
                 // supported by default in WPRequest, as is the base &#x60;.param&#x60; method. Any GET
                 // argument parameters not covered here must be set directly by using &#x60;.param&#x60;.
                 module.exports = {
+                	after: { after: parameterMixins.after },
                 	author: { author: parameterMixins.author },
+                	before: { before: parameterMixins.before },
                 	filter: filterMixins,
                 	page: { page: parameterMixins.page },
                 	parent: { parent: parameterMixins.parent },

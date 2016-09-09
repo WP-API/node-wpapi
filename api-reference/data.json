@@ -2,7 +2,7 @@
     "project": {
         "name": "wpapi",
         "description": "A client for interacting with the WordPress REST API",
-        "version": "0.9.1",
+        "version": "0.9.2",
         "url": "https://github.com/wp-api/node-wpapi"
     },
     "files": {
@@ -127,6 +127,20 @@
             "classes": {
                 "wp": 1
             },
+            "fors": {},
+            "namespaces": {}
+        },
+        "tests/integration/helpers/get-prop.js": {
+            "name": "tests/integration/helpers/get-prop.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "tests/integration/helpers/get-rendered-prop.js": {
+            "name": "tests/integration/helpers/get-rendered-prop.js",
+            "modules": {},
+            "classes": {},
             "fors": {},
             "namespaces": {}
         },
@@ -887,22 +901,6 @@
         {
             "file": "lib/constructors/wp-request.js",
             "line": 610,
-            "description": "Parse the request's instance properties into a WordPress API request URI",
-            "access": "private",
-            "tagname": "",
-            "itemtype": "method",
-            "name": "_renderURI",
-            "return": {
-                "description": "The URI for the HTTP request to be sent",
-                "type": "String"
-            },
-            "class": "WPRequest",
-            "module": "WP",
-            "submodule": "WPRequest"
-        },
-        {
-            "file": "lib/constructors/wp-request.js",
-            "line": 628,
             "description": "Conditionally set basic authentication on a server request object",
             "itemtype": "method",
             "name": "_auth",
@@ -931,7 +929,28 @@
         },
         {
             "file": "lib/constructors/wp-request.js",
-            "line": 665,
+            "line": 647,
+            "description": "Parse the request into a WordPress API request URI string",
+            "itemtype": "method",
+            "name": "toString",
+            "return": {
+                "description": "The URI for the HTTP request to be sent",
+                "type": "String"
+            },
+            "class": "WPRequest",
+            "module": "WP",
+            "submodule": "WPRequest"
+        },
+        {
+            "file": "lib/constructors/wp-request.js",
+            "line": 663,
+            "class": "WPRequest",
+            "module": "WP",
+            "submodule": "WPRequest"
+        },
+        {
+            "file": "lib/constructors/wp-request.js",
+            "line": 669,
             "description": "Set the namespace of the request, e.g. to specify the API root for routes\nregistered by wp core v2 (\"wp/v2\") or by any given plugin. Any previously-\nset namespace will be overwritten by subsequent calls to the method.",
             "itemtype": "method",
             "name": "namespace",
@@ -953,26 +972,41 @@
         },
         {
             "file": "lib/constructors/wp-request.js",
-            "line": 680,
-            "description": "Set a requst to use authentication, and optionally provide auth credentials",
+            "line": 684,
+            "description": "Set a request to use authentication, and optionally provide auth credentials\n\nNote: the `.auth( username, password )` signature is _deprecated_, use an object\nwith username and password properties instead as in the below example.\n\nIf auth credentials were already specified when the WP instance was created, calling\n`.auth` on the request chain will set that request to use the existing credentials:",
             "example": [
-                "\nIf auth credentials were already specified when the WP instance was created, calling\n`.auth` on the request chain will set that request to use the existing credentials:\n\n    request.auth().get...\n\nAlternatively, a username & password can be explicitly passed into `.auth`:\n\n    request.auth( 'username', 'password' ).get..."
+                " use existing credentials\n\n    request.auth().get...\n\nAlternatively, a username & password (or nonce) can be explicitly passed into `.auth`:",
+                " use explicit basic authentication credentials\n\n    request.auth({\n      username: 'admin',\n      password: 'super secure'\n    }).get...",
+                " use a nonce for cookie authentication\n\n    request.auth({\n      nonce: 'somenonce'\n    })..."
             ],
             "itemtype": "method",
             "name": "auth",
             "chainable": 1,
             "params": [
                 {
-                    "name": "usrOrObj",
-                    "description": "A username string for basic authentication,\n                                  or an object with 'username' and 'password'\n                                  string properties",
-                    "type": "String|Object",
-                    "optional": true
-                },
-                {
-                    "name": "password",
-                    "description": "A user password string for basic authentication\n                                  (ignored if usrOrObj is an object)",
-                    "type": "String",
-                    "optional": true
+                    "name": "credentials",
+                    "description": "An object with 'username' and 'password' string\n                                       properties, or else a 'nonce' property",
+                    "type": "Object",
+                    "props": [
+                        {
+                            "name": "username",
+                            "description": "A WP-API Basic HTTP Authentication username",
+                            "type": "String",
+                            "optional": true
+                        },
+                        {
+                            "name": "password",
+                            "description": "A WP-API Basic HTTP Authentication password",
+                            "type": "String",
+                            "optional": true
+                        },
+                        {
+                            "name": "nonce",
+                            "description": "A WP nonce for use with cookie authentication",
+                            "type": "String",
+                            "optional": true
+                        }
+                    ]
                 }
             ],
             "return": {
@@ -985,7 +1019,7 @@
         },
         {
             "file": "lib/constructors/wp-request.js",
-            "line": 727,
+            "line": 750,
             "description": "Specify a file or a file buffer to attach to the request, for use when\ncreating a new Media item",
             "example": [
                 " within a server context\n\n    wp.media()\n      // Pass .file() the file system path to a file to upload\n      .file( '/path/to/file.jpg' )\n      .create({})...",
@@ -1016,7 +1050,7 @@
         },
         {
             "file": "lib/constructors/wp-request.js",
-            "line": 762,
+            "line": 785,
             "itemtype": "method",
             "name": "_httpGet",
             "async": 1,
@@ -1040,7 +1074,7 @@
         },
         {
             "file": "lib/constructors/wp-request.js",
-            "line": 778,
+            "line": 801,
             "description": "Invoke an HTTP \"POST\" request against the provided endpoint",
             "itemtype": "method",
             "name": "_httpPost",
@@ -1070,7 +1104,7 @@
         },
         {
             "file": "lib/constructors/wp-request.js",
-            "line": 805,
+            "line": 828,
             "itemtype": "method",
             "name": "_httpPut",
             "async": 1,
@@ -1099,7 +1133,7 @@
         },
         {
             "file": "lib/constructors/wp-request.js",
-            "line": 823,
+            "line": 846,
             "itemtype": "method",
             "name": "_httpDelete",
             "async": 1,
@@ -1129,7 +1163,7 @@
         },
         {
             "file": "lib/constructors/wp-request.js",
-            "line": 843,
+            "line": 866,
             "itemtype": "method",
             "name": "_httpHead",
             "async": 1,
@@ -1153,21 +1187,21 @@
         },
         {
             "file": "lib/constructors/wp-request.js",
-            "line": 861,
+            "line": 884,
             "class": "WPRequest",
             "module": "WP",
             "submodule": "WPRequest"
         },
         {
             "file": "lib/constructors/wp-request.js",
-            "line": 866,
+            "line": 889,
             "class": "WPRequest",
             "module": "WP",
             "submodule": "WPRequest"
         },
         {
             "file": "lib/constructors/wp-request.js",
-            "line": 871,
+            "line": 894,
             "itemtype": "method",
             "name": "get",
             "async": 1,
@@ -1189,7 +1223,7 @@
         },
         {
             "file": "lib/constructors/wp-request.js",
-            "line": 881,
+            "line": 904,
             "description": "Create a HEAD request against a site",
             "itemtype": "method",
             "name": "headers",
@@ -1212,7 +1246,7 @@
         },
         {
             "file": "lib/constructors/wp-request.js",
-            "line": 892,
+            "line": 915,
             "description": "Invoke an HTTP \"POST\" request against the provided endpoint\n\nThis is the public interface creating for POST requests",
             "itemtype": "method",
             "name": "create",
@@ -1240,7 +1274,7 @@
         },
         {
             "file": "lib/constructors/wp-request.js",
-            "line": 907,
+            "line": 930,
             "itemtype": "method",
             "name": "_httpPut",
             "async": 1,
@@ -1269,7 +1303,7 @@
         },
         {
             "file": "lib/constructors/wp-request.js",
-            "line": 919,
+            "line": 942,
             "itemtype": "method",
             "name": "delete",
             "async": 1,
@@ -1297,7 +1331,7 @@
         },
         {
             "file": "lib/constructors/wp-request.js",
-            "line": 930,
+            "line": 953,
             "description": "Calling .then on a query chain will invoke the query as a GET and return a promise",
             "itemtype": "method",
             "name": "then",
@@ -1700,6 +1734,54 @@
             "module": "filters"
         },
         {
+            "file": "lib/mixins/parameters.js",
+            "line": 168,
+            "description": "Retrieve only records published before a specified date",
+            "example": [
+                " Provide an ISO 8601-compliant date string\n\n    wp.posts().before('2016-03-22')...",
+                " Provide a JavaScript Date object\n\n    wp.posts().before( new Date( 2016, 03, 22 ) )..."
+            ],
+            "itemtype": "method",
+            "name": "before",
+            "chainable": 1,
+            "params": [
+                {
+                    "name": "date",
+                    "description": "An ISO 8601-compliant date string, or Date object",
+                    "type": "String|Date"
+                }
+            ],
+            "return": {
+                "description": "The request instance (for chaining)"
+            },
+            "class": "wp",
+            "module": "filters"
+        },
+        {
+            "file": "lib/mixins/parameters.js",
+            "line": 189,
+            "description": "Retrieve only records published after a specified date",
+            "example": [
+                " Provide an ISO 8601-compliant date string\n\n    wp.posts().after('1986-03-22')...",
+                " Provide a JavaScript Date object\n\n    wp.posts().after( new Date( 1986, 03, 22 ) )..."
+            ],
+            "itemtype": "method",
+            "name": "after",
+            "chainable": 1,
+            "params": [
+                {
+                    "name": "date",
+                    "description": "An ISO 8601-compliant date string, or Date object",
+                    "type": "String|Date"
+                }
+            ],
+            "return": {
+                "description": "The request instance (for chaining)"
+            },
+            "class": "wp",
+            "module": "filters"
+        },
+        {
             "file": "lib/util/alphanumeric-sort.js",
             "line": 3,
             "description": "Utility function for sorting arrays of numbers or strings.",
@@ -2011,6 +2093,64 @@
             "module": "parseRouteString"
         },
         {
+            "file": "tests/integration/helpers/get-prop.js",
+            "line": 3,
+            "description": "This is a curry-able pluck function, that is all. Inspecting a collection of\nhuman-readable strings is usually a more comprehensible way to validate the\nright results were returned than using arbitrary values.",
+            "example": [
+                " Pluck the slugs titles from a collection of terms\n\n    var slugs = getProp( collection, 'slug' );",
+                " Create a bound variant that always plucks .name\n\n    var getNames = getProp.bind( null, 'name' );\n    var names = getNames( collection );"
+            ],
+            "access": "private",
+            "tagname": "",
+            "params": [
+                {
+                    "name": "property",
+                    "description": "The name of the property to pluck",
+                    "type": "String"
+                },
+                {
+                    "name": "collection",
+                    "description": "An array of response objects whence to pluck",
+                    "type": "Object[]"
+                }
+            ],
+            "return": {
+                "description": "The values of that property from each collection member",
+                "type": "String[]"
+            },
+            "class": "WP",
+            "module": "parseRouteString"
+        },
+        {
+            "file": "tests/integration/helpers/get-rendered-prop.js",
+            "line": 3,
+            "description": "This method is a super-pluck capable of grabbing the rendered version of\na nested property on a WP API response object. Inspecting a collection of\nhuman-readable properties is usually a more comprehensible way to validate\nthat the right results were returned than using IDs or arbitrary values.",
+            "example": [
+                " Pluck the rendered titles from the post\n\n    var titles = getRenderedProp( collection, 'title' );",
+                " Create a bound variant that always plucks titles\n\n    var getTitles = getRenderedProp.bind( null, 'title' );\n    var titles = getTitles( collection );"
+            ],
+            "access": "private",
+            "tagname": "",
+            "params": [
+                {
+                    "name": "property",
+                    "description": "The name of the rendered property to pluck",
+                    "type": "String"
+                },
+                {
+                    "name": "collection",
+                    "description": "An array of response objects whence to pluck",
+                    "type": "Object[]"
+                }
+            ],
+            "return": {
+                "description": "The collection of values for the rendered variants of\nthe specified response object property",
+                "type": "String[]"
+            },
+            "class": "WP",
+            "module": "parseRouteString"
+        },
+        {
             "file": "Gruntfile.js",
             "line": 1,
             "description": "The Gruntfile in this project is not responsible for the code build or\nlinting, and instead handles all tasks related to documentation generation\nand output.",
@@ -2093,7 +2233,52 @@
         },
         {
             "file": "wp.js",
-            "line": 169,
+            "line": 164,
+            "description": "Set the authentication to use for a WP site handler instance. Accepts basic\nHTTP authentication credentials (string username & password) or a Nonce (for\ncookie authentication) by default; may be overloaded to accept OAuth credentials\nin the future.",
+            "example": [
+                " Basic Authentication\n\n    site.auth({\n      username: 'admin',\n      password: 'securepass55'\n    })...",
+                " Cookie/Nonce Authentication\n\n    site.auth({\n      nonce: 'somenonce'\n    })..."
+            ],
+            "itemtype": "method",
+            "name": "auth",
+            "chainable": 1,
+            "params": [
+                {
+                    "name": "credentials",
+                    "description": "An authentication credentials object",
+                    "type": "Object",
+                    "props": [
+                        {
+                            "name": "username",
+                            "description": "A WP-API Basic HTTP Authentication username",
+                            "type": "String",
+                            "optional": true
+                        },
+                        {
+                            "name": "password",
+                            "description": "A WP-API Basic HTTP Authentication password",
+                            "type": "String",
+                            "optional": true
+                        },
+                        {
+                            "name": "nonce",
+                            "description": "A WP nonce for use with cookie authentication",
+                            "type": "String",
+                            "optional": true
+                        }
+                    ]
+                }
+            ],
+            "return": {
+                "description": "The WP site handler instance, for chaining",
+                "type": "WP"
+            },
+            "class": "WP",
+            "module": "WP"
+        },
+        {
+            "file": "wp.js",
+            "line": 196,
             "description": "Deduce request methods from a provided API root JSON response object's\nroutes dictionary, and assign those methods to the current instance. If\nno routes dictionary is provided then the instance will be bootstrapped\nwith route handlers for the default API endpoints only.\n\nThis method is called automatically during WP instance creation.",
             "itemtype": "method",
             "name": "bootstrap",
@@ -2114,7 +2299,7 @@
         },
         {
             "file": "wp.js",
-            "line": 234,
+            "line": 261,
             "description": "Access API endpoint handlers from a particular API namespace object",
             "example": [
                 "\n\n    wp.namespace( 'myplugin/v1' ).author()...\n\n    // Default WP endpoint handlers are assigned to the wp instance itself.\n    // These are equivalent:\n    wp.namespace( 'wp/v2' ).posts()...\n    wp.posts()..."
@@ -2135,7 +2320,7 @@
         },
         {
             "file": "wp.js",
-            "line": 257,
+            "line": 284,
             "description": "Take an arbitrary WordPress site, deduce the WP REST API root endpoint, query\nthat endpoint, and parse the response JSON. Use the returned JSON response\nto instantiate a WP instance bound to the provided site.",
             "itemtype": "method",
             "name": "discover",
@@ -2190,7 +2375,7 @@
         },
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " lib/constructors/wp-request.js:727"
+            "line": " lib/constructors/wp-request.js:750"
         },
         {
             "message": "replacing incorrect tag: returns with return",
@@ -2250,7 +2435,15 @@
         },
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " wp.js:234"
+            "line": " tests/integration/helpers/get-prop.js:3"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " tests/integration/helpers/get-rendered-prop.js:3"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " wp.js:261"
         },
         {
             "message": "Missing item type\nHelper method to request yes/no confirmation from the user, with some",
@@ -2302,11 +2495,15 @@
         },
         {
             "message": "Missing item type",
-            "line": " lib/constructors/wp-request.js:861"
+            "line": " lib/constructors/wp-request.js:663"
         },
         {
             "message": "Missing item type",
-            "line": " lib/constructors/wp-request.js:866"
+            "line": " lib/constructors/wp-request.js:884"
+        },
+        {
+            "message": "Missing item type",
+            "line": " lib/constructors/wp-request.js:889"
         },
         {
             "message": "Missing item type\nTo avoid requiring that auto-discovery be utilized every time the API client\nis initialized, this library ships with a built-in route definition from a\nvanilla WordPress REST API installation. That file may be updated by\ninstalling the API plugin on a clean WP development instance, with no other\nplugins running, and downloading the JSON output from `yourwpsite.com/wp-json/`\ninto the \"endpoint-response.json\" file in this directory.\n\nThat file can also be generated by running this script against the same live\nWP REST API instance to download that same file, the difference being that,\nif the `endpoint-response.json` file is downloaded through this script, it\nwill be run through the `simplifyObject` utility to cut out about 1/3 of the\nbytes of the response by removing properties that do not effect route generation.\n\nThis script is NOT intended to be a dependency of any part of wp.js, and is\nprovided purely as a utility for upgrading the built-in copy of the endpoint\nresponse JSON file that is used to bootstrap the default route handlers.",
@@ -2365,12 +2562,20 @@
             "line": " lib/route-tree.js:187"
         },
         {
+            "message": "Missing item type\nThis is a curry-able pluck function, that is all. Inspecting a collection of\nhuman-readable strings is usually a more comprehensible way to validate the\nright results were returned than using arbitrary values.",
+            "line": " tests/integration/helpers/get-prop.js:3"
+        },
+        {
+            "message": "Missing item type\nThis method is a super-pluck capable of grabbing the rendered version of\na nested property on a WP API response object. Inspecting a collection of\nhuman-readable properties is usually a more comprehensible way to validate\nthat the right results were returned than using IDs or arbitrary values.",
+            "line": " tests/integration/helpers/get-rendered-prop.js:3"
+        },
+        {
             "message": "Missing item type\nThe Gruntfile in this project is not responsible for the code build or\nlinting, and instead handles all tasks related to documentation generation\nand output.",
             "line": " Gruntfile.js:1"
         },
         {
             "message": "Missing item type\nAccess API endpoint handlers from a particular API namespace object",
-            "line": " wp.js:234"
+            "line": " wp.js:261"
         }
     ]
 }

@@ -14,7 +14,7 @@
     <header class="main-header">
         <div class="content">
             <div class="project-title">
-                    <h1 class="project-name">wpapi</h1> <span class="project-version">0.9.1</span>
+                    <h1 class="project-name">wpapi</h1> <span class="project-version">0.9.2</span>
                     <p class="description">A client for interacting with the WordPress REST API</p>
             </div>
             <ul class="jump-links">
@@ -672,24 +672,6 @@
                 };
                 
                 /**
-                 * Parse the request&#x27;s instance properties into a WordPress API request URI
-                 *
-                 * @private
-                 *
-                 * @method _renderURI
-                 * @return {String} The URI for the HTTP request to be sent
-                 */
-                WPRequest.prototype._renderURI = function() {
-                	// Render the path to a string
-                	var path = this._renderPath();
-                
-                	// Render the query string
-                	var queryStr = this._renderQuery();
-                
-                	return this._options.endpoint + path + queryStr;
-                };
-                
-                /**
                  * Conditionally set basic authentication on a server request object
                  *
                  * @method _auth
@@ -723,6 +705,28 @@
                 	return request.auth( username, password );
                 };
                 
+                // Non-chaining public methods
+                // ===========================
+                
+                /**
+                 * Parse the request into a WordPress API request URI string
+                 *
+                 * @method toString
+                 * @return {String} The URI for the HTTP request to be sent
+                 */
+                WPRequest.prototype.toString = function() {
+                	// Render the path to a string
+                	var path = this._renderPath();
+                
+                	// Render the query string
+                	var queryStr = this._renderQuery();
+                
+                	return this._options.endpoint + path + queryStr;
+                };
+                
+                /** @deprecated Use .toString() */
+                WPRequest.prototype._renderURI = WPRequest.prototype.toString;
+                
                 // Chaining methods
                 // ================
                 
@@ -742,39 +746,58 @@
                 };
                 
                 /**
-                 * Set a requst to use authentication, and optionally provide auth credentials
+                 * Set a request to use authentication, and optionally provide auth credentials
                  *
-                 * @example
+                 * Note: the &#x60;.auth( username, password )&#x60; signature is _deprecated_, use an object
+                 * with username and password properties instead as in the below example.
+                 *
                  * If auth credentials were already specified when the WP instance was created, calling
                  * &#x60;.auth&#x60; on the request chain will set that request to use the existing credentials:
                  *
+                 * @example use existing credentials
+                 *
                  *     request.auth().get...
                  *
-                 * Alternatively, a username &amp; password can be explicitly passed into &#x60;.auth&#x60;:
+                 * Alternatively, a username &amp; password (or nonce) can be explicitly passed into &#x60;.auth&#x60;:
                  *
-                 *     request.auth( &#x27;username&#x27;, &#x27;password&#x27; ).get...
+                 * @example use explicit basic authentication credentials
+                 *
+                 *     request.auth({
+                 *       username: &#x27;admin&#x27;,
+                 *       password: &#x27;super secure&#x27;
+                 *     }).get...
+                 *
+                 * @example use a nonce for cookie authentication
+                 *
+                 *     request.auth({
+                 *       nonce: &#x27;somenonce&#x27;
+                 *     })...
                  *
                  * @method auth
                  * @chainable
-                 * @param {String|Object} [usrOrObj] A username string for basic authentication,
-                 *                                   or an object with &#x27;username&#x27; and &#x27;password&#x27;
-                 *                                   string properties
-                 * @param {String}        [password] A user password string for basic authentication
-                 *                                   (ignored if usrOrObj is an object)
+                 * @param {Object} credentials            An object with &#x27;username&#x27; and &#x27;password&#x27; string
+                 *                                        properties, or else a &#x27;nonce&#x27; property
+                 * @param {String} [credentials.username] A WP-API Basic HTTP Authentication username
+                 * @param {String} [credentials.password] A WP-API Basic HTTP Authentication password
+                 * @param {String} [credentials.nonce]    A WP nonce for use with cookie authentication
                  * @return {WPRequest} The WPRequest instance (for chaining)
                  */
-                WPRequest.prototype.auth = function( usrOrObj, password ) {
-                	if ( typeof usrOrObj === &#x27;object&#x27; ) {
-                		if ( typeof usrOrObj.username === &#x27;string&#x27; ) {
-                			this._options.username = usrOrObj.username;
+                WPRequest.prototype.auth = function( credentials, password ) {
+                	if ( typeof credentials === &#x27;object&#x27; ) {
+                		if ( typeof credentials.username === &#x27;string&#x27; ) {
+                			this._options.username = credentials.username;
                 		}
                 
-                		if ( typeof usrOrObj.password === &#x27;string&#x27; ) {
-                			this._options.password = usrOrObj.password;
+                		if ( typeof credentials.password === &#x27;string&#x27; ) {
+                			this._options.password = credentials.password;
+                		}
+                
+                		if ( credentials.nonce ) {
+                			this._options.nonce = credentials.nonce;
                 		}
                 	} else {
-                		if ( typeof usrOrObj === &#x27;string&#x27; ) {
-                			this._options.username = usrOrObj;
+                		if ( typeof credentials === &#x27;string&#x27; ) {
+                			this._options.username = credentials;
                 		}
                 
                 		if ( typeof password === &#x27;string&#x27; ) {
@@ -832,7 +855,7 @@
                  */
                 WPRequest.prototype._httpGet = function( callback ) {
                 	this._checkMethodSupport( &#x27;get&#x27; );
-                	var url = this._renderURI();
+                	var url = this.toString();
                 
                 	var request = this._auth( agent.get( url ) );
                 
@@ -850,7 +873,7 @@
                  */
                 WPRequest.prototype._httpPost = function( data, callback ) {
                 	this._checkMethodSupport( &#x27;post&#x27; );
-                	var url = this._renderURI();
+                	var url = this.toString();
                 	data = data || {};
                 	var request = this._auth( agent.post( url ), true );
                 
@@ -876,7 +899,7 @@
                  */
                 WPRequest.prototype._httpPut = function( data, callback ) {
                 	this._checkMethodSupport( &#x27;put&#x27; );
-                	var url = this._renderURI();
+                	var url = this.toString();
                 	data = data || {};
                 
                 	var request = this._auth( agent.put( url ), true ).send( data );
@@ -898,7 +921,7 @@
                 		data = null;
                 	}
                 	this._checkMethodSupport( &#x27;delete&#x27; );
-                	var url = this._renderURI();
+                	var url = this.toString();
                 	var request = this._auth( agent.del( url ), true ).send( data );
                 
                 	return invokeAndPromisify( request, callback, returnBody.bind( this ) );
@@ -913,7 +936,7 @@
                  */
                 WPRequest.prototype._httpHead = function( callback ) {
                 	this._checkMethodSupport( &#x27;head&#x27; );
-                	var url = this._renderURI();
+                	var url = this.toString();
                 	var request = this._auth( agent.head( url ) );
                 
                 	return invokeAndPromisify( request, callback, returnHeaders );

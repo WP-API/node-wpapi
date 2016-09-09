@@ -33,7 +33,9 @@ wp.posts().then(function( data ) {
     // handle error
 });
 ```
-The `wp` object will have endpoint handler methods for every endpoint that ships with the default WordPress REST API plugin.
+The `wp` object has endpoint handler methods for every endpoint that ships with the default WordPress REST API plugin.
+
+Once you have used the chaining methods to describe a resource, you may call `.create()`, `.get()`, `.update()` or `.delete()`  to send the API request to create, read, update or delete content within WordPress. These methods are documented in further detail below.
 
 ### Self-signed (Insecure) HTTPS Certificates
 
@@ -73,6 +75,22 @@ apiPromise.then(function( site ) {
         .id( 7 )
         .then(function( author ) { /* ... */ });
 });
+```
+
+#### Authenticating with Auto-Discovery
+
+While using `WP.discover( url )` to generate the handler for your site gets you up and running quickly, it does not provide the same level of customization as instantiating your own `new WP` object. In order to specify authentication configuration when using autodiscovery, chain a `.then` onto the initial discovery query to call the `.auth` method on the returned site object with the relevant credentials (username & password, nonce, etc):
+
+```js
+var apiPromise = WP.discover( 'http://my-site.com' ).then(function( site ) {
+    return site.auth({
+        username: 'admin',
+        password: 'always use secure passwords'
+    });
+});
+apiPromise.then(function( site ) {
+    // site is now configured to use authentication
+})
 ```
 
 ### Bootstrapping
@@ -212,6 +230,16 @@ Additional querying methods provided, by endpoint:
 
 For security reasons, methods like `.revisions()` and `.users()` require the request to be authenticated.
 
+#### toString()
+
+To get the URI of the resource _without_ making a request, call `.toString()` at the end of a query chain:
+
+```js
+var uriString = wp.posts().id( 7 ).embed().toString();
+```
+
+As the name implies `.toString()` is not a chaining method, and will return a string containing the full URI; this can then be used with alternative HTTP transports like `request`, Node's native `http`, `fetch`, or jQuery.
+
 ### Filtering Collections
 
 Queries against collection endpoints (like `wp.posts()`, which maps to `endpoint/posts/`) can be filtered to specify a subset of posts to return. Many of the WP_Query values are available by default, including `tag`, `author_name`, `page_id`, etc; even more parameters are available to filter byif you authenticate with the API using either [Basic Auth](https://github.com/WP-API/Basic-Auth) or [OAuth](https://github.com/WP-API/OAuth1). You can continue to chain properties until you call `.then`, `.get`, `.post`, `.put`, or `.delete` on the request chain.
@@ -272,6 +300,8 @@ The following methods are shortcuts for filtering the requested collection down 
 * `.year( year )`: find items published in the specified year
 * `.month( month )`: find items published in the specified month, designated by the month index (1&ndash;12) or name (*e.g.* "February")
 * `.day( day )`: find items published on the specified day
+* `.before( date )`: find items published before the specified date (string or Date object)
+* `.after( date )`: find items published after the specified date (string or Date object)
 
 ### Uploading Media
 

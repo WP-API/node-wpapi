@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Gruntfile.js - wpapi</title>
+    <title>tests/integration/helpers/get-rendered-prop.js - wpapi</title>
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
     <link rel="shortcut icon" type="image/png" href="../assets/favicon.png">
@@ -58,31 +58,37 @@
 
         <div id="docs-main" class="apidocs">
             <div class="content container">
-                <h1 class="file-heading">File: Gruntfile.js</h1>
+                <h1 class="file-heading">File: tests/integration/helpers/get-rendered-prop.js</h1>
                 
                 <div class="file">
                     <pre class="code prettyprint linenums">
-                /**
-                 * The Gruntfile in this project is not responsible for the code build or
-                 * linting, and instead handles all tasks related to documentation generation
-                 * and output.
-                 */
                 &#x27;use strict&#x27;;
                 
-                module.exports = function( grunt ) {
-                	grunt.initConfig({
-                		pkg: grunt.file.readJSON( &#x27;package.json&#x27; )
+                /**
+                 * This method is a super-pluck capable of grabbing the rendered version of
+                 * a nested property on a WP API response object. Inspecting a collection of
+                 * human-readable properties is usually a more comprehensible way to validate
+                 * that the right results were returned than using IDs or arbitrary values.
+                 *
+                 * @example Pluck the rendered titles from the post
+                 *
+                 *     var titles = getRenderedProp( collection, &#x27;title&#x27; );
+                 *
+                 * @example Create a bound variant that always plucks titles
+                 *
+                 *     var getTitles = getRenderedProp.bind( null, &#x27;title&#x27; );
+                 *     var titles = getTitles( collection );
+                 *
+                 * @private
+                 * @param {String}   property   The name of the rendered property to pluck
+                 * @param {Object[]} collection An array of response objects whence to pluck
+                 * @returns {String[]} The collection of values for the rendered variants of
+                 * the specified response object property
+                 */
+                module.exports = function( property, collection ) {
+                	return collection.map(function( item ) {
+                		return item[ property ].rendered;
                 	});
-                
-                	// Individual tasks are defined within build/grunt
-                	grunt.loadTasks( &#x27;build/grunt&#x27; );
-                
-                	grunt.registerTask( &#x27;docs&#x27;, [
-                		&#x27;clean&#x27;,
-                		&#x27;generate_readme_docs&#x27;,
-                		&#x27;zip&#x27;,
-                		&#x27;yuidoc&#x27;
-                	]);
                 };
                 
                     </pre>
