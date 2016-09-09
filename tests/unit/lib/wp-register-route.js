@@ -4,6 +4,7 @@ var expect = chai.expect;
 
 var WPRequest = require( '../../../lib/constructors/wp-request' );
 var registerRoute = require( '../../../lib/wp-register-route' );
+var checkMethodSupport = require( '../../../lib/util/check-method-support' );
 
 describe( 'wp.registerRoute', function() {
 
@@ -298,7 +299,7 @@ describe( 'wp.registerRoute', function() {
 				[ 'get', 'post' ].forEach(function( method ) {
 					it( method, function() {
 						expect(function() {
-							handler.a( 1 ).b( 2 )._checkMethodSupport( method );
+							checkMethodSupport( method, handler.a( 1 ).b( 2 ) );
 						}).not.to.throw();
 					});
 				});
@@ -310,7 +311,7 @@ describe( 'wp.registerRoute', function() {
 				[ 'delete', 'put' ].forEach(function( method ) {
 					it( method, function() {
 						expect(function() {
-							handler.a( 1 ).b( 2 )._checkMethodSupport( method );
+							checkMethodSupport( method, handler.a( 1 ).b( 2 ) );
 						}).to.throw();
 					});
 				});
@@ -318,7 +319,9 @@ describe( 'wp.registerRoute', function() {
 			});
 
 			it( 'support "head" implicitly if "get" is whitelisted', function() {
-				expect(function() { handler.a( 1 ).b( 2 )._checkMethodSupport( 'head' ); }).not.to.throw();
+				expect(function() {
+					checkMethodSupport( 'head', handler.a( 1 ).b( 2 ) );
+				}).not.to.throw();
 			});
 
 			it( 'support "get" implicitly if "head" is whitelisted', function() {
@@ -328,7 +331,9 @@ describe( 'wp.registerRoute', function() {
 				handler = factory({
 					endpoint: '/'
 				});
-				expect(function() { handler.a( 1 ).b( 2 )._checkMethodSupport( 'head' ); }).not.to.throw();
+				expect(function() {
+					checkMethodSupport( 'head', handler.a( 1 ).b( 2 ) );
+				}).not.to.throw();
 			});
 
 		});
@@ -340,7 +345,7 @@ describe( 'wp.registerRoute', function() {
 				[ 'get', 'post', 'head', 'put', 'delete' ].forEach(function( method ) {
 					it( method, function() {
 						expect(function() {
-							handler.a( 1 )._checkMethodSupport( method );
+							checkMethodSupport( method, handler.a( 1 ) );
 						}).not.to.throw();
 					});
 				});
@@ -361,7 +366,9 @@ describe( 'wp.registerRoute', function() {
 			});
 
 			it( 'is properly whitelisted', function() {
-				expect(function() { handler.a( 1 ).b( 2 )._checkMethodSupport( 'post' ); }).not.to.throw();
+				expect(function() {
+					checkMethodSupport( 'post', handler.a( 1 ).b( 2 ) );
+				}).not.to.throw();
 			});
 
 			describe( 'implicitly blacklists other method', function() {
@@ -369,7 +376,7 @@ describe( 'wp.registerRoute', function() {
 				[ 'get', 'head', 'delete', 'put' ].forEach(function( method ) {
 					it( method, function() {
 						expect(function() {
-							handler.a( 1 ).b( 2 )._checkMethodSupport( method );
+							checkMethodSupport( method, handler.a( 1 ).b( 2 ) );
 						}).to.throw();
 					});
 				});

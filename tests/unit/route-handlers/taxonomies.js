@@ -21,11 +21,9 @@ describe( 'wp.taxonomies', function() {
 
 		it( 'should set any passed-in options', function() {
 			taxonomies = site.taxonomies({
-				booleanProp: true,
-				strProp: 'Some string'
+				endpoint: '/custom-endpoint/'
 			});
-			expect( taxonomies._options.booleanProp ).to.be.true;
-			expect( taxonomies._options.strProp ).to.equal( 'Some string' );
+			expect( taxonomies._options.endpoint ).to.equal( '/custom-endpoint/' );
 		});
 
 		it( 'should initialize _options to the site defaults', function() {

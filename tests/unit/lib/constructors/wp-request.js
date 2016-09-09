@@ -7,6 +7,7 @@ var sandbox = require( 'sandboxed-module' );
 
 var WPRequest = require( '../../../../lib/constructors/wp-request' );
 var filterMixins = require( '../../../../lib/mixins/filters' );
+var checkMethodSupport = require( '../../../../lib/util/check-method-support' );
 
 describe( 'WPRequest', function() {
 
@@ -24,11 +25,9 @@ describe( 'WPRequest', function() {
 
 		it( 'should set any passed-in options', function() {
 			request = new WPRequest({
-				booleanProp: true,
-				strProp: 'Some string'
+				endpoint: '/custom-endpoint/'
 			});
-			expect( request._options.booleanProp ).to.be.true;
-			expect( request._options.strProp ).to.equal( 'Some string' );
+			expect( request._options.endpoint ).to.equal( '/custom-endpoint/' );
 		});
 
 		it( 'should define a _supportedMethods array', function() {
@@ -97,17 +96,17 @@ describe( 'WPRequest', function() {
 
 	});
 
-	describe( '_checkMethodSupport', function() {
+	describe( 'checkMethodSupport', function() {
 
 		it( 'should return true when called with a supported method', function() {
-			expect( request._checkMethodSupport( 'get' ) ).to.equal( true );
+			expect( checkMethodSupport( 'get', request ) ).to.equal( true );
 		});
 
 		it( 'should throw an error when called with an unsupported method', function() {
 			request._supportedMethods = [ 'get' ];
 
 			expect(function() {
-				return request._checkMethodSupport( 'post' );
+				checkMethodSupport( 'post', request );
 			}).to.throw();
 		});
 
@@ -916,12 +915,12 @@ describe( 'WPRequest', function() {
 				expect( request.post ).to.be.a( 'function' );
 			});
 
-			it( 'proxies to ._httpPost', function() {
-				sinon.stub( request, '_httpPost' );
+			it( 'proxies to .create', function() {
+				sinon.stub( request, 'create' );
 				function cb() {}
-				request.post( 'foo', cb );
-				expect( request._httpPost ).to.have.been.calledWith( 'foo', cb );
-				request._httpPost.restore();
+				request.create( 'foo', cb );
+				expect( request.create ).to.have.been.calledWith( 'foo', cb );
+				request.create.restore();
 			});
 
 		});
@@ -933,12 +932,12 @@ describe( 'WPRequest', function() {
 				expect( request.put ).to.be.a( 'function' );
 			});
 
-			it( 'proxies to ._httpPut', function() {
-				sinon.stub( request, '_httpPut' );
+			it( 'proxies to .update', function() {
+				sinon.stub( request, 'update' );
 				function cb() {}
 				request.put( 'foo', cb );
-				expect( request._httpPut ).to.have.been.calledWith( 'foo', cb );
-				request._httpPut.restore();
+				expect( request.update ).to.have.been.calledWith( 'foo', cb );
+				request.update.restore();
 			});
 
 		});

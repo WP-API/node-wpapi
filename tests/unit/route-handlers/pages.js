@@ -21,11 +21,9 @@ describe( 'wp.pages', function() {
 
 		it( 'should set any passed-in options', function() {
 			pages = site.pages({
-				booleanProp: true,
-				strProp: 'Some string'
+				endpoint: '/custom-endpoint/'
 			});
-			expect( pages._options.booleanProp ).to.be.true;
-			expect( pages._options.strProp ).to.equal( 'Some string' );
+			expect( pages._options.endpoint ).to.equal( '/custom-endpoint/' );
 		});
 
 		it( 'should initialize _options to the site defaults', function() {

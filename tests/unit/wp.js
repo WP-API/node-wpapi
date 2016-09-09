@@ -235,7 +235,7 @@ describe( 'wp', function() {
 			expect( path ).to.equal( 'http://some.url.com/wp-json?filter[name]=some-slug' );
 		});
 
-		it( 'inherits non-endpoint options from the parent WP instance', function() {
+		it( 'inherits whitelisted non-endpoint options from the parent WP instance', function() {
 			var wp = new WP({
 				endpoint: 'http://website.com/',
 				identifier: 'some unique value'
@@ -243,8 +243,7 @@ describe( 'wp', function() {
 			var request = wp.url( 'http://new-endpoint.com/' );
 			expect( request._options ).to.have.property( 'endpoint' );
 			expect( request._options.endpoint ).to.equal( 'http://new-endpoint.com/' );
-			expect( request._options ).to.have.property( 'identifier' );
-			expect( request._options.identifier ).to.equal( 'some unique value' );
+			expect( request._options ).not.to.have.property( 'identifier' );
 		});
 
 	});
@@ -277,14 +276,11 @@ describe( 'wp', function() {
 
 		it( 'inherits options from the parent WP instance', function() {
 			var wp = new WP({
-				endpoint: 'http://cat.website.com/',
-				customOption: 'best method ever'
+				endpoint: 'http://cat.website.com/'
 			});
 			var request = wp.root( 'custom-path' );
 			expect( request._options ).to.have.property( 'endpoint' );
 			expect( request._options.endpoint ).to.equal( 'http://cat.website.com/' );
-			expect( request._options ).to.have.property( 'customOption' );
-			expect( request._options.customOption ).to.equal( 'best method ever' );
 		});
 
 	});

@@ -42,20 +42,28 @@ var autodiscovery = require( './lib/autodiscovery' );
 // Pull in base module constructors
 var WPRequest = require( './lib/constructors/wp-request' );
 
+// Pull in default HTTP transport
+var httpTransport = require( './lib/util/http-transport' );
+
 /**
  * The base constructor for the WP API service
  *
  * @class WP
  * @constructor
  * @uses WPRequest
- * @param {Object} options An options hash to configure the instance
- * @param {String} options.endpoint The URI for a WP-API endpoint
- * @param {String} [options.username] A WP-API Basic Auth username
- * @param {String} [options.password] A WP-API Basic Auth password
- * @param {Object} [options.routes]   A dictionary of API routes with which to
- *                                    bootstrap the WP instance: the instance will
- *                                    be initialized with default routes only
- *                                    if this property is omitted
+ * @param {Object} options             An options hash to configure the instance
+ * @param {String} options.endpoint    The URI for a WP-API endpoint
+ * @param {String} [options.username]  A WP-API Basic Auth username
+ * @param {String} [options.password]  A WP-API Basic Auth password
+ * @param {String} [options.nonce]     A WP nonce for use with cookie authentication
+ * @param {Object} [options.routes]    A dictionary of API routes with which to
+ *                                     bootstrap the WP instance: the instance will
+ *                                     be initialized with default routes only
+ *                                     if this property is omitted
+ * @param {String} [options.transport] An optional dictionary of HTTP transport
+ *                                     methods (.get, .post, .put, .delete, .head)
+ *                                     to use instead of the defaults, e.g. to use
+ *                                     a different HTTP library than superagent
  */
 function WP( options ) {
 
@@ -75,6 +83,9 @@ function WP( options ) {
 
 	// Ensure trailing slash on endpoint URI
 	this._options.endpoint = this._options.endpoint.replace( /\/?$/, '/' );
+
+	// Create the HTTP transport object
+	this._options.transport = Object.create( httpTransport );
 
 	return this.bootstrap( options && options.routes );
 }

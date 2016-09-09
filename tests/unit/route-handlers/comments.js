@@ -21,11 +21,9 @@ describe( 'wp.comments', function() {
 
 		it( 'should set any passed-in options', function() {
 			comments = site.comments({
-				booleanProp: true,
-				strProp: 'Some string'
+				endpoint: '/custom-endpoint/'
 			});
-			expect( comments._options.booleanProp ).to.be.true;
-			expect( comments._options.strProp ).to.equal( 'Some string' );
+			expect( comments._options.endpoint ).to.equal( '/custom-endpoint/' );
 		});
 
 		it( 'should initialize _options to the site defaults', function() {

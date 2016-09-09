@@ -21,11 +21,9 @@ describe( 'wp.users', function() {
 
 		it( 'should set any passed-in options', function() {
 			users = site.users({
-				booleanProp: true,
-				strProp: 'Some string'
+				endpoint: '/custom-endpoint/'
 			});
-			expect( users._options.booleanProp ).to.be.true;
-			expect( users._options.strProp ).to.equal( 'Some string' );
+			expect( users._options.endpoint ).to.equal( '/custom-endpoint/' );
 		});
 
 		it( 'should initialize _options to the site defaults', function() {

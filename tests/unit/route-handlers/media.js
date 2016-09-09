@@ -21,11 +21,9 @@ describe( 'wp.media', function() {
 
 		it( 'should set any passed-in options', function() {
 			media = site.media({
-				booleanProp: true,
-				strProp: 'Some string'
+				endpoint: '/custom-endpoint/'
 			});
-			expect( media._options.booleanProp ).to.be.true;
-			expect( media._options.strProp ).to.equal( 'Some string' );
+			expect( media._options.endpoint ).to.equal( '/custom-endpoint/' );
 		});
 
 		it( 'should initialize _options to the site defaults', function() {
