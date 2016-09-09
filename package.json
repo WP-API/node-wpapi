@@ -28,7 +28,6 @@
     "download-endpoint-json": "node ./lib/data/generate-endpoint-response-json",
     "docs": "grunt docs",
     "jekyll": "node bin/jekyll",
-    "build-docs": "npm run build && npm run docs && npm run release-docs",
     "release-docs": "node build/scripts/release-docs",
     "jshint": "jshint --reporter=node_modules/jshint-stylish/index.js Gruntfile.js wp.js bin build lib tests",
     "jscs": "jscs Gruntfile.js wp.js bin build lib tests --reporter node_modules/jscs-stylish/jscs-stylish.js",

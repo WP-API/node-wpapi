@@ -140,7 +140,7 @@ runCommand( 'rm -rf docs-tmp' )
 		});
 	}) )
 	// Ensure the built JS library is up to date
-	// .then( () => runCommand( 'npm run build' ) )
+	.then( () => runCommand( 'npm run build' ) )
 	// Build the docs site content (web bundle .zip, generated pages, etc)
 	.then( () => runCommand( 'npm run docs' ) )
 	// Copy the docs folder to a temp location to move its contents across branches
