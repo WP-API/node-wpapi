@@ -337,7 +337,7 @@ describe( 'WPRequest', function() {
 
 	}); // auth
 
-	describe( '._auth', function() {
+	describe.skip( '._auth', function() {
 
 		var mockAgent;
 
