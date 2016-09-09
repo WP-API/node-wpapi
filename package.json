@@ -4,7 +4,7 @@
     "url": "http://www.kadamwhite.com"
   },
   "name": "wpapi",
-  "version": "0.9.1",
+  "version": "0.9.2",
   "description": "A client for interacting with the WordPress REST API",
   "main": "wp.js",
   "repository": {
