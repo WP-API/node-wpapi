@@ -1,6 +1,8 @@
 'use strict';
 var superagent = require( 'superagent' );
 var qs = require( 'qs' );
+var opn = require( 'opn' );
+var prompt = require( 'prompt' );
 
 var OAuth = require( 'oauth-1.0a' );
 var oauth = new OAuth({
@@ -20,41 +22,39 @@ var oauth = new OAuth({
 // 	signature_method: 'HMAC-SHA1'
 // })
 
-function getRequestToken( url, data ) {
+function stringifyData( data ) {
+	return Object.keys( data ).reduce( ( memo, key ) => {
+		const value = data[ key ];
+		if ( Array.isArray( value ) ) {
+			value.forEach( ( val, index ) => memo[ `${key}[${index}]` ] = val );
+		} else {
+			memo[ key ] = value;
+		}
+		return memo;
+	}, {} );
+}
 
-	var oauthData = data;
-
-	var oauthData = null
-
-	if ( data ) {
-		oauthData = Object.keys( data ).reduce( ( memo, key ) => {
-			const value = data[ key ];
-			if ( Array.isArray( value ) ) {
-				value.forEach( ( val, index ) => memo[ `${key}[${index}]` ] = val );
-			} else {
-				memo[ key ] = value;
-			}
-			return memo;
-		}, {} );
-	}
-
+function getHeaders( url, data, token ) {
+	token = token || null;
 	var authorizedData = oauth.authorize( {
 		method: 'POST',
 		url: url,
-		data: oauthData
-	}, null ); // Token is still null at this point
+		data: stringifyData( data )
+	}, token );
 
-	const headers = Object.assign( oauth.toHeader( authorizedData ), {
-		Accept: 'application/json',
-		'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+	return Object.assign( oauth.toHeader( authorizedData ), {
+		// Accept: 'application/json',
+		// 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
 	});
+}
 
-	console.log( headers );
+function getRequestToken( url, data ) {
+	const headers = getHeaders( url, data );
 
 	return new Promise(function( resolve, reject ) {
 		superagent.post( url )
 			.set( headers )
-			.send( qs.stringify( data ) )
+			.send( data )
 			.end(function( err, res ) {
 				if ( err ) {
 					return reject( err );
@@ -64,9 +64,47 @@ function getRequestToken( url, data ) {
 	});
 }
 
+// function getAccessToken( url, data, config ) {
+
+// 	const headers =
+// 	return new Promise( ( resolve, reject ) => {
+// 		oauth.getOAuthAccessToken( config.token, config.secret, config.verifier, function( err, token, secret, results ) {
+// 			if ( err ) {
+// 				return reject( err );
+// 			}
+// 			resolve({
+// 				token: token,
+// 				secret: secret
+// 			});
+// 		});
+// 	});
+// }
+
 getRequestToken( 'http://wpapi.loc/oauth1/request', {
 // getRequestToken( 'http://www.kadamwhite.com/oauth1/request', {
 	oauth_callback: 'oob'
 })
+	.then(function( config ) {
+		const authorizeUrl = `http://wpapi.loc/oauth1/authorize?oauth_token=${config.oauth_token}&oauth_callback=oob`;
+		opn(authorizeUrl);
+		return new Promise(function( resolve, reject ) {
+			prompt.get([
+				'verification'
+			], function( err, result ) {
+				if ( err ) {
+					return reject( err );
+				}
+				resolve({
+					token: config.oauth_token,
+					secret: config.oauth_token_secret,
+					verification: result.verification
+				});
+			});
+		});
+	})
+	// .then(function( config ) {
+	// 	console.log( config );
+	// 	return getAccessToken( config );
+	// })
 	.then( result => console.log( result ) )
 	.catch( err => console.error( err ) );
