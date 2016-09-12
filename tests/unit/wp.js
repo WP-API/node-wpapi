@@ -1,10 +1,16 @@
 'use strict';
-var expect = require( 'chai' ).expect;
+var chai = require( 'chai' );
+var sinon = require( 'sinon' );
+chai.use( require( 'sinon-chai' ) );
+var expect = chai.expect;
 
 var WP = require( '../../' );
 
 // Constructors, for use with instanceof checks
 var WPRequest = require( '../../lib/constructors/wp-request' );
+
+// HTTP transport, for stubbing
+var httpTransport = require( '../../lib/http-transport' );
 
 describe( 'wp', function() {
 
@@ -53,6 +59,179 @@ describe( 'wp', function() {
 			expect( wp._options.endpoint ).to.equal( 'http://some.url.com/wp-json/' );
 			expect( wp._options.username ).to.equal( 'fyodor' );
 			expect( wp._options.password ).to.equal( 'dostoyevsky' );
+		});
+
+		describe( 'assigns default HTTP transport', function() {
+
+			it( 'for GET requests', function() {
+				sinon.stub( httpTransport, 'get' );
+				var site = new WP({
+					endpoint: 'http://some.url.com/wp-json'
+				});
+				var query = site.root( '' );
+				query.get();
+				expect( httpTransport.get ).to.have.been.calledWith( query );
+				httpTransport.get.restore();
+			});
+
+			it( 'for POST requests', function() {
+				sinon.stub( httpTransport, 'post' );
+				var site = new WP({
+					endpoint: 'http://some.url.com/wp-json'
+				});
+				var query = site.root( '' );
+				var data = {};
+				query.create( data );
+				expect( httpTransport.post ).to.have.been.calledWith( query, data );
+				httpTransport.post.restore();
+			});
+
+			it( 'for POST requests', function() {
+				sinon.stub( httpTransport, 'post' );
+				var site = new WP({
+					endpoint: 'http://some.url.com/wp-json'
+				});
+				var query = site.root( '' );
+				var data = {};
+				query.create( data );
+				expect( httpTransport.post ).to.have.been.calledWith( query, data );
+				httpTransport.post.restore();
+			});
+
+			it( 'for PUT requests', function() {
+				sinon.stub( httpTransport, 'put' );
+				var site = new WP({
+					endpoint: 'http://some.url.com/wp-json'
+				});
+				var query = site.root( 'a-resource' );
+				var data = {};
+				query.update( data );
+				expect( httpTransport.put ).to.have.been.calledWith( query, data );
+				httpTransport.put.restore();
+			});
+
+			it( 'for DELETE requests', function() {
+				sinon.stub( httpTransport, 'delete' );
+				var site = new WP({
+					endpoint: 'http://some.url.com/wp-json'
+				});
+				var query = site.root( 'a-resource' );
+				var data = {
+					force: true
+				};
+				query.delete( data );
+				expect( httpTransport.delete ).to.have.been.calledWith( query, data );
+				httpTransport.delete.restore();
+			});
+
+		});
+
+		describe( 'custom HTTP transport methods', function() {
+
+			it( 'can be set for an individual HTTP action', function() {
+				sinon.stub( httpTransport, 'get' );
+				var customGet = sinon.stub();
+				var site = new WP({
+					endpoint: 'http://some.url.com/wp-json',
+					transport: {
+						get: customGet
+					}
+				});
+				var query = site.root( '' );
+				query.get();
+				expect( httpTransport.get ).not.to.have.been.called;
+				expect( customGet ).to.have.been.calledWith( query );
+				httpTransport.get.restore();
+			});
+
+			it( 'can extend the default HTTP transport methods', function() {
+				sinon.stub( httpTransport, 'get' );
+				var customGet = sinon.spy(function() {
+					WP.transport.get.apply( null, arguments );
+				});
+				var site = new WP({
+					endpoint: 'http://some.url.com/wp-json',
+					transport: {
+						get: customGet
+					}
+				});
+				var query = site.root( '' );
+				query.get();
+				expect( customGet ).to.have.been.calledWith( query );
+				expect( httpTransport.get ).to.have.been.calledWith( query );
+				httpTransport.get.restore();
+			});
+
+			it( 'can be set for multiple HTTP actions', function() {
+				sinon.stub( httpTransport, 'post' );
+				sinon.stub( httpTransport, 'put' );
+				var customPost = sinon.stub();
+				var customPut = sinon.stub();
+				var site = new WP({
+					endpoint: 'http://some.url.com/wp-json',
+					transport: {
+						post: customPost,
+						put: customPut
+					}
+				});
+				var query = site.root( 'a-resource' );
+				var data = {};
+				query.create( data );
+				expect( httpTransport.post ).not.to.have.been.called;
+				expect( customPost ).to.have.been.calledWith( query, data );
+				query.update( data );
+				expect( httpTransport.put ).not.to.have.been.called;
+				expect( customPut ).to.have.been.calledWith( query, data );
+				httpTransport.post.restore();
+				httpTransport.put.restore();
+			});
+
+			it( 'only apply to a specific WP instance', function() {
+				sinon.stub( httpTransport, 'get' );
+				var customGet = sinon.stub();
+				var site = new WP({
+					endpoint: 'http://some.url.com/wp-json',
+					transport: {
+						get: customGet
+					}
+				});
+				var site2 = new WP({
+					endpoint: 'http://some.url.com/wp-json'
+				});
+				expect( site ).not.to.equal( site2 );
+				var query = site2.root( '' );
+				query.get();
+				expect( httpTransport.get ).to.have.been.calledWith( query );
+				expect( customGet ).not.to.have.been.called;
+				httpTransport.get.restore();
+			});
+
+		});
+
+	});
+
+	describe( '.transport constructor property', function() {
+
+		it( 'is defined', function() {
+			expect( WP ).to.have.property( 'transport' );
+		});
+
+		it( 'is an object', function() {
+			expect( WP.transport ).to.be.an( 'object' );
+		});
+
+		it( 'has methods for each http transport action', function() {
+			expect( WP.transport.delete ).to.be.a( 'function' );
+			expect( WP.transport.get ).to.be.a( 'function' );
+			expect( WP.transport.head ).to.be.a( 'function' );
+			expect( WP.transport.post ).to.be.a( 'function' );
+			expect( WP.transport.put ).to.be.a( 'function' );
+		});
+
+		it( 'is frozen (properties cannot be modified directly)', function() {
+			expect(function() {
+				WP.transport.get = function() {};
+			}).to.throw();
 		});
 
 	});

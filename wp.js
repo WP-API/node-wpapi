@@ -43,7 +43,7 @@ var autodiscovery = require( './lib/autodiscovery' );
 var WPRequest = require( './lib/constructors/wp-request' );
 
 // Pull in default HTTP transport
-var httpTransport = require( './lib/util/http-transport' );
+var httpTransport = require( './lib/http-transport' );
 
 /**
  * The base constructor for the WP API service
@@ -85,10 +85,46 @@ function WP( options ) {
 	this._options.endpoint = this._options.endpoint.replace( /\/?$/, '/' );
 
 	// Create the HTTP transport object
-	this._options.transport = Object.create( httpTransport );
+	this._options.transport = Object.assign( {}, httpTransport, options.transport );
 
 	return this.bootstrap( options && options.routes );
 }
+
+/**
+ * Default HTTP transport methods object that can be extended to define custom
+ * HTTP transport behavior for a WP instance
+ *
+ * @example showing how a cache hit (keyed by URI) could short-circuit a get request
+ *
+ *     var site = new WP({
+ *       endpoint: 'http://my-site.com/wp-json',
+ *       transport: {
+ *         get: function( wpquery, cb ) {
+ *           var result = cache[ wpquery ];
+ *           // If a cache hit is found, return it via the same callback/promise
+ *           // signature as the default transport method
+ *           if ( result ) {
+ *             if ( cb && typeof cb === 'function' ) {
+ *               cb( null, result );
+ *             }
+ *             return Promise.resolve( result );
+ *           }
+
+ *           // Delegate to default transport if no cached data was found
+ *           return WP.transport.get( wpquery, cb ).then(function( result ) {
+ *             cache[ wpquery ] = result;
+ *             return result;
+ *           });
+ *         }
+ *       }
+ *     });
+ *
+ * @static
+ * @property transport
+ * @type {Object}
+ */
+WP.transport = Object.create( httpTransport );
+Object.freeze( WP.transport );
 
 /**
  * Convenience method for making a new WP instance
