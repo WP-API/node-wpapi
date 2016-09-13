@@ -406,6 +406,50 @@ describe( 'wp', function() {
 
 		});
 
+		describe( '.transport()', function() {
+
+			it( 'is defined', function() {
+				expect( site ).to.have.property( 'transport' );
+			});
+
+			it( 'is a function', function() {
+				expect( site.transport ).to.be.a( 'function' );
+			});
+
+			it( 'is chainable', function() {
+				expect( site.transport() ).to.equal( site );
+			});
+
+			it( 'sets transport methods on the instance', function() {
+				sinon.stub( httpTransport, 'get' );
+				var customGet = sinon.stub();
+				site.transport({
+					get: customGet
+				});
+				function cb() {}
+				var query = site.root( '' );
+				query.get( cb );
+				expect( httpTransport.get ).not.to.have.been.called;
+				expect( customGet ).to.have.been.calledWith( query, cb );
+				httpTransport.get.restore();
+			});
+
+			it( 'does not impact or overwrite unspecified transport methods', function() {
+				var originalMethods = Object.assign( {}, site._options.transport );
+				site.transport({
+					get: function() {},
+					put: function() {}
+				});
+				var newMethods = Object.assign( {}, site._options.transport );
+				expect( newMethods.delete ).to.equal( originalMethods.delete );
+				expect( newMethods.post ).to.equal( originalMethods.post );
+
+				expect( newMethods.get ).not.to.equal( originalMethods.get );
+				expect( newMethods.put ).not.to.equal( originalMethods.put );
+			});
+
+		});
+
 		describe( '.url()', function() {
 
 			it( 'is defined', function() {

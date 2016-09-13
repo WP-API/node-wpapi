@@ -84,40 +84,89 @@ function WP( options ) {
 	// Ensure trailing slash on endpoint URI
 	this._options.endpoint = this._options.endpoint.replace( /\/?$/, '/' );
 
-	// Create the HTTP transport object
-	this._options.transport = Object.assign( {}, httpTransport, options.transport );
-
-	return this.bootstrap( options && options.routes );
+	return this
+		// Configure custom HTTP transport methods, if provided
+		.transport( options.transport )
+		// Bootstrap with a specific routes object, if provided
+		.bootstrap( options && options.routes );
 }
 
 /**
- * Default HTTP transport methods object that can be extended to define custom
- * HTTP transport behavior for a WP instance
+ * Set custom transport methods to use when making HTTP requests against the API
+ *
+ * Pass an object with a function for one or many of "get", "post", "put",
+ * "delete" and "head" and that function will be called when making that type
+ * of request. The provided transport functions should take a WP request handler
+ * instance (_e.g._ the result of a `wp.posts()...` chain or any other chaining
+ * request handler) as their first argument; a `data` object as their second
+ * argument (for POST, PUT and DELETE requests); and an optional callback as
+ * their final argument. Transport methods should invoke the callback with the
+ * response data (or error, as appropriate), and should also return a Promise.
  *
  * @example showing how a cache hit (keyed by URI) could short-circuit a get request
  *
  *     var site = new WP({
- *       endpoint: 'http://my-site.com/wp-json',
- *       transport: {
- *         get: function( wpquery, cb ) {
- *           var result = cache[ wpquery ];
- *           // If a cache hit is found, return it via the same callback/promise
- *           // signature as the default transport method
- *           if ( result ) {
- *             if ( cb && typeof cb === 'function' ) {
- *               cb( null, result );
- *             }
- *             return Promise.resolve( result );
+ *       endpoint: 'http://my-site.com/wp-json'
+ *     });
+ *
+ *     // Overwrite the GET behavior to inject a caching layer
+ *     site.transport({
+ *       get: function( wpquery, cb ) {
+ *         var result = cache[ wpquery ];
+ *         // If a cache hit is found, return it via the same callback/promise
+ *         // signature as the default transport method
+ *         if ( result ) {
+ *           if ( cb && typeof cb === 'function' ) {
+ *             cb( null, result );
  *           }
-
- *           // Delegate to default transport if no cached data was found
- *           return WP.transport.get( wpquery, cb ).then(function( result ) {
- *             cache[ wpquery ] = result;
- *             return result;
- *           });
+ *           return Promise.resolve( result );
  *         }
+ *
+ *         // Delegate to default transport if no cached data was found
+ *         return WP.transport.get( wpquery, cb ).then(function( result ) {
+ *           cache[ wpquery ] = result;
+ *           return result;
+ *         });
  *       }
  *     });
+ *
+ * This is advanced behavior; you will only need to utilize this functionality
+ * if your application has very specific HTTP handling or caching requirements.
+ * Refer to the "http-transport" module within this application for the code
+ * implementing the built-in transport methods.
+ *
+ * @chainable
+ * @param {Object}   transport          A dictionary of HTTP transport methods
+ * @param {Function} [transport.get]    The function to use for GET requests
+ * @param {Function} [transport.post]   The function to use for POST requests
+ * @param {Function} [transport.put]    The function to use for PUT requests
+ * @param {Function} [transport.delete] The function to use for DELETE requests
+ * @param {Function} [transport.head]   The function to use for HEAD requests
+ * @returns {WP} The WP instance, for chaining
+ */
+WP.prototype.transport = function( transport ) {
+	// Local reference to avoid need to reference via `this` inside forEach
+	var _options = this._options;
+
+	// Create the default transport if it does not exist
+	if ( ! _options.transport ) {
+		_options.transport = Object.create( WP.transport );
+	}
+
+	// Whitelist the methods that may be applied
+	[ 'get', 'head', 'post', 'put', 'delete' ].forEach(function( key ) {
+		if ( transport && transport[ key ] ) {
+			_options.transport[ key ] = transport[ key ];
+		}
+	});
+
+	return this;
+};
+
+/**
+ * Default HTTP transport methods object for all WP instances
+ *
+ * These methods may be extended or replaced on an instance-by-instance basis
  *
  * @static
  * @property transport
