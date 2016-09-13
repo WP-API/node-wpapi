@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>wp.js - wpapi</title>
+    <title>wpapi.js - wpapi</title>
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
     <link rel="shortcut icon" type="image/png" href="../assets/favicon.png">
@@ -14,7 +14,7 @@
     <header class="main-header">
         <div class="content">
             <div class="project-title">
-                    <h1 class="project-name">wpapi</h1> <span class="project-version">0.9.2</span>
+                    <h1 class="project-name">wpapi</h1> <span class="project-version">0.10.0</span>
                     <p class="description">A client for interacting with the WordPress REST API</p>
             </div>
             <ul class="jump-links">
@@ -39,16 +39,16 @@
             
                     <div id="api-tabview-panel">
                         <ul id="api-classes" class="apis classes">
-                            <li><a class="type" href="../classes/wp.html">wp</a></li>
-                            <li><a class="type" href="../classes/WP.html">WP</a></li>
+                            <li><a class="type" href="../classes/WPAPI.html">WPAPI</a></li>
                             <li><a class="type" href="../classes/WPRequest.html">WPRequest</a></li>
                         </ul>
             
                         <ul id="api-modules" class="apis modules">
                             <li><a class="module" href="../modules/autodiscovery.html">autodiscovery</a></li>
                             <li><a class="module" href="../modules/filters.html">filters</a></li>
+                            <li><a class="module" href="../modules/http-transport.html">http-transport</a></li>
                             <li><a class="module" href="../modules/parseRouteString.html">parseRouteString</a></li>
-                            <li><a class="module" href="../modules/WP.html">WP</a></li>
+                            <li><a class="module" href="../modules/WPAPI.html">WPAPI</a></li>
                             <li><a class="module" href="../modules/WPRequest.html">WPRequest</a></li>
                         </ul>
                     </div>
@@ -58,7 +58,7 @@
 
         <div id="docs-main" class="apidocs">
             <div class="content container">
-                <h1 class="file-heading">File: wp.js</h1>
+                <h1 class="file-heading">File: wpapi.js</h1>
                 
                 <div class="file">
                     <pre class="code prettyprint linenums">
@@ -66,15 +66,15 @@
                  * A WP REST API client for Node.js
                  *
                  * @example
-                 *     var wp = new WP({ endpoint: &#x27;http://src.wordpress-develop.dev/wp-json&#x27; });
+                 *     var wp = new WPAPI({ endpoint: &#x27;http://src.wordpress-develop.dev/wp-json&#x27; });
                  *     wp.posts().then(function( posts ) {
                  *         console.log( posts );
                  *     }).catch(function( err ) {
                  *         console.error( err );
                  *     });
                  *
-                 * @module WP
-                 * @main WP
+                 * @module WPAPI
+                 * @main WPAPI
                  * @beta
                  })
                  */
@@ -89,7 +89,7 @@
                 var generateEndpointFactories = require( &#x27;./lib/endpoint-factories&#x27; ).generate;
                 
                 // The default endpoint factories will be lazy-loaded by parsing the default
-                // route tree data if a default-mode WP instance is created (i.e. one that
+                // route tree data if a default-mode WPAPI instance is created (i.e. one that
                 // is to be bootstrapped with the handlers for all of the built-in routes)
                 var defaultEndpointFactories;
                 
@@ -106,26 +106,34 @@
                 // Pull in base module constructors
                 var WPRequest = require( &#x27;./lib/constructors/wp-request&#x27; );
                 
+                // Pull in default HTTP transport
+                var httpTransport = require( &#x27;./lib/http-transport&#x27; );
+                
                 /**
                  * The base constructor for the WP API service
                  *
-                 * @class WP
+                 * @class WPAPI
                  * @constructor
                  * @uses WPRequest
-                 * @param {Object} options An options hash to configure the instance
-                 * @param {String} options.endpoint The URI for a WP-API endpoint
-                 * @param {String} [options.username] A WP-API Basic Auth username
-                 * @param {String} [options.password] A WP-API Basic Auth password
-                 * @param {Object} [options.routes]   A dictionary of API routes with which to
-                 *                                    bootstrap the WP instance: the instance will
-                 *                                    be initialized with default routes only
-                 *                                    if this property is omitted
+                 * @param {Object} options             An options hash to configure the instance
+                 * @param {String} options.endpoint    The URI for a WP-API endpoint
+                 * @param {String} [options.username]  A WP-API Basic Auth username
+                 * @param {String} [options.password]  A WP-API Basic Auth password
+                 * @param {String} [options.nonce]     A WP nonce for use with cookie authentication
+                 * @param {Object} [options.routes]    A dictionary of API routes with which to
+                 *                                     bootstrap the WPAPI instance: the instance will
+                 *                                     be initialized with default routes only
+                 *                                     if this property is omitted
+                 * @param {String} [options.transport] An optional dictionary of HTTP transport
+                 *                                     methods (.get, .post, .put, .delete, .head)
+                 *                                     to use instead of the defaults, e.g. to use
+                 *                                     a different HTTP library than superagent
                  */
-                function WP( options ) {
+                function WPAPI( options ) {
                 
                 	// Enforce &#x60;new&#x60;
-                	if ( this instanceof WP === false ) {
-                		return new WP( options );
+                	if ( this instanceof WPAPI === false ) {
+                		return new WPAPI( options );
                 	}
                 
                 	// Dictionary to be filled by handlers for default namespaces
@@ -140,19 +148,107 @@
                 	// Ensure trailing slash on endpoint URI
                 	this._options.endpoint = this._options.endpoint.replace( /\/?$/, &#x27;/&#x27; );
                 
-                	return this.bootstrap( options &amp;&amp; options.routes );
+                	return this
+                		// Configure custom HTTP transport methods, if provided
+                		.transport( options.transport )
+                		// Bootstrap with a specific routes object, if provided
+                		.bootstrap( options &amp;&amp; options.routes );
                 }
                 
                 /**
-                 * Convenience method for making a new WP instance
+                 * Set custom transport methods to use when making HTTP requests against the API
+                 *
+                 * Pass an object with a function for one or many of &quot;get&quot;, &quot;post&quot;, &quot;put&quot;,
+                 * &quot;delete&quot; and &quot;head&quot; and that function will be called when making that type
+                 * of request. The provided transport functions should take a WPRequest handler
+                 * instance (_e.g._ the result of a &#x60;wp.posts()...&#x60; chain or any other chaining
+                 * request handler) as their first argument; a &#x60;data&#x60; object as their second
+                 * argument (for POST, PUT and DELETE requests); and an optional callback as
+                 * their final argument. Transport methods should invoke the callback with the
+                 * response data (or error, as appropriate), and should also return a Promise.
+                 *
+                 * @example showing how a cache hit (keyed by URI) could short-circuit a get request
+                 *
+                 *     var site = new WPAPI({
+                 *       endpoint: &#x27;http://my-site.com/wp-json&#x27;
+                 *     });
+                 *
+                 *     // Overwrite the GET behavior to inject a caching layer
+                 *     site.transport({
+                 *       get: function( wpreq, cb ) {
+                 *         var result = cache[ wpreq ];
+                 *         // If a cache hit is found, return it via the same callback/promise
+                 *         // signature as the default transport method
+                 *         if ( result ) {
+                 *           if ( cb &amp;&amp; typeof cb === &#x27;function&#x27; ) {
+                 *             cb( null, result );
+                 *           }
+                 *           return Promise.resolve( result );
+                 *         }
+                 *
+                 *         // Delegate to default transport if no cached data was found
+                 *         return WPAPI.transport.get( wpreq, cb ).then(function( result ) {
+                 *           cache[ wpreq ] = result;
+                 *           return result;
+                 *         });
+                 *       }
+                 *     });
+                 *
+                 * This is advanced behavior; you will only need to utilize this functionality
+                 * if your application has very specific HTTP handling or caching requirements.
+                 * Refer to the &quot;http-transport&quot; module within this application for the code
+                 * implementing the built-in transport methods.
+                 *
+                 * @chainable
+                 * @param {Object}   transport          A dictionary of HTTP transport methods
+                 * @param {Function} [transport.get]    The function to use for GET requests
+                 * @param {Function} [transport.post]   The function to use for POST requests
+                 * @param {Function} [transport.put]    The function to use for PUT requests
+                 * @param {Function} [transport.delete] The function to use for DELETE requests
+                 * @param {Function} [transport.head]   The function to use for HEAD requests
+                 * @returns {WPAPI} The WPAPI instance, for chaining
+                 */
+                WPAPI.prototype.transport = function( transport ) {
+                	// Local reference to avoid need to reference via &#x60;this&#x60; inside forEach
+                	var _options = this._options;
+                
+                	// Create the default transport if it does not exist
+                	if ( ! _options.transport ) {
+                		_options.transport = Object.create( WPAPI.transport );
+                	}
+                
+                	// Whitelist the methods that may be applied
+                	[ &#x27;get&#x27;, &#x27;head&#x27;, &#x27;post&#x27;, &#x27;put&#x27;, &#x27;delete&#x27; ].forEach(function( key ) {
+                		if ( transport &amp;&amp; transport[ key ] ) {
+                			_options.transport[ key ] = transport[ key ];
+                		}
+                	});
+                
+                	return this;
+                };
+                
+                /**
+                 * Default HTTP transport methods object for all WPAPI instances
+                 *
+                 * These methods may be extended or replaced on an instance-by-instance basis
+                 *
+                 * @static
+                 * @property transport
+                 * @type {Object}
+                 */
+                WPAPI.transport = Object.create( httpTransport );
+                Object.freeze( WPAPI.transport );
+                
+                /**
+                 * Convenience method for making a new WPAPI instance
                  *
                  * @example
                  * These are equivalent:
                  *
-                 *     var wp = new WP({ endpoint: &#x27;http://my.blog.url/wp-json&#x27; });
-                 *     var wp = WP.site( &#x27;http://my.blog.url/wp-json&#x27; );
+                 *     var wp = new WPAPI({ endpoint: &#x27;http://my.blog.url/wp-json&#x27; });
+                 *     var wp = WPAPI.site( &#x27;http://my.blog.url/wp-json&#x27; );
                  *
-                 * &#x60;WP.site&#x60; can take an optional API root response JSON object to use when
+                 * &#x60;WPAPI.site&#x60; can take an optional API root response JSON object to use when
                  * bootstrapping the client&#x27;s endpoint handler methods: if no second parameter
                  * is provided, the client instance is assumed to be using the default API
                  * with no additional plugins and is initialized with handlers for only those
@@ -162,11 +258,11 @@
                  * These are equivalent:
                  *
                  *     // {...} means the JSON output of http://my.blog.url/wp-json
-                 *     var wp = new WP({
+                 *     var wp = new WPAPI({
                  *       endpoint: &#x27;http://my.blog.url/wp-json&#x27;,
                  *       json: {...}
                  *     });
-                 *     var wp = WP.site( &#x27;http://my.blog.url/wp-json&#x27;, {...} );
+                 *     var wp = WPAPI.site( &#x27;http://my.blog.url/wp-json&#x27;, {...} );
                  *
                  * @method site
                  * @static
@@ -175,10 +271,10 @@
                  *                          from the root API endpoint of a WP site, which should
                  *                          be a dictionary of route definition objects keyed by
                  *                          the route&#x27;s regex pattern
-                 * @return {WP} A new WP instance, bound to the provided endpoint
+                 * @return {WPAPI} A new WPAPI instance, bound to the provided endpoint
                  */
-                WP.site = function( endpoint, routes ) {
-                	return new WP({
+                WPAPI.site = function( endpoint, routes ) {
+                	return new WPAPI({
                 		endpoint: endpoint,
                 		routes: routes
                 	});
@@ -187,7 +283,7 @@
                 /**
                  * Generate a request against a completely arbitrary endpoint, with no assumptions about
                  * or mutation of path, filtering, or query parameters. This request is not restricted to
-                 * the endpoint specified during WP object instantiation.
+                 * the endpoint specified during WPAPI object instantiation.
                  *
                  * @example
                  * Generate a request to the explicit URL &quot;http://your.website.com/wp-json/some/custom/path&quot;
@@ -198,7 +294,7 @@
                  * @param {String} url The URL to request
                  * @return {WPRequest} A WPRequest object bound to the provided URL
                  */
-                WP.prototype.url = function( url ) {
+                WPAPI.prototype.url = function( url ) {
                 	var options = extend( {}, this._options, {
                 		endpoint: url
                 	});
@@ -213,7 +309,7 @@
                  * @param {String} [relativePath] An endpoint-relative path to which to bind the request
                  * @return {WPRequest} A request object
                  */
-                WP.prototype.root = function( relativePath ) {
+                WPAPI.prototype.root = function( relativePath ) {
                 	relativePath = relativePath || &#x27;&#x27;;
                 	var options = extend( {}, this._options );
                 	// Request should be
@@ -226,7 +322,7 @@
                 };
                 
                 /**
-                 * Set the authentication to use for a WP site handler instance. Accepts basic
+                 * Set the authentication to use for a WPAPI site handler instance. Accepts basic
                  * HTTP authentication credentials (string username &amp; password) or a Nonce (for
                  * cookie authentication) by default; may be overloaded to accept OAuth credentials
                  * in the future.
@@ -250,12 +346,12 @@
                  * @param {String} [credentials.username] A WP-API Basic HTTP Authentication username
                  * @param {String} [credentials.password] A WP-API Basic HTTP Authentication password
                  * @param {String} [credentials.nonce]    A WP nonce for use with cookie authentication
-                 * @return {WP} The WP site handler instance, for chaining
+                 * @return {WPAPI} The WPAPI site handler instance, for chaining
                  */
-                WP.prototype.auth = WPRequest.prototype.auth;
+                WPAPI.prototype.auth = WPRequest.prototype.auth;
                 
                 // Apply the registerRoute method to the prototype
-                WP.prototype.registerRoute = require( &#x27;./lib/wp-register-route&#x27; );
+                WPAPI.prototype.registerRoute = require( &#x27;./lib/wp-register-route&#x27; );
                 
                 /**
                  * Deduce request methods from a provided API root JSON response object&#x27;s
@@ -263,7 +359,7 @@
                  * no routes dictionary is provided then the instance will be bootstrapped
                  * with route handlers for the default API endpoints only.
                  *
-                 * This method is called automatically during WP instance creation.
+                 * This method is called automatically during WPAPI instance creation.
                  *
                  * @method bootstrap
                  * @chainable
@@ -271,9 +367,9 @@
                  *                        from the root API endpoint of a WP site, which should
                  *                        be a dictionary of route definition objects keyed by
                  *                        the route&#x27;s regex pattern
-                 * @return {WP} The bootstrapped WP client instance (for chaining or assignment)
+                 * @return {WPAPI} The bootstrapped WPAPI client instance (for chaining or assignment)
                  */
-                WP.prototype.bootstrap = function( routes ) {
+                WPAPI.prototype.bootstrap = function( routes ) {
                 	var routesByNamespace;
                 	var endpointFactoriesByNamespace;
                 
@@ -290,11 +386,11 @@
                 	}
                 
                 	// For each namespace for which routes were identified, store the generated
-                	// route handlers on the WP instance&#x27;s private _ns dictionary. These namespaced
+                	// route handlers on the WPAPI instance&#x27;s private _ns dictionary. These namespaced
                 	// handler methods can be accessed by calling &#x60;.namespace( str )&#x60; on the
                 	// client instance and passing a registered namespace string.
-                	// Handlers for default (wp/v2) routes will also be assigned to the WP client
-                	// instance object itself, for brevity.
+                	// Handlers for default (wp/v2) routes will also be assigned to the WPAPI
+                	// client instance object itself, for brevity.
                 	return _reduce( endpointFactoriesByNamespace, function( wpInstance, endpointFactories, namespace ) {
                 
                 		// Set (or augment) the route handler factories for this namespace.
@@ -302,7 +398,7 @@
                 			nsHandlers[ methodName ] = handlerFn;
                 			return nsHandlers;
                 		}, wpInstance._ns[ namespace ] || {
-                			// Create all namespace dictionaries with a direct reference to the main WP
+                			// Create all namespace dictionaries with a direct reference to the main WPAPI
                 			// instance&#x27;s _options property so that things like auth propagate properly
                 			_options: wpInstance._options
                 		} );
@@ -338,7 +434,7 @@
                  * @returns {Object} An object of route endpoint handler methods for the
                  * routes within the specified namespace
                  */
-                WP.prototype.namespace = function( namespace ) {
+                WPAPI.prototype.namespace = function( namespace ) {
                 	if ( ! this._ns[ namespace ] ) {
                 		throw new Error( &#x27;Error: namespace &#x27; + namespace + &#x27; is not recognized&#x27; );
                 	}
@@ -348,16 +444,16 @@
                 /**
                  * Take an arbitrary WordPress site, deduce the WP REST API root endpoint, query
                  * that endpoint, and parse the response JSON. Use the returned JSON response
-                 * to instantiate a WP instance bound to the provided site.
+                 * to instantiate a WPAPI instance bound to the provided site.
                  *
                  * @method discover
                  * @static
-                 * @param {string} url A URL within a WP endpoint
-                 * @return {Promise} A promise that resolves to a configured WP instance bound
+                 * @param {string} url A URL within a REST API-enabled WordPress website
+                 * @return {Promise} A promise that resolves to a configured WPAPI instance bound
                  * to the deduced endpoint, or rejected if an endpoint is not found or the
                  * library is unable to parse the provided endpoint.
                  */
-                WP.discover = function( url ) {
+                WPAPI.discover = function( url ) {
                 	// local placeholder for API root URL
                 	var endpoint;
                 
@@ -365,14 +461,14 @@
                 		.then( autodiscovery.locateAPIRootHeader )
                 		.then(function( apiRootURL ) {
                 			// Set the function-scope variable that will be used to instantiate
-                			// the bound WP instance, then pass the URL on
+                			// the bound WPAPI instance, then pass the URL on
                 			endpoint = apiRootURL;
                 			return apiRootURL;
                 		})
                 		.then( autodiscovery.getRootResponseJSON )
                 		.then(function( apiRootJSON ) {
                 			// Instantiate &amp; bootstrap with the discovered methods
-                			return new WP({
+                			return new WPAPI({
                 				endpoint: endpoint,
                 				routes: apiRootJSON.routes
                 			});
@@ -383,13 +479,13 @@
                 			if ( endpoint ) {
                 				console.warn( &#x27;Endpoint detected, proceeding despite error...&#x27; );
                 				console.warn( &#x27;Binding to &#x27; + endpoint + &#x27; and assuming default routes&#x27; );
-                				return new WP.site( endpoint );
+                				return new WPAPI.site( endpoint );
                 			}
                 			return null;
                 		});
                 };
                 
-                module.exports = WP;
+                module.exports = WPAPI;
                 
                     </pre>
                 </div>

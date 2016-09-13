@@ -1,15 +1,15 @@
 YUI.add("yuidoc-meta", function(Y) {
    Y.YUIDoc = { meta: {
     "classes": [
-        "WP",
-        "WPRequest",
-        "wp"
+        "WPAPI",
+        "WPRequest"
     ],
     "modules": [
-        "WP",
+        "WPAPI",
         "WPRequest",
         "autodiscovery",
         "filters",
+        "http-transport",
         "parseRouteString"
     ],
     "allModules": [
@@ -24,13 +24,17 @@ YUI.add("yuidoc-meta", function(Y) {
             "description": "Filter methods that can be mixed in to a request constructor's prototype to\nallow that request to take advantage of the `?filter[]=` aliases for WP_Query\nparameters for collection endpoints. These are most relevant to posts, pages\nand CPTs."
         },
         {
+            "displayName": "http-transport",
+            "name": "http-transport"
+        },
+        {
             "displayName": "parseRouteString",
             "name": "parseRouteString",
             "description": "Take a WP route string (with PCRE named capture groups), such as"
         },
         {
-            "displayName": "WP",
-            "name": "WP",
+            "displayName": "WPAPI",
+            "name": "WPAPI",
             "description": "A WP REST API client for Node.js"
         },
         {

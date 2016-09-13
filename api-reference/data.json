@@ -2,17 +2,10 @@
     "project": {
         "name": "wpapi",
         "description": "A client for interacting with the WordPress REST API",
-        "version": "0.9.2",
+        "version": "0.10.0",
         "url": "https://github.com/wp-api/node-wpapi"
     },
     "files": {
-        "build/scripts/release-docs.js": {
-            "name": "build/scripts/release-docs.js",
-            "modules": {},
-            "classes": {},
-            "fors": {},
-            "namespaces": {}
-        },
         "lib/constructors/wp-request.js": {
             "name": "lib/constructors/wp-request.js",
             "modules": {
@@ -68,6 +61,13 @@
             "fors": {},
             "namespaces": {}
         },
+        "lib/util/check-method-support.js": {
+            "name": "lib/util/check-method-support.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
         "lib/util/named-group-regexp.js": {
             "name": "lib/util/named-group-regexp.js",
             "modules": {},
@@ -100,6 +100,15 @@
             "fors": {},
             "namespaces": {}
         },
+        "lib/http-transport.js": {
+            "name": "lib/http-transport.js",
+            "modules": {
+                "http-transport": 1
+            },
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
         "lib/path-part-setter.js": {
             "name": "lib/path-part-setter.js",
             "modules": {},
@@ -124,22 +133,6 @@
         "lib/wp-register-route.js": {
             "name": "lib/wp-register-route.js",
             "modules": {},
-            "classes": {
-                "wp": 1
-            },
-            "fors": {},
-            "namespaces": {}
-        },
-        "tests/integration/helpers/get-prop.js": {
-            "name": "tests/integration/helpers/get-prop.js",
-            "modules": {},
-            "classes": {},
-            "fors": {},
-            "namespaces": {}
-        },
-        "tests/integration/helpers/get-rendered-prop.js": {
-            "name": "tests/integration/helpers/get-rendered-prop.js",
-            "modules": {},
             "classes": {},
             "fors": {},
             "namespaces": {}
@@ -151,37 +144,37 @@
             "fors": {},
             "namespaces": {}
         },
-        "wp.js": {
-            "name": "wp.js",
+        "wpapi.js": {
+            "name": "wpapi.js",
             "modules": {
-                "WP": 1
+                "WPAPI": 1
             },
             "classes": {
-                "WP": 1
+                "WPAPI": 1
             },
             "fors": {},
             "namespaces": {}
         }
     },
     "modules": {
-        "WP": {
-            "name": "WP",
+        "WPAPI": {
+            "name": "WPAPI",
             "submodules": {
                 "WPRequest": 1
             },
             "elements": {},
             "classes": {
                 "WPRequest": 1,
-                "WP": 1
+                "WPAPI": 1
             },
             "fors": {},
             "namespaces": {},
             "tag": "main",
-            "file": "wp.js",
-            "line": 45,
+            "file": "wpapi.js",
+            "line": 48,
             "description": "A WP REST API client for Node.js",
             "example": [
-                "\n    var wp = new WP({ endpoint: 'http://src.wordpress-develop.dev/wp-json' });\n    wp.posts().then(function( posts ) {\n        console.log( posts );\n    }).catch(function( err ) {\n        console.error( err );\n    });"
+                "\n    var wp = new WPAPI({ endpoint: 'http://src.wordpress-develop.dev/wp-json' });\n    wp.posts().then(function( posts ) {\n        console.log( posts );\n    }).catch(function( err ) {\n        console.error( err );\n    });"
             ],
             "itemtype": "main"
         },
@@ -195,10 +188,10 @@
             "fors": {},
             "is_submodule": 1,
             "namespaces": {},
-            "module": "WP",
+            "module": "WPAPI",
             "namespace": "",
             "file": "lib/constructors/wp-request.js",
-            "line": 22,
+            "line": 17,
             "beta": 1,
             "description": "WPRequest is the base API request object constructor"
         },
@@ -230,15 +223,24 @@
             "name": "parseRouteString",
             "submodules": {},
             "elements": {},
-            "classes": {
-                "wp": 1
-            },
+            "classes": {},
             "fors": {},
             "namespaces": {},
             "tag": "module",
-            "file": "lib/wp-register-route.js",
-            "line": 8,
+            "file": "lib/endpoint-factories.js",
+            "line": 2,
             "description": "Take a WP route string (with PCRE named capture groups), such as"
+        },
+        "http-transport": {
+            "name": "http-transport",
+            "submodules": {},
+            "elements": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {},
+            "tag": "module",
+            "file": "lib/http-transport.js",
+            "line": 2
         }
     },
     "classes": {
@@ -250,13 +252,13 @@
             "extensions": [],
             "plugin_for": [],
             "extension_for": [
-                "WP"
+                "WPAPI"
             ],
-            "module": "WP",
+            "module": "WPAPI",
             "submodule": "WPRequest",
             "namespace": "",
             "file": "lib/constructors/wp-request.js",
-            "line": 22,
+            "line": 17,
             "description": "WPRequest is the base API request object constructor",
             "is_constructor": 1,
             "params": [
@@ -267,8 +269,13 @@
                     "props": [
                         {
                             "name": "endpoint",
-                            "description": "The endpoint URI for the invoking WP instance",
+                            "description": "The endpoint URI for the invoking WPAPI instance",
                             "type": "String"
+                        },
+                        {
+                            "name": "transport",
+                            "description": "An object of http transport methods (get, post, etc)",
+                            "type": "Object"
                         },
                         {
                             "name": "username",
@@ -281,24 +288,30 @@
                             "description": "A password for authenticating API requests",
                             "type": "String",
                             "optional": true
+                        },
+                        {
+                            "name": "nonce",
+                            "description": "A WP nonce for use with cookie authentication",
+                            "type": "String",
+                            "optional": true
                         }
                     ]
                 }
             ]
         },
-        "wp": {
-            "name": "wp",
-            "shortname": "wp",
+        "WPAPI": {
+            "name": "WPAPI",
+            "shortname": "WPAPI",
             "classitems": [],
             "plugins": [],
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
-            "module": "parseRouteString",
+            "module": "WPAPI",
             "namespace": "",
-            "file": "lib/wp-register-route.js",
-            "line": 8,
-            "description": "Create and return a handler for an arbitrary WP REST API endpoint.\n\nThe first two parameters mirror `register_rest_route` in the REST API\ncodebase:",
+            "file": "wpapi.js",
+            "line": 48,
+            "description": "The base constructor for the WP API service",
             "itemtype": "method",
             "params": [
                 {
@@ -335,138 +348,19 @@
             "return": {
                 "description": "An endpoint handler factory function for the\nspecified route",
                 "type": "Function"
-            }
-        },
-        "WP": {
-            "name": "WP",
-            "shortname": "WP",
-            "classitems": [],
-            "plugins": [],
-            "extensions": [],
-            "plugin_for": [],
-            "extension_for": [],
-            "module": "WP",
-            "namespace": "",
-            "file": "wp.js",
-            "line": 45,
-            "description": "The base constructor for the WP API service",
+            },
             "is_constructor": 1,
             "uses": [
                 "WPRequest"
-            ],
-            "params": [
-                {
-                    "name": "options",
-                    "description": "An options hash to configure the instance",
-                    "type": "Object",
-                    "props": [
-                        {
-                            "name": "endpoint",
-                            "description": "The URI for a WP-API endpoint",
-                            "type": "String"
-                        },
-                        {
-                            "name": "username",
-                            "description": "A WP-API Basic Auth username",
-                            "type": "String",
-                            "optional": true
-                        },
-                        {
-                            "name": "password",
-                            "description": "A WP-API Basic Auth password",
-                            "type": "String",
-                            "optional": true
-                        },
-                        {
-                            "name": "routes",
-                            "description": "A dictionary of API routes with which to\n                                   bootstrap the WP instance: the instance will\n                                   be initialized with default routes only\n                                   if this property is omitted",
-                            "type": "Object",
-                            "optional": true
-                        }
-                    ]
-                }
             ]
         }
     },
     "elements": {},
     "classitems": [
         {
-            "file": "build/scripts/release-docs.js",
-            "line": 32,
-            "description": "Helper method to request yes/no confirmation from the user, with some",
-            "access": "private",
-            "tagname": "",
-            "return": {
-                "description": "A promise that will resolve with a boolean true/false\nindicating whether assent was given",
-                "type": "Promise"
-            },
-            "class": "WPRequest"
-        },
-        {
-            "file": "build/scripts/release-docs.js",
-            "line": 50,
-            "description": "Get the list of files in a directory, either as a list of file and subdir\nnames or a list of absolute file system paths",
-            "access": "private",
-            "tagname": "",
-            "params": [
-                {
-                    "name": "inputDir",
-                    "description": "The file system path to the directory to read",
-                    "type": "String"
-                }
-            ],
-            "return": {
-                "description": "A promise to the string array of file names",
-                "type": "Promise"
-            },
-            "class": "WPRequest"
-        },
-        {
-            "file": "build/scripts/release-docs.js",
-            "line": 70,
-            "description": "Spawn a shell command, pipe its output to the parent process's stdio, and\nreturn a promise that will resolve or reject when the subprocess completes",
-            "access": "private",
-            "tagname": "",
-            "params": [
-                {
-                    "name": "commandStr",
-                    "description": "A string containing a shell command to run",
-                    "type": "String"
-                },
-                {
-                    "name": "otherArgs",
-                    "description": "Array of additional string arguments, so that\nquoted arguments with spaces like github commit messages will not be broken",
-                    "type": "String[]",
-                    "optional": true
-                }
-            ],
-            "return": {
-                "description": "A promise that will resolve if the command executes\nsuccessfully or reject if it errors",
-                "type": "Promise"
-            },
-            "class": "WPRequest"
-        },
-        {
-            "file": "build/scripts/release-docs.js",
-            "line": 104,
-            "description": "Helper function that takes in an array of functions that return promises,\nthen executes those functions sequentially to execute each action",
-            "params": [
-                {
-                    "name": "arrOfFnsReturningPromises",
-                    "description": "An array of functions",
-                    "type": "Function[]"
-                }
-            ],
-            "return": {
-                "description": "A promise that will resolve once all the promises\nreturned by that function successfully complete",
-                "type": "Promise"
-            },
-            "class": "WPRequest"
-        },
-        {
             "file": "lib/constructors/wp-request.js",
-            "line": 33,
-            "description": "Configuration options for the request such as the endpoint for the invoking WP instance",
+            "line": 30,
+            "description": "Configuration options for the request",
             "itemtype": "property",
             "name": "_options",
             "type": "Object",
@@ -474,12 +368,25 @@
             "tagname": "",
             "default": "{}",
             "class": "WPRequest",
-            "module": "WP",
+            "module": "WPAPI",
             "submodule": "WPRequest"
         },
         {
             "file": "lib/constructors/wp-request.js",
-            "line": 43,
+            "line": 52,
+            "description": "The HTTP transport methods (.get, .post, .put, .delete, .head) to use for this request",
+            "itemtype": "property",
+            "name": "transport",
+            "type": "{Object}",
+            "access": "private",
+            "tagname": "",
+            "class": "WPRequest",
+            "module": "WPAPI",
+            "submodule": "WPRequest"
+        },
+        {
+            "file": "lib/constructors/wp-request.js",
+            "line": 61,
             "description": "A hash of query parameters\nThis is used to store the values for supported query parameters like ?_embed",
             "itemtype": "property",
             "name": "_params",
@@ -488,12 +395,12 @@
             "tagname": "",
             "default": "{}",
             "class": "WPRequest",
-            "module": "WP",
+            "module": "WPAPI",
             "submodule": "WPRequest"
         },
         {
             "file": "lib/constructors/wp-request.js",
-            "line": 54,
+            "line": 72,
             "description": "Methods supported by this API request instance:\nIndividual endpoint handlers specify their own subset of supported methods",
             "itemtype": "property",
             "name": "_supportedMethods",
@@ -502,12 +409,12 @@
             "tagname": "",
             "default": "[ 'head', 'get', 'put', 'post', 'delete' ]",
             "class": "WPRequest",
-            "module": "WP",
+            "module": "WPAPI",
             "submodule": "WPRequest"
         },
         {
             "file": "lib/constructors/wp-request.js",
-            "line": 65,
+            "line": 83,
             "description": "A hash of values to assemble into the API request path\n(This will be overwritten by each specific endpoint handler constructor)",
             "itemtype": "property",
             "name": "_path",
@@ -516,90 +423,19 @@
             "tagname": "",
             "default": "{}",
             "class": "WPRequest",
-            "module": "WP",
+            "module": "WPAPI",
             "submodule": "WPRequest"
         },
         {
             "file": "lib/constructors/wp-request.js",
-            "line": 80,
+            "line": 98,
             "class": "WPRequest",
-            "module": "WP",
+            "module": "WPAPI",
             "submodule": "WPRequest"
         },
         {
             "file": "lib/constructors/wp-request.js",
-            "line": 85,
-            "description": "Submit the provided superagent request object, invoke a callback (if it was\nprovided), and return a promise to the response from the HTTP request.",
-            "params": [
-                {
-                    "name": "request",
-                    "description": "A superagent request object",
-                    "type": "Object"
-                },
-                {
-                    "name": "callback",
-                    "description": "A callback function (optional)",
-                    "type": "Function"
-                },
-                {
-                    "name": "transform",
-                    "description": "A function to transform the result data",
-                    "type": "Function"
-                }
-            ],
-            "return": {
-                "description": "A promise to the superagent request",
-                "type": "Promise"
-            },
-            "class": "WPRequest",
-            "module": "WP",
-            "submodule": "WPRequest"
-        },
-        {
-            "file": "lib/constructors/wp-request.js",
-            "line": 125,
-            "description": "Return the body of the request, augmented with pagination information if the\nresult is a paged collection.",
-            "itemtype": "method",
-            "name": "returnBody",
-            "access": "private",
-            "tagname": "",
-            "params": [
-                {
-                    "name": "result",
-                    "description": "The results from the HTTP request",
-                    "type": "Object"
-                }
-            ],
-            "return": {
-                "description": "The \"body\" property of the result, conditionally augmented with\n                 pagination information if the result is a partial collection.",
-                "type": "Object"
-            },
-            "class": "WPRequest",
-            "module": "WP",
-            "submodule": "WPRequest"
-        },
-        {
-            "file": "lib/constructors/wp-request.js",
-            "line": 141,
-            "description": "Extract and return the headers property from a superagent response object",
-            "params": [
-                {
-                    "name": "result",
-                    "description": "The results from the HTTP request",
-                    "type": "Object"
-                }
-            ],
-            "return": {
-                "description": "The \"headers\" property of the result",
-                "type": "Object"
-            },
-            "class": "WPRequest",
-            "module": "WP",
-            "submodule": "WPRequest"
-        },
-        {
-            "file": "lib/constructors/wp-request.js",
-            "line": 151,
+            "line": 103,
             "description": "Process arrays of taxonomy terms into query parameters.\nAll terms listed in the arrays will be required (AND behavior).\n\nThis method will not be called with any values unless we are handling\nan endpoint with the filter mixin; however, since parameter handling\n(and therefore `_renderQuery()`) are part of WPRequest itself, this\nhelper method lives here alongside the code where it is used.",
             "example": [
                 "\n    prepareTaxonomies({\n        tag: [ 'tag1 ', 'tag2' ], // by term slug\n        cat: [ 7 ] // by term ID\n    }) === {\n        tag: 'tag1+tag2',\n        cat: '7'\n    }"
@@ -616,12 +452,12 @@
                 "type": "Object"
             },
             "class": "WPRequest",
-            "module": "WP",
+            "module": "WPAPI",
             "submodule": "WPRequest"
         },
         {
             "file": "lib/constructors/wp-request.js",
-            "line": 188,
+            "line": 140,
             "description": "Return an object with any properties with undefined, null or empty string\nvalues removed.",
             "example": [
                 "\n\n    populated({\n      a: 'a',\n      b: '',\n      c: null\n    }); // { a: 'a' }"
@@ -638,12 +474,12 @@
                 "type": "Object"
             },
             "class": "WPRequest",
-            "module": "WP",
+            "module": "WPAPI",
             "submodule": "WPRequest"
         },
         {
             "file": "lib/constructors/wp-request.js",
-            "line": 215,
+            "line": 167,
             "description": "Assert whether a provided URL component is \"valid\" by checking it against\nan array of registered path component validator methods for that level of\nthe URL path.",
             "params": [
                 {
@@ -662,60 +498,12 @@
                 "type": "Boolean"
             },
             "class": "WPRequest",
-            "module": "WP",
+            "module": "WPAPI",
             "submodule": "WPRequest"
         },
         {
             "file": "lib/constructors/wp-request.js",
-            "line": 254,
-            "description": "Combine the API endpoint root URI and link URI into a valid request URL.\nEndpoints are generally a full path to the JSON API's root endpoint, such\nas `website.com/wp-json`: the link headers, however, are returned as root-\nrelative paths. Concatenating these would generate a URL such as\n`website.com/wp-json/wp-json/posts?page=2`: we must intelligently merge the\nURI strings in order to generate a valid new request URL.",
-            "params": [
-                {
-                    "name": "endpoint",
-                    "description": "The endpoint URL for the REST API root",
-                    "type": "String"
-                },
-                {
-                    "name": "linkPath",
-                    "description": "A root-relative link path to an API request",
-                    "type": "String"
-                }
-            ],
-            "return": {
-                "description": "The full URL path to the provided link",
-                "type": "String"
-            },
-            "class": "WPRequest",
-            "module": "WP",
-            "submodule": "WPRequest"
-        },
-        {
-            "file": "lib/constructors/wp-request.js",
-            "line": 280,
-            "description": "If the response is not paged, return the body as-is. If pagination\ninformation is present in the response headers, parse those headers into\na custom `_paging` property on the response body. `_paging` contains links\nto the previous and next pages in the collection, as well as metadata\nabout the size and number of pages in the collection.\n\nThe structure of the `_paging` property is as follows:\n\n- `total` {Integer} The total number of records in the collection\n- `totalPages` {Integer} The number of pages available\n- `links` {Object} The parsed \"links\" headers, separated into individual URI strings\n- `next` {WPRequest} A WPRequest object bound to the \"next\" page (if page exists)\n- `prev` {WPRequest} A WPRequest object bound to the \"previous\" page (if page exists)",
-            "params": [
-                {
-                    "name": "result",
-                    "description": "The response object from the HTTP request",
-                    "type": "Object"
-                },
-                {
-                    "name": "endpoint",
-                    "description": "The base URL of the requested API endpoint",
-                    "type": "String"
-                }
-            ],
-            "return": {
-                "description": "The body of the HTTP request, conditionally augmented with\n                  pagination metadata",
-                "type": "Object"
-            },
-            "class": "WPRequest",
-            "module": "WP",
-            "submodule": "WPRequest"
-        },
-        {
-            "file": "lib/constructors/wp-request.js",
-            "line": 343,
+            "line": 206,
             "description": "Process the endpoint query's filter objects into a valid query string.\nNested objects and Array properties are rendered with indexed array syntax.",
             "example": [
                 "\n    _renderQuery({ p1: 'val1', p2: 'val2' });  // ?p1=val1&p2=val2\n    _renderQuery({ obj: { prop: 'val' } });    // ?obj[prop]=val\n    _renderQuery({ arr: [ 'val1', 'val2' ] }); // ?arr[0]=val1&arr[1]=val2"
@@ -729,12 +517,49 @@
                 "type": "String"
             },
             "class": "WPRequest",
-            "module": "WP",
+            "module": "WPAPI",
             "submodule": "WPRequest"
         },
         {
             "file": "lib/constructors/wp-request.js",
-            "line": 377,
+            "line": 240,
+            "description": "Validate & assemble a path string from the request object's _path",
+            "access": "private",
+            "tagname": "",
+            "itemtype": "method",
+            "name": "_renderPath",
+            "return": {
+                "description": "The rendered path",
+                "type": "String"
+            },
+            "class": "WPRequest",
+            "module": "WPAPI",
+            "submodule": "WPRequest"
+        },
+        {
+            "file": "lib/constructors/wp-request.js",
+            "line": 276,
+            "description": "Parse the request into a WordPress API request URI string",
+            "itemtype": "method",
+            "name": "toString",
+            "return": {
+                "description": "The URI for the HTTP request to be sent",
+                "type": "String"
+            },
+            "class": "WPRequest",
+            "module": "WPAPI",
+            "submodule": "WPRequest"
+        },
+        {
+            "file": "lib/constructors/wp-request.js",
+            "line": 292,
+            "class": "WPRequest",
+            "module": "WPAPI",
+            "submodule": "WPRequest"
+        },
+        {
+            "file": "lib/constructors/wp-request.js",
+            "line": 295,
             "description": "Set a component of the resource URL itself (as opposed to a query parameter)\n\nIf a path component has already been set at this level, throw an error:\nrequests are meant to be transient, so any re-writing of a previously-set\npath part value is likely to be a mistake.",
             "itemtype": "method",
             "name": "setPathPart",
@@ -756,12 +581,12 @@
                 "type": "WPRequest"
             },
             "class": "WPRequest",
-            "module": "WP",
+            "module": "WPAPI",
             "submodule": "WPRequest"
         },
         {
             "file": "lib/constructors/wp-request.js",
-            "line": 399,
+            "line": 317,
             "description": "Validate whether the specified path parts are valid for this endpoint\n\n\"Path parts\" are non-query-string URL segments, like \"some\" \"path\" in the URL\n`mydomain.com/some/path?and=a&query=string&too`. Because a well-formed path\nis necessary to execute a successful API request, we throw an error if the\nuser has omitted a value (such as `/some/[missing component]/url`) or has\nprovided a path part value that does not match the regular expression the\nAPI uses to goven that segment.",
             "itemtype": "method",
             "name": "validatePath",
@@ -771,12 +596,12 @@
                 "type": "WPRequest"
             },
             "class": "WPRequest",
-            "module": "WP",
+            "module": "WPAPI",
             "submodule": "WPRequest"
         },
         {
             "file": "lib/constructors/wp-request.js",
-            "line": 454,
+            "line": 372,
             "description": "Set a parameter to render into the final query URI.",
             "itemtype": "method",
             "name": "param",
@@ -805,12 +630,12 @@
                 "type": "WPRequest"
             },
             "class": "WPRequest",
-            "module": "WP",
+            "module": "WPAPI",
             "submodule": "WPRequest"
         },
         {
             "file": "lib/constructors/wp-request.js",
-            "line": 515,
+            "line": 433,
             "description": "Set the context of the request. Used primarily to expose private values on a request\nobject, by setting the context to \"edit\".",
             "itemtype": "method",
             "name": "context",
@@ -827,12 +652,12 @@
                 "type": "WPRequest"
             },
             "class": "WPRequest",
-            "module": "WP",
+            "module": "WPAPI",
             "submodule": "WPRequest"
         },
         {
             "file": "lib/constructors/wp-request.js",
-            "line": 532,
+            "line": 450,
             "description": "Convenience wrapper for `.context( 'edit' )`",
             "itemtype": "method",
             "name": "edit",
@@ -842,12 +667,12 @@
                 "type": "WPRequest"
             },
             "class": "WPRequest",
-            "module": "WP",
+            "module": "WPAPI",
             "submodule": "WPRequest"
         },
         {
             "file": "lib/constructors/wp-request.js",
-            "line": 543,
+            "line": 461,
             "description": "Return embedded resources as part of the response payload.",
             "itemtype": "method",
             "name": "embed",
@@ -857,100 +682,12 @@
                 "type": "WPRequest"
             },
             "class": "WPRequest",
-            "module": "WP",
+            "module": "WPAPI",
             "submodule": "WPRequest"
         },
         {
             "file": "lib/constructors/wp-request.js",
-            "line": 557,
-            "description": "Verify that the current request object supports a given HTTP verb",
-            "access": "private",
-            "tagname": "",
-            "itemtype": "method",
-            "name": "_checkMethodSupport",
-            "params": [
-                {
-                    "name": "method",
-                    "description": "An HTTP method to check ('get', 'post', etc)",
-                    "type": "String"
-                }
-            ],
-            "return": {
-                "description": "true iff the method is within this._supportedMethods"
-            },
-            "class": "WPRequest",
-            "module": "WP",
-            "submodule": "WPRequest"
-        },
-        {
-            "file": "lib/constructors/wp-request.js",
-            "line": 577,
-            "description": "Validate & assemble a path string from the request object's _path",
-            "access": "private",
-            "tagname": "",
-            "itemtype": "method",
-            "name": "_renderPath",
-            "return": {
-                "description": "The rendered path",
-                "type": "String"
-            },
-            "class": "WPRequest",
-            "module": "WP",
-            "submodule": "WPRequest"
-        },
-        {
-            "file": "lib/constructors/wp-request.js",
-            "line": 610,
-            "description": "Conditionally set basic authentication on a server request object",
-            "itemtype": "method",
-            "name": "_auth",
-            "access": "private",
-            "tagname": "",
-            "params": [
-                {
-                    "name": "request",
-                    "description": "A superagent request object",
-                    "type": "Object"
-                },
-                {
-                    "name": "forceAuthentication",
-                    "description": "whether to force authentication on the request",
-                    "type": "Boolean"
-                },
-                {
-                    "name": "A",
-                    "description": "superagent request object, conditionally configured to use basic auth",
-                    "type": "Object"
-                }
-            ],
-            "class": "WPRequest",
-            "module": "WP",
-            "submodule": "WPRequest"
-        },
-        {
-            "file": "lib/constructors/wp-request.js",
-            "line": 647,
-            "description": "Parse the request into a WordPress API request URI string",
-            "itemtype": "method",
-            "name": "toString",
-            "return": {
-                "description": "The URI for the HTTP request to be sent",
-                "type": "String"
-            },
-            "class": "WPRequest",
-            "module": "WP",
-            "submodule": "WPRequest"
-        },
-        {
-            "file": "lib/constructors/wp-request.js",
-            "line": 663,
-            "class": "WPRequest",
-            "module": "WP",
-            "submodule": "WPRequest"
-        },
-        {
-            "file": "lib/constructors/wp-request.js",
-            "line": 669,
+            "line": 478,
             "description": "Set the namespace of the request, e.g. to specify the API root for routes\nregistered by wp core v2 (\"wp/v2\") or by any given plugin. Any previously-\nset namespace will be overwritten by subsequent calls to the method.",
             "itemtype": "method",
             "name": "namespace",
@@ -967,13 +704,13 @@
                 "type": "WPRequest"
             },
             "class": "WPRequest",
-            "module": "WP",
+            "module": "WPAPI",
             "submodule": "WPRequest"
         },
         {
             "file": "lib/constructors/wp-request.js",
-            "line": 684,
-            "description": "Set a request to use authentication, and optionally provide auth credentials\n\nNote: the `.auth( username, password )` signature is _deprecated_, use an object\nwith username and password properties instead as in the below example.\n\nIf auth credentials were already specified when the WP instance was created, calling\n`.auth` on the request chain will set that request to use the existing credentials:",
+            "line": 493,
+            "description": "Set a request to use authentication, and optionally provide auth credentials\n\nNote: the `.auth( username, password )` signature is _deprecated_, use an object\nwith username and password properties instead as in the below example.\n\nIf auth credentials were already specified when the WPAPI instance was created, calling\n`.auth` on the request chain will set that request to use the existing credentials:",
             "example": [
                 " use existing credentials\n\n    request.auth().get...\n\nAlternatively, a username & password (or nonce) can be explicitly passed into `.auth`:",
                 " use explicit basic authentication credentials\n\n    request.auth({\n      username: 'admin',\n      password: 'super secure'\n    }).get...",
@@ -1014,12 +751,12 @@
                 "type": "WPRequest"
             },
             "class": "WPRequest",
-            "module": "WP",
+            "module": "WPAPI",
             "submodule": "WPRequest"
         },
         {
             "file": "lib/constructors/wp-request.js",
-            "line": 750,
+            "line": 559,
             "description": "Specify a file or a file buffer to attach to the request, for use when\ncreating a new Media item",
             "example": [
                 " within a server context\n\n    wp.media()\n      // Pass .file() the file system path to a file to upload\n      .file( '/path/to/file.jpg' )\n      .create({})...",
@@ -1045,163 +782,27 @@
                 "type": "[type]"
             },
             "class": "WPRequest",
-            "module": "WP",
+            "module": "WPAPI",
             "submodule": "WPRequest"
         },
         {
             "file": "lib/constructors/wp-request.js",
-            "line": 785,
-            "itemtype": "method",
-            "name": "_httpGet",
-            "async": 1,
-            "access": "private",
-            "tagname": "",
-            "params": [
-                {
-                    "name": "callback",
-                    "description": "A callback to invoke with the results of the GET request",
-                    "type": "Function",
-                    "optional": true
-                }
-            ],
-            "return": {
-                "description": "A promise to the results of the HTTP request",
-                "type": "Promise"
-            },
+            "line": 594,
             "class": "WPRequest",
-            "module": "WP",
+            "module": "WPAPI",
             "submodule": "WPRequest"
         },
         {
             "file": "lib/constructors/wp-request.js",
-            "line": 801,
-            "description": "Invoke an HTTP \"POST\" request against the provided endpoint",
-            "itemtype": "method",
-            "name": "_httpPost",
-            "async": 1,
-            "access": "private",
-            "tagname": "",
-            "params": [
-                {
-                    "name": "data",
-                    "description": "The data for the POST request",
-                    "type": "Object"
-                },
-                {
-                    "name": "callback",
-                    "description": "A callback to invoke with the results of the POST request",
-                    "type": "Function",
-                    "optional": true
-                }
-            ],
-            "return": {
-                "description": "A promise to the results of the HTTP request",
-                "type": "Promise"
-            },
+            "line": 599,
             "class": "WPRequest",
-            "module": "WP",
+            "module": "WPAPI",
             "submodule": "WPRequest"
         },
         {
             "file": "lib/constructors/wp-request.js",
-            "line": 828,
-            "itemtype": "method",
-            "name": "_httpPut",
-            "async": 1,
-            "access": "private",
-            "tagname": "",
-            "params": [
-                {
-                    "name": "data",
-                    "description": "The data for the PUT request",
-                    "type": "Object"
-                },
-                {
-                    "name": "callback",
-                    "description": "A callback to invoke with the results of the PUT request",
-                    "type": "Function",
-                    "optional": true
-                }
-            ],
-            "return": {
-                "description": "A promise to the results of the HTTP request",
-                "type": "Promise"
-            },
-            "class": "WPRequest",
-            "module": "WP",
-            "submodule": "WPRequest"
-        },
-        {
-            "file": "lib/constructors/wp-request.js",
-            "line": 846,
-            "itemtype": "method",
-            "name": "_httpDelete",
-            "async": 1,
-            "access": "private",
-            "tagname": "",
-            "params": [
-                {
-                    "name": "data",
-                    "description": "Data to send along with the DELETE request",
-                    "type": "Object",
-                    "optional": true
-                },
-                {
-                    "name": "callback",
-                    "description": "A callback to invoke with the results of the DELETE request",
-                    "type": "Function",
-                    "optional": true
-                }
-            ],
-            "return": {
-                "description": "A promise to the results of the HTTP request",
-                "type": "Promise"
-            },
-            "class": "WPRequest",
-            "module": "WP",
-            "submodule": "WPRequest"
-        },
-        {
-            "file": "lib/constructors/wp-request.js",
-            "line": 866,
-            "itemtype": "method",
-            "name": "_httpHead",
-            "async": 1,
-            "access": "private",
-            "tagname": "",
-            "params": [
-                {
-                    "name": "callback",
-                    "description": "A callback to invoke with the results of the HEAD request",
-                    "type": "Function",
-                    "optional": true
-                }
-            ],
-            "return": {
-                "description": "A promise to the header results of the HTTP request",
-                "type": "Promise"
-            },
-            "class": "WPRequest",
-            "module": "WP",
-            "submodule": "WPRequest"
-        },
-        {
-            "file": "lib/constructors/wp-request.js",
-            "line": 884,
-            "class": "WPRequest",
-            "module": "WP",
-            "submodule": "WPRequest"
-        },
-        {
-            "file": "lib/constructors/wp-request.js",
-            "line": 889,
-            "class": "WPRequest",
-            "module": "WP",
-            "submodule": "WPRequest"
-        },
-        {
-            "file": "lib/constructors/wp-request.js",
-            "line": 894,
+            "line": 604,
+            "description": "Get (download the data for) the specified resource",
             "itemtype": "method",
             "name": "get",
             "async": 1,
@@ -1218,13 +819,13 @@
                 "type": "Promise"
             },
             "class": "WPRequest",
-            "module": "WP",
+            "module": "WPAPI",
             "submodule": "WPRequest"
         },
         {
             "file": "lib/constructors/wp-request.js",
-            "line": 904,
-            "description": "Create a HEAD request against a site",
+            "line": 616,
+            "description": "Get the headers for the specified resource",
             "itemtype": "method",
             "name": "headers",
             "async": 1,
@@ -1241,13 +842,13 @@
                 "type": "Promise"
             },
             "class": "WPRequest",
-            "module": "WP",
+            "module": "WPAPI",
             "submodule": "WPRequest"
         },
         {
             "file": "lib/constructors/wp-request.js",
-            "line": 915,
-            "description": "Invoke an HTTP \"POST\" request against the provided endpoint\n\nThis is the public interface creating for POST requests",
+            "line": 628,
+            "description": "Create the specified resource with the provided data\n\nThis is the public interface for creating POST requests",
             "itemtype": "method",
             "name": "create",
             "async": 1,
@@ -1269,14 +870,15 @@
                 "type": "Promise"
             },
             "class": "WPRequest",
-            "module": "WP",
+            "module": "WPAPI",
             "submodule": "WPRequest"
         },
         {
             "file": "lib/constructors/wp-request.js",
-            "line": 930,
+            "line": 643,
+            "description": "Update the specified resource with the provided data\n\nThis is the public interface for creating PUT requests",
             "itemtype": "method",
-            "name": "_httpPut",
+            "name": "update",
             "async": 1,
             "access": "private",
             "tagname": "",
@@ -1298,12 +900,13 @@
                 "type": "Promise"
             },
             "class": "WPRequest",
-            "module": "WP",
+            "module": "WPAPI",
             "submodule": "WPRequest"
         },
         {
             "file": "lib/constructors/wp-request.js",
-            "line": 942,
+            "line": 659,
+            "description": "Delete the specified resource",
             "itemtype": "method",
             "name": "delete",
             "async": 1,
@@ -1326,12 +929,12 @@
                 "type": "Promise"
             },
             "class": "WPRequest",
-            "module": "WP",
+            "module": "WPAPI",
             "submodule": "WPRequest"
         },
         {
             "file": "lib/constructors/wp-request.js",
-            "line": 953,
+            "line": 672,
             "description": "Calling .then on a query chain will invoke the query as a GET and return a promise",
             "itemtype": "method",
             "name": "then",
@@ -1355,7 +958,7 @@
                 "type": "Promise"
             },
             "class": "WPRequest",
-            "module": "WP",
+            "module": "WPAPI",
             "submodule": "WPRequest"
         },
         {
@@ -1367,8 +970,8 @@
                 "\n\n    # Invoke directly, run against an arbitrary WordPress API root\n    ./generate-endpoint-response-json.js --endpoint=http://my-site.com/wp-json\n\n    # Invoke with `node` CLI, run against an arbitrary WordPress API root\n    node ./generate-endpoint-response-json --endpoint=http://my-site.com/wp-json\n\nEither form will update the `endpoint-response.json` file in this directory,\nproviding that the endpoint data is downloaded successfully.\n\nThis script also has some utility for downloading a custom JSON file for your\nown WP REST API-enabled site, so that you can bootstrap your own routes without\nincurring an HTTP request. To output to a different directory than the default\n(which is this directory, `lib/data/`), pass an --output argument on the CLI:",
                 "\n\n    # Output to your current working directory\n    ./path/to/this/dir/generate-endpoint-response-json.js --output=.\n\n    # Output to an arbitrary absolute path\n    ./path/to/this/dir/generate-endpoint-response-json.js --output=/home/mordor/output.json\n\nThese command-line flags may be combined, and you will usually want to use\n--endpoint alongside --output to download your own JSON into your own directory."
             ],
-            "class": "wp",
-            "module": "WP"
+            "class": "WPAPI",
+            "module": "WPAPI"
         },
         {
             "file": "lib/data/simplify-object.js",
@@ -1385,8 +988,8 @@
                 "description": "The passed-in value, with non-essential args properties and all\n_links properties removes.",
                 "type": "*"
             },
-            "class": "wp",
-            "module": "WP"
+            "class": "WPAPI",
+            "module": "WPAPI"
         },
         {
             "file": "lib/mixins/filters.js",
@@ -1414,7 +1017,7 @@
             "return": {
                 "description": "The request instance (for chaining)"
             },
-            "class": "wp",
+            "class": "WPAPI",
             "module": "filters"
         },
         {
@@ -1439,7 +1042,7 @@
             "return": {
                 "description": "The request instance (for chaining)"
             },
-            "class": "wp",
+            "class": "WPAPI",
             "module": "filters"
         },
         {
@@ -1459,7 +1062,7 @@
             "return": {
                 "description": "The request instance (for chaining)"
             },
-            "class": "wp",
+            "class": "WPAPI",
             "module": "filters"
         },
         {
@@ -1479,7 +1082,7 @@
             "return": {
                 "description": "The request instance (for chaining)"
             },
-            "class": "wp",
+            "class": "WPAPI",
             "module": "filters"
         },
         {
@@ -1499,7 +1102,7 @@
             "return": {
                 "description": "The request instance (for chaining)"
             },
-            "class": "wp",
+            "class": "WPAPI",
             "module": "filters"
         },
         {
@@ -1519,7 +1122,7 @@
             "return": {
                 "description": "The request instance (for chaining)"
             },
-            "class": "wp",
+            "class": "WPAPI",
             "module": "filters"
         },
         {
@@ -1539,7 +1142,7 @@
             "return": {
                 "description": "The request instance (for chaining)"
             },
-            "class": "wp",
+            "class": "WPAPI",
             "module": "filters"
         },
         {
@@ -1559,14 +1162,14 @@
             "return": {
                 "description": "The request instance (for chaining)"
             },
-            "class": "wp",
+            "class": "WPAPI",
             "module": "filters"
         },
         {
             "file": "lib/mixins/index.js",
             "line": 1,
             "description": "This module defines a mapping between supported GET request query parameter\narguments and their corresponding mixin, if available.",
-            "class": "wp",
+            "class": "WPAPI",
             "module": "filters"
         },
         {
@@ -1586,7 +1189,7 @@
             "return": {
                 "description": "The request instance (for chaining)"
             },
-            "class": "wp",
+            "class": "WPAPI",
             "module": "filters"
         },
         {
@@ -1606,7 +1209,7 @@
             "return": {
                 "description": "The request instance (for chaining)"
             },
-            "class": "wp",
+            "class": "WPAPI",
             "module": "filters"
         },
         {
@@ -1626,7 +1229,7 @@
             "return": {
                 "description": "The request instance (for chaining)"
             },
-            "class": "wp",
+            "class": "WPAPI",
             "module": "filters"
         },
         {
@@ -1647,7 +1250,7 @@
             "return": {
                 "description": "The request instance (for chaining)"
             },
-            "class": "wp",
+            "class": "WPAPI",
             "module": "filters"
         },
         {
@@ -1667,7 +1270,7 @@
             "return": {
                 "description": "The request instance (for chaining)"
             },
-            "class": "wp",
+            "class": "WPAPI",
             "module": "filters"
         },
         {
@@ -1687,7 +1290,7 @@
             "return": {
                 "description": "The request instance (for chaining)"
             },
-            "class": "wp",
+            "class": "WPAPI",
             "module": "filters"
         },
         {
@@ -1710,7 +1313,7 @@
             "return": {
                 "description": "The request instance (for chaining)"
             },
-            "class": "wp",
+            "class": "WPAPI",
             "module": "filters"
         },
         {
@@ -1730,7 +1333,7 @@
             "return": {
                 "description": "The request instance (for chaining)"
             },
-            "class": "wp",
+            "class": "WPAPI",
             "module": "filters"
         },
         {
@@ -1754,7 +1357,7 @@
             "return": {
                 "description": "The request instance (for chaining)"
             },
-            "class": "wp",
+            "class": "WPAPI",
             "module": "filters"
         },
         {
@@ -1778,7 +1381,7 @@
             "return": {
                 "description": "The request instance (for chaining)"
             },
-            "class": "wp",
+            "class": "WPAPI",
             "module": "filters"
         },
         {
@@ -1800,7 +1403,29 @@
             "return": {
                 "description": "-1 if the values are backwards, 1 if they're ordered, and 0 if they're the same"
             },
-            "class": "wp",
+            "class": "WPAPI",
+            "module": "filters"
+        },
+        {
+            "file": "lib/util/check-method-support.js",
+            "line": 3,
+            "description": "Verify that a specific HTTP method is supported by the provided WPRequest",
+            "params": [
+                {
+                    "name": "method",
+                    "description": "An HTTP method to check ('get', 'post', etc)",
+                    "type": "String"
+                },
+                {
+                    "name": "request",
+                    "description": "A WPRequest object with a _supportedMethods array",
+                    "type": "WPRequest"
+                }
+            ],
+            "return": {
+                "description": "true iff the method is within request._supportedMethods"
+            },
+            "class": "WPAPI",
             "module": "filters"
         },
         {
@@ -1808,7 +1433,7 @@
             "line": 3,
             "description": "Regular Expression to identify a capture group in PCRE formats\n`(?<name>regex)`, `(?'name'regex)` or `(?P<name>regex)` (see\nregular-expressions.info/refext.html); RegExp is built as a string\nto enable more detailed annotation.",
             "type": "{RegExp}",
-            "class": "wp",
+            "class": "WPAPI",
             "module": "filters"
         },
         {
@@ -1832,7 +1457,7 @@
                 "description": "A promise to the string containing the API endpoint URL",
                 "type": "Promise"
             },
-            "class": "wp",
+            "class": "WPAPI",
             "module": "autodiscovery"
         },
         {
@@ -1850,7 +1475,7 @@
                 "description": "Promise that resolves once the API root has been inspected",
                 "type": "Promise"
             },
-            "class": "wp",
+            "class": "WPAPI",
             "module": "autodiscovery"
         },
         {
@@ -1873,7 +1498,7 @@
                 "description": "A dictionary of endpoint request handler factories",
                 "type": "Object"
             },
-            "class": "wp",
+            "class": "WPAPI",
             "module": "parseRouteString"
         },
         {
@@ -1885,8 +1510,317 @@
             "type": "{object}",
             "access": "private",
             "tagname": "",
-            "class": "wp",
+            "class": "WPAPI",
             "module": "parseRouteString"
+        },
+        {
+            "file": "lib/http-transport.js",
+            "line": 17,
+            "description": "Conditionally set basic authentication on a server request object",
+            "itemtype": "method",
+            "name": "_auth",
+            "access": "private",
+            "tagname": "",
+            "params": [
+                {
+                    "name": "request",
+                    "description": "A superagent request object",
+                    "type": "Object"
+                },
+                {
+                    "name": "options",
+                    "description": "A WPRequest _options object",
+                    "type": "Object"
+                },
+                {
+                    "name": "forceAuthentication",
+                    "description": "whether to force authentication on the request",
+                    "type": "Boolean"
+                },
+                {
+                    "name": "A",
+                    "description": "superagent request object, conditionally configured to use basic auth",
+                    "type": "Object"
+                }
+            ],
+            "class": "WPAPI",
+            "module": "http-transport"
+        },
+        {
+            "file": "lib/http-transport.js",
+            "line": 55,
+            "description": "Combine the API endpoint root URI and link URI into a valid request URL.\nEndpoints are generally a full path to the JSON API's root endpoint, such\nas `website.com/wp-json`: the link headers, however, are returned as root-\nrelative paths. Concatenating these would generate a URL such as\n`website.com/wp-json/wp-json/posts?page=2`: we must intelligently merge the\nURI strings in order to generate a valid new request URL.",
+            "params": [
+                {
+                    "name": "endpoint",
+                    "description": "The endpoint URL for the REST API root",
+                    "type": "String"
+                },
+                {
+                    "name": "linkPath",
+                    "description": "A root-relative link path to an API request",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "The full URL path to the provided link",
+                "type": "String"
+            },
+            "class": "WPAPI",
+            "module": "http-transport"
+        },
+        {
+            "file": "lib/http-transport.js",
+            "line": 81,
+            "description": "If the response is not paged, return the body as-is. If pagination\ninformation is present in the response headers, parse those headers into\na custom `_paging` property on the response body. `_paging` contains links\nto the previous and next pages in the collection, as well as metadata\nabout the size and number of pages in the collection.\n\nThe structure of the `_paging` property is as follows:\n\n- `total` {Integer} The total number of records in the collection\n- `totalPages` {Integer} The number of pages available\n- `links` {Object} The parsed \"links\" headers, separated into individual URI strings\n- `next` {WPRequest} A WPRequest object bound to the \"next\" page (if page exists)\n- `prev` {WPRequest} A WPRequest object bound to the \"previous\" page (if page exists)",
+            "params": [
+                {
+                    "name": "result",
+                    "description": "The response object from the HTTP request",
+                    "type": "Object"
+                },
+                {
+                    "name": "endpoint",
+                    "description": "The base URL of the requested API endpoint",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "The body of the HTTP request, conditionally augmented with\n                  pagination metadata",
+                "type": "Object"
+            },
+            "class": "WPAPI",
+            "module": "http-transport"
+        },
+        {
+            "file": "lib/http-transport.js",
+            "line": 146,
+            "description": "Submit the provided superagent request object, invoke a callback (if it was\nprovided), and return a promise to the response from the HTTP request.",
+            "params": [
+                {
+                    "name": "request",
+                    "description": "A superagent request object",
+                    "type": "Object"
+                },
+                {
+                    "name": "callback",
+                    "description": "A callback function (optional)",
+                    "type": "Function"
+                },
+                {
+                    "name": "transform",
+                    "description": "A function to transform the result data",
+                    "type": "Function"
+                }
+            ],
+            "return": {
+                "description": "A promise to the superagent request",
+                "type": "Promise"
+            },
+            "class": "WPAPI",
+            "module": "http-transport"
+        },
+        {
+            "file": "lib/http-transport.js",
+            "line": 186,
+            "description": "Return the body of the request, augmented with pagination information if the\nresult is a paged collection.",
+            "itemtype": "method",
+            "name": "returnBody",
+            "access": "private",
+            "tagname": "",
+            "params": [
+                {
+                    "name": "wpreq",
+                    "description": "The WPRequest representing the returned HTTP response",
+                    "type": "WPRequest"
+                },
+                {
+                    "name": "result",
+                    "description": "The results from the HTTP request",
+                    "type": "Object"
+                }
+            ],
+            "return": {
+                "description": "The \"body\" property of the result, conditionally augmented with\n                 pagination information if the result is a partial collection.",
+                "type": "Object"
+            },
+            "class": "WPAPI",
+            "module": "http-transport"
+        },
+        {
+            "file": "lib/http-transport.js",
+            "line": 203,
+            "description": "Extract and return the headers property from a superagent response object",
+            "params": [
+                {
+                    "name": "result",
+                    "description": "The results from the HTTP request",
+                    "type": "Object"
+                }
+            ],
+            "return": {
+                "description": "The \"headers\" property of the result",
+                "type": "Object"
+            },
+            "class": "WPAPI",
+            "module": "http-transport"
+        },
+        {
+            "file": "lib/http-transport.js",
+            "line": 216,
+            "itemtype": "method",
+            "name": "_httpGet",
+            "async": 1,
+            "access": "private",
+            "tagname": "",
+            "params": [
+                {
+                    "name": "wpreq",
+                    "description": "A WPRequest query object",
+                    "type": "WPRequest"
+                },
+                {
+                    "name": "callback",
+                    "description": "A callback to invoke with the results of the GET request",
+                    "type": "Function",
+                    "optional": true
+                }
+            ],
+            "return": {
+                "description": "A promise to the results of the HTTP request",
+                "type": "Promise"
+            },
+            "class": "WPAPI",
+            "module": "http-transport"
+        },
+        {
+            "file": "lib/http-transport.js",
+            "line": 233,
+            "description": "Invoke an HTTP \"POST\" request against the provided endpoint",
+            "itemtype": "method",
+            "name": "_httpPost",
+            "async": 1,
+            "access": "private",
+            "tagname": "",
+            "params": [
+                {
+                    "name": "wpreq",
+                    "description": "A WPRequest query object",
+                    "type": "WPRequest"
+                },
+                {
+                    "name": "data",
+                    "description": "The data for the POST request",
+                    "type": "Object"
+                },
+                {
+                    "name": "callback",
+                    "description": "A callback to invoke with the results of the POST request",
+                    "type": "Function",
+                    "optional": true
+                }
+            ],
+            "return": {
+                "description": "A promise to the results of the HTTP request",
+                "type": "Promise"
+            },
+            "class": "WPAPI",
+            "module": "http-transport"
+        },
+        {
+            "file": "lib/http-transport.js",
+            "line": 261,
+            "itemtype": "method",
+            "name": "_httpPut",
+            "async": 1,
+            "access": "private",
+            "tagname": "",
+            "params": [
+                {
+                    "name": "wpreq",
+                    "description": "A WPRequest query object",
+                    "type": "WPRequest"
+                },
+                {
+                    "name": "data",
+                    "description": "The data for the PUT request",
+                    "type": "Object"
+                },
+                {
+                    "name": "callback",
+                    "description": "A callback to invoke with the results of the PUT request",
+                    "type": "Function",
+                    "optional": true
+                }
+            ],
+            "return": {
+                "description": "A promise to the results of the HTTP request",
+                "type": "Promise"
+            },
+            "class": "WPAPI",
+            "module": "http-transport"
+        },
+        {
+            "file": "lib/http-transport.js",
+            "line": 280,
+            "itemtype": "method",
+            "name": "_httpDelete",
+            "async": 1,
+            "access": "private",
+            "tagname": "",
+            "params": [
+                {
+                    "name": "wpreq",
+                    "description": "A WPRequest query object",
+                    "type": "WPRequest"
+                },
+                {
+                    "name": "data",
+                    "description": "Data to send along with the DELETE request",
+                    "type": "Object",
+                    "optional": true
+                },
+                {
+                    "name": "callback",
+                    "description": "A callback to invoke with the results of the DELETE request",
+                    "type": "Function",
+                    "optional": true
+                }
+            ],
+            "return": {
+                "description": "A promise to the results of the HTTP request",
+                "type": "Promise"
+            },
+            "class": "WPAPI",
+            "module": "http-transport"
+        },
+        {
+            "file": "lib/http-transport.js",
+            "line": 301,
+            "itemtype": "method",
+            "name": "_httpHead",
+            "async": 1,
+            "access": "private",
+            "tagname": "",
+            "params": [
+                {
+                    "name": "wpreq",
+                    "description": "A WPRequest query object",
+                    "type": "WPRequest"
+                },
+                {
+                    "name": "callback",
+                    "description": "A callback to invoke with the results of the HEAD request",
+                    "type": "Function",
+                    "optional": true
+                }
+            ],
+            "return": {
+                "description": "A promise to the header results of the HTTP request",
+                "type": "Promise"
+            },
+            "class": "WPAPI",
+            "module": "http-transport"
         },
         {
             "file": "lib/path-part-setter.js",
@@ -1903,8 +1837,8 @@
                 "description": "[description]",
                 "type": "[type]"
             },
-            "class": "wp",
-            "module": "parseRouteString"
+            "class": "WPAPI",
+            "module": "http-transport"
         },
         {
             "file": "lib/path-part-setter.js",
@@ -1925,8 +1859,8 @@
                 "description": "The handler instance (for chaining)",
                 "type": "Object"
             },
-            "class": "wp",
-            "module": "parseRouteString"
+            "class": "WPAPI",
+            "module": "http-transport"
         },
         {
             "file": "lib/path-part-setter.js",
@@ -1948,8 +1882,8 @@
                 "description": "The handler instance (for chaining)",
                 "type": "Object"
             },
-            "class": "wp",
-            "module": "parseRouteString"
+            "class": "WPAPI",
+            "module": "http-transport"
         },
         {
             "file": "lib/resource-handler-spec.js",
@@ -1970,8 +1904,8 @@
                     ]
                 }
             ],
-            "class": "wp",
-            "module": "parseRouteString"
+            "class": "WPAPI",
+            "module": "http-transport"
         },
         {
             "file": "lib/resource-handler-spec.js",
@@ -1993,8 +1927,8 @@
                 "description": "A handler spec object with _path, _levels and _setters properties",
                 "type": "Object"
             },
-            "class": "wp",
-            "module": "parseRouteString"
+            "class": "WPAPI",
+            "module": "http-transport"
         },
         {
             "file": "lib/route-tree.js",
@@ -2040,8 +1974,8 @@
                 "description": "The child object of the level being reduced",
                 "type": "Object"
             },
-            "class": "wp",
-            "module": "parseRouteString"
+            "class": "WPAPI",
+            "module": "http-transport"
         },
         {
             "file": "lib/route-tree.js",
@@ -2071,8 +2005,8 @@
                 "description": "The namespaces dictionary memo object",
                 "type": "Object"
             },
-            "class": "wp",
-            "module": "parseRouteString"
+            "class": "WPAPI",
+            "module": "http-transport"
         },
         {
             "file": "lib/route-tree.js",
@@ -2089,81 +2023,88 @@
                 "description": "A dictionary, keyed by namespace, of resource handler\nfactory methods for each namespace's resources",
                 "type": "Object"
             },
-            "class": "wp",
-            "module": "parseRouteString"
-        },
-        {
-            "file": "tests/integration/helpers/get-prop.js",
-            "line": 3,
-            "description": "This is a curry-able pluck function, that is all. Inspecting a collection of\nhuman-readable strings is usually a more comprehensible way to validate the\nright results were returned than using arbitrary values.",
-            "example": [
-                " Pluck the slugs titles from a collection of terms\n\n    var slugs = getProp( collection, 'slug' );",
-                " Create a bound variant that always plucks .name\n\n    var getNames = getProp.bind( null, 'name' );\n    var names = getNames( collection );"
-            ],
-            "access": "private",
-            "tagname": "",
-            "params": [
-                {
-                    "name": "property",
-                    "description": "The name of the property to pluck",
-                    "type": "String"
-                },
-                {
-                    "name": "collection",
-                    "description": "An array of response objects whence to pluck",
-                    "type": "Object[]"
-                }
-            ],
-            "return": {
-                "description": "The values of that property from each collection member",
-                "type": "String[]"
-            },
-            "class": "WP",
-            "module": "parseRouteString"
-        },
-        {
-            "file": "tests/integration/helpers/get-rendered-prop.js",
-            "line": 3,
-            "description": "This method is a super-pluck capable of grabbing the rendered version of\na nested property on a WP API response object. Inspecting a collection of\nhuman-readable properties is usually a more comprehensible way to validate\nthat the right results were returned than using IDs or arbitrary values.",
-            "example": [
-                " Pluck the rendered titles from the post\n\n    var titles = getRenderedProp( collection, 'title' );",
-                " Create a bound variant that always plucks titles\n\n    var getTitles = getRenderedProp.bind( null, 'title' );\n    var titles = getTitles( collection );"
-            ],
-            "access": "private",
-            "tagname": "",
-            "params": [
-                {
-                    "name": "property",
-                    "description": "The name of the rendered property to pluck",
-                    "type": "String"
-                },
-                {
-                    "name": "collection",
-                    "description": "An array of response objects whence to pluck",
-                    "type": "Object[]"
-                }
-            ],
-            "return": {
-                "description": "The collection of values for the rendered variants of\nthe specified response object property",
-                "type": "String[]"
-            },
-            "class": "WP",
-            "module": "parseRouteString"
+            "class": "WPAPI",
+            "module": "http-transport"
         },
         {
             "file": "Gruntfile.js",
             "line": 1,
             "description": "The Gruntfile in this project is not responsible for the code build or\nlinting, and instead handles all tasks related to documentation generation\nand output.",
-            "class": "WP",
-            "module": "parseRouteString"
+            "class": "WPAPI",
+            "module": "http-transport"
         },
         {
-            "file": "wp.js",
-            "line": 82,
-            "description": "Convenience method for making a new WP instance",
+            "file": "wpapi.js",
+            "line": 94,
+            "description": "Set custom transport methods to use when making HTTP requests against the API\n\nPass an object with a function for one or many of \"get\", \"post\", \"put\",\n\"delete\" and \"head\" and that function will be called when making that type\nof request. The provided transport functions should take a WPRequest handler\ninstance (_e.g._ the result of a `wp.posts()...` chain or any other chaining\nrequest handler) as their first argument; a `data` object as their second\nargument (for POST, PUT and DELETE requests); and an optional callback as\ntheir final argument. Transport methods should invoke the callback with the\nresponse data (or error, as appropriate), and should also return a Promise.",
             "example": [
-                "\nThese are equivalent:\n\n    var wp = new WP({ endpoint: 'http://my.blog.url/wp-json' });\n    var wp = WP.site( 'http://my.blog.url/wp-json' );\n\n`WP.site` can take an optional API root response JSON object to use when\nbootstrapping the client's endpoint handler methods: if no second parameter\nis provided, the client instance is assumed to be using the default API\nwith no additional plugins and is initialized with handlers for only those\ndefault API routes.",
-                "\nThese are equivalent:\n\n    // {...} means the JSON output of http://my.blog.url/wp-json\n    var wp = new WP({\n      endpoint: 'http://my.blog.url/wp-json',\n      json: {...}\n    });\n    var wp = WP.site( 'http://my.blog.url/wp-json', {...} );"
+                " showing how a cache hit (keyed by URI) could short-circuit a get request\n\n    var site = new WPAPI({\n      endpoint: 'http://my-site.com/wp-json'\n    });\n\n    // Overwrite the GET behavior to inject a caching layer\n    site.transport({\n      get: function( wpreq, cb ) {\n        var result = cache[ wpreq ];\n        // If a cache hit is found, return it via the same callback/promise\n        // signature as the default transport method\n        if ( result ) {\n          if ( cb && typeof cb === 'function' ) {\n            cb( null, result );\n          }\n          return Promise.resolve( result );\n        }\n\n        // Delegate to default transport if no cached data was found\n        return WPAPI.transport.get( wpreq, cb ).then(function( result ) {\n          cache[ wpreq ] = result;\n          return result;\n        });\n      }\n    });\n\nThis is advanced behavior; you will only need to utilize this functionality\nif your application has very specific HTTP handling or caching requirements.\nRefer to the \"http-transport\" module within this application for the code\nimplementing the built-in transport methods."
+            ],
+            "chainable": 1,
+            "params": [
+                {
+                    "name": "transport",
+                    "description": "A dictionary of HTTP transport methods",
+                    "type": "Object",
+                    "props": [
+                        {
+                            "name": "get",
+                            "description": "The function to use for GET requests",
+                            "type": "Function",
+                            "optional": true
+                        },
+                        {
+                            "name": "post",
+                            "description": "The function to use for POST requests",
+                            "type": "Function",
+                            "optional": true
+                        },
+                        {
+                            "name": "put",
+                            "description": "The function to use for PUT requests",
+                            "type": "Function",
+                            "optional": true
+                        },
+                        {
+                            "name": "delete",
+                            "description": "The function to use for DELETE requests",
+                            "type": "Function",
+                            "optional": true
+                        },
+                        {
+                            "name": "head",
+                            "description": "The function to use for HEAD requests",
+                            "type": "Function",
+                            "optional": true
+                        }
+                    ]
+                }
+            ],
+            "return": {
+                "description": "The WPAPI instance, for chaining",
+                "type": "WPAPI"
+            },
+            "class": "WPAPI",
+            "module": "WPAPI"
+        },
+        {
+            "file": "wpapi.js",
+            "line": 166,
+            "description": "Default HTTP transport methods object for all WPAPI instances\n\nThese methods may be extended or replaced on an instance-by-instance basis",
+            "static": 1,
+            "itemtype": "property",
+            "name": "transport",
+            "type": "{Object}",
+            "class": "WPAPI",
+            "module": "WPAPI"
+        },
+        {
+            "file": "wpapi.js",
+            "line": 178,
+            "description": "Convenience method for making a new WPAPI instance",
+            "example": [
+                "\nThese are equivalent:\n\n    var wp = new WPAPI({ endpoint: 'http://my.blog.url/wp-json' });\n    var wp = WPAPI.site( 'http://my.blog.url/wp-json' );\n\n`WPAPI.site` can take an optional API root response JSON object to use when\nbootstrapping the client's endpoint handler methods: if no second parameter\nis provided, the client instance is assumed to be using the default API\nwith no additional plugins and is initialized with handlers for only those\ndefault API routes.",
+                "\nThese are equivalent:\n\n    // {...} means the JSON output of http://my.blog.url/wp-json\n    var wp = new WPAPI({\n      endpoint: 'http://my.blog.url/wp-json',\n      json: {...}\n    });\n    var wp = WPAPI.site( 'http://my.blog.url/wp-json', {...} );"
             ],
             "itemtype": "method",
             "name": "site",
@@ -2181,16 +2122,16 @@
                 }
             ],
             "return": {
-                "description": "A new WP instance, bound to the provided endpoint",
-                "type": "WP"
+                "description": "A new WPAPI instance, bound to the provided endpoint",
+                "type": "WPAPI"
             },
-            "class": "WP",
-            "module": "WP"
+            "class": "WPAPI",
+            "module": "WPAPI"
         },
         {
-            "file": "wp.js",
-            "line": 123,
-            "description": "Generate a request against a completely arbitrary endpoint, with no assumptions about\nor mutation of path, filtering, or query parameters. This request is not restricted to\nthe endpoint specified during WP object instantiation.",
+            "file": "wpapi.js",
+            "line": 219,
+            "description": "Generate a request against a completely arbitrary endpoint, with no assumptions about\nor mutation of path, filtering, or query parameters. This request is not restricted to\nthe endpoint specified during WPAPI object instantiation.",
             "example": [
                 "\nGenerate a request to the explicit URL \"http://your.website.com/wp-json/some/custom/path\"\n\n    wp.url( 'http://your.website.com/wp-json/some/custom/path' ).get()..."
             ],
@@ -2207,12 +2148,12 @@
                 "description": "A WPRequest object bound to the provided URL",
                 "type": "WPRequest"
             },
-            "class": "WP",
-            "module": "WP"
+            "class": "WPAPI",
+            "module": "WPAPI"
         },
         {
-            "file": "wp.js",
-            "line": 144,
+            "file": "wpapi.js",
+            "line": 240,
             "description": "Generate a query against an arbitrary path on the current endpoint. This is useful for\nrequesting resources at custom WP-API endpoints, such as WooCommerce's `/products`.",
             "itemtype": "method",
             "name": "root",
@@ -2228,13 +2169,13 @@
                 "description": "A request object",
                 "type": "WPRequest"
             },
-            "class": "WP",
-            "module": "WP"
+            "class": "WPAPI",
+            "module": "WPAPI"
         },
         {
-            "file": "wp.js",
-            "line": 164,
-            "description": "Set the authentication to use for a WP site handler instance. Accepts basic\nHTTP authentication credentials (string username & password) or a Nonce (for\ncookie authentication) by default; may be overloaded to accept OAuth credentials\nin the future.",
+            "file": "wpapi.js",
+            "line": 260,
+            "description": "Set the authentication to use for a WPAPI site handler instance. Accepts basic\nHTTP authentication credentials (string username & password) or a Nonce (for\ncookie authentication) by default; may be overloaded to accept OAuth credentials\nin the future.",
             "example": [
                 " Basic Authentication\n\n    site.auth({\n      username: 'admin',\n      password: 'securepass55'\n    })...",
                 " Cookie/Nonce Authentication\n\n    site.auth({\n      nonce: 'somenonce'\n    })..."
@@ -2270,16 +2211,16 @@
                 }
             ],
             "return": {
-                "description": "The WP site handler instance, for chaining",
-                "type": "WP"
+                "description": "The WPAPI site handler instance, for chaining",
+                "type": "WPAPI"
             },
-            "class": "WP",
-            "module": "WP"
+            "class": "WPAPI",
+            "module": "WPAPI"
         },
         {
-            "file": "wp.js",
-            "line": 196,
-            "description": "Deduce request methods from a provided API root JSON response object's\nroutes dictionary, and assign those methods to the current instance. If\nno routes dictionary is provided then the instance will be bootstrapped\nwith route handlers for the default API endpoints only.\n\nThis method is called automatically during WP instance creation.",
+            "file": "wpapi.js",
+            "line": 292,
+            "description": "Deduce request methods from a provided API root JSON response object's\nroutes dictionary, and assign those methods to the current instance. If\nno routes dictionary is provided then the instance will be bootstrapped\nwith route handlers for the default API endpoints only.\n\nThis method is called automatically during WPAPI instance creation.",
             "itemtype": "method",
             "name": "bootstrap",
             "chainable": 1,
@@ -2291,15 +2232,15 @@
                 }
             ],
             "return": {
-                "description": "The bootstrapped WP client instance (for chaining or assignment)",
-                "type": "WP"
+                "description": "The bootstrapped WPAPI client instance (for chaining or assignment)",
+                "type": "WPAPI"
             },
-            "class": "WP",
-            "module": "WP"
+            "class": "WPAPI",
+            "module": "WPAPI"
         },
         {
-            "file": "wp.js",
-            "line": 261,
+            "file": "wpapi.js",
+            "line": 357,
             "description": "Access API endpoint handlers from a particular API namespace object",
             "example": [
                 "\n\n    wp.namespace( 'myplugin/v1' ).author()...\n\n    // Default WP endpoint handlers are assigned to the wp instance itself.\n    // These are equivalent:\n    wp.namespace( 'wp/v2' ).posts()...\n    wp.posts()..."
@@ -2315,67 +2256,43 @@
                 "description": "An object of route endpoint handler methods for the\nroutes within the specified namespace",
                 "type": "Object"
             },
-            "class": "WP",
-            "module": "WP"
+            "class": "WPAPI",
+            "module": "WPAPI"
         },
         {
-            "file": "wp.js",
-            "line": 284,
-            "description": "Take an arbitrary WordPress site, deduce the WP REST API root endpoint, query\nthat endpoint, and parse the response JSON. Use the returned JSON response\nto instantiate a WP instance bound to the provided site.",
+            "file": "wpapi.js",
+            "line": 380,
+            "description": "Take an arbitrary WordPress site, deduce the WP REST API root endpoint, query\nthat endpoint, and parse the response JSON. Use the returned JSON response\nto instantiate a WPAPI instance bound to the provided site.",
             "itemtype": "method",
             "name": "discover",
             "static": 1,
             "params": [
                 {
                     "name": "url",
-                    "description": "A URL within a WP endpoint",
+                    "description": "A URL within a REST API-enabled WordPress website",
                     "type": "String"
                 }
             ],
             "return": {
-                "description": "A promise that resolves to a configured WP instance bound\nto the deduced endpoint, or rejected if an endpoint is not found or the\nlibrary is unable to parse the provided endpoint.",
+                "description": "A promise that resolves to a configured WPAPI instance bound\nto the deduced endpoint, or rejected if an endpoint is not found or the\nlibrary is unable to parse the provided endpoint.",
                 "type": "Promise"
             },
-            "class": "WP",
-            "module": "WP"
+            "class": "WPAPI",
+            "module": "WPAPI"
         }
     ],
     "warnings": [
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " build/scripts/release-docs.js:32"
+            "line": " lib/constructors/wp-request.js:167"
         },
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " build/scripts/release-docs.js:50"
+            "line": " lib/constructors/wp-request.js:317"
         },
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " build/scripts/release-docs.js:70"
-        },
-        {
-            "message": "replacing incorrect tag: returns with return",
-            "line": " build/scripts/release-docs.js:104"
-        },
-        {
-            "message": "replacing incorrect tag: returns with return",
-            "line": " lib/constructors/wp-request.js:215"
-        },
-        {
-            "message": "replacing incorrect tag: returns with return",
-            "line": " lib/constructors/wp-request.js:254"
-        },
-        {
-            "message": "replacing incorrect tag: returns with return",
-            "line": " lib/constructors/wp-request.js:280"
-        },
-        {
-            "message": "replacing incorrect tag: returns with return",
-            "line": " lib/constructors/wp-request.js:399"
-        },
-        {
-            "message": "replacing incorrect tag: returns with return",
-            "line": " lib/constructors/wp-request.js:750"
+            "line": " lib/constructors/wp-request.js:559"
         },
         {
             "message": "replacing incorrect tag: returns with return",
@@ -2411,6 +2328,14 @@
         },
         {
             "message": "replacing incorrect tag: returns with return",
+            "line": " lib/http-transport.js:55"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " lib/http-transport.js:81"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
             "line": " lib/path-part-setter.js:3"
         },
         {
@@ -2435,75 +2360,39 @@
         },
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " tests/integration/helpers/get-prop.js:3"
+            "line": " wpapi.js:94"
         },
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " tests/integration/helpers/get-rendered-prop.js:3"
-        },
-        {
-            "message": "replacing incorrect tag: returns with return",
-            "line": " wp.js:261"
-        },
-        {
-            "message": "Missing item type\nHelper method to request yes/no confirmation from the user, with some",
-            "line": " build/scripts/release-docs.js:32"
-        },
-        {
-            "message": "Missing item type\nGet the list of files in a directory, either as a list of file and subdir\nnames or a list of absolute file system paths",
-            "line": " build/scripts/release-docs.js:50"
-        },
-        {
-            "message": "Missing item type\nSpawn a shell command, pipe its output to the parent process's stdio, and\nreturn a promise that will resolve or reject when the subprocess completes",
-            "line": " build/scripts/release-docs.js:70"
-        },
-        {
-            "message": "Missing item type\nHelper function that takes in an array of functions that return promises,\nthen executes those functions sequentially to execute each action",
-            "line": " build/scripts/release-docs.js:104"
+            "line": " wpapi.js:357"
         },
         {
             "message": "Missing item type",
-            "line": " lib/constructors/wp-request.js:80"
-        },
-        {
-            "message": "Missing item type\nSubmit the provided superagent request object, invoke a callback (if it was\nprovided), and return a promise to the response from the HTTP request.",
-            "line": " lib/constructors/wp-request.js:85"
-        },
-        {
-            "message": "Missing item type\nExtract and return the headers property from a superagent response object",
-            "line": " lib/constructors/wp-request.js:141"
+            "line": " lib/constructors/wp-request.js:98"
         },
         {
             "message": "Missing item type\nProcess arrays of taxonomy terms into query parameters.\nAll terms listed in the arrays will be required (AND behavior).\n\nThis method will not be called with any values unless we are handling\nan endpoint with the filter mixin; however, since parameter handling\n(and therefore `_renderQuery()`) are part of WPRequest itself, this\nhelper method lives here alongside the code where it is used.",
-            "line": " lib/constructors/wp-request.js:151"
+            "line": " lib/constructors/wp-request.js:103"
         },
         {
             "message": "Missing item type\nReturn an object with any properties with undefined, null or empty string\nvalues removed.",
-            "line": " lib/constructors/wp-request.js:188"
+            "line": " lib/constructors/wp-request.js:140"
         },
         {
             "message": "Missing item type\nAssert whether a provided URL component is \"valid\" by checking it against\nan array of registered path component validator methods for that level of\nthe URL path.",
-            "line": " lib/constructors/wp-request.js:215"
-        },
-        {
-            "message": "Missing item type\nCombine the API endpoint root URI and link URI into a valid request URL.\nEndpoints are generally a full path to the JSON API's root endpoint, such\nas `website.com/wp-json`: the link headers, however, are returned as root-\nrelative paths. Concatenating these would generate a URL such as\n`website.com/wp-json/wp-json/posts?page=2`: we must intelligently merge the\nURI strings in order to generate a valid new request URL.",
-            "line": " lib/constructors/wp-request.js:254"
-        },
-        {
-            "message": "Missing item type\nIf the response is not paged, return the body as-is. If pagination\ninformation is present in the response headers, parse those headers into\na custom `_paging` property on the response body. `_paging` contains links\nto the previous and next pages in the collection, as well as metadata\nabout the size and number of pages in the collection.\n\nThe structure of the `_paging` property is as follows:\n\n- `total` {Integer} The total number of records in the collection\n- `totalPages` {Integer} The number of pages available\n- `links` {Object} The parsed \"links\" headers, separated into individual URI strings\n- `next` {WPRequest} A WPRequest object bound to the \"next\" page (if page exists)\n- `prev` {WPRequest} A WPRequest object bound to the \"previous\" page (if page exists)",
-            "line": " lib/constructors/wp-request.js:280"
+            "line": " lib/constructors/wp-request.js:167"
         },
         {
             "message": "Missing item type",
-            "line": " lib/constructors/wp-request.js:663"
+            "line": " lib/constructors/wp-request.js:292"
         },
         {
             "message": "Missing item type",
-            "line": " lib/constructors/wp-request.js:884"
+            "line": " lib/constructors/wp-request.js:594"
         },
         {
             "message": "Missing item type",
-            "line": " lib/constructors/wp-request.js:889"
+            "line": " lib/constructors/wp-request.js:599"
         },
         {
             "message": "Missing item type\nTo avoid requiring that auto-discovery be utilized every time the API client\nis initialized, this library ships with a built-in route definition from a\nvanilla WordPress REST API installation. That file may be updated by\ninstalling the API plugin on a clean WP development instance, with no other\nplugins running, and downloading the JSON output from `yourwpsite.com/wp-json/`\ninto the \"endpoint-response.json\" file in this directory.\n\nThat file can also be generated by running this script against the same live\nWP REST API instance to download that same file, the difference being that,\nif the `endpoint-response.json` file is downloaded through this script, it\nwill be run through the `simplifyObject` utility to cut out about 1/3 of the\nbytes of the response by removing properties that do not effect route generation.\n\nThis script is NOT intended to be a dependency of any part of wp.js, and is\nprovided purely as a utility for upgrading the built-in copy of the endpoint\nresponse JSON file that is used to bootstrap the default route handlers.",
@@ -2522,6 +2411,10 @@
             "line": " lib/util/alphanumeric-sort.js:3"
         },
         {
+            "message": "Missing item type\nVerify that a specific HTTP method is supported by the provided WPRequest",
+            "line": " lib/util/check-method-support.js:3"
+        },
+        {
             "message": "Missing item type\nRegular Expression to identify a capture group in PCRE formats\n`(?<name>regex)`, `(?'name'regex)` or `(?P<name>regex)` (see\nregular-expressions.info/refext.html); RegExp is built as a string\nto enable more detailed annotation.",
             "line": " lib/util/named-group-regexp.js:3"
         },
@@ -2536,6 +2429,22 @@
         {
             "message": "Missing item type\nGiven an array of route definitions and a specific namespace for those routes,\nrecurse through the node tree representing all possible routes within the\nprovided namespace to define path value setters (and corresponding property\nvalidators) for all possible variants of each resource's API endpoints.",
             "line": " lib/endpoint-factories.js:12"
+        },
+        {
+            "message": "Missing item type\nCombine the API endpoint root URI and link URI into a valid request URL.\nEndpoints are generally a full path to the JSON API's root endpoint, such\nas `website.com/wp-json`: the link headers, however, are returned as root-\nrelative paths. Concatenating these would generate a URL such as\n`website.com/wp-json/wp-json/posts?page=2`: we must intelligently merge the\nURI strings in order to generate a valid new request URL.",
+            "line": " lib/http-transport.js:55"
+        },
+        {
+            "message": "Missing item type\nIf the response is not paged, return the body as-is. If pagination\ninformation is present in the response headers, parse those headers into\na custom `_paging` property on the response body. `_paging` contains links\nto the previous and next pages in the collection, as well as metadata\nabout the size and number of pages in the collection.\n\nThe structure of the `_paging` property is as follows:\n\n- `total` {Integer} The total number of records in the collection\n- `totalPages` {Integer} The number of pages available\n- `links` {Object} The parsed \"links\" headers, separated into individual URI strings\n- `next` {WPRequest} A WPRequest object bound to the \"next\" page (if page exists)\n- `prev` {WPRequest} A WPRequest object bound to the \"previous\" page (if page exists)",
+            "line": " lib/http-transport.js:81"
+        },
+        {
+            "message": "Missing item type\nSubmit the provided superagent request object, invoke a callback (if it was\nprovided), and return a promise to the response from the HTTP request.",
+            "line": " lib/http-transport.js:146"
+        },
+        {
+            "message": "Missing item type\nExtract and return the headers property from a superagent response object",
+            "line": " lib/http-transport.js:203"
         },
         {
             "message": "Missing item type\nReturn a function to set part of the request URL path.\n\nPath part setter methods may be either dynamic (*i.e.* may represent a\n\"named group\") or non-dynamic (representing a static part of the URL, which\nis usually a collection endpoint of some sort). Which type of function is\nreturned depends on whether a given route has one or many sub-resources.",
@@ -2562,20 +2471,16 @@
             "line": " lib/route-tree.js:187"
         },
         {
-            "message": "Missing item type\nThis is a curry-able pluck function, that is all. Inspecting a collection of\nhuman-readable strings is usually a more comprehensible way to validate the\nright results were returned than using arbitrary values.",
-            "line": " tests/integration/helpers/get-prop.js:3"
-        },
-        {
-            "message": "Missing item type\nThis method is a super-pluck capable of grabbing the rendered version of\na nested property on a WP API response object. Inspecting a collection of\nhuman-readable properties is usually a more comprehensible way to validate\nthat the right results were returned than using IDs or arbitrary values.",
-            "line": " tests/integration/helpers/get-rendered-prop.js:3"
-        },
-        {
             "message": "Missing item type\nThe Gruntfile in this project is not responsible for the code build or\nlinting, and instead handles all tasks related to documentation generation\nand output.",
             "line": " Gruntfile.js:1"
         },
         {
+            "message": "Missing item type\nSet custom transport methods to use when making HTTP requests against the API\n\nPass an object with a function for one or many of \"get\", \"post\", \"put\",\n\"delete\" and \"head\" and that function will be called when making that type\nof request. The provided transport functions should take a WPRequest handler\ninstance (_e.g._ the result of a `wp.posts()...` chain or any other chaining\nrequest handler) as their first argument; a `data` object as their second\nargument (for POST, PUT and DELETE requests); and an optional callback as\ntheir final argument. Transport methods should invoke the callback with the\nresponse data (or error, as appropriate), and should also return a Promise.",
+            "line": " wpapi.js:94"
+        },
+        {
             "message": "Missing item type\nAccess API endpoint handlers from a particular API namespace object",
-            "line": " wp.js:261"
+            "line": " wpapi.js:357"
         }
     ]
 }

@@ -20,7 +20,7 @@ npm install --save wpapi
 Then, within your application's script files, `require` the module to gain access to it:
 
 ```javascript
-var WP = require( 'wpapi' );
+var WPAPI = require( 'wpapi' );
 ```
 
 This library requires Node.js version 0.12 or above; 4.0 or higher is highly recommended.

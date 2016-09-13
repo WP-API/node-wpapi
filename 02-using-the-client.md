@@ -10,8 +10,8 @@ permalink: /using-the-client/
 The module is a constructor, so you can create an instance of the API client bound to the endpoint for your WordPress install:
 
 ```javascript
-var WP = require( 'wpapi' );
-var wp = new WP({ endpoint: 'http://src.wordpress-develop.dev/wp-json' });
+var WPAPI = require( 'wpapi' );
+var wp = new WPAPI({ endpoint: 'http://src.wordpress-develop.dev/wp-json' });
 ```
 Once an instance is constructed, you can chain off of it to construct a specific request. (Think of it as a query-builder for WordPress!)
 
@@ -49,14 +49,14 @@ process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 
 It is also possible to leverage the [capability discovery](http://v2.wp-api.org/guide/discovery/) features of the API to automatically detect and add setter methods for your custom routes, or routes added by plugins.
 
-To utilize the auto-discovery functionality, call `WP.discover()` with a URL within a WordPress REST API-enabled site:
+To utilize the auto-discovery functionality, call `WPAPI.discover()` with a URL within a WordPress REST API-enabled site:
 
 ```js
-var apiPromise = WP.discover( 'http://my-site.com' );
+var apiPromise = WPAPI.discover( 'http://my-site.com' );
 ```
-If auto-discovery succeeds this method returns a promise that will be resolved with a WP client instance object configured specifically for your site. You can use that promise as the queue that your client instance is ready, then use the client normally within the `.then` callback.
+If auto-discovery succeeds this method returns a promise that will be resolved with a WPAPI client instance object configured specifically for your site. You can use that promise as the queue that your client instance is ready, then use the client normally within the `.then` callback.
 
-**Custom Routes** will be detected by this process, and registered on the client. To prevent name conflicts, only routes in the `wp/v2` namespace will be bound to your instance object itself. The rest can be accessed through the `.namespace` method on the WP instance, as demonstrated below.
+**Custom Routes** will be detected by this process, and registered on the client. To prevent name conflicts, only routes in the `wp/v2` namespace will be bound to your instance object itself. The rest can be accessed through the `.namespace` method on the WPAPI instance, as demonstrated below.
 
 ```js
 apiPromise.then(function( site ) {
@@ -79,10 +79,10 @@ apiPromise.then(function( site ) {
 
 #### Authenticating with Auto-Discovery
 
-While using `WP.discover( url )` to generate the handler for your site gets you up and running quickly, it does not provide the same level of customization as instantiating your own `new WP` object. In order to specify authentication configuration when using autodiscovery, chain a `.then` onto the initial discovery query to call the `.auth` method on the returned site object with the relevant credentials (username & password, nonce, etc):
+While using `WPAPI.discover( url )` to generate the handler for your site gets you up and running quickly, it does not provide the same level of customization as instantiating your own `new WPAPI` object. In order to specify authentication configuration when using autodiscovery, chain a `.then` onto the initial discovery query to call the `.auth` method on the returned site object with the relevant credentials (username & password, nonce, etc):
 
 ```js
-var apiPromise = WP.discover( 'http://my-site.com' ).then(function( site ) {
+var apiPromise = WPAPI.discover( 'http://my-site.com' ).then(function( site ) {
     return site.auth({
         username: 'admin',
         password: 'always use secure passwords'
@@ -96,13 +96,13 @@ apiPromise.then(function( site ) {
 ### Bootstrapping
 
 If you are building an application designed to interface with a specific site, it is possible to sidestep the additional asynchronous HTTP calls that are needed to bootstrap the client through auto-discovery. You can download the root API response, *i.e.* the JSON response when you hit the root endpoint such as `your-site.com/wp-json`, and save that JSON file locally; then, in
-your application code, just require in that JSON file and pass the routes property into the `WP` constructor or the `WP.site` method.
+your application code, just require in that JSON file and pass the routes property into the `WPAPI` constructor or the `WPAPI.site` method.
 
 Note that you must specify the endpoint URL as normal when using this approach.
 
 ```js
 var apiRootJSON = require( './my-endpoint-response.json' );
-var site = new WP({
+var site = new WPAPI({
     endpoint: 'http://my-site.com/wp-json',
     routes: apiRootJSON.routes
 });
@@ -123,7 +123,7 @@ To create posts, use the `.create()` method on a query to POST (the HTTP verb fo
 
 ```js
 // You must authenticate to be able to POST (create) a post
-var wp = new WP({
+var wp = new WPAPI({
     endpoint: 'http://your-site.com/wp-json',
     // This assumes you are using basic auth, as described further below
     username: 'someusername',
@@ -151,7 +151,7 @@ To create posts, use the `.update()` method on a single-item query to PUT (the H
 
 ```js
 // You must authenticate to be able to PUT (update) a post
-var wp = new WP({
+var wp = new WPAPI({
     endpoint: 'http://your-site.com/wp-json',
     // This assumes you are using basic auth, as described further below
     username: 'someusername',
@@ -172,7 +172,7 @@ This will work in the same manner for resources other than `post`: you can see t
 
 ### Requesting Different Resources
 
-A WP instance object provides the following basic request methods:
+A WPAPI instance object provides the following basic request methods:
 
 * `wp.posts()...`: Request items from the `/posts` endpoints
 * `wp.pages()...`: Start a request for the `/pages` endpoints
@@ -345,7 +345,7 @@ wp.media()
 Support for Custom Post Types is provided via the `.registerRoute` method. This method returns a handler function which can be assigned to your site instance as a method, and takes the [same namespace and route string arguments as `rest_register_route`](http://v2.wp-api.org/extending/adding/#bare-basics):
 
 ```js
-var site = new WP({ endpoint: 'http://www.yoursite.com/wp-json' });
+var site = new WPAPI({ endpoint: 'http://www.yoursite.com/wp-json' });
 site.myCustomResource = site.registerRoute( 'myplugin/v1', '/author/(?P<id>)' );
 site.myCustomResource().id( 17 ); // => myplugin/v1/author/17
 ```
@@ -355,7 +355,7 @@ The string `(?P<id>)` indicates that a level of the route for this resource is a
 You might notice that in the example from the official WP-API documentation, a pattern is specified with a different format: this is a [regular expression](http://www.regular-expressions.info/tutorial.html) designed to validate the values that may be used for this capture group.
 
 ```js
-var site = new WP({ endpoint: 'http://www.yoursite.com/wp-json' });
+var site = new WPAPI({ endpoint: 'http://www.yoursite.com/wp-json' });
 site.myCustomResource = site.registerRoute( 'myplugin/v1', '/author/(?P<id>\\d+)' );
 site.myCustomResource().id( 7 ); // => myplugin/v1/author/7
 site.myCustomResource().id( 'foo' ); // => Error: Invalid path component: foo does not match (?P<a>\d+)

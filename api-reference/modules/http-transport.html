@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>tests/integration/helpers/get-rendered-prop.js - wpapi</title>
+    <title>http-transport - wpapi</title>
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
     <link rel="shortcut icon" type="image/png" href="../assets/favicon.png">
@@ -14,7 +14,7 @@
     <header class="main-header">
         <div class="content">
             <div class="project-title">
-                    <h1 class="project-name">wpapi</h1> <span class="project-version">0.9.2</span>
+                    <h1 class="project-name">wpapi</h1> <span class="project-version">0.10.0</span>
                     <p class="description">A client for interacting with the WordPress REST API</p>
             </div>
             <ul class="jump-links">
@@ -39,16 +39,16 @@
             
                     <div id="api-tabview-panel">
                         <ul id="api-classes" class="apis classes">
-                            <li><a class="type" href="../classes/wp.html">wp</a></li>
-                            <li><a class="type" href="../classes/WP.html">WP</a></li>
+                            <li><a class="type" href="../classes/WPAPI.html">WPAPI</a></li>
                             <li><a class="type" href="../classes/WPRequest.html">WPRequest</a></li>
                         </ul>
             
                         <ul id="api-modules" class="apis modules">
                             <li><a class="module" href="../modules/autodiscovery.html">autodiscovery</a></li>
                             <li><a class="module" href="../modules/filters.html">filters</a></li>
+                            <li><a class="module" href="../modules/http-transport.html">http-transport</a></li>
                             <li><a class="module" href="../modules/parseRouteString.html">parseRouteString</a></li>
-                            <li><a class="module" href="../modules/WP.html">WP</a></li>
+                            <li><a class="module" href="../modules/WPAPI.html">WPAPI</a></li>
                             <li><a class="module" href="../modules/WPRequest.html">WPRequest</a></li>
                         </ul>
                     </div>
@@ -58,40 +58,28 @@
 
         <div id="docs-main" class="apidocs">
             <div class="content container">
-                <h1 class="file-heading">File: tests/integration/helpers/get-rendered-prop.js</h1>
+                <h1>http-transport Module</h1>
+                <div class="box clearfix meta">
                 
-                <div class="file">
-                    <pre class="code prettyprint linenums">
-                &#x27;use strict&#x27;;
                 
-                /**
-                 * This method is a super-pluck capable of grabbing the rendered version of
-                 * a nested property on a WP API response object. Inspecting a collection of
-                 * human-readable properties is usually a more comprehensible way to validate
-                 * that the right results were returned than using IDs or arbitrary values.
-                 *
-                 * @example Pluck the rendered titles from the post
-                 *
-                 *     var titles = getRenderedProp( collection, &#x27;title&#x27; );
-                 *
-                 * @example Create a bound variant that always plucks titles
-                 *
-                 *     var getTitles = getRenderedProp.bind( null, &#x27;title&#x27; );
-                 *     var titles = getTitles( collection );
-                 *
-                 * @private
-                 * @param {String}   property   The name of the rendered property to pluck
-                 * @param {Object[]} collection An array of response objects whence to pluck
-                 * @returns {String[]} The collection of values for the rendered variants of
-                 * the specified response object property
-                 */
-                module.exports = function( property, collection ) {
-                	return collection.map(function( item ) {
-                		return item[ property ].rendered;
-                	});
-                };
+                        <div class="foundat">
+                            Defined in: <a href="../files/lib_http-transport.js.html#l2"><code>lib&#x2F;http-transport.js:2</code></a>
+                        </div>
                 
-                    </pre>
+                </div>
+                
+                
+                <div class="box intro">
+                    
+                </div>
+                
+                
+                <div class="yui3-g">
+                    <div class="yui3-u-1-2">
+                    </div>
+                
+                    <div class="yui3-u-1-2">
+                    </div>
                 </div>
             </div>
         </div>
