@@ -1,7 +1,7 @@
 'use strict';
 var expect = require( 'chai' ).expect;
 
-var WPAPI = require( '../../../wp' );
+var WPAPI = require( '../../../wpapi' );
 var WPRequest = require( '../../../lib/constructors/wp-request' );
 
 describe( 'wp.users', function() {

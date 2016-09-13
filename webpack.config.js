@@ -4,7 +4,7 @@ const path = require( 'path' );
 const outputPath = path.join( __dirname, 'browser' );
 
 module.exports = {
-	entry: './wp.js',
+	entry: './wpapi.js',
 
 	devtool: 'source-map',
 
