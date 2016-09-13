@@ -9,7 +9,7 @@ module.exports = function( grunt ) {
 			url: '<%= pkg.homepage %>',
 			options: {
 				ignorePaths: [ 'node_modules', 'tests', 'browser' ],
-				exclude: 'browser',
+				exclude: 'browser,bin,build,tests',
 				paths: '.',
 				themedir: './docs-theme',
 				// theme: 'simple',

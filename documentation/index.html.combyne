@@ -15,7 +15,7 @@ layout: default
     <ol class="post-list">
     [{%each readmeSections as section %}]
       <li>
-        <a class="post-link" href="{{ "/<< section.slug >>" | prepend: site.baseurl }}">[{{{
+        <a class="post-link" href="{{ "/[{{ section.slug }}]" | prepend: site.baseurl }}">[{{{
           section.title
         }}}]</a>
         [{%if section.hasSubheadings %}]
