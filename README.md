@@ -557,9 +557,9 @@ var site = new WP({
   endpoint: 'http://my-site.com/wp-json',
   transport: {
     // Only override the transport for the GET method, in this example
-    // Transport methods should take a wpquery object and a callback:
-    get: function( wpquery, cb ) {
-      var result = cache[ wpquery ];
+    // Transport methods should take a wpreq object and a callback:
+    get: function( wpreq, cb ) {
+      var result = cache[ wpreq ];
       // If a cache hit is found, return it via the same callback/promise
       // signature as the default transport method:
       if ( result ) {
@@ -572,8 +572,8 @@ var site = new WP({
       }
 
       // Delegate to default transport if no cached data was found
-      return WP.transport.get( wpquery, cb ).then(function( result ) {
-        cache[ wpquery ] = result;
+      return WP.transport.get( wpreq, cb ).then(function( result ) {
+        cache[ wpreq ] = result;
         return result;
       });
     }
@@ -585,8 +585,8 @@ You may set one or many custom HTTP transport methods on an existing WP site cli
 
 ```js
 site.transport({
-    get: function( wpquery, callbackFn ) { /* ... */},
-    put: function( wpquery, callbackFn ) { /* ... */}
+    get: function( wpreq, callbackFn ) { /* ... */},
+    put: function( wpreq, callbackFn ) { /* ... */}
 });
 ```
 

@@ -111,8 +111,8 @@ function WP( options ) {
  *
  *     // Overwrite the GET behavior to inject a caching layer
  *     site.transport({
- *       get: function( wpquery, cb ) {
- *         var result = cache[ wpquery ];
+ *       get: function( wpreq, cb ) {
+ *         var result = cache[ wpreq ];
  *         // If a cache hit is found, return it via the same callback/promise
  *         // signature as the default transport method
  *         if ( result ) {
@@ -123,8 +123,8 @@ function WP( options ) {
  *         }
  *
  *         // Delegate to default transport if no cached data was found
- *         return WP.transport.get( wpquery, cb ).then(function( result ) {
- *           cache[ wpquery ] = result;
+ *         return WP.transport.get( wpreq, cb ).then(function( result ) {
+ *           cache[ wpreq ] = result;
  *           return result;
  *         });
  *       }

@@ -27,8 +27,8 @@ describe( 'integration: custom HTTP transport methods', function() {
 
 	beforeEach(function() {
 		cache = {};
-		cachingGet = sinon.spy(function( wpquery, cb ) {
-			var result = cache[ wpquery ];
+		cachingGet = sinon.spy(function( wpreq, cb ) {
+			var result = cache[ wpreq ];
 			// If a cache hit is found, return it via the same callback/promise
 			// signature as the default transport method
 			if ( result ) {
@@ -39,8 +39,8 @@ describe( 'integration: custom HTTP transport methods', function() {
 			}
 
 			// Delegate to default transport if no cached data was found
-			return WP.transport.get( wpquery, cb ).then(function( result ) {
-				cache[ wpquery ] = result;
+			return WP.transport.get( wpreq, cb ).then(function( result ) {
+				cache[ wpreq ] = result;
 				return result;
 			});
 		});
