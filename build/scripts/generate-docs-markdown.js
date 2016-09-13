@@ -180,7 +180,7 @@ const licenseOutput = copyFile( licensePath, 'License' );
 const indexOutput = readmeOutput.then( entries => {
 	entries.push({
 		title: 'API Documentation',
-		slug: 'api-reference/modules/WP.html'
+		slug: 'api-reference/modules/WPAPI.html'
 	});
 	return readFile( indexTemplatePath ).then( fileTemplate => {
 		const outputPath = path.join( docsDir, 'index.html' );

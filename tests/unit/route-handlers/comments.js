@@ -1,7 +1,7 @@
 'use strict';
 var expect = require( 'chai' ).expect;
 
-var WP = require( '../../../wp' );
+var WPAPI = require( '../../../wp' );
 var WPRequest = require( '../../../lib/constructors/wp-request' );
 
 describe( 'wp.comments', function() {
@@ -9,7 +9,7 @@ describe( 'wp.comments', function() {
 	var comments;
 
 	beforeEach(function() {
-		site = new WP({
+		site = new WPAPI({
 			endpoint: '/wp-json',
 			username: 'foouser',
 			password: 'barpass'

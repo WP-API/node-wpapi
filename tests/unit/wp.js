@@ -4,7 +4,7 @@ var sinon = require( 'sinon' );
 chai.use( require( 'sinon-chai' ) );
 var expect = chai.expect;
 
-var WP = require( '../../' );
+var WPAPI = require( '../../' );
 
 // Constructors, for use with instanceof checks
 var WPRequest = require( '../../lib/constructors/wp-request' );
@@ -17,41 +17,41 @@ describe( 'wp', function() {
 	var site;
 
 	beforeEach(function() {
-		site = new WP({ endpoint: 'endpoint/url' });
+		site = new WPAPI({ endpoint: 'endpoint/url' });
 	});
 
 	describe( 'constructor', function() {
 
 		it( 'enforces new', function() {
-			var wp1 = new WP({ endpoint: '/' });
-			expect( wp1 instanceof WP ).to.be.true;
-			var wp2 = WP({ endpoint: '/' });
-			expect( wp2 instanceof WP ).to.be.true;
+			var wp1 = new WPAPI({ endpoint: '/' });
+			expect( wp1 instanceof WPAPI ).to.be.true;
+			var wp2 = WPAPI({ endpoint: '/' });
+			expect( wp2 instanceof WPAPI ).to.be.true;
 		});
 
 		it( 'throws an error if no endpoint is provided', function() {
 			expect(function() {
-				new WP({ endpoint: '/' });
+				new WPAPI({ endpoint: '/' });
 			}).not.to.throw();
 			expect(function() {
-				new WP();
+				new WPAPI();
 			}).to.throw();
 		});
 
 		it( 'throws an error if a non-string endpoint is provided', function() {
 			expect(function() {
-				new WP({ endpoint: 42 });
+				new WPAPI({ endpoint: 42 });
 			}).to.throw();
 			expect(function() {
-				new WP({ endpoint: [] });
+				new WPAPI({ endpoint: [] });
 			}).to.throw();
 			expect(function() {
-				new WP({ endpoint: { lob: 'ster' } });
+				new WPAPI({ endpoint: { lob: 'ster' } });
 			}).to.throw();
 		});
 
 		it( 'sets options on an instance variable', function() {
-			var wp = new WP({
+			var wp = new WPAPI({
 				endpoint: 'http://some.url.com/wp-json',
 				username: 'fyodor',
 				password: 'dostoyevsky'
@@ -65,7 +65,7 @@ describe( 'wp', function() {
 
 			it( 'for GET requests', function() {
 				sinon.stub( httpTransport, 'get' );
-				var site = new WP({
+				var site = new WPAPI({
 					endpoint: 'http://some.url.com/wp-json'
 				});
 				var query = site.root( '' );
@@ -76,7 +76,7 @@ describe( 'wp', function() {
 
 			it( 'for POST requests', function() {
 				sinon.stub( httpTransport, 'post' );
-				var site = new WP({
+				var site = new WPAPI({
 					endpoint: 'http://some.url.com/wp-json'
 				});
 				var query = site.root( '' );
@@ -88,7 +88,7 @@ describe( 'wp', function() {
 
 			it( 'for POST requests', function() {
 				sinon.stub( httpTransport, 'post' );
-				var site = new WP({
+				var site = new WPAPI({
 					endpoint: 'http://some.url.com/wp-json'
 				});
 				var query = site.root( '' );
@@ -100,7 +100,7 @@ describe( 'wp', function() {
 
 			it( 'for PUT requests', function() {
 				sinon.stub( httpTransport, 'put' );
-				var site = new WP({
+				var site = new WPAPI({
 					endpoint: 'http://some.url.com/wp-json'
 				});
 				var query = site.root( 'a-resource' );
@@ -112,7 +112,7 @@ describe( 'wp', function() {
 
 			it( 'for DELETE requests', function() {
 				sinon.stub( httpTransport, 'delete' );
-				var site = new WP({
+				var site = new WPAPI({
 					endpoint: 'http://some.url.com/wp-json'
 				});
 				var query = site.root( 'a-resource' );
@@ -131,7 +131,7 @@ describe( 'wp', function() {
 			it( 'can be set for an individual HTTP action', function() {
 				sinon.stub( httpTransport, 'get' );
 				var customGet = sinon.stub();
-				var site = new WP({
+				var site = new WPAPI({
 					endpoint: 'http://some.url.com/wp-json',
 					transport: {
 						get: customGet
@@ -147,9 +147,9 @@ describe( 'wp', function() {
 			it( 'can extend the default HTTP transport methods', function() {
 				sinon.stub( httpTransport, 'get' );
 				var customGet = sinon.spy(function() {
-					WP.transport.get.apply( null, arguments );
+					WPAPI.transport.get.apply( null, arguments );
 				});
-				var site = new WP({
+				var site = new WPAPI({
 					endpoint: 'http://some.url.com/wp-json',
 					transport: {
 						get: customGet
@@ -167,7 +167,7 @@ describe( 'wp', function() {
 				sinon.stub( httpTransport, 'put' );
 				var customPost = sinon.stub();
 				var customPut = sinon.stub();
-				var site = new WP({
+				var site = new WPAPI({
 					endpoint: 'http://some.url.com/wp-json',
 					transport: {
 						post: customPost,
@@ -186,16 +186,16 @@ describe( 'wp', function() {
 				httpTransport.put.restore();
 			});
 
-			it( 'only apply to a specific WP instance', function() {
+			it( 'only apply to a specific WPAPI instance', function() {
 				sinon.stub( httpTransport, 'get' );
 				var customGet = sinon.stub();
-				var site = new WP({
+				var site = new WPAPI({
 					endpoint: 'http://some.url.com/wp-json',
 					transport: {
 						get: customGet
 					}
 				});
-				var site2 = new WP({
+				var site2 = new WPAPI({
 					endpoint: 'http://some.url.com/wp-json'
 				});
 				expect( site ).not.to.equal( site2 );
@@ -213,24 +213,24 @@ describe( 'wp', function() {
 	describe( '.transport constructor property', function() {
 
 		it( 'is defined', function() {
-			expect( WP ).to.have.property( 'transport' );
+			expect( WPAPI ).to.have.property( 'transport' );
 		});
 
 		it( 'is an object', function() {
-			expect( WP.transport ).to.be.an( 'object' );
+			expect( WPAPI.transport ).to.be.an( 'object' );
 		});
 
 		it( 'has methods for each http transport action', function() {
-			expect( WP.transport.delete ).to.be.a( 'function' );
-			expect( WP.transport.get ).to.be.a( 'function' );
-			expect( WP.transport.head ).to.be.a( 'function' );
-			expect( WP.transport.post ).to.be.a( 'function' );
-			expect( WP.transport.put ).to.be.a( 'function' );
+			expect( WPAPI.transport.delete ).to.be.a( 'function' );
+			expect( WPAPI.transport.get ).to.be.a( 'function' );
+			expect( WPAPI.transport.head ).to.be.a( 'function' );
+			expect( WPAPI.transport.post ).to.be.a( 'function' );
+			expect( WPAPI.transport.put ).to.be.a( 'function' );
 		});
 
 		it( 'is frozen (properties cannot be modified directly)', function() {
 			expect(function() {
-				WP.transport.get = function() {};
+				WPAPI.transport.get = function() {};
 			}).to.throw();
 		});
 
@@ -239,18 +239,18 @@ describe( 'wp', function() {
 	describe( '.site() constructor method', function() {
 
 		it( 'is a function', function() {
-			expect( WP ).to.have.property( 'site' );
-			expect( WP.site ).to.be.a( 'function' );
+			expect( WPAPI ).to.have.property( 'site' );
+			expect( WPAPI.site ).to.be.a( 'function' );
 		});
 
-		it( 'creates and returns a new WP instance', function() {
-			var site = WP.site( 'endpoint/url' );
-			expect( site instanceof WP ).to.be.true;
+		it( 'creates and returns a new WPAPI instance', function() {
+			var site = WPAPI.site( 'endpoint/url' );
+			expect( site instanceof WPAPI ).to.be.true;
 			expect( site._options.endpoint ).to.equal( 'endpoint/url/' );
 		});
 
 		it( 'can take a routes configuration object to bootstrap the returned instance', function() {
-			var site = WP.site( 'endpoint/url', {
+			var site = WPAPI.site( 'endpoint/url', {
 				'/wp/v2/posts': {
 					namespace: 'wp/v2',
 					methods: [ 'GET' ],
@@ -262,7 +262,7 @@ describe( 'wp', function() {
 					} ]
 				}
 			});
-			expect( site instanceof WP ).to.be.true;
+			expect( site instanceof WPAPI ).to.be.true;
 			expect( site.posts ).to.be.a( 'function' );
 			expect( site ).not.to.have.property( 'comments' );
 			expect( site.posts() ).not.to.have.property( 'id' );
@@ -275,8 +275,8 @@ describe( 'wp', function() {
 	describe( '.discover() constructor method', function() {
 
 		it( 'is a function', function() {
-			expect( WP ).to.have.property( 'discover' );
-			expect( WP.discover ).to.be.a( 'function' );
+			expect( WPAPI ).to.have.property( 'discover' );
+			expect( WPAPI.discover ).to.be.a( 'function' );
 		});
 
 	});
@@ -300,7 +300,7 @@ describe( 'wp', function() {
 				expect( wpV2.comments ).to.be.a( 'function' );
 			});
 
-			it( 'passes options from the parent WP instance to the namespaced handlers', function() {
+			it( 'passes options from the parent WPAPI instance to the namespaced handlers', function() {
 				site.auth( 'u', 'p' );
 				var pages = site.namespace( 'wp/v2' ).pages();
 				expect( pages._options ).to.be.an( 'object' );
@@ -469,8 +469,8 @@ describe( 'wp', function() {
 				expect( path ).to.equal( 'http://some.url.com/wp-json?filter[name]=some-slug' );
 			});
 
-			it( 'inherits whitelisted non-endpoint options from the parent WP instance', function() {
-				var wp = new WP({
+			it( 'inherits whitelisted non-endpoint options from the parent WPAPI instance', function() {
+				var wp = new WPAPI({
 					endpoint: 'http://website.com/',
 					identifier: 'some unique value'
 				});
@@ -485,7 +485,7 @@ describe( 'wp', function() {
 		describe( '.root()', function() {
 
 			beforeEach(function() {
-				site = new WP({ endpoint: 'http://my.site.com/wp-json' });
+				site = new WPAPI({ endpoint: 'http://my.site.com/wp-json' });
 			});
 
 			it( 'is defined', function() {
@@ -508,8 +508,8 @@ describe( 'wp', function() {
 				expect( pathRequest instanceof WPRequest ).to.be.true;
 			});
 
-			it( 'inherits options from the parent WP instance', function() {
-				var wp = new WP({
+			it( 'inherits options from the parent WPAPI instance', function() {
+				var wp = new WPAPI({
 					endpoint: 'http://cat.website.com/'
 				});
 				var request = wp.root( 'custom-path' );
@@ -522,7 +522,7 @@ describe( 'wp', function() {
 		describe( '.auth()', function() {
 
 			beforeEach(function() {
-				site = new WP({ endpoint: 'http://my.site.com/wp-json' });
+				site = new WPAPI({ endpoint: 'http://my.site.com/wp-json' });
 			});
 
 			it( 'is defined', function() {

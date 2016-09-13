@@ -8,13 +8,13 @@ var SUCCESS = 'success';
 chai.use( require( 'chai-as-promised' ) );
 var expect = chai.expect;
 
-var WP = require( '../../' );
+var WPAPI = require( '../../' );
 
 describe( 'integration: taxonomies()', function() {
 	var wp;
 
 	beforeEach(function() {
-		wp = new WP({
+		wp = new WPAPI({
 			endpoint: 'http://wpapi.loc/wp-json'
 		});
 	});

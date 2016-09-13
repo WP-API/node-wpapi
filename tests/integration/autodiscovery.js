@@ -13,7 +13,7 @@ var sinon = require( 'sinon' );
 /*jshint -W079 */// Suppress warning about redefiniton of `Promise`
 var Promise = require( 'es6-promise' ).Promise;
 
-var WP = require( '../../' );
+var WPAPI = require( '../../' );
 var WPRequest = require( '../../lib/constructors/wp-request.js' );
 var autodiscovery = require( '../../lib/autodiscovery' );
 
@@ -33,7 +33,7 @@ describe( 'integration: discover()', function() {
 	var sinonSandbox;
 
 	beforeEach(function() {
-		apiPromise = WP.discover( 'http://wpapi.loc' );
+		apiPromise = WPAPI.discover( 'http://wpapi.loc' );
 		// Stub warn and error
 		sinonSandbox = sinon.sandbox.create();
 		sinonSandbox.stub( global.console, 'warn' );
@@ -52,7 +52,7 @@ describe( 'integration: discover()', function() {
 	it( 'eventually returns a configured WP instance', function() {
 		var prom = apiPromise
 			.then(function( result ) {
-				expect( result ).to.be.an.instanceOf( WP );
+				expect( result ).to.be.an.instanceOf( WPAPI );
 				expect( result.namespace( 'wp/v2' ) ).to.be.an( 'object' );
 				expect( result.posts ).to.be.a( 'function' );
 				expect( result.posts() ).to.be.an.instanceOf( WPRequest );
@@ -133,13 +133,13 @@ describe( 'integration: discover()', function() {
 
 		it( 'resolves even if no endpoint is found', function() {
 			autodiscovery.getAPIRootFromURL.returns( Promise.reject() );
-			var prom = WP.discover( 'http://we.made.it/to/mozarts/house' );
+			var prom = WPAPI.discover( 'http://we.made.it/to/mozarts/house' );
 			return expect( prom ).to.eventually.be.fulfilled;
 		});
 
 		it( 'resolves to null if no endpoint is found', function() {
 			autodiscovery.getAPIRootFromURL.returns( Promise.resolve() );
-			var prom = WP.discover( 'http://we.made.it/to/mozarts/house' )
+			var prom = WPAPI.discover( 'http://we.made.it/to/mozarts/house' )
 				.then(function( result ) {
 					expect( result ).to.equal( null );
 					return SUCCESS;
@@ -149,7 +149,7 @@ describe( 'integration: discover()', function() {
 
 		it( 'logs a console error if no endpoint is found', function() {
 			autodiscovery.getAPIRootFromURL.returns( Promise.reject() );
-			var prom = WP.discover( 'http://we.made.it/to/mozarts/house' )
+			var prom = WPAPI.discover( 'http://we.made.it/to/mozarts/house' )
 				.then(function() {
 					expect( console.error ).to.have.been.calledWith( 'Autodiscovery failed' );
 					return SUCCESS;
@@ -159,7 +159,7 @@ describe( 'integration: discover()', function() {
 
 		it( 'does not display any warnings if no endpoint is found', function() {
 			autodiscovery.getAPIRootFromURL.returns( Promise.reject() );
-			var prom = WP.discover( 'http://we.made.it/to/mozarts/house' )
+			var prom = WPAPI.discover( 'http://we.made.it/to/mozarts/house' )
 				.then(function() {
 					expect( console.warn ).not.to.have.been.called;
 					return SUCCESS;
@@ -167,13 +167,13 @@ describe( 'integration: discover()', function() {
 			return expect( prom ).to.eventually.equal( SUCCESS );
 		});
 
-		it( 'resolves to a WP instance if an endpoint is found but route autodiscovery fails', function() {
+		it( 'resolves to a WPAPI instance if an endpoint is found but route autodiscovery fails', function() {
 			autodiscovery.getAPIRootFromURL.returns( Promise.resolve() );
 			autodiscovery.locateAPIRootHeader.returns( 'http://we.made.it/to/mozarts/house' );
 			autodiscovery.getRootResponseJSON.throws();
-			var prom = WP.discover()
+			var prom = WPAPI.discover()
 				.then(function( result ) {
-					expect( result ).to.be.an.instanceOf( WP );
+					expect( result ).to.be.an.instanceOf( WPAPI );
 					return SUCCESS;
 				});
 			return expect( prom ).to.eventually.equal( SUCCESS );
@@ -183,7 +183,7 @@ describe( 'integration: discover()', function() {
 			autodiscovery.getAPIRootFromURL.returns( Promise.resolve() );
 			autodiscovery.locateAPIRootHeader.returns( 'http://we.made.it/to/mozarts/house' );
 			autodiscovery.getRootResponseJSON.throws();
-			var prom = WP.discover()
+			var prom = WPAPI.discover()
 				.then(function( result ) {
 					expect( result.root( '' ).toString() ).to.equal( 'http://we.made.it/to/mozarts/house/' );
 					return SUCCESS;
@@ -195,7 +195,7 @@ describe( 'integration: discover()', function() {
 			autodiscovery.getAPIRootFromURL.returns( Promise.resolve() );
 			autodiscovery.locateAPIRootHeader.returns( 'http://we.made.it/to/mozarts/house' );
 			autodiscovery.getRootResponseJSON.throws();
-			var prom = WP.discover()
+			var prom = WPAPI.discover()
 				.then(function() {
 					expect( console.error ).to.have.been.calledWith( 'Autodiscovery failed' );
 					return SUCCESS;
@@ -207,7 +207,7 @@ describe( 'integration: discover()', function() {
 			autodiscovery.getAPIRootFromURL.returns( Promise.resolve() );
 			autodiscovery.locateAPIRootHeader.returns( 'http://we.made.it/to/mozarts/house' );
 			autodiscovery.getRootResponseJSON.throws();
-			var prom = WP.discover()
+			var prom = WPAPI.discover()
 				.then(function() {
 					expect( console.warn ).to.have.been.calledWith( 'Endpoint detected, proceeding despite error...' );
 					expect( console.warn ).to.have.been.calledWith( 'Binding to http://we.made.it/to/mozarts/house and assuming default routes' );

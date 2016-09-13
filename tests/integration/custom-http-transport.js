@@ -13,7 +13,7 @@ var expect = chai.expect;
 /*jshint -W079 */// Suppress warning about redefiniton of `Promise`
 var Promise = require( 'es6-promise' ).Promise;
 
-var WP = require( '../../' );
+var WPAPI = require( '../../' );
 
 var httpTransport = require( '../../lib/http-transport' );
 
@@ -39,13 +39,13 @@ describe( 'integration: custom HTTP transport methods', function() {
 			}
 
 			// Delegate to default transport if no cached data was found
-			return WP.transport.get( wpreq, cb ).then(function( result ) {
+			return WPAPI.transport.get( wpreq, cb ).then(function( result ) {
 				cache[ wpreq ] = result;
 				return result;
 			});
 		});
 
-		return WP.site( 'http://wpapi.loc/wp-json' )
+		return WPAPI.site( 'http://wpapi.loc/wp-json' )
 			.posts()
 			.perPage( 1 )
 			.then(function( posts ) {
@@ -64,7 +64,7 @@ describe( 'integration: custom HTTP transport methods', function() {
 		var query1;
 		var query2;
 
-		wp = new WP({
+		wp = new WPAPI({
 			endpoint: 'http://wpapi.loc/wp-json',
 			transport: {
 				get: cachingGet

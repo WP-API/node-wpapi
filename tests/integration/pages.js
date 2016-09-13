@@ -8,7 +8,7 @@ var SUCCESS = 'success';
 chai.use( require( 'chai-as-promised' ) );
 var expect = chai.expect;
 
-var WP = require( '../../' );
+var WPAPI = require( '../../' );
 var WPRequest = require( '../../lib/constructors/wp-request.js' );
 
 // Inspecting the titles of the returned posts arrays is an easy way to
@@ -48,7 +48,7 @@ describe( 'integration: pages()', function() {
 	var wp;
 
 	beforeEach(function() {
-		wp = new WP({
+		wp = new WPAPI({
 			endpoint: 'http://wpapi.loc/wp-json'
 		});
 	});

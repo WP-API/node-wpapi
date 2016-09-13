@@ -15,7 +15,7 @@ var _reduce = require( 'lodash.reduce' );
 var _unique = require( 'lodash.uniq' );
 var httpTestUtils = require( './helpers/http-test-utils' );
 
-var WP = require( '../../' );
+var WPAPI = require( '../../' );
 var WPRequest = require( '../../lib/constructors/wp-request.js' );
 
 // Inspecting the titles of the returned posts arrays is an easy way to
@@ -70,10 +70,10 @@ describe( 'integration: media()', function() {
 	var authenticated;
 
 	beforeEach(function() {
-		wp = new WP({
+		wp = new WPAPI({
 			endpoint: 'http://wpapi.loc/wp-json'
 		});
-		authenticated = new WP({
+		authenticated = new WPAPI({
 			endpoint: 'http://wpapi.loc/wp-json'
 		}).auth( credentials );
 	});

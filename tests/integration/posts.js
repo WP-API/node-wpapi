@@ -13,7 +13,7 @@ var httpTestUtils = require( './helpers/http-test-utils' );
 /*jshint -W079 */// Suppress warning about redefiniton of `Promise`
 var Promise = require( 'es6-promise' ).Promise;
 
-var WP = require( '../../' );
+var WPAPI = require( '../../' );
 var WPRequest = require( '../../lib/constructors/wp-request.js' );
 
 // Inspecting the titles of the returned posts arrays is an easy way to
@@ -66,10 +66,10 @@ describe( 'integration: posts()', function() {
 	var authenticated;
 
 	beforeEach(function() {
-		wp = new WP({
+		wp = new WPAPI({
 			endpoint: 'http://wpapi.loc/wp-json'
 		});
-		authenticated = new WP({
+		authenticated = new WPAPI({
 			endpoint: 'http://wpapi.loc/wp-json'
 		}).auth( credentials );
 	});

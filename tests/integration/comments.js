@@ -9,7 +9,7 @@ var SUCCESS = 'success';
 chai.use( require( 'chai-as-promised' ) );
 var expect = chai.expect;
 
-var WP = require( '../../' );
+var WPAPI = require( '../../' );
 var WPRequest = require( '../../lib/constructors/wp-request.js' );
 
 // Define some arrays to use ensuring the returned data is what we expect
@@ -62,7 +62,7 @@ describe( 'integration: comments()', function() {
 	var wp;
 
 	beforeEach(function() {
-		wp = new WP({
+		wp = new WPAPI({
 			endpoint: 'http://wpapi.loc/wp-json'
 		});
 	});

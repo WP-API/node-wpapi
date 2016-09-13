@@ -82,7 +82,7 @@ describe( 'autodiscovery methods', function() {
 			}).to.throw( 'No header link found with rel="https://api.w.org/"' );
 		});
 
-		it( 'parsed and returns the header with the rel for the WP api endpoint', function() {
+		it( 'parsed and returns the header with the rel for the REST API endpoint', function() {
 			var result = locateAPIRootHeader({
 				headers: {
 					link: '<http://wpapi.loc/wp-json/>; rel="https://api.w.org/"'

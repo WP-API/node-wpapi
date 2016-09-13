@@ -8,7 +8,7 @@ var SUCCESS = 'success';
 chai.use( require( 'chai-as-promised' ) );
 var expect = chai.expect;
 
-var WP = require( '../../' );
+var WPAPI = require( '../../' );
 var WPRequest = require( '../../lib/constructors/wp-request.js' );
 
 // Inspecting the names of the returned terms is an easy way to validate
@@ -62,7 +62,7 @@ describe( 'integration: tags()', function() {
 	var wp;
 
 	beforeEach(function() {
-		wp = new WP({
+		wp = new WPAPI({
 			endpoint: 'http://wpapi.loc/wp-json'
 		});
 	});
