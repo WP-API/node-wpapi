@@ -171,7 +171,7 @@ var site = new WPAPI({
 site.namespace( 'myplugin/v1' ).authors()...
 ```
 
-To create a slimmed JSON file dedicated to this particular purpose, see the Node script [lib/data/generate-endpoint-request.js](lib/data/generate-endpoint-request.js), which will let you download and save an endpoint response to your local project.
+To create a slimmed JSON file dedicated to this particular purpose, see the Node script [lib/data/generate-endpoint-response-json.js](lib/data/generate-endpoint-response-json.js), which will let you download and save an endpoint response to your local project.
 
 In addition to retrieving the specified resource with `.get()`, you can also `.create()`, `.update()` and `.delete()` resources:
 
