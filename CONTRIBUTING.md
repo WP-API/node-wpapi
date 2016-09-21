@@ -33,10 +33,6 @@ expect( mockAgent.get ).to.have.been.calledWith( 'url/' );
 ```
 See the [existing test files](https://github.com/wp-api/node-wpapi/tree/master/tests) for more examples.
 
-#### Mocking Dependencies
-
-When testing code that uses 3rd-party modules, mocks may be injected for those dependencies by using the [sandboxed-module](https://www.npmjs.org/package/sandboxed-module) package. See the [WPRequest tests](https://github.com/wp-api/node-wpapi/blob/master/tests/lib/WPRequest.js) for example usage.
-
 ## Best Practices for Commits
 
 You should always run `npm test` before committing, to identify any syntax, style or unit test errors in your branch.  See "Testing" below for more details about setting up the environment for running the tests.

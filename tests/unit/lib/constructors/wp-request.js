@@ -3,7 +3,6 @@ var chai = require( 'chai' );
 var expect = chai.expect;
 chai.use( require( 'sinon-chai' ) );
 var sinon = require( 'sinon' );
-var sandbox = require( 'sandboxed-module' );
 
 var WPRequest = require( '../../../../lib/constructors/wp-request' );
 var filterMixins = require( '../../../../lib/mixins/filters' );
@@ -14,7 +13,9 @@ describe( 'WPRequest', function() {
 	var request;
 
 	beforeEach(function() {
-		request = new WPRequest();
+		request = new WPRequest({
+			endpoint: '/'
+		});
 	});
 
 	describe( 'constructor', function() {
@@ -704,451 +705,170 @@ describe( 'WPRequest', function() {
 
 	});
 
-	// Skipping tests until (a) the lodash v. sandboxed-module conflict can be
-	// diagnosed and resolved, and/or (b) these tests can be modified so that
-	// they test the external interface: right now we are testing our integration
-	// with superagent, not whether the request methods _really_ do the right
-	// thing. The integration suite that runs against wpapi-vagrant-varietal is
-	// a good stop-gap for now, but we should consider using Nock (or similar)
-	// to test this functionality.
-	describe.skip( 'request methods', function() {
+	describe( '.setPathPart', function() {
 
-		var MockAgent = require( '../../mocks/mock-superagent' );
-		var mockAgent;
-		var SandboxedRequest;
-		var wpRequest;
-
-		beforeEach(function() {
-			mockAgent = new MockAgent();
-			SandboxedRequest = sandbox.require( '../../../../lib/constructors/wp-request', {
-				requires: {
-					'superagent': mockAgent
-				}
-			});
-			wpRequest = new SandboxedRequest({
-				endpoint: 'url/'
-			});
+		it( 'is defined', function() {
+			expect( request ).to.have.property( 'setPathPart' );
 		});
 
-		describe( '.get()', function() {
-
-			it( 'should trigger an HTTP GET request', function() {
-				sinon.spy( mockAgent, 'get' );
-				sinon.stub( mockAgent, 'end' );
-
-				wpRequest.get();
-
-				expect( mockAgent.get ).to.have.been.calledOnce;
-				expect( mockAgent.get ).to.have.been.calledWith( 'url/' );
-				expect( mockAgent.end ).to.have.been.calledOnce;
-			});
-
-			it( 'should invoke a callback, if provided', function() {
-				var spy = sinon.spy();
-				mockAgent._response = { body: 'data', headers: {} };
-
-				return wpRequest.get( spy ).then( function() {
-					expect( spy ).to.have.been.calledOnce;
-					expect( spy ).to.have.been.calledWith( null, 'data' );
-				});
-			});
-
-			it( 'should return a Promise to the request data', function() {
-				mockAgent._response = { body: 'data', headers: {} };
-				var promise = wpRequest.get();
-				expect( promise ).to.have.property( 'then' );
-				expect( promise.then ).to.be.a( 'function' );
-				return promise.then(function( data ) {
-					expect( data ).to.equal( 'data' );
-				});
-			});
-
-		}); // .get()
-
-		describe( '.then()', function() {
-
-			it( 'should invoke GET and pass the results to the provided callback', function() {
-				mockAgent._response = { body: 'data', headers: {} };
-				var get = sinon.spy( wpRequest, 'get' );
-				var success = sinon.stub();
-				var failure = sinon.stub();
-				var promise = wpRequest.then( success, failure );
-
-				expect( promise ).to.have.property( 'then' );
-				expect( promise.then ).to.be.a( 'function' );
-
-				return promise.then(function() {
-					expect( get ).to.have.been.calledWith();
-					expect( success ).to.have.been.calledWith( 'data' );
-					expect( failure ).not.to.have.been.called;
-				});
-			});
-
-			it( 'should call the failure callback if GET fails', function() {
-				mockAgent._err = 'Something went wrong';
-				var success = sinon.stub();
-				var failure = sinon.stub();
-				var promise = wpRequest.then( success, failure );
-
-				expect( promise ).to.have.property( 'then' );
-				expect( promise.then ).to.be.a( 'function' );
-
-				return promise.then(function() {
-					expect( failure ).to.have.been.calledWith( 'Something went wrong' );
-					expect( success ).not.to.have.been.called;
-				});
-			});
-
-		}); // .then()
-
-		describe( '.post()', function() {
-
-			it( 'should trigger an HTTP POST request', function() {
-				sinon.spy( mockAgent, 'post' );
-				sinon.spy( mockAgent, 'auth' );
-				sinon.spy( mockAgent, 'send' );
-				sinon.stub( mockAgent, 'end' );
-
-				wpRequest._options.username = 'user';
-				wpRequest._options.password = 'pass';
-				var data = { some: 'data' };
-
-				wpRequest.post( data );
-
-				expect( mockAgent.post ).to.have.been.calledOnce;
-				expect( mockAgent.post ).to.have.been.calledWith( 'url/' );
-				expect( mockAgent.auth ).to.have.been.calledOnce;
-				expect( mockAgent.auth ).to.have.been.calledWith( 'user', 'pass' );
-				expect( mockAgent.send ).to.have.been.calledOnce;
-				expect( mockAgent.send ).to.have.been.calledWith( data );
-			});
-
-			it( 'should invoke a callback, if provided', function() {
-				var spy = sinon.spy();
-				var data = { some: 'data' };
-				mockAgent._response = { body: 'some data', headers: {} };
-
-				return wpRequest.post( data, spy ).then( function() {
-					expect( spy ).to.have.been.calledOnce;
-					expect( spy ).to.have.been.calledWith( null, 'some data' );
-				});
-			});
-
-			it( 'should return a Promise to the request response', function() {
-				mockAgent._response = { body: 'resp', headers: {} };
-				var data = { some: 'data' };
-				var promise = wpRequest.post( data );
-				expect( promise ).to.have.property( 'then' );
-				expect( promise.then ).to.be.a( 'function' );
-				return promise.then(function( resp ) {
-					expect( resp ).to.equal( 'resp' );
-				});
-			});
-
-		}); // .post()
-
-		describe( '.put()', function() {
-
-			it( 'should trigger an HTTP PUT request', function() {
-				sinon.spy( mockAgent, 'put' );
-				sinon.spy( mockAgent, 'auth' );
-				sinon.spy( mockAgent, 'send' );
-				sinon.stub( mockAgent, 'end' );
-
-				wpRequest._options.username = 'user';
-				wpRequest._options.password = 'pass';
-				var data = { some: 'data' };
-
-				wpRequest.put( data );
-
-				expect( mockAgent.put ).to.have.been.calledOnce;
-				expect( mockAgent.put ).to.have.been.calledWith( 'url/' );
-				expect( mockAgent.auth ).to.have.been.calledOnce;
-				expect( mockAgent.auth ).to.have.been.calledWith( 'user', 'pass' );
-				expect( mockAgent.send ).to.have.been.calledOnce;
-				expect( mockAgent.send ).to.have.been.calledWith( data );
-			});
-
-			it( 'should invoke a callback, if provided', function() {
-				var spy = sinon.spy();
-				var data = { some: 'data' };
-				mockAgent._response = { body: 'some data', headers: {} };
-
-				return wpRequest.put( data, spy ).then( function() {
-					expect( spy ).to.have.been.calledOnce;
-					expect( spy ).to.have.been.calledWith( null, 'some data' );
-				});
-			});
-
-			it( 'should return a Promise to the request data', function() {
-				mockAgent._response = { body: 'resp', headers: {} };
-				var data = { some: 'data' };
-				var promise = wpRequest.put( data );
-				expect( promise ).to.have.property( 'then' );
-				expect( promise.then ).to.be.a( 'function' );
-				return promise.then(function( resp ) {
-					expect( resp ).to.equal( 'resp' );
-				});
-			});
-
-		}); // .put()
-
-		describe( '.delete()', function() {
-
-			it( 'should trigger an HTTP DELETE request', function() {
-				sinon.spy( mockAgent, 'del' );
-				sinon.spy( mockAgent, 'auth' );
-				sinon.stub( mockAgent, 'end' );
-
-				wpRequest._options.username = 'user';
-				wpRequest._options.password = 'pass';
-
-				wpRequest.delete();
-
-				expect( mockAgent.del ).to.have.been.calledOnce;
-				expect( mockAgent.del ).to.have.been.calledWith( 'url/' );
-				expect( mockAgent.auth ).to.have.been.calledOnce;
-				expect( mockAgent.auth ).to.have.been.calledWith( 'user', 'pass' );
-			});
-
-			it( 'should invoke a callback, if provided', function() {
-				var spy = sinon.spy();
-				mockAgent._response = { body: 'some data', headers: {} };
-
-				return wpRequest.delete( spy ).then( function() {
-					expect( spy ).to.have.been.calledOnce;
-					expect( spy ).to.have.been.calledWith( null, 'some data' );
-				});
-			});
-
-			it( 'should pass through a provided data object', function() {
-				sinon.spy( mockAgent, 'del' );
-				sinon.spy( mockAgent, 'auth' );
-				sinon.spy( mockAgent, 'send' );
-				sinon.stub( mockAgent, 'end' );
-
-				wpRequest._options.username = 'user';
-				wpRequest._options.password = 'pass';
-				var options = { force: true };
-
-				wpRequest.delete( options );
-
-				expect( mockAgent.del ).to.have.been.calledOnce;
-				expect( mockAgent.del ).to.have.been.calledWith( 'url/' );
-				expect( mockAgent.auth ).to.have.been.calledOnce;
-				expect( mockAgent.auth ).to.have.been.calledWith( 'user', 'pass' );
-				expect( mockAgent.send ).to.have.been.calledOnce;
-				expect( mockAgent.send ).to.have.been.calledWith( options );
-			});
-
-			it( 'should return a Promise to the body of the request data', function() {
-				mockAgent._response = { body: 'resp', headers: {} };
-				var promise = wpRequest.delete();
-				expect( promise ).to.have.property( 'then' );
-				expect( promise.then ).to.be.a( 'function' );
-				return promise.then(function( resp ) {
-					expect( resp ).to.equal( 'resp' );
-				});
-			});
-
-		}); // .delete()
-
-		describe( '.head()', function() {
-
-			it( 'should trigger an HTTP HEAD request', function() {
-				sinon.spy( mockAgent, 'head' );
-				sinon.stub( mockAgent, 'end' );
-
-				wpRequest.head();
-
-				expect( mockAgent.head ).to.have.been.calledOnce;
-				expect( mockAgent.head ).to.have.been.calledWith( 'url/' );
-				expect( mockAgent.end ).to.have.been.calledOnce;
-			});
-
-			it( 'should invoke a callback, if provided', function() {
-				var spy = sinon.spy();
-				mockAgent._response = { headers: 'some headers' };
-
-				return wpRequest.head( spy ).then(function() {
-					expect( spy ).to.have.been.calledOnce;
-					expect( spy ).to.have.been.calledWith( null, 'some headers' );
-				});
-			});
-
-			it( 'should return a Promise to the headers from the response', function() {
-				mockAgent._response = { headers: 'resp' };
-				var promise = wpRequest.head();
-				expect( promise ).to.have.property( 'then' );
-				expect( promise.then ).to.be.a( 'function' );
-				return promise.then(function( resp ) {
-					expect( resp ).to.equal( 'resp' );
-				});
-			});
-
-		}); // .head()
-
-		describe( 'pagination', function() {
-
-			beforeEach(function() {
-				wpRequest = new SandboxedRequest({
-					endpoint: 'http://site.com/wp-json'
-				});
-			});
-
-			it( 'passes data through unchanged if no headers are present', function() {
-				mockAgent._response = {
-					body: 'some object'
-				};
-				return wpRequest.then(function( parsedResult ) {
-					expect( parsedResult ).to.equal( 'some object' );
-					expect( parsedResult ).not.to.have.property( '_paging' );
-				});
-			});
-
-			it( 'sets pagination properties if headers include paging counts without links', function() {
-				mockAgent._response = {
-					headers: {
-						'x-wp-totalpages': 1,
-						'x-wp-total': 5
-					},
-					body: {}
-				};
-				return wpRequest.then(function( parsedResult ) {
-					expect( parsedResult ).to.have.property( '_paging' );
-					expect( parsedResult._paging ).not.to.have.property( 'next' );
-					expect( parsedResult._paging ).not.to.have.property( 'prev' );
-					expect( parsedResult._paging ).to.have.property( 'total' );
-					expect( parsedResult._paging.total ).to.equal( 5 );
-					expect( parsedResult._paging ).to.have.property( 'totalPages' );
-					expect( parsedResult._paging.totalPages ).to.equal( 1 );
-				});
-			});
-
-			it( 'passes data through unchanged if pagination header is unset or empty', function() {
-				mockAgent._response = {
-					headers: { link: '' },
-					body: 'some object'
-				};
-				return wpRequest.then(function( parsedResult ) {
-					expect( parsedResult ).to.equal( 'some object' );
-					expect( parsedResult ).not.to.have.property( '_paging' );
-				});
-			});
-
-			it( 'parses link headers', function() {
-				mockAgent._response = {
-					headers: {
-						'x-wp-totalpages': 4,
-						'x-wp-total': 7,
-						link: [
-							'</wp-json/wp/v2/posts?page=1>; rel="prev",',
-							'</wp-json/wp/v2/posts?page=2>; rel="next",',
-							'<http://site.com/wp-json/wp/v2/posts/1024>; rel="item";',
-							'title="Article Title",',
-							'<http://site.com/wp-json/wp/v2/posts/994>; rel="item";',
-							'title="Another Article"'
-						].join( ' ' )
-					},
-					body: {}
-				};
-				return wpRequest.then(function( parsedResult ) {
-					expect( parsedResult ).to.have.property( '_paging' );
-					expect( parsedResult._paging ).to.have.property( 'links' );
-					expect( parsedResult._paging.links ).to.have.property( 'prev' );
-					var expectedPrevLink = '/wp-json/wp/v2/posts?page=1';
-					expect( parsedResult._paging.links.prev ).to.equal( expectedPrevLink );
-					expect( parsedResult._paging.links ).to.have.property( 'next' );
-					var expectedNextLink = '/wp-json/wp/v2/posts?page=2';
-					expect( parsedResult._paging.links.next ).to.equal( expectedNextLink );
-				});
-			});
-
-			describe( '.next object', function() {
-
-				beforeEach(function() {
-					mockAgent._response = {
-						headers: {
-							'x-wp-totalpages': 4,
-							'x-wp-total': 7,
-							link: '</wp-json/wp/v2/posts?page=3>; rel="next"'
-						},
-						body: {}
-					};
-				});
-
-				it( 'is generated if a "next" header is present', function() {
-					return wpRequest.then(function( parsedResult ) {
-						expect( parsedResult ).to.have.property( '_paging' );
-						expect( parsedResult._paging ).to.have.property( 'next' );
-						expect( parsedResult._paging.next ).to.be.an.instanceof( SandboxedRequest );
-						expect( parsedResult._paging.next._options.endpoint ).to.equal(
-							'http://site.com/wp-json/wp/v2/posts?page=3'
-						);
-					});
-				});
-
-				it( 'is generated correctly for requests to explicit endpoints', function() {
-					// Testing full URLs as endpoints validates that _paging.next.then works
-					wpRequest._options.endpoint = 'http://site.com/wp-json/wp/v2/posts?page=3';
-					mockAgent._response.headers.link = '</wp-json/wp/v2/posts?page=4>; rel="next"';
-
-					return wpRequest.then(function( parsedResult ) {
-						expect( parsedResult ).to.have.property( '_paging' );
-						expect( parsedResult._paging ).to.have.property( 'next' );
-						expect( parsedResult._paging.next ).to.be.an.instanceof( SandboxedRequest );
-						expect( parsedResult._paging.next._options.endpoint ).to.equal(
-							'http://site.com/wp-json/wp/v2/posts?page=4'
-						);
-					});
-				});
-
-			});
-
-			describe( '.prev object', function() {
-
-				beforeEach(function() {
-					mockAgent._response = {
-						headers: {
-							'x-wp-totalpages': 4,
-							'x-wp-total': 7,
-							link: '</wp-json/wp/v2/posts?page=2>; rel="prev"'
-						},
-						body: {}
-					};
-				});
-
-				it( 'is generated if a "prev" header is present', function() {
-					return wpRequest.then(function( parsedResult ) {
-						expect( parsedResult ).to.have.property( '_paging' );
-						expect( parsedResult._paging ).to.have.property( 'prev' );
-						expect( parsedResult._paging.prev ).to.be.an.instanceof( SandboxedRequest );
-						expect( parsedResult._paging.prev._options.endpoint ).to.equal(
-							'http://site.com/wp-json/wp/v2/posts?page=2'
-						);
-					});
-				});
-
-				it( 'is generated correctly for requests to explicit endpoints', function() {
-					// Testing full URLs as endpoints validates that _paging.prev.then works
-					wpRequest._options.endpoint = 'http://site.com/wp-json/wp/v2/posts?page=2';
-					mockAgent._response.headers.link = '</wp-json/wp/v2/posts?page=1>; rel="prev"';
-
-					return wpRequest.then(function( parsedResult ) {
-						expect( parsedResult ).to.have.property( '_paging' );
-						expect( parsedResult._paging ).to.have.property( 'prev' );
-						expect( parsedResult._paging.prev ).to.be.an.instanceof( SandboxedRequest );
-						expect( parsedResult._paging.prev._options.endpoint ).to.equal(
-							'http://site.com/wp-json/wp/v2/posts?page=1'
-						);
-					});
-				});
-
-			});
-
-		}); // Pagination
-
-	}); // Request methods
+		it( 'is a function', function() {
+			expect( request.setPathPart ).to.be.a( 'function' );
+		});
+
+		it( 'is chainable', function() {
+			expect( request.setPathPart() ).to.equal( request );
+		});
+
+		it( 'sets a path part', function() {
+			request.setPathPart( 0, 'foo' );
+			expect( request.toString() ).to.equal( '/foo' );
+		});
+
+		it( 'sets multiple path parts', function() {
+			request.setPathPart( 0, 'foo' ).setPathPart( 1, 'bar' );
+			expect( request.toString() ).to.equal( '/foo/bar' );
+		});
+
+		it( 'sets multiple non-consecutive path parts', function() {
+			request.setPathPart( 0, 'foo' ).setPathPart( 2, 'baz' );
+			expect( request.toString() ).to.equal( '/foo/baz' );
+		});
+
+		it( 'throws an error if called multiple times for the same level', function() {
+			expect(function() {
+				request.setPathPart( 0, 'foo' ).setPathPart( 0, 'bar' );
+			}).to.throw( 'Cannot overwrite value foo' );
+		});
+
+	});
+
+	describe( '.validatePath()', function() {
+
+		it( 'is defined', function() {
+			expect( request ).to.have.property( 'validatePath' );
+		});
+
+		it( 'is a function', function() {
+			expect( request.validatePath ).to.be.a( 'function' );
+		});
+
+		it( 'is chainable', function() {
+			expect( request.validatePath() ).to.equal( request );
+		});
+
+		it( 'is called by toString()', function() {
+			sinon.spy( request, 'validatePath' );
+			request.toString();
+			expect( request.validatePath ).to.have.been.called;
+		});
+
+		it( 'allows any sequence of path parts if no _levels are specified', function() {
+			delete request._levels;
+			expect(function() {
+				request
+					.setPathPart( 0, 'foo' )
+					.setPathPart( 4, 'bar' )
+					.setPathPart( 2, 'baz' )
+					.validatePath();
+			}).not.to.throw();
+			expect( request.toString() ).to.equal( '/foo/baz/bar' );
+		});
+
+		it( 'allows omitted _levels so long as there are no gaps', function() {
+			request._levels = {
+				'0': [ { component: 'posts' } ],
+				'1': [ { component: '(?P<id>[\\d]+)' } ]
+			};
+			expect(function() {
+				request.setPathPart( 0, 'posts' ).validatePath();
+			}).not.to.throw();
+			expect( request.toString() ).to.equal( '/posts' );
+		});
+
+		it( 'allows any value for a level if no validate function is specified', function() {
+			request._levels = {
+				'0': [ { component: '(?P<id>[\\d]+)' } ]
+			};
+			expect(function() {
+				request.setPathPart( 0, 'foo' ).validatePath();
+			}).not.to.throw();
+			expect( request.toString() ).to.equal( '/foo' );
+		});
+
+		it( 'requires a level to conform to a validate function, when provided', function() {
+			request._levels = {
+				'0': [ {
+					component: '(?P<id>[\\d]+)',
+					validate: function( val ) { return /^[\d]+$/.test( val ); }
+				} ]
+			};
+			expect(function() {
+				request.setPathPart( 0, 'foo' ).validatePath();
+			}).to.throw( 'foo does not match (?P<id>[\\d]+)' );
+		});
+
+		it( 'allows any value for a level that passes a validate function, when provided', function() {
+			request._levels = {
+				'0': [ {
+					component: '(?P<id>[\\d]+)',
+					validate: function( val ) { return /^[\d]+$/.test( val ); }
+				} ]
+			};
+			expect(function() {
+				request.setPathPart( 0, '42' ).validatePath();
+			}).not.to.throw();
+			expect( request.toString() ).to.equal( '/42' );
+		});
+
+		it( 'requires a level to conform to any of several validate functions when provided', function() {
+			request._levels = {
+				'0': [ {
+					component: '(?P<id>[\\d]+)',
+					validate: function( val ) { return /^[\d]+$/.test( val ); }
+				}, {
+					component: 'posts',
+					validate: function( val ) { return 'posts' === val; }
+				}, {
+					component: 'pages',
+					validate: function( val ) { return 'pages' === val; }
+				} ]
+			};
+			expect(function() {
+				request.setPathPart( 0, 'foo' ).validatePath();
+			}).to.throw( 'foo does not match any of (?P<id>[\\d]+), posts, pages' );
+		});
+
+		it( 'allows any value for a level that passes any of the available validate functions', function() {
+			request._levels = {
+				'0': [ {
+					component: '(?P<id>[\\d]+)',
+					validate: function( val ) { return /^[\d]+$/.test( val ); }
+				}, {
+					component: 'posts',
+					validate: function( val ) { return 'posts' === val; }
+				}, {
+					component: 'pages',
+					validate: function( val ) { return 'pages' === val; }
+				} ]
+			};
+			expect(function() {
+				request.setPathPart( 0, 'posts' ).validatePath();
+			}).not.to.throw();
+			expect( request.toString() ).to.equal( '/posts' );
+		});
+
+		it( 'catches missing path parts if _levels are specified', function() {
+			request._levels = {
+				'0': [ { component: '(?P<parent>[\\d]+)' } ],
+				'1': [ { component: 'revisions' } ]
+				// '2': [ { component: '(?P<id>[\\d]+)' } ]
+			};
+			expect(function() {
+				request.setPathPart( 1, 'revisions' ).validatePath();
+			}).to.throw( 'Incomplete URL! Missing component: / ??? /revisions' );
+		});
+
+	});
 
 	describe( 'deprecated request methods', function() {
 
