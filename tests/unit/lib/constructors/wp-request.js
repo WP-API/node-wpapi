@@ -38,7 +38,7 @@ describe( 'WPRequest', function() {
 
 	});
 
-	describe( '_renderQuery()', function() {
+	describe( '._renderQuery() [internal]', function() {
 
 		beforeEach(function() {
 			Object.keys( filterMixins ).forEach(function( mixin ) {
@@ -97,7 +97,7 @@ describe( 'WPRequest', function() {
 
 	});
 
-	describe( 'checkMethodSupport', function() {
+	describe( '.checkMethodSupport()', function() {
 
 		it( 'should return true when called with a supported method', function() {
 			expect( checkMethodSupport( 'get', request ) ).to.equal( true );
@@ -113,7 +113,7 @@ describe( 'WPRequest', function() {
 
 	});
 
-	describe( 'namespace', function() {
+	describe( '.namespace()', function() {
 
 		it( 'is defined', function() {
 			expect( request ).to.have.property( 'namespace' );
@@ -142,7 +142,7 @@ describe( 'WPRequest', function() {
 
 	});
 
-	describe( 'param()', function() {
+	describe( '.param()', function() {
 
 		it( 'method exists', function() {
 			expect( request ).to.have.property( 'param' );
@@ -215,7 +215,7 @@ describe( 'WPRequest', function() {
 
 	});
 
-	describe( 'parameter convenience methods', function() {
+	describe( '.param() convenience methods', function() {
 		var getQueryStr;
 
 		beforeEach(function() {
@@ -227,7 +227,7 @@ describe( 'WPRequest', function() {
 			};
 		});
 
-		describe( 'context', function() {
+		describe( '.context()', function() {
 
 			beforeEach(function() {
 				request = new WPRequest({
@@ -271,7 +271,7 @@ describe( 'WPRequest', function() {
 
 		});
 
-		describe( 'embed()', function() {
+		describe( '.embed()', function() {
 
 			it( 'should be a function', function() {
 				expect( request ).to.have.property( 'embed' );
@@ -525,7 +525,7 @@ describe( 'WPRequest', function() {
 
 	});
 
-	describe( 'auth', function() {
+	describe( '.auth()', function() {
 
 		it( 'is defined', function() {
 			expect( request ).to.have.property( 'auth' );
@@ -581,7 +581,7 @@ describe( 'WPRequest', function() {
 
 	}); // auth
 
-	describe( 'file()', function() {
+	describe( '.file()', function() {
 
 		it( 'method exists', function() {
 			expect( request ).to.have.property( 'file' );
@@ -620,7 +620,7 @@ describe( 'WPRequest', function() {
 
 	});
 
-	describe( 'toString()', function() {
+	describe( '.toString()', function() {
 
 		beforeEach(function() {
 			request = new WPRequest({
@@ -640,7 +640,7 @@ describe( 'WPRequest', function() {
 
 	});
 
-	describe( '.setPathPart', function() {
+	describe( '.setPathPart()', function() {
 
 		it( 'is defined', function() {
 			expect( request ).to.have.property( 'setPathPart' );
