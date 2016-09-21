@@ -235,7 +235,7 @@ describe( 'WPRequest', function() {
 				});
 			});
 
-			it( 'should be defined', function() {
+			it( 'is defined', function() {
 				expect( request ).to.have.property( 'context' );
 				expect( request.context ).to.be.a( 'function' );
 			});
@@ -261,6 +261,7 @@ describe( 'WPRequest', function() {
 				request.edit();
 				expect( request.context ).to.have.been.calledWith( 'edit' );
 				expect( request.toString() ).to.equal( '/?context=edit' );
+				request.context.restore();
 			});
 
 			it( 'should force authentication when called with "edit"', function() {
@@ -273,8 +274,11 @@ describe( 'WPRequest', function() {
 
 		describe( '.embed()', function() {
 
-			it( 'should be a function', function() {
+			it( 'is defined', function() {
 				expect( request ).to.have.property( 'embed' );
+			});
+
+			it( 'is a function', function() {
 				expect( request.embed ).to.be.a( 'function' );
 			});
 
@@ -291,8 +295,11 @@ describe( 'WPRequest', function() {
 
 		describe( '.page()', function() {
 
-			it( 'should be a function', function() {
+			it( 'is defined', function() {
 				expect( request ).to.have.property( 'page' );
+			});
+
+			it( 'is a function', function() {
 				expect( request.page ).to.be.a( 'function' );
 			});
 
@@ -319,8 +326,11 @@ describe( 'WPRequest', function() {
 
 		describe( '.perPage()', function() {
 
-			it( 'should be a function', function() {
+			it( 'is defined', function() {
 				expect( request ).to.have.property( 'perPage' );
+			});
+
+			it( 'is a function', function() {
 				expect( request.perPage ).to.be.a( 'function' );
 			});
 
@@ -347,8 +357,11 @@ describe( 'WPRequest', function() {
 
 		describe( '.offset()', function() {
 
-			it( 'should be a function', function() {
+			it( 'is defined', function() {
 				expect( request ).to.have.property( 'offset' );
+			});
+
+			it( 'is a function', function() {
 				expect( request.offset ).to.be.a( 'function' );
 			});
 
@@ -375,8 +388,11 @@ describe( 'WPRequest', function() {
 
 		describe( '.order()', function() {
 
-			it( 'should be a function', function() {
+			it( 'is defined', function() {
 				expect( request ).to.have.property( 'order' );
+			});
+
+			it( 'is a function', function() {
 				expect( request.order ).to.be.a( 'function' );
 			});
 
@@ -403,8 +419,11 @@ describe( 'WPRequest', function() {
 
 		describe( '.orderby()', function() {
 
-			it( 'should be a function', function() {
+			it( 'is defined', function() {
 				expect( request ).to.have.property( 'orderby' );
+			});
+
+			it( 'is a function', function() {
 				expect( request.orderby ).to.be.a( 'function' );
 			});
 
@@ -431,8 +450,11 @@ describe( 'WPRequest', function() {
 
 		describe( '.search()', function() {
 
-			it( 'should be a function', function() {
+			it( 'is defined', function() {
 				expect( request ).to.have.property( 'search' );
+			});
+
+			it( 'is a function', function() {
 				expect( request.search ).to.be.a( 'function' );
 			});
 
@@ -459,8 +481,11 @@ describe( 'WPRequest', function() {
 
 		describe( '.include()', function() {
 
-			it( 'should be a function', function() {
+			it( 'is defined', function() {
 				expect( request ).to.have.property( 'include' );
+			});
+
+			it( 'is a function', function() {
 				expect( request.include ).to.be.a( 'function' );
 			});
 
@@ -492,8 +517,11 @@ describe( 'WPRequest', function() {
 
 		describe( '.exclude()', function() {
 
-			it( 'should be a function', function() {
+			it( 'is defined', function() {
 				expect( request ).to.have.property( 'exclude' );
+			});
+
+			it( 'is a function', function() {
 				expect( request.exclude ).to.be.a( 'function' );
 			});
 
@@ -754,6 +782,7 @@ describe( 'WPRequest', function() {
 			sinon.spy( request, 'validatePath' );
 			request.toString();
 			expect( request.validatePath ).to.have.been.called;
+			request.validatePath.restore();
 		});
 
 		it( 'allows any sequence of path parts if no _levels are specified', function() {

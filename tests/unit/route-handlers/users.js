@@ -60,8 +60,11 @@ describe( 'wp.users', function() {
 
 	describe( '.id()', function() {
 
-		it( 'should be defined', function() {
+		it( 'is defined', function() {
 			expect( users ).to.have.property( 'id' );
+		});
+
+		it( 'is a function', function() {
 			expect( users.id ).to.be.a( 'function' );
 		});
 

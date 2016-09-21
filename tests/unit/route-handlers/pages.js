@@ -75,7 +75,7 @@ describe( 'wp.pages', function() {
 
 		describe( '.id()', function() {
 
-			it( 'should be defined', function() {
+			it( 'is defined', function() {
 				expect( pages ).to.have.property( 'id' );
 				expect( pages.id ).to.be.a( 'function' );
 			});
@@ -95,7 +95,7 @@ describe( 'wp.pages', function() {
 
 		describe( '.path()', function() {
 
-			it( 'should be defined', function() {
+			it( 'is defined', function() {
 				expect( pages ).to.have.property( 'path' );
 				expect( pages.path ).to.be.a( 'function' );
 			});
@@ -116,8 +116,11 @@ describe( 'wp.pages', function() {
 
 		describe( '.revisions()', function() {
 
-			it( 'should be defined', function() {
+			it( 'is defined', function() {
 				expect( pages ).to.have.property( 'revisions' );
+			});
+
+			it( 'is a function', function() {
 				expect( pages.revisions ).to.be.a( 'function' );
 			});
 

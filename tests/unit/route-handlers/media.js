@@ -51,8 +51,11 @@ describe( 'wp.media', function() {
 
 	describe( '.id()', function() {
 
-		it( 'should be defined', function() {
+		it( 'is defined', function() {
 			expect( media ).to.have.property( 'id' );
+		});
+
+		it( 'is a function', function() {
 			expect( media.id ).to.be.a( 'function' );
 		});
 
