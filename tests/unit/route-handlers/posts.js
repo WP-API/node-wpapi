@@ -76,49 +76,6 @@ describe( 'wp.posts', function() {
 
 		});
 
-		describe.skip( '.meta()', function() {
-
-			it( 'is defined', function() {
-				expect( posts ).to.have.property( 'meta' );
-				expect( posts.meta ).to.be.a( 'function' );
-			});
-
-			it( 'provides a method to get the meta values for a post', function() {
-				posts.id( 3 ).meta();
-				expect( posts.toString() ).to.equal( '/wp-json/wp/v2/posts/3/meta' );
-			});
-
-			it( 'should force authentication when querying posts/id/meta', function() {
-				posts.id( 1337 ).meta();
-				expect( posts._options ).to.have.property( 'auth' );
-				expect( posts._options.auth ).to.be.true;
-			});
-
-			it( 'should update the supported methods when querying for meta', function() {
-				posts.id( 1066 ).meta();
-				var _supportedMethods = posts._supportedMethods.sort().join( '|' );
-				expect( _supportedMethods ).to.equal( 'get|head|post' );
-			});
-
-			it( 'provides a method to get specific post meta objects by ID', function() {
-				posts.id( 3 ).meta( 5 );
-				expect( posts.toString() ).to.equal( '/wp-json/wp/v2/posts/3/meta/5' );
-			});
-
-			it( 'should force authentication when querying posts/id/meta/:id', function() {
-				posts.id( 7331 ).meta( 7 );
-				expect( posts._options ).to.have.property( 'auth' );
-				expect( posts._options.auth ).to.be.true;
-			});
-
-			it( 'should update the supported methods when querying for meta', function() {
-				posts.id( 1066 ).meta( 2501 );
-				var _supportedMethods = posts._supportedMethods.sort().join( '|' );
-				expect( _supportedMethods ).to.equal( 'delete|get|head|post|put' );
-			});
-
-		});
-
 	});
 
 	describe( 'URL Generation', function() {
@@ -159,16 +116,6 @@ describe( 'wp.posts', function() {
 				posts.id( 'wombat' );
 				posts.validatePath();
 			}).to.throw();
-		});
-
-		it.skip( 'should create the URL for retrieving all meta for a specific post', function() {
-			var path = posts.id( 1337 ).meta().toString();
-			expect( path ).to.equal( '/wp-json/wp/v2/posts/1337/meta' );
-		});
-
-		it.skip( 'should create the URL for retrieving a specific meta item', function() {
-			var path = posts.id( 1337 ).meta( 2001 ).toString();
-			expect( path ).to.equal( '/wp-json/wp/v2/posts/1337/meta/2001' );
 		});
 
 		it( 'should create the URL for retrieving the revisions for a specific post', function() {

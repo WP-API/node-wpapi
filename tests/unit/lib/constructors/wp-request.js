@@ -28,7 +28,7 @@ describe( 'WPRequest', function() {
 			request = new WPRequest({
 				endpoint: '/custom-endpoint/'
 			});
-			expect( request._options.endpoint ).to.equal( '/custom-endpoint/' );
+			expect( request.toString() ).to.equal( '/custom-endpoint/' );
 		});
 
 		it( 'should define a _supportedMethods array', function() {
@@ -580,71 +580,6 @@ describe( 'WPRequest', function() {
 		});
 
 	}); // auth
-
-	describe.skip( '._auth', function() {
-
-		var mockAgent;
-
-		beforeEach(function() {
-			mockAgent = {
-				auth: sinon.stub(),
-				set: sinon.stub()
-			};
-		});
-
-		it( 'should set a header on the request if a nonce is provided', function() {
-			request._options = {
-				nonce: 'testnonce'
-			};
-			request._auth( mockAgent );
-			expect( mockAgent.set ).to.have.been.calledWith( 'X-WP-Nonce', 'testnonce' );
-		});
-
-		it( 'should set basic auth on the provided request if auth is forced', function() {
-			request._options = {
-				username: 'usr',
-				password: 'pwd'
-			};
-			request._auth( mockAgent, true );
-			expect( mockAgent.auth ).to.have.been.calledWith( 'usr', 'pwd' );
-		});
-
-		it( 'should set auth on the provided request if the "auth" option is true', function() {
-			request._options = {
-				username: 'usr',
-				password: 'pwd',
-				auth: true
-			};
-			request._auth( mockAgent );
-			expect( mockAgent.auth ).to.have.been.calledWith( 'usr', 'pwd' );
-		});
-
-		it( 'should not set auth if username is not available', function() {
-			request._options = {
-				password: 'pwd'
-			};
-			request._auth( mockAgent, true );
-			expect( mockAgent.auth ).not.to.have.been.called;
-		});
-
-		it( 'should not set auth if password is not available', function() {
-			request._options = {
-				username: 'usr'
-			};
-			request._auth( mockAgent, true );
-			expect( mockAgent.auth ).not.to.have.been.called;
-		});
-
-		it( 'should not set auth if auth is not true, and not forced', function() {
-			request._options = {
-				username: 'usr',
-				password: 'pwd'
-			};
-			request._auth( mockAgent );
-			expect( mockAgent.auth ).not.to.have.been.called;
-		});
-
-	}); // ._auth
 
 	describe( 'file()', function() {
 

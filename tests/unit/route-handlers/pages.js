@@ -114,42 +114,6 @@ describe( 'wp.pages', function() {
 
 		});
 
-		describe.skip( 'comments', function() {
-
-			it( 'should be defined', function() {
-				expect( pages ).to.have.property( 'comments' );
-				expect( pages.comments ).to.be.a( 'function' );
-			});
-
-			it( 'should create the URL for a page\'s comments collection', function() {
-				var path = pages.id( 1337 ).comments().toString();
-				expect( path ).to.equal( '/wp-json/wp/v2/pages/1337/comments' );
-			});
-
-			it( 'should set the correct supported methods for the comments endpoint', function() {
-				pages.id( 1337 ).comments();
-				var _supportedMethods = pages._supportedMethods.sort().join( '|' );
-				expect( _supportedMethods ).to.equal( 'get|head' );
-			});
-
-			it( 'should create the URL for retrieving a specific comment', function() {
-				var path = pages.id( 1337 ).comments().comment( 9001 ).toString();
-				expect( path ).to.equal( '/wp-json/wp/v2/pages/1337/comments/9001' );
-			});
-
-			it( 'should set the correct supported methods for the comment endpoint', function() {
-				pages.id( 1337 ).comment( 8 );
-				var _supportedMethods = pages._supportedMethods.sort().join( '|' );
-				expect( _supportedMethods ).to.equal( 'delete|get|head' );
-			});
-
-			it( 'should force action "comments" when calling .comment()', function() {
-				var path = pages.id( 1337 ).comment( 9002 ).toString();
-				expect( path ).to.equal( '/wp-json/wp/v2/pages/1337/comments/9002' );
-			});
-
-		});
-
 		describe( '.revisions()', function() {
 
 			it( 'should be defined', function() {
@@ -160,12 +124,6 @@ describe( 'wp.pages', function() {
 			it( 'should create the URL for retrieving the revisions for a specific post', function() {
 				var path = pages.id( 1337 ).revisions().toString();
 				expect( path ).to.equal( '/wp-json/wp/v2/pages/1337/revisions' );
-			});
-
-			it.skip( 'should force authentication when querying pages/id/revisions', function() {
-				pages.id( 1337 ).revisions();
-				expect( pages._options ).to.have.property( 'auth' );
-				expect( pages._options.auth ).to.be.true;
 			});
 
 		});
