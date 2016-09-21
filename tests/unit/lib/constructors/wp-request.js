@@ -344,6 +344,90 @@ describe( 'WPRequest', function() {
 
 		});
 
+		describe( '.offset()', function() {
+
+			it( 'should be a function', function() {
+				expect( request ).to.have.property( 'offset' );
+				expect( request.offset ).to.be.a( 'function' );
+			});
+
+			it( 'should be chainable', function() {
+				expect( request.offset() ).to.equal( request );
+			});
+
+			it( 'has no effect when called with no argument', function() {
+				var result = request.offset();
+				expect( getQueryStr( result ) ).to.equal( '' );
+			});
+
+			it( 'sets the "offset" query parameter when provided a value', function() {
+				var result = request.offset( 7 );
+				expect( getQueryStr( result ) ).to.equal( 'offset=7' );
+			});
+
+			it( 'should be chainable and replace values when called multiple times', function() {
+				var result = request.offset( 71 ).offset( 2 );
+				expect( getQueryStr( result ) ).to.equal( 'offset=2' );
+			});
+
+		});
+
+		describe( '.order()', function() {
+
+			it( 'should be a function', function() {
+				expect( request ).to.have.property( 'order' );
+				expect( request.order ).to.be.a( 'function' );
+			});
+
+			it( 'should be chainable', function() {
+				expect( request.order() ).to.equal( request );
+			});
+
+			it( 'has no effect when called with no argument', function() {
+				var result = request.order();
+				expect( getQueryStr( result ) ).to.equal( '' );
+			});
+
+			it( 'sets the "order" query parameter when provided a value', function() {
+				var result = request.order( 'asc' );
+				expect( getQueryStr( result ) ).to.equal( 'order=asc' );
+			});
+
+			it( 'should be chainable and replace values when called multiple times', function() {
+				var result = request.order( 'asc' ).order( 'desc' );
+				expect( getQueryStr( result ) ).to.equal( 'order=desc' );
+			});
+
+		});
+
+		describe( '.orderby()', function() {
+
+			it( 'should be a function', function() {
+				expect( request ).to.have.property( 'orderby' );
+				expect( request.orderby ).to.be.a( 'function' );
+			});
+
+			it( 'should be chainable', function() {
+				expect( request.orderby() ).to.equal( request );
+			});
+
+			it( 'has no effect when called with no argument', function() {
+				var result = request.orderby();
+				expect( getQueryStr( result ) ).to.equal( '' );
+			});
+
+			it( 'sets the "orderby" query parameter when provided a value', function() {
+				var result = request.orderby( 'title' );
+				expect( getQueryStr( result ) ).to.equal( 'orderby=title' );
+			});
+
+			it( 'should be chainable and replace values when called multiple times', function() {
+				var result = request.orderby( 'title' ).orderby( 'slug' );
+				expect( getQueryStr( result ) ).to.equal( 'orderby=slug' );
+			});
+
+		});
+
 		describe( '.search()', function() {
 
 			it( 'should be a function', function() {
@@ -368,6 +452,72 @@ describe( 'WPRequest', function() {
 			it( 'overwrites previously-set values on subsequent calls', function() {
 				var result = request.search( 'query' ).search( 'newquery' );
 				expect( getQueryStr( result ) ).to.equal( 'search=newquery' );
+			});
+
+		});
+
+		describe( '.include()', function() {
+
+			it( 'should be a function', function() {
+				expect( request ).to.have.property( 'include' );
+				expect( request.include ).to.be.a( 'function' );
+			});
+
+			it( 'should be chainable', function() {
+				expect( request.include() ).to.equal( request );
+			});
+
+			it( 'has no effect when called with no argument', function() {
+				var result = request.include();
+				expect( getQueryStr( result ) ).to.equal( '' );
+			});
+
+			it( 'sets the "include" query parameter when provided a value', function() {
+				var result = request.include( 7 );
+				expect( getQueryStr( result ) ).to.equal( 'include=7' );
+			});
+
+			it( 'can set an array of "include" values', function() {
+				var result = request.include([ 7, 41, 98 ]);
+				expect( getQueryStr( result ) ).to.equal( 'include[]=41&include[]=7&include[]=98' );
+			});
+
+			it( 'should be chainable and replace values when called multiple times', function() {
+				var result = request.include( 71 ).include( 2 );
+				expect( getQueryStr( result ) ).to.equal( 'include=2' );
+			});
+
+		});
+
+		describe( '.exclude()', function() {
+
+			it( 'should be a function', function() {
+				expect( request ).to.have.property( 'exclude' );
+				expect( request.exclude ).to.be.a( 'function' );
+			});
+
+			it( 'should be chainable', function() {
+				expect( request.exclude() ).to.equal( request );
+			});
+
+			it( 'has no effect when called with no argument', function() {
+				var result = request.exclude();
+				expect( getQueryStr( result ) ).to.equal( '' );
+			});
+
+			it( 'sets the "exclude" query parameter when provided a value', function() {
+				var result = request.exclude( 7 );
+				expect( getQueryStr( result ) ).to.equal( 'exclude=7' );
+			});
+
+			it( 'can set an array of "exclude" values', function() {
+				var result = request.exclude([ 7, 41, 98 ]);
+				expect( getQueryStr( result ) ).to.equal( 'exclude[]=41&exclude[]=7&exclude[]=98' );
+			});
+
+			it( 'should be chainable and replace values when called multiple times', function() {
+				var result = request.exclude( 71 ).exclude( 2 );
+				expect( getQueryStr( result ) ).to.equal( 'exclude=2' );
 			});
 
 		});
