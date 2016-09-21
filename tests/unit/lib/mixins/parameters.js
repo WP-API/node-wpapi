@@ -27,80 +27,6 @@ describe( 'mixins: parameters', function() {
 		};
 	});
 
-	describe( 'pagination parameters', function() {
-
-		describe( '.page()', function() {
-
-			beforeEach(function() {
-				Req.prototype.page = parameterMixins.page;
-			});
-
-			it( 'mixin method is defined', function() {
-				expect( parameterMixins ).to.have.property( 'page' );
-			});
-
-			it( 'is a function', function() {
-				expect( parameterMixins.page ).to.be.a( 'function' );
-			});
-
-			it( 'supports chaining', function() {
-				expect( req.page() ).to.equal( req );
-			});
-
-			it( 'has no effect when called with no argument', function() {
-				var result = req.page();
-				expect( getQueryStr( result ) ).to.equal( '' );
-			});
-
-			it( 'sets the "page" query parameter when provided a value', function() {
-				var result = req.page( 7 );
-				expect( getQueryStr( result ) ).to.equal( 'page=7' );
-			});
-
-			it( 'should be chainable and replace values when called multiple times', function() {
-				var result = req.page( 71 ).page( 2 );
-				expect( getQueryStr( result ) ).to.equal( 'page=2' );
-			});
-
-		});
-
-		describe( '.perPage()', function() {
-
-			beforeEach(function() {
-				Req.prototype.perPage = parameterMixins.perPage;
-			});
-
-			it( 'mixin method is defined', function() {
-				expect( parameterMixins ).to.have.property( 'perPage' );
-			});
-
-			it( 'is a function', function() {
-				expect( parameterMixins.perPage ).to.be.a( 'function' );
-			});
-
-			it( 'supports chaining', function() {
-				expect( req.perPage() ).to.equal( req );
-			});
-
-			it( 'has no effect when called with no argument', function() {
-				var result = req.perPage();
-				expect( getQueryStr( result ) ).to.equal( '' );
-			});
-
-			it( 'sets the "per_page" query parameter when provided a value', function() {
-				var result = req.perPage( 7 );
-				expect( getQueryStr( result ) ).to.equal( 'per_page=7' );
-			});
-
-			it( 'should be chainable and replace values when called multiple times', function() {
-				var result = req.perPage( 71 ).perPage( 2 );
-				expect( getQueryStr( result ) ).to.equal( 'per_page=2' );
-			});
-
-		});
-
-	});
-
 	describe( 'date parameters', function() {
 
 		describe( '.before()', function() {
@@ -248,41 +174,6 @@ describe( 'mixins: parameters', function() {
 				expect( getQueryStr( result ) ).to.equal( 'slug=7' );
 			});
 
-		});
-
-	});
-
-	describe( 'search', function() {
-
-		beforeEach(function() {
-			Req.prototype.search = parameterMixins.search;
-		});
-
-		it( 'mixin method is defined', function() {
-			expect( parameterMixins ).to.have.property( 'search' );
-		});
-
-		it( 'is a function', function() {
-			expect( parameterMixins.search ).to.be.a( 'function' );
-		});
-
-		it( 'supports chaining', function() {
-			expect( req.search() ).to.equal( req );
-		});
-
-		it( 'has no effect when called with no argument', function() {
-			var result = req.search();
-			expect( getQueryStr( result ) ).to.equal( '' );
-		});
-
-		it( 'sets the "search" query parameter when provided a value', function() {
-			var result = req.search( 'my search string' );
-			expect( getQueryStr( result ) ).to.equal( 'search=my search string' );
-		});
-
-		it( 'overwrites previously-set values on subsequent calls', function() {
-			var result = req.search( 'query' ).search( 'newquery' );
-			expect( getQueryStr( result ) ).to.equal( 'search=newquery' );
 		});
 
 	});

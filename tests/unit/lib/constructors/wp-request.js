@@ -215,6 +215,16 @@ describe( 'WPRequest', function() {
 	});
 
 	describe( 'parameter convenience methods', function() {
+		var getQueryStr;
+
+		beforeEach(function() {
+			getQueryStr = function( req ) {
+				var query = req
+					._renderQuery()
+					.replace( /^\?/, '' );
+				return decodeURIComponent( query );
+			};
+		});
 
 		describe( 'context', function() {
 
@@ -274,6 +284,90 @@ describe( 'WPRequest', function() {
 
 			it( 'should be chainable', function() {
 				expect( request.embed() ).to.equal( request );
+			});
+
+		});
+
+		describe( '.page()', function() {
+
+			it( 'should be a function', function() {
+				expect( request ).to.have.property( 'page' );
+				expect( request.page ).to.be.a( 'function' );
+			});
+
+			it( 'should be chainable', function() {
+				expect( request.page() ).to.equal( request );
+			});
+
+			it( 'has no effect when called with no argument', function() {
+				var result = request.page();
+				expect( getQueryStr( result ) ).to.equal( '' );
+			});
+
+			it( 'sets the "page" query parameter when provided a value', function() {
+				var result = request.page( 7 );
+				expect( getQueryStr( result ) ).to.equal( 'page=7' );
+			});
+
+			it( 'should be chainable and replace values when called multiple times', function() {
+				var result = request.page( 71 ).page( 2 );
+				expect( getQueryStr( result ) ).to.equal( 'page=2' );
+			});
+
+		});
+
+		describe( '.perPage()', function() {
+
+			it( 'should be a function', function() {
+				expect( request ).to.have.property( 'perPage' );
+				expect( request.perPage ).to.be.a( 'function' );
+			});
+
+			it( 'should be chainable', function() {
+				expect( request.perPage() ).to.equal( request );
+			});
+
+			it( 'has no effect when called with no argument', function() {
+				var result = request.perPage();
+				expect( getQueryStr( result ) ).to.equal( '' );
+			});
+
+			it( 'sets the "per_page" query parameter when provided a value', function() {
+				var result = request.perPage( 7 );
+				expect( getQueryStr( result ) ).to.equal( 'per_page=7' );
+			});
+
+			it( 'should be chainable and replace values when called multiple times', function() {
+				var result = request.perPage( 71 ).perPage( 2 );
+				expect( getQueryStr( result ) ).to.equal( 'per_page=2' );
+			});
+
+		});
+
+		describe( '.search()', function() {
+
+			it( 'should be a function', function() {
+				expect( request ).to.have.property( 'search' );
+				expect( request.search ).to.be.a( 'function' );
+			});
+
+			it( 'should be chainable', function() {
+				expect( request.search() ).to.equal( request );
+			});
+
+			it( 'has no effect when called with no argument', function() {
+				var result = request.search();
+				expect( getQueryStr( result ) ).to.equal( '' );
+			});
+
+			it( 'sets the "search" query parameter when provided a value', function() {
+				var result = request.search( 'my search string' );
+				expect( getQueryStr( result ) ).to.equal( 'search=my search string' );
+			});
+
+			it( 'overwrites previously-set values on subsequent calls', function() {
+				var result = request.search( 'query' ).search( 'newquery' );
+				expect( getQueryStr( result ) ).to.equal( 'search=newquery' );
 			});
 
 		});
