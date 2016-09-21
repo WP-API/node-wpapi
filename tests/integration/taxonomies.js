@@ -24,9 +24,10 @@ describe( 'integration: taxonomies()', function() {
 			.get()
 			.then(function( taxonomies ) {
 				expect( taxonomies ).to.be.an( 'object' );
-				expect( Object.keys( taxonomies ).length ).to.equal( 2 );
 				expect( taxonomies ).to.have.property( 'category' );
+				expect( taxonomies.category ).to.be.an( 'object' );
 				expect( taxonomies ).to.have.property( 'post_tag' );
+				expect( taxonomies.post_tag ).to.be.an( 'object' );
 				return SUCCESS;
 			});
 		return expect( prom ).to.eventually.equal( SUCCESS );
