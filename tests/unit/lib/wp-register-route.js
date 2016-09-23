@@ -218,7 +218,7 @@ describe( 'wp.registerRoute', function() {
 		});
 
 		it( 'creates a .param() wrapper for params that do not match existing mixins', function() {
-			var factory = registerRoute( 'a', '/b', {
+			var factory = registerRoute( 'a', 'b', {
 				params: [ 'customtax', 'someparam' ]
 			});
 			handler = factory({
@@ -234,6 +234,18 @@ describe( 'wp.registerRoute', function() {
 			]);
 			expect( result.toString() ).to.equal( '/a/b?customtax=techno&someparam%5B%5D=tech&someparam%5B%5D=yes' );
 		});
+
+		it( 'will not overwrite existing methods', function() {
+			var factory = registerRoute( 'myplugin/v1', '/author/(?P<id>\\d+)', {
+				params: [ 'param', 'edit', 'id' ]
+			});
+			handler = factory({
+				endpoint: '/'
+			});
+			var result = handler.id( 7 ).param( 'a', 'b' ).edit().toString();
+			expect( result ).to.equal( '/myplugin/v1/author/7?a=b&context=edit' );
+		});
+
 	});
 
 	describe( 'mixins', function() {
@@ -285,6 +297,20 @@ describe( 'wp.registerRoute', function() {
 			}).id( 7 ).toString();
 			expect( result ).not.to.equal( '/myplugin/v1/author?id=as_a_param' );
 			expect( result ).to.equal( '/myplugin/v1/author/7' );
+		});
+
+		it( 'will not overwrite WPRequest default methods', function() {
+			var factory = registerRoute( 'myplugin/v1', '/author/(?P<id>\\d+)', {
+				mixins: {
+					param: function() {
+						throw new Error();
+					}
+				}
+			});
+			var result = factory({
+				endpoint: '/'
+			}).id( 7 ).param( 'a', 'b' ).toString();
+			expect( result ).to.equal( '/myplugin/v1/author/7?a=b' );
 		});
 
 	});

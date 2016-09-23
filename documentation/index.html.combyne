@@ -4,7 +4,7 @@ layout: default
 
 <div class="home">
 
-  <h2 class="page-heading">About {{ site.library_title }}</h2>
+  <h1 class="page-heading">About {{ site.library_title }}</h1>
 
   [{{{ aboutContents }}}]
 
@@ -36,7 +36,7 @@ layout: default
   </section>
 
   <section>
-    <h2 class="page-heading">User Guides</h1>
+    <h2 class="page-heading">User Guides</h2>
 
     <p>Don't see the topic you're looking for? <a href="https://github.com/WP-API/node-wpapi/issues">Open an issue</a> to request a guide, or <a href="https://github.com/WP-API/node-wpapi/tree/master/documentation/_posts">submit your own</a> with a pull request!
 

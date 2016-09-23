@@ -21,6 +21,7 @@ const readmePath = path.join( projectRoot, 'README.md' );
 const contributingPath = path.join( projectRoot, 'CONTRIBUTING.md' );
 const licensePath = path.join( projectRoot, 'LICENSE' );
 const indexTemplatePath = path.join( projectRoot, 'documentation', 'index.html.combyne' );
+const err404TemplatePath = path.join( projectRoot, 'documentation', '404.html.combyne' );
 
 // This constant defines the minimum importance of header for which files will
 // be created: e.g. if this is 2, files will only be created for headers # & ##
@@ -166,7 +167,13 @@ const readmeOutput = readFile( readmePath ).then( contents => {
 				writeFile( outputPath, entry.contents ) :
 				Promise.resolve();
 		});
-	}, Promise.resolve() ).then( () => entries );
+	}, Promise.resolve() ).then( () => {
+		entries.push({
+			title: 'API Documentation',
+			slug: 'api-reference/modules/WPAPI.html'
+		});
+		return entries;
+	});
 });
 
 // Create the contributor guide (runs after the README files are processed in
@@ -176,36 +183,52 @@ const contributingOutput = readmeOutput.then( () => copyFile( contributingPath, 
 // Create the license page
 const licenseOutput = copyFile( licensePath, 'License' );
 
+// Build the template context to use with the
+const templateContext = readmeOutput.then( entries => {
+	return entries.reduce( ( context, entry ) => {
+		const isAboutPage = entry.slug === 'about';
+		if ( isAboutPage ) {
+			context.aboutContents = kramed( entry.tokens.join( '' ) );
+		} else if ( SKIP_SECTION_LINKS.indexOf( entry.slug ) === -1 ) {
+			entry.hasSubheadings = entry.subheadings && entry.subheadings.length;
+			context.readmeSections.push( entry );
+		}
+		return context;
+	}, {
+		aboutContents: null,
+		readmeSections: []
+	});
+});
+
+const fileAndContext = filePath => Promise.all([
+	readFile( filePath ),
+	templateContext
+]).then( result => ({
+	template: result[ 0 ],
+	context: result[ 1 ]
+}) );
+
 // Create the index HTML page
-const indexOutput = readmeOutput.then( entries => {
-	entries.push({
-		title: 'API Documentation',
-		slug: 'api-reference/modules/WPAPI.html'
-	});
-	return readFile( indexTemplatePath ).then( fileTemplate => {
-		const outputPath = path.join( docsDir, 'index.html' );
-		const templateContext = entries.reduce( ( context, entry ) => {
-			const isAboutPage = entry.slug === 'about';
-			if ( isAboutPage ) {
-				context.aboutContents = kramed( entry.tokens.join( '' ) );
-			} else if ( SKIP_SECTION_LINKS.indexOf( entry.slug ) === -1 ) {
-				entry.hasSubheadings = entry.subheadings && entry.subheadings.length;
-				context.readmeSections.push( entry );
-			}
-			return context;
-		}, {
-			aboutContents: null,
-			readmeSections: []
-		});
-		const fileContents = combyne( fileTemplate ).render( templateContext );
-		return writeFile( outputPath, fileContents );
-	});
+const indexOutput = fileAndContext( indexTemplatePath ).then( result => {
+	console.log( 'index' );
+	const outputPath = path.join( docsDir, 'index.html' );
+	const fileContents = combyne( result.template ).render( result.context );
+	return writeFile( outputPath, fileContents );
+});
+
+// Create the Error 404 page
+const err404Output = fileAndContext( err404TemplatePath ).then( result => {
+	console.log( '404' );
+	const outputPath = path.join( docsDir, '404.html' );
+	const fileContents = combyne( result.template ).render( result.context );
+	return writeFile( outputPath, fileContents );
 });
 
 module.exports = Promise.all([
 	readmeOutput,
 	contributingOutput,
 	licenseOutput,
-	indexOutput
+	indexOutput,
+	err404Output
 ])
 .catch( err => console.log( err && err.stack ) );

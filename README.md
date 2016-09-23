@@ -14,15 +14,19 @@ This is a client for the [WordPress REST API](http://v2.wp-api.org/). It is **un
 - [About](#about)
 - [Installation](#installation)
 - [Using the Client](#using-the-client)
-  - [Auto-discovery](#auto-discovery)
+  - [Auto-Discovery](#auto-discovery)
   - [Creating Posts](#creating-posts)
   - [Updating Posts](#updating-posts)
   - [Requesting Different Resources](#requesting-different-resources)
+  - [API Query Parameters](#api-query-parameters)
   - [Filtering Collections](#filtering-collections)
   - [Uploading Media](#uploading-media)
-  - [Custom Routes](#custom-routes)
+- [Custom Routes](#custom-routes)
+  - [Setter Method Naming](#setter-method-naming-for-named-route-components)
+  - [Query Parameters & Filtering](#query-parameters--filtering-custom-routes)
+  - [Mixins](#mixins)
 - [Embedding Data](#embedding-data)
-- [Paginated Collections](#working-with-paged-response-data)
+- [Collection Pagination](#collection-pagination)
 - [Customizing HTTP Request Behavior](#customizing-http-request-behavior)
 - [Authentication](#authentication)
 - [API Documentation](#api-documentation)
@@ -298,11 +302,57 @@ var uriString = wp.posts().id( 7 ).embed().toString();
 
 As the name implies `.toString()` is not a chaining method, and will return a string containing the full URI; this can then be used with alternative HTTP transports like `request`, Node's native `http`, `fetch`, or jQuery.
 
+### API Query Parameters
+
+To set a query parameter on a request, use the `.param()` method:
+
+```js
+// All posts by author w/ ID "7" published before Sept 22, 2016
+wp.posts()
+  .param( 'before', new Date( '2016-09-22' ) )
+  .param( 'author', 7 )...
+```
+
+You can continue to chain properties until you call `.then`, `.get`, `.create`, `.update`, or `.delete` on the request chain.
+
+**Parameter Shortcut Methods**
+
+This library provides convenience methods for many of the most common parameters, like `search=` (search for a string in post title or content), `slug` (query for a post by slug), and `before` and `after` (find posts in a given date range):
+
+```js
+// Find a page with a specific slug
+wp.pages().slug( 'about' )...
+
+// Find a post authored by the user with ID #42
+wp.posts().author( 42 )...
+
+// Find all categories containing the word "news"
+wp.categories().search( 'news' )...
+
+// Find posts from March 2013 (provide a Date object or full ISO-8601 date):
+wp.posts().before( '2013-04-01T00:00:00.000Z' ).after( new Date( 'March 01, 2013' ) )...
+```
+
+#### Paging & Sorting
+
+Convenience methods are also available to set paging & sorting properties like `page`, `per_page` (available as `.perPage()`), `offset`, `order` and `orderby`:
+
+```js
+// perPage() sets the maximum number of posts to return. 20 latest posts:
+wp.posts().perPage( 20 )...
+// 21st through 40th latest posts (*i.e.* the second page of results):
+wp.posts().perPage( 20 ).page( 2 )...
+// Order posts alphabetically by title:
+wp.posts().order( 'asc' ).orderby( 'title' )...
+```
+
+See the section on collection pagination for more information.
+
 ### Filtering Collections
 
-Queries against collection endpoints (like `wp.posts()`, which maps to `endpoint/posts/`) can be filtered to specify a subset of posts to return. Many of the WP_Query values are available by default, including `tag`, `author_name`, `page_id`, etc; even more parameters are available to filter byif you authenticate with the API using either [Basic Auth](https://github.com/WP-API/Basic-Auth) or [OAuth](https://github.com/WP-API/OAuth1). You can continue to chain properties until you call `.then`, `.get`, `.post`, `.put`, or `.delete` on the request chain.
+While some WP_Query functionality is not yet available through with the WordPress REST API, `filter` is a special query parameter that lets you directly specify many WP_Query arguments, including `tag`, `author_name`, and other [public query vars](https://codex.wordpress.org/WordPress_Query_Vars). Even more parameters are available for use with `filter` if you [authenticate with the API](http://v2.wp-api.org/guide/authentication/).
 
-Example queries:
+Example queries using `filter`:
 
 ```javascript
 // All posts belonging to author with nicename "jadenbeirne"
@@ -326,15 +376,10 @@ wp.posts().category( 7 ).tag( 'music' ).get();
 
 // equivalent to .filter( 'author_name', 'williamgibson' ):
 wp.posts().author( 'williamgibson' ).get();
-// equivalent to .filter( 'author', 42 ):
+// equivalent to .param( 'author', 42 ):
 wp.posts().author( 42 ).get();
 // last value wins: this queries for author_name == frankherbert
 wp.posts().author( 42 ).author( 'frankherbert' ).get();
-
-// perPage() sets the maximum number of posts to return. 20 latest posts:
-wp.posts().perPage( 20 )...
-// 21st through 40th latest posts (*i.e.* the second page of results):
-wp.posts().perPage( 20 ).page( 2 )...
 
 // Put it all together: Get the 5 most recent posts by jadenbeirne in 'fiction'
 wp.posts()
@@ -348,18 +393,13 @@ wp.posts()
 
 The following methods are shortcuts for filtering the requested collection down by various commonly-used criteria:
 
+* `.author( author )`: find posts by a specific author, designated either by nicename or by ID (ID preferred)
 * `.category( category )`: find posts in a specific category
 * `.tag( tag )`: find posts with a specific tag
 * `.taxonomy( name, term )`: find items with a specific taxonomy term
-* `.search( searchString )`: find posts containing the specified search term(s)
-* `.author( author )`: find posts by a specific author, designated either by name or by ID
-* `.name( slug )`: find the post with the specified slug
-* `.slug( slug )`: alias for `.name()`
 * `.year( year )`: find items published in the specified year
 * `.month( month )`: find items published in the specified month, designated by the month index (1&ndash;12) or name (*e.g.* "February")
 * `.day( day )`: find items published on the specified day
-* `.before( date )`: find items published before the specified date (string or Date object)
-* `.after( date )`: find items published after the specified date (string or Date object)
 
 ### Uploading Media
 
@@ -398,7 +438,7 @@ wp.media()
     .create()...
 ```
 
-### Custom Routes
+## Custom Routes
 
 Support for Custom Post Types is provided via the `.registerRoute` method. This method returns a handler function which can be assigned to your site instance as a method, and takes the [same namespace and route string arguments as `rest_register_route`](http://v2.wp-api.org/extending/adding/#bare-basics):
 
@@ -420,13 +460,70 @@ site.myCustomResource().id( 'foo' ); // => Error: Invalid path component: foo do
 ```
 Adding the regular expression pattern (as a string) enabled validation for this component. In this case, the `\\d+` will cause only _numeric_ values to be accepted.
 
-**NOTE THE DOUBLE-SLASHES** in the route definition here, however: `'/author/(?P<id>\\d+)'` This is a JavaScript string, where `\` _must_ be written as `\\` to be parsed properly. A single backslash will break the route's validation.
+**NOTE THE DOUBLE-SLASHES** in the route definition here, however:
+
+```
+'/author/(?P<id>\\d+)'
+```
+
+This is a JavaScript string, where `\` _must_ be written as `\\` to be parsed properly. A single backslash will break the route's validation.
 
 Each named group in the route will be converted into a named setter method on the route handler, as in `.id()` in the example above: that name is taken from the `<id>` in the route string.
 
-The route string `'pages/(?P<parentPage>[\d]+)/revisions/(?P<id>[\d]+)'` would create the setters `.parentPage()` and `id()`, permitting any permutation of the provided URL to be created.
+The route string `'pages/(?P<parentPage>[\\d]+)/revisions/(?P<id>[\\d]+)'` would create the setters `.parentPage()` and `id()`, permitting any permutation of the provided URL to be created.
 
-To permit custom parameter support methods on custom endpoints, a configuration object may be passed to the `registerRoute` method with a `mixins` property defining any functions to add:
+### Setter method naming for named route components
+
+In the example above, registering the route string `'/author/(?P<id>\\d+)'` results in the creation of an `.id()` method on the resulting resource handler:
+
+```js
+site.myCustomResource().id( 7 ); // => myplugin/v1/author/7
+```
+
+If a named route component (_e.g._ the "id" part in `(?P<id>\\d+)`, above) is in `snake_case`, then that setter will be converted to camelCase instead, as with `some_part` below:
+
+```js
+site.myCustomResource = site.registerRoute( 'myplugin/v1', '/resource/(?P<some_part>\\d+)' );
+site.myCustomResource().somePart( 7 ); // => myplugin/v1/resource/7
+```
+
+Non-snake_cased route parameter names will be unaffected.
+
+### Query Parameters & Filtering Custom Routes
+
+Many of the filtering methods available on the built-in collections are built in to custom-registered handlers, including `.page()`, `.perPage()`, `.search()`, `.include()`/`.exclude()` and `.slug()`; these parameters are supported across nearly all API endpoints, so they are made available automatically to custom endpoints as well.
+
+However not _every_ filtering method is available by default, so for convenience a configuration object may be passed to the `registerRoute` method with a `params` property specifying additional query parameters to support. This makes it very easy to add existing methods like `.filter()`, `.before()` or `.after()` to your own endpoints:
+
+```js
+site.handler = site.registerRoute( 'myplugin/v1', 'collection/(?P<id>)', {
+    // Listing any of these parameters will assign the built-in
+    // chaining method that handles the parameter:
+    params: [ 'filter', 'before', 'after', 'author', 'parent', 'post' ]
+});
+// yields
+site.handler().forPost( 8 ).author( 92 ).filter( 'etc', 'etera' )...
+```
+
+If you wish to set custom parameters, for example to query by the custom taxonomy `genre`, you can use the `.param()` method as usual:
+
+```js
+site.handler().param( 'genre', genreTermId );
+```
+
+but you can also specify additional query parameter names and a `.param()` wrapper function will be added automatically. _e.g._ here `.genre( x )` will be created as a shortcut for `.param( 'genre', x )`:
+
+```js
+site.books = site.registerRoute( 'myplugin/v1', 'books/(?P<id>)', {
+    params: [ 'genre' ]
+});
+// yields
+site.books().genre([ genreId1, genreId2 ])...
+```
+
+### Mixins
+
+To assign completely arbitrary custom methods for use with your custom endpoints, a configuration object may be passed to the `registerRoute` method with a `mixins` property defining any functions to add:
 
 ```js
 site.handler = site.registerRoute( 'myplugin/v1', 'collection/(?P<id>)', {
@@ -439,24 +536,7 @@ site.handler = site.registerRoute( 'myplugin/v1', 'collection/(?P<id>)', {
 ```
 This permits a developer to extend an endpoint with arbitrary parameters in the same manner as is done for the automatically-generated built-in route handlers.
 
-Re-utilizing existing mixins (like `.search()`) on custom routes will be supported in the near future.
-
-#### Setter method naming for named route components
-
-In the example above, registering the route string `'/author/(?P<id>\\d+)'` results in the creation of an `.id()` method on the resulting resource handler:
-
-```js
-site.myCustomResource().id( 7 ); // => myplugin/v1/author/7
-```
-
-If a named route component (e.g. `(?P<id>\\d+)`, above) is in `snake_case`, then that setter will be converted to camelCase instead, as with `some_part` below:
-
-```js
-site.myCustomResource = site.registerRoute( 'myplugin/v1', '/resource/(?P<some_part>\\d+)' );
-site.myCustomResource().somePart( 7 ); // => myplugin/v1/resource/7
-```
-
-Non-snake_cased route parameter names will be unaffected.
+Note that mixins should always return `this` to support method chaining.
 
 ## Embedding Data
 
@@ -490,7 +570,7 @@ This will include an `._embedded` object in the response JSON, which contains al
 
 For more on working with embedded data, [check out the WP-API documentation](http://v2.wp-api.org/).
 
-## Working with Paged Response Data
+## Collection Pagination
 
 WordPress sites can have a lot of content&mdash;far more than you'd want to pull down in a single request. The API endpoints default to providing a limited number of items per request, the same way that a WordPress site will default to 10 posts per page in archive views. The number of objects you can get back can be adjusted by calling the `perPage` method, but `perPage` is capped at 100 items per request for performance reasons. To work around these restrictions, the API provides headers so the API will frequently have to return your posts  be unable to fit all of your posts in a single query.
 
@@ -540,6 +620,17 @@ You can also use a `.page(pagenumber)` method on calls that support pagination t
 wp.posts().perPage( 5 ).page( 3 ).then(/* ... */);
 ```
 
+### Using `offset`
+
+If you prefer to think about your collections in terms of _offset_, or how many items "into" the collection you want to query, you can use the `offset` parameter (and parameter convenience method) instead of `page`. These are equivalent:
+
+```js
+// With .page()
+wp.posts().perPage( 5 ).page( 3 )...
+// With .offset()
+wp.posts().perPage( 5 ).offset( 10 )...
+```
+
 ## Customizing HTTP Request Behavior
 
 By default `node-wpapi` uses the [superagent](https://www.npmjs.com/package/superagent) library internally to make HTTP requests against the API endpoints. Superagent is a flexible tool that works on both the client and the browser, but you may want to use a different HTTP library, or to get data from a cache when available instead of making an HTTP request. To facilitate this, `node-wpapi` lets you supply a `transport` object when instantiating a site client to specify custom functions to use for one (or all) of GET, POST, PUT, DELETE & HEAD requests.
@@ -581,7 +672,7 @@ var site = new WPAPI({
 });
 ```
 
-You may set one or many custom HTTP transport methods on an existing WP site client instance (for example one returned through [Auto-discovery](#auto-discovery) by calling the `.transport()` method on the site client instance and passing an object of handler functions:
+You may set one or many custom HTTP transport methods on an existing WP site client instance (for example one returned through [auto-discovery](#auto-discovery) by calling the `.transport()` method on the site client instance and passing an object of handler functions:
 
 ```js
 site.transport({

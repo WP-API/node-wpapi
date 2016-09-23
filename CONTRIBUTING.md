@@ -78,12 +78,15 @@ We rebase feature branches onto master when merging in order to maintain a linea
 We use [JSCS](https://www.npmjs.org/package/jscs) to enforce a basic set of code style guidelines, and [JSHint](http://jshint.com/) to guard against syntax errors. To run them both execute `npm run lint`; they will also be run every time you execute `npm test`.
 
 JSCS is a useful tool for enforcing a code style, but isn't flexible enough to cover all guidelines. Note our standard for spacing within function parentheses, which is not enforced mechanically but will be evaluated manually when reviewing pull requests:
+
 ```javascript
 // Function params and args should be spaced out from the parentheses:
 someMethodCall( param1, param2 );
 function newFunction( arg1, arg2 ) {};
 ```
+
 "When in doubt, space it out," with the following exceptions.
+
 ```javascript
 // The space can be omitted when passing function expressions, object literals
 // or array literals as arguments:
@@ -101,6 +104,7 @@ someMethodThatTakesAnArray([
 ```
 
 We prefer `camelCase` variable and function names, and `UpperCamelCase` constructors. When using the `underscore_case` parameter names that are required by the WordPress API, the following JSHint directive can be used to disable the case enforcement for that particular file:
+
 ```javascript
 /*jshint -W106 */// Disable underscore_case warnings in this file
 ```

@@ -40,6 +40,17 @@ ul, ol, dl, figure,
 
 
 /**
+ * Set `margin-top` on subsidiary headings to break up the wall of text:
+ */
+h2, h3, h4, h5, h6 {
+    &:not(:first-child) {
+        margin-top: $spacing-unit;
+    }
+}
+
+
+
+/**
  * Images
  */
 img {

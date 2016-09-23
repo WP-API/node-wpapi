@@ -1,0 +1,39 @@
+---
+title: 404 Not Found
+layout: default
+---
+
+<div class="home">
+
+  <h1 class="page-heading">404 Not Found</h1>
+
+  <p><strong>The page you have requested does not exist or has moved.</strong></p>
+
+  <p>Perhaps you were looking for one of the resources below:</p>
+
+  <section>
+
+    <ol class="post-list">
+    [{%each readmeSections as section %}]
+      <li>
+        <a class="post-link" href="{{ "/[{{ section.slug }}]" | prepend: site.baseurl }}">[{{{
+          section.title
+        }}}]</a>
+        [{%if section.hasSubheadings %}]
+        <ul>
+        [{%each section.subheadings as subhed %}]
+          <li>
+            <a class="post-sublink" href="{{ "/[{{ subhed.slug }}]" | prepend: site.baseurl }}">[{{{
+              subhed.title
+            }}}]</a>
+          </li>
+        [{%endeach%}]
+        </ul>
+        [{%endif%}]
+      </li>
+    [{%endeach%}]
+    </ol>
+
+  </section>
+
+</div>
