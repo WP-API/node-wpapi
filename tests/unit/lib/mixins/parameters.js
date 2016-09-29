@@ -107,7 +107,7 @@ describe( 'mixins: parameters', function() {
 
 	});
 
-	describe( 'author', function() {
+	describe( '.author()', function() {
 
 		beforeEach(function() {
 			Req.prototype.author = parameterMixins.author;
@@ -177,7 +177,7 @@ describe( 'mixins: parameters', function() {
 
 	});
 
-	describe( 'parent', function() {
+	describe( '.parent()', function() {
 
 		beforeEach(function() {
 			Req.prototype.parent = parameterMixins.parent;
@@ -213,7 +213,7 @@ describe( 'mixins: parameters', function() {
 
 	});
 
-	describe( 'forPost', function() {
+	describe( '.forPost()', function() {
 
 		beforeEach(function() {
 			Req.prototype.forPost = parameterMixins.forPost;
@@ -248,7 +248,42 @@ describe( 'mixins: parameters', function() {
 
 	});
 
-	describe( 'sticky', function() {
+	describe( '.password()', function() {
+
+		beforeEach(function() {
+			Req.prototype.password = parameterMixins.password;
+		});
+
+		it( 'mixin method is defined', function() {
+			expect( parameterMixins ).to.have.property( 'password' );
+		});
+
+		it( 'is a function', function() {
+			expect( parameterMixins.password ).to.be.a( 'function' );
+		});
+
+		it( 'supports chaining', function() {
+			expect( req.password() ).to.equal( req );
+		});
+
+		it( 'has no effect when called with no argument', function() {
+			var result = req.password();
+			expect( getQueryStr( result ) ).to.equal( '' );
+		});
+
+		it( 'sets the "password" query parameter when provided a value', function() {
+			var result = req.password( 'correct horse battery staple' );
+			expect( getQueryStr( result ) ).to.equal( 'password=correct horse battery staple' );
+		});
+
+		it( 'overwrites previously-set values on subsequent calls', function() {
+			var result = req.password( 'correct horse' ).password( 'battery staple' );
+			expect( getQueryStr( result ) ).to.equal( 'password=battery staple' );
+		});
+
+	});
+
+	describe( '.sticky()', function() {
 
 		beforeEach(function() {
 			Req.prototype.sticky = parameterMixins.sticky;

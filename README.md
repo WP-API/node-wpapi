@@ -341,6 +341,9 @@ wp.posts().sticky( true )...
 
 // Return NO sticky posts
 wp.posts().sticky( false )...
+
+// Supply the password for a password-protected post
+wp.posts().id( 2501 ).password( 'correct horse battery staple' )...
 ```
 
 #### Paging & Sorting
