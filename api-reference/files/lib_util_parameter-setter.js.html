@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>parseRouteString - wpapi</title>
+    <title>lib/util/parameter-setter.js - wpapi</title>
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
     <link rel="shortcut icon" type="image/png" href="../assets/favicon.png">
@@ -58,29 +58,33 @@
 
         <div id="docs-main" class="apidocs">
             <div class="content container">
-                <h1>parseRouteString Module</h1>
-                <div class="box clearfix meta">
+                <h1 class="file-heading">File: lib/util/parameter-setter.js</h1>
                 
+                <div class="file">
+                    <pre class="code prettyprint linenums">
+                &#x27;use strict&#x27;;
                 
-                        <div class="foundat">
-                            Defined in: <a href="../files/lib_endpoint-factories.js.html#l2"><code>lib&#x2F;endpoint-factories.js:2</code></a>
-                        </div>
+                /**
+                 * Helper to create a simple parameter setter convenience method
+                 *
+                 * @param {String} param The string key of the parameter this method will set
+                 * @returns {Function} A setter method that can be assigned to a request instance
+                 */
+                module.exports = function( param ) {
+                	/**
+                	 * A setter for a specific parameter
+                	 *
+                	 * @chainable
+                	 * @param {*} val The value to set for the the parameter
+                	 * @returns The request instance on which this method was called (for chaining)
+                	 */
+                	return function( val ) {
+                		/* jshint validthis:true */
+                		return this.param( param, val );
+                	};
+                };
                 
-                </div>
-                
-                
-                <div class="box intro">
-                    <p>Take a WP route string (with PCRE named capture groups), such as</p>
-                
-                </div>
-                
-                
-                <div class="yui3-g">
-                    <div class="yui3-u-1-2">
-                    </div>
-                
-                    <div class="yui3-u-1-2">
-                    </div>
+                    </pre>
                 </div>
             </div>
         </div>

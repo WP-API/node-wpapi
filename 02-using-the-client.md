@@ -113,7 +113,7 @@ var site = new WPAPI({
 site.namespace( 'myplugin/v1' ).authors()...
 ```
 
-To create a slimmed JSON file dedicated to this particular purpose, see the Node script [lib/data/generate-endpoint-request.js](lib/data/generate-endpoint-request.js), which will let you download and save an endpoint response to your local project.
+To create a slimmed JSON file dedicated to this particular purpose, see the Node script [lib/data/generate-endpoint-response-json.js](lib/data/generate-endpoint-response-json.js), which will let you download and save an endpoint response to your local project.
 
 In addition to retrieving the specified resource with `.get()`, you can also `.create()`, `.update()` and `.delete()` resources:
 
@@ -240,11 +240,70 @@ var uriString = wp.posts().id( 7 ).embed().toString();
 
 As the name implies `.toString()` is not a chaining method, and will return a string containing the full URI; this can then be used with alternative HTTP transports like `request`, Node's native `http`, `fetch`, or jQuery.
 
+### API Query Parameters
+
+To set a query parameter on a request, use the `.param()` method:
+
+```js
+// All posts by author w/ ID "7" published before Sept 22, 2016
+wp.posts()
+  .param( 'before', new Date( '2016-09-22' ) )
+  .param( 'author', 7 )...
+```
+
+You can continue to chain properties until you call `.then`, `.get`, `.create`, `.update`, or `.delete` on the request chain.
+
+**Parameter Shortcut Methods**
+
+This library provides convenience methods for many of the most common parameters, like `search=` (search for a string in post title or content), `slug` (query for a post by slug), and `before` and `after` (find posts in a given date range):
+
+```js
+// Find a page with a specific slug
+wp.pages().slug( 'about' )...
+
+// Find a post authored by the user with ID #42
+wp.posts().author( 42 )...
+
+// Find all categories containing the word "news"
+wp.categories().search( 'news' )...
+
+// Find posts from March 2013 (provide a Date object or full ISO-8601 date):
+wp.posts().before( '2013-04-01T00:00:00.000Z' ).after( new Date( 'March 01, 2013' ) )...
+```
+
+If you are using the **latest development branch** of the API plugin, there are a few more new query parameter methods you may take advantage of:
+
+```js
+// Return ONLY sticky posts
+wp.posts().sticky( true )...
+
+// Return NO sticky posts
+wp.posts().sticky( false )...
+
+// Supply the password for a password-protected post
+wp.posts().id( 2501 ).password( 'correct horse battery staple' )...
+```
+
+#### Paging & Sorting
+
+Convenience methods are also available to set paging & sorting properties like `page`, `per_page` (available as `.perPage()`), `offset`, `order` and `orderby`:
+
+```js
+// perPage() sets the maximum number of posts to return. 20 latest posts:
+wp.posts().perPage( 20 )...
+// 21st through 40th latest posts (*i.e.* the second page of results):
+wp.posts().perPage( 20 ).page( 2 )...
+// Order posts alphabetically by title:
+wp.posts().order( 'asc' ).orderby( 'title' )...
+```
+
+See the section on collection pagination for more information.
+
 ### Filtering Collections
 
-Queries against collection endpoints (like `wp.posts()`, which maps to `endpoint/posts/`) can be filtered to specify a subset of posts to return. Many of the WP_Query values are available by default, including `tag`, `author_name`, `page_id`, etc; even more parameters are available to filter byif you authenticate with the API using either [Basic Auth](https://github.com/WP-API/Basic-Auth) or [OAuth](https://github.com/WP-API/OAuth1). You can continue to chain properties until you call `.then`, `.get`, `.post`, `.put`, or `.delete` on the request chain.
+While some WP_Query functionality is not yet available through with the WordPress REST API, `filter` is a special query parameter that lets you directly specify many WP_Query arguments, including `tag`, `author_name`, and other [public query vars](https://codex.wordpress.org/WordPress_Query_Vars). Even more parameters are available for use with `filter` if you [authenticate with the API](http://v2.wp-api.org/guide/authentication/).
 
-Example queries:
+Example queries using `filter`:
 
 ```javascript
 // All posts belonging to author with nicename "jadenbeirne"
@@ -268,15 +327,10 @@ wp.posts().category( 7 ).tag( 'music' ).get();
 
 // equivalent to .filter( 'author_name', 'williamgibson' ):
 wp.posts().author( 'williamgibson' ).get();
-// equivalent to .filter( 'author', 42 ):
+// equivalent to .param( 'author', 42 ):
 wp.posts().author( 42 ).get();
 // last value wins: this queries for author_name == frankherbert
 wp.posts().author( 42 ).author( 'frankherbert' ).get();
-
-// perPage() sets the maximum number of posts to return. 20 latest posts:
-wp.posts().perPage( 20 )...
-// 21st through 40th latest posts (*i.e.* the second page of results):
-wp.posts().perPage( 20 ).page( 2 )...
 
 // Put it all together: Get the 5 most recent posts by jadenbeirne in 'fiction'
 wp.posts()
@@ -290,18 +344,13 @@ wp.posts()
 
 The following methods are shortcuts for filtering the requested collection down by various commonly-used criteria:
 
+* `.author( author )`: find posts by a specific author, designated either by nicename or by ID (ID preferred)
 * `.category( category )`: find posts in a specific category
 * `.tag( tag )`: find posts with a specific tag
 * `.taxonomy( name, term )`: find items with a specific taxonomy term
-* `.search( searchString )`: find posts containing the specified search term(s)
-* `.author( author )`: find posts by a specific author, designated either by name or by ID
-* `.name( slug )`: find the post with the specified slug
-* `.slug( slug )`: alias for `.name()`
 * `.year( year )`: find items published in the specified year
 * `.month( month )`: find items published in the specified month, designated by the month index (1&ndash;12) or name (*e.g.* "February")
 * `.day( day )`: find items published on the specified day
-* `.before( date )`: find items published before the specified date (string or Date object)
-* `.after( date )`: find items published after the specified date (string or Date object)
 
 ### Uploading Media
 
@@ -339,63 +388,3 @@ wp.media()
     .file( document.getElementById( 'file-input' ).files[0] )
     .create()...
 ```
-
-### Custom Routes
-
-Support for Custom Post Types is provided via the `.registerRoute` method. This method returns a handler function which can be assigned to your site instance as a method, and takes the [same namespace and route string arguments as `rest_register_route`](http://v2.wp-api.org/extending/adding/#bare-basics):
-
-```js
-var site = new WPAPI({ endpoint: 'http://www.yoursite.com/wp-json' });
-site.myCustomResource = site.registerRoute( 'myplugin/v1', '/author/(?P<id>)' );
-site.myCustomResource().id( 17 ); // => myplugin/v1/author/17
-```
-
-The string `(?P<id>)` indicates that a level of the route for this resource is a dynamic property named ID. By default, properties identified in this fashion will not have any inherent validation. This is designed to give developers the flexibility to pass in anything, with the caveat that only valid IDs will be accepted on the WordPress end.
-
-You might notice that in the example from the official WP-API documentation, a pattern is specified with a different format: this is a [regular expression](http://www.regular-expressions.info/tutorial.html) designed to validate the values that may be used for this capture group.
-
-```js
-var site = new WPAPI({ endpoint: 'http://www.yoursite.com/wp-json' });
-site.myCustomResource = site.registerRoute( 'myplugin/v1', '/author/(?P<id>\\d+)' );
-site.myCustomResource().id( 7 ); // => myplugin/v1/author/7
-site.myCustomResource().id( 'foo' ); // => Error: Invalid path component: foo does not match (?P<a>\d+)
-```
-Adding the regular expression pattern (as a string) enabled validation for this component. In this case, the `\\d+` will cause only _numeric_ values to be accepted.
-
-**NOTE THE DOUBLE-SLASHES** in the route definition here, however: `'/author/(?P<id>\\d+)'` This is a JavaScript string, where `\` _must_ be written as `\\` to be parsed properly. A single backslash will break the route's validation.
-
-Each named group in the route will be converted into a named setter method on the route handler, as in `.id()` in the example above: that name is taken from the `<id>` in the route string.
-
-The route string `'pages/(?P<parentPage>[\d]+)/revisions/(?P<id>[\d]+)'` would create the setters `.parentPage()` and `id()`, permitting any permutation of the provided URL to be created.
-
-To permit custom parameter support methods on custom endpoints, a configuration object may be passed to the `registerRoute` method with a `mixins` property defining any functions to add:
-
-```js
-site.handler = site.registerRoute( 'myplugin/v1', 'collection/(?P<id>)', {
-    mixins: {
-        myParam: function( val ) {
-            return this.param( 'my_param', val );
-        }
-    }
-});
-```
-This permits a developer to extend an endpoint with arbitrary parameters in the same manner as is done for the automatically-generated built-in route handlers.
-
-Re-utilizing existing mixins (like `.search()`) on custom routes will be supported in the near future.
-
-#### Setter method naming for named route components
-
-In the example above, registering the route string `'/author/(?P<id>\\d+)'` results in the creation of an `.id()` method on the resulting resource handler:
-
-```js
-site.myCustomResource().id( 7 ); // => myplugin/v1/author/7
-```
-
-If a named route component (e.g. `(?P<id>\\d+)`, above) is in `snake_case`, then that setter will be converted to camelCase instead, as with `some_part` below:
-
-```js
-site.myCustomResource = site.registerRoute( 'myplugin/v1', '/resource/(?P<some_part>\\d+)' );
-site.myCustomResource().somePart( 7 ); // => myplugin/v1/resource/7
-```
-
-Non-snake_cased route parameter names will be unaffected.

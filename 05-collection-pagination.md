@@ -1,7 +1,7 @@
 ---
 layout: page
-title: Working with Paged Response Data
-permalink: /working-with-paged-response-data/
+title: Collection Pagination
+permalink: /collection-pagination/
 ---
 
 * TOC
@@ -53,4 +53,15 @@ You can also use a `.page(pagenumber)` method on calls that support pagination t
 
 ```js
 wp.posts().perPage( 5 ).page( 3 ).then(/* ... */);
+```
+
+### Using `offset`
+
+If you prefer to think about your collections in terms of _offset_, or how many items "into" the collection you want to query, you can use the `offset` parameter (and parameter convenience method) instead of `page`. These are equivalent:
+
+```js
+// With .page()
+wp.posts().perPage( 5 ).page( 3 )...
+// With .offset()
+wp.posts().perPage( 5 ).offset( 10 )...
 ```

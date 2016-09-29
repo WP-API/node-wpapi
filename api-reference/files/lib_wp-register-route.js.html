@@ -14,7 +14,7 @@
     <header class="main-header">
         <div class="content">
             <div class="project-title">
-                    <h1 class="project-name">wpapi</h1> <span class="project-version">0.10.0</span>
+                    <h1 class="project-name">wpapi</h1> <span class="project-version">0.11.0</span>
                     <p class="description">A client for interacting with the WordPress REST API</p>
             </div>
             <ul class="jump-links">
@@ -68,6 +68,9 @@
                 
                 var buildRouteTree = require( &#x27;./route-tree&#x27; ).build;
                 var generateEndpointFactories = require( &#x27;./endpoint-factories&#x27; ).generate;
+                var paramSetter = require( &#x27;./util/parameter-setter&#x27; );
+                var applyMixin = require( &#x27;./util/apply-mixin&#x27; );
+                var mixins = require( &#x27;./mixins&#x27; );
                 
                 /**
                  * Create and return a handler for an arbitrary WP REST API endpoint.
@@ -125,16 +128,33 @@
                 	var endpointFactories = generateEndpointFactories( routeTree )[ namespace ];
                 	var EndpointRequest = endpointFactories[ Object.keys( endpointFactories )[ 0 ] ].Ctor;
                 
+                	if ( options &amp;&amp; options.params ) {
+                		options.params.forEach(function( param ) {
+                			// Only accept string parameters
+                			if ( typeof param !== &#x27;string&#x27; ) {
+                				return;
+                			}
+                
+                			// If the parameter can be mapped to a mixin, apply that mixin
+                			if ( typeof mixins[ param ] === &#x27;object&#x27; ) {
+                				Object.keys( mixins[ param ] ).forEach(function( key ) {
+                					applyMixin( EndpointRequest.prototype, key, mixins[ param ][ key ] );
+                				});
+                				return;
+                			}
+                
+                			// Attempt to create a simple setter for any parameters for which
+                			// we do not already have a custom mixin
+                			applyMixin( EndpointRequest.prototype, param, paramSetter( param ) );
+                		});
+                	}
+                
+                	// Set any explicitly-provided object mixins
                 	if ( options &amp;&amp; typeof options.mixins === &#x27;object&#x27; ) {
                 
                 		// Set any specified mixin functions on the response
                 		Object.keys( options.mixins ).forEach(function( key ) {
-                			var mixin = options.mixins[ key ];
-                
-                			// Will not overwrite existing methods
-                			if ( typeof mixin === &#x27;function&#x27; &amp;&amp; ! EndpointRequest.prototype[ key ] ) {
-                				EndpointRequest.prototype[ key ] = options.mixins[ key ];
-                			}
+                			applyMixin( EndpointRequest.prototype, key, options.mixins[ key ] );
                 		});
                 	}
                 

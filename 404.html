@@ -4,16 +4,13 @@ layout: default
 
 <div class="home">
 
-  <h1 class="page-heading">About {{ site.library_title }}</h1>
+  <h1 class="page-heading">404 Not Found</h1>
 
-  <p><code>node-wpapi</code> makes it easy for your JavaScript application to request specific resources from a <a href="https://wordpress.org">WordPress</a> website. It uses a query builder-style syntax to let you craft the request being made to <a href="http://v2.wp-api.org">WordPress REST API</a> endpoints, then returns the API&#39;s response to your application as a JavaScript object. And don&#39;t let the name fool you: <code>node-wpapi</code> works just as well in the browser as it does on the server!</p>
-<p>This library is maintained by K. Adam White at <a href="https://bocoup.com">Bocoup</a>, with contributions from a <a href="https://github.com/WP-API/node-wpapi/graphs/contributors">great community</a> of WordPress and JavaScript developers.</p>
-<p>To get started, <code>npm install wpapi</code> or <a href="https://wp-api.github.io/node-wpapi/wpapi.zip">download the browser build</a> and check out &quot;Installation&quot; and &quot;Using the Client&quot; below.</p>
+  <p><strong>The page you have requested does not exist or has moved.</strong></p>
 
+  <p>Perhaps you were looking for one of the resources below:</p>
 
   <section>
-
-    <h2 class="page-heading">Readme &amp; Getting Started</h2>
 
     <ol class="post-list">
       <li>
@@ -119,27 +116,5 @@ layout: default
     </ol>
 
   </section>
-
-  <section>
-    <h2 class="page-heading">User Guides</h2>
-
-    <p>Don't see the topic you're looking for? <a href="https://github.com/WP-API/node-wpapi/issues">Open an issue</a> to request a guide, or <a href="https://github.com/WP-API/node-wpapi/tree/master/documentation/_posts">submit your own</a> with a pull request!
-
-    <ul class="post-list">
-      {% for post in site.posts %}
-        <li>
-          <span class="post-meta">{{ post.date | date: "%b %-d, %Y" }}</span>
-          <span class="post-link">
-            <a href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
-            by
-            {% if post.author_web %}<a href="{{ post.author_web }}">{% endif %}
-              {{ post.author }}
-            {% if post.author_web %}</a>{% endif %}
-          </span>
-        </li>
-      {% endfor %}
-    </ul>
-  </section>
-
 
 </div>

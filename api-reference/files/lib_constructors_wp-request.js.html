@@ -14,7 +14,7 @@
     <header class="main-header">
         <div class="content">
             <div class="project-title">
-                    <h1 class="project-name">wpapi</h1> <span class="project-version">0.10.0</span>
+                    <h1 class="project-name">wpapi</h1> <span class="project-version">0.11.0</span>
                     <p class="description">A client for interacting with the WordPress REST API</p>
             </div>
             <ul class="jump-links">
@@ -77,6 +77,7 @@
                 
                 var alphaNumericSort = require( &#x27;../util/alphanumeric-sort&#x27; );
                 var keyValToObj = require( &#x27;../util/key-val-to-obj&#x27; );
+                var paramSetter = require( &#x27;../util/parameter-setter&#x27; );
                 
                 /**
                  * WPRequest is the base API request object constructor
@@ -427,7 +428,7 @@
                 	}
                 
                 	if ( ! valid ) {
-                		throw new Error( &#x27;Incomplete URL! Missing component: &#x27; + path.join( &#x27;/&#x27; ) );
+                		throw new Error( &#x27;Incomplete URL! Missing component: /&#x27; + path.join( &#x27;/&#x27; ) );
                 	}
                 
                 	return this;
@@ -494,22 +495,19 @@
                 	return this;
                 };
                 
+                // Globally-applicable parameters that impact the shape of the request or response
+                // ===============================================================================
+                
                 /**
-                 * Set the context of the request. Used primarily to expose private values on a request
-                 * object, by setting the context to &quot;edit&quot;.
+                 * Set the context of the request. Used primarily to expose private values on a
+                 * request object by setting the context to &quot;edit&quot;.
                  *
                  * @method context
                  * @chainable
                  * @param {String} context The context to set on the request
                  * @return {WPRequest} The WPRequest instance (for chaining)
                  */
-                WPRequest.prototype.context = function( context ) {
-                	if ( context === &#x27;edit&#x27; ) {
-                		// Force basic authentication for edit context
-                		this.auth();
-                	}
-                	return this.param( &#x27;context&#x27;, context );
-                };
+                WPRequest.prototype.context = paramSetter( &#x27;context&#x27; );
                 
                 /**
                  * Convenience wrapper for &#x60;.context( &#x27;edit&#x27; )&#x60;
@@ -531,6 +529,119 @@
                  */
                 WPRequest.prototype.embed = function() {
                 	return this.param( &#x27;_embed&#x27;, true );
+                };
+                
+                // Parameters supported by all/nearly all default collections
+                // ==========================================================
+                
+                /**
+                 * Set the pagination of a request. Use in conjunction with &#x60;.perPage()&#x60; for explicit
+                 * pagination handling. (The number of pages in a response can be retrieved from the
+                 * response&#x27;s &#x60;_paging.totalPages&#x60; property.)
+                 *
+                 * @method page
+                 * @chainable
+                 * @param {Number} pageNumber The page number of results to retrieve
+                 * @return The request instance (for chaining)
+                 */
+                WPRequest.prototype.page = paramSetter( &#x27;page&#x27; );
+                
+                /**
+                 * Set the number of items to be returned in a page of responses.
+                 *
+                 * @method perPage
+                 * @chainable
+                 * @param {Number} itemsPerPage The number of items to return in one page of results
+                 * @return The request instance (for chaining)
+                 */
+                WPRequest.prototype.perPage = paramSetter( &#x27;per_page&#x27; );
+                
+                /**
+                 * Set an arbitrary offset to retrieve items from a specific point in a collection.
+                 *
+                 * @method offset
+                 * @chainable
+                 * @param {Number} offsetNumber The number of items by which to offset the response
+                 * @return The request instance (for chaining)
+                 */
+                WPRequest.prototype.offset = paramSetter( &#x27;offset&#x27; );
+                
+                /**
+                 * Change the sort direction of a returned collection
+                 *
+                 * @example order comments chronologically (oldest first)
+                 *
+                 *     site.comments().order( &#x27;asc&#x27; )...
+                 *
+                 * @method order
+                 * @chainable
+                 * @param {String} direction The order to use when sorting the response
+                 * @return The request instance (for chaining)
+                 */
+                WPRequest.prototype.order = paramSetter( &#x27;order&#x27; );
+                
+                /**
+                 * Order a collection by a specific field
+                 *
+                 * @method orderby
+                 * @chainable
+                 * @param {String} field The field by which to order the response
+                 * @return The request instance (for chaining)
+                 */
+                WPRequest.prototype.orderby = paramSetter( &#x27;orderby&#x27; );
+                
+                /**
+                 * Filter results to those matching the specified search terms.
+                 *
+                 * @method search
+                 * @chainable
+                 * @param {String} searchString A string to search for within post content
+                 * @return The request instance (for chaining)
+                 */
+                WPRequest.prototype.search = paramSetter( &#x27;search&#x27; );
+                
+                /**
+                 * Include specific resource IDs in the response collection.
+                 *
+                 * @method include
+                 * @chainable
+                 * @param {Number|Number[]} ids An ID or array of IDs to include
+                 * @return The request instance (for chaining)
+                 */
+                WPRequest.prototype.include = paramSetter( &#x27;include&#x27; );
+                
+                /**
+                 * Exclude specific resource IDs in the response collection.
+                 *
+                 * @method exclude
+                 * @chainable
+                 * @param {Number|Number[]} ids An ID or array of IDs to exclude
+                 * @return The request instance (for chaining)
+                 */
+                WPRequest.prototype.exclude = paramSetter( &#x27;exclude&#x27; );
+                
+                /**
+                 * Query a collection for members with a specific slug.
+                 *
+                 * @method slug
+                 * @chainable
+                 * @param {String} slug A post slug (slug), e.g. &quot;hello-world&quot;
+                 * @return The request instance (for chaining)
+                 */
+                WPRequest.prototype.slug = paramSetter( &#x27;slug&#x27; );
+                
+                /**
+                 * Alias for .slug()
+                 *
+                 * @method name
+                 * @alias slug
+                 * @deprecated use .slug()
+                 * @chainable
+                 * @param {String} slug A post name (slug), e.g. &quot;hello-world&quot;
+                 * @return The request instance (for chaining)
+                 */
+                WPRequest.prototype.name = function( slug ) {
+                	return this.slug( slug );
                 };
                 
                 // HTTP Transport Prototype Methods

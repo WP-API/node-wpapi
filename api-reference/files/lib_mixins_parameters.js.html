@@ -14,7 +14,7 @@
     <header class="main-header">
         <div class="content">
             <div class="project-title">
-                    <h1 class="project-name">wpapi</h1> <span class="project-version">0.10.0</span>
+                    <h1 class="project-name">wpapi</h1> <span class="project-version">0.11.0</span>
                     <p class="description">A client for interacting with the WordPress REST API</p>
             </div>
             <ul class="jump-links">
@@ -72,85 +72,15 @@
                  *
                  * @module filters
                  */
+                var paramSetter = require( &#x27;../util/parameter-setter&#x27; );
                 
                 var parameterMixins = {};
                 
                 // Needed for .author mixin, as author by ID is a parameter and by Name is a filter
                 var filter = require( &#x27;./filters&#x27; ).filter;
                 
-                // Pagination Methods
-                // ==================
-                
-                /**
-                 * Set the pagination of a request. Use in conjunction with &#x60;.perPage()&#x60; for explicit
-                 * pagination handling. (The number of pages in a response can be retrieved from the
-                 * response&#x27;s &#x60;_paging.totalPages&#x60; property.)
-                 *
-                 * @method page
-                 * @chainable
-                 * @param {Number} pageNumber The page number of results to retrieve
-                 * @return The request instance (for chaining)
-                 */
-                parameterMixins.page = function( pageNumber ) {
-                	/* jshint validthis:true */
-                	return this.param( &#x27;page&#x27;, pageNumber );
-                };
-                
-                /**
-                 * Set the number of items to be returned in a page of responses.
-                 *
-                 * @method perPage
-                 * @chainable
-                 * @param {Number} itemsPerPage The number of items to return in one page of results
-                 * @return The request instance (for chaining)
-                 */
-                parameterMixins.perPage = function( itemsPerPage ) {
-                	/* jshint validthis:true */
-                	return this.param( &#x27;per_page&#x27;, itemsPerPage );
-                };
-                
                 // Parameter Methods
                 // =================
-                
-                /**
-                 * Query a collection for members with a specific slug.
-                 *
-                 * @method slug
-                 * @chainable
-                 * @param {String} slug A post slug (slug), e.g. &quot;hello-world&quot;
-                 * @return The request instance (for chaining)
-                 */
-                parameterMixins.slug = function( slug ) {
-                	/* jshint validthis:true */
-                	return this.param( &#x27;slug&#x27;, slug );
-                };
-                
-                /**
-                 * Alias for .slug()
-                 *
-                 * @method name
-                 * @alias slug
-                 * @chainable
-                 * @param {String} slug A post name (slug), e.g. &quot;hello-world&quot;
-                 * @return The request instance (for chaining)
-                 */
-                parameterMixins.name = function( slug ) {
-                	/* jshint validthis:true */
-                	return parameterMixins.slug.call( this, slug );
-                };
-                
-                /**
-                 * Filter results to those matching the specified search terms.
-                 *
-                 * @method search
-                 * @chainable
-                 * @param {String} searchString A string to search for within post content
-                 * @return The request instance (for chaining)
-                 */
-                parameterMixins.search = function( searchString ) {
-                	/* jshint validthis:true */
-                	return this.param( &#x27;search&#x27;,  searchString );
-                };
                 
                 /**
                  * Query for posts by a specific author.
@@ -221,10 +151,28 @@
                  * @param {String|Number} post The ID of the post for which to retrieve terms
                  * @return The request instance (for chaining)
                  */
-                parameterMixins.forPost = function( postId ) {
-                	/* jshint validthis:true */
-                	return this.param( &#x27;post&#x27;, postId );
-                };
+                parameterMixins.forPost = paramSetter( &#x27;post&#x27; );
+                
+                /**
+                 * Specify the password to use to access the content of a password-protected post
+                 *
+                 * @method password
+                 * @chainable
+                 * @param {string} password A string password to access protected content within a post
+                 * @returns The request instance (for chaining)
+                 */
+                parameterMixins.password = paramSetter( &#x27;password&#x27; );
+                
+                /**
+                 * Specify whether to return only, or to completely exclude, sticky posts
+                 *
+                 * @method sticky
+                 * @chainable
+                 * @param {boolean} sticky A boolean value for whether ONLY sticky posts (true) or
+                 *                         NO sticky posts (false) should be returned in the query
+                 * @returns The request instance (for chaining)
+                 */
+                parameterMixins.sticky = paramSetter( &#x27;sticky&#x27; );
                 
                 // Date Methods
                 // ============

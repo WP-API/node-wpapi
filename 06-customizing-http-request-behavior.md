@@ -43,7 +43,7 @@ var site = new WPAPI({
 });
 ```
 
-You may set one or many custom HTTP transport methods on an existing WP site client instance (for example one returned through [Auto-discovery](#auto-discovery) by calling the `.transport()` method on the site client instance and passing an object of handler functions:
+You may set one or many custom HTTP transport methods on an existing WP site client instance (for example one returned through [auto-discovery](#auto-discovery) by calling the `.transport()` method on the site client instance and passing an object of handler functions:
 
 ```js
 site.transport({
