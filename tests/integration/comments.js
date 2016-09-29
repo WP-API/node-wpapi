@@ -67,7 +67,7 @@ describe( 'integration: comments()', function() {
 		});
 	});
 
-	it( 'can be used to retrieve a list of recent comments', function() {
+	it( 'can be used to retrieve a list of comments', function() {
 		var prom = wp.comments()
 			.get()
 			.then(function( comments ) {
@@ -78,8 +78,9 @@ describe( 'integration: comments()', function() {
 		return expect( prom ).to.eventually.equal( SUCCESS );
 	});
 
-	it( 'fetches the 10 most recent comments by default', function() {
+	it( 'fetches the 10 oldest comments when sorted "asc"', function() {
 		var prom = wp.comments()
+			.order( 'asc' )
 			.get()
 			.then(function( comments ) {
 				expect( getPostsAndAuthors( comments ) ).to.deep.equal( expectedResults.postsAndAuthors.page1 );
@@ -135,6 +136,7 @@ describe( 'integration: comments()', function() {
 					// Get last page & ensure 'next' no longer appears
 					return wp.comments()
 						.page( posts._paging.totalPages )
+						.order( 'asc' )
 						.get()
 						.then(function( posts ) {
 							expect( posts._paging ).not.to.have.property( 'next' );
@@ -147,6 +149,7 @@ describe( 'integration: comments()', function() {
 
 		it( 'allows access to the next page of results via .next', function() {
 			var prom = wp.comments()
+				.order( 'asc' )
 				.get()
 				.then(function( posts ) {
 					return posts._paging.next
@@ -182,6 +185,7 @@ describe( 'integration: comments()', function() {
 
 		it( 'allows access to the previous page of results via .prev', function() {
 			var prom = wp.comments()
+				.order( 'asc' )
 				.page( 2 )
 				.get()
 				.then(function( posts ) {
