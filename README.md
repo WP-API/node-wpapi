@@ -333,6 +333,16 @@ wp.categories().search( 'news' )...
 wp.posts().before( '2013-04-01T00:00:00.000Z' ).after( new Date( 'March 01, 2013' ) )...
 ```
 
+If you are using the **latest development branch** of the API plugin, there are a few more new query parameter methods you may take advantage of:
+
+```js
+// Return ONLY sticky posts
+wp.posts().sticky( true )...
+
+// Return NO sticky posts
+wp.posts().sticky( false )...
+```
+
 #### Paging & Sorting
 
 Convenience methods are also available to set paging & sorting properties like `page`, `per_page` (available as `.perPage()`), `offset`, `order` and `orderby`:

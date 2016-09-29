@@ -248,4 +248,39 @@ describe( 'mixins: parameters', function() {
 
 	});
 
+	describe( 'sticky', function() {
+
+		beforeEach(function() {
+			Req.prototype.sticky = parameterMixins.sticky;
+		});
+
+		it( 'mixin method is defined', function() {
+			expect( parameterMixins ).to.have.property( 'sticky' );
+		});
+
+		it( 'is a function', function() {
+			expect( parameterMixins.sticky ).to.be.a( 'function' );
+		});
+
+		it( 'supports chaining', function() {
+			expect( req.sticky() ).to.equal( req );
+		});
+
+		it( 'has no effect when called with no argument', function() {
+			var result = req.sticky();
+			expect( getQueryStr( result ) ).to.equal( '' );
+		});
+
+		it( 'sets the "sticky" query parameter when provided a value', function() {
+			var result = req.sticky( true );
+			expect( getQueryStr( result ) ).to.equal( 'sticky=true' );
+		});
+
+		it( 'overwrites previously-set values on subsequent calls', function() {
+			var result = req.sticky( 1 ).sticky( 0 );
+			expect( getQueryStr( result ) ).to.equal( 'sticky=0' );
+		});
+
+	});
+
 });
