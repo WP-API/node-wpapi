@@ -9,6 +9,7 @@ pids
 _gh_issues/
 coverage
 docs-theme/
+docs-tmp/
 docs/
 index.html
 test.js

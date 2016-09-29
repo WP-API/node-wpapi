@@ -26,6 +26,9 @@ const OMIT_FILE_RE = /^\.|\.lock|\.combyne$/;
 // unnecessarily deleted, but it makes things work with minimal complexity.
 const PROBABLY_A_DIRECTORY_RE = /^[^\.]+$/;
 
+// RE to match the markdown files that are extracted from the README.md
+const GENERATED_MARKDOWN_RE = /^\d+-.*\.md$/;
+
 // RE to match "y", yes", "yeah", "yes please", and other affirmative responses
 const AFFIRMATIVE_RE = /^y(:?e[asp]?h?)?(:? [^\n]+)?\s*$/i;
 
@@ -148,6 +151,17 @@ runCommand( 'rm -rf docs-tmp' )
 	.then( () => console.log( '\nTemporary directory created successfully. Switching branches...\n' ) )
 	// Switch to the docs site branch
 	.then( () => runCommand( 'git checkout gh-pages' ) )
+	// Remove auto-generated files from the root of the gh-pages branch, in case
+	// file names have changed since the last deploy
+	.then( () => ls( projectRoot )
+		.then( files => {
+			const removeFiles = files
+				.filter( file => GENERATED_MARKDOWN_RE.test( file ) )
+				.map( file => () => runCommand( `rm ${file}` ) );
+
+			return runInSequence( removeFiles );
+		})
+	)
 	.then( () => console.log( '\nCopying files from temp directory...\n' ) )
 	// Get a list of generated files in the temp directory
 	.then( () => ls( path.join( projectRoot, 'docs-tmp' ) ) )

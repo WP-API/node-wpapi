@@ -29,6 +29,7 @@ test.js
 # Docs directory should not be committed into master:
 # The rendered API docs files will live in the gh-pages branch
 docs/
+docs-tmp/
 index.html
 
 # Dynamic content within Jekyll documentation site
