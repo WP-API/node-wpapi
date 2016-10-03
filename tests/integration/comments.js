@@ -245,7 +245,7 @@ describe( 'integration: comments()', function() {
 
 	});
 
-	describe( 'forPost() query', function() {
+	describe( '.post() query', function() {
 		var pageComments;
 		var commentProm;
 
@@ -261,7 +261,7 @@ describe( 'integration: comments()', function() {
 						return flatArr.concat( arr );
 					}, [] );
 					return wp.comments()
-						.forPost( pageId )
+						.post( pageId )
 						.get();
 				});
 		});

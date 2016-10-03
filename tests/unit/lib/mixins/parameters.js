@@ -213,36 +213,36 @@ describe( 'mixins: parameters', function() {
 
 	});
 
-	describe( '.forPost()', function() {
+	describe( '.post()', function() {
 
 		beforeEach(function() {
-			Req.prototype.forPost = parameterMixins.forPost;
+			Req.prototype.post = parameterMixins.post;
 		});
 
 		it( 'mixin method is defined', function() {
-			expect( parameterMixins ).to.have.property( 'forPost' );
+			expect( parameterMixins ).to.have.property( 'post' );
 		});
 
 		it( 'is a function', function() {
-			expect( parameterMixins.forPost ).to.be.a( 'function' );
+			expect( parameterMixins.post ).to.be.a( 'function' );
 		});
 
 		it( 'supports chaining', function() {
-			expect( req.forPost() ).to.equal( req );
+			expect( req.post() ).to.equal( req );
 		});
 
 		it( 'has no effect when called with no argument', function() {
-			var result = req.forPost();
+			var result = req.post();
 			expect( getQueryStr( result ) ).to.equal( '' );
 		});
 
 		it( 'sets the "post" query parameter when provided a value', function() {
-			var result = req.forPost( 3263827 );
+			var result = req.post( 3263827 );
 			expect( getQueryStr( result ) ).to.equal( 'post=3263827' );
 		});
 
 		it( 'overwrites previously-set values on subsequent calls', function() {
-			var result = req.forPost( 1138 ).forPost( 2501 );
+			var result = req.post( 1138 ).post( 2501 );
 			expect( getQueryStr( result ) ).to.equal( 'post=2501' );
 		});
 

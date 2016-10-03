@@ -515,7 +515,7 @@ site.handler = site.registerRoute( 'myplugin/v1', 'collection/(?P<id>)', {
     params: [ 'filter', 'before', 'after', 'author', 'parent', 'post' ]
 });
 // yields
-site.handler().forPost( 8 ).author( 92 ).filter( 'etc', 'etera' )...
+site.handler().post( 8 ).author( 92 ).filter( 'etc', 'etera' )...
 ```
 
 If you wish to set custom parameters, for example to query by the custom taxonomy `genre`, you can use the `.param()` method as usual:

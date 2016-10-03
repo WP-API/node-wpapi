@@ -353,7 +353,7 @@ describe( 'integration: categories()', function() {
 
 	});
 
-	describe( 'forPost()', function() {
+	describe( '.post()', function() {
 
 		it( 'can be used to retrieve terms for a specific post', function() {
 			var postCategories;
@@ -370,7 +370,7 @@ describe( 'integration: categories()', function() {
 						}
 					});
 					var postId = post.id;
-					return wp.categories().forPost( postId );
+					return wp.categories().post( postId );
 				})
 				.then(function( categories ) {
 					expect( categories.length ).to.equal( postCategories.length );
