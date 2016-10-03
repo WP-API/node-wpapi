@@ -23,10 +23,10 @@ describe( 'wp', function() {
 	describe( 'constructor', function() {
 
 		it( 'enforces new', function() {
-			var wp1 = new WPAPI({ endpoint: '/' });
-			expect( wp1 instanceof WPAPI ).to.be.true;
-			var wp2 = WPAPI({ endpoint: '/' });
-			expect( wp2 instanceof WPAPI ).to.be.true;
+			var site1 = new WPAPI({ endpoint: '/' });
+			expect( site1 instanceof WPAPI ).to.be.true;
+			var site2 = WPAPI({ endpoint: '/' });
+			expect( site2 instanceof WPAPI ).to.be.true;
 		});
 
 		it( 'throws an error if no endpoint is provided', function() {
@@ -51,14 +51,25 @@ describe( 'wp', function() {
 		});
 
 		it( 'sets options on an instance variable', function() {
-			var wp = new WPAPI({
+			var site = new WPAPI({
 				endpoint: 'http://some.url.com/wp-json',
 				username: 'fyodor',
 				password: 'dostoyevsky'
 			});
-			expect( wp._options.endpoint ).to.equal( 'http://some.url.com/wp-json/' );
-			expect( wp._options.username ).to.equal( 'fyodor' );
-			expect( wp._options.password ).to.equal( 'dostoyevsky' );
+			expect( site._options.endpoint ).to.equal( 'http://some.url.com/wp-json/' );
+			expect( site._options.username ).to.equal( 'fyodor' );
+			expect( site._options.password ).to.equal( 'dostoyevsky' );
+		});
+
+		it( 'activates authentication when credentials are provided', function() {
+			var site = new WPAPI({
+				endpoint: 'http://some.url.com/wp-json',
+				username: 'fyodor',
+				password: 'dostoyevsky'
+			});
+			expect( site._options.username ).to.equal( 'fyodor' );
+			expect( site._options.password ).to.equal( 'dostoyevsky' );
+			expect( site._options.auth ).to.be.true;
 		});
 
 		describe( 'assigns default HTTP transport', function() {
@@ -301,7 +312,10 @@ describe( 'wp', function() {
 			});
 
 			it( 'passes options from the parent WPAPI instance to the namespaced handlers', function() {
-				site.auth( 'u', 'p' );
+				site.auth({
+					username: 'u',
+					password: 'p'
+				});
 				var pages = site.namespace( 'wp/v2' ).pages();
 				expect( pages._options ).to.be.an( 'object' );
 				expect( pages._options ).to.have.property( 'username' );
@@ -311,7 +325,10 @@ describe( 'wp', function() {
 			});
 
 			it( 'permits the namespace to be stored in a variable without disrupting options', function() {
-				site.auth( 'u', 'p' );
+				site.auth({
+					username: 'u',
+					password: 'p'
+				});
 				var wpV2 = site.namespace( 'wp/v2' );
 				var pages = wpV2.pages();
 				expect( pages._options ).to.be.an( 'object' );
@@ -470,11 +487,11 @@ describe( 'wp', function() {
 			});
 
 			it( 'inherits whitelisted non-endpoint options from the parent WPAPI instance', function() {
-				var wp = new WPAPI({
+				var site = new WPAPI({
 					endpoint: 'http://website.com/',
 					identifier: 'some unique value'
 				});
-				var request = wp.url( 'http://new-endpoint.com/' );
+				var request = site.url( 'http://new-endpoint.com/' );
 				expect( request._options ).to.have.property( 'endpoint' );
 				expect( request._options.endpoint ).to.equal( 'http://new-endpoint.com/' );
 				expect( request._options ).not.to.have.property( 'identifier' );
@@ -509,10 +526,10 @@ describe( 'wp', function() {
 			});
 
 			it( 'inherits options from the parent WPAPI instance', function() {
-				var wp = new WPAPI({
+				var site = new WPAPI({
 					endpoint: 'http://cat.website.com/'
 				});
-				var request = wp.root( 'custom-path' );
+				var request = site.root( 'custom-path' );
 				expect( request._options ).to.have.property( 'endpoint' );
 				expect( request._options.endpoint ).to.equal( 'http://cat.website.com/' );
 			});
@@ -530,7 +547,7 @@ describe( 'wp', function() {
 				expect( site.auth ).to.be.a( 'function' );
 			});
 
-			it( 'sets the "auth" option to "true"', function() {
+			it( 'activates authentication for the site', function() {
 				expect( site._options ).not.to.have.property( 'auth' );
 				site.auth();
 				expect( site._options ).to.have.property( 'auth' );

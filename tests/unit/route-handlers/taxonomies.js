@@ -27,11 +27,9 @@ describe( 'wp.taxonomies', function() {
 		});
 
 		it( 'should initialize _options to the site defaults', function() {
-			expect( taxonomies._options ).to.deep.equal({
-				endpoint: '/wp-json/',
-				username: 'foouser',
-				password: 'barpass'
-			});
+			expect( taxonomies._options.endpoint ).to.equal( '/wp-json/' );
+			expect( taxonomies._options.username ).to.equal( 'foouser' );
+			expect( taxonomies._options.password ).to.equal( 'barpass' );
 		});
 
 		it( 'should initialize the base path component', function() {

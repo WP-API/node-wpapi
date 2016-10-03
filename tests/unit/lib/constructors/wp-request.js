@@ -613,7 +613,7 @@ describe( 'WPRequest', function() {
 			expect( request.auth ).to.be.a( 'function' );
 		});
 
-		it( 'sets the "auth" option to "true"', function() {
+		it( 'activates authentication for the request', function() {
 			expect( request._options ).not.to.have.property( 'auth' );
 			request.auth();
 			expect( request._options ).to.have.property( 'auth' );
@@ -656,6 +656,29 @@ describe( 'WPRequest', function() {
 			});
 			expect( request._options ).not.to.have.property( 'username' );
 			expect( request._options ).not.to.have.property( 'password' );
+			expect( request._options ).to.have.property( 'auth' );
+			expect( request._options.auth ).to.be.true;
+		});
+
+		it( 'sets the nonce when provided in an object', function() {
+			expect( request._options ).not.to.have.property( 'nonce' );
+			request.auth({
+				nonce: 'nonceynonce'
+			});
+			expect( request._options ).to.have.property( 'nonce' );
+			expect( request._options.nonce ).to.equal( 'nonceynonce' );
+			expect( request._options ).to.have.property( 'auth' );
+			expect( request._options.auth ).to.be.true;
+		});
+
+		it( 'can update nonce credentials', function() {
+			request.auth({
+				nonce: 'nonceynonce'
+			}).auth({
+				nonce: 'refreshednonce'
+			});
+			expect( request._options ).to.have.property( 'nonce' );
+			expect( request._options.nonce ).to.equal( 'refreshednonce' );
 			expect( request._options ).to.have.property( 'auth' );
 			expect( request._options.auth ).to.be.true;
 		});

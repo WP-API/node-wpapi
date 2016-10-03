@@ -27,11 +27,9 @@ describe( 'wp.pages', function() {
 		});
 
 		it( 'should initialize _options to the site defaults', function() {
-			expect( pages._options ).to.deep.equal({
-				endpoint: '/wp-json/',
-				username: 'foouser',
-				password: 'barpass'
-			});
+			expect( pages._options.endpoint ).to.equal( '/wp-json/' );
+			expect( pages._options.username ).to.equal( 'foouser' );
+			expect( pages._options.password ).to.equal( 'barpass' );
 		});
 
 		it( 'should initialize the base path component', function() {

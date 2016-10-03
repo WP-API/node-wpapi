@@ -29,11 +29,7 @@ var generateEndpointFactories = require( './lib/endpoint-factories' ).generate;
 // is to be bootstrapped with the handlers for all of the built-in routes)
 var defaultEndpointFactories;
 
-var defaults = {
-	username: '',
-	password: ''
-};
-
+// Constant used to detect first-party WordPress REST API routes
 var apiDefaultNamespace = 'wp/v2';
 
 // Pull in autodiscovery methods
@@ -72,17 +68,22 @@ function WPAPI( options ) {
 		return new WPAPI( options );
 	}
 
-	// Dictionary to be filled by handlers for default namespaces
-	this._ns = {};
-
-	this._options = extend( {}, defaults, options );
-
-	if ( typeof this._options.endpoint !== 'string' ) {
+	if ( typeof options.endpoint !== 'string' ) {
 		throw new Error( 'options hash must contain an API endpoint URL string' );
 	}
 
-	// Ensure trailing slash on endpoint URI
-	this._options.endpoint = this._options.endpoint.replace( /\/?$/, '/' );
+	// Dictionary to be filled by handlers for default namespaces
+	this._ns = {};
+
+	this._options = {
+		// Ensure trailing slash on endpoint URI
+		endpoint: options.endpoint.replace(  /\/?$/, '/' )
+	};
+
+	// If any authentication credentials were provided, assign them now
+	if ( options && ( options.username || options.password || options.nonce ) ) {
+		this.auth( options );
+	}
 
 	return this
 		// Configure custom HTTP transport methods, if provided
