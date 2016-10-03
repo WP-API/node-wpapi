@@ -554,16 +554,6 @@ describe( 'wp', function() {
 				expect( site._options.auth ).to.be.true;
 			});
 
-			it( 'sets the username and password when provided as strings', function() {
-				site.auth( 'user1', 'pass1' );
-				expect( site._options ).to.have.property( 'username' );
-				expect( site._options ).to.have.property( 'password' );
-				expect( site._options.username ).to.equal( 'user1' );
-				expect( site._options.password ).to.equal( 'pass1' );
-				expect( site._options ).to.have.property( 'auth' );
-				expect( site._options.auth ).to.be.true;
-			});
-
 			it( 'sets the username and password when provided in an object', function() {
 				site.auth({
 					username: 'user1',

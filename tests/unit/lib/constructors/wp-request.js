@@ -620,18 +620,6 @@ describe( 'WPRequest', function() {
 			expect( request._options.auth ).to.be.true;
 		});
 
-		it( 'sets the username and password when provided as strings', function() {
-			expect( request._options ).not.to.have.property( 'username' );
-			expect( request._options ).not.to.have.property( 'password' );
-			request.auth( 'user', 'pass' );
-			expect( request._options ).to.have.property( 'username' );
-			expect( request._options ).to.have.property( 'password' );
-			expect( request._options.username ).to.equal( 'user' );
-			expect( request._options.password ).to.equal( 'pass' );
-			expect( request._options ).to.have.property( 'auth' );
-			expect( request._options.auth ).to.be.true;
-		});
-
 		it( 'sets the username and password when provided in an object', function() {
 			expect( request._options ).not.to.have.property( 'username' );
 			expect( request._options ).not.to.have.property( 'password' );
