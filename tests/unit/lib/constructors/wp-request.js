@@ -898,42 +898,4 @@ describe( 'WPRequest', function() {
 
 	});
 
-	describe( 'deprecated request methods', function() {
-
-		describe( '.post()', function() {
-
-			it( 'is a function', function() {
-				expect( request ).to.have.property( 'post' );
-				expect( request.post ).to.be.a( 'function' );
-			});
-
-			it( 'proxies to .create', function() {
-				sinon.stub( request, 'create' );
-				function cb() {}
-				request.create( 'foo', cb );
-				expect( request.create ).to.have.been.calledWith( 'foo', cb );
-				request.create.restore();
-			});
-
-		});
-
-		describe( '.put()', function() {
-
-			it( 'is a function', function() {
-				expect( request ).to.have.property( 'put' );
-				expect( request.put ).to.be.a( 'function' );
-			});
-
-			it( 'proxies to .update', function() {
-				sinon.stub( request, 'update' );
-				function cb() {}
-				request.put( 'foo', cb );
-				expect( request.update ).to.have.been.calledWith( 'foo', cb );
-				request.update.restore();
-			});
-
-		});
-
-	}); // Deprecated request methods
-
 });
