@@ -581,7 +581,7 @@ describe( 'integration: posts()', function() {
 				var media = post._embedded[ 'wp:featuredmedia' ][ 0 ];
 				expect( media.id ).to.equal( mediaId );
 				expect( media.slug ).to.match( /emilygarfield-untitled/ );
-				expect( media.source_url ).to.match( /emilygarfield-untitled(?:-\d*).jpg$/ );
+				expect( media.source_url ).to.match( /emilygarfield-untitled(?:-\d*)?.jpg$/ );
 				// Validate tags & categories
 				expect( post._embedded ).to.have.property( 'wp:term' );
 				var terms = post._embedded[ 'wp:term' ];
