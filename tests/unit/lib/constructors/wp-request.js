@@ -571,39 +571,6 @@ describe( 'WPRequest', function() {
 
 		});
 
-		describe( '.name()', function() {
-
-			it( 'is defined', function() {
-				expect( request ).to.have.property( 'name' );
-			});
-
-			it( 'is a function', function() {
-				expect( request.name ).to.be.a( 'function' );
-			});
-
-			it( 'supports chaining', function() {
-				expect( request.name() ).to.equal( request );
-			});
-
-			it( 'has no effect when called with no argument', function() {
-				var result = request.name();
-				expect( getQueryStr( result ) ).to.equal( '' );
-			});
-
-			it( 'is an alias for .slug()', function() {
-				sinon.spy( request, 'slug' );
-				request.name( 'crooked-man' );
-				expect( request.slug ).to.have.been.calledWith( 'crooked-man' );
-				request.slug.restore();
-			});
-
-			it( 'sets the "slug" query parameter when provided a value', function() {
-				var result = request.name( 'bran-van' );
-				expect( getQueryStr( result ) ).to.equal( 'slug=bran-van' );
-			});
-
-		});
-
 	});
 
 	describe( '.auth()', function() {
