@@ -447,4 +447,140 @@ describe( 'mixins: filter', function() {
 
 	});
 
+	describe( 'taxQuery()', function() {
+
+		beforeEach(function() {
+			Req.prototype.filter = filterMixins.filter;
+			Req.prototype.taxQuery = filterMixins.taxQuery;
+		});
+
+		it( 'mixin method is defined', function() {
+			expect( filterMixins ).to.have.property( 'taxQuery' );
+		});
+
+		it( 'is a function', function() {
+			expect( filterMixins.taxQuery ).to.be.a( 'function' );
+		});
+
+		it( 'supports chaining', function() {
+			expect( req.taxQuery() ).to.equal( req );
+		});
+
+		it( 'will nave no effect if called with no value', function() {
+			var result = req.taxQuery();
+			expect( getQueryStr( result ) ).to.equal( '' );
+		});
+
+		it( 'sets the tax_query filter parameter on a request instance', function() {
+			var result = req.taxQuery({
+				taxonomy: 'category',
+				terms: [ 29 ]
+			});
+			expect( getQueryStr( result ) ).to.equal( [
+				'filter[tax_query][0][taxonomy]=category',
+				'filter[tax_query][0][terms][]=29'
+			].join( '&' ) );
+		});
+
+		it( 'properly indexes arrays of tax_query structures', function() {
+			var result = req.taxQuery([ {
+				taxonomy: 'category',
+				terms: [ 49, 29 ]
+			}, {
+				taxonomy: 'post_tag',
+				terms: [ 79 ]
+			} ]);
+			expect( getQueryStr( result ) ).to.equal( [
+				'filter[tax_query][0][taxonomy]=category',
+				'filter[tax_query][0][terms][]=29',
+				'filter[tax_query][0][terms][]=49',
+				'filter[tax_query][1][taxonomy]=post_tag',
+				'filter[tax_query][1][terms][]=79',
+				'filter[tax_query][relation]=OR'
+			].join( '&' ) );
+		});
+
+		it( 'handles tax_query structures with a relation', function() {
+			var result = req.taxQuery({
+				relation: 'AND',
+				'0': {
+					taxonomy: 'category',
+					terms: [ 49, 29 ]
+				},
+				'1': {
+					taxonomy: 'post_tag',
+					field: 'slug',
+					terms: [ 'content-2' ]
+				},
+				'2': {
+					taxonomy: 'post_tag',
+					terms: [ 106 ],
+					operator: 'NOT IN'
+				}
+			});
+			expect( getQueryStr( result ) ).to.equal( [
+				'filter[tax_query][0][taxonomy]=category',
+				'filter[tax_query][0][terms][]=29',
+				'filter[tax_query][0][terms][]=49',
+				'filter[tax_query][1][field]=slug',
+				'filter[tax_query][1][taxonomy]=post_tag',
+				'filter[tax_query][1][terms][]=content-2',
+				'filter[tax_query][2][operator]=NOT IN',
+				'filter[tax_query][2][taxonomy]=post_tag',
+				'filter[tax_query][2][terms][]=106',
+				'filter[tax_query][relation]=AND'
+			].join( '&' ) );
+		});
+
+		it( 'handles nested tax_query structures', function() {
+			var result = req.taxQuery([ {
+				relation: 'AND',
+				'0': {
+					taxonomy: 'category',
+					terms: [ 49 ]
+				},
+				'1': {
+					relation: 'OR',
+					'0': {
+						taxonomy: 'post_tag',
+						terms: [ 93 ]
+					},
+					'1': {
+						taxonomy: 'post_tag',
+						terms: [ 126 ]
+					}
+				}
+			}, {
+				relation: 'AND',
+				'0': {
+					taxonomy: 'post_tag',
+					terms: [ 81 ]
+				},
+				'1': {
+					taxonomy: 'post_tag',
+					terms: [ 116 ],
+					operator: 'NOT IN'
+				}
+			} ]);
+			expect( getQueryStr( result ) ).to.equal( [
+				'filter[tax_query][0][0][taxonomy]=category',
+				'filter[tax_query][0][0][terms][]=49',
+				'filter[tax_query][0][1][0][taxonomy]=post_tag',
+				'filter[tax_query][0][1][0][terms][]=93',
+				'filter[tax_query][0][1][1][taxonomy]=post_tag',
+				'filter[tax_query][0][1][1][terms][]=126',
+				'filter[tax_query][0][1][relation]=OR',
+				'filter[tax_query][0][relation]=AND',
+				'filter[tax_query][1][0][taxonomy]=post_tag',
+				'filter[tax_query][1][0][terms][]=81',
+				'filter[tax_query][1][1][operator]=NOT IN',
+				'filter[tax_query][1][1][taxonomy]=post_tag',
+				'filter[tax_query][1][1][terms][]=116',
+				'filter[tax_query][1][relation]=AND',
+				'filter[tax_query][relation]=OR'
+			].join( '&' ) );
+		});
+
+	});
+
 });
