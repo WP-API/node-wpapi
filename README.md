@@ -420,6 +420,25 @@ Files may be uploaded to the WordPress media library by creating a media record 
 
 If you wish to associate a newly-uploaded media record to a specific post, you must use two calls: one to first upload the file, then another to associate it with a post. Example code:
 
+#### Syntax
+```js
+wp.media().file(content [, name])
+```
+
+`content`
+Type: String
+String with path to image file, e. g. `'/path/to/the/image.jpg'`
+
+`content`
+Type: Buffer
+Buffer with file content, e. g. `new Buffer()`
+
+`name`
+Type: String
+String with new file name to upload with, e. g. `image.jpg`. If omitted, it tries to get file name from content.
+
+#### Example usage
+
 ```js
 wp.media()
     // Specify a path to the file you want to upload
