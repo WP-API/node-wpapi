@@ -425,16 +425,22 @@ If you wish to associate a newly-uploaded media record to a specific post, you m
 wp.media().file(content [, name])
 ```
 
-`content`
-Type: String
+##### `content`
+
+Type: `String`
+
 String with path to image file, e. g. `'/path/to/the/image.jpg'`
 
-`content`
-Type: Buffer
+##### `content`
+
+Type: `Buffer`
+
 Buffer with file content, e. g. `new Buffer()`
 
-`name`
-Type: String
+##### `name`
+
+Type: `String`
+
 String with new file name to upload with, e. g. `image.jpg`. If omitted, it tries to get file name from content.
 
 #### Example usage
