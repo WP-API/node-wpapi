@@ -418,36 +418,27 @@ The following methods are shortcuts for filtering the requested collection down 
 
 Files may be uploaded to the WordPress media library by creating a media record using the `.media()` collection handler.
 
-If you wish to associate a newly-uploaded media record to a specific post, you must use two calls: one to first upload the file, then another to associate it with a post. Example code:
+The file to upload can be specified as
 
-#### Syntax
+- a `String` describing an image file path, _e.g._ `'/path/to/the/image.jpg'`
+- a `Buffer` with file content, _e.g._ `new Buffer()`
+- a file object from a `<input>` element, _e.g._ `document.getElementById( 'file-input' ).files[0]`
+
+The file is passed into the `.file()` method:
+
 ```js
-wp.media().file(content [, name])
+wp.media().file(content [, name])...
 ```
 
-##### `content`
+The optional second string argument specifies the file name to use for the uploaded media. If the name argument is omitted `file()` will try to infer a filename from the provided content.
 
-Type: `String`
+#### Adding Media to a Post
 
-String with path to image file, e. g. `'/path/to/the/image.jpg'`
-
-##### `content`
-
-Type: `Buffer`
-
-Buffer with file content, e. g. `new Buffer()`
-
-##### `name`
-
-Type: `String`
-
-String with new file name to upload with, e. g. `image.jpg`. If omitted, it tries to get file name from content.
-
-#### Example usage
+If you wish to associate a newly-uploaded media record to a specific post, you must use two calls: one to first upload the file, then another to associate it with a post. Example code:
 
 ```js
 wp.media()
-    // Specify a path to the file you want to upload
+    // Specify a path to the file you want to upload, or a Buffer
     .file( '/path/to/the/image.jpg' )
     .create({
         title: 'My awesome image',
