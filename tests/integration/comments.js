@@ -17,6 +17,38 @@ var WPRequest = require( '../../lib/constructors/wp-request.js' );
 var expectedResults = {
 	postsAndAuthors: {
 		page1: [
+			'1170John Doe',
+			'1148Jane Doe',
+			'1148John Doe',
+			'1148John Doe',
+			'1148Jane Doe',
+			'1148John Doe',
+			'1148Joe Bloggs',
+			'1148Jane Bloggs',
+			'1148Joe Bloggs'
+		],
+		page2: [
+			'1148Jane Bloggs',
+			'1148Joe Bloggs',
+			'1148Fred Bloggs',
+			'1148Fred Bloggs',
+			'1148Jane Bloggs',
+			'1148John Doe',
+			'1148John Doe',
+			'1148John Doe',
+			'1148Jane Doe',
+			'1148Anonymous User'
+		],
+		page3: [
+			'1148John Doe',
+			'1149John Doe',
+			'155John Doe',
+			'155Anon',
+			'155tellyworthtest2'
+		]
+	},
+	postsAndAuthorsAsc: {
+		page1: [
 			'155tellyworthtest2',
 			'155Anon',
 			'155John Doe',
@@ -27,34 +59,15 @@ var expectedResults = {
 			'1148John Doe',
 			'1148John Doe',
 			'1148John Doe'
-		],
-		page2: [
-			'1148Jane Bloggs',
-			'1148Fred Bloggs',
-			'1148Fred Bloggs',
-			'1148Joe Bloggs',
-			'1148Jane Bloggs',
-			'1148Joe Bloggs',
-			'1148Jane Bloggs',
-			'1148Joe Bloggs',
-			'1148John Doe',
-			'1148Jane Doe'
-		],
-		page3: [
-			'1148John Doe',
-			'1148John Doe',
-			'1148Jane Doe',
-			'1168Jane Doe',
-			'1170John Doe'
 		]
 	}
 };
 
 // Inspecting the posts and authors of the returned comments arrays is an easy
 // way to validate that the right page of results was returned
-function getPostsAndAuthors( posts ) {
-	return posts.map(function( post ) {
-		return post.post + post.author_name;
+function getPostsAndAuthors( comments ) {
+	return comments.map(function( comment ) {
+		return comment.post + comment.author_name;
 	});
 }
 
@@ -67,12 +80,22 @@ describe( 'integration: comments()', function() {
 		});
 	});
 
-	it( 'can be used to retrieve a list of comments', function() {
+	it( 'can be used to retrieve a list of comments, omitting a password-protected comment', function() {
 		var prom = wp.comments()
 			.get()
 			.then(function( comments ) {
 				expect( comments ).to.be.an( 'array' );
-				expect( comments.length ).to.equal( 10 );
+				expect( comments.length ).to.equal( 9 );
+				return SUCCESS;
+			});
+		return expect( prom ).to.eventually.equal( SUCCESS );
+	});
+
+	it( 'fetches the first page, omitting a password-protected comment', function() {
+		var prom = wp.comments()
+			.get()
+			.then(function( comments ) {
+				expect( getPostsAndAuthors( comments ) ).to.deep.equal( expectedResults.postsAndAuthors.page1 );
 				return SUCCESS;
 			});
 		return expect( prom ).to.eventually.equal( SUCCESS );
@@ -83,7 +106,7 @@ describe( 'integration: comments()', function() {
 			.order( 'asc' )
 			.get()
 			.then(function( comments ) {
-				expect( getPostsAndAuthors( comments ) ).to.deep.equal( expectedResults.postsAndAuthors.page1 );
+				expect( getPostsAndAuthors( comments ) ).to.deep.equal( expectedResults.postsAndAuthorsAsc.page1 );
 				return SUCCESS;
 			});
 		return expect( prom ).to.eventually.equal( SUCCESS );
@@ -136,7 +159,6 @@ describe( 'integration: comments()', function() {
 					// Get last page & ensure 'next' no longer appears
 					return wp.comments()
 						.page( posts._paging.totalPages )
-						.order( 'asc' )
 						.get()
 						.then(function( posts ) {
 							expect( posts._paging ).not.to.have.property( 'next' );
@@ -149,7 +171,6 @@ describe( 'integration: comments()', function() {
 
 		it( 'allows access to the next page of results via .next', function() {
 			var prom = wp.comments()
-				.order( 'asc' )
 				.get()
 				.then(function( posts ) {
 					return posts._paging.next
@@ -185,7 +206,6 @@ describe( 'integration: comments()', function() {
 
 		it( 'allows access to the previous page of results via .prev', function() {
 			var prom = wp.comments()
-				.order( 'asc' )
 				.page( 2 )
 				.get()
 				.then(function( posts ) {
@@ -194,7 +214,8 @@ describe( 'integration: comments()', function() {
 						.get()
 						.then(function( posts ) {
 							expect( posts ).to.be.an( 'array' );
-							expect( posts.length ).to.equal( 10 );
+							// 9 because one comment is for a password-protected post
+							expect( posts.length ).to.equal( 9 );
 							expect( getPostsAndAuthors( posts ) ).to.deep.equal( expectedResults.postsAndAuthors.page1 );
 							return SUCCESS;
 						});
