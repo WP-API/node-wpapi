@@ -268,14 +268,14 @@ Additional querying methods provided, by endpoint:
 * **taxonomies**
     - `wp.taxonomies()`: retrieve all registered taxonomies
     - `wp.taxonomies().taxonomy( 'taxonomy_name' )`: get a specific taxonomy object with name *taxonomy_name*
-    - `wp.taxonomies().taxonomy( 'taxonomy_name' ).terms()`: get all terms for taxonomy *taxonomy_name*
-    - `wp.taxonomies().taxonomy( 'taxonomy_name' ).term( termIdentifier )`: get the term with slug or ID *termIdentifier* from the taxonomy *taxonomy_name*
 * **categories**
     - `wp.categories()`: retrieve all registered categories
     - `wp.categories().id( n )`: get a specific category object with id *n*
 * **tags**
     - `wp.tags()`: retrieve all registered tags
     - `wp.tags().id( n )`: get a specific tag object with id *n*
+* **custom taxonomy terms**
+    - [Use `registerRoute()`](http://wp-api.org/node-wpapi/custom-routes/) or [route auto-discovery](http://wp-api.org/node-wpapi/using-the-client/#auto-discovery) to query for custom taxonomy terms
 * **types**
     - `wp.types()`: get a collection of all registered public post types
     - `wp.types().type( 'cpt_name' )`: get the object for the custom post type with the name *cpt_name*
