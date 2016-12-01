@@ -21,9 +21,9 @@ describe( 'route-tree utility', function() {
 
 		it( 'includes objects for all default wp/v2 routes', function() {
 			var routes = Object.keys( tree[ 'wp/v2' ] ).sort();
-			expect( routes ).to.have.length( 10 );
+			expect( routes ).to.have.length( 11 );
 			expect( routes.join( ',' ) ).to
-				.equal( 'categories,comments,media,pages,posts,statuses,tags,taxonomies,types,users' );
+				.equal( 'categories,comments,media,pages,posts,settings,statuses,tags,taxonomies,types,users' );
 		});
 
 		it( 'includes objects for all default oembed/1.0 routes', function() {
@@ -63,11 +63,14 @@ describe( 'route-tree utility', function() {
 					offset: false,
 					order: false,
 					orderby: false,
+					password: false,
 					slug: false,
 					status: false,
-					filter: false,
+					sticky: false,
 					categories: false,
-					tags: false
+					categories_exclude: false,
+					tags: false,
+					tags_exclude: false
 				});
 			});
 

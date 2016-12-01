@@ -63,10 +63,10 @@ describe( 'wp.pages', function() {
 			});
 
 			it( 'should provide filtering methods', function() {
-				expect( pages ).to.have.property( 'filter' );
-				expect( pages.filter ).to.be.a( 'function' );
-				var path = pages.filter( 'name', 'some-slug' ).toString();
-				expect( path ).to.equal( '/wp-json/wp/v2/pages?filter%5Bname%5D=some-slug' );
+				expect( pages ).to.have.property( 'slug' );
+				expect( pages.slug ).to.be.a( 'function' );
+				var path = pages.slug( 'some-slug' ).toString();
+				expect( path ).to.equal( '/wp-json/wp/v2/pages?slug=some-slug' );
 			});
 
 		});
@@ -87,27 +87,6 @@ describe( 'wp.pages', function() {
 				pages.id( 8 );
 				var _supportedMethods = pages._supportedMethods.sort().join( '|' );
 				expect( _supportedMethods ).to.equal( 'delete|get|head|patch|post|put' );
-			});
-
-		});
-
-		describe( '.path()', function() {
-
-			it( 'is defined', function() {
-				expect( pages ).to.have.property( 'path' );
-				expect( pages.path ).to.be.a( 'function' );
-			});
-
-			it( 'should create the URL for retrieving a post by path', function() {
-				var path = pages.path( 'nested/page' ).toString();
-				expect( path ).to
-					.equal( '/wp-json/wp/v2/pages?filter%5Bpagename%5D=nested%2Fpage' );
-			});
-
-			it( 'should not update the supported methods when setting Path', function() {
-				pages.path( 'page/path' );
-				var _supportedMethods = pages._supportedMethods.sort().join( '|' );
-				expect( _supportedMethods ).to.equal( 'delete|get|head|post|put' );
 			});
 
 		});

@@ -230,7 +230,7 @@ describe( 'integration: posts()', function() {
 
 		});
 
-		describe( 'tag', function() {
+		describe( 'tags', function() {
 
 			it( 'can be used to return only posts with a provided tag', function() {
 				var prom = wp.tags()
@@ -287,7 +287,43 @@ describe( 'integration: posts()', function() {
 
 		});
 
-		describe( 'category', function() {
+		describe( 'excludeTags', function() {
+
+			it( 'can be used to omit posts in specific tags', function() {
+				var prom = Promise
+					.all([
+						wp.tags().search( 'css' ),
+						wp.tags().search( 'content' )
+					])
+					.then(function( results ) {
+						var tagIDs = results.reduce(function( ids, arr ) {
+							return ids.concat( arr.map(function( tag ) {
+								return tag.id;
+							}) );
+						}, [] );
+						return wp.posts().excludeTags( tagIDs );
+					})
+					.then(function( posts ) {
+						expect( getTitles( posts ) ).to.deep.equal([
+							'Markup: Title With Special Characters',
+							'Template: Featured Image (Vertical)',
+							'Template: Featured Image (Horizontal)',
+							'Template: Sticky',
+							'Template: Password Protected (the password is &#8220;enter&#8221;)',
+							'Template: Comments',
+							'Template: Comments Disabled',
+							'Template: Pingbacks And Trackbacks',
+							'Post Format: Standard',
+							'Post Format: Gallery'
+						]);
+						return SUCCESS;
+					});
+				return expect( prom ).to.eventually.equal( SUCCESS );
+			});
+
+		});
+
+		describe( 'categories', function() {
 
 			it( 'can be used to return only posts with a provided category', function() {
 				var prom = wp.categories()
@@ -337,6 +373,42 @@ describe( 'integration: posts()', function() {
 							'Edge Case: Many Categories',
 							'Edge Case: Many Tags',
 							'Edge Case: Nested And Mixed Lists'
+						]);
+						return SUCCESS;
+					});
+				return expect( prom ).to.eventually.equal( SUCCESS );
+			});
+
+		});
+
+		describe( 'excludeCategories', function() {
+
+			it( 'can be used to omit posts in specific categories', function() {
+				var prom = Promise
+					.all([
+						wp.categories().slug( 'markup' ),
+						wp.categories().slug( 'post-formats' )
+					])
+					.then(function( results ) {
+						var tagIDs = results.reduce(function( ids, arr ) {
+							return ids.concat( arr.map(function( tag ) {
+								return tag.id;
+							}) );
+						}, [] );
+						return wp.posts().excludeCategories( tagIDs );
+					})
+					.then(function( posts ) {
+						expect( getTitles( posts ) ).to.deep.equal([
+							'Template: Featured Image (Vertical)',
+							'Template: Featured Image (Horizontal)',
+							'Template: More Tag',
+							'Template: Excerpt (Defined)',
+							'Template: Excerpt (Generated)',
+							'Template: Paginated',
+							'Template: Sticky',
+							'Template: Password Protected (the password is &#8220;enter&#8221;)',
+							'Template: Comments',
+							'Template: Comments Disabled'
 						]);
 						return SUCCESS;
 					});
@@ -545,7 +617,7 @@ describe( 'integration: posts()', function() {
 				return SUCCESS;
 			});
 		return expect( prom ).to.eventually.equal( SUCCESS );
-	});
+	}).timeout( 10000 );
 
 	it( 'can create a post with tags, categories and featured media', function() {
 		var id;
