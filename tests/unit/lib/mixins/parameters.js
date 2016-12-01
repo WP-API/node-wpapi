@@ -318,4 +318,209 @@ describe( 'mixins: parameters', function() {
 
 	});
 
+	describe( 'categories()', function() {
+
+		beforeEach(function() {
+			Req.prototype.categories = parameterMixins.categories;
+		});
+
+		it( 'mixin is defined', function() {
+			expect( parameterMixins ).to.have.property( 'categories' );
+		});
+
+		it( 'is a function', function() {
+			expect( parameterMixins.categories ).to.be.a( 'function' );
+		});
+
+		it( 'supports chaining', function() {
+			expect( req.categories( 7 ) ).to.equal( req );
+		});
+
+		it( 'sets the "categories" parameter for a single category ID', function() {
+			var result = req.categories( 7 );
+			expect( getQueryStr( result ) ).to.equal( 'categories=7' );
+		});
+
+		it( 'sets the "categories" parameter for multiple category IDs', function() {
+			var result = req.categories([ 7, 13 ]);
+			expect( getQueryStr( result ) ).to.equal( 'categories[]=13&categories[]=7' );
+		});
+
+	});
+
+	describe( 'category()', function() {
+
+		beforeEach(function() {
+			Req.prototype.category = parameterMixins.category;
+		});
+
+		it( 'mixin is defined', function() {
+			expect( parameterMixins ).to.have.property( 'category' );
+		});
+
+		it( 'is a function', function() {
+			expect( parameterMixins.category ).to.be.a( 'function' );
+		});
+
+		it( 'supports chaining', function() {
+			expect( req.category( 'foo' ) ).to.equal( req );
+		});
+
+		it( 'sets the "categories" parameter for a single category ID', function() {
+			var result = req.category( 7 );
+			expect( getQueryStr( result ) ).to.equal( 'categories=7' );
+		});
+
+		it( 'sets the "categories" parameter for multiple category IDs', function() {
+			var result = req.category([ 7, 13 ]);
+			expect( getQueryStr( result ) ).to.equal( 'categories[]=13&categories[]=7' );
+		});
+
+		it( 'sets the "category_name" filter for categories where the term is a string [DEPRECATED]', function() {
+			var result = req.category( 'fiction' );
+			expect( getQueryStr( result ) ).to.equal( 'filter[category_name]=fiction' );
+		});
+
+	});
+
+	describe( 'excludeCategories()', function() {
+
+		beforeEach(function() {
+			Req.prototype.excludeCategories = parameterMixins.excludeCategories;
+		});
+
+		it( 'mixin is defined', function() {
+			expect( parameterMixins ).to.have.property( 'excludeCategories' );
+		});
+
+		it( 'is a function', function() {
+			expect( parameterMixins.excludeCategories ).to.be.a( 'function' );
+		});
+
+		it( 'supports chaining', function() {
+			expect( req.excludeCategories( 7 ) ).to.equal( req );
+		});
+
+		it( 'sets the "categories_exclude" parameter for a single category ID', function() {
+			var result = req.excludeCategories( 7 );
+			expect( getQueryStr( result ) ).to.equal( 'categories_exclude=7' );
+		});
+
+		it( 'sets the "categories_exclude" parameter for multiple category IDs', function() {
+			var result = req.excludeCategories([ 7, 13 ]);
+			expect( getQueryStr( result ) ).to.equal( 'categories_exclude[]=13&categories_exclude[]=7' );
+		});
+
+	});
+
+	describe( 'tags()', function() {
+
+		beforeEach(function() {
+			Req.prototype.tags = parameterMixins.tags;
+		});
+
+		it( 'mixin is defined', function() {
+			expect( parameterMixins ).to.have.property( 'tags' );
+		});
+
+		it( 'is a function', function() {
+			expect( parameterMixins.tags ).to.be.a( 'function' );
+		});
+
+		it( 'supports chaining', function() {
+			expect( req.tags( 7 ) ).to.equal( req );
+		});
+
+		it( 'sets the "tags" parameter for a single category ID', function() {
+			var result = req.tags( 7 );
+			expect( getQueryStr( result ) ).to.equal( 'tags=7' );
+		});
+
+		it( 'sets the "tags" parameter for multiple category IDs', function() {
+			var result = req.tags([ 7, 13 ]);
+			expect( getQueryStr( result ) ).to.equal( 'tags[]=13&tags[]=7' );
+		});
+
+		it( 'sets the "tags" parameter for multiple category IDs provided as numeric strings', function() {
+			var result = req.tags([ '7', '13' ]);
+			expect( getQueryStr( result ) ).to.equal( 'tags[]=13&tags[]=7' );
+		});
+
+	});
+
+	describe( 'tag()', function() {
+
+		beforeEach(function() {
+			Req.prototype.tag = parameterMixins.tag;
+		});
+
+		it( 'mixin is defined', function() {
+			expect( parameterMixins ).to.have.property( 'tag' );
+		});
+
+		it( 'is a function', function() {
+			expect( parameterMixins.tag ).to.be.a( 'function' );
+		});
+
+		it( 'supports chaining', function() {
+			expect( req.tag( 7 ) ).to.equal( req );
+		});
+
+		it( 'sets the "tag" parameter for a single category ID', function() {
+			var result = req.tag( 7 );
+			expect( getQueryStr( result ) ).to.equal( 'tags=7' );
+		});
+
+		it( 'sets the "tags" parameter for multiple category IDs', function() {
+			var result = req.tag([ 7, 13 ]);
+			expect( getQueryStr( result ) ).to.equal( 'tags[]=13&tags[]=7' );
+		});
+
+		it( 'sets the "tags" parameter for multiple category IDs provided as numeric strings', function() {
+			var result = req.tag([ '7', '13' ]);
+			expect( getQueryStr( result ) ).to.equal( 'tags[]=13&tags[]=7' );
+		});
+
+		it( 'sets the "tag" filter when the term is a string [DEPRECATED]', function() {
+			var result = req.tag( 'bagpipe-techno' );
+			expect( getQueryStr( result ) ).to.equal( 'filter[tag]=bagpipe-techno' );
+		});
+
+	});
+
+	describe( 'excludeTags()', function() {
+
+		beforeEach(function() {
+			Req.prototype.excludeTags = parameterMixins.excludeTags;
+		});
+
+		it( 'mixin is defined', function() {
+			expect( parameterMixins ).to.have.property( 'excludeTags' );
+		});
+
+		it( 'is a function', function() {
+			expect( parameterMixins.excludeTags ).to.be.a( 'function' );
+		});
+
+		it( 'supports chaining', function() {
+			expect( req.excludeTags( 7 ) ).to.equal( req );
+		});
+
+		it( 'sets the "tags_exclude" parameter for a single category ID', function() {
+			var result = req.excludeTags( 7 );
+			expect( getQueryStr( result ) ).to.equal( 'tags_exclude=7' );
+		});
+
+		it( 'sets the "tags_exclude" parameter for multiple category IDs', function() {
+			var result = req.excludeTags([ 7, 13 ]);
+			expect( getQueryStr( result ) ).to.equal( 'tags_exclude[]=13&tags_exclude[]=7' );
+		});
+
+		it( 'sets the "tags_exclude" parameter for multiple category IDs provided as numeric strings', function() {
+			var result = req.excludeTags([ '7', '13' ]);
+			expect( getQueryStr( result ) ).to.equal( 'tags_exclude[]=13&tags_exclude[]=7' );
+		});
+
+	});
+
 });

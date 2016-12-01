@@ -206,24 +206,6 @@ describe( 'integration: pages()', function() {
 
 		});
 
-		describe( 'path', function() {
-
-			it( 'can be used to return only pages with the specified URL path', function() {
-				var prom = wp.pages()
-					.path( 'level-1/level-2/level-3a' )
-					.get()
-					.then(function( pages ) {
-						expect( pages.length ).to.equal( 1 );
-						expect( getTitles( pages ) ).to.deep.equal([
-							'Level 3a'
-						]);
-						return SUCCESS;
-					});
-				return expect( prom ).to.eventually.equal( SUCCESS );
-			});
-
-		});
-
 	});
 
 });
