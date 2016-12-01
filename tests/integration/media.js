@@ -220,6 +220,7 @@ describe( 'integration: media()', function() {
 					content: 'Some Content'
 				})
 				.catch(function( err ) {
+					httpTestUtils.rethrowIfChaiError( err );
 					expect( err ).to.be.an.instanceOf( Error );
 					expect( err ).to.have.property( 'status' );
 					expect( err.status ).to.equal( 401 );
@@ -241,6 +242,7 @@ describe( 'integration: media()', function() {
 						});
 				})
 				.catch(function( err ) {
+					httpTestUtils.rethrowIfChaiError( err );
 					expect( err ).to.be.an.instanceOf( Error );
 					expect( err ).to.have.property( 'status' );
 					expect( err.status ).to.equal( 401 );
@@ -260,6 +262,7 @@ describe( 'integration: media()', function() {
 					});
 				})
 				.catch(function( err ) {
+					httpTestUtils.rethrowIfChaiError( err );
 					expect( err ).to.be.an.instanceOf( Error );
 					expect( err ).to.have.property( 'status' );
 					expect( err.status ).to.equal( 401 );

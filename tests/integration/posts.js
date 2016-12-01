@@ -233,9 +233,15 @@ describe( 'integration: posts()', function() {
 		describe( 'tag', function() {
 
 			it( 'can be used to return only posts with a provided tag', function() {
-				var prom = wp.posts()
-					.tag( 'Title' )
+				var prom = wp.tags()
+					.slug( 'title' )
 					.get()
+					.then(function( tags ) {
+						var tagIDs = tags.map(function( tag ) {
+							return tag.id;
+						});
+						return wp.posts().tags( tagIDs );
+					})
 					.then(function( posts ) {
 						expect( posts.length ).to.equal( 5 );
 						expect( getTitles( posts ) ).to.deep.equal([
@@ -250,18 +256,28 @@ describe( 'integration: posts()', function() {
 				return expect( prom ).to.eventually.equal( SUCCESS );
 			});
 
-			it( 'can be used to return only posts with all provided tags', function() {
-				var prom = wp.posts()
-					.tag([
-						'Template',
-						'Codex'
+			it( 'can be used to return posts with any of the provided tags', function() {
+				var prom = Promise
+					.all([
+						wp.tags().search( 'featured image' ),
+						wp.tags().search( 'embeds' )
 					])
-					.get()
+					.then(function( results ) {
+						var tagIDs = results.reduce(function( ids, arr ) {
+							return ids.concat( arr.map(function( tag ) {
+								return tag.id;
+							}) );
+						}, [] );
+						return wp.posts().tags( tagIDs );
+					})
 					.then(function( posts ) {
-						expect( posts.length ).to.equal( 3 );
+						expect( posts.length ).to.equal( 6 );
 						expect( getTitles( posts ) ).to.deep.equal([
 							'Template: Featured Image (Vertical)',
 							'Template: Featured Image (Horizontal)',
+							'Media: Twitter Embeds',
+							'Post Format: Video (WordPress.tv)',
+							'Post Format: Video (VideoPress)',
 							'Edge Case: Many Tags'
 						]);
 						return SUCCESS;
@@ -274,9 +290,15 @@ describe( 'integration: posts()', function() {
 		describe( 'category', function() {
 
 			it( 'can be used to return only posts with a provided category', function() {
-				var prom = wp.posts()
-					.category( 'Markup' )
+				var prom = wp.categories()
+					.slug( 'markup' )
 					.get()
+					.then(function( categories ) {
+						var categoryIDs = categories.map(function( cat ) {
+							return cat.id;
+						});
+						return wp.posts().categories( categoryIDs );
+					})
 					.then(function( posts ) {
 						expect( posts.length ).to.equal( 6 );
 						expect( getTitles( posts ) ).to.deep.equal([
@@ -292,18 +314,29 @@ describe( 'integration: posts()', function() {
 				return expect( prom ).to.eventually.equal( SUCCESS );
 			});
 
-			// Pending until we confirm whether querying by multiple category_name is permitted
-			it( 'can be used to return only posts with all provided categories', function() {
-				var prom = wp.posts()
-					.category([
-						'Markup',
-						'pustule'
+			it( 'can be used to return posts with any of the provided categories', function() {
+				var prom = Promise
+					.all([
+						wp.categories().search( 'edge case' ),
+						wp.categories().search( 'pustule' )
 					])
-					.get()
+					.then(function( results ) {
+						var categoriesIDs = results.reduce(function( ids, arr ) {
+							return ids.concat( arr.map(function( cat ) {
+								return cat.id;
+							}) );
+						}, [] );
+						return wp.posts().categories( categoriesIDs );
+					})
 					.then(function( posts ) {
-						expect( posts.length ).to.equal( 1 );
+						expect( posts.length ).to.equal( 6 );
 						expect( getTitles( posts ) ).to.deep.equal([
-							'Edge Case: Many Categories'
+							'Antidisestablishmentarianism',
+							'',
+							'Edge Case: No Content',
+							'Edge Case: Many Categories',
+							'Edge Case: Many Tags',
+							'Edge Case: Nested And Mixed Lists'
 						]);
 						return SUCCESS;
 					});
@@ -357,6 +390,7 @@ describe( 'integration: posts()', function() {
 					.delete();
 			})
 			.catch(function( err ) {
+				httpTestUtils.rethrowIfChaiError( err );
 				expect( err ).to.be.an.instanceOf( Error );
 				expect( err ).to.have.property( 'status' );
 				expect( err.status ).to.equal( 401 );
@@ -406,6 +440,7 @@ describe( 'integration: posts()', function() {
 					});
 			})
 			.catch(function( err ) {
+				httpTestUtils.rethrowIfChaiError( err );
 				expect( err ).to.be.an.instanceOf( Error );
 				expect( err ).to.have.property( 'status' );
 				expect( err.status ).to.equal( 401 );
@@ -482,6 +517,7 @@ describe( 'integration: posts()', function() {
 				return wp.posts().id( id );
 			})
 			.catch(function( error ) {
+				httpTestUtils.rethrowIfChaiError( error );
 				expect( error ).to.be.an.instanceOf( Error );
 				expect( error ).to.have.property( 'status' );
 				expect( error.status ).to.equal( 403 );
@@ -494,13 +530,15 @@ describe( 'integration: posts()', function() {
 			})
 			.then(function( response ) {
 				expect( response ).to.be.an( 'object' );
-				// DELETE action returns the post object
-				expect( response.id ).to.equal( id );
+				// DELETE action returns the fully-deleted post object as .previous
+				expect( response.previous ).to.be.an( 'object' );
+				expect( response.previous.id ).to.equal( id );
 				// Query for the post, with auth: expect this to fail, since it is not
 				// just trashed but now deleted permanently
 				return authenticated.posts().id( id );
 			})
 			.catch(function( error ) {
+				httpTestUtils.rethrowIfChaiError( error );
 				expect( error ).to.be.an.instanceOf( Error );
 				expect( error ).to.have.property( 'status' );
 				expect( error.status ).to.equal( 404 );
