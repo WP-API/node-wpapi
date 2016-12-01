@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>lib/util/alphanumeric-sort.js - wpapi</title>
+    <title>lib/util/argument-is-numeric.js - wpapi</title>
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
     <link rel="shortcut icon" type="image/png" href="../assets/favicon.png">
@@ -58,30 +58,46 @@
 
         <div id="docs-main" class="apidocs">
             <div class="content container">
-                <h1 class="file-heading">File: lib/util/alphanumeric-sort.js</h1>
+                <h1 class="file-heading">File: lib/util/argument-is-numeric.js</h1>
                 
                 <div class="file">
                     <pre class="code prettyprint linenums">
                 &#x27;use strict&#x27;;
                 
                 /**
-                 * Utility function for sorting arrays of numbers or strings.
+                 * Return true if the provided argument is a number, a numeric string, or an
+                 * array of numbers or numeric strings
                  *
-                 * @param {String|Number} a The first comparator operand
-                 * @param {String|Number} a The second comparator operand
-                 * @return -1 if the values are backwards, 1 if they&#x27;re ordered, and 0 if they&#x27;re the same
+                 * @param {Number|String|Number[]|String[]} val The value to inspect
+                 * @param {String} key The property to which the mixin method should be assigned
+                 * @param {Function} mixin The mixin method
+                 * @returns {void}
                  */
-                function alphaNumericSort( a, b ) {
-                	if ( a &gt; b ) {
-                		return 1;
+                function argumentIsNumeric( val ) {
+                	if ( typeof val === &#x27;number&#x27; ) {
+                		return true;
                 	}
-                	if ( a &lt; b ) {
-                		return -1;
+                
+                	if ( typeof val === &#x27;string&#x27; ) {
+                		return /^\d+$/.test( val );
                 	}
-                	return 0;
+                
+                	if ( Array.isArray( val ) ) {
+                		for ( var i = 0; i &lt; val.length; i++ ) {
+                			// Fail early if any argument isn&#x27;t determined to be numeric
+                			if ( ! argumentIsNumeric( val[ i ] ) ) {
+                				return false;
+                			}
+                		}
+                		return true;
+                	}
+                
+                	// If it&#x27;s not an array, and not a string, and not a number, we don&#x27;t
+                	// know what to do with it
+                	return false;
                 }
                 
-                module.exports = alphaNumericSort;
+                module.exports = argumentIsNumeric;
                 
                     </pre>
                 </div>

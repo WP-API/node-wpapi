@@ -14,7 +14,7 @@
     <header class="main-header">
         <div class="content">
             <div class="project-title">
-                    <h1 class="project-name">wpapi</h1> <span class="project-version">0.11.0</span>
+                    <h1 class="project-name">wpapi</h1> <span class="project-version">0.12.0</span>
                     <p class="description">A client for interacting with the WordPress REST API</p>
             </div>
             <ul class="jump-links">
@@ -354,9 +354,6 @@
                 	return this._options.endpoint + path + queryStr;
                 };
                 
-                /** @deprecated Use .toString() */
-                WPRequest.prototype._renderURI = WPRequest.prototype.toString;
-                
                 /**
                  * Set a component of the resource URL itself (as opposed to a query parameter)
                  *
@@ -630,20 +627,6 @@
                  */
                 WPRequest.prototype.slug = paramSetter( &#x27;slug&#x27; );
                 
-                /**
-                 * Alias for .slug()
-                 *
-                 * @method name
-                 * @alias slug
-                 * @deprecated use .slug()
-                 * @chainable
-                 * @param {String} slug A post name (slug), e.g. &quot;hello-world&quot;
-                 * @return The request instance (for chaining)
-                 */
-                WPRequest.prototype.name = function( slug ) {
-                	return this.slug( slug );
-                };
-                
                 // HTTP Transport Prototype Methods
                 // ================================
                 
@@ -667,9 +650,6 @@
                 
                 /**
                  * Set a request to use authentication, and optionally provide auth credentials
-                 *
-                 * Note: the &#x60;.auth( username, password )&#x60; signature is _deprecated_, use an object
-                 * with username and password properties instead as in the below example.
                  *
                  * If auth credentials were already specified when the WPAPI instance was created, calling
                  * &#x60;.auth&#x60; on the request chain will set that request to use the existing credentials:
@@ -702,7 +682,7 @@
                  * @param {String} [credentials.nonce]    A WP nonce for use with cookie authentication
                  * @return {WPRequest} The WPRequest instance (for chaining)
                  */
-                WPRequest.prototype.auth = function( credentials, password ) {
+                WPRequest.prototype.auth = function( credentials ) {
                 	if ( typeof credentials === &#x27;object&#x27; ) {
                 		if ( typeof credentials.username === &#x27;string&#x27; ) {
                 			this._options.username = credentials.username;
@@ -714,14 +694,6 @@
                 
                 		if ( credentials.nonce ) {
                 			this._options.nonce = credentials.nonce;
-                		}
-                	} else {
-                		if ( typeof credentials === &#x27;string&#x27; ) {
-                			this._options.username = credentials;
-                		}
-                
-                		if ( typeof password === &#x27;string&#x27; ) {
-                			this._options.password = password;
                 		}
                 	}
                 
@@ -765,16 +737,6 @@
                 
                 // HTTP Methods: Public Interface
                 // ==============================
-                
-                /** @deprecated Use .create() */
-                WPRequest.prototype.post = function() {
-                	return this.create.apply( this, arguments );
-                };
-                
-                /** @deprecated Use .update() */
-                WPRequest.prototype.put = function() {
-                	return this.update.apply( this, arguments );
-                };
                 
                 /**
                  * Get (download the data for) the specified resource

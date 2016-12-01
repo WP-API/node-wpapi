@@ -21,7 +21,7 @@ YUI.add("yuidoc-meta", function(Y) {
         {
             "displayName": "filters",
             "name": "filters",
-            "description": "Filter methods that can be mixed in to a request constructor's prototype to\nallow that request to take advantage of the `?filter[]=` aliases for WP_Query\nparameters for collection endpoints. These are most relevant to posts, pages\nand CPTs."
+            "description": "Filter methods that can be mixed in to a request constructor's prototype to\nallow that request to take advantage of the `?filter[]=` aliases for WP_Query\nparameters for collection endpoints, when available."
         },
         {
             "displayName": "http-transport",

@@ -14,7 +14,7 @@
     <header class="main-header">
         <div class="content">
             <div class="project-title">
-                    <h1 class="project-name">wpapi</h1> <span class="project-version">0.11.0</span>
+                    <h1 class="project-name">wpapi</h1> <span class="project-version">0.12.0</span>
                     <p class="description">A client for interacting with the WordPress REST API</p>
             </div>
             <ul class="jump-links">
@@ -69,7 +69,7 @@
                 
                 
                         <div class="foundat">
-                            Defined in: <a href="../files/wpapi.js.html#l48"><code>wpapi.js:48</code></a>
+                            Defined in: <a href="../files/wpapi.js.html#l44"><code>wpapi.js:44</code></a>
                         </div>
                 
                             Module: <a href="../modules/WPAPI.html">WPAPI</a>
@@ -219,7 +219,7 @@
                 
                                 </li>
                                 <li class="index-item method">
-                                    <a href="#method_category">category</a>
+                                    <a href="#method_categories">categories</a>
                 
                                 </li>
                                 <li class="index-item method inherited">
@@ -255,16 +255,20 @@
                                     <a href="#method_exclude">exclude</a>
                 
                                 </li>
+                                <li class="index-item method">
+                                    <a href="#method_excludeCategories">excludeCategories</a>
+                
+                                </li>
+                                <li class="index-item method">
+                                    <a href="#method_excludeTags">excludeTags</a>
+                
+                                </li>
                                 <li class="index-item method inherited">
                                     <a href="#method_file">file</a>
                 
                                 </li>
                                 <li class="index-item method">
                                     <a href="#method_filter">filter</a>
-                
-                                </li>
-                                <li class="index-item method">
-                                    <a href="#method_forPost">forPost</a>
                 
                                 </li>
                                 <li class="index-item method inherited">
@@ -282,11 +286,6 @@
                                 <li class="index-item method">
                                     <a href="#method_month">month</a>
                 
-                                </li>
-                                <li class="index-item method deprecated inherited">
-                                    <a href="#method_name">name</a>
-                
-                                        <span class="flag deprecated">deprecated</span>
                                 </li>
                                 <li class="index-item method inherited">
                                     <a href="#method_namespace">namespace</a>
@@ -328,6 +327,10 @@
                                     <a href="#method_perPage">perPage</a>
                 
                                 </li>
+                                <li class="index-item method">
+                                    <a href="#method_post">post</a>
+                
+                                </li>
                                 <li class="index-item method private">
                                     <a href="#method_returnBody">returnBody</a>
                 
@@ -357,8 +360,18 @@
                                     <a href="#method_sticky">sticky</a>
                 
                                 </li>
-                                <li class="index-item method">
+                                <li class="index-item method deprecated">
                                     <a href="#method_tag">tag</a>
+                
+                                        <span class="flag deprecated">deprecated</span>
+                                </li>
+                                <li class="index-item method deprecated">
+                                    <a href="#method_tag">tag</a>
+                
+                                        <span class="flag deprecated">deprecated</span>
+                                </li>
+                                <li class="index-item method">
+                                    <a href="#method_tags">tags</a>
                 
                                 </li>
                                 <li class="index-item method">
@@ -582,7 +595,7 @@
                                             WPRequest
                                         </a>
                                         but overwritten in
-                                    <a href="../files/wpapi.js.html#l166"><code>wpapi.js:166</code></a>
+                                    <a href="../files/wpapi.js.html#l167"><code>wpapi.js:167</code></a>
                                     </p>
                             
                             
@@ -642,7 +655,7 @@
                             <div class="meta">
                                         <p>
                                         Defined in
-                                <a href="../files/wpapi.js.html#l48"><code>wpapi.js:48</code></a>
+                                <a href="../files/wpapi.js.html#l44"><code>wpapi.js:44</code></a>
                                 </p>
                         
                         
@@ -1709,7 +1722,7 @@
                                                 <p>Provided by the <a href="../modules/filters.html" class="module-name">filters</a> module.</p>
                                             <p>
                                             Defined in
-                                    <a href="../files/lib_mixins_parameters.js.html#l137"><code>lib&#x2F;mixins&#x2F;parameters.js:137</code></a>
+                                    <a href="../files/lib_mixins_parameters.js.html#l220"><code>lib&#x2F;mixins&#x2F;parameters.js:220</code></a>
                                     </p>
                             
                             
@@ -1794,7 +1807,7 @@
                                             WPRequest
                                         </a>
                                         but overwritten in
-                                    <a href="../files/wpapi.js.html#l260"><code>wpapi.js:260</code></a>
+                                    <a href="../files/wpapi.js.html#l261"><code>wpapi.js:261</code></a>
                                     </p>
                             
                             
@@ -1921,7 +1934,7 @@
                                                 <p>Provided by the <a href="../modules/filters.html" class="module-name">filters</a> module.</p>
                                             <p>
                                             Defined in
-                                    <a href="../files/lib_mixins_parameters.js.html#l21"><code>lib&#x2F;mixins&#x2F;parameters.js:21</code></a>
+                                    <a href="../files/lib_mixins_parameters.js.html#l25"><code>lib&#x2F;mixins&#x2F;parameters.js:25</code></a>
                                     </p>
                             
                             
@@ -1933,9 +1946,11 @@
                                     <div class="description">
                                         <p>Query for posts by a specific author.
                             This method will replace any previous 'author' query parameters that had been set.</p>
+                            <p><em>Usage with the author nicename string is deprecated.</em> Query by author ID instead.</p>
                             <p>Note that this method will either set the &quot;author&quot; top-level query parameter,
-                            or else the &quot;author_name&quot; filter parameter: this is irregular as most parameter
-                            helper methods either set a top level parameter or a filter, not both.</p>
+                            or else the &quot;author_name&quot; filter parameter (when querying by nicename): this is
+                            irregular as most parameter helper methods either set a top level parameter or a
+                            filter, not both.</p>
                             
                                     </div>
                             
@@ -1997,7 +2012,7 @@
                                                 <p>Provided by the <a href="../modules/filters.html" class="module-name">filters</a> module.</p>
                                             <p>
                                             Defined in
-                                    <a href="../files/lib_mixins_parameters.js.html#l116"><code>lib&#x2F;mixins&#x2F;parameters.js:116</code></a>
+                                    <a href="../files/lib_mixins_parameters.js.html#l199"><code>lib&#x2F;mixins&#x2F;parameters.js:199</code></a>
                                     </p>
                             
                             
@@ -2079,7 +2094,7 @@
                                 <div class="meta">
                                             <p>
                                             Defined in
-                                    <a href="../files/wpapi.js.html#l292"><code>wpapi.js:292</code></a>
+                                    <a href="../files/wpapi.js.html#l293"><code>wpapi.js:293</code></a>
                                     </p>
                             
                             
@@ -2130,14 +2145,14 @@
                             
                                 </div>
                             </div>
-                            <a name="method_category" class="anchor-link"></a>
+                            <a name="method_categories" class="anchor-link"></a>
                             <div class="method item">
-                                <h3 class="name"><code>category</code>
+                                <h3 class="name"><code>categories</code>
                             
                                     <div class="args">
                                         <span class="paren">(</span><ul class="args-list inline commas">
                                             <li class="arg">
-                                                    <code>category</code>
+                                                    <code>categories</code>
                                             </li>
                                         </ul><span class="paren">)</span>
                                     </div>
@@ -2159,7 +2174,7 @@
                                                 <p>Provided by the <a href="../modules/filters.html" class="module-name">filters</a> module.</p>
                                             <p>
                                             Defined in
-                                    <a href="../files/lib_mixins_filters.js.html#l122"><code>lib&#x2F;mixins&#x2F;filters.js:122</code></a>
+                                    <a href="../files/lib_mixins_parameters.js.html#l122"><code>lib&#x2F;mixins&#x2F;parameters.js:122</code></a>
                                     </p>
                             
                             
@@ -2169,7 +2184,7 @@
                                 <div class="extended-detail">
                             
                                     <div class="description">
-                                        <p>Convenience wrapper for <code>.taxonomy( 'category', ... )</code>.</p>
+                                        <p>Retrieve only records associated with one of the provided categories</p>
                             
                                     </div>
                             
@@ -2178,12 +2193,12 @@
                             
                                             <ul class="params-list">
                                                 <li class="param">
-                                                        <code class="param-name">category</code>
+                                                        <code class="param-name">categories</code>
                                                         <span class="type">String | Number | Array</span>
                             
                             
                                                     <div class="param-description">
-                                                        <p>A string or integer, or array thereof, representing terms</p>
+                                                        <p>A term ID integer or numeric string, or array thereof</p>
                             
                                                     </div>
                             
@@ -2230,7 +2245,7 @@
                                 <div class="meta">
                                             <p>Inherited from
                                             <a href="../classes/WPRequest.html#method_context" class="type">WPRequest</a>:
-                                    <a href="../files/lib_constructors_wp-request.js.html#l437"><code>lib&#x2F;constructors&#x2F;wp-request.js:437</code></a>
+                                    <a href="../files/lib_constructors_wp-request.js.html#l434"><code>lib&#x2F;constructors&#x2F;wp-request.js:434</code></a>
                                     </p>
                             
                             
@@ -2306,7 +2321,7 @@
                                 <div class="meta">
                                             <p>Inherited from
                                             <a href="../classes/WPRequest.html#method_create" class="type">WPRequest</a>:
-                                    <a href="../files/lib_constructors_wp-request.js.html#l739"><code>lib&#x2F;constructors&#x2F;wp-request.js:739</code></a>
+                                    <a href="../files/lib_constructors_wp-request.js.html#l701"><code>lib&#x2F;constructors&#x2F;wp-request.js:701</code></a>
                                     </p>
                             
                             
@@ -2392,7 +2407,7 @@
                                                 <p>Provided by the <a href="../modules/filters.html" class="module-name">filters</a> module.</p>
                                             <p>
                                             Defined in
-                                    <a href="../files/lib_mixins_filters.js.html#l194"><code>lib&#x2F;mixins&#x2F;filters.js:194</code></a>
+                                    <a href="../files/lib_mixins_filters.js.html#l167"><code>lib&#x2F;mixins&#x2F;filters.js:167</code></a>
                                     </p>
                             
                             
@@ -2466,7 +2481,7 @@
                                 <div class="meta">
                                             <p>Inherited from
                                             <a href="../classes/WPRequest.html#method_delete" class="type">WPRequest</a>:
-                                    <a href="../files/lib_constructors_wp-request.js.html#l770"><code>lib&#x2F;constructors&#x2F;wp-request.js:770</code></a>
+                                    <a href="../files/lib_constructors_wp-request.js.html#l732"><code>lib&#x2F;constructors&#x2F;wp-request.js:732</code></a>
                                     </p>
                             
                             
@@ -2551,7 +2566,7 @@
                                 <div class="meta">
                                             <p>
                                             Defined in
-                                    <a href="../files/wpapi.js.html#l380"><code>wpapi.js:380</code></a>
+                                    <a href="../files/wpapi.js.html#l381"><code>wpapi.js:381</code></a>
                                     </p>
                             
                             
@@ -2621,7 +2636,7 @@
                                 <div class="meta">
                                             <p>Inherited from
                                             <a href="../classes/WPRequest.html#method_edit" class="type">WPRequest</a>:
-                                    <a href="../files/lib_constructors_wp-request.js.html#l448"><code>lib&#x2F;constructors&#x2F;wp-request.js:448</code></a>
+                                    <a href="../files/lib_constructors_wp-request.js.html#l445"><code>lib&#x2F;constructors&#x2F;wp-request.js:445</code></a>
                                     </p>
                             
                             
@@ -2670,7 +2685,7 @@
                                 <div class="meta">
                                             <p>Inherited from
                                             <a href="../classes/WPRequest.html#method_embed" class="type">WPRequest</a>:
-                                    <a href="../files/lib_constructors_wp-request.js.html#l459"><code>lib&#x2F;constructors&#x2F;wp-request.js:459</code></a>
+                                    <a href="../files/lib_constructors_wp-request.js.html#l456"><code>lib&#x2F;constructors&#x2F;wp-request.js:456</code></a>
                                     </p>
                             
                             
@@ -2725,7 +2740,7 @@
                                 <div class="meta">
                                             <p>Inherited from
                                             <a href="../classes/WPRequest.html#method_exclude" class="type">WPRequest</a>:
-                                    <a href="../files/lib_constructors_wp-request.js.html#l549"><code>lib&#x2F;constructors&#x2F;wp-request.js:549</code></a>
+                                    <a href="../files/lib_constructors_wp-request.js.html#l546"><code>lib&#x2F;constructors&#x2F;wp-request.js:546</code></a>
                                     </p>
                             
                             
@@ -2750,6 +2765,150 @@
                             
                                                     <div class="param-description">
                                                         <p>An ID or array of IDs to exclude</p>
+                            
+                                                    </div>
+                            
+                                                </li>
+                                            </ul>
+                                        </div>
+                            
+                                        <div class="returns">
+                                            <h4>Returns:</h4>
+                            
+                                            <div class="returns-description">
+                                                    <p>The request instance (for chaining)</p>
+                            
+                                            </div>
+                                        </div>
+                            
+                                </div>
+                            </div>
+                            <a name="method_excludeCategories" class="anchor-link"></a>
+                            <div class="method item">
+                                <h3 class="name"><code>excludeCategories</code>
+                            
+                                    <div class="args">
+                                        <span class="paren">(</span><ul class="args-list inline commas">
+                                            <li class="arg">
+                                                    <code>category</code>
+                                            </li>
+                                        </ul><span class="paren">)</span>
+                                    </div>
+                            
+                                    <span class="returns-inline">
+                                        <span class="type"></span>
+                                    </span>
+                            
+                            
+                            
+                            
+                            
+                                    <span class="flag chainable">chainable</span>
+                            
+                            
+                                </h3>
+                            
+                                <div class="meta">
+                                                <p>Provided by the <a href="../modules/filters.html" class="module-name">filters</a> module.</p>
+                                            <p>
+                                            Defined in
+                                    <a href="../files/lib_mixins_parameters.js.html#l149"><code>lib&#x2F;mixins&#x2F;parameters.js:149</code></a>
+                                    </p>
+                            
+                            
+                            
+                                </div>
+                            
+                                <div class="extended-detail">
+                            
+                                    <div class="description">
+                                        <p>Exclude records associated with any of the provided category IDs</p>
+                            
+                                    </div>
+                            
+                                        <div class="params">
+                                            <h4>Parameters:</h4>
+                            
+                                            <ul class="params-list">
+                                                <li class="param">
+                                                        <code class="param-name">category</code>
+                                                        <span class="type">String | Number | Array</span>
+                            
+                            
+                                                    <div class="param-description">
+                                                        <p>A term ID integer or numeric string, or array thereof</p>
+                            
+                                                    </div>
+                            
+                                                </li>
+                                            </ul>
+                                        </div>
+                            
+                                        <div class="returns">
+                                            <h4>Returns:</h4>
+                            
+                                            <div class="returns-description">
+                                                    <p>The request instance (for chaining)</p>
+                            
+                                            </div>
+                                        </div>
+                            
+                                </div>
+                            </div>
+                            <a name="method_excludeTags" class="anchor-link"></a>
+                            <div class="method item">
+                                <h3 class="name"><code>excludeTags</code>
+                            
+                                    <div class="args">
+                                        <span class="paren">(</span><ul class="args-list inline commas">
+                                            <li class="arg">
+                                                    <code>category</code>
+                                            </li>
+                                        </ul><span class="paren">)</span>
+                                    </div>
+                            
+                                    <span class="returns-inline">
+                                        <span class="type"></span>
+                                    </span>
+                            
+                            
+                            
+                            
+                            
+                                    <span class="flag chainable">chainable</span>
+                            
+                            
+                                </h3>
+                            
+                                <div class="meta">
+                                                <p>Provided by the <a href="../modules/filters.html" class="module-name">filters</a> module.</p>
+                                            <p>
+                                            Defined in
+                                    <a href="../files/lib_mixins_parameters.js.html#l186"><code>lib&#x2F;mixins&#x2F;parameters.js:186</code></a>
+                                    </p>
+                            
+                            
+                            
+                                </div>
+                            
+                                <div class="extended-detail">
+                            
+                                    <div class="description">
+                                        <p>Exclude records associated with any of the provided tag IDs</p>
+                            
+                                    </div>
+                            
+                                        <div class="params">
+                                            <h4>Parameters:</h4>
+                            
+                                            <ul class="params-list">
+                                                <li class="param">
+                                                        <code class="param-name">category</code>
+                                                        <span class="type">String | Number | Array</span>
+                            
+                            
+                                                    <div class="param-description">
+                                                        <p>A term ID integer or numeric string, or array thereof</p>
                             
                                                     </div>
                             
@@ -2798,7 +2957,7 @@
                                 <div class="meta">
                                             <p>Inherited from
                                             <a href="../classes/WPRequest.html#method_file" class="type">WPRequest</a>:
-                                    <a href="../files/lib_constructors_wp-request.js.html#l670"><code>lib&#x2F;constructors&#x2F;wp-request.js:670</code></a>
+                                    <a href="../files/lib_constructors_wp-request.js.html#l642"><code>lib&#x2F;constructors&#x2F;wp-request.js:642</code></a>
                                     </p>
                             
                             
@@ -2905,7 +3064,7 @@
                                                 <p>Provided by the <a href="../modules/filters.html" class="module-name">filters</a> module.</p>
                                             <p>
                                             Defined in
-                                    <a href="../files/lib_mixins_filters.js.html#l21"><code>lib&#x2F;mixins&#x2F;filters.js:21</code></a>
+                                    <a href="../files/lib_mixins_filters.js.html#l20"><code>lib&#x2F;mixins&#x2F;filters.js:20</code></a>
                                     </p>
                             
                             
@@ -2980,80 +3139,6 @@
                                         </div>
                                 </div>
                             </div>
-                            <a name="method_forPost" class="anchor-link"></a>
-                            <div class="method item">
-                                <h3 class="name"><code>forPost</code>
-                            
-                                    <div class="args">
-                                        <span class="paren">(</span><ul class="args-list inline commas">
-                                            <li class="arg">
-                                                    <code>post</code>
-                                            </li>
-                                        </ul><span class="paren">)</span>
-                                    </div>
-                            
-                                    <span class="returns-inline">
-                                        <span class="type"></span>
-                                    </span>
-                            
-                            
-                            
-                            
-                            
-                                    <span class="flag chainable">chainable</span>
-                            
-                            
-                                </h3>
-                            
-                                <div class="meta">
-                                                <p>Provided by the <a href="../modules/filters.html" class="module-name">filters</a> module.</p>
-                                            <p>
-                                            Defined in
-                                    <a href="../files/lib_mixins_parameters.js.html#l80"><code>lib&#x2F;mixins&#x2F;parameters.js:80</code></a>
-                                    </p>
-                            
-                            
-                            
-                                </div>
-                            
-                                <div class="extended-detail">
-                            
-                                    <div class="description">
-                                        <p>Specify the post for which to retrieve terms (relevant for <em>e.g.</em> taxonomy
-                            and comment collection endpoints). <code>forPost</code> is used to avoid conflicting
-                            with the <code>.post()</code> method, which corresponds to the HTTP POST action.</p>
-                            
-                                    </div>
-                            
-                                        <div class="params">
-                                            <h4>Parameters:</h4>
-                            
-                                            <ul class="params-list">
-                                                <li class="param">
-                                                        <code class="param-name">post</code>
-                                                        <span class="type">String | Number</span>
-                            
-                            
-                                                    <div class="param-description">
-                                                        <p>The ID of the post for which to retrieve terms</p>
-                            
-                                                    </div>
-                            
-                                                </li>
-                                            </ul>
-                                        </div>
-                            
-                                        <div class="returns">
-                                            <h4>Returns:</h4>
-                            
-                                            <div class="returns-description">
-                                                    <p>The request instance (for chaining)</p>
-                            
-                                            </div>
-                                        </div>
-                            
-                                </div>
-                            </div>
                             <a name="method_get" class="anchor-link"></a>
                             <div class="method item inherited">
                                 <h3 class="name"><code>get</code>
@@ -3082,7 +3167,7 @@
                                 <div class="meta">
                                             <p>Inherited from
                                             <a href="../classes/WPRequest.html#method_get" class="type">WPRequest</a>:
-                                    <a href="../files/lib_constructors_wp-request.js.html#l715"><code>lib&#x2F;constructors&#x2F;wp-request.js:715</code></a>
+                                    <a href="../files/lib_constructors_wp-request.js.html#l677"><code>lib&#x2F;constructors&#x2F;wp-request.js:677</code></a>
                                     </p>
                             
                             
@@ -3155,7 +3240,7 @@
                                 <div class="meta">
                                             <p>Inherited from
                                             <a href="../classes/WPRequest.html#method_headers" class="type">WPRequest</a>:
-                                    <a href="../files/lib_constructors_wp-request.js.html#l727"><code>lib&#x2F;constructors&#x2F;wp-request.js:727</code></a>
+                                    <a href="../files/lib_constructors_wp-request.js.html#l689"><code>lib&#x2F;constructors&#x2F;wp-request.js:689</code></a>
                                     </p>
                             
                             
@@ -3228,7 +3313,7 @@
                                 <div class="meta">
                                             <p>Inherited from
                                             <a href="../classes/WPRequest.html#method_include" class="type">WPRequest</a>:
-                                    <a href="../files/lib_constructors_wp-request.js.html#l539"><code>lib&#x2F;constructors&#x2F;wp-request.js:539</code></a>
+                                    <a href="../files/lib_constructors_wp-request.js.html#l536"><code>lib&#x2F;constructors&#x2F;wp-request.js:536</code></a>
                                     </p>
                             
                             
@@ -3300,7 +3385,7 @@
                                                 <p>Provided by the <a href="../modules/filters.html" class="module-name">filters</a> module.</p>
                                             <p>
                                             Defined in
-                                    <a href="../files/lib_mixins_filters.js.html#l161"><code>lib&#x2F;mixins&#x2F;filters.js:161</code></a>
+                                    <a href="../files/lib_mixins_filters.js.html#l134"><code>lib&#x2F;mixins&#x2F;filters.js:134</code></a>
                                     </p>
                             
                             
@@ -3326,79 +3411,6 @@
                             
                                                     <div class="param-description">
                                                         <p>Integer for month (1) or month string (&quot;January&quot;)</p>
-                            
-                                                    </div>
-                            
-                                                </li>
-                                            </ul>
-                                        </div>
-                            
-                                        <div class="returns">
-                                            <h4>Returns:</h4>
-                            
-                                            <div class="returns-description">
-                                                    <p>The request instance (for chaining)</p>
-                            
-                                            </div>
-                                        </div>
-                            
-                                </div>
-                            </div>
-                            <a name="method_name" class="anchor-link"></a>
-                            <div class="method item deprecated inherited">
-                                <h3 class="name"><code>name</code>
-                            
-                                    <div class="args">
-                                        <span class="paren">(</span><ul class="args-list inline commas">
-                                            <li class="arg">
-                                                    <code>slug</code>
-                                            </li>
-                                        </ul><span class="paren">)</span>
-                                    </div>
-                            
-                                    <span class="returns-inline">
-                                        <span class="type"></span>
-                                    </span>
-                            
-                                    <span class="flag deprecated" title="use .slug()">deprecated</span>
-                            
-                            
-                            
-                            
-                                    <span class="flag chainable">chainable</span>
-                            
-                            
-                                </h3>
-                            
-                                <div class="meta">
-                                            <p>Inherited from
-                                            <a href="../classes/WPRequest.html#method_name" class="type">WPRequest</a>:
-                                    <a href="../files/lib_constructors_wp-request.js.html#l569"><code>lib&#x2F;constructors&#x2F;wp-request.js:569</code></a>
-                                    </p>
-                            
-                            
-                                        <p class="deprecated">Deprecated: <span class="message">use .slug()</span></p>
-                            
-                                </div>
-                            
-                                <div class="extended-detail">
-                            
-                                    <div class="description">
-                                        <p>Alias for .slug()</p>
-                            
-                                    </div>
-                            
-                                        <div class="params">
-                                            <h4>Parameters:</h4>
-                            
-                                            <ul class="params-list">
-                                                <li class="param">
-                                                        <code class="param-name">slug</code>
-                                                        <span class="type">String</span>
-                            
-                            
-                                                    <div class="param-description">
-                                                        <p>A post name (slug), e.g. &quot;hello-world&quot;</p>
                             
                                                     </div>
                             
@@ -3445,7 +3457,7 @@
                                 <div class="meta">
                                             <p>Inherited from
                                             <a href="../classes/WPRequest.html#method_namespace" class="type">WPRequest</a>:
-                                    <a href="../files/lib_constructors_wp-request.js.html#l589"><code>lib&#x2F;constructors&#x2F;wp-request.js:589</code></a>
+                                    <a href="../files/lib_constructors_wp-request.js.html#l572"><code>lib&#x2F;constructors&#x2F;wp-request.js:572</code></a>
                                     </p>
                             
                             
@@ -3519,7 +3531,7 @@
                                 <div class="meta">
                                             <p>Inherited from
                                             <a href="../classes/WPRequest.html#method_offset" class="type">WPRequest</a>:
-                                    <a href="../files/lib_constructors_wp-request.js.html#l495"><code>lib&#x2F;constructors&#x2F;wp-request.js:495</code></a>
+                                    <a href="../files/lib_constructors_wp-request.js.html#l492"><code>lib&#x2F;constructors&#x2F;wp-request.js:492</code></a>
                                     </p>
                             
                             
@@ -3590,7 +3602,7 @@
                                 <div class="meta">
                                             <p>Inherited from
                                             <a href="../classes/WPRequest.html#method_order" class="type">WPRequest</a>:
-                                    <a href="../files/lib_constructors_wp-request.js.html#l505"><code>lib&#x2F;constructors&#x2F;wp-request.js:505</code></a>
+                                    <a href="../files/lib_constructors_wp-request.js.html#l502"><code>lib&#x2F;constructors&#x2F;wp-request.js:502</code></a>
                                     </p>
                             
                             
@@ -3670,7 +3682,7 @@
                                 <div class="meta">
                                             <p>Inherited from
                                             <a href="../classes/WPRequest.html#method_orderby" class="type">WPRequest</a>:
-                                    <a href="../files/lib_constructors_wp-request.js.html#l519"><code>lib&#x2F;constructors&#x2F;wp-request.js:519</code></a>
+                                    <a href="../files/lib_constructors_wp-request.js.html#l516"><code>lib&#x2F;constructors&#x2F;wp-request.js:516</code></a>
                                     </p>
                             
                             
@@ -3741,7 +3753,7 @@
                                 <div class="meta">
                                             <p>Inherited from
                                             <a href="../classes/WPRequest.html#method_page" class="type">WPRequest</a>:
-                                    <a href="../files/lib_constructors_wp-request.js.html#l473"><code>lib&#x2F;constructors&#x2F;wp-request.js:473</code></a>
+                                    <a href="../files/lib_constructors_wp-request.js.html#l470"><code>lib&#x2F;constructors&#x2F;wp-request.js:470</code></a>
                                     </p>
                             
                             
@@ -3820,7 +3832,7 @@
                                 <div class="meta">
                                             <p>Inherited from
                                             <a href="../classes/WPRequest.html#method_param" class="type">WPRequest</a>:
-                                    <a href="../files/lib_constructors_wp-request.js.html#l373"><code>lib&#x2F;constructors&#x2F;wp-request.js:373</code></a>
+                                    <a href="../files/lib_constructors_wp-request.js.html#l370"><code>lib&#x2F;constructors&#x2F;wp-request.js:370</code></a>
                                     </p>
                             
                             
@@ -3918,7 +3930,7 @@
                                                 <p>Provided by the <a href="../modules/filters.html" class="module-name">filters</a> module.</p>
                                             <p>
                                             Defined in
-                                    <a href="../files/lib_mixins_parameters.js.html#l54"><code>lib&#x2F;mixins&#x2F;parameters.js:54</code></a>
+                                    <a href="../files/lib_mixins_parameters.js.html#l61"><code>lib&#x2F;mixins&#x2F;parameters.js:61</code></a>
                                     </p>
                             
                             
@@ -4007,7 +4019,7 @@
                                                 <p>Provided by the <a href="../modules/filters.html" class="module-name">filters</a> module.</p>
                                             <p>
                                             Defined in
-                                    <a href="../files/lib_mixins_parameters.js.html#l92"><code>lib&#x2F;mixins&#x2F;parameters.js:92</code></a>
+                                    <a href="../files/lib_mixins_parameters.js.html#l98"><code>lib&#x2F;mixins&#x2F;parameters.js:98</code></a>
                                     </p>
                             
                             
@@ -4079,7 +4091,7 @@
                                                 <p>Provided by the <a href="../modules/filters.html" class="module-name">filters</a> module.</p>
                                             <p>
                                             Defined in
-                                    <a href="../files/lib_mixins_filters.js.html#l207"><code>lib&#x2F;mixins&#x2F;filters.js:207</code></a>
+                                    <a href="../files/lib_mixins_filters.js.html#l180"><code>lib&#x2F;mixins&#x2F;filters.js:180</code></a>
                                     </p>
                             
                             
@@ -4150,7 +4162,7 @@
                                 <div class="meta">
                                             <p>Inherited from
                                             <a href="../classes/WPRequest.html#method_perPage" class="type">WPRequest</a>:
-                                    <a href="../files/lib_constructors_wp-request.js.html#l485"><code>lib&#x2F;constructors&#x2F;wp-request.js:485</code></a>
+                                    <a href="../files/lib_constructors_wp-request.js.html#l482"><code>lib&#x2F;constructors&#x2F;wp-request.js:482</code></a>
                                     </p>
                             
                             
@@ -4175,6 +4187,79 @@
                             
                                                     <div class="param-description">
                                                         <p>The number of items to return in one page of results</p>
+                            
+                                                    </div>
+                            
+                                                </li>
+                                            </ul>
+                                        </div>
+                            
+                                        <div class="returns">
+                                            <h4>Returns:</h4>
+                            
+                                            <div class="returns-description">
+                                                    <p>The request instance (for chaining)</p>
+                            
+                                            </div>
+                                        </div>
+                            
+                                </div>
+                            </div>
+                            <a name="method_post" class="anchor-link"></a>
+                            <div class="method item">
+                                <h3 class="name"><code>post</code>
+                            
+                                    <div class="args">
+                                        <span class="paren">(</span><ul class="args-list inline commas">
+                                            <li class="arg">
+                                                    <code>post</code>
+                                            </li>
+                                        </ul><span class="paren">)</span>
+                                    </div>
+                            
+                                    <span class="returns-inline">
+                                        <span class="type"></span>
+                                    </span>
+                            
+                            
+                            
+                            
+                            
+                                    <span class="flag chainable">chainable</span>
+                            
+                            
+                                </h3>
+                            
+                                <div class="meta">
+                                                <p>Provided by the <a href="../modules/filters.html" class="module-name">filters</a> module.</p>
+                                            <p>
+                                            Defined in
+                                    <a href="../files/lib_mixins_parameters.js.html#l87"><code>lib&#x2F;mixins&#x2F;parameters.js:87</code></a>
+                                    </p>
+                            
+                            
+                            
+                                </div>
+                            
+                                <div class="extended-detail">
+                            
+                                    <div class="description">
+                                        <p>Specify the post for which to retrieve terms (relevant for <em>e.g.</em> taxonomy
+                            and comment collection endpoints).</p>
+                            
+                                    </div>
+                            
+                                        <div class="params">
+                                            <h4>Parameters:</h4>
+                            
+                                            <ul class="params-list">
+                                                <li class="param">
+                                                        <code class="param-name">post</code>
+                                                        <span class="type">String | Number</span>
+                            
+                            
+                                                    <div class="param-description">
+                                                        <p>The ID of the post for which to retrieve terms</p>
                             
                                                     </div>
                             
@@ -4309,7 +4394,7 @@
                                 <div class="meta">
                                             <p>
                                             Defined in
-                                    <a href="../files/wpapi.js.html#l240"><code>wpapi.js:240</code></a>
+                                    <a href="../files/wpapi.js.html#l241"><code>wpapi.js:241</code></a>
                                     </p>
                             
                             
@@ -4383,7 +4468,7 @@
                                 <div class="meta">
                                             <p>Inherited from
                                             <a href="../classes/WPRequest.html#method_search" class="type">WPRequest</a>:
-                                    <a href="../files/lib_constructors_wp-request.js.html#l529"><code>lib&#x2F;constructors&#x2F;wp-request.js:529</code></a>
+                                    <a href="../files/lib_constructors_wp-request.js.html#l526"><code>lib&#x2F;constructors&#x2F;wp-request.js:526</code></a>
                                     </p>
                             
                             
@@ -4457,7 +4542,7 @@
                                 <div class="meta">
                                             <p>Inherited from
                                             <a href="../classes/WPRequest.html#method_setPathPart" class="type">WPRequest</a>:
-                                    <a href="../files/lib_constructors_wp-request.js.html#l296"><code>lib&#x2F;constructors&#x2F;wp-request.js:296</code></a>
+                                    <a href="../files/lib_constructors_wp-request.js.html#l293"><code>lib&#x2F;constructors&#x2F;wp-request.js:293</code></a>
                                     </p>
                             
                             
@@ -4546,7 +4631,7 @@
                                 <div class="meta">
                                             <p>
                                             Defined in
-                                    <a href="../files/wpapi.js.html#l178"><code>wpapi.js:178</code></a>
+                                    <a href="../files/wpapi.js.html#l179"><code>wpapi.js:179</code></a>
                                     </p>
                             
                             
@@ -4655,7 +4740,7 @@
                                 <div class="meta">
                                             <p>Inherited from
                                             <a href="../classes/WPRequest.html#method_slug" class="type">WPRequest</a>:
-                                    <a href="../files/lib_constructors_wp-request.js.html#l559"><code>lib&#x2F;constructors&#x2F;wp-request.js:559</code></a>
+                                    <a href="../files/lib_constructors_wp-request.js.html#l556"><code>lib&#x2F;constructors&#x2F;wp-request.js:556</code></a>
                                     </p>
                             
                             
@@ -4727,7 +4812,7 @@
                                                 <p>Provided by the <a href="../modules/filters.html" class="module-name">filters</a> module.</p>
                                             <p>
                                             Defined in
-                                    <a href="../files/lib_mixins_parameters.js.html#l102"><code>lib&#x2F;mixins&#x2F;parameters.js:102</code></a>
+                                    <a href="../files/lib_mixins_parameters.js.html#l108"><code>lib&#x2F;mixins&#x2F;parameters.js:108</code></a>
                                     </p>
                             
                             
@@ -4772,13 +4857,161 @@
                                 </div>
                             </div>
                             <a name="method_tag" class="anchor-link"></a>
-                            <div class="method item">
+                            <div class="method item deprecated">
                                 <h3 class="name"><code>tag</code>
                             
                                     <div class="args">
                                         <span class="paren">(</span><ul class="args-list inline commas">
                                             <li class="arg">
                                                     <code>tag</code>
+                                            </li>
+                                        </ul><span class="paren">)</span>
+                                    </div>
+                            
+                                    <span class="returns-inline">
+                                        <span class="type"></span>
+                                    </span>
+                            
+                                    <span class="flag deprecated" title="Use &#x60;.categories()&#x60; and query by category IDs">deprecated</span>
+                            
+                            
+                            
+                            
+                                    <span class="flag chainable">chainable</span>
+                            
+                            
+                                </h3>
+                            
+                                <div class="meta">
+                                                <p>Provided by the <a href="../modules/filters.html" class="module-name">filters</a> module.</p>
+                                            <p>
+                                            Defined in
+                                    <a href="../files/lib_mixins_parameters.js.html#l132"><code>lib&#x2F;mixins&#x2F;parameters.js:132</code></a>
+                                    </p>
+                            
+                            
+                                        <p class="deprecated">Deprecated: <span class="message">Use &#x60;.categories()&#x60; and query by category IDs</span></p>
+                            
+                                </div>
+                            
+                                <div class="extended-detail">
+                            
+                                    <div class="description">
+                                        <p>Legacy wrapper for <code>.categories()</code> that uses <code>?filter</code> to query by slug if available</p>
+                            
+                                    </div>
+                            
+                                        <div class="params">
+                                            <h4>Parameters:</h4>
+                            
+                                            <ul class="params-list">
+                                                <li class="param">
+                                                        <code class="param-name">tag</code>
+                                                        <span class="type">String | Number | Array</span>
+                            
+                            
+                                                    <div class="param-description">
+                                                        <p>A category term slug string, numeric ID, or array of numeric IDs</p>
+                            
+                                                    </div>
+                            
+                                                </li>
+                                            </ul>
+                                        </div>
+                            
+                                        <div class="returns">
+                                            <h4>Returns:</h4>
+                            
+                                            <div class="returns-description">
+                                                    <p>The request instance (for chaining)</p>
+                            
+                                            </div>
+                                        </div>
+                            
+                                </div>
+                            </div>
+                            <a name="method_tag" class="anchor-link"></a>
+                            <div class="method item deprecated">
+                                <h3 class="name"><code>tag</code>
+                            
+                                    <div class="args">
+                                        <span class="paren">(</span><ul class="args-list inline commas">
+                                            <li class="arg">
+                                                    <code>tag</code>
+                                            </li>
+                                        </ul><span class="paren">)</span>
+                                    </div>
+                            
+                                    <span class="returns-inline">
+                                        <span class="type"></span>
+                                    </span>
+                            
+                                    <span class="flag deprecated" title="Use &#x60;.tags()&#x60; and query by term IDs">deprecated</span>
+                            
+                            
+                            
+                            
+                                    <span class="flag chainable">chainable</span>
+                            
+                            
+                                </h3>
+                            
+                                <div class="meta">
+                                                <p>Provided by the <a href="../modules/filters.html" class="module-name">filters</a> module.</p>
+                                            <p>
+                                            Defined in
+                                    <a href="../files/lib_mixins_parameters.js.html#l169"><code>lib&#x2F;mixins&#x2F;parameters.js:169</code></a>
+                                    </p>
+                            
+                            
+                                        <p class="deprecated">Deprecated: <span class="message">Use &#x60;.tags()&#x60; and query by term IDs</span></p>
+                            
+                                </div>
+                            
+                                <div class="extended-detail">
+                            
+                                    <div class="description">
+                                        <p>Legacy wrapper for <code>.tags()</code> that uses <code>?filter</code> to query by slug if available</p>
+                            
+                                    </div>
+                            
+                                        <div class="params">
+                                            <h4>Parameters:</h4>
+                            
+                                            <ul class="params-list">
+                                                <li class="param">
+                                                        <code class="param-name">tag</code>
+                                                        <span class="type">String | Number | Array</span>
+                            
+                            
+                                                    <div class="param-description">
+                                                        <p>A tag term slug string, numeric ID, or array of numeric IDs</p>
+                            
+                                                    </div>
+                            
+                                                </li>
+                                            </ul>
+                                        </div>
+                            
+                                        <div class="returns">
+                                            <h4>Returns:</h4>
+                            
+                                            <div class="returns-description">
+                                                    <p>The request instance (for chaining)</p>
+                            
+                                            </div>
+                                        </div>
+                            
+                                </div>
+                            </div>
+                            <a name="method_tags" class="anchor-link"></a>
+                            <div class="method item">
+                                <h3 class="name"><code>tags</code>
+                            
+                                    <div class="args">
+                                        <span class="paren">(</span><ul class="args-list inline commas">
+                                            <li class="arg">
+                                                    <code>tags</code>
                                             </li>
                                         </ul><span class="paren">)</span>
                                     </div>
@@ -4800,7 +5033,7 @@
                                                 <p>Provided by the <a href="../modules/filters.html" class="module-name">filters</a> module.</p>
                                             <p>
                                             Defined in
-                                    <a href="../files/lib_mixins_filters.js.html#l135"><code>lib&#x2F;mixins&#x2F;filters.js:135</code></a>
+                                    <a href="../files/lib_mixins_parameters.js.html#l159"><code>lib&#x2F;mixins&#x2F;parameters.js:159</code></a>
                                     </p>
                             
                             
@@ -4810,7 +5043,7 @@
                                 <div class="extended-detail">
                             
                                     <div class="description">
-                                        <p>Convenience wrapper for <code>.taxonomy( 'tag', ... )</code>.</p>
+                                        <p>Retrieve only records associated with one of the provided tag IDs</p>
                             
                                     </div>
                             
@@ -4819,12 +5052,12 @@
                             
                                             <ul class="params-list">
                                                 <li class="param">
-                                                        <code class="param-name">tag</code>
+                                                        <code class="param-name">tags</code>
                                                         <span class="type">String | Number | Array</span>
                             
                             
                                                     <div class="param-description">
-                                                        <p>A tag term string or array of tag term strings</p>
+                                                        <p>A term ID integer or numeric string, or array thereof</p>
                             
                                                     </div>
                             
@@ -4875,7 +5108,7 @@
                                                 <p>Provided by the <a href="../modules/filters.html" class="module-name">filters</a> module.</p>
                                             <p>
                                             Defined in
-                                    <a href="../files/lib_mixins_filters.js.html#l63"><code>lib&#x2F;mixins&#x2F;filters.js:63</code></a>
+                                    <a href="../files/lib_mixins_filters.js.html#l62"><code>lib&#x2F;mixins&#x2F;filters.js:62</code></a>
                                     </p>
                             
                             
@@ -4960,7 +5193,7 @@
                                 <div class="meta">
                                             <p>Inherited from
                                             <a href="../classes/WPRequest.html#method_then" class="type">WPRequest</a>:
-                                    <a href="../files/lib_constructors_wp-request.js.html#l783"><code>lib&#x2F;constructors&#x2F;wp-request.js:783</code></a>
+                                    <a href="../files/lib_constructors_wp-request.js.html#l745"><code>lib&#x2F;constructors&#x2F;wp-request.js:745</code></a>
                                     </p>
                             
                             
@@ -5097,7 +5330,7 @@
                                 <div class="meta">
                                             <p>Inherited from
                                             <a href="../classes/WPRequest.html#method_update" class="type">WPRequest</a>:
-                                    <a href="../files/lib_constructors_wp-request.js.html#l754"><code>lib&#x2F;constructors&#x2F;wp-request.js:754</code></a>
+                                    <a href="../files/lib_constructors_wp-request.js.html#l716"><code>lib&#x2F;constructors&#x2F;wp-request.js:716</code></a>
                                     </p>
                             
                             
@@ -5181,7 +5414,7 @@
                                 <div class="meta">
                                             <p>
                                             Defined in
-                                    <a href="../files/wpapi.js.html#l219"><code>wpapi.js:219</code></a>
+                                    <a href="../files/wpapi.js.html#l220"><code>wpapi.js:220</code></a>
                                     </p>
                             
                             
@@ -5258,7 +5491,7 @@
                                 <div class="meta">
                                             <p>Inherited from
                                             <a href="../classes/WPRequest.html#method_validatePath" class="type">WPRequest</a>:
-                                    <a href="../files/lib_constructors_wp-request.js.html#l318"><code>lib&#x2F;constructors&#x2F;wp-request.js:318</code></a>
+                                    <a href="../files/lib_constructors_wp-request.js.html#l315"><code>lib&#x2F;constructors&#x2F;wp-request.js:315</code></a>
                                     </p>
                             
                             
@@ -5320,7 +5553,7 @@
                                                 <p>Provided by the <a href="../modules/filters.html" class="module-name">filters</a> module.</p>
                                             <p>
                                             Defined in
-                                    <a href="../files/lib_mixins_filters.js.html#l148"><code>lib&#x2F;mixins&#x2F;filters.js:148</code></a>
+                                    <a href="../files/lib_mixins_filters.js.html#l121"><code>lib&#x2F;mixins&#x2F;filters.js:121</code></a>
                                     </p>
                             
                             

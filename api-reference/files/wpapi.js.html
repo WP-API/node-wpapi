@@ -14,7 +14,7 @@
     <header class="main-header">
         <div class="content">
             <div class="project-title">
-                    <h1 class="project-name">wpapi</h1> <span class="project-version">0.11.0</span>
+                    <h1 class="project-name">wpapi</h1> <span class="project-version">0.12.0</span>
                     <p class="description">A client for interacting with the WordPress REST API</p>
             </div>
             <ul class="jump-links">
@@ -93,11 +93,7 @@
                 // is to be bootstrapped with the handlers for all of the built-in routes)
                 var defaultEndpointFactories;
                 
-                var defaults = {
-                	username: &#x27;&#x27;,
-                	password: &#x27;&#x27;
-                };
-                
+                // Constant used to detect first-party WordPress REST API routes
                 var apiDefaultNamespace = &#x27;wp/v2&#x27;;
                 
                 // Pull in autodiscovery methods
@@ -136,17 +132,22 @@
                 		return new WPAPI( options );
                 	}
                 
-                	// Dictionary to be filled by handlers for default namespaces
-                	this._ns = {};
-                
-                	this._options = extend( {}, defaults, options );
-                
-                	if ( typeof this._options.endpoint !== &#x27;string&#x27; ) {
+                	if ( typeof options.endpoint !== &#x27;string&#x27; ) {
                 		throw new Error( &#x27;options hash must contain an API endpoint URL string&#x27; );
                 	}
                 
-                	// Ensure trailing slash on endpoint URI
-                	this._options.endpoint = this._options.endpoint.replace( /\/?$/, &#x27;/&#x27; );
+                	// Dictionary to be filled by handlers for default namespaces
+                	this._ns = {};
+                
+                	this._options = {
+                		// Ensure trailing slash on endpoint URI
+                		endpoint: options.endpoint.replace(  /\/?$/, &#x27;/&#x27; )
+                	};
+                
+                	// If any authentication credentials were provided, assign them now
+                	if ( options &amp;&amp; ( options.username || options.password || options.nonce ) ) {
+                		this.auth( options );
+                	}
                 
                 	return this
                 		// Configure custom HTTP transport methods, if provided

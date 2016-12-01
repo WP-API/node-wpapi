@@ -14,7 +14,7 @@
     <header class="main-header">
         <div class="content">
             <div class="project-title">
-                    <h1 class="project-name">wpapi</h1> <span class="project-version">0.11.0</span>
+                    <h1 class="project-name">wpapi</h1> <span class="project-version">0.12.0</span>
                     <p class="description">A client for interacting with the WordPress REST API</p>
             </div>
             <ul class="jump-links">
@@ -73,11 +73,15 @@
                  * @module filters
                  */
                 var paramSetter = require( &#x27;../util/parameter-setter&#x27; );
+                var argumentIsNumeric = require( &#x27;../util/argument-is-numeric&#x27; );
                 
                 var parameterMixins = {};
                 
+                var filters = require( &#x27;./filters&#x27; );
                 // Needed for .author mixin, as author by ID is a parameter and by Name is a filter
-                var filter = require( &#x27;./filters&#x27; ).filter;
+                var filter = filters.filter;
+                // Needed for .tag and .category mixin, for deprecated query-by-slug support
+                var taxonomy = filters.taxonomy;
                 
                 // Parameter Methods
                 // =================
@@ -86,9 +90,12 @@
                  * Query for posts by a specific author.
                  * This method will replace any previous &#x27;author&#x27; query parameters that had been set.
                  *
+                 * _Usage with the author nicename string is deprecated._ Query by author ID instead.
+                 *
                  * Note that this method will either set the &quot;author&quot; top-level query parameter,
-                 * or else the &quot;author_name&quot; filter parameter: this is irregular as most parameter
-                 * helper methods either set a top level parameter or a filter, not both.
+                 * or else the &quot;author_name&quot; filter parameter (when querying by nicename): this is
+                 * irregular as most parameter helper methods either set a top level parameter or a
+                 * filter, not both.
                  *
                  * @method author
                  * @chainable
@@ -143,15 +150,14 @@
                 
                 /**
                  * Specify the post for which to retrieve terms (relevant for *e.g.* taxonomy
-                 * and comment collection endpoints). &#x60;forPost&#x60; is used to avoid conflicting
-                 * with the &#x60;.post()&#x60; method, which corresponds to the HTTP POST action.
+                 * and comment collection endpoints).
                  *
-                 * @method forPost
+                 * @method post
                  * @chainable
                  * @param {String|Number} post The ID of the post for which to retrieve terms
                  * @return The request instance (for chaining)
                  */
-                parameterMixins.forPost = paramSetter( &#x27;post&#x27; );
+                parameterMixins.post = paramSetter( &#x27;post&#x27; );
                 
                 /**
                  * Specify the password to use to access the content of a password-protected post
@@ -173,6 +179,83 @@
                  * @returns The request instance (for chaining)
                  */
                 parameterMixins.sticky = paramSetter( &#x27;sticky&#x27; );
+                
+                // Taxonomy Term Filter Methods
+                // ============================
+                
+                /**
+                 * Retrieve only records associated with one of the provided categories
+                 *
+                 * @method categories
+                 * @chainable
+                 * @param {String|Number|Array} categories A term ID integer or numeric string, or array thereof
+                 * @return The request instance (for chaining)
+                 */
+                parameterMixins.categories = paramSetter( &#x27;categories&#x27; );
+                
+                /**
+                 * Legacy wrapper for &#x60;.categories()&#x60; that uses &#x60;?filter&#x60; to query by slug if available
+                 *
+                 * @method tag
+                 * @deprecated Use &#x60;.categories()&#x60; and query by category IDs
+                 * @chainable
+                 * @param {String|Number|Array} tag A category term slug string, numeric ID, or array of numeric IDs
+                 * @return The request instance (for chaining)
+                 */
+                parameterMixins.category = function( category ) {
+                	/* jshint validthis:true */
+                	if ( argumentIsNumeric( category ) ) {
+                		return parameterMixins.categories.call( this, category );
+                	}
+                	return taxonomy.call( this, &#x27;category&#x27;, category );
+                };
+                
+                /**
+                 * Exclude records associated with any of the provided category IDs
+                 *
+                 * @method excludeCategories
+                 * @chainable
+                 * @param {String|Number|Array} category A term ID integer or numeric string, or array thereof
+                 * @return The request instance (for chaining)
+                 */
+                parameterMixins.excludeCategories = paramSetter( &#x27;categories_exclude&#x27; );
+                
+                /**
+                 * Retrieve only records associated with one of the provided tag IDs
+                 *
+                 * @method tags
+                 * @chainable
+                 * @param {String|Number|Array} tags A term ID integer or numeric string, or array thereof
+                 * @return The request instance (for chaining)
+                 */
+                parameterMixins.tags = paramSetter( &#x27;tags&#x27; );
+                
+                /**
+                 * Legacy wrapper for &#x60;.tags()&#x60; that uses &#x60;?filter&#x60; to query by slug if available
+                 *
+                 * @method tag
+                 * @deprecated Use &#x60;.tags()&#x60; and query by term IDs
+                 * @chainable
+                 * @param {String|Number|Array} tag A tag term slug string, numeric ID, or array of numeric IDs
+                 * @return The request instance (for chaining)
+                 */
+                parameterMixins.tag = function( tag ) {
+                	/* jshint validthis:true */
+                	if ( argumentIsNumeric( tag ) ) {
+                		return parameterMixins.tags.call( this, tag );
+                	}
+                	return taxonomy.call( this, &#x27;tag&#x27;, tag );
+                };
+                
+                /**
+                 * Exclude records associated with any of the provided tag IDs
+                 *
+                 * @method excludeTags
+                 * @chainable
+                 * @param {String|Number|Array} category A term ID integer or numeric string, or array thereof
+                 * @return The request instance (for chaining)
+                 */
+                parameterMixins.excludeTags = paramSetter( &#x27;tags_exclude&#x27; );
                 
                 // Date Methods
                 // ============

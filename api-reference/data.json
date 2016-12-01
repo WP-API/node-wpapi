@@ -2,7 +2,7 @@
     "project": {
         "name": "wpapi",
         "description": "A client for interacting with the WordPress REST API",
-        "version": "0.11.0",
+        "version": "0.12.0",
         "url": "https://github.com/wp-api/node-wpapi"
     },
     "files": {
@@ -63,6 +63,13 @@
         },
         "lib/util/apply-mixin.js": {
             "name": "lib/util/apply-mixin.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "lib/util/argument-is-numeric.js": {
+            "name": "lib/util/argument-is-numeric.js",
             "modules": {},
             "classes": {},
             "fors": {},
@@ -185,7 +192,7 @@
             "namespaces": {},
             "tag": "main",
             "file": "wpapi.js",
-            "line": 48,
+            "line": 44,
             "description": "A WP REST API client for Node.js",
             "example": [
                 "\n    var wp = new WPAPI({ endpoint: 'http://src.wordpress-develop.dev/wp-json' });\n    wp.posts().then(function( posts ) {\n        console.log( posts );\n    }).catch(function( err ) {\n        console.error( err );\n    });"
@@ -219,7 +226,7 @@
             "tag": "module",
             "file": "lib/mixins/filters.js",
             "line": 2,
-            "description": "Filter methods that can be mixed in to a request constructor's prototype to\nallow that request to take advantage of the `?filter[]=` aliases for WP_Query\nparameters for collection endpoints. These are most relevant to posts, pages\nand CPTs."
+            "description": "Filter methods that can be mixed in to a request constructor's prototype to\nallow that request to take advantage of the `?filter[]=` aliases for WP_Query\nparameters for collection endpoints, when available."
         },
         "autodiscovery": {
             "name": "autodiscovery",
@@ -324,7 +331,7 @@
             "module": "WPAPI",
             "namespace": "",
             "file": "wpapi.js",
-            "line": 48,
+            "line": 44,
             "description": "The base constructor for the WP API service",
             "itemtype": "method",
             "params": [
@@ -567,13 +574,6 @@
         {
             "file": "lib/constructors/wp-request.js",
             "line": 293,
-            "class": "WPRequest",
-            "module": "WPAPI",
-            "submodule": "WPRequest"
-        },
-        {
-            "file": "lib/constructors/wp-request.js",
-            "line": 296,
             "description": "Set a component of the resource URL itself (as opposed to a query parameter)\n\nIf a path component has already been set at this level, throw an error:\nrequests are meant to be transient, so any re-writing of a previously-set\npath part value is likely to be a mistake.",
             "itemtype": "method",
             "name": "setPathPart",
@@ -600,7 +600,7 @@
         },
         {
             "file": "lib/constructors/wp-request.js",
-            "line": 318,
+            "line": 315,
             "description": "Validate whether the specified path parts are valid for this endpoint\n\n\"Path parts\" are non-query-string URL segments, like \"some\" \"path\" in the URL\n`mydomain.com/some/path?and=a&query=string&too`. Because a well-formed path\nis necessary to execute a successful API request, we throw an error if the\nuser has omitted a value (such as `/some/[missing component]/url`) or has\nprovided a path part value that does not match the regular expression the\nAPI uses to goven that segment.",
             "itemtype": "method",
             "name": "validatePath",
@@ -615,7 +615,7 @@
         },
         {
             "file": "lib/constructors/wp-request.js",
-            "line": 373,
+            "line": 370,
             "description": "Set a parameter to render into the final query URI.",
             "itemtype": "method",
             "name": "param",
@@ -649,7 +649,7 @@
         },
         {
             "file": "lib/constructors/wp-request.js",
-            "line": 437,
+            "line": 434,
             "description": "Set the context of the request. Used primarily to expose private values on a\nrequest object by setting the context to \"edit\".",
             "itemtype": "method",
             "name": "context",
@@ -671,7 +671,7 @@
         },
         {
             "file": "lib/constructors/wp-request.js",
-            "line": 448,
+            "line": 445,
             "description": "Convenience wrapper for `.context( 'edit' )`",
             "itemtype": "method",
             "name": "edit",
@@ -686,7 +686,7 @@
         },
         {
             "file": "lib/constructors/wp-request.js",
-            "line": 459,
+            "line": 456,
             "description": "Return embedded resources as part of the response payload.",
             "itemtype": "method",
             "name": "embed",
@@ -701,7 +701,7 @@
         },
         {
             "file": "lib/constructors/wp-request.js",
-            "line": 473,
+            "line": 470,
             "description": "Set the pagination of a request. Use in conjunction with `.perPage()` for explicit\npagination handling. (The number of pages in a response can be retrieved from the\nresponse's `_paging.totalPages` property.)",
             "itemtype": "method",
             "name": "page",
@@ -722,7 +722,7 @@
         },
         {
             "file": "lib/constructors/wp-request.js",
-            "line": 485,
+            "line": 482,
             "description": "Set the number of items to be returned in a page of responses.",
             "itemtype": "method",
             "name": "perPage",
@@ -743,7 +743,7 @@
         },
         {
             "file": "lib/constructors/wp-request.js",
-            "line": 495,
+            "line": 492,
             "description": "Set an arbitrary offset to retrieve items from a specific point in a collection.",
             "itemtype": "method",
             "name": "offset",
@@ -764,7 +764,7 @@
         },
         {
             "file": "lib/constructors/wp-request.js",
-            "line": 505,
+            "line": 502,
             "description": "Change the sort direction of a returned collection",
             "example": [
                 " order comments chronologically (oldest first)\n\n    site.comments().order( 'asc' )..."
@@ -788,7 +788,7 @@
         },
         {
             "file": "lib/constructors/wp-request.js",
-            "line": 519,
+            "line": 516,
             "description": "Order a collection by a specific field",
             "itemtype": "method",
             "name": "orderby",
@@ -809,7 +809,7 @@
         },
         {
             "file": "lib/constructors/wp-request.js",
-            "line": 529,
+            "line": 526,
             "description": "Filter results to those matching the specified search terms.",
             "itemtype": "method",
             "name": "search",
@@ -830,7 +830,7 @@
         },
         {
             "file": "lib/constructors/wp-request.js",
-            "line": 539,
+            "line": 536,
             "description": "Include specific resource IDs in the response collection.",
             "itemtype": "method",
             "name": "include",
@@ -851,7 +851,7 @@
         },
         {
             "file": "lib/constructors/wp-request.js",
-            "line": 549,
+            "line": 546,
             "description": "Exclude specific resource IDs in the response collection.",
             "itemtype": "method",
             "name": "exclude",
@@ -872,7 +872,7 @@
         },
         {
             "file": "lib/constructors/wp-request.js",
-            "line": 559,
+            "line": 556,
             "description": "Query a collection for members with a specific slug.",
             "itemtype": "method",
             "name": "slug",
@@ -893,31 +893,7 @@
         },
         {
             "file": "lib/constructors/wp-request.js",
-            "line": 569,
-            "description": "Alias for .slug()",
-            "itemtype": "method",
-            "name": "name",
-            "alias": "slug",
-            "deprecated": true,
-            "deprecationMessage": "use .slug()",
-            "chainable": 1,
-            "params": [
-                {
-                    "name": "slug",
-                    "description": "A post name (slug), e.g. \"hello-world\"",
-                    "type": "String"
-                }
-            ],
-            "return": {
-                "description": "The request instance (for chaining)"
-            },
-            "class": "WPRequest",
-            "module": "WPAPI",
-            "submodule": "WPRequest"
-        },
-        {
-            "file": "lib/constructors/wp-request.js",
-            "line": 589,
+            "line": 572,
             "description": "Set the namespace of the request, e.g. to specify the API root for routes\nregistered by wp core v2 (\"wp/v2\") or by any given plugin. Any previously-\nset namespace will be overwritten by subsequent calls to the method.",
             "itemtype": "method",
             "name": "namespace",
@@ -939,8 +915,8 @@
         },
         {
             "file": "lib/constructors/wp-request.js",
-            "line": 604,
-            "description": "Set a request to use authentication, and optionally provide auth credentials\n\nNote: the `.auth( username, password )` signature is _deprecated_, use an object\nwith username and password properties instead as in the below example.\n\nIf auth credentials were already specified when the WPAPI instance was created, calling\n`.auth` on the request chain will set that request to use the existing credentials:",
+            "line": 587,
+            "description": "Set a request to use authentication, and optionally provide auth credentials\n\nIf auth credentials were already specified when the WPAPI instance was created, calling\n`.auth` on the request chain will set that request to use the existing credentials:",
             "example": [
                 " use existing credentials\n\n    request.auth().get...\n\nAlternatively, a username & password (or nonce) can be explicitly passed into `.auth`:",
                 " use explicit basic authentication credentials\n\n    request.auth({\n      username: 'admin',\n      password: 'super secure'\n    }).get...",
@@ -986,7 +962,7 @@
         },
         {
             "file": "lib/constructors/wp-request.js",
-            "line": 670,
+            "line": 642,
             "description": "Specify a file or a file buffer to attach to the request, for use when\ncreating a new Media item",
             "example": [
                 " within a server context\n\n    wp.media()\n      // Pass .file() the file system path to a file to upload\n      .file( '/path/to/file.jpg' )\n      .create({})...",
@@ -1017,21 +993,7 @@
         },
         {
             "file": "lib/constructors/wp-request.js",
-            "line": 705,
-            "class": "WPRequest",
-            "module": "WPAPI",
-            "submodule": "WPRequest"
-        },
-        {
-            "file": "lib/constructors/wp-request.js",
-            "line": 710,
-            "class": "WPRequest",
-            "module": "WPAPI",
-            "submodule": "WPRequest"
-        },
-        {
-            "file": "lib/constructors/wp-request.js",
-            "line": 715,
+            "line": 677,
             "description": "Get (download the data for) the specified resource",
             "itemtype": "method",
             "name": "get",
@@ -1054,7 +1016,7 @@
         },
         {
             "file": "lib/constructors/wp-request.js",
-            "line": 727,
+            "line": 689,
             "description": "Get the headers for the specified resource",
             "itemtype": "method",
             "name": "headers",
@@ -1077,7 +1039,7 @@
         },
         {
             "file": "lib/constructors/wp-request.js",
-            "line": 739,
+            "line": 701,
             "description": "Create the specified resource with the provided data\n\nThis is the public interface for creating POST requests",
             "itemtype": "method",
             "name": "create",
@@ -1105,7 +1067,7 @@
         },
         {
             "file": "lib/constructors/wp-request.js",
-            "line": 754,
+            "line": 716,
             "description": "Update the specified resource with the provided data\n\nThis is the public interface for creating PUT requests",
             "itemtype": "method",
             "name": "update",
@@ -1135,7 +1097,7 @@
         },
         {
             "file": "lib/constructors/wp-request.js",
-            "line": 770,
+            "line": 732,
             "description": "Delete the specified resource",
             "itemtype": "method",
             "name": "delete",
@@ -1164,7 +1126,7 @@
         },
         {
             "file": "lib/constructors/wp-request.js",
-            "line": 783,
+            "line": 745,
             "description": "Calling .then on a query chain will invoke the query as a GET and return a promise",
             "itemtype": "method",
             "name": "then",
@@ -1223,7 +1185,7 @@
         },
         {
             "file": "lib/mixins/filters.js",
-            "line": 21,
+            "line": 20,
             "description": "Specify key-value pairs by which to filter the API results (commonly used\nto retrieve only posts meeting certain criteria, such as posts within a\nparticular category or by a particular author).",
             "example": [
                 "\n    // Set a single property:\n    wp.filter( 'post_type', 'cpt_event' )...\n\n    // Set multiple properties at once:\n    wp.filter({\n        post_status: 'publish',\n        category_name: 'news'\n    })...\n\n    // Chain calls to .filter():\n    wp.filter( 'post_status', 'publish' ).filter( 'category_name', 'news' )..."
@@ -1252,7 +1214,7 @@
         },
         {
             "file": "lib/mixins/filters.js",
-            "line": 63,
+            "line": 62,
             "description": "Restrict the query results to posts matching one or more taxonomy terms.",
             "itemtype": "method",
             "name": "taxonomy",
@@ -1277,47 +1239,7 @@
         },
         {
             "file": "lib/mixins/filters.js",
-            "line": 122,
-            "description": "Convenience wrapper for `.taxonomy( 'category', ... )`.",
-            "itemtype": "method",
-            "name": "category",
-            "chainable": 1,
-            "params": [
-                {
-                    "name": "category",
-                    "description": "A string or integer, or array thereof, representing terms",
-                    "type": "String|Number|Array"
-                }
-            ],
-            "return": {
-                "description": "The request instance (for chaining)"
-            },
-            "class": "WPAPI",
-            "module": "filters"
-        },
-        {
-            "file": "lib/mixins/filters.js",
-            "line": 135,
-            "description": "Convenience wrapper for `.taxonomy( 'tag', ... )`.",
-            "itemtype": "method",
-            "name": "tag",
-            "chainable": 1,
-            "params": [
-                {
-                    "name": "tag",
-                    "description": "A tag term string or array of tag term strings",
-                    "type": "String|Number|Array"
-                }
-            ],
-            "return": {
-                "description": "The request instance (for chaining)"
-            },
-            "class": "WPAPI",
-            "module": "filters"
-        },
-        {
-            "file": "lib/mixins/filters.js",
-            "line": 148,
+            "line": 121,
             "description": "Query for posts published in a given year.",
             "itemtype": "method",
             "name": "year",
@@ -1337,7 +1259,7 @@
         },
         {
             "file": "lib/mixins/filters.js",
-            "line": 161,
+            "line": 134,
             "description": "Query for posts published in a given month, either by providing the number\nof the requested month (e.g. 3), or the month's name as a string (e.g. \"March\")",
             "itemtype": "method",
             "name": "month",
@@ -1357,7 +1279,7 @@
         },
         {
             "file": "lib/mixins/filters.js",
-            "line": 194,
+            "line": 167,
             "description": "Add the day filter into the request to retrieve posts for a given day",
             "itemtype": "method",
             "name": "day",
@@ -1377,7 +1299,7 @@
         },
         {
             "file": "lib/mixins/filters.js",
-            "line": 207,
+            "line": 180,
             "description": "Specify that we are requesting a page by its path (specific to Page resources)",
             "itemtype": "method",
             "name": "path",
@@ -1403,9 +1325,27 @@
             "module": "filters"
         },
         {
+            "file": "lib/mixins/index.js",
+            "line": 19,
+            "class": "WPAPI",
+            "module": "filters"
+        },
+        {
+            "file": "lib/mixins/index.js",
+            "line": 27,
+            "class": "WPAPI",
+            "module": "filters"
+        },
+        {
+            "file": "lib/mixins/index.js",
+            "line": 37,
+            "class": "WPAPI",
+            "module": "filters"
+        },
+        {
             "file": "lib/mixins/parameters.js",
-            "line": 21,
-            "description": "Query for posts by a specific author.\nThis method will replace any previous 'author' query parameters that had been set.\n\nNote that this method will either set the \"author\" top-level query parameter,\nor else the \"author_name\" filter parameter: this is irregular as most parameter\nhelper methods either set a top level parameter or a filter, not both.",
+            "line": 25,
+            "description": "Query for posts by a specific author.\nThis method will replace any previous 'author' query parameters that had been set.\n\n_Usage with the author nicename string is deprecated._ Query by author ID instead.\n\nNote that this method will either set the \"author\" top-level query parameter,\nor else the \"author_name\" filter parameter (when querying by nicename): this is\nirregular as most parameter helper methods either set a top level parameter or a\nfilter, not both.",
             "itemtype": "method",
             "name": "author",
             "chainable": 1,
@@ -1424,7 +1364,7 @@
         },
         {
             "file": "lib/mixins/parameters.js",
-            "line": 54,
+            "line": 61,
             "description": "Search for hierarchical taxonomy terms that are children of the parent term\nindicated by the provided term ID",
             "example": [
                 "\n\n    wp.pages().parent( 3 ).then(function( pages ) {\n      // console.log( 'all of these pages are nested below page ID#3:' );\n      // console.log( pages );\n    });\n\n    wp.categories().parent( 42 ).then(function( categories ) {\n      console.log( 'all of these categories are sub-items of cat ID#42:' );\n      console.log( categories );\n    });"
@@ -1447,10 +1387,10 @@
         },
         {
             "file": "lib/mixins/parameters.js",
-            "line": 80,
-            "description": "Specify the post for which to retrieve terms (relevant for *e.g.* taxonomy\nand comment collection endpoints). `forPost` is used to avoid conflicting\nwith the `.post()` method, which corresponds to the HTTP POST action.",
+            "line": 87,
+            "description": "Specify the post for which to retrieve terms (relevant for *e.g.* taxonomy\nand comment collection endpoints).",
             "itemtype": "method",
-            "name": "forPost",
+            "name": "post",
             "chainable": 1,
             "params": [
                 {
@@ -1467,7 +1407,7 @@
         },
         {
             "file": "lib/mixins/parameters.js",
-            "line": 92,
+            "line": 98,
             "description": "Specify the password to use to access the content of a password-protected post",
             "itemtype": "method",
             "name": "password",
@@ -1487,7 +1427,7 @@
         },
         {
             "file": "lib/mixins/parameters.js",
-            "line": 102,
+            "line": 108,
             "description": "Specify whether to return only, or to completely exclude, sticky posts",
             "itemtype": "method",
             "name": "sticky",
@@ -1507,7 +1447,131 @@
         },
         {
             "file": "lib/mixins/parameters.js",
-            "line": 116,
+            "line": 122,
+            "description": "Retrieve only records associated with one of the provided categories",
+            "itemtype": "method",
+            "name": "categories",
+            "chainable": 1,
+            "params": [
+                {
+                    "name": "categories",
+                    "description": "A term ID integer or numeric string, or array thereof",
+                    "type": "String|Number|Array"
+                }
+            ],
+            "return": {
+                "description": "The request instance (for chaining)"
+            },
+            "class": "WPAPI",
+            "module": "filters"
+        },
+        {
+            "file": "lib/mixins/parameters.js",
+            "line": 132,
+            "description": "Legacy wrapper for `.categories()` that uses `?filter` to query by slug if available",
+            "itemtype": "method",
+            "name": "tag",
+            "deprecated": true,
+            "deprecationMessage": "Use `.categories()` and query by category IDs",
+            "chainable": 1,
+            "params": [
+                {
+                    "name": "tag",
+                    "description": "A category term slug string, numeric ID, or array of numeric IDs",
+                    "type": "String|Number|Array"
+                }
+            ],
+            "return": {
+                "description": "The request instance (for chaining)"
+            },
+            "class": "WPAPI",
+            "module": "filters"
+        },
+        {
+            "file": "lib/mixins/parameters.js",
+            "line": 149,
+            "description": "Exclude records associated with any of the provided category IDs",
+            "itemtype": "method",
+            "name": "excludeCategories",
+            "chainable": 1,
+            "params": [
+                {
+                    "name": "category",
+                    "description": "A term ID integer or numeric string, or array thereof",
+                    "type": "String|Number|Array"
+                }
+            ],
+            "return": {
+                "description": "The request instance (for chaining)"
+            },
+            "class": "WPAPI",
+            "module": "filters"
+        },
+        {
+            "file": "lib/mixins/parameters.js",
+            "line": 159,
+            "description": "Retrieve only records associated with one of the provided tag IDs",
+            "itemtype": "method",
+            "name": "tags",
+            "chainable": 1,
+            "params": [
+                {
+                    "name": "tags",
+                    "description": "A term ID integer or numeric string, or array thereof",
+                    "type": "String|Number|Array"
+                }
+            ],
+            "return": {
+                "description": "The request instance (for chaining)"
+            },
+            "class": "WPAPI",
+            "module": "filters"
+        },
+        {
+            "file": "lib/mixins/parameters.js",
+            "line": 169,
+            "description": "Legacy wrapper for `.tags()` that uses `?filter` to query by slug if available",
+            "itemtype": "method",
+            "name": "tag",
+            "deprecated": true,
+            "deprecationMessage": "Use `.tags()` and query by term IDs",
+            "chainable": 1,
+            "params": [
+                {
+                    "name": "tag",
+                    "description": "A tag term slug string, numeric ID, or array of numeric IDs",
+                    "type": "String|Number|Array"
+                }
+            ],
+            "return": {
+                "description": "The request instance (for chaining)"
+            },
+            "class": "WPAPI",
+            "module": "filters"
+        },
+        {
+            "file": "lib/mixins/parameters.js",
+            "line": 186,
+            "description": "Exclude records associated with any of the provided tag IDs",
+            "itemtype": "method",
+            "name": "excludeTags",
+            "chainable": 1,
+            "params": [
+                {
+                    "name": "category",
+                    "description": "A term ID integer or numeric string, or array thereof",
+                    "type": "String|Number|Array"
+                }
+            ],
+            "return": {
+                "description": "The request instance (for chaining)"
+            },
+            "class": "WPAPI",
+            "module": "filters"
+        },
+        {
+            "file": "lib/mixins/parameters.js",
+            "line": 199,
             "description": "Retrieve only records published before a specified date",
             "example": [
                 " Provide an ISO 8601-compliant date string\n\n    wp.posts().before('2016-03-22')...",
@@ -1531,7 +1595,7 @@
         },
         {
             "file": "lib/mixins/parameters.js",
-            "line": 137,
+            "line": 220,
             "description": "Retrieve only records published after a specified date",
             "example": [
                 " Provide an ISO 8601-compliant date string\n\n    wp.posts().after('1986-03-22')...",
@@ -1584,6 +1648,34 @@
                     "name": "obj",
                     "description": "The object (usually a prototype) to augment",
                     "type": "Object"
+                },
+                {
+                    "name": "key",
+                    "description": "The property to which the mixin method should be assigned",
+                    "type": "String"
+                },
+                {
+                    "name": "mixin",
+                    "description": "The mixin method",
+                    "type": "Function"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Void"
+            },
+            "class": "WPAPI",
+            "module": "filters"
+        },
+        {
+            "file": "lib/util/argument-is-numeric.js",
+            "line": 3,
+            "description": "Return true if the provided argument is a number, a numeric string, or an\narray of numbers or numeric strings",
+            "params": [
+                {
+                    "name": "val",
+                    "description": "The value to inspect",
+                    "type": "Number|String|Number[]|String[]"
                 },
                 {
                     "name": "key",
@@ -2268,7 +2360,7 @@
         },
         {
             "file": "wpapi.js",
-            "line": 94,
+            "line": 95,
             "description": "Set custom transport methods to use when making HTTP requests against the API\n\nPass an object with a function for one or many of \"get\", \"post\", \"put\",\n\"delete\" and \"head\" and that function will be called when making that type\nof request. The provided transport functions should take a WPRequest handler\ninstance (_e.g._ the result of a `wp.posts()...` chain or any other chaining\nrequest handler) as their first argument; a `data` object as their second\nargument (for POST, PUT and DELETE requests); and an optional callback as\ntheir final argument. Transport methods should invoke the callback with the\nresponse data (or error, as appropriate), and should also return a Promise.",
             "example": [
                 " showing how a cache hit (keyed by URI) could short-circuit a get request\n\n    var site = new WPAPI({\n      endpoint: 'http://my-site.com/wp-json'\n    });\n\n    // Overwrite the GET behavior to inject a caching layer\n    site.transport({\n      get: function( wpreq, cb ) {\n        var result = cache[ wpreq ];\n        // If a cache hit is found, return it via the same callback/promise\n        // signature as the default transport method\n        if ( result ) {\n          if ( cb && typeof cb === 'function' ) {\n            cb( null, result );\n          }\n          return Promise.resolve( result );\n        }\n\n        // Delegate to default transport if no cached data was found\n        return WPAPI.transport.get( wpreq, cb ).then(function( result ) {\n          cache[ wpreq ] = result;\n          return result;\n        });\n      }\n    });\n\nThis is advanced behavior; you will only need to utilize this functionality\nif your application has very specific HTTP handling or caching requirements.\nRefer to the \"http-transport\" module within this application for the code\nimplementing the built-in transport methods."
@@ -2322,7 +2414,7 @@
         },
         {
             "file": "wpapi.js",
-            "line": 166,
+            "line": 167,
             "description": "Default HTTP transport methods object for all WPAPI instances\n\nThese methods may be extended or replaced on an instance-by-instance basis",
             "static": 1,
             "itemtype": "property",
@@ -2333,7 +2425,7 @@
         },
         {
             "file": "wpapi.js",
-            "line": 178,
+            "line": 179,
             "description": "Convenience method for making a new WPAPI instance",
             "example": [
                 "\nThese are equivalent:\n\n    var wp = new WPAPI({ endpoint: 'http://my.blog.url/wp-json' });\n    var wp = WPAPI.site( 'http://my.blog.url/wp-json' );\n\n`WPAPI.site` can take an optional API root response JSON object to use when\nbootstrapping the client's endpoint handler methods: if no second parameter\nis provided, the client instance is assumed to be using the default API\nwith no additional plugins and is initialized with handlers for only those\ndefault API routes.",
@@ -2363,7 +2455,7 @@
         },
         {
             "file": "wpapi.js",
-            "line": 219,
+            "line": 220,
             "description": "Generate a request against a completely arbitrary endpoint, with no assumptions about\nor mutation of path, filtering, or query parameters. This request is not restricted to\nthe endpoint specified during WPAPI object instantiation.",
             "example": [
                 "\nGenerate a request to the explicit URL \"http://your.website.com/wp-json/some/custom/path\"\n\n    wp.url( 'http://your.website.com/wp-json/some/custom/path' ).get()..."
@@ -2386,7 +2478,7 @@
         },
         {
             "file": "wpapi.js",
-            "line": 240,
+            "line": 241,
             "description": "Generate a query against an arbitrary path on the current endpoint. This is useful for\nrequesting resources at custom WP-API endpoints, such as WooCommerce's `/products`.",
             "itemtype": "method",
             "name": "root",
@@ -2407,7 +2499,7 @@
         },
         {
             "file": "wpapi.js",
-            "line": 260,
+            "line": 261,
             "description": "Set the authentication to use for a WPAPI site handler instance. Accepts basic\nHTTP authentication credentials (string username & password) or a Nonce (for\ncookie authentication) by default; may be overloaded to accept OAuth credentials\nin the future.",
             "example": [
                 " Basic Authentication\n\n    site.auth({\n      username: 'admin',\n      password: 'securepass55'\n    })...",
@@ -2452,7 +2544,7 @@
         },
         {
             "file": "wpapi.js",
-            "line": 292,
+            "line": 293,
             "description": "Deduce request methods from a provided API root JSON response object's\nroutes dictionary, and assign those methods to the current instance. If\nno routes dictionary is provided then the instance will be bootstrapped\nwith route handlers for the default API endpoints only.\n\nThis method is called automatically during WPAPI instance creation.",
             "itemtype": "method",
             "name": "bootstrap",
@@ -2473,7 +2565,7 @@
         },
         {
             "file": "wpapi.js",
-            "line": 357,
+            "line": 358,
             "description": "Access API endpoint handlers from a particular API namespace object",
             "example": [
                 "\n\n    wp.namespace( 'myplugin/v1' ).author()...\n\n    // Default WP endpoint handlers are assigned to the wp instance itself.\n    // These are equivalent:\n    wp.namespace( 'wp/v2' ).posts()...\n    wp.posts()..."
@@ -2494,7 +2586,7 @@
         },
         {
             "file": "wpapi.js",
-            "line": 380,
+            "line": 381,
             "description": "Take an arbitrary WordPress site, deduce the WP REST API root endpoint, query\nthat endpoint, and parse the response JSON. Use the returned JSON response\nto instantiate a WPAPI instance bound to the provided site.",
             "itemtype": "method",
             "name": "discover",
@@ -2521,15 +2613,11 @@
         },
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " lib/constructors/wp-request.js:318"
-        },
-        {
-            "message": "unknown tag: alias",
-            "line": " lib/constructors/wp-request.js:569"
+            "line": " lib/constructors/wp-request.js:315"
         },
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " lib/constructors/wp-request.js:670"
+            "line": " lib/constructors/wp-request.js:642"
         },
         {
             "message": "replacing incorrect tag: returns with return",
@@ -2537,31 +2625,35 @@
         },
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " lib/mixins/filters.js:148"
+            "line": " lib/mixins/filters.js:121"
         },
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " lib/mixins/filters.js:161"
+            "line": " lib/mixins/filters.js:134"
         },
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " lib/mixins/filters.js:194"
+            "line": " lib/mixins/filters.js:167"
         },
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " lib/mixins/filters.js:207"
+            "line": " lib/mixins/filters.js:180"
         },
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " lib/mixins/parameters.js:92"
+            "line": " lib/mixins/parameters.js:98"
         },
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " lib/mixins/parameters.js:102"
+            "line": " lib/mixins/parameters.js:108"
         },
         {
             "message": "replacing incorrect tag: returns with return",
             "line": " lib/util/apply-mixin.js:3"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " lib/util/argument-is-numeric.js:3"
         },
         {
             "message": "replacing incorrect tag: returns with return",
@@ -2613,11 +2705,11 @@
         },
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " wpapi.js:94"
+            "line": " wpapi.js:95"
         },
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " wpapi.js:357"
+            "line": " wpapi.js:358"
         },
         {
             "message": "Missing item type",
@@ -2636,18 +2728,6 @@
             "line": " lib/constructors/wp-request.js:168"
         },
         {
-            "message": "Missing item type",
-            "line": " lib/constructors/wp-request.js:293"
-        },
-        {
-            "message": "Missing item type",
-            "line": " lib/constructors/wp-request.js:705"
-        },
-        {
-            "message": "Missing item type",
-            "line": " lib/constructors/wp-request.js:710"
-        },
-        {
             "message": "Missing item type\nTo avoid requiring that auto-discovery be utilized every time the API client\nis initialized, this library ships with a built-in route definition from a\nvanilla WordPress REST API installation. That file may be updated by\ninstalling the API plugin on a clean WP development instance, with no other\nplugins running, and downloading the JSON output from `yourwpsite.com/wp-json/`\ninto the \"endpoint-response.json\" file in this directory.\n\nThat file can also be generated by running this script against the same live\nWP REST API instance to download that same file, the difference being that,\nif the `endpoint-response.json` file is downloaded through this script, it\nwill be run through the `simplifyObject` utility to cut out about 1/3 of the\nbytes of the response by removing properties that do not effect route generation.\n\nThis script is NOT intended to be a dependency of any part of wp.js, and is\nprovided purely as a utility for upgrading the built-in copy of the endpoint\nresponse JSON file that is used to bootstrap the default route handlers.",
             "line": " lib/data/generate-endpoint-response-json.js:6"
         },
@@ -2660,12 +2740,28 @@
             "line": " lib/mixins/index.js:1"
         },
         {
+            "message": "Missing item type",
+            "line": " lib/mixins/index.js:19"
+        },
+        {
+            "message": "Missing item type",
+            "line": " lib/mixins/index.js:27"
+        },
+        {
+            "message": "Missing item type",
+            "line": " lib/mixins/index.js:37"
+        },
+        {
             "message": "Missing item type\nUtility function for sorting arrays of numbers or strings.",
             "line": " lib/util/alphanumeric-sort.js:3"
         },
         {
             "message": "Missing item type\nAugment an object (specifically a prototype) with a mixin method\n(the provided object is mutated by reference)",
             "line": " lib/util/apply-mixin.js:3"
+        },
+        {
+            "message": "Missing item type\nReturn true if the provided argument is a number, a numeric string, or an\narray of numbers or numeric strings",
+            "line": " lib/util/argument-is-numeric.js:3"
         },
         {
             "message": "Missing item type\nVerify that a specific HTTP method is supported by the provided WPRequest",
@@ -2741,11 +2837,11 @@
         },
         {
             "message": "Missing item type\nSet custom transport methods to use when making HTTP requests against the API\n\nPass an object with a function for one or many of \"get\", \"post\", \"put\",\n\"delete\" and \"head\" and that function will be called when making that type\nof request. The provided transport functions should take a WPRequest handler\ninstance (_e.g._ the result of a `wp.posts()...` chain or any other chaining\nrequest handler) as their first argument; a `data` object as their second\nargument (for POST, PUT and DELETE requests); and an optional callback as\ntheir final argument. Transport methods should invoke the callback with the\nresponse data (or error, as appropriate), and should also return a Promise.",
-            "line": " wpapi.js:94"
+            "line": " wpapi.js:95"
         },
         {
             "message": "Missing item type\nAccess API endpoint handlers from a particular API namespace object",
-            "line": " wpapi.js:357"
+            "line": " wpapi.js:358"
         }
     ]
 }

@@ -206,14 +206,14 @@ Additional querying methods provided, by endpoint:
 * **taxonomies**
     - `wp.taxonomies()`: retrieve all registered taxonomies
     - `wp.taxonomies().taxonomy( 'taxonomy_name' )`: get a specific taxonomy object with name *taxonomy_name*
-    - `wp.taxonomies().taxonomy( 'taxonomy_name' ).terms()`: get all terms for taxonomy *taxonomy_name*
-    - `wp.taxonomies().taxonomy( 'taxonomy_name' ).term( termIdentifier )`: get the term with slug or ID *termIdentifier* from the taxonomy *taxonomy_name*
 * **categories**
     - `wp.categories()`: retrieve all registered categories
     - `wp.categories().id( n )`: get a specific category object with id *n*
 * **tags**
     - `wp.tags()`: retrieve all registered tags
     - `wp.tags().id( n )`: get a specific tag object with id *n*
+* **custom taxonomy terms**
+    - [Use `registerRoute()`](http://wp-api.org/node-wpapi/custom-routes/) or [route auto-discovery](http://wp-api.org/node-wpapi/using-the-client/#auto-discovery) to query for custom taxonomy terms
 * **types**
     - `wp.types()`: get a collection of all registered public post types
     - `wp.types().type( 'cpt_name' )`: get the object for the custom post type with the name *cpt_name*
@@ -269,11 +269,7 @@ wp.categories().search( 'news' )...
 
 // Find posts from March 2013 (provide a Date object or full ISO-8601 date):
 wp.posts().before( '2013-04-01T00:00:00.000Z' ).after( new Date( 'March 01, 2013' ) )...
-```
 
-If you are using the **latest development branch** of the API plugin, there are a few more new query parameter methods you may take advantage of:
-
-```js
 // Return ONLY sticky posts
 wp.posts().sticky( true )...
 
@@ -299,55 +295,116 @@ wp.posts().order( 'asc' ).orderby( 'title' )...
 
 See the section on collection pagination for more information.
 
-### Filtering Collections
+#### Filtering by Taxonomy Terms
 
-While some WP_Query functionality is not yet available through with the WordPress REST API, `filter` is a special query parameter that lets you directly specify many WP_Query arguments, including `tag`, `author_name`, and other [public query vars](https://codex.wordpress.org/WordPress_Query_Vars). Even more parameters are available for use with `filter` if you [authenticate with the API](http://v2.wp-api.org/guide/authentication/).
+A variety of other methods are available to further modify which posts are returned from the API. For example, to restrict the returned posts to only those in category 7, pass that ID to the `.categories()` method:
 
-Example queries using `filter`:
-
-```javascript
-// All posts belonging to author with nicename "jadenbeirne"
-wp.posts().filter( 'author_name', 'jadenbeirne' ).get();
-
-// All posts in category "islands" and tags "clouds" & "sunset"
-// (filter can either accept two parameters, as above where it's called with
-// a key and a value, or an object of parameter keys and values, as below)
-wp.posts().filter({
-    category_name: 'islands',
-    tag: [ 'clouds', 'sunset' ]
-}).get();
-
-// Convenience methods exist for filtering by taxonomy terms
-// 'category' can accept either numeric IDs, or string slugs, but not both!
-wp.posts().category( 7 ).tag( 'music' ).get();
-
-// Convenience methods also exist for specifying an author: this can also take
-// either a numeric ID, or a nicename string. Unlike tags, setting a new value
-// will erase any prior value, regardless of type.
-
-// equivalent to .filter( 'author_name', 'williamgibson' ):
-wp.posts().author( 'williamgibson' ).get();
-// equivalent to .param( 'author', 42 ):
-wp.posts().author( 42 ).get();
-// last value wins: this queries for author_name == frankherbert
-wp.posts().author( 42 ).author( 'frankherbert' ).get();
-
-// Put it all together: Get the 5 most recent posts by jadenbeirne in 'fiction'
-wp.posts()
-    .author( 'jadenbeirne' )
-    .perPage( 5 )
-    .tag( 'fiction' )
-    .get();
+```js
+wp.posts().categories( 7 )...
 ```
 
-**Filtering Shortcut Methods**
+**Relationships in the REST API are always specified by ID.** The slug of a term may change, but the term ID associated with the underlying post will not.
 
-The following methods are shortcuts for filtering the requested collection down by various commonly-used criteria:
+To find the ID of a tag or category for which the slug is known, you can query the associated collection with `.slug()` and use the ID of the returned object in a two-step process:
 
-* `.author( author )`: find posts by a specific author, designated either by nicename or by ID (ID preferred)
-* `.category( category )`: find posts in a specific category
-* `.tag( tag )`: find posts with a specific tag
-* `.taxonomy( name, term )`: find items with a specific taxonomy term
+```js
+wp.categories().slug( 'fiction' )
+    .then(function( cats ) {
+        // .slug() queries will always return as an array
+        var fictionCat = cats[0];
+        return wp.posts().categories( fictionCat.id );
+    })
+    .then(function( postsInFiction ) {
+        // These posts are all categorized "fiction":
+        console.log( postsInFiction );
+    });
+```
+
+To find posts in category 'fiction' and tagged either 'magical-realism' or 'historical', this process can be extended: note that this example uses the [`RSVP.hash` utility](https://github.com/tildeio/rsvp.js/#hash-of-promises) for convenience and parallelism, but the same result could easily be accomplished with `Promise.all` or by chaining each request.
+
+```js
+RSVP.hash({
+  categories: wp.categories().slug( 'fiction' ),
+  tags1: wp.tags().slug('magical-realism'),
+  tags2: wp.tags().slug('historical')
+}).then(function( results ) {
+    // Combine & map .slug() results into arrays of IDs by taxonomy
+    var tagIDs = results.tags1.concat( results.tags2 )
+        .map(function( tag ) { return tag.id; });
+    var categoryIDs = results.categories
+        .map(function( cat ) { return cat.id; });
+    return wp.posts()
+        .tags( tags )
+        .categories( categories );
+}).then(function( posts ) {
+    // These posts are all fiction, either magical realism or historical:
+    console.log( posts );
+});
+```
+
+This process may seem cumbersome, but it provides a more broadly reliable method of querying than querying by mutable slugs. The first requests may also be avoided entirely by pre-creating and storing a dictionary of term slugs and their associated IDs in your application; however, be aware that this dictionary must be updated whenever slugs change.
+
+It is also possible to add your own slug-oriented query parameters to a site that you control by creating a plugin that registers additional collection parameter arguments.
+
+**Excluding terms**
+
+Just as `.categories()` and `.tags()` can be used to return posts that are associated with one or more taxonomies, two methods exist to exclude posts by their term associations.
+
+- `.excludeCategories()` is a shortcut for `.param( 'categories_exclude', ... )` which excludes results associated with the provided category term IDs 
+- `.excludeTags()` is a shortcut for `.param( 'tags_exclude', ... )` which excludes results associated with the provided tag term IDs 
+
+**Custom Taxonomies**
+
+Just as the `?categories` and `?categories_exclude` parameters are available for use with the built-in taxonomies, any custom taxonomy that is registered with a `rest_base` argument has a `?{taxonomy rest_base}` and `?{taxonomy rest_base}_exclude` parameter available, which can be set directly using `.param`. For the custom taxonomy `genres`, for example:
+
+- `wp.posts().param( 'genres', [ array of genre term IDs ])`: return only records associated with any of the provided genres
+- `wp.posts().param( 'genres_exclude', [ array of genre term IDs ])`: return only records associated with none of the provided genres
+
+#### Retrieving posts by author
+
+The `.author()` method also exists to query for posts authored by a specific user (specified by ID).
+
+```js
+// equivalent to .param( 'author', 42 ):
+wp.posts().author( 42 ).get();
+
+// last value wins: this queries for author == 71
+wp.posts().author( 42 ).author( 71 ).get();
+```
+
+As with categories and tags, the `/users` endpoint may be queried by slug to retrieve the ID to use in this query, if needed.
+
+#### Other Filters
+
+The `?filter` query parameter is not natively supported within the WordPress core REST API endpoints, but can be added to your site using a plugin. `filter` is a special query parameter that lets you directly specify many WP_Query arguments, including `tag`, `author_name`, and other [public query vars](https://codex.wordpress.org/WordPress_Query_Vars). Even more parameters are available for use with `filter` if you [authenticate with the API](http://v2.wp-api.org/guide/authentication/).
+
+If your environment supports this parameter, other filtering methods will be available if you initialize your site [using auto-discovery](http://wp-api.org/node-wpapi/using-the-client/#auto-discovery), which will auto-detect the availability of `filter`:
+
+```js
+WPAPI.discover( 'http://mysite.com' )
+    .then(function( site ) {
+        // Apply an arbitrary `filter` query parameter:
+        // All posts belonging to author with nicename "jadenbeirne"
+        wp.posts().filter( 'author_name', 'jadenbeirne' ).get();
+
+        // Query by the slug of a category or tag
+        // Get all posts in category "islands" and tags "clouds" & "sunset"
+        // (filter can either accept two parameters, as above where it's called with
+        // a key and a value, or an object of parameter keys and values, as below)
+        wp.posts().filter({
+            category_name: 'islands',
+            tag: [ 'clouds', 'sunset' ]
+        })...
+
+        // Query for a page at a specific URL path
+        wp.pages().filter( 'pagename', 'some/url/path' )..
+    });
+```
+
+**Date Filter Methods**
+
+`?before` and `?after` provide first-party support for querying by date, but should you have access to `filter` then three additional date query methods are available to return posts from a specific month, day or year:
+
 * `.year( year )`: find items published in the specified year
 * `.month( month )`: find items published in the specified month, designated by the month index (1&ndash;12) or name (*e.g.* "February")
 * `.day( day )`: find items published on the specified day
@@ -356,11 +413,27 @@ The following methods are shortcuts for filtering the requested collection down 
 
 Files may be uploaded to the WordPress media library by creating a media record using the `.media()` collection handler.
 
+The file to upload can be specified as
+
+- a `String` describing an image file path, _e.g._ `'/path/to/the/image.jpg'`
+- a `Buffer` with file content, _e.g._ `new Buffer()`
+- a file object from a `<input>` element, _e.g._ `document.getElementById( 'file-input' ).files[0]`
+
+The file is passed into the `.file()` method:
+
+```js
+wp.media().file(content [, name])...
+```
+
+The optional second string argument specifies the file name to use for the uploaded media. If the name argument is omitted `file()` will try to infer a filename from the provided content.
+
+#### Adding Media to a Post
+
 If you wish to associate a newly-uploaded media record to a specific post, you must use two calls: one to first upload the file, then another to associate it with a post. Example code:
 
 ```js
 wp.media()
-    // Specify a path to the file you want to upload
+    // Specify a path to the file you want to upload, or a Buffer
     .file( '/path/to/the/image.jpg' )
     .create({
         title: 'My awesome image',

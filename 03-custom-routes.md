@@ -60,16 +60,16 @@ Non-snake_cased route parameter names will be unaffected.
 
 Many of the filtering methods available on the built-in collections are built in to custom-registered handlers, including `.page()`, `.perPage()`, `.search()`, `.include()`/`.exclude()` and `.slug()`; these parameters are supported across nearly all API endpoints, so they are made available automatically to custom endpoints as well.
 
-However not _every_ filtering method is available by default, so for convenience a configuration object may be passed to the `registerRoute` method with a `params` property specifying additional query parameters to support. This makes it very easy to add existing methods like `.filter()`, `.before()` or `.after()` to your own endpoints:
+However not _every_ filtering method is available by default, so for convenience a configuration object may be passed to the `registerRoute` method with a `params` property specifying additional query parameters to support. This makes it very easy to add existing methods like `.before()` or `.after()` to your own endpoints:
 
 ```js
 site.handler = site.registerRoute( 'myplugin/v1', 'collection/(?P<id>)', {
     // Listing any of these parameters will assign the built-in
     // chaining method that handles the parameter:
-    params: [ 'filter', 'before', 'after', 'author', 'parent', 'post' ]
+    params: [ 'before', 'after', 'author', 'parent', 'post' ]
 });
 // yields
-site.handler().forPost( 8 ).author( 92 ).filter( 'etc', 'etera' )...
+site.handler().post( 8 ).author( 92 ).before( dateObj )...
 ```
 
 If you wish to set custom parameters, for example to query by the custom taxonomy `genre`, you can use the `.param()` method as usual:

@@ -14,7 +14,7 @@
     <header class="main-header">
         <div class="content">
             <div class="project-title">
-                    <h1 class="project-name">wpapi</h1> <span class="project-version">0.11.0</span>
+                    <h1 class="project-name">wpapi</h1> <span class="project-version">0.12.0</span>
                     <p class="description">A client for interacting with the WordPress REST API</p>
             </div>
             <ul class="jump-links">
@@ -66,8 +66,7 @@
                 /**
                  * Filter methods that can be mixed in to a request constructor&#x27;s prototype to
                  * allow that request to take advantage of the &#x60;?filter[]=&#x60; aliases for WP_Query
-                 * parameters for collection endpoints. These are most relevant to posts, pages
-                 * and CPTs.
+                 * parameters for collection endpoints, when available.
                  *
                  * @module filters
                  */
@@ -181,32 +180,6 @@
                 	this._taxonomyFilters[ taxonomy ] = _unique( taxonomyTerms, true );
                 
                 	return this;
-                };
-                
-                /**
-                 * Convenience wrapper for &#x60;.taxonomy( &#x27;category&#x27;, ... )&#x60;.
-                 *
-                 * @method category
-                 * @chainable
-                 * @param {String|Number|Array} category A string or integer, or array thereof, representing terms
-                 * @return The request instance (for chaining)
-                 */
-                filterMixins.category = function( category ) {
-                	/* jshint validthis:true */
-                	return filterMixins.taxonomy.call( this, &#x27;category&#x27;, category );
-                };
-                
-                /**
-                 * Convenience wrapper for &#x60;.taxonomy( &#x27;tag&#x27;, ... )&#x60;.
-                 *
-                 * @method tag
-                 * @chainable
-                 * @param {String|Number|Array} tag A tag term string or array of tag term strings
-                 * @return The request instance (for chaining)
-                 */
-                filterMixins.tag = function( tag ) {
-                	/* jshint validthis:true */
-                	return filterMixins.taxonomy.call( this, &#x27;tag&#x27;, tag );
                 };
                 
                 /**
