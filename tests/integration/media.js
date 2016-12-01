@@ -30,17 +30,16 @@ var expectedResults = {
 		page1: [
 			'spectacles',
 			'dsc20050315_145007_132',
-			'2014-slider-mobile-behavior',
 			'dsc20050604_133440_34211',
 			'dsc20040724_152504_532',
 			'triforce-wallpaper',
 			'Vertical Featured Image',
 			'Horizontal Featured Image',
 			'Unicorn Wallpaper',
-			'Image Alignment 1200&#215;4002'
+			'Image Alignment 1200&#215;4002',
+			'Image Alignment 580&#215;300'
 		],
 		page2: [
-			'Image Alignment 580&#215;300',
 			'Image Alignment 300&#215;200',
 			'Image Alignment 150&#215;150',
 			'I Am Worth Loving Wallpaper',
@@ -49,10 +48,10 @@ var expectedResults = {
 			'dsc20050604_133440_3421',
 			'dsc20040724_152504_532',
 			'Boat Barco Texture',
-			'Huatulco Coastline'
+			'Huatulco Coastline',
+			'Brazil Beach'
 		],
 		page4: [
-			'Rain Ripples',
 			'Yachtsody in Blue',
 			'Boardwalk',
 			'Sunburst Over River',
@@ -117,7 +116,7 @@ describe( 'integration: media()', function() {
 				.headers()
 				.then(function( postHeadersResponse ) {
 					expect( postHeadersResponse ).to.have.property( 'x-wp-total' );
-					expect( postHeadersResponse[ 'x-wp-total' ] ).to.equal( '39' );
+					expect( postHeadersResponse[ 'x-wp-total' ] ).to.equal( '38' );
 					return SUCCESS;
 				});
 			return expect( prom ).to.eventually.equal( SUCCESS );
@@ -286,7 +285,7 @@ describe( 'integration: media()', function() {
 				id = createdMedia.id;
 				imageUrl = createdMedia.source_url;
 				expect( createdMedia.title.rendered ).to.equal( 'Untitled' );
-				expect( createdMedia.caption ).to.equal( 'A painting from Emily Garfield\'s "Conduits" series' );
+				expect( createdMedia.caption.raw ).to.equal( 'A painting from Emily Garfield\'s "Conduits" series' );
 
 				// File name is correctly applied and image was uploaded to content dir
 				expect( imageUrl ).to.match( /^http:\/\/wpapi.loc\/content\/uploads\/.*\/ehg-conduits.jpg$/ );
@@ -347,8 +346,9 @@ describe( 'integration: media()', function() {
 			})
 			.then(function( response ) {
 				expect( response ).to.be.an( 'object' );
-				// DELETE action returns the media object
-				expect( response.id ).to.equal( id );
+				// DELETE action returns the media object as the .previous property
+				expect( response.previous ).to.be.an( 'object' );
+				expect( response.previous.id ).to.equal( id );
 				// Query for the media: expect this to fail, since it has been deleted
 				return wp.media().id( id );
 			})
