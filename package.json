@@ -29,6 +29,7 @@
     "docs": "grunt docs",
     "jekyll": "node bin/jekyll",
     "release-docs": "node build/scripts/release-docs",
+    "release-npm": "npm run build && npm test && npm publish",
     "jshint": "jshint --reporter=node_modules/jshint-stylish/index.js Gruntfile.js wpapi.js bin build lib tests",
     "jscs": "jscs Gruntfile.js wpapi.js bin build lib tests --reporter node_modules/jscs-stylish/jscs-stylish.js",
     "lint": "npm run jshint && npm run jscs || true",
