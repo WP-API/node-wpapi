@@ -11,8 +11,8 @@ var expect = chai.expect;
 /*jshint -W079 */// Suppress warning about redefiniton of `Promise`
 var Promise = require( 'es6-promise' ).Promise;
 var path = require( 'path' );
-var _reduce = require( 'lodash.reduce' );
 var _unique = require( 'lodash.uniq' );
+var objectReduce = require( '../../lib/util/object-reduce' );
 var httpTestUtils = require( './helpers/http-test-utils' );
 
 var WPAPI = require( '../../' );
@@ -312,7 +312,7 @@ describe( 'integration: media()', function() {
 			// Validate thumbnails were created
 			.then(function( result ) {
 				var sizes = result.media_details.sizes;
-				var sizeURLs = _reduce( sizes, function( urls, size ) {
+				var sizeURLs = objectReduce( sizes, function( urls, size ) {
 					return urls.concat( size.source_url );
 				}, [] );
 				// Expect all sizes to have different URLs

@@ -749,7 +749,7 @@ describe( 'integration: posts()', function() {
 				return SUCCESS;
 			});
 		return expect( prom ).to.eventually.equal( SUCCESS );
-	});
+	}).timeout( 10000 );
 
 	// Callback context
 

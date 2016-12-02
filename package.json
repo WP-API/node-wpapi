@@ -47,7 +47,6 @@
   "dependencies": {
     "es6-promise": "^3.2.1",
     "li": "^1.0.1",
-    "lodash.reduce": "^4.4.0",
     "lodash.union": "^4.4.0",
     "lodash.uniq": "^4.3.0",
     "node.extend": "^1.1.5",
@@ -74,6 +73,7 @@
     "json-loader": "^0.5.4",
     "kramed": "^0.5.6",
     "load-grunt-tasks": "^3.5.0",
+    "lodash.reduce": "^4.6.0",
     "minimist": "^1.2.0",
     "mocha": "^2.5.3",
     "prompt": "^1.0.0",

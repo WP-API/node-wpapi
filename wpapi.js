@@ -16,8 +16,8 @@
  */
 'use strict';
 
-var _reduce = require( 'lodash.reduce' );
 var extend = require( 'node.extend' );
+var objectReduce = require( './lib/util/object-reduce' );
 
 // All valid routes in API v2 beta 11
 var defaultRoutes = require( './lib/data/endpoint-response.json' ).routes;
@@ -328,10 +328,10 @@ WPAPI.prototype.bootstrap = function( routes ) {
 	// client instance and passing a registered namespace string.
 	// Handlers for default (wp/v2) routes will also be assigned to the WPAPI
 	// client instance object itself, for brevity.
-	return _reduce( endpointFactoriesByNamespace, function( wpInstance, endpointFactories, namespace ) {
+	return objectReduce( endpointFactoriesByNamespace, function( wpInstance, endpointFactories, namespace ) {
 
 		// Set (or augment) the route handler factories for this namespace.
-		wpInstance._ns[ namespace ] = _reduce( endpointFactories, function( nsHandlers, handlerFn, methodName ) {
+		wpInstance._ns[ namespace ] = objectReduce( endpointFactories, function( nsHandlers, handlerFn, methodName ) {
 			nsHandlers[ methodName ] = handlerFn;
 			return nsHandlers;
 		}, wpInstance._ns[ namespace ] || {
