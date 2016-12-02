@@ -103,6 +103,24 @@ describe( 'wp.registerRoute', function() {
 
 	});
 
+	describe( 'handler for /a/(?P<kebab-cased-path-setter>\\d+)', function() {
+		var handler;
+
+		beforeEach(function() {
+			var factory = registerRoute( 'ns', '/a/(?P<kebab-cased-path-setter>\\d+)' );
+			handler = factory({
+				endpoint: '/'
+			});
+		});
+
+		it( 'camelCases the setter name', function() {
+			expect( handler ).not.to.have.property( 'kebab-cased-path-setter' );
+			expect( handler ).to.have.property( 'kebabCasedPathSetter' );
+			expect( handler.kebabCasedPathSetter ).to.be.a( 'function' );
+		});
+
+	});
+
 	describe( 'handler for /a/(?P<camelCasedPathSetter>\\d+)', function() {
 		var handler;
 
