@@ -394,15 +394,26 @@ WPAPI.discover = function( url ) {
 	// local placeholder for API root URL
 	var endpoint;
 
-	return autodiscovery.getAPIRootFromURL( url )
+	// Try HEAD request first, for smaller payload: use WPAPI.site to produce
+	// a request that utilizes the defined HTTP transports
+	var req = WPAPI.site( url ).root();
+	return req.headers()
+		.catch(function() {
+			// On the hypothesis that any error here is related to the HEAD request
+			// failing, provisionally try again using GET because that method is
+			// more widely supported
+			return req.get();
+		})
+		// Inspect response to find API location header
 		.then( autodiscovery.locateAPIRootHeader )
 		.then(function( apiRootURL ) {
 			// Set the function-scope variable that will be used to instantiate
-			// the bound WPAPI instance, then pass the URL on
+			// the bound WPAPI instance,
 			endpoint = apiRootURL;
-			return apiRootURL;
+
+			// then GET the API root JSON object
+			return WPAPI.site( apiRootURL ).root().get();
 		})
-		.then( autodiscovery.getRootResponseJSON )
 		.then(function( apiRootJSON ) {
 			// Instantiate & bootstrap with the discovered methods
 			return new WPAPI({
@@ -411,14 +422,13 @@ WPAPI.discover = function( url ) {
 			});
 		})
 		.catch(function( err ) {
-			console.error( 'Autodiscovery failed' );
 			console.error( err );
 			if ( endpoint ) {
 				console.warn( 'Endpoint detected, proceeding despite error...' );
 				console.warn( 'Binding to ' + endpoint + ' and assuming default routes' );
 				return new WPAPI.site( endpoint );
 			}
-			return null;
+			throw new Error( 'Autodiscovery failed' );
 		});
 };
 

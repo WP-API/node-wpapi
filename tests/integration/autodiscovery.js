@@ -15,7 +15,6 @@ var Promise = require( 'es6-promise' ).Promise;
 
 var WPAPI = require( '../../' );
 var WPRequest = require( '../../lib/constructors/wp-request.js' );
-var autodiscovery = require( '../../lib/autodiscovery' );
 
 // Inspecting the titles of the returned posts arrays is an easy way to
 // validate that the right page of results was returned
@@ -110,107 +109,6 @@ describe( 'integration: discover()', function() {
 				.then(function( user ) {
 					expect( user ).to.be.an( 'object' );
 					expect( user.slug ).to.equal( credentials.username );
-					return SUCCESS;
-				});
-			return expect( prom ).to.eventually.equal( SUCCESS );
-		});
-
-	});
-
-	describe( 'rejection states', function() {
-
-		beforeEach(function() {
-			sinon.stub( autodiscovery, 'getAPIRootFromURL' );
-			sinon.stub( autodiscovery, 'locateAPIRootHeader' );
-			sinon.stub( autodiscovery, 'getRootResponseJSON' );
-		});
-
-		afterEach(function() {
-			autodiscovery.getAPIRootFromURL.restore();
-			autodiscovery.locateAPIRootHeader.restore();
-			autodiscovery.getRootResponseJSON.restore();
-		});
-
-		it( 'resolves even if no endpoint is found', function() {
-			autodiscovery.getAPIRootFromURL.returns( Promise.reject() );
-			var prom = WPAPI.discover( 'http://we.made.it/to/mozarts/house' );
-			return expect( prom ).to.eventually.be.fulfilled;
-		});
-
-		it( 'resolves to null if no endpoint is found', function() {
-			autodiscovery.getAPIRootFromURL.returns( Promise.resolve() );
-			var prom = WPAPI.discover( 'http://we.made.it/to/mozarts/house' )
-				.then(function( result ) {
-					expect( result ).to.equal( null );
-					return SUCCESS;
-				});
-			return expect( prom ).to.eventually.equal( SUCCESS );
-		});
-
-		it( 'logs a console error if no endpoint is found', function() {
-			autodiscovery.getAPIRootFromURL.returns( Promise.reject() );
-			var prom = WPAPI.discover( 'http://we.made.it/to/mozarts/house' )
-				.then(function() {
-					expect( console.error ).to.have.been.calledWith( 'Autodiscovery failed' );
-					return SUCCESS;
-				});
-			return expect( prom ).to.eventually.equal( SUCCESS );
-		});
-
-		it( 'does not display any warnings if no endpoint is found', function() {
-			autodiscovery.getAPIRootFromURL.returns( Promise.reject() );
-			var prom = WPAPI.discover( 'http://we.made.it/to/mozarts/house' )
-				.then(function() {
-					expect( console.warn ).not.to.have.been.called;
-					return SUCCESS;
-				});
-			return expect( prom ).to.eventually.equal( SUCCESS );
-		});
-
-		it( 'resolves to a WPAPI instance if an endpoint is found but route autodiscovery fails', function() {
-			autodiscovery.getAPIRootFromURL.returns( Promise.resolve() );
-			autodiscovery.locateAPIRootHeader.returns( 'http://we.made.it/to/mozarts/house' );
-			autodiscovery.getRootResponseJSON.throws();
-			var prom = WPAPI.discover()
-				.then(function( result ) {
-					expect( result ).to.be.an.instanceOf( WPAPI );
-					return SUCCESS;
-				});
-			return expect( prom ).to.eventually.equal( SUCCESS );
-		});
-
-		it( 'binds returned instance to the provided endpoint even if route autodiscovery fails', function() {
-			autodiscovery.getAPIRootFromURL.returns( Promise.resolve() );
-			autodiscovery.locateAPIRootHeader.returns( 'http://we.made.it/to/mozarts/house' );
-			autodiscovery.getRootResponseJSON.throws();
-			var prom = WPAPI.discover()
-				.then(function( result ) {
-					expect( result.root( '' ).toString() ).to.equal( 'http://we.made.it/to/mozarts/house/' );
-					return SUCCESS;
-				});
-			return expect( prom ).to.eventually.equal( SUCCESS );
-		});
-
-		it( 'logs a console error if an endpoint is found but route autodiscovery fails', function() {
-			autodiscovery.getAPIRootFromURL.returns( Promise.resolve() );
-			autodiscovery.locateAPIRootHeader.returns( 'http://we.made.it/to/mozarts/house' );
-			autodiscovery.getRootResponseJSON.throws();
-			var prom = WPAPI.discover()
-				.then(function() {
-					expect( console.error ).to.have.been.calledWith( 'Autodiscovery failed' );
-					return SUCCESS;
-				});
-			return expect( prom ).to.eventually.equal( SUCCESS );
-		});
-
-		it( 'displays a warning if an endpoint is detected but route autodiscovery fails', function() {
-			autodiscovery.getAPIRootFromURL.returns( Promise.resolve() );
-			autodiscovery.locateAPIRootHeader.returns( 'http://we.made.it/to/mozarts/house' );
-			autodiscovery.getRootResponseJSON.throws();
-			var prom = WPAPI.discover()
-				.then(function() {
-					expect( console.warn ).to.have.been.calledWith( 'Endpoint detected, proceeding despite error...' );
-					expect( console.warn ).to.have.been.calledWith( 'Binding to http://we.made.it/to/mozarts/house and assuming default routes' );
 					return SUCCESS;
 				});
 			return expect( prom ).to.eventually.equal( SUCCESS );

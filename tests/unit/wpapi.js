@@ -1,8 +1,17 @@
 'use strict';
 var chai = require( 'chai' );
-var sinon = require( 'sinon' );
+// Variable to use as our "success token" in promise assertions
+var SUCCESS = 'success';
+// Chai-as-promised and the `expect( prom ).to.eventually.equal( SUCCESS ) is
+// used to ensure that the assertions running within the promise chains are
+// actually run.
+chai.use( require( 'chai-as-promised' ) );
 chai.use( require( 'sinon-chai' ) );
 var expect = chai.expect;
+var sinon = require( 'sinon' );
+
+/*jshint -W079 */// Suppress warning about redefiniton of `Promise`
+var Promise = require( 'es6-promise' ).Promise;
 
 var WPAPI = require( '../../' );
 
@@ -12,7 +21,7 @@ var WPRequest = require( '../../lib/constructors/wp-request' );
 // HTTP transport, for stubbing
 var httpTransport = require( '../../lib/http-transport' );
 
-describe( 'wp', function() {
+describe( 'WPAPI', function() {
 
 	var site;
 
@@ -284,10 +293,150 @@ describe( 'wp', function() {
 	});
 
 	describe( '.discover() constructor method', function() {
+		var responses;
+		var sinonSandbox;
+
+		beforeEach(function() {
+			responses = {
+				head: {},
+				get: {}
+			};
+			responses.head.withLink = {
+				'content-type': 'text/html; charset=UTF-8',
+				link: '<http://mozarts.house/wp-json/>; rel="https://api.w.org/"'
+			};
+			responses.head.withoutLink = {
+				'content-type': 'text/html; charset=utf-8'
+			};
+			responses.get.withLink = {
+				headers: {
+					'content-type': 'text/html; charset=UTF-8',
+					link: '<http://mozarts.house/wp-json/>; rel="https://api.w.org/"'
+				}
+			};
+			responses.get.withoutLink = {
+				headers: {
+					'content-type': 'text/html; charset=UTF-8'
+				}
+			};
+			responses.apiRoot = {
+				name: 'Skip Beats',
+				descrition: 'Just another WordPress weblog',
+				routes: {
+					'list': {},
+					'of': {},
+					'routes': {}
+				}
+			};
+			// Stub HTTP methods
+			sinon.stub( httpTransport, 'head' );
+			sinon.stub( httpTransport, 'get' );
+			// Stub warn and error
+			sinonSandbox = sinon.sandbox.create();
+			sinonSandbox.stub( global.console, 'warn' );
+			sinonSandbox.stub( global.console, 'error' );
+		});
+
+		afterEach(function() {
+			// Restore HTTP methods
+			httpTransport.head.restore();
+			httpTransport.get.restore();
+			// Restore sandbox
+			sinonSandbox.restore();
+		});
 
 		it( 'is a function', function() {
 			expect( WPAPI ).to.have.property( 'discover' );
 			expect( WPAPI.discover ).to.be.a( 'function' );
+		});
+
+		it( 'throws an error if no API endpoint can be discovered', function() {
+			var url = 'http://we.made.it/to/mozarts/house';
+			httpTransport.head.onFirstCall().returns( Promise.reject() );
+			httpTransport.get.onFirstCall().returns( Promise.reject( 'Some error' ) );
+			var prom = WPAPI.discover( url )
+				.catch(function( err ) {
+					expect( global.console.error ).to.have.been.calledWith( 'Some error' );
+					expect( err.message ).to.equal( 'Autodiscovery failed' );
+					return SUCCESS;
+				});
+			return expect( prom ).to.eventually.equal( SUCCESS );
+		});
+
+		it( 'discovers the API root with a HEAD request', function() {
+			var url = 'http://mozarts.house';
+			httpTransport.head.returns( Promise.resolve( responses.head.withLink ) );
+			httpTransport.get.returns( Promise.resolve( responses.apiRoot ) );
+			var prom = WPAPI.discover( url )
+				.then(function( result ) {
+					expect( result ).to.be.an.instanceOf( WPAPI );
+					expect( httpTransport.head.calledOnce ).to.equal( true );
+					expect( httpTransport.get.calledOnce ).to.equal( true );
+					expect( result.root().toString() ).to.equal( 'http://mozarts.house/wp-json/' );
+					return SUCCESS;
+				});
+			return expect( prom ).to.eventually.equal( SUCCESS );
+		});
+
+		it( 'throws an error if HEAD succeeds but no link is present', function() {
+			var url = 'http://we.made.it/to/mozarts/house';
+			httpTransport.head.onFirstCall().returns( Promise.resolve( responses.head.withoutLink ) );
+			var prom = WPAPI.discover( url )
+				.catch(function( err ) {
+					expect( global.console.error ).to.have.been
+						.calledWith( new Error( 'No header link found with rel="https://api.w.org/"' ) );
+					expect( err.message ).to.equal( 'Autodiscovery failed' );
+					return SUCCESS;
+				});
+			return expect( prom ).to.eventually.equal( SUCCESS );
+		});
+
+		it( 'retries the initial site request as a GET if HEAD fails', function() {
+			var url = 'http://mozarts.house';
+			httpTransport.head.returns( Promise.reject() );
+			httpTransport.get.onFirstCall().returns( Promise.resolve( responses.get.withLink ) );
+			httpTransport.get.onSecondCall().returns( Promise.resolve( responses.apiRoot ) );
+			var prom = WPAPI.discover( url )
+				.then(function( result ) {
+					expect( result ).to.be.an.instanceOf( WPAPI );
+					expect( httpTransport.head.calledOnce ).to.equal( true );
+					expect( httpTransport.get.calledTwice ).to.equal( true );
+					expect( result.root().toString() ).to.equal( 'http://mozarts.house/wp-json/' );
+					return SUCCESS;
+				});
+			return expect( prom ).to.eventually.equal( SUCCESS );
+		});
+
+		it( 'throws an error if GET retry succeeds but no link is present', function() {
+			var url = 'http://we.made.it/to/mozarts/house';
+			httpTransport.head.returns( Promise.reject() );
+			httpTransport.get.onFirstCall().returns( Promise.resolve( responses.get.withoutLink ) );
+			var prom = WPAPI.discover( url )
+				.catch(function( err ) {
+					expect( global.console.error ).to.have.been
+						.calledWith( new Error( 'No header link found with rel="https://api.w.org/"' ) );
+					expect( err.message ).to.equal( 'Autodiscovery failed' );
+					return SUCCESS;
+				});
+			return expect( prom ).to.eventually.equal( SUCCESS );
+		});
+
+		it( 'returns WPAPI instance bound to discovered root even when route request errors', function() {
+			var url = 'http://mozarts.house';
+			httpTransport.head.returns( Promise.reject() );
+			httpTransport.get.onFirstCall().returns( Promise.resolve( responses.get.withLink ) );
+			httpTransport.get.onSecondCall().returns( Promise.reject( 'Some error' ) );
+			var prom = WPAPI.discover( url )
+				.then(function( result ) {
+					expect( result ).to.be.an.instanceOf( WPAPI );
+					expect( httpTransport.head.calledOnce ).to.equal( true );
+					expect( httpTransport.get.calledTwice ).to.equal( true );
+					expect( global.console.error ).to.have.been.calledWith( 'Some error' );
+					expect( global.console.warn ).to.have.been.calledWith( 'Endpoint detected, proceeding despite error...' );
+					expect( result.root().toString() ).to.equal( 'http://mozarts.house/wp-json/' );
+					return SUCCESS;
+				});
+			return expect( prom ).to.eventually.equal( SUCCESS );
 		});
 
 	});

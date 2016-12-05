@@ -249,6 +249,31 @@ describe( 'mixins: filter', function() {
 
 	});
 
+	describe( '.path()', function() {
+
+		beforeEach(function() {
+			Req.prototype.path = filterMixins.path;
+		});
+
+		it( 'mixin is defined', function() {
+			expect( filterMixins ).to.have.property( 'path' );
+		});
+
+		it( 'is a function', function() {
+			expect( filterMixins.path ).to.be.a( 'function' );
+		});
+
+		it( 'supports chaining', function() {
+			expect( req.path( 'tag', 'foo' ) ).to.equal( req );
+		});
+
+		it( 'should create the URL for retrieving a post by path', function() {
+			var path = req.path( 'nested/page' );
+			expect( getQueryStr( path ) ).to.equal( 'filter[pagename]=nested/page' );
+		});
+
+	});
+
 	describe( 'date filters', function() {
 
 		describe( 'year()', function() {
