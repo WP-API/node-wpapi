@@ -449,76 +449,93 @@ describe( 'integration: posts()', function() {
 	});
 
 	// Post creation, update & deletion suites
+	describe( 'authorization errors', function() {
 
-	it( 'cannot DELETE without authentication', function() {
-		var id;
-		var prom = wp.posts()
-			.perPage( 1 )
-			.get()
-			.then(function( posts ) {
-				id = posts[ 0 ].id;
-				return wp.posts()
-					.id( id )
-					.delete();
-			})
-			.catch(function( err ) {
-				httpTestUtils.rethrowIfChaiError( err );
-				expect( err ).to.be.an.instanceOf( Error );
-				expect( err ).to.have.property( 'status' );
-				expect( err.status ).to.equal( 401 );
-				// Ensure that the post was NOT deleted by querying for it again
-				return wp.posts()
-					.id( id )
-					.get();
-			})
-			.then(function( result ) {
-				expect( result ).to.have.property( 'id' );
-				expect( result.id ).to.equal( id );
-				return SUCCESS;
-			});
-		return expect( prom ).to.eventually.equal( SUCCESS );
-	});
-
-	it( 'cannot create (POST) without authentication (also tests callback-mode errors)', function() {
-		var prom = new Promise(function( resolve, reject ) {
-			wp.posts().create({
-				title: 'New Post 2501',
-				content: 'Some Content'
-			}, function( err ) {
-				if ( ! err ) {
-					reject();
-				}
-				expect( err ).to.be.an.instanceOf( Error );
-				expect( err ).to.have.property( 'status' );
-				expect( err.status ).to.equal( 401 );
-				resolve( SUCCESS );
-			});
-		});
-		return expect( prom ).to.eventually.equal( SUCCESS );
-	});
-
-	it( 'cannot update (PUT) without authentication', function() {
-		var id;
-		var prom = wp.posts()
-			.perPage( 1 )
-			.get()
-			.then(function( posts ) {
-				id = posts[ 0 ].id;
-				return wp.posts()
-					.id( id )
-					.update({
-						title: 'New Post 2501',
-						content: 'Some Content'
+		it( 'cannot use context=edit without authentication', function() {
+			var prom = wp.posts()
+				.edit()
+				.get()
+				.catch(function( err ) {
+					expect( err.code ).to.equal( 'rest_forbidden_context' );
+					expect( err.data ).to.deep.equal({
+						status: 401
 					});
-			})
-			.catch(function( err ) {
-				httpTestUtils.rethrowIfChaiError( err );
-				expect( err ).to.be.an.instanceOf( Error );
-				expect( err ).to.have.property( 'status' );
-				expect( err.status ).to.equal( 401 );
-				return SUCCESS;
+					return SUCCESS;
+				});
+			return expect( prom ).to.eventually.equal( SUCCESS );
+		});
+
+		it( 'cannot DELETE without authentication', function() {
+			var id;
+			var prom = wp.posts()
+				.perPage( 1 )
+				.get()
+				.then(function( posts ) {
+					id = posts[ 0 ].id;
+					return wp.posts()
+						.id( id )
+						.delete();
+				})
+				.catch(function( err ) {
+					expect( err.code ).to.equal( 'rest_cannot_delete' );
+					expect( err.data ).to.deep.equal({
+						status: 401
+					});
+					// Ensure that the post was NOT deleted by querying for it again
+					return wp.posts()
+						.id( id )
+						.get();
+				})
+				.then(function( result ) {
+					expect( result ).to.have.property( 'id' );
+					expect( result.id ).to.equal( id );
+					return SUCCESS;
+				});
+			return expect( prom ).to.eventually.equal( SUCCESS );
+		});
+
+		it( 'cannot create (POST) without authentication (also tests callback-mode errors)', function() {
+			var prom = new Promise(function( resolve, reject ) {
+				wp.posts().create({
+					title: 'New Post 2501',
+					content: 'Some Content'
+				}, function( err ) {
+					if ( ! err ) {
+						reject();
+					}
+					expect( err.code ).to.equal( 'rest_cannot_create' );
+					expect( err.data ).to.deep.equal({
+						status: 401
+					});
+					resolve( SUCCESS );
+				});
 			});
-		return expect( prom ).to.eventually.equal( SUCCESS );
+			return expect( prom ).to.eventually.equal( SUCCESS );
+		});
+
+		it( 'cannot update (PUT) without authentication', function() {
+			var id;
+			var prom = wp.posts()
+				.perPage( 1 )
+				.get()
+				.then(function( posts ) {
+					id = posts[ 0 ].id;
+					return wp.posts()
+						.id( id )
+						.update({
+							title: 'New Post 2501',
+							content: 'Some Content'
+						});
+				})
+				.catch(function( err ) {
+					expect( err.code ).to.equal( 'rest_cannot_edit' );
+					expect( err.data ).to.deep.equal({
+						status: 401
+					});
+					return SUCCESS;
+				});
+			return expect( prom ).to.eventually.equal( SUCCESS );
+		});
 	});
 
 	it( 'can create, update & delete a post when authenticated', function() {
@@ -590,9 +607,10 @@ describe( 'integration: posts()', function() {
 			})
 			.catch(function( error ) {
 				httpTestUtils.rethrowIfChaiError( error );
-				expect( error ).to.be.an.instanceOf( Error );
-				expect( error ).to.have.property( 'status' );
-				expect( error.status ).to.equal( 403 );
+				expect( error.code ).to.equal( 'rest_forbidden' );
+				expect( error.data ).to.deep.equal({
+					status: 403
+				});
 				// Re-authenticate & permanently delete this post
 				return authenticated.posts()
 					.id( id )
@@ -611,9 +629,10 @@ describe( 'integration: posts()', function() {
 			})
 			.catch(function( error ) {
 				httpTestUtils.rethrowIfChaiError( error );
-				expect( error ).to.be.an.instanceOf( Error );
-				expect( error ).to.have.property( 'status' );
-				expect( error.status ).to.equal( 404 );
+				expect( error.code ).to.equal( 'rest_post_invalid_id' );
+				expect( error.data ).to.deep.equal({
+					status: 404
+				});
 				return SUCCESS;
 			});
 		return expect( prom ).to.eventually.equal( SUCCESS );
@@ -725,9 +744,10 @@ describe( 'integration: posts()', function() {
 			})
 			.catch(function( error ) {
 				httpTestUtils.rethrowIfChaiError( error );
-				expect( error ).to.be.an.instanceOf( Error );
-				expect( error ).to.have.property( 'status' );
-				expect( error.status ).to.equal( 404 );
+				expect( error.code ).to.equal( 'rest_post_invalid_id' );
+				expect( error.data ).to.deep.equal({
+					status: 404
+				});
 			})
 			.then(function() {
 				// Clean up after ourselves: remove post
@@ -743,9 +763,10 @@ describe( 'integration: posts()', function() {
 			})
 			.catch(function( error ) {
 				httpTestUtils.rethrowIfChaiError( error );
-				expect( error ).to.be.an.instanceOf( Error );
-				expect( error ).to.have.property( 'status' );
-				expect( error.status ).to.equal( 404 );
+				expect( error.code ).to.equal( 'rest_post_invalid_id' );
+				expect( error.data ).to.deep.equal({
+					status: 404
+				});
 				return SUCCESS;
 			});
 		return expect( prom ).to.eventually.equal( SUCCESS );

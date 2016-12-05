@@ -221,9 +221,10 @@ describe( 'integration: media()', function() {
 				})
 				.catch(function( err ) {
 					httpTestUtils.rethrowIfChaiError( err );
-					expect( err ).to.be.an.instanceOf( Error );
-					expect( err ).to.have.property( 'status' );
-					expect( err.status ).to.equal( 401 );
+					expect( err.code ).to.equal( 'rest_cannot_create' );
+					expect( err.data ).to.deep.equal({
+						status: 401
+					});
 					return SUCCESS;
 				});
 			return expect( prom ).to.eventually.equal( SUCCESS );
@@ -243,9 +244,10 @@ describe( 'integration: media()', function() {
 				})
 				.catch(function( err ) {
 					httpTestUtils.rethrowIfChaiError( err );
-					expect( err ).to.be.an.instanceOf( Error );
-					expect( err ).to.have.property( 'status' );
-					expect( err.status ).to.equal( 401 );
+					expect( err.code ).to.equal( 'rest_cannot_edit' );
+					expect( err.data ).to.deep.equal({
+						status: 401
+					});
 					return SUCCESS;
 				});
 			return expect( prom ).to.eventually.equal( SUCCESS );
@@ -263,9 +265,10 @@ describe( 'integration: media()', function() {
 				})
 				.catch(function( err ) {
 					httpTestUtils.rethrowIfChaiError( err );
-					expect( err ).to.be.an.instanceOf( Error );
-					expect( err ).to.have.property( 'status' );
-					expect( err.status ).to.equal( 401 );
+					expect( err.code ).to.equal( 'rest_cannot_delete' );
+					expect( err.data ).to.deep.equal({
+						status: 401
+					});
 					return SUCCESS;
 				});
 			return expect( prom ).to.eventually.equal( SUCCESS );
@@ -337,9 +340,10 @@ describe( 'integration: media()', function() {
 			})
 			.catch(function( error ) {
 				httpTestUtils.rethrowIfChaiError( error );
-				expect( error ).to.be.an.instanceOf( Error );
-				expect( error ).to.have.property( 'status' );
-				expect( error.status ).to.equal( 501 );
+				expect( error.code ).to.equal( 'rest_trash_not_supported' );
+				expect( error.data ).to.deep.equal({
+					status: 501
+				});
 				// Now permanently delete this media
 				return authenticated.media()
 					.id( id )
@@ -357,9 +361,10 @@ describe( 'integration: media()', function() {
 			})
 			.catch(function( error ) {
 				httpTestUtils.rethrowIfChaiError( error );
-				expect( error ).to.be.an.instanceOf( Error );
-				expect( error ).to.have.property( 'status' );
-				expect( error.status ).to.equal( 404 );
+				expect( error.code ).to.equal( 'rest_post_invalid_id' );
+				expect( error.data ).to.deep.equal({
+					status: 404
+				});
 			})
 			// Validate image file has been removed
 			.then(function() {
