@@ -14,8 +14,8 @@
     <header class="main-header">
         <div class="content">
             <div class="project-title">
-                    <h1 class="project-name">wpapi</h1> <span class="project-version">0.12.0</span>
-                    <p class="description">A client for interacting with the WordPress REST API</p>
+                    <h1 class="project-name">wpapi</h1> <span class="project-version">1.0.0</span>
+                    <p class="description">An isomorphic JavaScript client for interacting with the WordPress REST API</p>
             </div>
             <ul class="jump-links">
                 <li><a href="#index" class="index-jump-link">index</a></li>
@@ -47,6 +47,7 @@
                             <li><a class="module" href="../modules/autodiscovery.html">autodiscovery</a></li>
                             <li><a class="module" href="../modules/filters.html">filters</a></li>
                             <li><a class="module" href="../modules/http-transport.html">http-transport</a></li>
+                            <li><a class="module" href="../modules/object-reduce.html">object-reduce</a></li>
                             <li><a class="module" href="../modules/parseRouteString.html">parseRouteString</a></li>
                             <li><a class="module" href="../modules/WPAPI.html">WPAPI</a></li>
                             <li><a class="module" href="../modules/WPRequest.html">WPRequest</a></li>
@@ -357,6 +358,10 @@
                 
                                 </li>
                                 <li class="index-item method">
+                                    <a href="#method_status">status</a>
+                
+                                </li>
+                                <li class="index-item method">
                                     <a href="#method_sticky">sticky</a>
                 
                                 </li>
@@ -461,7 +466,7 @@
                                 <div class="meta">
                                             <p>Inherited from
                                             <a href="../classes/WPRequest.html#property__options" class="type">WPRequest</a>:
-                                    <a href="../files/lib_constructors_wp-request.js.html#l31"><code>lib&#x2F;constructors&#x2F;wp-request.js:31</code></a>
+                                    <a href="../files/lib_constructors_wp-request.js.html#l29"><code>lib&#x2F;constructors&#x2F;wp-request.js:29</code></a>
                                     </p>
                             
                             
@@ -493,7 +498,7 @@
                                 <div class="meta">
                                             <p>Inherited from
                                             <a href="../classes/WPRequest.html#property__params" class="type">WPRequest</a>:
-                                    <a href="../files/lib_constructors_wp-request.js.html#l62"><code>lib&#x2F;constructors&#x2F;wp-request.js:62</code></a>
+                                    <a href="../files/lib_constructors_wp-request.js.html#l60"><code>lib&#x2F;constructors&#x2F;wp-request.js:60</code></a>
                                     </p>
                             
                             
@@ -526,7 +531,7 @@
                                 <div class="meta">
                                             <p>Inherited from
                                             <a href="../classes/WPRequest.html#property__path" class="type">WPRequest</a>:
-                                    <a href="../files/lib_constructors_wp-request.js.html#l84"><code>lib&#x2F;constructors&#x2F;wp-request.js:84</code></a>
+                                    <a href="../files/lib_constructors_wp-request.js.html#l82"><code>lib&#x2F;constructors&#x2F;wp-request.js:82</code></a>
                                     </p>
                             
                             
@@ -559,7 +564,7 @@
                                 <div class="meta">
                                             <p>Inherited from
                                             <a href="../classes/WPRequest.html#property__supportedMethods" class="type">WPRequest</a>:
-                                    <a href="../files/lib_constructors_wp-request.js.html#l73"><code>lib&#x2F;constructors&#x2F;wp-request.js:73</code></a>
+                                    <a href="../files/lib_constructors_wp-request.js.html#l71"><code>lib&#x2F;constructors&#x2F;wp-request.js:71</code></a>
                                     </p>
                             
                             
@@ -890,7 +895,7 @@
                                                 <p>Provided by the <a href="../modules/http-transport.html" class="module-name">http-transport</a> module.</p>
                                             <p>
                                             Defined in
-                                    <a href="../files/lib_http-transport.js.html#l280"><code>lib&#x2F;http-transport.js:280</code></a>
+                                    <a href="../files/lib_http-transport.js.html#l289"><code>lib&#x2F;http-transport.js:289</code></a>
                                     </p>
                             
                             
@@ -990,7 +995,7 @@
                                                 <p>Provided by the <a href="../modules/http-transport.html" class="module-name">http-transport</a> module.</p>
                                             <p>
                                             Defined in
-                                    <a href="../files/lib_http-transport.js.html#l216"><code>lib&#x2F;http-transport.js:216</code></a>
+                                    <a href="../files/lib_http-transport.js.html#l225"><code>lib&#x2F;http-transport.js:225</code></a>
                                     </p>
                             
                             
@@ -1078,7 +1083,7 @@
                                                 <p>Provided by the <a href="../modules/http-transport.html" class="module-name">http-transport</a> module.</p>
                                             <p>
                                             Defined in
-                                    <a href="../files/lib_http-transport.js.html#l301"><code>lib&#x2F;http-transport.js:301</code></a>
+                                    <a href="../files/lib_http-transport.js.html#l310"><code>lib&#x2F;http-transport.js:310</code></a>
                                     </p>
                             
                             
@@ -1169,7 +1174,7 @@
                                                 <p>Provided by the <a href="../modules/http-transport.html" class="module-name">http-transport</a> module.</p>
                                             <p>
                                             Defined in
-                                    <a href="../files/lib_http-transport.js.html#l233"><code>lib&#x2F;http-transport.js:233</code></a>
+                                    <a href="../files/lib_http-transport.js.html#l242"><code>lib&#x2F;http-transport.js:242</code></a>
                                     </p>
                             
                             
@@ -1272,7 +1277,7 @@
                                                 <p>Provided by the <a href="../modules/http-transport.html" class="module-name">http-transport</a> module.</p>
                                             <p>
                                             Defined in
-                                    <a href="../files/lib_http-transport.js.html#l261"><code>lib&#x2F;http-transport.js:261</code></a>
+                                    <a href="../files/lib_http-transport.js.html#l270"><code>lib&#x2F;http-transport.js:270</code></a>
                                     </p>
                             
                             
@@ -1382,7 +1387,7 @@
                                                 <p>Provided by the <a href="../modules/http-transport.html" class="module-name">http-transport</a> module.</p>
                                             <p>
                                             Defined in
-                                    <a href="../files/lib_route-tree.js.html#l8"><code>lib&#x2F;route-tree.js:8</code></a>
+                                    <a href="../files/lib_route-tree.js.html#l7"><code>lib&#x2F;route-tree.js:7</code></a>
                                     </p>
                             
                             
@@ -1518,7 +1523,7 @@
                                                 <p>Provided by the <a href="../modules/http-transport.html" class="module-name">http-transport</a> module.</p>
                                             <p>
                                             Defined in
-                                    <a href="../files/lib_route-tree.js.html#l134"><code>lib&#x2F;route-tree.js:134</code></a>
+                                    <a href="../files/lib_route-tree.js.html#l133"><code>lib&#x2F;route-tree.js:133</code></a>
                                     </p>
                             
                             
@@ -1606,7 +1611,7 @@
                                 <div class="meta">
                                             <p>Inherited from
                                             <a href="../classes/WPRequest.html#method__renderPath" class="type">WPRequest</a>:
-                                    <a href="../files/lib_constructors_wp-request.js.html#l241"><code>lib&#x2F;constructors&#x2F;wp-request.js:241</code></a>
+                                    <a href="../files/lib_constructors_wp-request.js.html#l239"><code>lib&#x2F;constructors&#x2F;wp-request.js:239</code></a>
                                     </p>
                             
                             
@@ -1655,7 +1660,7 @@
                                 <div class="meta">
                                             <p>Inherited from
                                             <a href="../classes/WPRequest.html#method__renderQuery" class="type">WPRequest</a>:
-                                    <a href="../files/lib_constructors_wp-request.js.html#l207"><code>lib&#x2F;constructors&#x2F;wp-request.js:207</code></a>
+                                    <a href="../files/lib_constructors_wp-request.js.html#l205"><code>lib&#x2F;constructors&#x2F;wp-request.js:205</code></a>
                                     </p>
                             
                             
@@ -1722,7 +1727,7 @@
                                                 <p>Provided by the <a href="../modules/filters.html" class="module-name">filters</a> module.</p>
                                             <p>
                                             Defined in
-                                    <a href="../files/lib_mixins_parameters.js.html#l220"><code>lib&#x2F;mixins&#x2F;parameters.js:220</code></a>
+                                    <a href="../files/lib_mixins_parameters.js.html#l232"><code>lib&#x2F;mixins&#x2F;parameters.js:232</code></a>
                                     </p>
                             
                             
@@ -2012,7 +2017,7 @@
                                                 <p>Provided by the <a href="../modules/filters.html" class="module-name">filters</a> module.</p>
                                             <p>
                                             Defined in
-                                    <a href="../files/lib_mixins_parameters.js.html#l199"><code>lib&#x2F;mixins&#x2F;parameters.js:199</code></a>
+                                    <a href="../files/lib_mixins_parameters.js.html#l211"><code>lib&#x2F;mixins&#x2F;parameters.js:211</code></a>
                                     </p>
                             
                             
@@ -2174,7 +2179,7 @@
                                                 <p>Provided by the <a href="../modules/filters.html" class="module-name">filters</a> module.</p>
                                             <p>
                                             Defined in
-                                    <a href="../files/lib_mixins_parameters.js.html#l122"><code>lib&#x2F;mixins&#x2F;parameters.js:122</code></a>
+                                    <a href="../files/lib_mixins_parameters.js.html#l134"><code>lib&#x2F;mixins&#x2F;parameters.js:134</code></a>
                                     </p>
                             
                             
@@ -2245,7 +2250,7 @@
                                 <div class="meta">
                                             <p>Inherited from
                                             <a href="../classes/WPRequest.html#method_context" class="type">WPRequest</a>:
-                                    <a href="../files/lib_constructors_wp-request.js.html#l434"><code>lib&#x2F;constructors&#x2F;wp-request.js:434</code></a>
+                                    <a href="../files/lib_constructors_wp-request.js.html#l409"><code>lib&#x2F;constructors&#x2F;wp-request.js:409</code></a>
                                     </p>
                             
                             
@@ -2321,7 +2326,7 @@
                                 <div class="meta">
                                             <p>Inherited from
                                             <a href="../classes/WPRequest.html#method_create" class="type">WPRequest</a>:
-                                    <a href="../files/lib_constructors_wp-request.js.html#l701"><code>lib&#x2F;constructors&#x2F;wp-request.js:701</code></a>
+                                    <a href="../files/lib_constructors_wp-request.js.html#l676"><code>lib&#x2F;constructors&#x2F;wp-request.js:676</code></a>
                                     </p>
                             
                             
@@ -2481,7 +2486,7 @@
                                 <div class="meta">
                                             <p>Inherited from
                                             <a href="../classes/WPRequest.html#method_delete" class="type">WPRequest</a>:
-                                    <a href="../files/lib_constructors_wp-request.js.html#l732"><code>lib&#x2F;constructors&#x2F;wp-request.js:732</code></a>
+                                    <a href="../files/lib_constructors_wp-request.js.html#l707"><code>lib&#x2F;constructors&#x2F;wp-request.js:707</code></a>
                                     </p>
                             
                             
@@ -2636,7 +2641,7 @@
                                 <div class="meta">
                                             <p>Inherited from
                                             <a href="../classes/WPRequest.html#method_edit" class="type">WPRequest</a>:
-                                    <a href="../files/lib_constructors_wp-request.js.html#l445"><code>lib&#x2F;constructors&#x2F;wp-request.js:445</code></a>
+                                    <a href="../files/lib_constructors_wp-request.js.html#l420"><code>lib&#x2F;constructors&#x2F;wp-request.js:420</code></a>
                                     </p>
                             
                             
@@ -2685,7 +2690,7 @@
                                 <div class="meta">
                                             <p>Inherited from
                                             <a href="../classes/WPRequest.html#method_embed" class="type">WPRequest</a>:
-                                    <a href="../files/lib_constructors_wp-request.js.html#l456"><code>lib&#x2F;constructors&#x2F;wp-request.js:456</code></a>
+                                    <a href="../files/lib_constructors_wp-request.js.html#l431"><code>lib&#x2F;constructors&#x2F;wp-request.js:431</code></a>
                                     </p>
                             
                             
@@ -2740,7 +2745,7 @@
                                 <div class="meta">
                                             <p>Inherited from
                                             <a href="../classes/WPRequest.html#method_exclude" class="type">WPRequest</a>:
-                                    <a href="../files/lib_constructors_wp-request.js.html#l546"><code>lib&#x2F;constructors&#x2F;wp-request.js:546</code></a>
+                                    <a href="../files/lib_constructors_wp-request.js.html#l521"><code>lib&#x2F;constructors&#x2F;wp-request.js:521</code></a>
                                     </p>
                             
                             
@@ -2812,7 +2817,7 @@
                                                 <p>Provided by the <a href="../modules/filters.html" class="module-name">filters</a> module.</p>
                                             <p>
                                             Defined in
-                                    <a href="../files/lib_mixins_parameters.js.html#l149"><code>lib&#x2F;mixins&#x2F;parameters.js:149</code></a>
+                                    <a href="../files/lib_mixins_parameters.js.html#l161"><code>lib&#x2F;mixins&#x2F;parameters.js:161</code></a>
                                     </p>
                             
                             
@@ -2884,7 +2889,7 @@
                                                 <p>Provided by the <a href="../modules/filters.html" class="module-name">filters</a> module.</p>
                                             <p>
                                             Defined in
-                                    <a href="../files/lib_mixins_parameters.js.html#l186"><code>lib&#x2F;mixins&#x2F;parameters.js:186</code></a>
+                                    <a href="../files/lib_mixins_parameters.js.html#l198"><code>lib&#x2F;mixins&#x2F;parameters.js:198</code></a>
                                     </p>
                             
                             
@@ -2957,7 +2962,7 @@
                                 <div class="meta">
                                             <p>Inherited from
                                             <a href="../classes/WPRequest.html#method_file" class="type">WPRequest</a>:
-                                    <a href="../files/lib_constructors_wp-request.js.html#l642"><code>lib&#x2F;constructors&#x2F;wp-request.js:642</code></a>
+                                    <a href="../files/lib_constructors_wp-request.js.html#l617"><code>lib&#x2F;constructors&#x2F;wp-request.js:617</code></a>
                                     </p>
                             
                             
@@ -3167,7 +3172,7 @@
                                 <div class="meta">
                                             <p>Inherited from
                                             <a href="../classes/WPRequest.html#method_get" class="type">WPRequest</a>:
-                                    <a href="../files/lib_constructors_wp-request.js.html#l677"><code>lib&#x2F;constructors&#x2F;wp-request.js:677</code></a>
+                                    <a href="../files/lib_constructors_wp-request.js.html#l652"><code>lib&#x2F;constructors&#x2F;wp-request.js:652</code></a>
                                     </p>
                             
                             
@@ -3240,7 +3245,7 @@
                                 <div class="meta">
                                             <p>Inherited from
                                             <a href="../classes/WPRequest.html#method_headers" class="type">WPRequest</a>:
-                                    <a href="../files/lib_constructors_wp-request.js.html#l689"><code>lib&#x2F;constructors&#x2F;wp-request.js:689</code></a>
+                                    <a href="../files/lib_constructors_wp-request.js.html#l664"><code>lib&#x2F;constructors&#x2F;wp-request.js:664</code></a>
                                     </p>
                             
                             
@@ -3313,7 +3318,7 @@
                                 <div class="meta">
                                             <p>Inherited from
                                             <a href="../classes/WPRequest.html#method_include" class="type">WPRequest</a>:
-                                    <a href="../files/lib_constructors_wp-request.js.html#l536"><code>lib&#x2F;constructors&#x2F;wp-request.js:536</code></a>
+                                    <a href="../files/lib_constructors_wp-request.js.html#l511"><code>lib&#x2F;constructors&#x2F;wp-request.js:511</code></a>
                                     </p>
                             
                             
@@ -3457,7 +3462,7 @@
                                 <div class="meta">
                                             <p>Inherited from
                                             <a href="../classes/WPRequest.html#method_namespace" class="type">WPRequest</a>:
-                                    <a href="../files/lib_constructors_wp-request.js.html#l572"><code>lib&#x2F;constructors&#x2F;wp-request.js:572</code></a>
+                                    <a href="../files/lib_constructors_wp-request.js.html#l547"><code>lib&#x2F;constructors&#x2F;wp-request.js:547</code></a>
                                     </p>
                             
                             
@@ -3531,7 +3536,7 @@
                                 <div class="meta">
                                             <p>Inherited from
                                             <a href="../classes/WPRequest.html#method_offset" class="type">WPRequest</a>:
-                                    <a href="../files/lib_constructors_wp-request.js.html#l492"><code>lib&#x2F;constructors&#x2F;wp-request.js:492</code></a>
+                                    <a href="../files/lib_constructors_wp-request.js.html#l467"><code>lib&#x2F;constructors&#x2F;wp-request.js:467</code></a>
                                     </p>
                             
                             
@@ -3602,7 +3607,7 @@
                                 <div class="meta">
                                             <p>Inherited from
                                             <a href="../classes/WPRequest.html#method_order" class="type">WPRequest</a>:
-                                    <a href="../files/lib_constructors_wp-request.js.html#l502"><code>lib&#x2F;constructors&#x2F;wp-request.js:502</code></a>
+                                    <a href="../files/lib_constructors_wp-request.js.html#l477"><code>lib&#x2F;constructors&#x2F;wp-request.js:477</code></a>
                                     </p>
                             
                             
@@ -3682,7 +3687,7 @@
                                 <div class="meta">
                                             <p>Inherited from
                                             <a href="../classes/WPRequest.html#method_orderby" class="type">WPRequest</a>:
-                                    <a href="../files/lib_constructors_wp-request.js.html#l516"><code>lib&#x2F;constructors&#x2F;wp-request.js:516</code></a>
+                                    <a href="../files/lib_constructors_wp-request.js.html#l491"><code>lib&#x2F;constructors&#x2F;wp-request.js:491</code></a>
                                     </p>
                             
                             
@@ -3753,7 +3758,7 @@
                                 <div class="meta">
                                             <p>Inherited from
                                             <a href="../classes/WPRequest.html#method_page" class="type">WPRequest</a>:
-                                    <a href="../files/lib_constructors_wp-request.js.html#l470"><code>lib&#x2F;constructors&#x2F;wp-request.js:470</code></a>
+                                    <a href="../files/lib_constructors_wp-request.js.html#l445"><code>lib&#x2F;constructors&#x2F;wp-request.js:445</code></a>
                                     </p>
                             
                             
@@ -3810,9 +3815,6 @@
                                             <li class="arg">
                                                     <code class="optional">[value]</code>
                                             </li>
-                                            <li class="arg">
-                                                    <code class="optional">[merge]</code>
-                                            </li>
                                         </ul><span class="paren">)</span>
                                     </div>
                             
@@ -3832,7 +3834,7 @@
                                 <div class="meta">
                                             <p>Inherited from
                                             <a href="../classes/WPRequest.html#method_param" class="type">WPRequest</a>:
-                                    <a href="../files/lib_constructors_wp-request.js.html#l370"><code>lib&#x2F;constructors&#x2F;wp-request.js:370</code></a>
+                                    <a href="../files/lib_constructors_wp-request.js.html#l368"><code>lib&#x2F;constructors&#x2F;wp-request.js:368</code></a>
                                     </p>
                             
                             
@@ -3870,18 +3872,6 @@
                             
                                                     <div class="param-description">
                                                         <p>The value of the parameter being set</p>
-                            
-                                                    </div>
-                            
-                                                </li>
-                                                <li class="param">
-                                                        <code class="param-name optional">[merge]</code>
-                                                        <span class="type">Boolean</span>
-                                                        <span class="flag optional" title="This parameter is optional.">optional</span>
-                            
-                            
-                                                    <div class="param-description">
-                                                        <p>Whether to merge the value (true) or replace it (false, default)</p>
                             
                                                     </div>
                             
@@ -4019,7 +4009,7 @@
                                                 <p>Provided by the <a href="../modules/filters.html" class="module-name">filters</a> module.</p>
                                             <p>
                                             Defined in
-                                    <a href="../files/lib_mixins_parameters.js.html#l98"><code>lib&#x2F;mixins&#x2F;parameters.js:98</code></a>
+                                    <a href="../files/lib_mixins_parameters.js.html#l95"><code>lib&#x2F;mixins&#x2F;parameters.js:95</code></a>
                                     </p>
                             
                             
@@ -4162,7 +4152,7 @@
                                 <div class="meta">
                                             <p>Inherited from
                                             <a href="../classes/WPRequest.html#method_perPage" class="type">WPRequest</a>:
-                                    <a href="../files/lib_constructors_wp-request.js.html#l482"><code>lib&#x2F;constructors&#x2F;wp-request.js:482</code></a>
+                                    <a href="../files/lib_constructors_wp-request.js.html#l457"><code>lib&#x2F;constructors&#x2F;wp-request.js:457</code></a>
                                     </p>
                             
                             
@@ -4234,7 +4224,7 @@
                                                 <p>Provided by the <a href="../modules/filters.html" class="module-name">filters</a> module.</p>
                                             <p>
                                             Defined in
-                                    <a href="../files/lib_mixins_parameters.js.html#l87"><code>lib&#x2F;mixins&#x2F;parameters.js:87</code></a>
+                                    <a href="../files/lib_mixins_parameters.js.html#l84"><code>lib&#x2F;mixins&#x2F;parameters.js:84</code></a>
                                     </p>
                             
                             
@@ -4310,7 +4300,7 @@
                                                 <p>Provided by the <a href="../modules/http-transport.html" class="module-name">http-transport</a> module.</p>
                                             <p>
                                             Defined in
-                                    <a href="../files/lib_http-transport.js.html#l186"><code>lib&#x2F;http-transport.js:186</code></a>
+                                    <a href="../files/lib_http-transport.js.html#l195"><code>lib&#x2F;http-transport.js:195</code></a>
                                     </p>
                             
                             
@@ -4468,7 +4458,7 @@
                                 <div class="meta">
                                             <p>Inherited from
                                             <a href="../classes/WPRequest.html#method_search" class="type">WPRequest</a>:
-                                    <a href="../files/lib_constructors_wp-request.js.html#l526"><code>lib&#x2F;constructors&#x2F;wp-request.js:526</code></a>
+                                    <a href="../files/lib_constructors_wp-request.js.html#l501"><code>lib&#x2F;constructors&#x2F;wp-request.js:501</code></a>
                                     </p>
                             
                             
@@ -4542,7 +4532,7 @@
                                 <div class="meta">
                                             <p>Inherited from
                                             <a href="../classes/WPRequest.html#method_setPathPart" class="type">WPRequest</a>:
-                                    <a href="../files/lib_constructors_wp-request.js.html#l293"><code>lib&#x2F;constructors&#x2F;wp-request.js:293</code></a>
+                                    <a href="../files/lib_constructors_wp-request.js.html#l291"><code>lib&#x2F;constructors&#x2F;wp-request.js:291</code></a>
                                     </p>
                             
                             
@@ -4740,7 +4730,7 @@
                                 <div class="meta">
                                             <p>Inherited from
                                             <a href="../classes/WPRequest.html#method_slug" class="type">WPRequest</a>:
-                                    <a href="../files/lib_constructors_wp-request.js.html#l556"><code>lib&#x2F;constructors&#x2F;wp-request.js:556</code></a>
+                                    <a href="../files/lib_constructors_wp-request.js.html#l531"><code>lib&#x2F;constructors&#x2F;wp-request.js:531</code></a>
                                     </p>
                             
                             
@@ -4765,6 +4755,82 @@
                             
                                                     <div class="param-description">
                                                         <p>A post slug (slug), e.g. &quot;hello-world&quot;</p>
+                            
+                                                    </div>
+                            
+                                                </li>
+                                            </ul>
+                                        </div>
+                            
+                                        <div class="returns">
+                                            <h4>Returns:</h4>
+                            
+                                            <div class="returns-description">
+                                                    <p>The request instance (for chaining)</p>
+                            
+                                            </div>
+                                        </div>
+                            
+                                </div>
+                            </div>
+                            <a name="method_status" class="anchor-link"></a>
+                            <div class="method item">
+                                <h3 class="name"><code>status</code>
+                            
+                                    <div class="args">
+                                        <span class="paren">(</span><ul class="args-list inline commas">
+                                            <li class="arg">
+                                                    <code>status</code>
+                                            </li>
+                                        </ul><span class="paren">)</span>
+                                    </div>
+                            
+                                    <span class="returns-inline">
+                                        <span class="type"></span>
+                                    </span>
+                            
+                            
+                            
+                            
+                            
+                                    <span class="flag chainable">chainable</span>
+                            
+                            
+                                </h3>
+                            
+                                <div class="meta">
+                                                <p>Provided by the <a href="../modules/filters.html" class="module-name">filters</a> module.</p>
+                                            <p>
+                                            Defined in
+                                    <a href="../files/lib_mixins_parameters.js.html#l105"><code>lib&#x2F;mixins&#x2F;parameters.js:105</code></a>
+                                    </p>
+                            
+                            
+                            
+                                </div>
+                            
+                                <div class="extended-detail">
+                            
+                                    <div class="description">
+                                        <p>Specify for which post statuses to return posts in a response collection</p>
+                            <p>See <a href="https://codex.wordpress.org/Post_Status">https://codex.wordpress.org/Post_Status</a> -- the default post status
+                            values in WordPress which are most relevant to the API are 'publish',
+                            'future', 'draft', 'pending', 'private', and 'trash'. This parameter also
+                            supports passing the special value &quot;any&quot; to return all statuses.</p>
+                            
+                                    </div>
+                            
+                                        <div class="params">
+                                            <h4>Parameters:</h4>
+                            
+                                            <ul class="params-list">
+                                                <li class="param">
+                                                        <code class="param-name">status</code>
+                                                        <span class="type">String | String</span>
+                            
+                            
+                                                    <div class="param-description">
+                                                        <p>A status name string or array of strings</p>
                             
                                                     </div>
                             
@@ -4812,7 +4878,7 @@
                                                 <p>Provided by the <a href="../modules/filters.html" class="module-name">filters</a> module.</p>
                                             <p>
                                             Defined in
-                                    <a href="../files/lib_mixins_parameters.js.html#l108"><code>lib&#x2F;mixins&#x2F;parameters.js:108</code></a>
+                                    <a href="../files/lib_mixins_parameters.js.html#l120"><code>lib&#x2F;mixins&#x2F;parameters.js:120</code></a>
                                     </p>
                             
                             
@@ -4886,7 +4952,7 @@
                                                 <p>Provided by the <a href="../modules/filters.html" class="module-name">filters</a> module.</p>
                                             <p>
                                             Defined in
-                                    <a href="../files/lib_mixins_parameters.js.html#l132"><code>lib&#x2F;mixins&#x2F;parameters.js:132</code></a>
+                                    <a href="../files/lib_mixins_parameters.js.html#l144"><code>lib&#x2F;mixins&#x2F;parameters.js:144</code></a>
                                     </p>
                             
                             
@@ -4960,7 +5026,7 @@
                                                 <p>Provided by the <a href="../modules/filters.html" class="module-name">filters</a> module.</p>
                                             <p>
                                             Defined in
-                                    <a href="../files/lib_mixins_parameters.js.html#l169"><code>lib&#x2F;mixins&#x2F;parameters.js:169</code></a>
+                                    <a href="../files/lib_mixins_parameters.js.html#l181"><code>lib&#x2F;mixins&#x2F;parameters.js:181</code></a>
                                     </p>
                             
                             
@@ -5033,7 +5099,7 @@
                                                 <p>Provided by the <a href="../modules/filters.html" class="module-name">filters</a> module.</p>
                                             <p>
                                             Defined in
-                                    <a href="../files/lib_mixins_parameters.js.html#l159"><code>lib&#x2F;mixins&#x2F;parameters.js:159</code></a>
+                                    <a href="../files/lib_mixins_parameters.js.html#l171"><code>lib&#x2F;mixins&#x2F;parameters.js:171</code></a>
                                     </p>
                             
                             
@@ -5193,7 +5259,7 @@
                                 <div class="meta">
                                             <p>Inherited from
                                             <a href="../classes/WPRequest.html#method_then" class="type">WPRequest</a>:
-                                    <a href="../files/lib_constructors_wp-request.js.html#l745"><code>lib&#x2F;constructors&#x2F;wp-request.js:745</code></a>
+                                    <a href="../files/lib_constructors_wp-request.js.html#l720"><code>lib&#x2F;constructors&#x2F;wp-request.js:720</code></a>
                                     </p>
                             
                             
@@ -5271,7 +5337,7 @@
                                 <div class="meta">
                                             <p>Inherited from
                                             <a href="../classes/WPRequest.html#method_toString" class="type">WPRequest</a>:
-                                    <a href="../files/lib_constructors_wp-request.js.html#l277"><code>lib&#x2F;constructors&#x2F;wp-request.js:277</code></a>
+                                    <a href="../files/lib_constructors_wp-request.js.html#l275"><code>lib&#x2F;constructors&#x2F;wp-request.js:275</code></a>
                                     </p>
                             
                             
@@ -5330,7 +5396,7 @@
                                 <div class="meta">
                                             <p>Inherited from
                                             <a href="../classes/WPRequest.html#method_update" class="type">WPRequest</a>:
-                                    <a href="../files/lib_constructors_wp-request.js.html#l716"><code>lib&#x2F;constructors&#x2F;wp-request.js:716</code></a>
+                                    <a href="../files/lib_constructors_wp-request.js.html#l691"><code>lib&#x2F;constructors&#x2F;wp-request.js:691</code></a>
                                     </p>
                             
                             
@@ -5491,7 +5557,7 @@
                                 <div class="meta">
                                             <p>Inherited from
                                             <a href="../classes/WPRequest.html#method_validatePath" class="type">WPRequest</a>:
-                                    <a href="../files/lib_constructors_wp-request.js.html#l315"><code>lib&#x2F;constructors&#x2F;wp-request.js:315</code></a>
+                                    <a href="../files/lib_constructors_wp-request.js.html#l313"><code>lib&#x2F;constructors&#x2F;wp-request.js:313</code></a>
                                     </p>
                             
                             

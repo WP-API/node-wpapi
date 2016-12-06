@@ -4,8 +4,6 @@ title: Embedding Data
 permalink: /embedding-data/
 ---
 
-_**Note:** This section applies only to the WP-API v2 betas and above; the initial 1.0 release of the API embedded data by default._
-
 Data types in WordPress are interrelated: A post has an author, some number of tags, some number of categories, *etc*. By default, the API responses will provide pointers to these related objects, but will not embed the full resources: so, for example, the `"author"` property would come back as just the author's ID, *e.g.* `"author": 4`.
 
 This functionality provides API consumers the flexibility to determine when and how they retrieve the related data. However, there are also times where an API consumer will want to get the most data in the fewest number of responses. Certain resources (author, comments, tags, and categories, to name a few) support *embedding*, meaning that they can be included in the response if the `_embed` query parameter is set.

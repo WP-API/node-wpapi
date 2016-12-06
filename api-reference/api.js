@@ -10,13 +10,14 @@ YUI.add("yuidoc-meta", function(Y) {
         "autodiscovery",
         "filters",
         "http-transport",
+        "object-reduce",
         "parseRouteString"
     ],
     "allModules": [
         {
             "displayName": "autodiscovery",
             "name": "autodiscovery",
-            "description": "Utility methods used to query a site in order to discover its available\nAPI endpoints"
+            "description": "Utility methods used when querying a site in order to discover its available\nAPI endpoints"
         },
         {
             "displayName": "filters",
@@ -26,6 +27,11 @@ YUI.add("yuidoc-meta", function(Y) {
         {
             "displayName": "http-transport",
             "name": "http-transport"
+        },
+        {
+            "displayName": "object-reduce",
+            "name": "object-reduce",
+            "description": "Utility method to permit Array#reduce-like operations over objects\n\nThis is likely to be slightly more inefficient than using lodash.reduce,\nbut results in ~50kb less size in the resulting bundled code before\nminification and ~12kb of savings with minification.\n\nUnlike lodash.reduce(), the iterator and initial value properties are NOT\noptional: this is done to simplify the code, this module is not intended to\nbe a full replacement for lodash.reduce and instead prioritizes simplicity\nfor a specific common case."
         },
         {
             "displayName": "parseRouteString",

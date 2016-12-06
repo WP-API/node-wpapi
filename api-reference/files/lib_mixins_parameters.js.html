@@ -14,8 +14,8 @@
     <header class="main-header">
         <div class="content">
             <div class="project-title">
-                    <h1 class="project-name">wpapi</h1> <span class="project-version">0.12.0</span>
-                    <p class="description">A client for interacting with the WordPress REST API</p>
+                    <h1 class="project-name">wpapi</h1> <span class="project-version">1.0.0</span>
+                    <p class="description">An isomorphic JavaScript client for interacting with the WordPress REST API</p>
             </div>
             <ul class="jump-links">
                 <li><a href="#index" class="index-jump-link">index</a></li>
@@ -47,6 +47,7 @@
                             <li><a class="module" href="../modules/autodiscovery.html">autodiscovery</a></li>
                             <li><a class="module" href="../modules/filters.html">filters</a></li>
                             <li><a class="module" href="../modules/http-transport.html">http-transport</a></li>
+                            <li><a class="module" href="../modules/object-reduce.html">object-reduce</a></li>
                             <li><a class="module" href="../modules/parseRouteString.html">parseRouteString</a></li>
                             <li><a class="module" href="../modules/WPAPI.html">WPAPI</a></li>
                             <li><a class="module" href="../modules/WPRequest.html">WPRequest</a></li>
@@ -143,10 +144,7 @@
                  * @param {Number} parentId The ID of a (hierarchical) taxonomy term
                  * @return The request instance (for chaining)
                  */
-                parameterMixins.parent = function( parentId ) {
-                	/* jshint validthis:true */
-                	return this.param( &#x27;parent&#x27;, parentId, true );
-                };
+                parameterMixins.parent = paramSetter( &#x27;parent&#x27; );
                 
                 /**
                  * Specify the post for which to retrieve terms (relevant for *e.g.* taxonomy
@@ -168,6 +166,21 @@
                  * @returns The request instance (for chaining)
                  */
                 parameterMixins.password = paramSetter( &#x27;password&#x27; );
+                
+                /**
+                 * Specify for which post statuses to return posts in a response collection
+                 *
+                 * See https://codex.wordpress.org/Post_Status -- the default post status
+                 * values in WordPress which are most relevant to the API are &#x27;publish&#x27;,
+                 * &#x27;future&#x27;, &#x27;draft&#x27;, &#x27;pending&#x27;, &#x27;private&#x27;, and &#x27;trash&#x27;. This parameter also
+                 * supports passing the special value &quot;any&quot; to return all statuses.
+                 *
+                 * @method status
+                 * @chainable
+                 * @param {string|string[]} status A status name string or array of strings
+                 * @returns The request instance (for chaining)
+                 */
+                parameterMixins.status = paramSetter( &#x27;status&#x27; );
                 
                 /**
                  * Specify whether to return only, or to completely exclude, sticky posts

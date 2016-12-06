@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>WPRequest - wpapi</title>
+    <title>object-reduce - wpapi</title>
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
     <link rel="shortcut icon" type="image/png" href="../assets/favicon.png">
@@ -59,34 +59,32 @@
 
         <div id="docs-main" class="apidocs">
             <div class="content container">
-                <h1>WPRequest Module</h1>
+                <h1>object-reduce Module</h1>
                 <div class="box clearfix meta">
                 
                 
                         <div class="foundat">
-                            Defined in: <a href="../files/lib_constructors_wp-request.js.html#l16"><code>lib&#x2F;constructors&#x2F;wp-request.js:16</code></a>
+                            Defined in: <a href="../files/lib_util_object-reduce.js.html#l3"><code>lib&#x2F;util&#x2F;object-reduce.js:3</code></a>
                         </div>
                 
                 </div>
                 
                 
                 <div class="box intro">
-                    <p>WPRequest is the base API request object constructor</p>
+                    <p>Utility method to permit Array#reduce-like operations over objects</p>
+                <p>This is likely to be slightly more inefficient than using lodash.reduce,
+                but results in ~50kb less size in the resulting bundled code before
+                minification and ~12kb of savings with minification.</p>
+                <p>Unlike lodash.reduce(), the iterator and initial value properties are NOT
+                optional: this is done to simplify the code, this module is not intended to
+                be a full replacement for lodash.reduce and instead prioritizes simplicity
+                for a specific common case.</p>
                 
                 </div>
                 
                 
                 <div class="yui3-g">
                     <div class="yui3-u-1-2">
-                            <p>This module provides the following classes:</p>
-                
-                            <ul class="module-classes">
-                                <li class="module-class">
-                                    <a href="../classes/WPRequest.html">
-                                        WPRequest
-                                    </a>
-                                </li>
-                            </ul>
                     </div>
                 
                     <div class="yui3-u-1-2">

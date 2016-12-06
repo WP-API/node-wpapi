@@ -14,8 +14,8 @@
     <header class="main-header">
         <div class="content">
             <div class="project-title">
-                    <h1 class="project-name">wpapi</h1> <span class="project-version">0.12.0</span>
-                    <p class="description">A client for interacting with the WordPress REST API</p>
+                    <h1 class="project-name">wpapi</h1> <span class="project-version">1.0.0</span>
+                    <p class="description">An isomorphic JavaScript client for interacting with the WordPress REST API</p>
             </div>
             <ul class="jump-links">
                 <li><a href="#index" class="index-jump-link">index</a></li>
@@ -47,6 +47,7 @@
                             <li><a class="module" href="../modules/autodiscovery.html">autodiscovery</a></li>
                             <li><a class="module" href="../modules/filters.html">filters</a></li>
                             <li><a class="module" href="../modules/http-transport.html">http-transport</a></li>
+                            <li><a class="module" href="../modules/object-reduce.html">object-reduce</a></li>
                             <li><a class="module" href="../modules/parseRouteString.html">parseRouteString</a></li>
                             <li><a class="module" href="../modules/WPAPI.html">WPAPI</a></li>
                             <li><a class="module" href="../modules/WPRequest.html">WPRequest</a></li>
@@ -63,70 +64,22 @@
                 <div class="file">
                     <pre class="code prettyprint linenums">
                 /**
-                 * Utility methods used to query a site in order to discover its available
+                 * Utility methods used when querying a site in order to discover its available
                  * API endpoints
                  *
                  * @module autodiscovery
                  */
                 &#x27;use strict&#x27;;
                 
-                /*jshint -W079 */// Suppress warning about redefiniton of &#x60;Promise&#x60;
-                var Promise = require( &#x27;es6-promise&#x27; ).Promise;
-                var agent = require( &#x27;superagent&#x27; );
                 var parseLinkHeader = require( &#x27;parse-link-header&#x27; );
                 
-                function resolveAsPromise( superagentReq ) {
-                	return new Promise(function( resolve, reject ) {
-                		superagentReq.end(function( err, res ) {
-                			if ( err ) {
-                				// If err.response is present, the request succeeded but we got an
-                				// error from the server: surface &amp; return that error
-                				if ( err.response &amp;&amp; err.response.error ) {
-                					return reject( err.response.error );
-                				}
-                				// If err.response is not present, the request could not connect
-                				return reject( err );
-                			}
-                			resolve( res );
-                		});
-                	});
-                }
-                
-                /**
-                 * Fetch the headers for a URL and inspect them to attempt to locate an API
-                 * endpoint header. Return a promise that will be resolved with a string, or
-                 * rejected if no such header can be located.
-                 *
-                 * @param {string}  url      An arbitrary URL within an API-enabled WordPress site
-                 * @param {boolean} [useGET] Whether to use GET or HEAD to read the URL, to enable
-                 *                           the method to upgrade to a full GET request if a HEAD
-                 *                           request initially fails.
-                 * @returns {Promise} A promise to the string containing the API endpoint URL
-                 */
-                function getAPIRootFromURL( url, useGET ) {
-                
-                	// If useGET is specified and truthy, .get the url; otherwise use .head
-                	// because we only care about the HTTP headers, not the response body.
-                	var request = useGET ? agent.get( url ) : agent.head( url );
-                
-                	return resolveAsPromise( request )
-                		.catch(function( err ) {
-                			// If this wasn&#x27;t already a GET request, then on the hypothesis that an
-                			// error arises from an unaccepted HEAD request, try again using GET
-                			if ( ! useGET ) {
-                				return getAPIRootFromURL( url, true );
-                			}
-                
-                			// Otherwise re-throw the error
-                			throw err;
-                		});
-                }
-                
                 function locateAPIRootHeader( response ) {
+                	// Define the expected link rel value per http://v2.wp-api.org/guide/discovery/
                 	var rel = &#x27;https://api.w.org/&#x27;;
                 
                 	// Extract &amp; parse the response link headers
-                	var headers = parseLinkHeader( response.headers.link );
+                	var link = response.link || ( response.headers &amp;&amp; response.headers.link );
+                	var headers = parseLinkHeader( link );
                 	var apiHeader = headers &amp;&amp; headers[ rel ];
                 
                 	if ( apiHeader &amp;&amp; apiHeader.url ) {
@@ -136,24 +89,8 @@
                 	throw new Error( &#x27;No header link found with rel=&quot;https://api.w.org/&quot;&#x27; );
                 }
                 
-                /**
-                 * Function to be called with the API url, once we have found one
-                 *
-                 * @param  {String} linkUrl The href of the &lt;link&gt; pointing to the API root
-                 * @return {Promise} Promise that resolves once the API root has been inspected
-                 */
-                function getRootResponseJSON( apiRootURL ) {
-                	return resolveAsPromise( agent.get( apiRootURL ).set( &#x27;Accept&#x27;, &#x27;application/json&#x27; ) )
-                		.then(function( response ) {
-                			return response.body;
-                		});
-                }
-                
                 module.exports = {
-                	resolveAsPromise: resolveAsPromise,
-                	getAPIRootFromURL: getAPIRootFromURL,
-                	locateAPIRootHeader: locateAPIRootHeader,
-                	getRootResponseJSON: getRootResponseJSON
+                	locateAPIRootHeader: locateAPIRootHeader
                 };
                 
                     </pre>

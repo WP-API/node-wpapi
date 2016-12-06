@@ -1,8 +1,8 @@
 {
     "project": {
         "name": "wpapi",
-        "description": "A client for interacting with the WordPress REST API",
-        "version": "0.12.0",
+        "description": "An isomorphic JavaScript client for interacting with the WordPress REST API",
+        "version": "1.0.0",
         "url": "https://github.com/wp-api/node-wpapi"
     },
     "files": {
@@ -17,15 +17,15 @@
             "fors": {},
             "namespaces": {}
         },
-        "lib/data/generate-endpoint-response-json.js": {
-            "name": "lib/data/generate-endpoint-response-json.js",
+        "lib/data/simplify-object.js": {
+            "name": "lib/data/simplify-object.js",
             "modules": {},
             "classes": {},
             "fors": {},
             "namespaces": {}
         },
-        "lib/data/simplify-object.js": {
-            "name": "lib/data/simplify-object.js",
+        "lib/data/update-default-routes-json.js": {
+            "name": "lib/data/update-default-routes-json.js",
             "modules": {},
             "classes": {},
             "fors": {},
@@ -85,6 +85,15 @@
         "lib/util/named-group-regexp.js": {
             "name": "lib/util/named-group-regexp.js",
             "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "lib/util/object-reduce.js": {
+            "name": "lib/util/object-reduce.js",
+            "modules": {
+                "object-reduce": 1
+            },
             "classes": {},
             "fors": {},
             "namespaces": {}
@@ -190,7 +199,7 @@
             },
             "fors": {},
             "namespaces": {},
-            "tag": "main",
+            "tag": "module",
             "file": "wpapi.js",
             "line": 44,
             "description": "A WP REST API client for Node.js",
@@ -212,8 +221,7 @@
             "module": "WPAPI",
             "namespace": "",
             "file": "lib/constructors/wp-request.js",
-            "line": 18,
-            "beta": 1,
+            "line": 16,
             "description": "WPRequest is the base API request object constructor"
         },
         "filters": {
@@ -228,6 +236,40 @@
             "line": 2,
             "description": "Filter methods that can be mixed in to a request constructor's prototype to\nallow that request to take advantage of the `?filter[]=` aliases for WP_Query\nparameters for collection endpoints, when available."
         },
+        "object-reduce": {
+            "name": "object-reduce",
+            "submodules": {},
+            "elements": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {},
+            "tag": "module",
+            "file": "lib/util/object-reduce.js",
+            "line": 3,
+            "description": "Utility method to permit Array#reduce-like operations over objects\n\nThis is likely to be slightly more inefficient than using lodash.reduce,\nbut results in ~50kb less size in the resulting bundled code before\nminification and ~12kb of savings with minification.\n\nUnlike lodash.reduce(), the iterator and initial value properties are NOT\noptional: this is done to simplify the code, this module is not intended to\nbe a full replacement for lodash.reduce and instead prioritizes simplicity\nfor a specific common case.",
+            "access": "private",
+            "tagname": "",
+            "params": [
+                {
+                    "name": "obj",
+                    "description": "An object of key-value pairs",
+                    "type": "Object"
+                },
+                {
+                    "name": "iterator",
+                    "description": "A function to use to reduce the object",
+                    "type": "Function"
+                },
+                {
+                    "name": "initialState",
+                    "description": "The initial value to pass to the reducer function",
+                    "type": "*"
+                }
+            ],
+            "return": {
+                "description": "The result of the reduction operation"
+            }
+        },
         "autodiscovery": {
             "name": "autodiscovery",
             "submodules": {},
@@ -238,7 +280,7 @@
             "tag": "module",
             "file": "lib/autodiscovery.js",
             "line": 1,
-            "description": "Utility methods used to query a site in order to discover its available\nAPI endpoints"
+            "description": "Utility methods used when querying a site in order to discover its available\nAPI endpoints"
         },
         "parseRouteString": {
             "name": "parseRouteString",
@@ -279,7 +321,7 @@
             "submodule": "WPRequest",
             "namespace": "",
             "file": "lib/constructors/wp-request.js",
-            "line": 18,
+            "line": 16,
             "description": "WPRequest is the base API request object constructor",
             "is_constructor": 1,
             "params": [
@@ -380,7 +422,7 @@
     "classitems": [
         {
             "file": "lib/constructors/wp-request.js",
-            "line": 31,
+            "line": 29,
             "description": "Configuration options for the request",
             "itemtype": "property",
             "name": "_options",
@@ -394,7 +436,7 @@
         },
         {
             "file": "lib/constructors/wp-request.js",
-            "line": 53,
+            "line": 51,
             "description": "The HTTP transport methods (.get, .post, .put, .delete, .head) to use for this request",
             "itemtype": "property",
             "name": "transport",
@@ -407,7 +449,7 @@
         },
         {
             "file": "lib/constructors/wp-request.js",
-            "line": 62,
+            "line": 60,
             "description": "A hash of query parameters\nThis is used to store the values for supported query parameters like ?_embed",
             "itemtype": "property",
             "name": "_params",
@@ -421,7 +463,7 @@
         },
         {
             "file": "lib/constructors/wp-request.js",
-            "line": 73,
+            "line": 71,
             "description": "Methods supported by this API request instance:\nIndividual endpoint handlers specify their own subset of supported methods",
             "itemtype": "property",
             "name": "_supportedMethods",
@@ -435,7 +477,7 @@
         },
         {
             "file": "lib/constructors/wp-request.js",
-            "line": 84,
+            "line": 82,
             "description": "A hash of values to assemble into the API request path\n(This will be overwritten by each specific endpoint handler constructor)",
             "itemtype": "property",
             "name": "_path",
@@ -449,14 +491,14 @@
         },
         {
             "file": "lib/constructors/wp-request.js",
-            "line": 99,
+            "line": 97,
             "class": "WPRequest",
             "module": "WPAPI",
             "submodule": "WPRequest"
         },
         {
             "file": "lib/constructors/wp-request.js",
-            "line": 104,
+            "line": 102,
             "description": "Process arrays of taxonomy terms into query parameters.\nAll terms listed in the arrays will be required (AND behavior).\n\nThis method will not be called with any values unless we are handling\nan endpoint with the filter mixin; however, since parameter handling\n(and therefore `_renderQuery()`) are part of WPRequest itself, this\nhelper method lives here alongside the code where it is used.",
             "example": [
                 "\n    prepareTaxonomies({\n        tag: [ 'tag1 ', 'tag2' ], // by term slug\n        cat: [ 7 ] // by term ID\n    }) === {\n        tag: 'tag1+tag2',\n        cat: '7'\n    }"
@@ -478,7 +520,7 @@
         },
         {
             "file": "lib/constructors/wp-request.js",
-            "line": 141,
+            "line": 139,
             "description": "Return an object with any properties with undefined, null or empty string\nvalues removed.",
             "example": [
                 "\n\n    populated({\n      a: 'a',\n      b: '',\n      c: null\n    }); // { a: 'a' }"
@@ -500,7 +542,7 @@
         },
         {
             "file": "lib/constructors/wp-request.js",
-            "line": 168,
+            "line": 166,
             "description": "Assert whether a provided URL component is \"valid\" by checking it against\nan array of registered path component validator methods for that level of\nthe URL path.",
             "params": [
                 {
@@ -524,7 +566,7 @@
         },
         {
             "file": "lib/constructors/wp-request.js",
-            "line": 207,
+            "line": 205,
             "description": "Process the endpoint query's filter objects into a valid query string.\nNested objects and Array properties are rendered with indexed array syntax.",
             "example": [
                 "\n    _renderQuery({ p1: 'val1', p2: 'val2' });  // ?p1=val1&p2=val2\n    _renderQuery({ obj: { prop: 'val' } });    // ?obj[prop]=val\n    _renderQuery({ arr: [ 'val1', 'val2' ] }); // ?arr[0]=val1&arr[1]=val2"
@@ -543,7 +585,7 @@
         },
         {
             "file": "lib/constructors/wp-request.js",
-            "line": 241,
+            "line": 239,
             "description": "Validate & assemble a path string from the request object's _path",
             "access": "private",
             "tagname": "",
@@ -559,7 +601,7 @@
         },
         {
             "file": "lib/constructors/wp-request.js",
-            "line": 277,
+            "line": 275,
             "description": "Parse the request into a WordPress API request URI string",
             "itemtype": "method",
             "name": "toString",
@@ -573,7 +615,7 @@
         },
         {
             "file": "lib/constructors/wp-request.js",
-            "line": 293,
+            "line": 291,
             "description": "Set a component of the resource URL itself (as opposed to a query parameter)\n\nIf a path component has already been set at this level, throw an error:\nrequests are meant to be transient, so any re-writing of a previously-set\npath part value is likely to be a mistake.",
             "itemtype": "method",
             "name": "setPathPart",
@@ -600,7 +642,7 @@
         },
         {
             "file": "lib/constructors/wp-request.js",
-            "line": 315,
+            "line": 313,
             "description": "Validate whether the specified path parts are valid for this endpoint\n\n\"Path parts\" are non-query-string URL segments, like \"some\" \"path\" in the URL\n`mydomain.com/some/path?and=a&query=string&too`. Because a well-formed path\nis necessary to execute a successful API request, we throw an error if the\nuser has omitted a value (such as `/some/[missing component]/url`) or has\nprovided a path part value that does not match the regular expression the\nAPI uses to goven that segment.",
             "itemtype": "method",
             "name": "validatePath",
@@ -615,7 +657,7 @@
         },
         {
             "file": "lib/constructors/wp-request.js",
-            "line": 370,
+            "line": 368,
             "description": "Set a parameter to render into the final query URI.",
             "itemtype": "method",
             "name": "param",
@@ -631,12 +673,6 @@
                     "description": "The value of the parameter being set",
                     "type": "String|Number|Array",
                     "optional": true
-                },
-                {
-                    "name": "merge",
-                    "description": "Whether to merge the value (true) or replace it (false, default)",
-                    "type": "Boolean",
-                    "optional": true
                 }
             ],
             "return": {
@@ -649,7 +685,7 @@
         },
         {
             "file": "lib/constructors/wp-request.js",
-            "line": 434,
+            "line": 409,
             "description": "Set the context of the request. Used primarily to expose private values on a\nrequest object by setting the context to \"edit\".",
             "itemtype": "method",
             "name": "context",
@@ -671,7 +707,7 @@
         },
         {
             "file": "lib/constructors/wp-request.js",
-            "line": 445,
+            "line": 420,
             "description": "Convenience wrapper for `.context( 'edit' )`",
             "itemtype": "method",
             "name": "edit",
@@ -686,7 +722,7 @@
         },
         {
             "file": "lib/constructors/wp-request.js",
-            "line": 456,
+            "line": 431,
             "description": "Return embedded resources as part of the response payload.",
             "itemtype": "method",
             "name": "embed",
@@ -701,7 +737,7 @@
         },
         {
             "file": "lib/constructors/wp-request.js",
-            "line": 470,
+            "line": 445,
             "description": "Set the pagination of a request. Use in conjunction with `.perPage()` for explicit\npagination handling. (The number of pages in a response can be retrieved from the\nresponse's `_paging.totalPages` property.)",
             "itemtype": "method",
             "name": "page",
@@ -722,7 +758,7 @@
         },
         {
             "file": "lib/constructors/wp-request.js",
-            "line": 482,
+            "line": 457,
             "description": "Set the number of items to be returned in a page of responses.",
             "itemtype": "method",
             "name": "perPage",
@@ -743,7 +779,7 @@
         },
         {
             "file": "lib/constructors/wp-request.js",
-            "line": 492,
+            "line": 467,
             "description": "Set an arbitrary offset to retrieve items from a specific point in a collection.",
             "itemtype": "method",
             "name": "offset",
@@ -764,7 +800,7 @@
         },
         {
             "file": "lib/constructors/wp-request.js",
-            "line": 502,
+            "line": 477,
             "description": "Change the sort direction of a returned collection",
             "example": [
                 " order comments chronologically (oldest first)\n\n    site.comments().order( 'asc' )..."
@@ -788,7 +824,7 @@
         },
         {
             "file": "lib/constructors/wp-request.js",
-            "line": 516,
+            "line": 491,
             "description": "Order a collection by a specific field",
             "itemtype": "method",
             "name": "orderby",
@@ -809,7 +845,7 @@
         },
         {
             "file": "lib/constructors/wp-request.js",
-            "line": 526,
+            "line": 501,
             "description": "Filter results to those matching the specified search terms.",
             "itemtype": "method",
             "name": "search",
@@ -830,7 +866,7 @@
         },
         {
             "file": "lib/constructors/wp-request.js",
-            "line": 536,
+            "line": 511,
             "description": "Include specific resource IDs in the response collection.",
             "itemtype": "method",
             "name": "include",
@@ -851,7 +887,7 @@
         },
         {
             "file": "lib/constructors/wp-request.js",
-            "line": 546,
+            "line": 521,
             "description": "Exclude specific resource IDs in the response collection.",
             "itemtype": "method",
             "name": "exclude",
@@ -872,7 +908,7 @@
         },
         {
             "file": "lib/constructors/wp-request.js",
-            "line": 556,
+            "line": 531,
             "description": "Query a collection for members with a specific slug.",
             "itemtype": "method",
             "name": "slug",
@@ -893,7 +929,7 @@
         },
         {
             "file": "lib/constructors/wp-request.js",
-            "line": 572,
+            "line": 547,
             "description": "Set the namespace of the request, e.g. to specify the API root for routes\nregistered by wp core v2 (\"wp/v2\") or by any given plugin. Any previously-\nset namespace will be overwritten by subsequent calls to the method.",
             "itemtype": "method",
             "name": "namespace",
@@ -915,7 +951,7 @@
         },
         {
             "file": "lib/constructors/wp-request.js",
-            "line": 587,
+            "line": 562,
             "description": "Set a request to use authentication, and optionally provide auth credentials\n\nIf auth credentials were already specified when the WPAPI instance was created, calling\n`.auth` on the request chain will set that request to use the existing credentials:",
             "example": [
                 " use existing credentials\n\n    request.auth().get...\n\nAlternatively, a username & password (or nonce) can be explicitly passed into `.auth`:",
@@ -962,7 +998,7 @@
         },
         {
             "file": "lib/constructors/wp-request.js",
-            "line": 642,
+            "line": 617,
             "description": "Specify a file or a file buffer to attach to the request, for use when\ncreating a new Media item",
             "example": [
                 " within a server context\n\n    wp.media()\n      // Pass .file() the file system path to a file to upload\n      .file( '/path/to/file.jpg' )\n      .create({})...",
@@ -993,7 +1029,7 @@
         },
         {
             "file": "lib/constructors/wp-request.js",
-            "line": 677,
+            "line": 652,
             "description": "Get (download the data for) the specified resource",
             "itemtype": "method",
             "name": "get",
@@ -1016,7 +1052,7 @@
         },
         {
             "file": "lib/constructors/wp-request.js",
-            "line": 689,
+            "line": 664,
             "description": "Get the headers for the specified resource",
             "itemtype": "method",
             "name": "headers",
@@ -1039,7 +1075,7 @@
         },
         {
             "file": "lib/constructors/wp-request.js",
-            "line": 701,
+            "line": 676,
             "description": "Create the specified resource with the provided data\n\nThis is the public interface for creating POST requests",
             "itemtype": "method",
             "name": "create",
@@ -1067,7 +1103,7 @@
         },
         {
             "file": "lib/constructors/wp-request.js",
-            "line": 716,
+            "line": 691,
             "description": "Update the specified resource with the provided data\n\nThis is the public interface for creating PUT requests",
             "itemtype": "method",
             "name": "update",
@@ -1097,7 +1133,7 @@
         },
         {
             "file": "lib/constructors/wp-request.js",
-            "line": 732,
+            "line": 707,
             "description": "Delete the specified resource",
             "itemtype": "method",
             "name": "delete",
@@ -1126,7 +1162,7 @@
         },
         {
             "file": "lib/constructors/wp-request.js",
-            "line": 745,
+            "line": 720,
             "description": "Calling .then on a query chain will invoke the query as a GET and return a promise",
             "itemtype": "method",
             "name": "then",
@@ -1154,18 +1190,6 @@
             "submodule": "WPRequest"
         },
         {
-            "file": "lib/data/generate-endpoint-response-json.js",
-            "line": 6,
-            "description": "To avoid requiring that auto-discovery be utilized every time the API client\nis initialized, this library ships with a built-in route definition from a\nvanilla WordPress REST API installation. That file may be updated by\ninstalling the API plugin on a clean WP development instance, with no other\nplugins running, and downloading the JSON output from `yourwpsite.com/wp-json/`\ninto the \"endpoint-response.json\" file in this directory.\n\nThat file can also be generated by running this script against the same live\nWP REST API instance to download that same file, the difference being that,\nif the `endpoint-response.json` file is downloaded through this script, it\nwill be run through the `simplifyObject` utility to cut out about 1/3 of the\nbytes of the response by removing properties that do not effect route generation.\n\nThis script is NOT intended to be a dependency of any part of wp.js, and is\nprovided purely as a utility for upgrading the built-in copy of the endpoint\nresponse JSON file that is used to bootstrap the default route handlers.",
-            "example": [
-                "\n\n    # Invoke directly, run against default endpoint (details below)\n    ./generate-endpoint-response-json.js\n\n    # Invoke with `node` CLI, run against default endpoint\n    node ./generate-endpoint-response-json --endpoint=http://my-site.com/wp-json\n\nThis script runs against http://wpapi.loc/wp-json by default, but it can be\nrun against an arbitrary WordPress REST API endpoint by passing the --endpoint\nargument on the CLI:",
-                "\n\n    # Invoke directly, run against an arbitrary WordPress API root\n    ./generate-endpoint-response-json.js --endpoint=http://my-site.com/wp-json\n\n    # Invoke with `node` CLI, run against an arbitrary WordPress API root\n    node ./generate-endpoint-response-json --endpoint=http://my-site.com/wp-json\n\nEither form will update the `endpoint-response.json` file in this directory,\nproviding that the endpoint data is downloaded successfully.\n\nThis script also has some utility for downloading a custom JSON file for your\nown WP REST API-enabled site, so that you can bootstrap your own routes without\nincurring an HTTP request. To output to a different directory than the default\n(which is this directory, `lib/data/`), pass an --output argument on the CLI:",
-                "\n\n    # Output to your current working directory\n    ./path/to/this/dir/generate-endpoint-response-json.js --output=.\n\n    # Output to an arbitrary absolute path\n    ./path/to/this/dir/generate-endpoint-response-json.js --output=/home/mordor/output.json\n\nThese command-line flags may be combined, and you will usually want to use\n--endpoint alongside --output to download your own JSON into your own directory."
-            ],
-            "class": "WPAPI",
-            "module": "WPAPI"
-        },
-        {
             "file": "lib/data/simplify-object.js",
             "line": 5,
             "description": "Walk through the keys and values of a provided object, removing any properties\nwhich would be inessential to the generation of the route tree used to deduce\nroute handlers from a `wp-json/` root API endpoint. This module is not used by\nthe wpapi module itself, but is rather a dependency of the script that is used\nto create the `endpoint-response.json` file that is shipped along with this\nmodule for use in generating the \"default\" routes.",
@@ -1180,6 +1204,18 @@
                 "description": "The passed-in value, with non-essential args properties and all\n_links properties removes.",
                 "type": "*"
             },
+            "class": "WPAPI",
+            "module": "WPAPI"
+        },
+        {
+            "file": "lib/data/update-default-routes-json.js",
+            "line": 6,
+            "description": "To avoid requiring that auto-discovery be utilized every time the API client\nis initialized, this library ships with a built-in route definition from a\nvanilla WordPress REST API installation. That file may be updated by\ninstalling the API plugin on a clean WP development instance, with no other\nplugins running, and downloading the JSON output from `yourwpsite.com/wp-json/`\ninto the \"default-routes.json\" file in this directory.\n\nThat file can also be generated by running this script against the same live\nWP REST API instance to download that same file, the difference being that,\nif the `default-routes.json` file is downloaded through this script, it\nwill be run through the `simplifyObject` utility to cut out about 1/3 of the\nbytes of the response by removing properties that do not effect route generation.\n\nThis script is NOT intended to be a dependency of any part of wp.js, and is\nprovided purely as a utility for upgrading the built-in copy of the endpoint\nresponse JSON file that is used to bootstrap the default route handlers.",
+            "example": [
+                "\n\n    # Invoke directly, run against default endpoint (details below)\n    ./update-default-routes-json.js\n\n    # Invoke with `node` CLI, run against default endpoint\n    node ./update-default-routes-json --endpoint=http://my-site.com/wp-json\n\nThis script runs against http://wpapi.loc/wp-json by default, but it can be\nrun against an arbitrary WordPress REST API endpoint by passing the --endpoint\nargument on the CLI:",
+                "\n\n    # Invoke directly, run against an arbitrary WordPress API root\n    ./update-default-routes-json.js --endpoint=http://my-site.com/wp-json\n\n    # Invoke with `node` CLI, run against an arbitrary WordPress API root\n    node ./update-default-routes-json --endpoint=http://my-site.com/wp-json\n\nEither form will update the `default-routes.json` file in this directory,\nproviding that the endpoint data is downloaded successfully.\n\nThis script also has some utility for downloading a custom JSON file for your\nown WP REST API-enabled site, so that you can bootstrap your own routes without\nincurring an HTTP request. To output to a different directory than the default\n(which is this directory, `lib/data/`), pass an --output argument on the CLI:",
+                "\n\n    # Output to your current working directory\n    ./path/to/this/dir/update-default-routes-json.js --output=.\n\n    # Output to an arbitrary absolute path\n    ./path/to/this/dir/update-default-routes-json.js --output=/home/mordor/output.json\n\nThese command-line flags may be combined, and you will usually want to use\n--endpoint alongside --output to download your own JSON into your own directory."
+            ],
             "class": "WPAPI",
             "module": "WPAPI"
         },
@@ -1326,19 +1362,19 @@
         },
         {
             "file": "lib/mixins/index.js",
-            "line": 19,
+            "line": 21,
             "class": "WPAPI",
             "module": "filters"
         },
         {
             "file": "lib/mixins/index.js",
-            "line": 27,
+            "line": 29,
             "class": "WPAPI",
             "module": "filters"
         },
         {
             "file": "lib/mixins/index.js",
-            "line": 37,
+            "line": 38,
             "class": "WPAPI",
             "module": "filters"
         },
@@ -1387,7 +1423,7 @@
         },
         {
             "file": "lib/mixins/parameters.js",
-            "line": 87,
+            "line": 84,
             "description": "Specify the post for which to retrieve terms (relevant for *e.g.* taxonomy\nand comment collection endpoints).",
             "itemtype": "method",
             "name": "post",
@@ -1407,7 +1443,7 @@
         },
         {
             "file": "lib/mixins/parameters.js",
-            "line": 98,
+            "line": 95,
             "description": "Specify the password to use to access the content of a password-protected post",
             "itemtype": "method",
             "name": "password",
@@ -1427,7 +1463,27 @@
         },
         {
             "file": "lib/mixins/parameters.js",
-            "line": 108,
+            "line": 105,
+            "description": "Specify for which post statuses to return posts in a response collection\n\nSee https://codex.wordpress.org/Post_Status -- the default post status\nvalues in WordPress which are most relevant to the API are 'publish',\n'future', 'draft', 'pending', 'private', and 'trash'. This parameter also\nsupports passing the special value \"any\" to return all statuses.",
+            "itemtype": "method",
+            "name": "status",
+            "chainable": 1,
+            "params": [
+                {
+                    "name": "status",
+                    "description": "A status name string or array of strings",
+                    "type": "String|string[]"
+                }
+            ],
+            "return": {
+                "description": "The request instance (for chaining)"
+            },
+            "class": "WPAPI",
+            "module": "filters"
+        },
+        {
+            "file": "lib/mixins/parameters.js",
+            "line": 120,
             "description": "Specify whether to return only, or to completely exclude, sticky posts",
             "itemtype": "method",
             "name": "sticky",
@@ -1447,7 +1503,7 @@
         },
         {
             "file": "lib/mixins/parameters.js",
-            "line": 122,
+            "line": 134,
             "description": "Retrieve only records associated with one of the provided categories",
             "itemtype": "method",
             "name": "categories",
@@ -1467,7 +1523,7 @@
         },
         {
             "file": "lib/mixins/parameters.js",
-            "line": 132,
+            "line": 144,
             "description": "Legacy wrapper for `.categories()` that uses `?filter` to query by slug if available",
             "itemtype": "method",
             "name": "tag",
@@ -1489,7 +1545,7 @@
         },
         {
             "file": "lib/mixins/parameters.js",
-            "line": 149,
+            "line": 161,
             "description": "Exclude records associated with any of the provided category IDs",
             "itemtype": "method",
             "name": "excludeCategories",
@@ -1509,7 +1565,7 @@
         },
         {
             "file": "lib/mixins/parameters.js",
-            "line": 159,
+            "line": 171,
             "description": "Retrieve only records associated with one of the provided tag IDs",
             "itemtype": "method",
             "name": "tags",
@@ -1529,7 +1585,7 @@
         },
         {
             "file": "lib/mixins/parameters.js",
-            "line": 169,
+            "line": 181,
             "description": "Legacy wrapper for `.tags()` that uses `?filter` to query by slug if available",
             "itemtype": "method",
             "name": "tag",
@@ -1551,7 +1607,7 @@
         },
         {
             "file": "lib/mixins/parameters.js",
-            "line": 186,
+            "line": 198,
             "description": "Exclude records associated with any of the provided tag IDs",
             "itemtype": "method",
             "name": "excludeTags",
@@ -1571,7 +1627,7 @@
         },
         {
             "file": "lib/mixins/parameters.js",
-            "line": 199,
+            "line": 211,
             "description": "Retrieve only records published before a specified date",
             "example": [
                 " Provide an ISO 8601-compliant date string\n\n    wp.posts().before('2016-03-22')...",
@@ -1595,7 +1651,7 @@
         },
         {
             "file": "lib/mixins/parameters.js",
-            "line": 220,
+            "line": 232,
             "description": "Retrieve only records published after a specified date",
             "example": [
                 " Provide an ISO 8601-compliant date string\n\n    wp.posts().after('1986-03-22')...",
@@ -1741,7 +1797,7 @@
                 "type": "Function"
             },
             "class": "WPAPI",
-            "module": "filters"
+            "module": "object-reduce"
         },
         {
             "file": "lib/util/parameter-setter.js",
@@ -1759,49 +1815,7 @@
                 "description": "The request instance on which this method was called (for chaining)"
             },
             "class": "WPAPI",
-            "module": "filters"
-        },
-        {
-            "file": "lib/autodiscovery.js",
-            "line": 31,
-            "description": "Fetch the headers for a URL and inspect them to attempt to locate an API\nendpoint header. Return a promise that will be resolved with a string, or\nrejected if no such header can be located.",
-            "params": [
-                {
-                    "name": "url",
-                    "description": "An arbitrary URL within an API-enabled WordPress site",
-                    "type": "String"
-                },
-                {
-                    "name": "useGET",
-                    "description": "Whether to use GET or HEAD to read the URL, to enable\n                          the method to upgrade to a full GET request if a HEAD\n                          request initially fails.",
-                    "type": "Boolean",
-                    "optional": true
-                }
-            ],
-            "return": {
-                "description": "A promise to the string containing the API endpoint URL",
-                "type": "Promise"
-            },
-            "class": "WPAPI",
-            "module": "autodiscovery"
-        },
-        {
-            "file": "lib/autodiscovery.js",
-            "line": 75,
-            "description": "Function to be called with the API url, once we have found one",
-            "params": [
-                {
-                    "name": "linkUrl",
-                    "description": "The href of the <link> pointing to the API root",
-                    "type": "String"
-                }
-            ],
-            "return": {
-                "description": "Promise that resolves once the API root has been inspected",
-                "type": "Promise"
-            },
-            "class": "WPAPI",
-            "module": "autodiscovery"
+            "module": "object-reduce"
         },
         {
             "file": "lib/endpoint-factories.js",
@@ -1947,7 +1961,7 @@
         },
         {
             "file": "lib/http-transport.js",
-            "line": 186,
+            "line": 195,
             "description": "Return the body of the request, augmented with pagination information if the\nresult is a paged collection.",
             "itemtype": "method",
             "name": "returnBody",
@@ -1974,7 +1988,7 @@
         },
         {
             "file": "lib/http-transport.js",
-            "line": 203,
+            "line": 212,
             "description": "Extract and return the headers property from a superagent response object",
             "params": [
                 {
@@ -1992,7 +2006,7 @@
         },
         {
             "file": "lib/http-transport.js",
-            "line": 216,
+            "line": 225,
             "itemtype": "method",
             "name": "_httpGet",
             "async": 1,
@@ -2020,7 +2034,7 @@
         },
         {
             "file": "lib/http-transport.js",
-            "line": 233,
+            "line": 242,
             "description": "Invoke an HTTP \"POST\" request against the provided endpoint",
             "itemtype": "method",
             "name": "_httpPost",
@@ -2054,7 +2068,7 @@
         },
         {
             "file": "lib/http-transport.js",
-            "line": 261,
+            "line": 270,
             "itemtype": "method",
             "name": "_httpPut",
             "async": 1,
@@ -2087,7 +2101,7 @@
         },
         {
             "file": "lib/http-transport.js",
-            "line": 280,
+            "line": 289,
             "itemtype": "method",
             "name": "_httpDelete",
             "async": 1,
@@ -2121,7 +2135,7 @@
         },
         {
             "file": "lib/http-transport.js",
-            "line": 301,
+            "line": 310,
             "itemtype": "method",
             "name": "_httpHead",
             "async": 1,
@@ -2257,7 +2271,7 @@
         },
         {
             "file": "lib/route-tree.js",
-            "line": 8,
+            "line": 7,
             "description": "Method to use when reducing route components array.",
             "itemtype": "method",
             "name": "_reduceRouteComponents",
@@ -2304,7 +2318,7 @@
         },
         {
             "file": "lib/route-tree.js",
-            "line": 134,
+            "line": 133,
             "itemtype": "method",
             "name": "_reduceRouteTree",
             "access": "private",
@@ -2335,7 +2349,7 @@
         },
         {
             "file": "lib/route-tree.js",
-            "line": 187,
+            "line": 186,
             "description": "Build a route tree by reducing over a routes definition object from the API\nroot endpoint response object",
             "params": [
                 {
@@ -2609,15 +2623,15 @@
     "warnings": [
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " lib/constructors/wp-request.js:168"
+            "line": " lib/constructors/wp-request.js:166"
         },
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " lib/constructors/wp-request.js:315"
+            "line": " lib/constructors/wp-request.js:313"
         },
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " lib/constructors/wp-request.js:642"
+            "line": " lib/constructors/wp-request.js:617"
         },
         {
             "message": "replacing incorrect tag: returns with return",
@@ -2641,11 +2655,15 @@
         },
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " lib/mixins/parameters.js:98"
+            "line": " lib/mixins/parameters.js:95"
         },
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " lib/mixins/parameters.js:108"
+            "line": " lib/mixins/parameters.js:105"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " lib/mixins/parameters.js:120"
         },
         {
             "message": "replacing incorrect tag: returns with return",
@@ -2657,15 +2675,15 @@
         },
         {
             "message": "replacing incorrect tag: returns with return",
+            "line": " lib/util/object-reduce.js:3"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
             "line": " lib/util/parameter-setter.js:3"
         },
         {
             "message": "replacing incorrect tag: returns with return",
             "line": " lib/util/parameter-setter.js:10"
-        },
-        {
-            "message": "replacing incorrect tag: returns with return",
-            "line": " lib/autodiscovery.js:31"
         },
         {
             "message": "replacing incorrect tag: returns with return",
@@ -2689,15 +2707,15 @@
         },
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " lib/route-tree.js:8"
+            "line": " lib/route-tree.js:7"
         },
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " lib/route-tree.js:134"
+            "line": " lib/route-tree.js:133"
         },
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " lib/route-tree.js:187"
+            "line": " lib/route-tree.js:186"
         },
         {
             "message": "replacing incorrect tag: returns with return",
@@ -2713,27 +2731,27 @@
         },
         {
             "message": "Missing item type",
-            "line": " lib/constructors/wp-request.js:99"
+            "line": " lib/constructors/wp-request.js:97"
         },
         {
             "message": "Missing item type\nProcess arrays of taxonomy terms into query parameters.\nAll terms listed in the arrays will be required (AND behavior).\n\nThis method will not be called with any values unless we are handling\nan endpoint with the filter mixin; however, since parameter handling\n(and therefore `_renderQuery()`) are part of WPRequest itself, this\nhelper method lives here alongside the code where it is used.",
-            "line": " lib/constructors/wp-request.js:104"
+            "line": " lib/constructors/wp-request.js:102"
         },
         {
             "message": "Missing item type\nReturn an object with any properties with undefined, null or empty string\nvalues removed.",
-            "line": " lib/constructors/wp-request.js:141"
+            "line": " lib/constructors/wp-request.js:139"
         },
         {
             "message": "Missing item type\nAssert whether a provided URL component is \"valid\" by checking it against\nan array of registered path component validator methods for that level of\nthe URL path.",
-            "line": " lib/constructors/wp-request.js:168"
-        },
-        {
-            "message": "Missing item type\nTo avoid requiring that auto-discovery be utilized every time the API client\nis initialized, this library ships with a built-in route definition from a\nvanilla WordPress REST API installation. That file may be updated by\ninstalling the API plugin on a clean WP development instance, with no other\nplugins running, and downloading the JSON output from `yourwpsite.com/wp-json/`\ninto the \"endpoint-response.json\" file in this directory.\n\nThat file can also be generated by running this script against the same live\nWP REST API instance to download that same file, the difference being that,\nif the `endpoint-response.json` file is downloaded through this script, it\nwill be run through the `simplifyObject` utility to cut out about 1/3 of the\nbytes of the response by removing properties that do not effect route generation.\n\nThis script is NOT intended to be a dependency of any part of wp.js, and is\nprovided purely as a utility for upgrading the built-in copy of the endpoint\nresponse JSON file that is used to bootstrap the default route handlers.",
-            "line": " lib/data/generate-endpoint-response-json.js:6"
+            "line": " lib/constructors/wp-request.js:166"
         },
         {
             "message": "Missing item type\nWalk through the keys and values of a provided object, removing any properties\nwhich would be inessential to the generation of the route tree used to deduce\nroute handlers from a `wp-json/` root API endpoint. This module is not used by\nthe wpapi module itself, but is rather a dependency of the script that is used\nto create the `endpoint-response.json` file that is shipped along with this\nmodule for use in generating the \"default\" routes.",
             "line": " lib/data/simplify-object.js:5"
+        },
+        {
+            "message": "Missing item type\nTo avoid requiring that auto-discovery be utilized every time the API client\nis initialized, this library ships with a built-in route definition from a\nvanilla WordPress REST API installation. That file may be updated by\ninstalling the API plugin on a clean WP development instance, with no other\nplugins running, and downloading the JSON output from `yourwpsite.com/wp-json/`\ninto the \"default-routes.json\" file in this directory.\n\nThat file can also be generated by running this script against the same live\nWP REST API instance to download that same file, the difference being that,\nif the `default-routes.json` file is downloaded through this script, it\nwill be run through the `simplifyObject` utility to cut out about 1/3 of the\nbytes of the response by removing properties that do not effect route generation.\n\nThis script is NOT intended to be a dependency of any part of wp.js, and is\nprovided purely as a utility for upgrading the built-in copy of the endpoint\nresponse JSON file that is used to bootstrap the default route handlers.",
+            "line": " lib/data/update-default-routes-json.js:6"
         },
         {
             "message": "Missing item type\nThis module defines a mapping between supported GET request query parameter\narguments and their corresponding mixin, if available.",
@@ -2741,15 +2759,15 @@
         },
         {
             "message": "Missing item type",
-            "line": " lib/mixins/index.js:19"
+            "line": " lib/mixins/index.js:21"
         },
         {
             "message": "Missing item type",
-            "line": " lib/mixins/index.js:27"
+            "line": " lib/mixins/index.js:29"
         },
         {
             "message": "Missing item type",
-            "line": " lib/mixins/index.js:37"
+            "line": " lib/mixins/index.js:38"
         },
         {
             "message": "Missing item type\nUtility function for sorting arrays of numbers or strings.",
@@ -2780,14 +2798,6 @@
             "line": " lib/util/parameter-setter.js:10"
         },
         {
-            "message": "Missing item type\nFetch the headers for a URL and inspect them to attempt to locate an API\nendpoint header. Return a promise that will be resolved with a string, or\nrejected if no such header can be located.",
-            "line": " lib/autodiscovery.js:31"
-        },
-        {
-            "message": "Missing item type\nFunction to be called with the API url, once we have found one",
-            "line": " lib/autodiscovery.js:75"
-        },
-        {
             "message": "Missing item type\nGiven an array of route definitions and a specific namespace for those routes,\nrecurse through the node tree representing all possible routes within the\nprovided namespace to define path value setters (and corresponding property\nvalidators) for all possible variants of each resource's API endpoints.",
             "line": " lib/endpoint-factories.js:12"
         },
@@ -2805,7 +2815,7 @@
         },
         {
             "message": "Missing item type\nExtract and return the headers property from a superagent response object",
-            "line": " lib/http-transport.js:203"
+            "line": " lib/http-transport.js:212"
         },
         {
             "message": "Missing item type\nReturn a function to set part of the request URL path.\n\nPath part setter methods may be either dynamic (*i.e.* may represent a\n\"named group\") or non-dynamic (representing a static part of the URL, which\nis usually a collection endpoint of some sort). Which type of function is\nreturned depends on whether a given route has one or many sub-resources.",
@@ -2829,7 +2839,7 @@
         },
         {
             "message": "Missing item type\nBuild a route tree by reducing over a routes definition object from the API\nroot endpoint response object",
-            "line": " lib/route-tree.js:187"
+            "line": " lib/route-tree.js:186"
         },
         {
             "message": "Missing item type\nThe Gruntfile in this project is not responsible for the code build or\nlinting, and instead handles all tasks related to documentation generation\nand output.",

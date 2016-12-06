@@ -14,8 +14,8 @@
     <header class="main-header">
         <div class="content">
             <div class="project-title">
-                    <h1 class="project-name">wpapi</h1> <span class="project-version">0.12.0</span>
-                    <p class="description">A client for interacting with the WordPress REST API</p>
+                    <h1 class="project-name">wpapi</h1> <span class="project-version">1.0.0</span>
+                    <p class="description">An isomorphic JavaScript client for interacting with the WordPress REST API</p>
             </div>
             <ul class="jump-links">
                 <li><a href="#index" class="index-jump-link">index</a></li>
@@ -47,6 +47,7 @@
                             <li><a class="module" href="../modules/autodiscovery.html">autodiscovery</a></li>
                             <li><a class="module" href="../modules/filters.html">filters</a></li>
                             <li><a class="module" href="../modules/http-transport.html">http-transport</a></li>
+                            <li><a class="module" href="../modules/object-reduce.html">object-reduce</a></li>
                             <li><a class="module" href="../modules/parseRouteString.html">parseRouteString</a></li>
                             <li><a class="module" href="../modules/WPAPI.html">WPAPI</a></li>
                             <li><a class="module" href="../modules/WPRequest.html">WPRequest</a></li>
@@ -75,16 +76,16 @@
                  *
                  * @module WPAPI
                  * @main WPAPI
-                 * @beta
                  })
                  */
                 &#x27;use strict&#x27;;
                 
-                var _reduce = require( &#x27;lodash.reduce&#x27; );
                 var extend = require( &#x27;node.extend&#x27; );
+                var objectReduce = require( &#x27;./lib/util/object-reduce&#x27; );
                 
-                // All valid routes in API v2 beta 11
-                var defaultRoutes = require( &#x27;./lib/data/endpoint-response.json&#x27; ).routes;
+                // This JSON file provides enough data to create handler methods for all valid
+                // API routes in WordPress 4.7
+                var defaultRoutes = require( &#x27;./lib/data/default-routes.json&#x27; );
                 var buildRouteTree = require( &#x27;./lib/route-tree&#x27; ).build;
                 var generateEndpointFactories = require( &#x27;./lib/endpoint-factories&#x27; ).generate;
                 
@@ -392,10 +393,10 @@
                 	// client instance and passing a registered namespace string.
                 	// Handlers for default (wp/v2) routes will also be assigned to the WPAPI
                 	// client instance object itself, for brevity.
-                	return _reduce( endpointFactoriesByNamespace, function( wpInstance, endpointFactories, namespace ) {
+                	return objectReduce( endpointFactoriesByNamespace, function( wpInstance, endpointFactories, namespace ) {
                 
                 		// Set (or augment) the route handler factories for this namespace.
-                		wpInstance._ns[ namespace ] = _reduce( endpointFactories, function( nsHandlers, handlerFn, methodName ) {
+                		wpInstance._ns[ namespace ] = objectReduce( endpointFactories, function( nsHandlers, handlerFn, methodName ) {
                 			nsHandlers[ methodName ] = handlerFn;
                 			return nsHandlers;
                 		}, wpInstance._ns[ namespace ] || {
@@ -458,15 +459,26 @@
                 	// local placeholder for API root URL
                 	var endpoint;
                 
-                	return autodiscovery.getAPIRootFromURL( url )
+                	// Try HEAD request first, for smaller payload: use WPAPI.site to produce
+                	// a request that utilizes the defined HTTP transports
+                	var req = WPAPI.site( url ).root();
+                	return req.headers()
+                		.catch(function() {
+                			// On the hypothesis that any error here is related to the HEAD request
+                			// failing, provisionally try again using GET because that method is
+                			// more widely supported
+                			return req.get();
+                		})
+                		// Inspect response to find API location header
                 		.then( autodiscovery.locateAPIRootHeader )
                 		.then(function( apiRootURL ) {
                 			// Set the function-scope variable that will be used to instantiate
-                			// the bound WPAPI instance, then pass the URL on
+                			// the bound WPAPI instance,
                 			endpoint = apiRootURL;
-                			return apiRootURL;
+                
+                			// then GET the API root JSON object
+                			return WPAPI.site( apiRootURL ).root().get();
                 		})
-                		.then( autodiscovery.getRootResponseJSON )
                 		.then(function( apiRootJSON ) {
                 			// Instantiate &amp; bootstrap with the discovered methods
                 			return new WPAPI({
@@ -475,14 +487,13 @@
                 			});
                 		})
                 		.catch(function( err ) {
-                			console.error( &#x27;Autodiscovery failed&#x27; );
                 			console.error( err );
                 			if ( endpoint ) {
                 				console.warn( &#x27;Endpoint detected, proceeding despite error...&#x27; );
                 				console.warn( &#x27;Binding to &#x27; + endpoint + &#x27; and assuming default routes&#x27; );
                 				return new WPAPI.site( endpoint );
                 			}
-                			return null;
+                			throw new Error( &#x27;Autodiscovery failed&#x27; );
                 		});
                 };
                 

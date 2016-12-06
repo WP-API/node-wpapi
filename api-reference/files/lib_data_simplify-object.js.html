@@ -14,8 +14,8 @@
     <header class="main-header">
         <div class="content">
             <div class="project-title">
-                    <h1 class="project-name">wpapi</h1> <span class="project-version">0.12.0</span>
-                    <p class="description">A client for interacting with the WordPress REST API</p>
+                    <h1 class="project-name">wpapi</h1> <span class="project-version">1.0.0</span>
+                    <p class="description">An isomorphic JavaScript client for interacting with the WordPress REST API</p>
             </div>
             <ul class="jump-links">
                 <li><a href="#index" class="index-jump-link">index</a></li>
@@ -47,6 +47,7 @@
                             <li><a class="module" href="../modules/autodiscovery.html">autodiscovery</a></li>
                             <li><a class="module" href="../modules/filters.html">filters</a></li>
                             <li><a class="module" href="../modules/http-transport.html">http-transport</a></li>
+                            <li><a class="module" href="../modules/object-reduce.html">object-reduce</a></li>
                             <li><a class="module" href="../modules/parseRouteString.html">parseRouteString</a></li>
                             <li><a class="module" href="../modules/WPAPI.html">WPAPI</a></li>
                             <li><a class="module" href="../modules/WPRequest.html">WPRequest</a></li>
@@ -64,7 +65,7 @@
                     <pre class="code prettyprint linenums">
                 &#x27;use strict&#x27;;
                 
-                var _reduce = require( &#x27;lodash.reduce&#x27; );
+                var objectReduce = require( &#x27;../util/object-reduce&#x27; );
                 
                 /**
                  * Walk through the keys and values of a provided object, removing any properties
@@ -91,7 +92,7 @@
                 
                 	// Reduce through objects to run each property through simplifyObject
                 	if ( typeof obj === &#x27;object&#x27; ) {
-                		return _reduce( obj, function( newObj, val, key ) {
+                		return objectReduce( obj, function( newObj, val, key ) {
                 			// Omit _links objects entirely
                 			if ( key === &#x27;_links&#x27; ) {
                 				return newObj;
@@ -100,10 +101,8 @@
                 			// If the key is &quot;args&quot;, omit all keys of second-level descendants
                 			// other than &quot;required&quot;
                 			if ( key === &#x27;args&#x27; ) {
-                				newObj.args = _reduce( val, function( slimArgs, argVal, argKey ) {
-                					slimArgs[ argKey ] = {
-                						required: argVal.required
-                					};
+                				newObj.args = objectReduce( val, function( slimArgs, argVal, argKey ) {
+                					slimArgs[ argKey ] = {};
                 					return slimArgs;
                 				}, {});
                 			} else {

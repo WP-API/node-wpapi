@@ -113,7 +113,7 @@ var site = new WPAPI({
 site.namespace( 'myplugin/v1' ).authors()...
 ```
 
-To create a slimmed JSON file dedicated to this particular purpose, see the Node script [lib/data/generate-endpoint-response-json.js](lib/data/generate-endpoint-response-json.js), which will let you download and save an endpoint response to your local project.
+To create a slimmed JSON file dedicated to this particular purpose, see the Node script [lib/data/update-default-routes-json.js](https://github.com/wp-api/node-wpapi/tree/master/lib/data/update-default-routes-json.js), which will let you download and save an endpoint response to your local project.
 
 In addition to retrieving the specified resource with `.get()`, you can also `.create()`, `.update()` and `.delete()` resources:
 
@@ -184,6 +184,7 @@ A WPAPI instance object provides the following basic request methods:
 * `wp.statuses()...`: Get resources within the `/statuses` endpoints
 * `wp.users()...`: Get resources within the `/users` endpoints
 * `wp.media()...`: Get Media collections and objects from the `/media` endpoints
+* `wp.settings()...`: Read or update site settings from the `/settings` endpoint (always requires authentication)
 
 All of these methods return a customizable request object. The request object can be further refined with chaining methods, and/or sent to the server via `.get()`, `.create()`, `.update()`, `.delete()`, `.headers()`, or `.then()`. (Not all endpoints support all methods; for example, you cannot POST or PUT records on `/types`, as these are defined in WordPress plugin or theme code.)
 
@@ -221,14 +222,16 @@ Additional querying methods provided, by endpoint:
     - `wp.statuses()`: get a collection of all registered public post statuses (if the query is authenticated&mdash;will just display "published" if unauthenticated)
     - `wp.statuses().status( 'slug' )`: get the object for the status with the slug *slug*
 * **users**
-    - `wp.users()`: get a collection of registered users
+    - `wp.users()`: get a collection of users (will show only users with published content if request is not authenticated)
     - `wp.users().id( n )`: get the user with ID *n* (does not require authentication if that user is a published author within the blog)
     - `wp.users().me()`: get the authenticated user's record
 * **media**
     - `wp.media()`: get a collection of media objects (attachments)
     - `wp.media().id( n )`: get media object with ID *n*
+* **settings**
+    - `wp.settings()`: get or update one or many site settings
 
-For security reasons, methods like `.revisions()` and `.users()` require the request to be authenticated.
+For security reasons, methods like `.revisions()` and `.settings()` require the request to be authenticated, and others such as `.users()` and `.posts()` will return only a subset of their information without authentication.
 
 #### toString()
 
@@ -263,6 +266,12 @@ wp.pages().slug( 'about' )...
 
 // Find a post authored by the user with ID #42
 wp.posts().author( 42 )...
+
+// Find trashed posts
+wp.posts().status( 'trash' )...
+
+// Find posts in status "future" or "draft"
+wp.posts().status([ 'draft', 'future' ])...
 
 // Find all categories containing the word "news"
 wp.categories().search( 'news' )...
@@ -373,6 +382,25 @@ wp.posts().author( 42 ).author( 71 ).get();
 ```
 
 As with categories and tags, the `/users` endpoint may be queried by slug to retrieve the ID to use in this query, if needed.
+
+### Password-Protected posts
+
+The `.password()` method (not to be confused with the password property of `.auth()`!) sets the password to use to view a password-protected post. Any post for which the content is protected will have `protected: true` set on its `content` and `excerpt` properties; `content.rendered` and `excerpt.rendered` will both be `''` until the password is provided by query string.
+
+```js
+wp.posts().id( idOfProtectedPost )
+    .then(function( result ) {
+        console.log( result.content.protected ); // true
+        console.log( result.content.rendered ); // ""
+    });
+
+wp.posts.id( idOfProtectedPost )
+    // Provide the password string with the request
+    .password( 'thepasswordstring' )
+    .then(function( result ) {
+        console.log( result.content.rendered ); // "The post content"
+    });
+```
 
 #### Other Filters
 
