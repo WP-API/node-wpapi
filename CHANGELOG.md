@@ -215,7 +215,7 @@ adds .posts().meta() method
 
 ## v0.3.0
 
-The main new feature in 0.3.0 is initial support for collection pagination: Pagination data is exposed in a _paging property on response collections, if additional pages of collection objects are available.
+The main new feature in 0.3.0 is initial support for collection pagination: Pagination data is exposed in a `_paging` property on response collections, if additional pages of collection objects are available.
 
 ### v0.3.0
 
