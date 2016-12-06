@@ -66,7 +66,7 @@ describe( 'simplifyObject', function() {
 		});
 	});
 
-	it( 'removes non-`.required` keys from children of .args objects', function() {
+	it( 'removes unneeded keys from children of .args objects', function() {
 		expect( simplifyObject({
 			args: {
 				context: {
@@ -77,7 +77,7 @@ describe( 'simplifyObject', function() {
 			}
 		}) ).to.deep.equal({
 			args: {
-				'context': {}
+				context: {}
 			}
 		});
 	});

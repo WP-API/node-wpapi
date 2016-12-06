@@ -50,27 +50,27 @@ describe( 'route-tree utility', function() {
 				expect( posts ).to.have.property( '_getArgs' );
 				expect( posts._getArgs ).to.be.an( 'object' );
 				expect( posts._getArgs ).to.deep.equal({
-					context: false,
-					page: false,
-					per_page: false,
-					search: false,
-					after: false,
-					author: false,
-					author_exclude: false,
-					before: false,
-					exclude: false,
-					include: false,
-					offset: false,
-					order: false,
-					orderby: false,
-					password: false,
-					slug: false,
-					status: false,
-					sticky: false,
-					categories: false,
-					categories_exclude: false,
-					tags: false,
-					tags_exclude: false
+					context: {},
+					page: {},
+					per_page: {},
+					search: {},
+					after: {},
+					author: {},
+					author_exclude: {},
+					before: {},
+					exclude: {},
+					include: {},
+					offset: {},
+					order: {},
+					orderby: {},
+					password: {},
+					slug: {},
+					status: {},
+					sticky: {},
+					categories: {},
+					categories_exclude: {},
+					tags: {},
+					tags_exclude: {}
 				});
 			});
 
