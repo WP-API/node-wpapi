@@ -25,7 +25,7 @@
   "scripts": {
     "build": "webpack && webpack --config webpack.config.minified.js",
     "zip": "npm run build && grunt zip",
-    "download-endpoint-json": "node ./lib/data/generate-endpoint-response-json",
+    "update-default-routes-json": "node ./lib/data/update-default-routes-json",
     "docs": "grunt docs",
     "jekyll": "node bin/jekyll",
     "release-docs": "node build/scripts/release-docs",

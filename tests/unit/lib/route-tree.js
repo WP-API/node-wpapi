@@ -2,7 +2,7 @@
 var expect = require( 'chai' ).expect;
 
 var routeTree = require( '../../../lib/route-tree' );
-var endpointResponse = require( '../../../lib/data/endpoint-response.json' );
+var defaultRoutes = require( '../../../lib/data/default-routes.json' );
 
 describe( 'route-tree utility', function() {
 
@@ -10,7 +10,7 @@ describe( 'route-tree utility', function() {
 		var tree;
 
 		beforeEach(function() {
-			tree = routeTree.build( endpointResponse.routes );
+			tree = routeTree.build( defaultRoutes );
 		});
 
 		it( 'returns an object keyed by API namespace', function() {

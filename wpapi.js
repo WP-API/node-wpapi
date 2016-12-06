@@ -20,7 +20,7 @@ var extend = require( 'node.extend' );
 var objectReduce = require( './lib/util/object-reduce' );
 
 // All valid routes in API v2 beta 11
-var defaultRoutes = require( './lib/data/endpoint-response.json' ).routes;
+var defaultRoutes = require( './lib/data/default-routes.json' );
 var buildRouteTree = require( './lib/route-tree' ).build;
 var generateEndpointFactories = require( './lib/endpoint-factories' ).generate;
 

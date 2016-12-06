@@ -77,9 +77,7 @@ describe( 'simplifyObject', function() {
 			}
 		}) ).to.deep.equal({
 			args: {
-				context: {
-					required: false
-				}
+				'context': {}
 			}
 		});
 	});
@@ -91,44 +89,44 @@ describe( 'simplifyObject', function() {
 			endpoints: [ {
 				methods: [ 'GET' ],
 				args: {
-					context: { required: false },
-					page: { required: false },
-					per_page: { required: false },
-					search: { required: false },
-					after: { required: false },
-					author: { required: false },
-					author_exclude: { required: false },
-					before: { required: false },
-					exclude: { required: false },
-					include: { required: false },
-					offset: { required: false },
-					order: { required: false },
-					orderby: { required: false },
-					slug: { required: false },
-					status: { required: false },
-					filter: { required: false },
-					categories: { required: false },
-					tags: { required: false }
+					context: {},
+					page: {},
+					per_page: {},
+					search: {},
+					after: {},
+					author: {},
+					author_exclude: {},
+					before: {},
+					exclude: {},
+					include: {},
+					offset: {},
+					order: {},
+					orderby: {},
+					slug: {},
+					status: {},
+					filter: {},
+					categories: {},
+					tags: {}
 				}
 			}, {
 				methods: [ 'POST' ],
 				args: {
-					date: { required: false },
-					date_gmt: { required: false },
-					password: { required: false },
-					slug: { required: false },
-					status: { required: false },
-					title: { required: false },
-					content: { required: false },
-					author: { required: false },
-					excerpt: { required: false },
-					featured_media: { required: false },
-					comment_status: { required: false },
-					ping_status: { required: false },
-					format: { required: false },
-					sticky: { required: false },
-					categories: { required: false },
-					tags: { required: false }
+					date: {},
+					date_gmt: {},
+					password: {},
+					slug: {},
+					status: {},
+					title: {},
+					content: {},
+					author: {},
+					excerpt: {},
+					featured_media: {},
+					comment_status: {},
+					ping_status: {},
+					format: {},
+					sticky: {},
+					categories: {},
+					tags: {}
 				}
 			} ]
 		});

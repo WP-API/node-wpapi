@@ -277,7 +277,7 @@ describe( 'WPAPI', function() {
 					endpoints: [ {
 						methods: [ 'GET' ],
 						args: {
-							filter: { required: false }
+							filter: {}
 						}
 					} ]
 				}
@@ -511,7 +511,7 @@ describe( 'WPAPI', function() {
 						endpoints: [ {
 							methods: [ 'GET' ],
 							args: {
-								name: { required: false }
+								name: {}
 							}
 						} ]
 					},
@@ -521,7 +521,7 @@ describe( 'WPAPI', function() {
 						endpoints: [ {
 							methods: [ 'GET' ],
 							args: {
-								parent: { required: false }
+								parent: {}
 							}
 						} ]
 					}
