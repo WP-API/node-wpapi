@@ -99,4 +99,89 @@ describe( 'integration: custom HTTP transport methods', function() {
 		return expect( prom ).to.eventually.equal( SUCCESS );
 	});
 
+	it( 'can be defined to transform responses', function() {
+		function extractSlug( results ) {
+			if ( Array.isArray( results ) && results.length === 1 ) {
+				return results[0];
+			}
+			return results;
+		}
+
+		function simpleSlugGet( wpreq, cb ) {
+			if ( ! wpreq._params.slug ) {
+				/* jshint validthis:true */
+				return WPAPI.transport.get.call( this, wpreq, cb );
+			}
+			return WPAPI.transport.get( wpreq ).then(function( results ) {
+				var result = extractSlug( results );
+				if ( cb && typeof cb === 'function' ) {
+					cb( null, result );
+				}
+				return result;
+			});
+		}
+
+		wp = new WPAPI({
+			endpoint: 'http://wpapi.loc/wp-json',
+			transport: {
+				get: simpleSlugGet
+			}
+		});
+
+		var prom = wp.posts().slug( 'template-more-tag' )
+			.then(function( results ) {
+				expect( results ).to.be.an( 'object' );
+				expect( Array.isArray( results ) ).to.equal( false );
+				expect( results.title.rendered ).to.equal( 'Template: More Tag' );
+				return SUCCESS;
+			});
+
+		return expect( prom ).to.eventually.equal( SUCCESS );
+	});
+
+	it( 'can be defined to augment responses', function() {
+		function Collection( arr ) {
+			this.data = arr;
+		}
+		Collection.prototype.pluck = function( key ) {
+			return this.data.map(function( val ) {
+				return val[ key ];
+			});
+		};
+		function addCollectionMethodsGet( wpreq, cb ) {
+			/* jshint validthis:true */
+			return WPAPI.transport.get.call( this, wpreq, cb ).then(function( results ) {
+				if ( Array.isArray( results ) ) {
+					return new Collection( results );
+				}
+			});
+		}
+
+		wp = new WPAPI({
+			endpoint: 'http://wpapi.loc/wp-json',
+			transport: {
+				get: addCollectionMethodsGet
+			}
+		});
+
+		var prom = wp.posts()
+			.then(function( results ) {
+				expect( results ).to.be.an.instanceOf( Collection );
+				expect( results.pluck( 'slug' ) ).to.deep.equal([
+					'markup-html-tags-and-formatting',
+					'markup-image-alignment',
+					'markup-text-alignment',
+					'title-with-special-characters',
+					'markup-title-with-markup',
+					'template-featured-image-vertical',
+					'template-featured-image-horizontal',
+					'template-more-tag',
+					'template-excerpt-defined',
+					'template-excerpt-generated'
+				]);
+				return SUCCESS;
+			});
+		return expect( prom ).to.eventually.equal( SUCCESS );
+	});
+
 });
