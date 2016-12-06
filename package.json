@@ -4,8 +4,8 @@
     "url": "http://www.kadamwhite.com"
   },
   "name": "wpapi",
-  "version": "1.0.0-rc.1",
-  "description": "A client for interacting with the WordPress REST API",
+  "version": "1.0.0",
+  "description": "An isomorphic JavaScript client for interacting with the WordPress REST API",
   "main": "wpapi.js",
   "repository": {
     "type": "git",
@@ -41,9 +41,6 @@
     "test:ci": "npm run lint && istanbul cover _mocha -- tests/unit --recursive --reporter=list",
     "pretest": "npm run lint",
     "test": "istanbul cover _mocha -- tests --recursive --reporter=nyan"
-  },
-  "engines": {
-    "node": ">= 0.10.0"
   },
   "dependencies": {
     "es6-promise": "^3.2.1",

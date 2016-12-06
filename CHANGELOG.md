@@ -100,9 +100,7 @@ There is remaining inconsistency throughout the docs & test suite between whethe
 
 Custom HTTP transport methods may be provided to inject or short-circuit HTTP behavior for each type of request; methods may be specified via a `.transport` property on the configuration object passed to the `WP` constructor, or by passing an object of transport methods to the `.transport()` method on the instantiated `WP` object.
 
-**Props**
-
-@edygar
+Props @edygar
 
 
 ## v0.9.1 _Since I Left You_
