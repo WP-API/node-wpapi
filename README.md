@@ -1,9 +1,7 @@
 A WordPress REST API client for JavaScript
 ==========================================
 
-This is a client for the [WordPress REST API](http://v2.wp-api.org/). It is **under active development**, and should be considered beta software. More features are in progress, and **[issues](https://github.com/wp-api/node-wpapi/issues)** are welcome if you find something that doesn't work!
-
-**`wpapi` is designed to work with [WP-API](https://github.com/WP-API/WP-API) v2 beta 1 or higher.** If you use a prior version of the beta, some commands will not work. The latest beta is always recommended!
+This library is an isomorphic client for the [WordPress REST API](http://developer.wordpress.org/rest-api), designed to work with WordPress 4.7 or later. If you are using the older [WP REST API plugin](https://github.com/WP-API/WP-API), some commands will not work.
 
 [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/wp-api/node-wpapi?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
@@ -34,7 +32,7 @@ This is a client for the [WordPress REST API](http://v2.wp-api.org/). It is **un
 
 ## About
 
-`node-wpapi` makes it easy for your JavaScript application to request specific resources from a [WordPress](https://wordpress.org) website. It uses a query builder-style syntax to let you craft the request being made to [WordPress REST API](http://v2.wp-api.org) endpoints, then returns the API's response to your application as a JavaScript object. And don't let the name fool you: `node-wpapi` works just as well in the browser as it does on the server!
+`node-wpapi` is an isomorphic JavaScript client for the [WordPress REST API](https://developer.wordpress.org/rest-api) that makes it easy for your JavaScript application to request specific resources from a [WordPress](https://wordpress.org) website. It uses a query builder-style syntax to let you craft the request being made to REST API endpoints, then returns the API's response to your application as a JSON object. And don't let the name fool you: with [Webpack](https://webpack.github.io/) or [Browserify](http://browserify.org/), `node-wpapi` works just as well in the browser as it does on the server!
 
 This library is maintained by K. Adam White at [Bocoup](https://bocoup.com), with contributions from a [great community](https://github.com/WP-API/node-wpapi/graphs/contributors) of WordPress and JavaScript developers.
 
@@ -652,8 +650,6 @@ This permits a developer to extend an endpoint with arbitrary parameters in the 
 Note that mixins should always return `this` to support method chaining.
 
 ## Embedding Data
-
-_**Note:** This section applies only to the WP-API v2 betas and above; the initial 1.0 release of the API embedded data by default._
 
 Data types in WordPress are interrelated: A post has an author, some number of tags, some number of categories, *etc*. By default, the API responses will provide pointers to these related objects, but will not embed the full resources: so, for example, the `"author"` property would come back as just the author's ID, *e.g.* `"author": 4`.
 
