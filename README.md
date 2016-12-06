@@ -325,6 +325,12 @@ wp.pages().slug( 'about' )...
 // Find a post authored by the user with ID #42
 wp.posts().author( 42 )...
 
+// Find trashed posts
+wp.posts().status( 'trash' )...
+
+// Find posts in status "future" or "draft"
+wp.posts().status([ 'draft', 'future' ])...
+
 // Find all categories containing the word "news"
 wp.categories().search( 'news' )...
 
@@ -434,6 +440,25 @@ wp.posts().author( 42 ).author( 71 ).get();
 ```
 
 As with categories and tags, the `/users` endpoint may be queried by slug to retrieve the ID to use in this query, if needed.
+
+### Password-Protected posts
+
+The `.password()` method (not to be confused with the password property of `.auth()`!) sets the password to use to view a password-protected post. Any post for which the content is protected will have `protected: true` set on its `content` and `excerpt` properties; `content.rendered` and `excerpt.rendered` will both be `''` until the password is provided by query string.
+
+```js
+wp.posts().id( idOfProtectedPost )
+    .then(function( result ) {
+        console.log( result.content.protected ); // true
+        console.log( result.content.rendered ); // ""
+    });
+
+wp.posts.id( idOfProtectedPost )
+    // Provide the password string with the request
+    .password( 'thepasswordstring' )
+    .then(function( result ) {
+        console.log( result.content.rendered ); // "The post content"
+    });
+```
 
 #### Other Filters
 

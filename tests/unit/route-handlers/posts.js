@@ -76,6 +76,24 @@ describe( 'wp.posts', function() {
 
 	});
 
+	it( 'provides expected filter methods', function() {
+		[
+			'after',
+			'before',
+			'categories',
+			'include',
+			'order',
+			'page',
+			'slug',
+			'password',
+			'status',
+			'sticky'
+		].forEach(function( methodName ) {
+			expect( posts ).to.have.property( methodName );
+			expect( posts[ methodName ] ).to.be.a( 'function' );
+		});
+	});
+
 	describe( 'URL Generation', function() {
 
 		it( 'should create the URL for retrieving all posts', function() {

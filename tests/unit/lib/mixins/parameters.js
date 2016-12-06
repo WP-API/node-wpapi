@@ -283,6 +283,36 @@ describe( 'mixins: parameters', function() {
 
 	});
 
+	describe( '.status()', function() {
+
+		beforeEach(function() {
+			Req.prototype.status = parameterMixins.status;
+		});
+
+		it( 'mixin method is defined', function() {
+			expect( parameterMixins ).to.have.property( 'status' );
+		});
+
+		it( 'is a function', function() {
+			expect( parameterMixins.status ).to.be.a( 'function' );
+		});
+
+		it( 'supports chaining', function() {
+			expect( req.status( 'publish' ) ).to.equal( req );
+		});
+
+		it( 'sets the "status" query parameter when provided a value', function() {
+			var result = req.status( 'future' );
+			expect( getQueryStr( result ) ).to.equal( 'status=future' );
+		});
+
+		it( 'sets an array of "status" query values when provided an array of strings', function() {
+			var result = req.status([ 'future', 'draft' ]);
+			expect( getQueryStr( result ) ).to.equal( 'status[]=draft&status[]=future' );
+		});
+
+	});
+
 	describe( '.sticky()', function() {
 
 		beforeEach(function() {

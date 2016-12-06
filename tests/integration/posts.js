@@ -230,6 +230,24 @@ describe( 'integration: posts()', function() {
 
 		});
 
+		describe( 'status', function() {
+
+			it( 'can be used to retrieve specific statuses of posts', function() {
+				var prom = authenticated.posts()
+					.status([ 'future', 'draft' ])
+					.get()
+					.then(function( posts ) {
+						expect( getTitles( posts ) ).to.deep.equal([
+							'Scheduled',
+							'Draft'
+						]);
+						return SUCCESS;
+					});
+				return expect( prom ).to.eventually.equal( SUCCESS );
+			});
+
+		});
+
 		describe( 'tags', function() {
 
 			it( 'can be used to return only posts with a provided tag', function() {
