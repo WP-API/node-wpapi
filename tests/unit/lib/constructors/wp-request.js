@@ -192,7 +192,7 @@ describe( 'WPRequest', function() {
 			expect( request._renderQuery() ).to.equal( '?context=edit&type=some_cpt' );
 		});
 
-		it( 'should set parameters by passing a hash object', function() {
+		it( 'should set multiple parameters by passing a hash object', function() {
 			request.param({
 				page: 309,
 				context: 'view'
@@ -200,16 +200,8 @@ describe( 'WPRequest', function() {
 			expect( request._renderQuery() ).to.equal( '?context=view&page=309' );
 		});
 
-		it( 'should merge provided values if merge is set to true', function() {
-			request.param( 'type', 'post' );
-			request.param( 'type', 'page', true );
-			expect( request._params.type ).to.deep.equal( [ 'page', 'post' ] );
-		});
-
-		it( 'should merge, de-dupe & sort array values', function() {
-			request.param( 'type', [ 'post', 'page', 'post' ] );
-			expect( request._renderQuery() ).to.equal( '?type%5B%5D=page&type%5B%5D=post' );
-			request.param( 'type', [ 'page', 'cpt_item' ], true );
+		it( 'should de-dupe & sort array values', function() {
+			request.param( 'type', [ 'post', 'page', 'post', 'page', 'cpt_item' ] );
 			expect( request._renderQuery() ).to.equal( '?type%5B%5D=cpt_item&type%5B%5D=page&type%5B%5D=post' );
 		});
 

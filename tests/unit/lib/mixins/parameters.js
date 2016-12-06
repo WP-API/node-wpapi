@@ -205,9 +205,13 @@ describe( 'mixins: parameters', function() {
 			expect( getQueryStr( result ) ).to.equal( 'parent=42' );
 		});
 
-		it( 'merges values on subsequent calls', function() {
-			// TODO: Is this how the API actually functions?
+		it( 'replaces values on subsequent calls', function() {
 			var result = req.parent( 42 ).parent( 2501 );
+			expect( getQueryStr( result ) ).to.equal( 'parent=2501' );
+		});
+
+		it( 'can pass an array of parent values', function() {
+			var result = req.parent([ 42, 2501 ]);
 			expect( getQueryStr( result ) ).to.equal( 'parent[]=2501&parent[]=42' );
 		});
 
