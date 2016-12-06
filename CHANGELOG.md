@@ -1,4 +1,18 @@
-# v0.12.0 _You Only Live Once_
+# v1.0.0 _Emotional Technology_
+
+- Add CHANGELOG.md
+- Reduce complexity of, and rename, default routes JSON file
+- BREAKING: Remove third "merge" argument from `.param()` method signature
+- Document `.settings()` top-level route handler
+- BREAKING: Return API error objects directly from HTTP transport: only return a transport-level error object in the event of a non-API error
+- Add `.status()` parameter method mixin
+- Properly register `.password()` and `.sticky()` parameter mixins
+- Utilize the HTTP transport methods during auto-discovery process
+- Replace `lodash.reduce` with custom `objectReduce` method throughout codebase to reduce browser bundle size
+
+This release is named for BT's 2003 album _Emotional Technology_.
+
+## v0.12.0 _You Only Live Once_
 
 This release makes breaking changes to how endpoint filtering methods are bound, specifically reacting to the removal of the `?filter` query parameter which is not present in WordPress 4.7's API endpoints.
 
