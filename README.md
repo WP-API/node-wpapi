@@ -245,6 +245,7 @@ A WPAPI instance object provides the following basic request methods:
 * `wp.statuses()...`: Get resources within the `/statuses` endpoints
 * `wp.users()...`: Get resources within the `/users` endpoints
 * `wp.media()...`: Get Media collections and objects from the `/media` endpoints
+* `wp.settings()...`: Read or update site settings from the `/settings` endpoint (always requires authentication)
 
 All of these methods return a customizable request object. The request object can be further refined with chaining methods, and/or sent to the server via `.get()`, `.create()`, `.update()`, `.delete()`, `.headers()`, or `.then()`. (Not all endpoints support all methods; for example, you cannot POST or PUT records on `/types`, as these are defined in WordPress plugin or theme code.)
 
@@ -282,14 +283,16 @@ Additional querying methods provided, by endpoint:
     - `wp.statuses()`: get a collection of all registered public post statuses (if the query is authenticated&mdash;will just display "published" if unauthenticated)
     - `wp.statuses().status( 'slug' )`: get the object for the status with the slug *slug*
 * **users**
-    - `wp.users()`: get a collection of registered users
+    - `wp.users()`: get a collection of users (will show only users with published content if request is not authenticated)
     - `wp.users().id( n )`: get the user with ID *n* (does not require authentication if that user is a published author within the blog)
     - `wp.users().me()`: get the authenticated user's record
 * **media**
     - `wp.media()`: get a collection of media objects (attachments)
     - `wp.media().id( n )`: get media object with ID *n*
+* **settings**
+    - `wp.settings()`: get or update one or many site settings
 
-For security reasons, methods like `.revisions()` and `.users()` require the request to be authenticated.
+For security reasons, methods like `.revisions()` and `.settings()` require the request to be authenticated, and others such as `.users()` and `.posts()` will return only a subset of their information without authentication.
 
 #### toString()
 
