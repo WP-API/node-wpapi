@@ -95,6 +95,14 @@ describe( 'WPRequest', function() {
 			expect( query ).to.equal( '?filter%5Bcat%5D=7%2B10&filter%5Bname%5D=some-slug' );
 		});
 
+		it( 'uses the correct query character if the endpoint already contains a query', function() {
+			request._filters = { name: 'some-slug' };
+			request._options = { endpoint: 'https://example.org?rest_route=' };
+			var query = request._renderQuery();
+			expect( query ).to
+				.equal( '&filter%5Bname%5D=some-slug' );
+		});
+
 	});
 
 	describe( '.checkMethodSupport()', function() {
