@@ -95,14 +95,6 @@ describe( 'WPRequest', function() {
 			expect( query ).to.equal( '?filter%5Bcat%5D=7%2B10&filter%5Bname%5D=some-slug' );
 		});
 
-		it( 'uses the correct query character if the endpoint already contains a query', function() {
-			request._filters = { name: 'some-slug' };
-			request._options = { endpoint: 'https://example.org?rest_route=' };
-			var query = request._renderQuery();
-			expect( query ).to
-				.equal( '&filter%5Bname%5D=some-slug' );
-		});
-
 	});
 
 	describe( '.checkMethodSupport()', function() {
@@ -695,6 +687,14 @@ describe( 'WPRequest', function() {
 		it( 'exhibits normal toString() behavior via coercion', function() {
 			var str = '' + request.param( 'a', 7 ).param( 'b', [ 1, 2 ] );
 			expect( str ).to.equal( 'http://blogoblog.com/wp-json?a=7&b%5B%5D=1&b%5B%5D=2' );
+		});
+
+		it( 'correctly merges query strings for "plain permalinks" endpoints', function() {
+			request = new WPRequest({
+				endpoint: 'https://blogoblog.com?rest_route=/'
+			});
+			var str = request.param( 'a', 7 ).param( 'b', [ 1, 2 ] ).toString();
+			expect( str ).to.equal( 'https://blogoblog.com?rest_route=/&a=7&b%5B%5D=1&b%5B%5D=2' );
 		});
 
 	});
