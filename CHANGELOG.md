@@ -1,3 +1,10 @@
+# v1.0.1 _The Only Constant is Change_
+
+- Support endpoints using "plain permalinks", props @luisherranz
+
+This patch release is named for _The Only Constant is Change_, a track from
+v1.0 namesake album _Emotional Technology_ by BT.
+
 # v1.0.0 _Emotional Technology_
 
 - Add CHANGELOG.md
