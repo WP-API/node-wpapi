@@ -14,7 +14,7 @@
     <header class="main-header">
         <div class="content">
             <div class="project-title">
-                    <h1 class="project-name">wpapi</h1> <span class="project-version">1.0.0</span>
+                    <h1 class="project-name">wpapi</h1> <span class="project-version">1.0.1</span>
                     <p class="description">An isomorphic JavaScript client for interacting with the WordPress REST API</p>
             </div>
             <ul class="jump-links">
@@ -297,8 +297,11 @@
                 		.sort()
                 		.join( &#x27;&amp;&#x27; );
                 
-                	// Prepend a &quot;?&quot; if a query is present, and return
-                	return ( queryString === &#x27;&#x27; ) ? &#x27;&#x27; : &#x27;?&#x27; + queryString;
+                	// Check if the endpoint contains a previous query and set the query character accordingly.
+                	var queryCharacter = /\?/.test( this._options.endpoint ) ? &#x27;&amp;&#x27; : &#x27;?&#x27;;
+                
+                	// Prepend a &quot;?&quot; (or a &quot;&amp;&quot;) if a query is present, and return.
+                	return ( queryString === &#x27;&#x27; ) ? &#x27;&#x27; : queryCharacter + queryString;
                 };
                 
                 /**

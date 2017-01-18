@@ -2,7 +2,7 @@
     "project": {
         "name": "wpapi",
         "description": "An isomorphic JavaScript client for interacting with the WordPress REST API",
-        "version": "1.0.0",
+        "version": "1.0.1",
         "url": "https://github.com/wp-api/node-wpapi"
     },
     "files": {
@@ -585,7 +585,7 @@
         },
         {
             "file": "lib/constructors/wp-request.js",
-            "line": 239,
+            "line": 242,
             "description": "Validate & assemble a path string from the request object's _path",
             "access": "private",
             "tagname": "",
@@ -601,7 +601,7 @@
         },
         {
             "file": "lib/constructors/wp-request.js",
-            "line": 275,
+            "line": 278,
             "description": "Parse the request into a WordPress API request URI string",
             "itemtype": "method",
             "name": "toString",
@@ -615,7 +615,7 @@
         },
         {
             "file": "lib/constructors/wp-request.js",
-            "line": 291,
+            "line": 294,
             "description": "Set a component of the resource URL itself (as opposed to a query parameter)\n\nIf a path component has already been set at this level, throw an error:\nrequests are meant to be transient, so any re-writing of a previously-set\npath part value is likely to be a mistake.",
             "itemtype": "method",
             "name": "setPathPart",
@@ -642,7 +642,7 @@
         },
         {
             "file": "lib/constructors/wp-request.js",
-            "line": 313,
+            "line": 316,
             "description": "Validate whether the specified path parts are valid for this endpoint\n\n\"Path parts\" are non-query-string URL segments, like \"some\" \"path\" in the URL\n`mydomain.com/some/path?and=a&query=string&too`. Because a well-formed path\nis necessary to execute a successful API request, we throw an error if the\nuser has omitted a value (such as `/some/[missing component]/url`) or has\nprovided a path part value that does not match the regular expression the\nAPI uses to goven that segment.",
             "itemtype": "method",
             "name": "validatePath",
@@ -657,7 +657,7 @@
         },
         {
             "file": "lib/constructors/wp-request.js",
-            "line": 368,
+            "line": 371,
             "description": "Set a parameter to render into the final query URI.",
             "itemtype": "method",
             "name": "param",
@@ -685,7 +685,7 @@
         },
         {
             "file": "lib/constructors/wp-request.js",
-            "line": 409,
+            "line": 412,
             "description": "Set the context of the request. Used primarily to expose private values on a\nrequest object by setting the context to \"edit\".",
             "itemtype": "method",
             "name": "context",
@@ -707,7 +707,7 @@
         },
         {
             "file": "lib/constructors/wp-request.js",
-            "line": 420,
+            "line": 423,
             "description": "Convenience wrapper for `.context( 'edit' )`",
             "itemtype": "method",
             "name": "edit",
@@ -722,7 +722,7 @@
         },
         {
             "file": "lib/constructors/wp-request.js",
-            "line": 431,
+            "line": 434,
             "description": "Return embedded resources as part of the response payload.",
             "itemtype": "method",
             "name": "embed",
@@ -737,7 +737,7 @@
         },
         {
             "file": "lib/constructors/wp-request.js",
-            "line": 445,
+            "line": 448,
             "description": "Set the pagination of a request. Use in conjunction with `.perPage()` for explicit\npagination handling. (The number of pages in a response can be retrieved from the\nresponse's `_paging.totalPages` property.)",
             "itemtype": "method",
             "name": "page",
@@ -758,7 +758,7 @@
         },
         {
             "file": "lib/constructors/wp-request.js",
-            "line": 457,
+            "line": 460,
             "description": "Set the number of items to be returned in a page of responses.",
             "itemtype": "method",
             "name": "perPage",
@@ -779,7 +779,7 @@
         },
         {
             "file": "lib/constructors/wp-request.js",
-            "line": 467,
+            "line": 470,
             "description": "Set an arbitrary offset to retrieve items from a specific point in a collection.",
             "itemtype": "method",
             "name": "offset",
@@ -800,7 +800,7 @@
         },
         {
             "file": "lib/constructors/wp-request.js",
-            "line": 477,
+            "line": 480,
             "description": "Change the sort direction of a returned collection",
             "example": [
                 " order comments chronologically (oldest first)\n\n    site.comments().order( 'asc' )..."
@@ -824,7 +824,7 @@
         },
         {
             "file": "lib/constructors/wp-request.js",
-            "line": 491,
+            "line": 494,
             "description": "Order a collection by a specific field",
             "itemtype": "method",
             "name": "orderby",
@@ -845,7 +845,7 @@
         },
         {
             "file": "lib/constructors/wp-request.js",
-            "line": 501,
+            "line": 504,
             "description": "Filter results to those matching the specified search terms.",
             "itemtype": "method",
             "name": "search",
@@ -866,7 +866,7 @@
         },
         {
             "file": "lib/constructors/wp-request.js",
-            "line": 511,
+            "line": 514,
             "description": "Include specific resource IDs in the response collection.",
             "itemtype": "method",
             "name": "include",
@@ -887,7 +887,7 @@
         },
         {
             "file": "lib/constructors/wp-request.js",
-            "line": 521,
+            "line": 524,
             "description": "Exclude specific resource IDs in the response collection.",
             "itemtype": "method",
             "name": "exclude",
@@ -908,7 +908,7 @@
         },
         {
             "file": "lib/constructors/wp-request.js",
-            "line": 531,
+            "line": 534,
             "description": "Query a collection for members with a specific slug.",
             "itemtype": "method",
             "name": "slug",
@@ -929,7 +929,7 @@
         },
         {
             "file": "lib/constructors/wp-request.js",
-            "line": 547,
+            "line": 550,
             "description": "Set the namespace of the request, e.g. to specify the API root for routes\nregistered by wp core v2 (\"wp/v2\") or by any given plugin. Any previously-\nset namespace will be overwritten by subsequent calls to the method.",
             "itemtype": "method",
             "name": "namespace",
@@ -951,7 +951,7 @@
         },
         {
             "file": "lib/constructors/wp-request.js",
-            "line": 562,
+            "line": 565,
             "description": "Set a request to use authentication, and optionally provide auth credentials\n\nIf auth credentials were already specified when the WPAPI instance was created, calling\n`.auth` on the request chain will set that request to use the existing credentials:",
             "example": [
                 " use existing credentials\n\n    request.auth().get...\n\nAlternatively, a username & password (or nonce) can be explicitly passed into `.auth`:",
@@ -998,7 +998,7 @@
         },
         {
             "file": "lib/constructors/wp-request.js",
-            "line": 617,
+            "line": 620,
             "description": "Specify a file or a file buffer to attach to the request, for use when\ncreating a new Media item",
             "example": [
                 " within a server context\n\n    wp.media()\n      // Pass .file() the file system path to a file to upload\n      .file( '/path/to/file.jpg' )\n      .create({})...",
@@ -1029,7 +1029,7 @@
         },
         {
             "file": "lib/constructors/wp-request.js",
-            "line": 652,
+            "line": 655,
             "description": "Get (download the data for) the specified resource",
             "itemtype": "method",
             "name": "get",
@@ -1052,7 +1052,7 @@
         },
         {
             "file": "lib/constructors/wp-request.js",
-            "line": 664,
+            "line": 667,
             "description": "Get the headers for the specified resource",
             "itemtype": "method",
             "name": "headers",
@@ -1075,7 +1075,7 @@
         },
         {
             "file": "lib/constructors/wp-request.js",
-            "line": 676,
+            "line": 679,
             "description": "Create the specified resource with the provided data\n\nThis is the public interface for creating POST requests",
             "itemtype": "method",
             "name": "create",
@@ -1103,7 +1103,7 @@
         },
         {
             "file": "lib/constructors/wp-request.js",
-            "line": 691,
+            "line": 694,
             "description": "Update the specified resource with the provided data\n\nThis is the public interface for creating PUT requests",
             "itemtype": "method",
             "name": "update",
@@ -1133,7 +1133,7 @@
         },
         {
             "file": "lib/constructors/wp-request.js",
-            "line": 707,
+            "line": 710,
             "description": "Delete the specified resource",
             "itemtype": "method",
             "name": "delete",
@@ -1162,7 +1162,7 @@
         },
         {
             "file": "lib/constructors/wp-request.js",
-            "line": 720,
+            "line": 723,
             "description": "Calling .then on a query chain will invoke the query as a GET and return a promise",
             "itemtype": "method",
             "name": "then",
@@ -2273,8 +2273,6 @@
             "file": "lib/route-tree.js",
             "line": 7,
             "description": "Method to use when reducing route components array.",
-            "itemtype": "method",
-            "name": "_reduceRouteComponents",
             "access": "private",
             "tagname": "",
             "params": [
@@ -2318,9 +2316,7 @@
         },
         {
             "file": "lib/route-tree.js",
-            "line": 133,
-            "itemtype": "method",
-            "name": "_reduceRouteTree",
+            "line": 128,
             "access": "private",
             "tagname": "",
             "params": [
@@ -2349,8 +2345,10 @@
         },
         {
             "file": "lib/route-tree.js",
-            "line": 186,
+            "line": 180,
             "description": "Build a route tree by reducing over a routes definition object from the API\nroot endpoint response object",
+            "itemtype": "method",
+            "name": "build",
             "params": [
                 {
                     "name": "routes",
@@ -2627,11 +2625,11 @@
         },
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " lib/constructors/wp-request.js:313"
+            "line": " lib/constructors/wp-request.js:316"
         },
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " lib/constructors/wp-request.js:617"
+            "line": " lib/constructors/wp-request.js:620"
         },
         {
             "message": "replacing incorrect tag: returns with return",
@@ -2711,11 +2709,11 @@
         },
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " lib/route-tree.js:133"
+            "line": " lib/route-tree.js:128"
         },
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " lib/route-tree.js:186"
+            "line": " lib/route-tree.js:180"
         },
         {
             "message": "replacing incorrect tag: returns with return",
@@ -2838,8 +2836,12 @@
             "line": " lib/resource-handler-spec.js:71"
         },
         {
-            "message": "Missing item type\nBuild a route tree by reducing over a routes definition object from the API\nroot endpoint response object",
-            "line": " lib/route-tree.js:186"
+            "message": "Missing item type\nMethod to use when reducing route components array.",
+            "line": " lib/route-tree.js:7"
+        },
+        {
+            "message": "Missing item type",
+            "line": " lib/route-tree.js:128"
         },
         {
             "message": "Missing item type\nThe Gruntfile in this project is not responsible for the code build or\nlinting, and instead handles all tasks related to documentation generation\nand output.",

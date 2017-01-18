@@ -14,7 +14,7 @@
     <header class="main-header">
         <div class="content">
             <div class="project-title">
-                    <h1 class="project-name">wpapi</h1> <span class="project-version">1.0.0</span>
+                    <h1 class="project-name">wpapi</h1> <span class="project-version">1.0.1</span>
                     <p class="description">An isomorphic JavaScript client for interacting with the WordPress REST API</p>
             </div>
             <ul class="jump-links">
@@ -183,14 +183,6 @@
                                     <a href="#method__httpPut">_httpPut</a>
                 
                                 </li>
-                                <li class="index-item method private">
-                                    <a href="#method__reduceRouteComponents">_reduceRouteComponents</a>
-                
-                                </li>
-                                <li class="index-item method private">
-                                    <a href="#method__reduceRouteTree">_reduceRouteTree</a>
-                
-                                </li>
                                 <li class="index-item method private inherited">
                                     <a href="#method__renderPath">_renderPath</a>
                 
@@ -217,6 +209,10 @@
                                 </li>
                                 <li class="index-item method">
                                     <a href="#method_bootstrap">bootstrap</a>
+                
+                                </li>
+                                <li class="index-item method">
+                                    <a href="#method_build">build</a>
                 
                                 </li>
                                 <li class="index-item method">
@@ -1343,252 +1339,6 @@
                             
                                 </div>
                             </div>
-                            <a name="method__reduceRouteComponents" class="anchor-link"></a>
-                            <div class="method item private">
-                                <h3 class="name"><code>_reduceRouteComponents</code>
-                            
-                                    <div class="args">
-                                        <span class="paren">(</span><ul class="args-list inline commas">
-                                            <li class="arg">
-                                                    <code>routeObj</code>
-                                            </li>
-                                            <li class="arg">
-                                                    <code>topLevel</code>
-                                            </li>
-                                            <li class="arg">
-                                                    <code>parentLevel</code>
-                                            </li>
-                                            <li class="arg">
-                                                    <code>component</code>
-                                            </li>
-                                            <li class="arg">
-                                                    <code>idx</code>
-                                            </li>
-                                            <li class="arg">
-                                                    <code>components</code>
-                                            </li>
-                                        </ul><span class="paren">)</span>
-                                    </div>
-                            
-                                    <span class="returns-inline">
-                                        <span class="type">Object</span>
-                                    </span>
-                            
-                            
-                                    <span class="flag private">private</span>
-                            
-                            
-                            
-                            
-                            
-                                </h3>
-                            
-                                <div class="meta">
-                                                <p>Provided by the <a href="../modules/http-transport.html" class="module-name">http-transport</a> module.</p>
-                                            <p>
-                                            Defined in
-                                    <a href="../files/lib_route-tree.js.html#l7"><code>lib&#x2F;route-tree.js:7</code></a>
-                                    </p>
-                            
-                            
-                            
-                                </div>
-                            
-                                <div class="extended-detail">
-                            
-                                    <div class="description">
-                                        <p>Method to use when reducing route components array.</p>
-                            
-                                    </div>
-                            
-                                        <div class="params">
-                                            <h4>Parameters:</h4>
-                            
-                                            <ul class="params-list">
-                                                <li class="param">
-                                                        <code class="param-name">routeObj</code>
-                                                        <span class="type">Object</span>
-                            
-                            
-                                                    <div class="param-description">
-                                                        <p>A route definition object (set via .bind partial application)</p>
-                            
-                                                    </div>
-                            
-                                                </li>
-                                                <li class="param">
-                                                        <code class="param-name">topLevel</code>
-                                                        <span class="type">Object</span>
-                            
-                            
-                                                    <div class="param-description">
-                                                        <p>The top-level route tree object for this set of routes (set
-                            via .bind partial application)</p>
-                            
-                                                    </div>
-                            
-                                                </li>
-                                                <li class="param">
-                                                        <code class="param-name">parentLevel</code>
-                                                        <span class="type">Object</span>
-                            
-                            
-                                                    <div class="param-description">
-                                                        <p>The memo object, which is mutated as the reducer adds
-                            a new level handler for each level in the route</p>
-                            
-                                                    </div>
-                            
-                                                </li>
-                                                <li class="param">
-                                                        <code class="param-name">component</code>
-                                                        <span class="type">String</span>
-                            
-                            
-                                                    <div class="param-description">
-                                                        <p>The string defining this route component</p>
-                            
-                                                    </div>
-                            
-                                                </li>
-                                                <li class="param">
-                                                        <code class="param-name">idx</code>
-                                                        <span class="type">Number</span>
-                            
-                            
-                                                    <div class="param-description">
-                                                        <p>The index of this component within the components array</p>
-                            
-                                                    </div>
-                            
-                                                </li>
-                                                <li class="param">
-                                                        <code class="param-name">components</code>
-                                                        <span class="type">String</span>
-                            
-                            
-                                                    <div class="param-description">
-                                                        <p>The array of all components</p>
-                            
-                                                    </div>
-                            
-                                                </li>
-                                            </ul>
-                                        </div>
-                            
-                                        <div class="returns">
-                                            <h4>Returns:</h4>
-                            
-                                            <div class="returns-description">
-                                                        <span class="type">Object</span>:
-                                                    <p>The child object of the level being reduced</p>
-                            
-                                            </div>
-                                        </div>
-                            
-                                </div>
-                            </div>
-                            <a name="method__reduceRouteTree" class="anchor-link"></a>
-                            <div class="method item private">
-                                <h3 class="name"><code>_reduceRouteTree</code>
-                            
-                                    <div class="args">
-                                        <span class="paren">(</span><ul class="args-list inline commas">
-                                            <li class="arg">
-                                                    <code>namespaces</code>
-                                            </li>
-                                            <li class="arg">
-                                                    <code>routeObj</code>
-                                            </li>
-                                            <li class="arg">
-                                                    <code>route</code>
-                                            </li>
-                                        </ul><span class="paren">)</span>
-                                    </div>
-                            
-                                    <span class="returns-inline">
-                                        <span class="type">Object</span>
-                                    </span>
-                            
-                            
-                                    <span class="flag private">private</span>
-                            
-                            
-                            
-                            
-                            
-                                </h3>
-                            
-                                <div class="meta">
-                                                <p>Provided by the <a href="../modules/http-transport.html" class="module-name">http-transport</a> module.</p>
-                                            <p>
-                                            Defined in
-                                    <a href="../files/lib_route-tree.js.html#l133"><code>lib&#x2F;route-tree.js:133</code></a>
-                                    </p>
-                            
-                            
-                            
-                                </div>
-                            
-                                <div class="extended-detail">
-                            
-                                    <div class="description">
-                                        
-                                    </div>
-                            
-                                        <div class="params">
-                                            <h4>Parameters:</h4>
-                            
-                                            <ul class="params-list">
-                                                <li class="param">
-                                                        <code class="param-name">namespaces</code>
-                                                        <span class="type">Object</span>
-                            
-                            
-                                                    <div class="param-description">
-                                                        <p>The memo object that becomes a dictionary mapping API
-                            namespaces to an object of the namespace's routes</p>
-                            
-                                                    </div>
-                            
-                                                </li>
-                                                <li class="param">
-                                                        <code class="param-name">routeObj</code>
-                                                        <span class="type">Object</span>
-                            
-                            
-                                                    <div class="param-description">
-                                                        <p>A route definition object</p>
-                            
-                                                    </div>
-                            
-                                                </li>
-                                                <li class="param">
-                                                        <code class="param-name">route</code>
-                                                        <span class="type">String</span>
-                            
-                            
-                                                    <div class="param-description">
-                                                        <p>The string key of the <code>routeObj</code> route object</p>
-                            
-                                                    </div>
-                            
-                                                </li>
-                                            </ul>
-                                        </div>
-                            
-                                        <div class="returns">
-                                            <h4>Returns:</h4>
-                            
-                                            <div class="returns-description">
-                                                        <span class="type">Object</span>:
-                                                    <p>The namespaces dictionary memo object</p>
-                            
-                                            </div>
-                                        </div>
-                            
-                                </div>
-                            </div>
                             <a name="method__renderPath" class="anchor-link"></a>
                             <div class="method item private inherited">
                                 <h3 class="name"><code>_renderPath</code>
@@ -1611,7 +1361,7 @@
                                 <div class="meta">
                                             <p>Inherited from
                                             <a href="../classes/WPRequest.html#method__renderPath" class="type">WPRequest</a>:
-                                    <a href="../files/lib_constructors_wp-request.js.html#l239"><code>lib&#x2F;constructors&#x2F;wp-request.js:239</code></a>
+                                    <a href="../files/lib_constructors_wp-request.js.html#l242"><code>lib&#x2F;constructors&#x2F;wp-request.js:242</code></a>
                                     </p>
                             
                             
@@ -2150,6 +1900,80 @@
                             
                                 </div>
                             </div>
+                            <a name="method_build" class="anchor-link"></a>
+                            <div class="method item">
+                                <h3 class="name"><code>build</code>
+                            
+                                    <div class="args">
+                                        <span class="paren">(</span><ul class="args-list inline commas">
+                                            <li class="arg">
+                                                    <code>routes</code>
+                                            </li>
+                                        </ul><span class="paren">)</span>
+                                    </div>
+                            
+                                    <span class="returns-inline">
+                                        <span class="type">Object</span>
+                                    </span>
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                                </h3>
+                            
+                                <div class="meta">
+                                                <p>Provided by the <a href="../modules/http-transport.html" class="module-name">http-transport</a> module.</p>
+                                            <p>
+                                            Defined in
+                                    <a href="../files/lib_route-tree.js.html#l180"><code>lib&#x2F;route-tree.js:180</code></a>
+                                    </p>
+                            
+                            
+                            
+                                </div>
+                            
+                                <div class="extended-detail">
+                            
+                                    <div class="description">
+                                        <p>Build a route tree by reducing over a routes definition object from the API
+                            root endpoint response object</p>
+                            
+                                    </div>
+                            
+                                        <div class="params">
+                                            <h4>Parameters:</h4>
+                            
+                                            <ul class="params-list">
+                                                <li class="param">
+                                                        <code class="param-name">routes</code>
+                                                        <span class="type">Object</span>
+                            
+                            
+                                                    <div class="param-description">
+                                                        <p>A dictionary of routes keyed by route regex strings</p>
+                            
+                                                    </div>
+                            
+                                                </li>
+                                            </ul>
+                                        </div>
+                            
+                                        <div class="returns">
+                                            <h4>Returns:</h4>
+                            
+                                            <div class="returns-description">
+                                                        <span class="type">Object</span>:
+                                                    <p>A dictionary, keyed by namespace, of resource handler
+                            factory methods for each namespace's resources</p>
+                            
+                                            </div>
+                                        </div>
+                            
+                                </div>
+                            </div>
                             <a name="method_categories" class="anchor-link"></a>
                             <div class="method item">
                                 <h3 class="name"><code>categories</code>
@@ -2250,7 +2074,7 @@
                                 <div class="meta">
                                             <p>Inherited from
                                             <a href="../classes/WPRequest.html#method_context" class="type">WPRequest</a>:
-                                    <a href="../files/lib_constructors_wp-request.js.html#l409"><code>lib&#x2F;constructors&#x2F;wp-request.js:409</code></a>
+                                    <a href="../files/lib_constructors_wp-request.js.html#l412"><code>lib&#x2F;constructors&#x2F;wp-request.js:412</code></a>
                                     </p>
                             
                             
@@ -2326,7 +2150,7 @@
                                 <div class="meta">
                                             <p>Inherited from
                                             <a href="../classes/WPRequest.html#method_create" class="type">WPRequest</a>:
-                                    <a href="../files/lib_constructors_wp-request.js.html#l676"><code>lib&#x2F;constructors&#x2F;wp-request.js:676</code></a>
+                                    <a href="../files/lib_constructors_wp-request.js.html#l679"><code>lib&#x2F;constructors&#x2F;wp-request.js:679</code></a>
                                     </p>
                             
                             
@@ -2486,7 +2310,7 @@
                                 <div class="meta">
                                             <p>Inherited from
                                             <a href="../classes/WPRequest.html#method_delete" class="type">WPRequest</a>:
-                                    <a href="../files/lib_constructors_wp-request.js.html#l707"><code>lib&#x2F;constructors&#x2F;wp-request.js:707</code></a>
+                                    <a href="../files/lib_constructors_wp-request.js.html#l710"><code>lib&#x2F;constructors&#x2F;wp-request.js:710</code></a>
                                     </p>
                             
                             
@@ -2641,7 +2465,7 @@
                                 <div class="meta">
                                             <p>Inherited from
                                             <a href="../classes/WPRequest.html#method_edit" class="type">WPRequest</a>:
-                                    <a href="../files/lib_constructors_wp-request.js.html#l420"><code>lib&#x2F;constructors&#x2F;wp-request.js:420</code></a>
+                                    <a href="../files/lib_constructors_wp-request.js.html#l423"><code>lib&#x2F;constructors&#x2F;wp-request.js:423</code></a>
                                     </p>
                             
                             
@@ -2690,7 +2514,7 @@
                                 <div class="meta">
                                             <p>Inherited from
                                             <a href="../classes/WPRequest.html#method_embed" class="type">WPRequest</a>:
-                                    <a href="../files/lib_constructors_wp-request.js.html#l431"><code>lib&#x2F;constructors&#x2F;wp-request.js:431</code></a>
+                                    <a href="../files/lib_constructors_wp-request.js.html#l434"><code>lib&#x2F;constructors&#x2F;wp-request.js:434</code></a>
                                     </p>
                             
                             
@@ -2745,7 +2569,7 @@
                                 <div class="meta">
                                             <p>Inherited from
                                             <a href="../classes/WPRequest.html#method_exclude" class="type">WPRequest</a>:
-                                    <a href="../files/lib_constructors_wp-request.js.html#l521"><code>lib&#x2F;constructors&#x2F;wp-request.js:521</code></a>
+                                    <a href="../files/lib_constructors_wp-request.js.html#l524"><code>lib&#x2F;constructors&#x2F;wp-request.js:524</code></a>
                                     </p>
                             
                             
@@ -2962,7 +2786,7 @@
                                 <div class="meta">
                                             <p>Inherited from
                                             <a href="../classes/WPRequest.html#method_file" class="type">WPRequest</a>:
-                                    <a href="../files/lib_constructors_wp-request.js.html#l617"><code>lib&#x2F;constructors&#x2F;wp-request.js:617</code></a>
+                                    <a href="../files/lib_constructors_wp-request.js.html#l620"><code>lib&#x2F;constructors&#x2F;wp-request.js:620</code></a>
                                     </p>
                             
                             
@@ -3172,7 +2996,7 @@
                                 <div class="meta">
                                             <p>Inherited from
                                             <a href="../classes/WPRequest.html#method_get" class="type">WPRequest</a>:
-                                    <a href="../files/lib_constructors_wp-request.js.html#l652"><code>lib&#x2F;constructors&#x2F;wp-request.js:652</code></a>
+                                    <a href="../files/lib_constructors_wp-request.js.html#l655"><code>lib&#x2F;constructors&#x2F;wp-request.js:655</code></a>
                                     </p>
                             
                             
@@ -3245,7 +3069,7 @@
                                 <div class="meta">
                                             <p>Inherited from
                                             <a href="../classes/WPRequest.html#method_headers" class="type">WPRequest</a>:
-                                    <a href="../files/lib_constructors_wp-request.js.html#l664"><code>lib&#x2F;constructors&#x2F;wp-request.js:664</code></a>
+                                    <a href="../files/lib_constructors_wp-request.js.html#l667"><code>lib&#x2F;constructors&#x2F;wp-request.js:667</code></a>
                                     </p>
                             
                             
@@ -3318,7 +3142,7 @@
                                 <div class="meta">
                                             <p>Inherited from
                                             <a href="../classes/WPRequest.html#method_include" class="type">WPRequest</a>:
-                                    <a href="../files/lib_constructors_wp-request.js.html#l511"><code>lib&#x2F;constructors&#x2F;wp-request.js:511</code></a>
+                                    <a href="../files/lib_constructors_wp-request.js.html#l514"><code>lib&#x2F;constructors&#x2F;wp-request.js:514</code></a>
                                     </p>
                             
                             
@@ -3462,7 +3286,7 @@
                                 <div class="meta">
                                             <p>Inherited from
                                             <a href="../classes/WPRequest.html#method_namespace" class="type">WPRequest</a>:
-                                    <a href="../files/lib_constructors_wp-request.js.html#l547"><code>lib&#x2F;constructors&#x2F;wp-request.js:547</code></a>
+                                    <a href="../files/lib_constructors_wp-request.js.html#l550"><code>lib&#x2F;constructors&#x2F;wp-request.js:550</code></a>
                                     </p>
                             
                             
@@ -3536,7 +3360,7 @@
                                 <div class="meta">
                                             <p>Inherited from
                                             <a href="../classes/WPRequest.html#method_offset" class="type">WPRequest</a>:
-                                    <a href="../files/lib_constructors_wp-request.js.html#l467"><code>lib&#x2F;constructors&#x2F;wp-request.js:467</code></a>
+                                    <a href="../files/lib_constructors_wp-request.js.html#l470"><code>lib&#x2F;constructors&#x2F;wp-request.js:470</code></a>
                                     </p>
                             
                             
@@ -3607,7 +3431,7 @@
                                 <div class="meta">
                                             <p>Inherited from
                                             <a href="../classes/WPRequest.html#method_order" class="type">WPRequest</a>:
-                                    <a href="../files/lib_constructors_wp-request.js.html#l477"><code>lib&#x2F;constructors&#x2F;wp-request.js:477</code></a>
+                                    <a href="../files/lib_constructors_wp-request.js.html#l480"><code>lib&#x2F;constructors&#x2F;wp-request.js:480</code></a>
                                     </p>
                             
                             
@@ -3687,7 +3511,7 @@
                                 <div class="meta">
                                             <p>Inherited from
                                             <a href="../classes/WPRequest.html#method_orderby" class="type">WPRequest</a>:
-                                    <a href="../files/lib_constructors_wp-request.js.html#l491"><code>lib&#x2F;constructors&#x2F;wp-request.js:491</code></a>
+                                    <a href="../files/lib_constructors_wp-request.js.html#l494"><code>lib&#x2F;constructors&#x2F;wp-request.js:494</code></a>
                                     </p>
                             
                             
@@ -3758,7 +3582,7 @@
                                 <div class="meta">
                                             <p>Inherited from
                                             <a href="../classes/WPRequest.html#method_page" class="type">WPRequest</a>:
-                                    <a href="../files/lib_constructors_wp-request.js.html#l445"><code>lib&#x2F;constructors&#x2F;wp-request.js:445</code></a>
+                                    <a href="../files/lib_constructors_wp-request.js.html#l448"><code>lib&#x2F;constructors&#x2F;wp-request.js:448</code></a>
                                     </p>
                             
                             
@@ -3834,7 +3658,7 @@
                                 <div class="meta">
                                             <p>Inherited from
                                             <a href="../classes/WPRequest.html#method_param" class="type">WPRequest</a>:
-                                    <a href="../files/lib_constructors_wp-request.js.html#l368"><code>lib&#x2F;constructors&#x2F;wp-request.js:368</code></a>
+                                    <a href="../files/lib_constructors_wp-request.js.html#l371"><code>lib&#x2F;constructors&#x2F;wp-request.js:371</code></a>
                                     </p>
                             
                             
@@ -4152,7 +3976,7 @@
                                 <div class="meta">
                                             <p>Inherited from
                                             <a href="../classes/WPRequest.html#method_perPage" class="type">WPRequest</a>:
-                                    <a href="../files/lib_constructors_wp-request.js.html#l457"><code>lib&#x2F;constructors&#x2F;wp-request.js:457</code></a>
+                                    <a href="../files/lib_constructors_wp-request.js.html#l460"><code>lib&#x2F;constructors&#x2F;wp-request.js:460</code></a>
                                     </p>
                             
                             
@@ -4458,7 +4282,7 @@
                                 <div class="meta">
                                             <p>Inherited from
                                             <a href="../classes/WPRequest.html#method_search" class="type">WPRequest</a>:
-                                    <a href="../files/lib_constructors_wp-request.js.html#l501"><code>lib&#x2F;constructors&#x2F;wp-request.js:501</code></a>
+                                    <a href="../files/lib_constructors_wp-request.js.html#l504"><code>lib&#x2F;constructors&#x2F;wp-request.js:504</code></a>
                                     </p>
                             
                             
@@ -4532,7 +4356,7 @@
                                 <div class="meta">
                                             <p>Inherited from
                                             <a href="../classes/WPRequest.html#method_setPathPart" class="type">WPRequest</a>:
-                                    <a href="../files/lib_constructors_wp-request.js.html#l291"><code>lib&#x2F;constructors&#x2F;wp-request.js:291</code></a>
+                                    <a href="../files/lib_constructors_wp-request.js.html#l294"><code>lib&#x2F;constructors&#x2F;wp-request.js:294</code></a>
                                     </p>
                             
                             
@@ -4730,7 +4554,7 @@
                                 <div class="meta">
                                             <p>Inherited from
                                             <a href="../classes/WPRequest.html#method_slug" class="type">WPRequest</a>:
-                                    <a href="../files/lib_constructors_wp-request.js.html#l531"><code>lib&#x2F;constructors&#x2F;wp-request.js:531</code></a>
+                                    <a href="../files/lib_constructors_wp-request.js.html#l534"><code>lib&#x2F;constructors&#x2F;wp-request.js:534</code></a>
                                     </p>
                             
                             
@@ -4938,80 +4762,6 @@
                                         <span class="type"></span>
                                     </span>
                             
-                                    <span class="flag deprecated" title="Use &#x60;.categories()&#x60; and query by category IDs">deprecated</span>
-                            
-                            
-                            
-                            
-                                    <span class="flag chainable">chainable</span>
-                            
-                            
-                                </h3>
-                            
-                                <div class="meta">
-                                                <p>Provided by the <a href="../modules/filters.html" class="module-name">filters</a> module.</p>
-                                            <p>
-                                            Defined in
-                                    <a href="../files/lib_mixins_parameters.js.html#l144"><code>lib&#x2F;mixins&#x2F;parameters.js:144</code></a>
-                                    </p>
-                            
-                            
-                                        <p class="deprecated">Deprecated: <span class="message">Use &#x60;.categories()&#x60; and query by category IDs</span></p>
-                            
-                                </div>
-                            
-                                <div class="extended-detail">
-                            
-                                    <div class="description">
-                                        <p>Legacy wrapper for <code>.categories()</code> that uses <code>?filter</code> to query by slug if available</p>
-                            
-                                    </div>
-                            
-                                        <div class="params">
-                                            <h4>Parameters:</h4>
-                            
-                                            <ul class="params-list">
-                                                <li class="param">
-                                                        <code class="param-name">tag</code>
-                                                        <span class="type">String | Number | Array</span>
-                            
-                            
-                                                    <div class="param-description">
-                                                        <p>A category term slug string, numeric ID, or array of numeric IDs</p>
-                            
-                                                    </div>
-                            
-                                                </li>
-                                            </ul>
-                                        </div>
-                            
-                                        <div class="returns">
-                                            <h4>Returns:</h4>
-                            
-                                            <div class="returns-description">
-                                                    <p>The request instance (for chaining)</p>
-                            
-                                            </div>
-                                        </div>
-                            
-                                </div>
-                            </div>
-                            <a name="method_tag" class="anchor-link"></a>
-                            <div class="method item deprecated">
-                                <h3 class="name"><code>tag</code>
-                            
-                                    <div class="args">
-                                        <span class="paren">(</span><ul class="args-list inline commas">
-                                            <li class="arg">
-                                                    <code>tag</code>
-                                            </li>
-                                        </ul><span class="paren">)</span>
-                                    </div>
-                            
-                                    <span class="returns-inline">
-                                        <span class="type"></span>
-                                    </span>
-                            
                                     <span class="flag deprecated" title="Use &#x60;.tags()&#x60; and query by term IDs">deprecated</span>
                             
                             
@@ -5052,6 +4802,80 @@
                             
                                                     <div class="param-description">
                                                         <p>A tag term slug string, numeric ID, or array of numeric IDs</p>
+                            
+                                                    </div>
+                            
+                                                </li>
+                                            </ul>
+                                        </div>
+                            
+                                        <div class="returns">
+                                            <h4>Returns:</h4>
+                            
+                                            <div class="returns-description">
+                                                    <p>The request instance (for chaining)</p>
+                            
+                                            </div>
+                                        </div>
+                            
+                                </div>
+                            </div>
+                            <a name="method_tag" class="anchor-link"></a>
+                            <div class="method item deprecated">
+                                <h3 class="name"><code>tag</code>
+                            
+                                    <div class="args">
+                                        <span class="paren">(</span><ul class="args-list inline commas">
+                                            <li class="arg">
+                                                    <code>tag</code>
+                                            </li>
+                                        </ul><span class="paren">)</span>
+                                    </div>
+                            
+                                    <span class="returns-inline">
+                                        <span class="type"></span>
+                                    </span>
+                            
+                                    <span class="flag deprecated" title="Use &#x60;.categories()&#x60; and query by category IDs">deprecated</span>
+                            
+                            
+                            
+                            
+                                    <span class="flag chainable">chainable</span>
+                            
+                            
+                                </h3>
+                            
+                                <div class="meta">
+                                                <p>Provided by the <a href="../modules/filters.html" class="module-name">filters</a> module.</p>
+                                            <p>
+                                            Defined in
+                                    <a href="../files/lib_mixins_parameters.js.html#l144"><code>lib&#x2F;mixins&#x2F;parameters.js:144</code></a>
+                                    </p>
+                            
+                            
+                                        <p class="deprecated">Deprecated: <span class="message">Use &#x60;.categories()&#x60; and query by category IDs</span></p>
+                            
+                                </div>
+                            
+                                <div class="extended-detail">
+                            
+                                    <div class="description">
+                                        <p>Legacy wrapper for <code>.categories()</code> that uses <code>?filter</code> to query by slug if available</p>
+                            
+                                    </div>
+                            
+                                        <div class="params">
+                                            <h4>Parameters:</h4>
+                            
+                                            <ul class="params-list">
+                                                <li class="param">
+                                                        <code class="param-name">tag</code>
+                                                        <span class="type">String | Number | Array</span>
+                            
+                            
+                                                    <div class="param-description">
+                                                        <p>A category term slug string, numeric ID, or array of numeric IDs</p>
                             
                                                     </div>
                             
@@ -5259,7 +5083,7 @@
                                 <div class="meta">
                                             <p>Inherited from
                                             <a href="../classes/WPRequest.html#method_then" class="type">WPRequest</a>:
-                                    <a href="../files/lib_constructors_wp-request.js.html#l720"><code>lib&#x2F;constructors&#x2F;wp-request.js:720</code></a>
+                                    <a href="../files/lib_constructors_wp-request.js.html#l723"><code>lib&#x2F;constructors&#x2F;wp-request.js:723</code></a>
                                     </p>
                             
                             
@@ -5337,7 +5161,7 @@
                                 <div class="meta">
                                             <p>Inherited from
                                             <a href="../classes/WPRequest.html#method_toString" class="type">WPRequest</a>:
-                                    <a href="../files/lib_constructors_wp-request.js.html#l275"><code>lib&#x2F;constructors&#x2F;wp-request.js:275</code></a>
+                                    <a href="../files/lib_constructors_wp-request.js.html#l278"><code>lib&#x2F;constructors&#x2F;wp-request.js:278</code></a>
                                     </p>
                             
                             
@@ -5396,7 +5220,7 @@
                                 <div class="meta">
                                             <p>Inherited from
                                             <a href="../classes/WPRequest.html#method_update" class="type">WPRequest</a>:
-                                    <a href="../files/lib_constructors_wp-request.js.html#l691"><code>lib&#x2F;constructors&#x2F;wp-request.js:691</code></a>
+                                    <a href="../files/lib_constructors_wp-request.js.html#l694"><code>lib&#x2F;constructors&#x2F;wp-request.js:694</code></a>
                                     </p>
                             
                             
@@ -5557,7 +5381,7 @@
                                 <div class="meta">
                                             <p>Inherited from
                                             <a href="../classes/WPRequest.html#method_validatePath" class="type">WPRequest</a>:
-                                    <a href="../files/lib_constructors_wp-request.js.html#l313"><code>lib&#x2F;constructors&#x2F;wp-request.js:313</code></a>
+                                    <a href="../files/lib_constructors_wp-request.js.html#l316"><code>lib&#x2F;constructors&#x2F;wp-request.js:316</code></a>
                                     </p>
                             
                             

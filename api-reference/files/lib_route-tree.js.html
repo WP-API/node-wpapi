@@ -14,7 +14,7 @@
     <header class="main-header">
         <div class="content">
             <div class="project-title">
-                    <h1 class="project-name">wpapi</h1> <span class="project-version">1.0.0</span>
+                    <h1 class="project-name">wpapi</h1> <span class="project-version">1.0.1</span>
                     <p class="description">An isomorphic JavaScript client for interacting with the WordPress REST API</p>
             </div>
             <ul class="jump-links">
@@ -72,7 +72,6 @@
                 /**
                  * Method to use when reducing route components array.
                  *
-                 * @method _reduceRouteComponents
                  * @private
                  * @param {object} routeObj     A route definition object (set via .bind partial application)
                  * @param {object} topLevel     The top-level route tree object for this set of routes (set
@@ -111,27 +110,28 @@
                 	// a custom route via &#x60;.registerRoute&#x60; that does not include parameter
                 	// validation. In this case we assume the groupName is sufficiently unique,
                 	// and fall back to &#x60;|| groupName&#x60; for the levelKey string.
-                	var levelKey = namedGroup ? groupPattern : component || groupName;
+                	var levelKey = namedGroup ? ( groupPattern || groupName ) : component;
                 
-                	// Level name, on the other hand, would take its value from the group&#x27;s name
+                	// Level name on the other hand takes its value from the group&#x27;s name, if
+                	// defined, and falls back to the component string to handle situations where
+                	// &#x60;component&#x60; is a collection (e.g. &quot;revisions&quot;)
                 	var levelName = namedGroup ? groupName : component;
                 
                 	// Check whether we have a preexisting node at this level of the tree, and
-                	// create a new level object if not
+                	// create a new level object if not. The component string is included so that
+                	// validators can throw meaningful errors as appropriate.
                 	var currentLevel = parentLevel[ levelKey ] || {
+                		component: component,
                 		namedGroup: namedGroup ? true : false,
                 		level: idx,
                 		names: []
                 	};
                 
-                	// A level&#x27;s &quot;name&quot; corresponds to the list of strings which could describe
+                	// A level&#x27;s &quot;names&quot; correspond to the list of strings which could describe
                 	// an endpoint&#x27;s component setter functions: &quot;id&quot;, &quot;revisions&quot;, etc.
                 	if ( currentLevel.names.indexOf( levelName ) &lt; 0 ) {
                 		currentLevel.names.push( levelName );
                 	}
-                
-                	// Set the component, so that the validator can throw the appropriate error
-                	currentLevel.component = component;
                 
                 	// A level&#x27;s validate method is called to check whether a value being set
                 	// on the request URL is of the proper type for the location in which it
@@ -155,9 +155,9 @@
                 		currentLevel.children = currentLevel.children || {};
                 	} else {
                 		// At leaf nodes, specify the method capabilities of this endpoint
-                		currentLevel.methods = routeObj.methods ? routeObj.methods.map(function( str ) {
+                		currentLevel.methods = ( routeObj.methods || [] ).map(function( str ) {
                 			return str.toLowerCase();
-                		}) : [];
+                		});
                 		// Ensure HEAD is included whenever GET is supported: the API automatically
                 		// adds support for HEAD if you have GET
                 		if ( currentLevel.methods.indexOf( &#x27;get&#x27; ) &gt; -1 &amp;&amp; currentLevel.methods.indexOf( &#x27;head&#x27; ) === -1 ) {
@@ -170,7 +170,7 @@
                 		if ( routeObj.endpoints ) {
                 			topLevel._getArgs = topLevel._getArgs || {};
                 			routeObj.endpoints.forEach(function( endpoint ) {
-                				// endpoint.methods will be an array of methods like &#x60;[ &#x27;GET&#x27; ]&#x60;: we
+                				// &#x60;endpoint.methods&#x60; will be an array of methods like &#x60;[ &#x27;GET&#x27; ]&#x60;: we
                 				// only care about GET for this exercise. Validating POST and PUT args
                 				// could be useful but is currently deemed to be out-of-scope.
                 				endpoint.methods.forEach(function( method ) {
@@ -183,11 +183,6 @@
                 				});
                 			});
                 		}
-                
-                		// // Label node with the title of this endpoint&#x27;s resource, if available
-                		// if ( routeObj.schema &amp;&amp; routeObj.schema.title ) {
-                		// 	currentLevel.title = routeObj.schema.title;
-                		// }
                 	}
                 
                 	// Return the child node object as the new &quot;level&quot;
@@ -197,7 +192,6 @@
                 
                 /**
                  *
-                 * @method _reduceRouteTree
                  * @private
                  * @param {object}   namespaces The memo object that becomes a dictionary mapping API
                  *                              namespaces to an object of the namespace&#x27;s routes
@@ -252,6 +246,7 @@
                  * Build a route tree by reducing over a routes definition object from the API
                  * root endpoint response object
                  *
+                 * @method build
                  * @param {object} routes A dictionary of routes keyed by route regex strings
                  * @returns {object} A dictionary, keyed by namespace, of resource handler
                  * factory methods for each namespace&#x27;s resources
