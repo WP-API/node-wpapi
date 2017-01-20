@@ -40,8 +40,8 @@ function getHeaders( url, data, token ) {
 	}, token );
 
 	return Object.assign( oauth.toHeader( authorizedData ), {
-		// Accept: 'application/json',
-		// 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+		Accept: 'application/json',
+		'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
 	});
 }
 
@@ -61,27 +61,28 @@ function post( url, data, token ) {
 	});
 }
 
-// function getAccessToken( url, data, config ) {
+function postEncoded( url, data, token ) {
+	const headers = getHeaders( url, stringifyData(data), token );
 
-// 	const headers =
-// 	return new Promise( ( resolve, reject ) => {
-// 		oauth.getOAuthAccessToken( config.token, config.secret, config.verifier, function( err, token, secret, results ) {
-// 			if ( err ) {
-// 				return reject( err );
-// 			}
-// 			resolve({
-// 				token: token,
-// 				secret: secret
-// 			});
-// 		});
-// 	});
-// }
+	return new Promise((resolve, reject) => {
+		var req = superagent.post(url)
+			.set(headers)
+			.type('form')
+			.send(data)
+			.end((err, res) => {
+				if ( err ) {
+					return reject( err );
+				}
+				resolve( res.body );
+			});
+	});
+}
 
-// let creds = null;
-let creds = {
-	key: 'GnbkxntFuYKNrQfz8TiVwglm',
-	secret: '6o8n0Edj8dJrcneUTR0OPK5MWyfVcQZwXGEkB1Tcdc4jhWxY'
-};
+let creds = null;
+// let creds = {
+// 	key: 'GnbkxntFuYKNrQfz8TiVwglm',
+// 	secret: '6o8n0Edj8dJrcneUTR0OPK5MWyfVcQZwXGEkB1Tcdc4jhWxY'
+// };
 
 const WPAPI = require( './' );
 let endpoints = null;
@@ -117,7 +118,6 @@ const getToken = creds ? Promise.resolve(creds) : WPAPI.discover( 'http://wpapi.
 		});
 	})
 	.then((tempCreds) => {
-		// console.log(tempCreds);
 		const token = {
 			key: tempCreds.token,
 			secret: tempCreds.secret
@@ -127,7 +127,6 @@ const getToken = creds ? Promise.resolve(creds) : WPAPI.discover( 'http://wpapi.
 		}, token);
 	})
 	.then(token => {
-		console.log( token );
 		creds = {
 			key: token.oauth_token,
 			secret: token.oauth_token_secret
@@ -137,15 +136,11 @@ const getToken = creds ? Promise.resolve(creds) : WPAPI.discover( 'http://wpapi.
 
 getToken
 	.then(token => {
-		return post( site.posts().toString(), {
+		return postEncoded( site.posts().toString(), {
 			title: 'IT IS ALIIIIVE!',
 			content: 'Hahahaaa suckers'
 		}, token);
 	})
-	// // .then(function( config ) {
-	// // 	console.log( config );
-	// // 	return getAccessToken( config );
-	// // })
 	.then( result => console.log( result ) )
 	.then(() => process.exit(0))
 	.catch( err => {
