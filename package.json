@@ -43,6 +43,7 @@
     "test": "istanbul cover _mocha -- tests --recursive --reporter=nyan"
   },
   "dependencies": {
+    "crypto": "0.0.3",
     "es6-promise": "^3.2.1",
     "li": "^1.0.1",
     "lodash.uniq": "^4.3.0",

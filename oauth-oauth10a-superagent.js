@@ -2,25 +2,21 @@
 var superagent = require( 'superagent' );
 var qs = require( 'qs' );
 var opn = require( 'opn' );
+var crypto = require('crypto');
 var prompt = require( 'prompt' );
 
 var OAuth = require( 'oauth-1.0a' );
 var oauth = new OAuth({
 	consumer: {
-		public: 'cReJQ7zmzzAP',
-		secret: '1DafMQV4Mx4kGin5G78RWl5H5s4PdiyoIRLutoiFDnwjT6Po'
+		key: 'N5RWWNyWYSDK',
+		secret: 'uWWy9r3OLsJO94HsRayTmgStsE0HUdaytmvq6hjr57qkgAlG'
 	},
-	signature_method: 'HMAC-SHA1'
+	signature_method: 'HMAC-SHA1',
+	hash_function: (base_string, key) => crypto
+		.createHmac('sha1', key)
+		.update(base_string)
+		.digest('base64')
 });
-
-// KAW.com
-// var oauth = new OAuth({
-// 	consumer: {
-// 		public: 'zJz6elMQsj5D',
-// 		secret: 'KOFt1fslLCvln0mavKthZgXpvDdm0NWYgUT5oAET2ehpbV8e'
-// 	},
-// 	signature_method: 'HMAC-SHA1'
-// })
 
 function stringifyData( data ) {
 	return Object.keys( data ).reduce( ( memo, key ) => {
@@ -39,7 +35,8 @@ function getHeaders( url, data, token ) {
 	var authorizedData = oauth.authorize( {
 		method: 'POST',
 		url: url,
-		data: stringifyData( data )
+		data
+		// data: stringifyData( data )
 	}, token );
 
 	return Object.assign( oauth.toHeader( authorizedData ), {
@@ -48,14 +45,14 @@ function getHeaders( url, data, token ) {
 	});
 }
 
-function getRequestToken( url, data ) {
-	const headers = getHeaders( url, data );
+function post( url, data, token ) {
+	const headers = getHeaders( url, data, token );
 
-	return new Promise(function( resolve, reject ) {
+	return new Promise((resolve, reject) => {
 		superagent.post( url )
 			.set( headers )
 			.send( data )
-			.end(function( err, res ) {
+			.end((err, res) => {
 				if ( err ) {
 					return reject( err );
 				}
@@ -80,12 +77,29 @@ function getRequestToken( url, data ) {
 // 	});
 // }
 
-getRequestToken( 'http://wpapi.loc/oauth1/request', {
-// getRequestToken( 'http://www.kadamwhite.com/oauth1/request', {
-	oauth_callback: 'oob'
-})
+// let creds = null;
+let creds = {
+	key: 'GnbkxntFuYKNrQfz8TiVwglm',
+	secret: '6o8n0Edj8dJrcneUTR0OPK5MWyfVcQZwXGEkB1Tcdc4jhWxY'
+};
+
+const WPAPI = require( './' );
+let endpoints = null;
+let site = WPAPI.site('http://wpapi.loc/wp-json');
+
+const getToken = creds ? Promise.resolve(creds) : WPAPI.discover( 'http://wpapi.loc' )
+	.then(result => {
+		site = result;
+		return site.root();
+	})
+	.then(root => {
+		endpoints = root.authentication.oauth1;
+		return post( endpoints.request, {
+			oauth_callback: 'oob'
+		});
+	})
 	.then(function( config ) {
-		const authorizeUrl = `http://wpapi.loc/oauth1/authorize?oauth_token=${config.oauth_token}&oauth_callback=oob`;
+		const authorizeUrl = `${endpoints.authorize}?oauth_token=${config.oauth_token}&oauth_callback=oob`;
 		opn(authorizeUrl);
 		return new Promise(function( resolve, reject ) {
 			prompt.get([
@@ -102,9 +116,42 @@ getRequestToken( 'http://wpapi.loc/oauth1/request', {
 			});
 		});
 	})
-	// .then(function( config ) {
-	// 	console.log( config );
-	// 	return getAccessToken( config );
-	// })
+	.then((tempCreds) => {
+		// console.log(tempCreds);
+		const token = {
+			key: tempCreds.token,
+			secret: tempCreds.secret
+		};
+		return post( endpoints.access, {
+			oauth_verifier: tempCreds.verification
+		}, token);
+	})
+	.then(token => {
+		console.log( token );
+		creds = {
+			key: token.oauth_token,
+			secret: token.oauth_token_secret
+		};
+		return creds;
+	});
+
+getToken
+	.then(token => {
+		return post( site.posts().toString(), {
+			title: 'IT IS ALIIIIVE!',
+			content: 'Hahahaaa suckers'
+		}, token);
+	})
+	// // .then(function( config ) {
+	// // 	console.log( config );
+	// // 	return getAccessToken( config );
+	// // })
 	.then( result => console.log( result ) )
-	.catch( err => console.error( err ) );
+	.then(() => process.exit(0))
+	.catch( err => {
+		if ( err.response && err.response.text ) {
+			console.log(err.response.text);
+		} else {
+			console.error( err );
+		}
+	});
