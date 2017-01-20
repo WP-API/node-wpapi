@@ -828,7 +828,7 @@ This `.auth` method can also be used to manually specify a username and a passwo
 
 ```javascript
 // Use username "mcurie" and password "nobel" for this request
-wp.posts().id( 817 ).auth( 'mcurie', 'nobel' ).get(...
+wp.posts().id( 817 ).auth( {username: 'mcurie', password: 'nobel'} ).get(...
 ```
 This will override any previously-set username or password values.
 
