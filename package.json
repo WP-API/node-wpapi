@@ -50,7 +50,7 @@
     "parse-link-header": "^0.4.1",
     "qs": "^6.2.0",
     "route-parser": "0.0.4",
-    "superagent": "^1.8.3"
+    "superagent": "^3.3.1"
   },
   "devDependencies": {
     "chai": "^3.5.0",
