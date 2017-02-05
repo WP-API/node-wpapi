@@ -40,7 +40,7 @@ To get started, `npm install wpapi` or [download the browser build](https://wp-a
 
 ## Installation
 
-`node-wpapi` works both on the server or in the browser.
+`node-wpapi` works both on the server or in the browser. Node.js version 4.0 or higher is required.
 
 ### Install with NPM
 
@@ -55,8 +55,6 @@ Then, within your application's script files, `require` the module to gain acces
 ```javascript
 var WPAPI = require( 'wpapi' );
 ```
-
-This library requires Node.js version 0.12 or above; 4.0 or higher is highly recommended.
 
 This library is designed to work in the browser as well, via a build system such as Browserify or Webpack; just install the package and `require( 'wpapi' )` from your application code.
 
