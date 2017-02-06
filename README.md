@@ -200,7 +200,7 @@ wp.posts().create({
 })
 ```
 
-This will work in the same manner for resources other than `post`: you can see the list of required data parameters for each resource on the [WP REST API Documentation Website](https://developer.wordpress.org/rest-api/reference/).
+This will work in the same manner for resources other than `post`: you can see the list of required data parameters for each resource on the [REST API Developer Handbook](https://developer.wordpress.org/rest-api/reference/).
 
 ### Updating Posts
 
@@ -225,7 +225,7 @@ wp.posts().id( 2501 ).update({
 })
 ```
 
-This will work in the same manner for resources other than `post`: you can see the list of required data parameters for each resource on the [WP REST API Documentation Website](https://developer.wordpress.org/rest-api/reference/).
+This will work in the same manner for resources other than `post`: you can see the list of required data parameters for each resource in the [REST API Developer Handbook](https://developer.wordpress.org/rest-api/reference/).
 
 ### Requesting Different Resources
 
@@ -851,7 +851,7 @@ More robust authentication methods will hopefully be added; we would welcome con
 
 ### Cookie Authentication
 
-When the library is loaded from the frontend of the WordPress site you are querying against, you can utilize the build in [Cookie authentication](https://developer.wordpress.org/rest-api/using-the-rest-api/authentication/#cookie-authentication) supported by WP REST API.
+When the library is loaded from the frontend of the WordPress site you are querying against, you may authenticate your REST API requests using the built in WordPress [Cookie authentication](https://developer.wordpress.org/rest-api/using-the-rest-api/authentication/#cookie-authentication) by creating and passing a Nonce with your API requests.
 
 First localize your scripts with an object with root-url and nonce in your theme's `functions.php` or your plugin:
 
