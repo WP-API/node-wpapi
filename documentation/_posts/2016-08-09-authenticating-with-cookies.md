@@ -17,7 +17,7 @@ Out of the box you can use the script to access all public content, but eventual
 
 ## Creating The Plugin
 
-If you don't have a plugin already, let's make a quick one together. First, we'll need the [WordPress REST API v2 plugin](https://wordpress.org/plugins/rest-api/) to be installed and activated. Then in your `wp-content/plugins` directory, create the folder `wpapi-demo`, then make an empty `wpapi-demo.php` file inside that folder.
+If you don't have a plugin already, let's make a quick one together. First, we'll need to ensure our site is running WordPress 4.7.3 or higher, so that the API endpoints are available. Then in your `wp-content/plugins` directory, create the folder `wpapi-demo`, then make an empty `wpapi-demo.php` file inside that folder.
 
 Next, download and copy over the script files from the [wpapi.js download bundle](https://wp-api.github.io/node-wpapi/wpapi.zip) into your plugin directory. At a minimum, you should now have this:
 
