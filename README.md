@@ -104,7 +104,7 @@ process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 
 ### Auto-Discovery
 
-It is also possible to leverage the [capability discovery](http://v2.wp-api.org/guide/discovery/) features of the API to automatically detect and add setter methods for your custom routes, or routes added by plugins.
+It is also possible to leverage the [capability discovery](https://developer.wordpress.org/rest-api/using-the-rest-api/discovery/) features of the API to automatically detect and add setter methods for your custom routes, or routes added by plugins.
 
 To utilize the auto-discovery functionality, call `WPAPI.discover()` with a URL within a WordPress REST API-enabled site:
 
@@ -200,7 +200,7 @@ wp.posts().create({
 })
 ```
 
-This will work in the same manner for resources other than `post`: you can see the list of required data parameters for each resource on the [WP REST API Documentation Website](http://v2.wp-api.org/reference/).
+This will work in the same manner for resources other than `post`: you can see the list of required data parameters for each resource on the [WP REST API Documentation Website](https://developer.wordpress.org/rest-api/reference/).
 
 ### Updating Posts
 
@@ -225,7 +225,7 @@ wp.posts().id( 2501 ).update({
 })
 ```
 
-This will work in the same manner for resources other than `post`: you can see the list of required data parameters for each resource on the [WP REST API Documentation Website](http://v2.wp-api.org/reference/).
+This will work in the same manner for resources other than `post`: you can see the list of required data parameters for each resource on the [WP REST API Documentation Website](https://developer.wordpress.org/rest-api/reference/).
 
 ### Requesting Different Resources
 
@@ -461,7 +461,7 @@ wp.posts.id( idOfProtectedPost )
 
 #### Other Filters
 
-The `?filter` query parameter is not natively supported within the WordPress core REST API endpoints, but can be added to your site using a plugin. `filter` is a special query parameter that lets you directly specify many WP_Query arguments, including `tag`, `author_name`, and other [public query vars](https://codex.wordpress.org/WordPress_Query_Vars). Even more parameters are available for use with `filter` if you [authenticate with the API](http://v2.wp-api.org/guide/authentication/).
+The `?filter` query parameter is not natively supported within the WordPress core REST API endpoints, but can be added to your site using the [rest-filter plugin](https://github.com/wp-api/rest-filter). `filter` is a special query parameter that lets you directly specify many WP_Query arguments, including `tag`, `author_name`, and other [public query vars](https://codex.wordpress.org/WordPress_Query_Vars). Even more parameters are available for use with `filter` once you [authenticate with the API](https://developer.wordpress.org/rest-api/using-the-rest-api/authentication/).
 
 If your environment supports this parameter, other filtering methods will be available if you initialize your site [using auto-discovery](http://wp-api.org/node-wpapi/using-the-client/#auto-discovery), which will auto-detect the availability of `filter`:
 
@@ -664,18 +664,18 @@ This will include an `._embedded` object in the response JSON, which contains al
     "_embedded": {
         "author": [ /* ... */ ],
         "replies": [ /* ... */ ],
-        "http://v2.wp-api.org/attachment": [ /* ... */ ],
-        "http://v2.wp-api.org/term": [
+        "wp:attachment": [ /* ... */ ],
+        "wp:term": [
             [ {}, {} /* category terms */ ],
             [ {} /* tag terms */ ],
             /* etc... */
         ],
-        "http://v2.wp-api.org/meta": [ /* ... */ ]
+        "wp:meta": [ /* ... */ ]
     }
 }
 ```
 
-For more on working with embedded data, [check out the WP-API documentation](http://v2.wp-api.org/).
+For more on working with embedded data, [check out the WP-API documentation](https://developer.wordpress.org/rest-api/using-the-rest-api/linking-and-embedding/).
 
 ## Collection Pagination
 
@@ -851,7 +851,7 @@ More robust authentication methods will hopefully be added; we would welcome con
 
 ### Cookie Authentication
 
-When the library is loaded from the frontend of the WordPress site you are querying against, you can utilize the build in [Cookie authentication](http://wp-api.org/guides/authentication.html) supported by WP REST API.
+When the library is loaded from the frontend of the WordPress site you are querying against, you can utilize the build in [Cookie authentication](https://developer.wordpress.org/rest-api/using-the-rest-api/authentication/#cookie-authentication) supported by WP REST API.
 
 First localize your scripts with an object with root-url and nonce in your theme's `functions.php` or your plugin:
 
@@ -859,9 +859,9 @@ First localize your scripts with an object with root-url and nonce in your theme
 function my_enqueue_scripts() {
     wp_enqueue_script( 'app', get_template_directory_uri() . '/assets/dist/bundle.js', array(), false, true );
     wp_localize_script( 'app', 'WP_API_Settings', array(
-        'endpoint' => esc_url_raw( get_json_url() ),
-        'nonce' => wp_create_nonce( 'wp_json' ) )
-    );
+        'root' => esc_url_raw( rest_url() ),
+        'nonce' => wp_create_nonce( 'wp_rest' )
+    ) );
 }
 add_action( 'wp_enqueue_scripts', 'my_enqueue_scripts' );
 ```
