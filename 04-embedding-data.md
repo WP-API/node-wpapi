@@ -19,15 +19,15 @@ This will include an `._embedded` object in the response JSON, which contains al
     "_embedded": {
         "author": [ /* ... */ ],
         "replies": [ /* ... */ ],
-        "http://v2.wp-api.org/attachment": [ /* ... */ ],
-        "http://v2.wp-api.org/term": [
+        "wp:attachment": [ /* ... */ ],
+        "wp:term": [
             [ {}, {} /* category terms */ ],
             [ {} /* tag terms */ ],
             /* etc... */
         ],
-        "http://v2.wp-api.org/meta": [ /* ... */ ]
+        "wp:meta": [ /* ... */ ]
     }
 }
 ```
 
-For more on working with embedded data, [check out the WP-API documentation](http://v2.wp-api.org/).
+For more on working with embedded data, [check out the WP-API documentation](https://developer.wordpress.org/rest-api/using-the-rest-api/linking-and-embedding/).

@@ -47,7 +47,7 @@ process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 
 ### Auto-Discovery
 
-It is also possible to leverage the [capability discovery](http://v2.wp-api.org/guide/discovery/) features of the API to automatically detect and add setter methods for your custom routes, or routes added by plugins.
+It is also possible to leverage the [capability discovery](https://developer.wordpress.org/rest-api/using-the-rest-api/discovery/) features of the API to automatically detect and add setter methods for your custom routes, or routes added by plugins.
 
 To utilize the auto-discovery functionality, call `WPAPI.discover()` with a URL within a WordPress REST API-enabled site:
 
@@ -143,7 +143,7 @@ wp.posts().create({
 })
 ```
 
-This will work in the same manner for resources other than `post`: you can see the list of required data parameters for each resource on the [WP REST API Documentation Website](http://v2.wp-api.org/reference/).
+This will work in the same manner for resources other than `post`: you can see the list of required data parameters for each resource on the [REST API Developer Handbook](https://developer.wordpress.org/rest-api/reference/).
 
 ### Updating Posts
 
@@ -168,7 +168,7 @@ wp.posts().id( 2501 ).update({
 })
 ```
 
-This will work in the same manner for resources other than `post`: you can see the list of required data parameters for each resource on the [WP REST API Documentation Website](http://v2.wp-api.org/reference/).
+This will work in the same manner for resources other than `post`: you can see the list of required data parameters for each resource in the [REST API Developer Handbook](https://developer.wordpress.org/rest-api/reference/).
 
 ### Requesting Different Resources
 
@@ -404,7 +404,7 @@ wp.posts.id( idOfProtectedPost )
 
 #### Other Filters
 
-The `?filter` query parameter is not natively supported within the WordPress core REST API endpoints, but can be added to your site using a plugin. `filter` is a special query parameter that lets you directly specify many WP_Query arguments, including `tag`, `author_name`, and other [public query vars](https://codex.wordpress.org/WordPress_Query_Vars). Even more parameters are available for use with `filter` if you [authenticate with the API](http://v2.wp-api.org/guide/authentication/).
+The `?filter` query parameter is not natively supported within the WordPress core REST API endpoints, but can be added to your site using the [rest-filter plugin](https://github.com/wp-api/rest-filter). `filter` is a special query parameter that lets you directly specify many WP_Query arguments, including `tag`, `author_name`, and other [public query vars](https://codex.wordpress.org/WordPress_Query_Vars). Even more parameters are available for use with `filter` once you [authenticate with the API](https://developer.wordpress.org/rest-api/using-the-rest-api/authentication/).
 
 If your environment supports this parameter, other filtering methods will be available if you initialize your site [using auto-discovery](http://wp-api.org/node-wpapi/using-the-client/#auto-discovery), which will auto-detect the availability of `filter`:
 

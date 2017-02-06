@@ -23,7 +23,7 @@ The unit tests can be run without any additional setup with `npm run test:unit`,
 
 ### Integration Tests
 
-In order to run the integration tests you will need to run a local WP REST API instance in a virtual machine as described in [wpapi-vagrant-varietal](https://github.com/kadamwhite/wpapi-vagrant-varietal).  Full instructions are provided there, and once that VM is running the integration tests will pass. (You can run the integration suite specifically with the command `npm test:integration`).
+In order to run the integration tests you will need to run a specifically-configured local WordPress instance in a virtual machine as described in [wpapi-vagrant-varietal](https://github.com/kadamwhite/wpapi-vagrant-varietal).  Full instructions are provided there, and once that VM is booted and running the integration tests will pass. (You can run the integration suite specifically with the command `npm test:integration`).
 
 ### Adding Tests
 

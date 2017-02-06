@@ -41,7 +41,7 @@ This `.auth` method can also be used to manually specify a username and a passwo
 
 ```javascript
 // Use username "mcurie" and password "nobel" for this request
-wp.posts().id( 817 ).auth( 'mcurie', 'nobel' ).get(...
+wp.posts().id( 817 ).auth( {username: 'mcurie', password: 'nobel'} ).get(...
 ```
 This will override any previously-set username or password values.
 
@@ -66,7 +66,7 @@ More robust authentication methods will hopefully be added; we would welcome con
 
 ### Cookie Authentication
 
-When the library is loaded from the frontend of the WordPress site you are querying against, you can utilize the build in [Cookie authentication](http://wp-api.org/guides/authentication.html) supported by WP REST API.
+When the library is loaded from the frontend of the WordPress site you are querying against, you may authenticate your REST API requests using the built in WordPress [Cookie authentication](https://developer.wordpress.org/rest-api/using-the-rest-api/authentication/#cookie-authentication) by creating and passing a Nonce with your API requests.
 
 First localize your scripts with an object with root-url and nonce in your theme's `functions.php` or your plugin:
 
@@ -74,9 +74,9 @@ First localize your scripts with an object with root-url and nonce in your theme
 function my_enqueue_scripts() {
     wp_enqueue_script( 'app', get_template_directory_uri() . '/assets/dist/bundle.js', array(), false, true );
     wp_localize_script( 'app', 'WP_API_Settings', array(
-        'endpoint' => esc_url_raw( get_json_url() ),
-        'nonce' => wp_create_nonce( 'wp_json' ) )
-    );
+        'root' => esc_url_raw( rest_url() ),
+        'nonce' => wp_create_nonce( 'wp_rest' )
+    ) );
 }
 add_action( 'wp_enqueue_scripts', 'my_enqueue_scripts' );
 ```
