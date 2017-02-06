@@ -549,7 +549,7 @@ wp.media()
 
 ## Custom Routes
 
-Support for Custom Post Types is provided via the `.registerRoute` method. This method returns a handler function which can be assigned to your site instance as a method, and takes the [same namespace and route string arguments as `rest_register_route`](http://v2.wp-api.org/extending/adding/#bare-basics):
+Support for Custom Post Types is provided via the `.registerRoute` method. This method returns a handler function which can be assigned to your site instance as a method, and takes the [same namespace and route string arguments as `rest_register_route`](https://developer.wordpress.org/rest-api/extending-the-rest-api/adding-custom-endpoints/):
 
 ```js
 var site = new WPAPI({ endpoint: 'http://www.yoursite.com/wp-json' });
