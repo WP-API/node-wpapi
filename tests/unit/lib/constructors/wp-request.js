@@ -269,12 +269,33 @@ describe( 'WPRequest', function() {
 			});
 
 			it( 'should set the "_embed" parameter', function() {
-				request.embed();
-				expect( request._params._embed ).to.equal( true );
+				var path = request.embed().toString();
+				expect( path ).to.equal( '/?_embed=true' );
 			});
 
 			it( 'should be chainable', function() {
 				expect( request.embed() ).to.equal( request );
+			});
+
+		});
+
+		describe( '.envelope()', function() {
+
+			it( 'is defined', function() {
+				expect( request ).to.have.property( 'envelope' );
+			});
+
+			it( 'is a function', function() {
+				expect( request.envelope ).to.be.a( 'function' );
+			});
+
+			it( 'should set the "_envelope" parameter', function() {
+				var path = request.envelope().toString();
+				expect( path ).to.equal( '/?_envelope=true' );
+			});
+
+			it( 'should be chainable', function() {
+				expect( request.envelope() ).to.equal( request );
 			});
 
 		});
