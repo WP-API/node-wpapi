@@ -96,10 +96,33 @@ describe( 'integration: posts()', function() {
 		return expect( prom ).to.eventually.equal( SUCCESS );
 	});
 
+	it( 'properly parses responses returned from server as text/html', function() {
+		var prom = wp.posts()
+			.param( '_wpapi_force_html', true )
+			.get()
+			.then(function( posts ) {
+				expect( getTitles( posts ) ).to.deep.equal( expectedResults.titles.page1 );
+				return SUCCESS;
+			});
+		return expect( prom ).to.eventually.equal( SUCCESS );
+	});
+
 	describe( 'paging properties', function() {
 
 		it( 'are exposed as _paging on the response array', function() {
 			var prom = wp.posts()
+				.get()
+				.then(function( posts ) {
+					expect( posts ).to.have.property( '_paging' );
+					expect( posts._paging ).to.be.an( 'object' );
+					return SUCCESS;
+				});
+			return expect( prom ).to.eventually.equal( SUCCESS );
+		});
+
+		it( 'are exposed as _paging on the response array when response is text/html', function() {
+			var prom = wp.posts()
+				.param( '_wpapi_force_html', true )
 				.get()
 				.then(function( posts ) {
 					expect( posts ).to.have.property( '_paging' );
@@ -164,6 +187,21 @@ describe( 'integration: posts()', function() {
 							// @TODO: re-enable once PPP support is merged
 							// expect( posts.length ).to.equal( 10 );
 							// expect( getTitles( posts ) ).to.deep.equal( expectedResults.titles.page2 );
+							return SUCCESS;
+						});
+				});
+			return expect( prom ).to.eventually.equal( SUCCESS );
+		});
+
+		it( 'allows access to the next page of results via .next when response is text/html', function() {
+			var prom = wp.posts()
+				.param( '_wpapi_force_html', true )
+				.get()
+				.then(function( posts ) {
+					return posts._paging.next
+						.get()
+						.then(function( posts ) {
+							expect( posts ).to.be.an( 'array' );
 							return SUCCESS;
 						});
 				});
