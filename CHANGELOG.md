@@ -1,3 +1,14 @@
+# v1.0.3 _Couleurs Primaires_
+
+- Properly parse API response text when response is sent back with Content-Type "text/html"
+
+# v1.0.2 _Recto Verso_
+
+- Upgrade Superagent dependency to avoid "double callback" error when JSON response contains extraneous HTML content
+- Fix documentation inaccuracies following the merge of the REST API plugin into WordPress core
+
+Patch release named for Paradis' 2016 LP "Recto Verso".
+
 # v1.0.1 _The Only Constant is Change_
 
 - Support endpoints using "plain permalinks", props @luisherranz
