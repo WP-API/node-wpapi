@@ -259,6 +259,31 @@ WPAPI.prototype.root = function( relativePath ) {
 };
 
 /**
+ * Set the default headers to use for all HTTP requests created from this WPAPI
+ * site instance. Accepts a header name and its associated value as two strings,
+ * or multiple headers as an object of name-value pairs.
+ *
+ * @example Set a single header to be used by all requests to this site
+ *
+ *     site.setHeaders( 'Authorization', 'Bearer trustme' )...
+ *
+ * @example Set multiple headers to be used by all requests to this site
+ *
+ *     site.setHeaders({
+ *       Authorization: 'Bearer comeonwereoldfriendsright',
+ *       'Accept-Language': 'en-CA'
+ *     })...
+ *
+ * @method setHeaders
+ * @chainable
+ * @param {String|Object} headers The name of the header to set, or an object of
+ *                                header names and their associated string values
+ * @param {String}        [value] The value of the header being set
+ * @return {WPAPI} The WPAPI site handler instance, for chaining
+ */
+WPAPI.prototype.setHeaders = WPRequest.prototype.setHeaders;
+
+/**
  * Set the authentication to use for a WPAPI site handler instance. Accepts basic
  * HTTP authentication credentials (string username & password) or a Nonce (for
  * cookie authentication) by default; may be overloaded to accept OAuth credentials

@@ -772,6 +772,61 @@ describe( 'WPAPI', function() {
 
 		});
 
+		describe( '.setHeaders()', function() {
+
+			beforeEach(function() {
+				site = new WPAPI({ endpoint: 'http://my.site.com/wp-json' });
+			});
+
+			it( 'is defined', function() {
+				expect( site ).to.have.property( 'setHeaders' );
+				expect( site.setHeaders ).to.be.a( 'function' );
+			});
+
+			it( 'initializes site-wide headers object if called with no arguments', function() {
+				expect( site._options ).not.to.have.property( 'headers' );
+				site.setHeaders();
+				expect( site._options ).to.have.property( 'headers' );
+				expect( site._options.headers ).to.deep.equal({});
+			});
+
+			it( 'sets site-wide headers when provided a name-value pair', function() {
+				site.setHeaders( 'Accept-Language', 'en-US' );
+				expect( site._options ).to.have.property( 'headers' );
+				expect( site._options.headers ).to.deep.equal({
+					'Accept-Language': 'en-US'
+				});
+			});
+
+			it( 'sets site-wide headers when provided an object of header name-value pairs', function() {
+				site.setHeaders({
+					'Accept-Language': 'en-CA',
+					Authorization: 'Bearer sometoken'
+				});
+				expect( site._options ).to.have.property( 'headers' );
+				expect( site._options.headers ).to.deep.equal({
+					'Accept-Language': 'en-CA',
+					Authorization: 'Bearer sometoken'
+				});
+			});
+
+			it( 'passes headers to all subsequently-instantiated handlers', function() {
+				site.setHeaders({
+					'Accept-Language': 'en-IL',
+					Authorization: 'Bearer chicagostylepizza'
+				});
+				var req = site.root( '' );
+				expect( req ).to.have.property( '_options' );
+				expect( req._options ).to.be.an( 'object' );
+				expect( req._options ).to.have.property( 'headers' );
+				expect( req._options.headers ).to.deep.equal({
+					'Accept-Language': 'en-IL',
+					Authorization: 'Bearer chicagostylepizza'
+				});
+			});
+
+		});
+
 		describe( '.registerRoute()', function() {
 
 			it( 'is a function', function() {

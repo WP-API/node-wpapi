@@ -25,6 +25,7 @@ This library is an isomorphic client for the [WordPress REST API](http://develop
 - [Embedding Data](#embedding-data)
 - [Collection Pagination](#collection-pagination)
 - [Customizing HTTP Request Behavior](#customizing-http-request-behavior)
+  - [Specifying HTTP Headers](#specifying-http-headers)
 - [Authentication](#authentication)
 - [API Documentation](#api-documentation)
 - [Issues](#issues)
@@ -809,6 +810,28 @@ site.transport({
 ```
 
 Note that these transport methods are the internal methods used by `create` and `.update`, so the names of these methods therefore map to the HTTP verbs "get", "post", "put", "head" and "delete"; name your transport methods accordingly or they will not be used.
+### Specifying HTTP Headers
+
+If you need to send additional HTTP headers along with your request (for example to provide a specific `Authorization` header for use with alternative authentication schemes), you can use the `.setHeaders()` method to specify one or more headers to send with the dispatched request:
+
+```js
+// Specify a single header to send with the outgoing request
+wp.posts().setHeaders( 'Authorization', 'Bearer xxxxx.yyyyy.zzzzz' )...
+
+// Specify multiple headers to send with the outgoing request
+wp.posts().setHeaders({
+    Authorization: 'Bearer xxxxx.yyyyy.zzzzz',
+    'Accept-Language': 'pt-BR'
+})...
+```
+
+You can also set headers on the WPAPI instance itself, which will then be used for all subsequent requests created from that site instance:
+
+```js
+wp.setHeaders( 'Authorization', 'Bearer xxxxx.yyyyy.zzzzz' );
+wp.users().me()...
+wp.posts().id( unpublishedPostId )...
+```
 
 ## Authentication
 
