@@ -150,6 +150,26 @@ apiPromise.then(function( site ) {
 })
 ```
 
+#### Cross-Origin Auto-Discovery
+
+When attempting auto-discovery against a remote server in a client-side environment, discovery will fail unless the server is configured for [Cross-Origin Resource Sharing](https://developer.mozilla.org/en-US/docs/Web/HTTP/Access_control_CORS) (CORS). CORS can be enabled by specifying a set of `Access-Control-` headers in your PHP code to instruct browsers that requests from remote clients are accepted; these headers also let you control what specific methods and links are exposed to those remote clients.
+
+The [WP-REST-Allow-All-Cors](https://github.com/ahmadawais/WP-REST-Allow-All-CORS) plugin will permit CORS requests for all API resources. Auto-discovery will still fail when using this plugin, however, because discovery depends on the presence of a `Link` header on WordPress pages outside of the root REST API endpoint.
+
+To permit your site to be auto-discovered by client-side REST API clients, add a filter to `send_headers` to explicitly whitelist the `Link` header for `HEAD` requests:
+
+```php
+add_action( 'send_headers', function() {
+	if ( ! did_action('rest_api_init') && $_SERVER['REQUEST_METHOD'] == 'HEAD' ) {
+		header( 'Access-Control-Allow-Origin: *' );
+		header( 'Access-Control-Expose-Headers: Link' );
+		header( 'Access-Control-Allow-Methods: HEAD' );
+	}
+} );
+```
+
+Enable CORS at your own discretion. Restricting `Access-Control-Allow-Origin` to a specific origin domain is often preferable to allowing all origins via `*`.
+
 ### Bootstrapping
 
 If you are building an application designed to interface with a specific site, it is possible to sidestep the additional asynchronous HTTP calls that are needed to bootstrap the client through auto-discovery. You can download the root API response, *i.e.* the JSON response when you hit the root endpoint such as `your-site.com/wp-json`, and save that JSON file locally; then, in
@@ -416,8 +436,8 @@ It is also possible to add your own slug-oriented query parameters to a site tha
 
 Just as `.categories()` and `.tags()` can be used to return posts that are associated with one or more taxonomies, two methods exist to exclude posts by their term associations.
 
-- `.excludeCategories()` is a shortcut for `.param( 'categories_exclude', ... )` which excludes results associated with the provided category term IDs 
-- `.excludeTags()` is a shortcut for `.param( 'tags_exclude', ... )` which excludes results associated with the provided tag term IDs 
+- `.excludeCategories()` is a shortcut for `.param( 'categories_exclude', ... )` which excludes results associated with the provided category term IDs
+- `.excludeTags()` is a shortcut for `.param( 'tags_exclude', ... )` which excludes results associated with the provided tag term IDs
 
 **Custom Taxonomies**
 
