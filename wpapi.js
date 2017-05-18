@@ -9,8 +9,7 @@
  *         console.error( err );
  *     });
  *
- * @module WPAPI
- * @main WPAPI
+ * @module wpapi
  })
  */
 'use strict';
@@ -46,7 +45,6 @@ var httpTransport = require( './lib/http-transport' );
  *
  * @class WPAPI
  * @constructor
- * @uses WPRequest
  * @param {Object} options             An options hash to configure the instance
  * @param {String} options.endpoint    The URI for a WP-API endpoint
  * @param {String} [options.username]  A WP-API Basic Auth username
