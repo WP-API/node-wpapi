@@ -814,6 +814,8 @@ Note that these transport methods are the internal methods used by `create` and 
 
 If you need to send additional HTTP headers along with your request (for example to provide a specific `Authorization` header for use with alternative authentication schemes), you can use the `.setHeaders()` method to specify one or more headers to send with the dispatched request:
 
+#### Set headers for a single request
+
 ```js
 // Specify a single header to send with the outgoing request
 wp.posts().setHeaders( 'Authorization', 'Bearer xxxxx.yyyyy.zzzzz' )...
@@ -825,10 +827,15 @@ wp.posts().setHeaders({
 })...
 ```
 
-You can also set headers on the WPAPI instance itself, which will then be used for all subsequent requests created from that site instance:
+#### Set headers globally
+
+You can also set headers globally on the WPAPI instance itself, which will then be used for all subsequent requests created from that site instance:
 
 ```js
+// Specify a header to be used by all subsequent requests
 wp.setHeaders( 'Authorization', 'Bearer xxxxx.yyyyy.zzzzz' );
+
+// These will now be sent with an Authorization header
 wp.users().me()...
 wp.posts().id( unpublishedPostId )...
 ```
