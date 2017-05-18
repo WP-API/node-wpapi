@@ -206,7 +206,7 @@ Object.freeze( WPAPI.transport );
  *                          from the root API endpoint of a WP site, which should
  *                          be a dictionary of route definition objects keyed by
  *                          the route's regex pattern
- * @return {WPAPI} A new WPAPI instance, bound to the provided endpoint
+ * @returns {WPAPI} A new WPAPI instance, bound to the provided endpoint
  */
 WPAPI.site = function( endpoint, routes ) {
 	return new WPAPI({
@@ -227,7 +227,7 @@ WPAPI.site = function( endpoint, routes ) {
  *
  * @method url
  * @param {String} url The URL to request
- * @return {WPRequest} A WPRequest object bound to the provided URL
+ * @returns {WPRequest} A WPRequest object bound to the provided URL
  */
 WPAPI.prototype.url = function( url ) {
 	var options = extend( {}, this._options, {
@@ -242,7 +242,7 @@ WPAPI.prototype.url = function( url ) {
  *
  * @method root
  * @param {String} [relativePath] An endpoint-relative path to which to bind the request
- * @return {WPRequest} A request object
+ * @returns {WPRequest} A request object
  */
 WPAPI.prototype.root = function( relativePath ) {
 	relativePath = relativePath || '';
@@ -278,7 +278,7 @@ WPAPI.prototype.root = function( relativePath ) {
  * @param {String|Object} headers The name of the header to set, or an object of
  *                                header names and their associated string values
  * @param {String}        [value] The value of the header being set
- * @return {WPAPI} The WPAPI site handler instance, for chaining
+ * @returns {WPAPI} The WPAPI site handler instance, for chaining
  */
 WPAPI.prototype.setHeaders = WPRequest.prototype.setHeaders;
 
@@ -307,7 +307,7 @@ WPAPI.prototype.setHeaders = WPRequest.prototype.setHeaders;
  * @param {String} [credentials.username] A WP-API Basic HTTP Authentication username
  * @param {String} [credentials.password] A WP-API Basic HTTP Authentication password
  * @param {String} [credentials.nonce]    A WP nonce for use with cookie authentication
- * @return {WPAPI} The WPAPI site handler instance, for chaining
+ * @returns {WPAPI} The WPAPI site handler instance, for chaining
  */
 WPAPI.prototype.auth = WPRequest.prototype.auth;
 
@@ -328,7 +328,7 @@ WPAPI.prototype.registerRoute = require( './lib/wp-register-route' );
  *                        from the root API endpoint of a WP site, which should
  *                        be a dictionary of route definition objects keyed by
  *                        the route's regex pattern
- * @return {WPAPI} The bootstrapped WPAPI client instance (for chaining or assignment)
+ * @returns {WPAPI} The bootstrapped WPAPI client instance (for chaining or assignment)
  */
 WPAPI.prototype.bootstrap = function( routes ) {
 	var routesByNamespace;
@@ -410,7 +410,7 @@ WPAPI.prototype.namespace = function( namespace ) {
  * @method discover
  * @static
  * @param {string} url A URL within a REST API-enabled WordPress website
- * @return {Promise} A promise that resolves to a configured WPAPI instance bound
+ * @returns {Promise} A promise that resolves to a configured WPAPI instance bound
  * to the deduced endpoint, or rejected if an endpoint is not found or the
  * library is unable to parse the provided endpoint.
  */
