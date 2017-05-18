@@ -52,6 +52,7 @@ var httpTransport = require( './lib/http-transport' );
  * @param {String} [options.username]  A WP-API Basic Auth username
  * @param {String} [options.password]  A WP-API Basic Auth password
  * @param {String} [options.nonce]     A WP nonce for use with cookie authentication
+ * @param {String} [options.jwt]     	 A Token for use with JSON Web Token authentication
  * @param {Object} [options.routes]    A dictionary of API routes with which to
  *                                     bootstrap the WPAPI instance: the instance will
  *                                     be initialized with default routes only
@@ -81,7 +82,7 @@ function WPAPI( options ) {
 	};
 
 	// If any authentication credentials were provided, assign them now
-	if ( options && ( options.username || options.password || options.nonce ) ) {
+	if ( options && ( options.username || options.password || options.nonce || options.jwt ) ) {
 		this.auth( options );
 	}
 
@@ -286,8 +287,8 @@ WPAPI.prototype.setHeaders = WPRequest.prototype.setHeaders;
 /**
  * Set the authentication to use for a WPAPI site handler instance. Accepts basic
  * HTTP authentication credentials (string username & password) or a Nonce (for
- * cookie authentication) by default; may be overloaded to accept OAuth credentials
- * in the future.
+ * cookie authentication) or a Token (for JSON Web Token authentication) by default; 
+ * may be overloaded to accept OAuth credentials in the future.
  *
  * @example Basic Authentication
  *
@@ -302,12 +303,19 @@ WPAPI.prototype.setHeaders = WPRequest.prototype.setHeaders;
  *       nonce: 'somenonce'
  *     })...
  *
+ * @example JSON Web Token Authentication
+ *
+ *     site.auth({
+ *       jwt: 'sometoken'
+ *     })...
+ *
  * @method auth
  * @chainable
  * @param {Object} credentials            An authentication credentials object
  * @param {String} [credentials.username] A WP-API Basic HTTP Authentication username
  * @param {String} [credentials.password] A WP-API Basic HTTP Authentication password
  * @param {String} [credentials.nonce]    A WP nonce for use with cookie authentication
+ * @param {String} [credentials.jwt] 			A JSON Web Token for use with jwt authentication
  * @return {WPAPI} The WPAPI site handler instance, for chaining
  */
 WPAPI.prototype.auth = WPRequest.prototype.auth;

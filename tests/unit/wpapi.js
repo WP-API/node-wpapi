@@ -754,6 +754,28 @@ describe( 'WPAPI', function() {
 				expect( site._options.auth ).to.be.true;
 			});
 
+			it( 'sets the token when provided in an object', function() {
+				site.auth({
+					jwt: 'sometoken'
+				});
+				expect( site._options ).to.have.property( 'jwt' );
+				expect( site._options.jwt ).to.equal( 'sometoken' );
+				expect( site._options ).to.have.property( 'auth' );
+				expect( site._options.auth ).to.be.true;
+			});
+
+			it( 'can update token credentials', function() {
+				site.auth({
+					jwt: 'sometoken'
+				}).auth({
+					jwt: 'refreshedtoken'
+				});
+				expect( site._options ).to.have.property( 'jwt' );
+				expect( site._options.jwt ).to.equal( 'refreshedtoken' );
+				expect( site._options ).to.have.property( 'auth' );
+				expect( site._options.auth ).to.be.true;
+			});
+
 			it( 'passes authentication status to all subsequently-instantiated handlers', function() {
 				site.auth({
 					username: 'user',

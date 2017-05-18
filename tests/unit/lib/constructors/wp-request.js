@@ -630,6 +630,29 @@ describe( 'WPRequest', function() {
 			expect( request._options.auth ).to.be.true;
 		});
 
+		it( 'sets the token when provided in an object', function() {
+			expect( request._options ).not.to.have.property( 'jwt' );
+			request.auth({
+				jwt: 'sometoken'
+			});
+			expect( request._options ).to.have.property( 'jwt' );
+			expect( request._options.jwt ).to.equal( 'sometoken' );
+			expect( request._options ).to.have.property( 'auth' );
+			expect( request._options.auth ).to.be.true;
+		});
+
+		it( 'can update token credentials', function() {
+			request.auth({
+				jwt: 'sometoken'
+			}).auth({
+				jwt: 'refreshedtoken'
+			});
+			expect( request._options ).to.have.property( 'jwt' );
+			expect( request._options.jwt ).to.equal( 'refreshedtoken' );
+			expect( request._options ).to.have.property( 'auth' );
+			expect( request._options.auth ).to.be.true;
+		});
+
 	}); // auth
 
 	describe( '.file()', function() {
