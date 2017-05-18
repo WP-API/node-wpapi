@@ -671,6 +671,85 @@ describe( 'WPRequest', function() {
 
 	});
 
+	describe( '.setHeaders()', function() {
+
+		it( 'method exists', function() {
+			expect( request ).to.have.property( 'setHeaders' );
+			expect( request.setHeaders ).to.be.a( 'function' );
+		});
+
+		it( 'will have no effect if called without any arguments', function() {
+			request.setHeaders();
+			expect( request._options.headers ).to.deep.equal({});
+		});
+
+		it( 'will set a header key/value pair', function() {
+			request.setHeaders( 'Authorization', 'Bearer sometoken' );
+			expect( request._options.headers ).to.deep.equal({
+				Authorization: 'Bearer sometoken'
+			});
+		});
+
+		it( 'will replace an existing header key/value pair', function() {
+			request
+				.setHeaders( 'Authorization', 'Bearer sometoken' )
+				.setHeaders( 'Authorization', 'Basic QWxhZGRpbjpvcGVuIHNlc2FtZQ==' );
+			expect( request._options.headers ).to.deep.equal({
+				Authorization: 'Basic QWxhZGRpbjpvcGVuIHNlc2FtZQ=='
+			});
+		});
+
+		it( 'will set multiple header key/value pairs with chained calls', function() {
+			request
+				.setHeaders( 'Accept-Language', 'en-US' )
+				.setHeaders( 'Authorization', 'Bearer sometoken' );
+			expect( request._options.headers ).to.deep.equal({
+				'Accept-Language': 'en-US',
+				Authorization: 'Bearer sometoken'
+			});
+		});
+
+		it( 'will set multiple header key/value pairs when passed an object', function() {
+			request.setHeaders({
+				'Accept-Language': 'en-US',
+				Authorization: 'Bearer sometoken'
+			});
+			expect( request._options.headers ).to.deep.equal({
+				'Accept-Language': 'en-US',
+				Authorization: 'Bearer sometoken'
+			});
+		});
+
+		it( 'will replace multiple existing header key/value pairs when passed an object', function() {
+			request
+				.setHeaders({
+					'Accept-Language': 'en-US',
+					Authorization: 'Bearer sometoken'
+				})
+				.setHeaders({
+					'Accept-Language': 'pt-BR',
+					Authorization: 'Basic QWxhZGRpbjpvcGVuIHNlc2FtZQ=='
+				});
+			expect( request._options.headers ).to.deep.equal({
+				'Accept-Language': 'pt-BR',
+				Authorization: 'Basic QWxhZGRpbjpvcGVuIHNlc2FtZQ=='
+			});
+		});
+
+		it( 'inherits headers from the constructor options object', function() {
+			request = new WPRequest({
+				endpoint: '/',
+				headers: {
+					'Accept-Language': 'pt-BR'
+				}
+			});
+			expect( request._options.headers ).to.deep.equal({
+				'Accept-Language': 'pt-BR'
+			});
+		});
+
+	});
+
 	describe( '.toString()', function() {
 
 		beforeEach(function() {
