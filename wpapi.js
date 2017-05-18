@@ -273,6 +273,7 @@ WPAPI.prototype.root = function( relativePath ) {
  *     })...
  *
  * @method setHeaders
+ * @since 1.1.0
  * @chainable
  * @param {String|Object} headers The name of the header to set, or an object of
  *                                header names and their associated string values
