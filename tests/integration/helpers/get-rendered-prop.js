@@ -6,11 +6,11 @@
  * human-readable properties is usually a more comprehensible way to validate
  * that the right results were returned than using IDs or arbitrary values.
  *
- * @example Pluck the rendered titles from the post
+ * @example <caption>Pluck the rendered titles from the post</caption>
  *
  *     var titles = getRenderedProp( collection, 'title' );
  *
- * @example Create a bound variant that always plucks titles
+ * @example <caption>Create a bound variant that always plucks titles</caption>
  *
  *     var getTitles = getRenderedProp.bind( null, 'title' );
  *     var titles = getTitles( collection );

@@ -102,7 +102,7 @@ function WPAPI( options ) {
  * their final argument. Transport methods should invoke the callback with the
  * response data (or error, as appropriate), and should also return a Promise.
  *
- * @example showing how a cache hit (keyed by URI) could short-circuit a get request
+ * @example <caption>showing how a cache hit (keyed by URI) could short-circuit a get request</caption>
  *
  *     var site = new WPAPI({
  *       endpoint: 'http://my-site.com/wp-json'
@@ -261,11 +261,11 @@ WPAPI.prototype.root = function( relativePath ) {
  * site instance. Accepts a header name and its associated value as two strings,
  * or multiple headers as an object of name-value pairs.
  *
- * @example Set a single header to be used by all requests to this site
+ * @example <caption>Set a single header to be used by all requests to this site</caption>
  *
  *     site.setHeaders( 'Authorization', 'Bearer trustme' )...
  *
- * @example Set multiple headers to be used by all requests to this site
+ * @example <caption>Set multiple headers to be used by all requests to this site</caption>
  *
  *     site.setHeaders({
  *       Authorization: 'Bearer comeonwereoldfriendsright',
@@ -288,14 +288,14 @@ WPAPI.prototype.setHeaders = WPRequest.prototype.setHeaders;
  * cookie authentication) by default; may be overloaded to accept OAuth credentials
  * in the future.
  *
- * @example Basic Authentication
+ * @example <caption>Basic Authentication</caption>
  *
  *     site.auth({
  *       username: 'admin',
  *       password: 'securepass55'
  *     })...
  *
- * @example Cookie/Nonce Authentication
+ * @example <caption>Cookie/Nonce Authentication</caption>
  *
  *     site.auth({
  *       nonce: 'somenonce'

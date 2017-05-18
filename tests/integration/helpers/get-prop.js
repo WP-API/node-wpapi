@@ -5,11 +5,11 @@
  * human-readable strings is usually a more comprehensible way to validate the
  * right results were returned than using arbitrary values.
  *
- * @example Pluck the slugs titles from a collection of terms
+ * @example <caption>Pluck the slugs titles from a collection of terms</caption>
  *
  *     var slugs = getProp( collection, 'slug' );
  *
- * @example Create a bound variant that always plucks .name
+ * @example <caption>Create a bound variant that always plucks .name</caption>
  *
  *     var getNames = getProp.bind( null, 'name' );
  *     var names = getNames( collection );
