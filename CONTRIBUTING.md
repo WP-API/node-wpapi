@@ -131,6 +131,10 @@ Internally, we try to use the following branch naming scheme to keep things orga
 
 It is not essential to maintain this naming structure in your own branches; the important thing is that pull requests *not* be submitted from your master branch.
 
+## Release "Props"
+
+Code is only a small part of the effort that goes into maintaining an open source project. We recognize both code _and_ non-code contributions with release "props," celebrating those who devote time and energy to the `wpapi` package. If you open an issue that highlights a bug, or contribute documentation and user guides, you will receive recognition for your support in the release notes where the associated code or documentation changes appear. Please participate constructively in [issue](https://github.com/wp-api/node-wpapi/issues) discussions, and thank you for your support!
+
 ## License
 
 All code contributed to this repository will be licensed under the [MIT license](http://opensource.org/licenses/MIT). Code you contribute should be owned by you, and by submitting a pull request you assert that the Node WordPress REST API client team has the authority to license that code to other people.

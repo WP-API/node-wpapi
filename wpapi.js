@@ -9,7 +9,7 @@
  *         console.error( err );
  *     });
  *
- * @module wpapi
+ * @license MIT
  })
  */
 'use strict';
@@ -41,10 +41,9 @@ var WPRequest = require( './lib/constructors/wp-request' );
 var httpTransport = require( './lib/http-transport' );
 
 /**
- * The base constructor for the WP API service
+ * Construct a REST API client instance object to create
  *
- * @class WPAPI
- * @constructor
+ * @constructor WPAPI
  * @param {Object} options             An options hash to configure the instance
  * @param {String} options.endpoint    The URI for a WP-API endpoint
  * @param {String} [options.username]  A WP-API Basic Auth username
@@ -134,6 +133,8 @@ function WPAPI( options ) {
  * Refer to the "http-transport" module within this application for the code
  * implementing the built-in transport methods.
  *
+ * @memberof! WPAPI
+ * @method transport
  * @chainable
  * @param {Object}   transport          A dictionary of HTTP transport methods
  * @param {Function} [transport.get]    The function to use for GET requests
@@ -167,6 +168,7 @@ WPAPI.prototype.transport = function( transport ) {
  *
  * These methods may be extended or replaced on an instance-by-instance basis
  *
+ * @memberof! WPAPI
  * @static
  * @property transport
  * @type {Object}
@@ -199,7 +201,7 @@ Object.freeze( WPAPI.transport );
  *     });
  *     var wp = WPAPI.site( 'http://my.blog.url/wp-json', {...} );
  *
- * @method site
+ * @memberof! WPAPI
  * @static
  * @param {String} endpoint The URI for a WP-API endpoint
  * @param {Object} routes   The "routes" object from the JSON object returned
@@ -225,7 +227,7 @@ WPAPI.site = function( endpoint, routes ) {
  *
  *     wp.url( 'http://your.website.com/wp-json/some/custom/path' ).get()...
  *
- * @method url
+ * @memberof! WPAPI
  * @param {String} url The URL to request
  * @returns {WPRequest} A WPRequest object bound to the provided URL
  */
@@ -240,7 +242,7 @@ WPAPI.prototype.url = function( url ) {
  * Generate a query against an arbitrary path on the current endpoint. This is useful for
  * requesting resources at custom WP-API endpoints, such as WooCommerce's `/products`.
  *
- * @method root
+ * @memberof! WPAPI
  * @param {String} [relativePath] An endpoint-relative path to which to bind the request
  * @returns {WPRequest} A request object
  */
@@ -272,7 +274,7 @@ WPAPI.prototype.root = function( relativePath ) {
  *       'Accept-Language': 'en-CA'
  *     })...
  *
- * @method setHeaders
+ * @memberof! WPAPI
  * @since 1.1.0
  * @chainable
  * @param {String|Object} headers The name of the header to set, or an object of
@@ -301,7 +303,8 @@ WPAPI.prototype.setHeaders = WPRequest.prototype.setHeaders;
  *       nonce: 'somenonce'
  *     })...
  *
- * @method auth
+ * @memberof! WPAPI
+ * @method
  * @chainable
  * @param {Object} credentials            An authentication credentials object
  * @param {String} [credentials.username] A WP-API Basic HTTP Authentication username
@@ -322,7 +325,7 @@ WPAPI.prototype.registerRoute = require( './lib/wp-register-route' );
  *
  * This method is called automatically during WPAPI instance creation.
  *
- * @method bootstrap
+ * @memberof! WPAPI
  * @chainable
  * @param {Object} routes The "routes" object from the JSON object returned
  *                        from the root API endpoint of a WP site, which should
@@ -391,6 +394,7 @@ WPAPI.prototype.bootstrap = function( routes ) {
  *     wp.namespace( 'wp/v2' ).posts()...
  *     wp.posts()...
  *
+ * @memberof! WPAPI
  * @param {string} namespace A namespace string
  * @returns {Object} An object of route endpoint handler methods for the
  * routes within the specified namespace
@@ -407,7 +411,7 @@ WPAPI.prototype.namespace = function( namespace ) {
  * that endpoint, and parse the response JSON. Use the returned JSON response
  * to instantiate a WPAPI instance bound to the provided site.
  *
- * @method discover
+ * @memberof! WPAPI
  * @static
  * @param {string} url A URL within a REST API-enabled WordPress website
  * @returns {Promise} A promise that resolves to a configured WPAPI instance bound

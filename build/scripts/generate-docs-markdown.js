@@ -14,6 +14,9 @@ combyne.settings.delimiters = {
 	END_EXPR: '%}]'
 };
 
+// Application Version
+const version = require( '../../package.json' ).version;
+
 // Paths
 const projectRoot = path.join( __dirname, '../..' );
 const docsDir = path.join( projectRoot, 'documentation' );
@@ -170,7 +173,7 @@ const readmeOutput = readFile( readmePath ).then( contents => {
 	}, Promise.resolve() ).then( () => {
 		entries.push({
 			title: 'API Documentation',
-			slug: 'api-reference/modules/WPAPI.html'
+			slug: `api-reference/wpapi/${version}/`
 		});
 		return entries;
 	});
