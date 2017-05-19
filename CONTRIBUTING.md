@@ -111,11 +111,13 @@ We prefer `camelCase` variable and function names, and `UpperCamelCase` construc
 
 ## Documentation
 
-The README getting started guide & YUIDoc block comment should be kept up-to-date with feature development: If you aren't familiar with adding doc blocks, we'll help you work through it in the comments of your PR.
+The README getting started guide & [JSDoc](http://usejsdoc.org/) block comment should be kept up-to-date with featrbenvure development: If you aren't familiar with adding JSDoc comments, we'll help you work through it in the comments of your PR.
 
-The API docs will be updated whenever a new NPM module version is published. No files within `docs/` should be committed in any branch other than gh-pages.
+The API docs will be updated whenever a new NPM module version is published. No generated files within `documentation/` should be committed in any branch other than gh-pages.
 
-To generate the docs yourself, run `npm run docs` (aliased to `grunt yuidoc`).
+To generate the docs yourself, run `npm run docs`. This task will parse the README into a series of individual markdown files, then run JSDoc to generate the API reference. These files will be consumed by GitHub Pages to render the final public [wp-api.org/node-wpapi](http://wp-api.org/node-wpapi) website.
+
+Preview the generated documentation site locally with `npm run jekyll`. To install Jekyll you will need Ruby (v2.3.x is required due to a dependency issue in 2.4), then run `gem install bundler` and `bundle install` from the `documentation/` directory.
 
 ## Branch Naming & Pull Requests
 
@@ -127,7 +129,7 @@ Internally, we try to use the following branch naming scheme to keep things orga
 * **build/feature-name**: Features relating to the build process, Gruntfile, linting or testing process, NPM package, *etcetera*
 * **docs/feature-name**: Documentation, README, contributing guide, fleshing out inline doc blocks; anything in the repository that's authored to be human-readable
 
-It is not essential to maintain this naming structure in your own branches, though it is preferred; the important thing is that pull requests *not* be submitted from your master branch.
+It is not essential to maintain this naming structure in your own branches; the important thing is that pull requests *not* be submitted from your master branch.
 
 ## License
 

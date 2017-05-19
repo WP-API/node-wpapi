@@ -4,7 +4,7 @@
     "url": "http://www.kadamwhite.com"
   },
   "name": "wpapi",
-  "version": "1.0.3",
+  "version": "1.1.0",
   "description": "An isomorphic JavaScript client for interacting with the WordPress REST API",
   "main": "wpapi.js",
   "repository": {
@@ -60,7 +60,6 @@
     "grunt-cli": "^1.2.0",
     "grunt-contrib-clean": "^1.0.0",
     "grunt-contrib-jshint": "^1.0.0",
-    "grunt-contrib-yuidoc": "^1.0.0",
     "grunt-zip": "^0.17.1",
     "istanbul": "^0.4.4",
     "jscs": "^3.0.6",
