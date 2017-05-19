@@ -1,0 +1,29 @@
+{
+	"source": {
+		"include": [
+			"lib",
+			"wpapi.js",
+			"wpapi-computed-methods.jsdoc",
+			"package.json",
+			"build/api-reference-readme.md"
+		],
+		"includePattern": ".+\\.js(doc)?$",
+		"excludePattern": "(browser/|bin/|build/|data/|tests/|node_modules)"
+	},
+	"plugins": [
+		"plugins/markdown"
+	],
+	"tags": {
+		"dictionaries": ["jsdoc"]
+	},
+	"templates": {
+		"useLongnameInNav": false,
+		"showInheritedInNav": true
+	},
+	"opts": {
+		"destination": "./documentation/api-reference/",
+		"template": "node_modules/minami",
+		"encoding": "utf8",
+		"recurse": true
+	}
+}

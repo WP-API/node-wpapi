@@ -16,7 +16,6 @@ module.exports = function( grunt ) {
 	grunt.registerTask( 'docs', [
 		'clean',
 		'generate_readme_docs',
-		'zip',
-		'yuidoc'
+		'zip'
 	]);
 };

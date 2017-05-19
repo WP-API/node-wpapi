@@ -1,0 +1,77 @@
+/**
+ * Start a request against /posts endpoints
+ *
+ * @method posts
+ * @memberof! WPAPI
+ * @returns {WPRequest}
+ */
+/**
+ * Start a request against /pages endpoints
+ *
+ * @method pages
+ * @memberof! WPAPI
+ * @returns {WPRequest}
+ */
+/**
+ * Start a request against /types endpoints
+ *
+ * @method types
+ * @memberof! WPAPI
+ * @returns {WPRequest}
+ */
+/**
+ * Start a request against /comments endpoints
+ *
+ * @method comments
+ * @memberof! WPAPI
+ * @returns {WPRequest}
+ */
+/**
+ * Start a request against /taxonomies endpoints
+ *
+ * @method taxonomies
+ * @memberof! WPAPI
+ * @returns {WPRequest}
+ */
+/**
+ * Start a request against /tags endpoint
+ *
+ * @method tags
+ * @memberof! WPAPI
+ * @returns {WPRequest}
+ */
+/**
+ * Start a request against /categories endpoint
+ *
+ * @method categories
+ * @memberof! WPAPI
+ * @returns {WPRequest}
+ */
+/**
+ * Start a request against /statuses endpoints
+ *
+ * @method statuses
+ * @memberof! WPAPI
+ * @returns {WPRequest}
+ */
+/**
+ * Start a request against /users endpoints
+ *
+ * @method users
+ * @memberof! WPAPI
+ * @returns {WPRequest}
+ */
+/**
+ * Start a request against /media endpoints
+ *
+ * @method media
+ * @memberof! WPAPI
+ * @returns {WPRequest}
+ */
+/**
+ * Start a request against /settings endpoint
+ *
+ * @method settings
+ * @memberof! WPAPI
+ * @returns {WPRequest}
+ */
