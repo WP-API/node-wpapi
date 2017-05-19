@@ -39,8 +39,11 @@ documentation/*.zip
 documentation/index.html
 *.ignore
 
-# Webstorm config folder
+# Local editor/IDE files & environment configuration
 .idea
+.vscode
+*.sublime-*
+.ruby-version
 
 # Built files (for use in browser)
 browser/

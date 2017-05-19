@@ -21,6 +21,7 @@ const version = require( '../../package.json' ).version;
 const projectRoot = path.join( __dirname, '../..' );
 const docsDir = path.join( projectRoot, 'documentation' );
 const readmePath = path.join( projectRoot, 'README.md' );
+const changelogPath = path.join( projectRoot, 'CHANGELOG.md' );
 const contributingPath = path.join( projectRoot, 'CONTRIBUTING.md' );
 const licensePath = path.join( projectRoot, 'LICENSE' );
 const indexTemplatePath = path.join( projectRoot, 'documentation', 'index.html.combyne' );
@@ -183,6 +184,9 @@ const readmeOutput = readFile( readmePath ).then( contents => {
 // order to overwrite the "contributing" README section, if present)
 const contributingOutput = readmeOutput.then( () => copyFile( contributingPath, 'Contributing' ) );
 
+// Create the changelog page
+const changelogOutput = copyFile( changelogPath, 'Changelog' );
+
 // Create the license page
 const licenseOutput = copyFile( licensePath, 'License' );
 
@@ -230,6 +234,7 @@ const err404Output = fileAndContext( err404TemplatePath ).then( result => {
 module.exports = Promise.all([
 	readmeOutput,
 	contributingOutput,
+	changelogOutput,
 	licenseOutput,
 	indexOutput,
 	err404Output
