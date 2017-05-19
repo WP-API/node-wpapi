@@ -6,10 +6,12 @@ pids
 *.seed
 .idea
 *.sublime-*
+webpack.*
 _gh_issues/
-coverage
+build/
+coverage/
 docs-tmp/
-docs/
+documentation/
 index.html
 test.js
 tests/

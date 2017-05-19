@@ -1,3 +1,9 @@
+#v1.1.0 _Where's Your Head At_
+
+- Implement a `.setHeader()` method for WPAPI and WPRequest objects to send arbitrary HTTP headers with outgoing API requests, props @anagio, @andreasvirkus, @gnarf, @Matthewnie, @mnivoliez, & @mzalewski
+- Clarify CORS requirements in README, props @entr
+- Improve inline documentation & switch from YUIDoc to JSDoc
+
 # v1.0.3 _Couleurs Primaires_
 
 - Properly parse API response text when response is sent back with Content-Type "text/html"
