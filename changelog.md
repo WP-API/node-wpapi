@@ -9,29 +9,31 @@ permalink: /changelog/
 
 
 
+## v1.1.0 _Where's Your Head At_
+
 - Implement a `.setHeader()` method for WPAPI and WPRequest objects to send arbitrary HTTP headers with outgoing API requests, props @anagio, @andreasvirkus, @gnarf, @Matthewnie, @mnivoliez, & @mzalewski
 - Clarify CORS requirements in README, props @entr
 - Improve inline documentation & switch from YUIDoc to JSDoc
 
-# v1.0.3 _Couleurs Primaires_
+## v1.0.3 _Couleurs Primaires_
 
 - Properly parse API response text when response is sent back with Content-Type "text/html"
 
-# v1.0.2 _Recto Verso_
+## v1.0.2 _Recto Verso_
 
 - Upgrade Superagent dependency to avoid "double callback" error when JSON response contains extraneous HTML content
 - Fix documentation inaccuracies following the merge of the REST API plugin into WordPress core
 
 Patch release named for Paradis' 2016 LP "Recto Verso".
 
-# v1.0.1 _The Only Constant is Change_
+## v1.0.1 _The Only Constant is Change_
 
 - Support endpoints using "plain permalinks", props @luisherranz
 
 This patch release is named for _The Only Constant is Change_, a track from
 v1.0 namesake album _Emotional Technology_ by BT.
 
-# v1.0.0 _Emotional Technology_
+## v1.0.0 _Emotional Technology_
 
 - Add CHANGELOG.md
 - Reduce complexity of, and rename, default routes JSON file
@@ -73,7 +75,7 @@ Props @joaojeronimo, @Ohar, @ryelle
 
 This release is named for w.hatano's latest EP [_You Only Live Once_](https://www.youtube.com/watch?v=V7mnNdkhciQ)
 
-### v0.12.1 _You Only Live Once -Instrumental-_
+## v0.12.1 _You Only Live Once -Instrumental-_
 
 This patch release fixes an issue where [valid post type identifiers](https://developer.wordpress.org/reference/functions/sanitize_key/) (or [PCRE capture group](http://www.regular-expressions.info/refext.html) names) are not properly intercepted and mapped to camelCase path part setters.
 
@@ -163,7 +165,7 @@ For pull requests and patches: @bt, @sdgluck
 
 For opening issues and asking or discussing questions: @elyobo, @joneslloyd, @mrkrumhausen, @satish9323, @smedegaard, @tommedema, @vtripolitakis, @z-avanes
 
-### v0.9.2 _Frontier Psychiatrist_
+## v0.9.2 _Frontier Psychiatrist_
 
 - Added `.toString()` method to WPRequest objects, which returns the full
   rendered URI for a query
@@ -182,7 +184,7 @@ Issues, Bugs, Documentation Requests & Discussion: @BenHen75, @brianloveswords, 
 
 [I felt strangely hypnotized](https://www.youtube.com/watch?v=eS3AZ12xf6s)
 
-### v0.9.3 _Frontier Psychiatrist, 85% Instrumental_
+## v0.9.3 _Frontier Psychiatrist, 85% Instrumental_
 
 Built bundles in `browser/` did not make it into previous publish!
 
@@ -262,13 +264,13 @@ adds .posts().meta() method
 
 The main new feature in 0.3.0 is initial support for collection pagination: Pagination data is exposed in a `_paging` property on response collections, if additional pages of collection objects are available.
 
-### v0.3.0
+## v0.3.0
 
 This release resolves an issue with the query string formatting encountered
 when requesting posts of multiple types in the same query
 
 
-## v0.2
+## v0.2.0
 
 - Force authentication where it would be convenient
 - Add a /media endpoint handler method
@@ -289,7 +291,7 @@ when requesting posts of multiple types in the same query
 - Standardize constructor naming in README examples
 - Add WP.site static convenience method for creating new sites
 
-### v0.2.1
+## v0.2.1
 
 Added in this release:
 
@@ -297,12 +299,12 @@ Added in this release:
 - `wp.categories()` convenience method for retrieving category terms
 - `wp.tags()` convenience method for retrieving post_tag terms
 
-### v0.2.2
+## v0.2.2
 
 This release improves the error handling around failed SuperAgent calls.
 Many thanks to @bmac for the bug fix!
 
-### v0.2.3
+## v0.2.3
 
 This release adds basic support for working with paginated responses
 
