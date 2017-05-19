@@ -4,6 +4,9 @@ title: Customizing HTTP Request Behavior
 permalink: /customizing-http-request-behavior/
 ---
 
+* TOC
+{:toc}
+
 By default `node-wpapi` uses the [superagent](https://www.npmjs.com/package/superagent) library internally to make HTTP requests against the API endpoints. Superagent is a flexible tool that works on both the client and the browser, but you may want to use a different HTTP library, or to get data from a cache when available instead of making an HTTP request. To facilitate this, `node-wpapi` lets you supply a `transport` object when instantiating a site client to specify custom functions to use for one (or all) of GET, POST, PUT, DELETE & HEAD requests.
 
 **This is advanced behavior; you will only need to utilize this functionality if your application has very specific HTTP handling or caching requirements.**
@@ -53,3 +56,32 @@ site.transport({
 ```
 
 Note that these transport methods are the internal methods used by `create` and `.update`, so the names of these methods therefore map to the HTTP verbs "get", "post", "put", "head" and "delete"; name your transport methods accordingly or they will not be used.
+### Specifying HTTP Headers
+
+If you need to send additional HTTP headers along with your request (for example to provide a specific `Authorization` header for use with alternative authentication schemes), you can use the `.setHeaders()` method to specify one or more headers to send with the dispatched request:
+
+#### Set headers for a single request
+
+```js
+// Specify a single header to send with the outgoing request
+wp.posts().setHeaders( 'Authorization', 'Bearer xxxxx.yyyyy.zzzzz' )...
+
+// Specify multiple headers to send with the outgoing request
+wp.posts().setHeaders({
+    Authorization: 'Bearer xxxxx.yyyyy.zzzzz',
+    'Accept-Language': 'pt-BR'
+})...
+```
+
+#### Set headers globally
+
+You can also set headers globally on the WPAPI instance itself, which will then be used for all subsequent requests created from that site instance:
+
+```js
+// Specify a header to be used by all subsequent requests
+wp.setHeaders( 'Authorization', 'Bearer xxxxx.yyyyy.zzzzz' );
+
+// These will now be sent with an Authorization header
+wp.users().me()...
+wp.posts().id( unpublishedPostId )...
+```

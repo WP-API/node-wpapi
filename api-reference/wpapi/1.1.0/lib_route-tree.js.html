@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>lib/route-tree.js - Documentation</title>
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav>
+    <li class="nav-link nav-home-link"><a href="index.html">Home</a></li><li class="nav-heading">Classes</li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="WPAPI.html">WPAPI</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="WPAPI.html#..categories">.categories</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="WPAPI.html#..comments">.comments</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="WPAPI.html#..discover">.discover</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="WPAPI.html#..media">.media</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="WPAPI.html#..pages">.pages</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="WPAPI.html#..posts">.posts</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="WPAPI.html#..settings">.settings</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="WPAPI.html#..site">.site</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="WPAPI.html#..statuses">.statuses</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="WPAPI.html#..tags">.tags</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="WPAPI.html#..taxonomies">.taxonomies</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="WPAPI.html#..transport">.transport</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="WPAPI.html#..types">.types</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="WPAPI.html#..users">.users</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="WPAPI.html##auth">#auth</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="WPAPI.html##bootstrap">#bootstrap</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="WPAPI.html##namespace">#namespace</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="WPAPI.html#registerRoute">registerRoute</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="WPAPI.html##root">#root</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="WPAPI.html##url">#url</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="WPRequest.html">WPRequest</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="WPRequest.html#auth">auth</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="WPRequest.html#context">context</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="WPRequest.html#create">create</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="WPRequest.html#delete">delete</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="WPRequest.html#edit">edit</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="WPRequest.html#embed">embed</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="WPRequest.html#exclude">exclude</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="WPRequest.html#file">file</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="WPRequest.html#get">get</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="WPRequest.html#headers">headers</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="WPRequest.html#include">include</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="WPRequest.html#namespace">namespace</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="WPRequest.html#offset">offset</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="WPRequest.html#order">order</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="WPRequest.html#orderby">orderby</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="WPRequest.html#page">page</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="WPRequest.html#param">param</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="WPRequest.html#perPage">perPage</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="WPRequest.html#search">search</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="WPRequest.html#setHeaders">setHeaders</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="WPRequest.html#setPathPart">setPathPart</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="WPRequest.html#slug">slug</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="WPRequest.html#then">then</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="WPRequest.html#toString">toString</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="WPRequest.html#validatePath">validatePath</a></span></li><li class="nav-heading">Modules</li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-autodiscovery.html">autodiscovery</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-autodiscovery.html#~locateAPIRootHeader">locateAPIRootHeader</a></span></li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-endpoint-factories.html">endpoint-factories</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-endpoint-factories.html#~generate">generate</a></span></li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-endpoint-request.html">endpoint-request</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-endpoint-request.html#~create">create</a></span></li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-http-transport.html">http-transport</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-http-transport.html#~delete">delete</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-http-transport.html#~get">get</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-http-transport.html#~head">head</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-http-transport.html#~post">post</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-http-transport.html#~put">put</a></span></li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-mixins_filters.html">mixins/filters</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-mixins_filters.html#~day">day</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-mixins_filters.html#~filter">filter</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-mixins_filters.html#~month">month</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-mixins_filters.html#~path">path</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-mixins_filters.html#~taxonomy">taxonomy</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-mixins_filters.html#~year">year</a></span></li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-mixins_parameters.html">mixins/parameters</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-mixins_parameters.html#~after">after</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-mixins_parameters.html#~author">author</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-mixins_parameters.html#~before">before</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-mixins_parameters.html#~categories">categories</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-mixins_parameters.html#~excludeCategories">excludeCategories</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-mixins_parameters.html#~excludeTags">excludeTags</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-mixins_parameters.html#~parent">parent</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-mixins_parameters.html#~password">password</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-mixins_parameters.html#~post">post</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-mixins_parameters.html#~status">status</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-mixins_parameters.html#~sticky">sticky</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-mixins_parameters.html#~tag">tag</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-mixins_parameters.html#~tag">tag</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-mixins_parameters.html#~tags">tags</a></span></li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-path-part-setter.html">path-part-setter</a></span></li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-resource-handler-spec.html">resource-handler-spec</a></span></li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-route-tree.html">route-tree</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-route-tree.html#~build">build</a></span></li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-util_alphanumeric-sort.html">util/alphanumeric-sort</a></span></li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-util_apply-mixin.html">util/apply-mixin</a></span></li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-util_argument-is-numeric.html">util/argument-is-numeric</a></span></li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-util_check-method-support.html">util/check-method-support</a></span></li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-util_ensure.html">util/ensure</a></span></li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-util_is-empty-object.html">util/is-empty-object</a></span></li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-util_key-val-to-obj.html">util/key-val-to-obj</a></span></li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-util_named-group-regexp.html">util/named-group-regexp</a></span></li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-util_parameter-setter.html">util/parameter-setter</a></span></li><li class="nav-heading">Mixins</li><li class="nav-heading"><span class="nav-item-type type-mixin">M</span><span class="nav-item-name"><a href="module-mixins_filters-filters.html">filters</a></span></li><li class="nav-heading"><span class="nav-item-type type-mixin">M</span><span class="nav-item-name"><a href="module-mixins_parameters-parameters.html">parameters</a></span></li>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">lib/route-tree.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @module route-tree
+ */
+'use strict';
+
+var namedGroupRegexp = require( './util/named-group-regexp' );
+var ensure = require( './util/ensure' );
+var objectReduce = require( './util/object-reduce' );
+
+/**
+ * Method to use when reducing route components array.
+ *
+ * @private
+ * @param {object} routeObj     A route definition object (set via .bind partial application)
+ * @param {object} topLevel     The top-level route tree object for this set of routes (set
+ *                              via .bind partial application)
+ * @param {object} parentLevel  The memo object, which is mutated as the reducer adds
+ *                              a new level handler for each level in the route
+ * @param {string} component    The string defining this route component
+ * @param {number} idx          The index of this component within the components array
+ * @param {string[]} components The array of all components
+ * @returns {object} The child object of the level being reduced
+ */
+function reduceRouteComponents( routeObj, topLevel, parentLevel, component, idx, components ) {
+	// Check to see if this component is a dynamic URL segment (i.e. defined by
+	// a named capture group regular expression). namedGroup will be `null` if
+	// the regexp does not match, or else an array defining the RegExp match, e.g.
+	// [
+	//   'P&lt;id>[\\d]+)',
+	//   'id', // Name of the group
+	//   '[\\d]+', // regular expression for this URL segment's contents
+	//   index: 15,
+	//   input: '/wp/v2/posts/(?P&lt;id>[\\d]+)'
+	// ]
+	var namedGroup = component.match( namedGroupRegexp );
+	// Pull out references to the relevant indices of the match, for utility:
+	// `null` checking is necessary in case the component did not match the RE,
+	// hence the `namedGroup &amp;&amp;`.
+	var groupName = namedGroup &amp;&amp; namedGroup[ 1 ];
+	var groupPattern = namedGroup &amp;&amp; namedGroup[ 2 ];
+
+	// When branching based on a dynamic capture group we used the group's RE
+	// pattern as the unique identifier: this is done because the same group
+	// could be assigned different names in different endpoint handlers, e.g.
+	// "id" for posts/:id vs "parent_id" for posts/:parent_id/revisions.
+	//
+	// There is an edge case where groupPattern will be "" if we are registering
+	// a custom route via `.registerRoute` that does not include parameter
+	// validation. In this case we assume the groupName is sufficiently unique,
+	// and fall back to `|| groupName` for the levelKey string.
+	var levelKey = namedGroup ? ( groupPattern || groupName ) : component;
+
+	// Level name on the other hand takes its value from the group's name, if
+	// defined, and falls back to the component string to handle situations where
+	// `component` is a collection (e.g. "revisions")
+	var levelName = namedGroup ? groupName : component;
+
+	// Check whether we have a preexisting node at this level of the tree, and
+	// create a new level object if not. The component string is included so that
+	// validators can throw meaningful errors as appropriate.
+	var currentLevel = parentLevel[ levelKey ] || {
+		component: component,
+		namedGroup: namedGroup ? true : false,
+		level: idx,
+		names: []
+	};
+
+	// A level's "names" correspond to the list of strings which could describe
+	// an endpoint's component setter functions: "id", "revisions", etc.
+	if ( currentLevel.names.indexOf( levelName ) &lt; 0 ) {
+		currentLevel.names.push( levelName );
+	}
+
+	// A level's validate method is called to check whether a value being set
+	// on the request URL is of the proper type for the location in which it
+	// is specified. If a group pattern was found, the validator checks whether
+	// the input string exactly matches the group pattern.
+	var groupPatternRE = groupPattern === '' ?
+		// If groupPattern is an empty string, accept any input without validation
+		/.*/ :
+		// Otherwise, validate against the group pattern or the component string
+		new RegExp( groupPattern ? '^' + groupPattern + '$' : component, 'i' );
+
+	// Only one validate function is maintained for each node, because each node
+	// is defined either by a string literal or by a specific regular expression.
+	currentLevel.validate = function( input ) {
+		return groupPatternRE.test( input );
+	};
+
+	// Check to see whether to expect more nodes within this branch of the tree,
+	if ( components[ idx + 1 ] ) {
+		// and create a "children" object to hold those nodes if necessary
+		currentLevel.children = currentLevel.children || {};
+	} else {
+		// At leaf nodes, specify the method capabilities of this endpoint
+		currentLevel.methods = ( routeObj.methods || [] ).map(function( str ) {
+			return str.toLowerCase();
+		});
+		// Ensure HEAD is included whenever GET is supported: the API automatically
+		// adds support for HEAD if you have GET
+		if ( currentLevel.methods.indexOf( 'get' ) > -1 &amp;&amp; currentLevel.methods.indexOf( 'head' ) === -1 ) {
+			currentLevel.methods.push( 'head' );
+		}
+
+		// At leaf nodes also flag (at the top level) what arguments are
+		// available to GET requests, so that we may automatically apply the
+		// appropriate parameter mixins
+		if ( routeObj.endpoints ) {
+			topLevel._getArgs = topLevel._getArgs || {};
+			routeObj.endpoints.forEach(function( endpoint ) {
+				// `endpoint.methods` will be an array of methods like `[ 'GET' ]`: we
+				// only care about GET for this exercise. Validating POST and PUT args
+				// could be useful but is currently deemed to be out-of-scope.
+				endpoint.methods.forEach(function( method ) {
+					if ( method.toLowerCase() === 'get' ) {
+						Object.keys( endpoint.args ).forEach(function( argKey ) {
+							// Reference param definition objects in the top _getArgs dictionary
+							topLevel._getArgs[ argKey ] = endpoint.args[ argKey ];
+						});
+					}
+				});
+			});
+		}
+	}
+
+	// Return the child node object as the new "level"
+	parentLevel[ levelKey ] = currentLevel;
+	return currentLevel.children;
+}
+
+/**
+ *
+ * @private
+ * @param {object}   namespaces The memo object that becomes a dictionary mapping API
+ *                              namespaces to an object of the namespace's routes
+ * @param {object}   routeObj   A route definition object
+ * @param {string}   route      The string key of the `routeObj` route object
+ * @returns {object} The namespaces dictionary memo object
+ */
+function reduceRouteTree( namespaces, routeObj, route ) {
+	var nsForRoute = routeObj.namespace;
+
+	// Strip the namespace from the route string (all routes should have the
+	// format `/namespace/other/stuff`) @TODO: Validate this assumption
+	var routeString = route.replace( '/' + nsForRoute + '/', '' );
+	var routeComponents = routeString.split( '/' );
+
+	// Do not make a namespace group for the API root
+	// Do not add the namespace root to its own group
+	// Do not take any action if routeString is empty
+	if ( ! nsForRoute || '/' + nsForRoute === route || ! routeString ) {
+		return namespaces;
+	}
+
+	// Ensure that the namespace object for this namespace exists
+	ensure( namespaces, nsForRoute, {} );
+
+	// Get a local reference to namespace object
+	var ns = namespaces[ nsForRoute ];
+
+	// The first element of the route tells us what type of resource this route
+	// is for, e.g. "posts" or "comments": we build one handler per resource
+	// type, so we group like resource paths together.
+	var resource = routeComponents[0];
+
+	// @TODO: This code above currently precludes baseless routes, e.g.
+	// myplugin/v2/(?P&lt;resource>\w+) -- should those be supported?
+
+	// Create an array to represent this resource, and ensure it is assigned
+	// to the namespace object. The array will structure the "levels" (path
+	// components and subresource types) of this resource's endpoint handler.
+	ensure( ns, resource, {} );
+	var levels = ns[ resource ];
+
+	// Recurse through the route components, mutating levels with information about
+	// each child node encountered while walking through the routes tree and what
+	// arguments (parameters) are available for GET requests to this endpoint.
+	routeComponents.reduce( reduceRouteComponents.bind( null, routeObj, levels ), levels );
+
+	return namespaces;
+}
+
+/**
+ * Build a route tree by reducing over a routes definition object from the API
+ * root endpoint response object
+ *
+ * @method build
+ * @param {object} routes A dictionary of routes keyed by route regex strings
+ * @returns {object} A dictionary, keyed by namespace, of resource handler
+ * factory methods for each namespace's resources
+ */
+function buildRouteTree( routes ) {
+	return objectReduce( routes, reduceRouteTree, {} );
+}
+
+module.exports = {
+	build: buildRouteTree
+};
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<br class="clear">
+
+<footer>
+    Generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Fri May 19 2017 17:31:57 GMT-0400 (EDT) using the Minami theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+</body>
+</html>

@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>wpapi.js - Documentation</title>
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav>
+    <li class="nav-link nav-home-link"><a href="index.html">Home</a></li><li class="nav-heading">Classes</li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="WPAPI.html">WPAPI</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="WPAPI.html#..categories">.categories</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="WPAPI.html#..comments">.comments</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="WPAPI.html#..discover">.discover</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="WPAPI.html#..media">.media</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="WPAPI.html#..pages">.pages</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="WPAPI.html#..posts">.posts</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="WPAPI.html#..settings">.settings</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="WPAPI.html#..site">.site</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="WPAPI.html#..statuses">.statuses</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="WPAPI.html#..tags">.tags</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="WPAPI.html#..taxonomies">.taxonomies</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="WPAPI.html#..transport">.transport</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="WPAPI.html#..types">.types</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="WPAPI.html#..users">.users</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="WPAPI.html##auth">#auth</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="WPAPI.html##bootstrap">#bootstrap</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="WPAPI.html##namespace">#namespace</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="WPAPI.html#registerRoute">registerRoute</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="WPAPI.html##root">#root</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="WPAPI.html##url">#url</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="WPRequest.html">WPRequest</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="WPRequest.html#auth">auth</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="WPRequest.html#context">context</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="WPRequest.html#create">create</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="WPRequest.html#delete">delete</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="WPRequest.html#edit">edit</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="WPRequest.html#embed">embed</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="WPRequest.html#exclude">exclude</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="WPRequest.html#file">file</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="WPRequest.html#get">get</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="WPRequest.html#headers">headers</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="WPRequest.html#include">include</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="WPRequest.html#namespace">namespace</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="WPRequest.html#offset">offset</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="WPRequest.html#order">order</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="WPRequest.html#orderby">orderby</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="WPRequest.html#page">page</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="WPRequest.html#param">param</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="WPRequest.html#perPage">perPage</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="WPRequest.html#search">search</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="WPRequest.html#setHeaders">setHeaders</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="WPRequest.html#setPathPart">setPathPart</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="WPRequest.html#slug">slug</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="WPRequest.html#then">then</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="WPRequest.html#toString">toString</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="WPRequest.html#validatePath">validatePath</a></span></li><li class="nav-heading">Modules</li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-autodiscovery.html">autodiscovery</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-autodiscovery.html#~locateAPIRootHeader">locateAPIRootHeader</a></span></li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-endpoint-factories.html">endpoint-factories</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-endpoint-factories.html#~generate">generate</a></span></li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-endpoint-request.html">endpoint-request</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-endpoint-request.html#~create">create</a></span></li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-http-transport.html">http-transport</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-http-transport.html#~delete">delete</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-http-transport.html#~get">get</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-http-transport.html#~head">head</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-http-transport.html#~post">post</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-http-transport.html#~put">put</a></span></li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-mixins_filters.html">mixins/filters</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-mixins_filters.html#~day">day</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-mixins_filters.html#~filter">filter</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-mixins_filters.html#~month">month</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-mixins_filters.html#~path">path</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-mixins_filters.html#~taxonomy">taxonomy</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-mixins_filters.html#~year">year</a></span></li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-mixins_parameters.html">mixins/parameters</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-mixins_parameters.html#~after">after</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-mixins_parameters.html#~author">author</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-mixins_parameters.html#~before">before</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-mixins_parameters.html#~categories">categories</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-mixins_parameters.html#~excludeCategories">excludeCategories</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-mixins_parameters.html#~excludeTags">excludeTags</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-mixins_parameters.html#~parent">parent</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-mixins_parameters.html#~password">password</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-mixins_parameters.html#~post">post</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-mixins_parameters.html#~status">status</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-mixins_parameters.html#~sticky">sticky</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-mixins_parameters.html#~tag">tag</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-mixins_parameters.html#~tag">tag</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-mixins_parameters.html#~tags">tags</a></span></li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-path-part-setter.html">path-part-setter</a></span></li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-resource-handler-spec.html">resource-handler-spec</a></span></li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-route-tree.html">route-tree</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-route-tree.html#~build">build</a></span></li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-util_alphanumeric-sort.html">util/alphanumeric-sort</a></span></li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-util_apply-mixin.html">util/apply-mixin</a></span></li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-util_argument-is-numeric.html">util/argument-is-numeric</a></span></li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-util_check-method-support.html">util/check-method-support</a></span></li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-util_ensure.html">util/ensure</a></span></li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-util_is-empty-object.html">util/is-empty-object</a></span></li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-util_key-val-to-obj.html">util/key-val-to-obj</a></span></li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-util_named-group-regexp.html">util/named-group-regexp</a></span></li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-util_parameter-setter.html">util/parameter-setter</a></span></li><li class="nav-heading">Mixins</li><li class="nav-heading"><span class="nav-item-type type-mixin">M</span><span class="nav-item-name"><a href="module-mixins_filters-filters.html">filters</a></span></li><li class="nav-heading"><span class="nav-item-type type-mixin">M</span><span class="nav-item-name"><a href="module-mixins_parameters-parameters.html">parameters</a></span></li>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">wpapi.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * A WP REST API client for Node.js
+ *
+ * @example
+ *     var wp = new WPAPI({ endpoint: 'http://src.wordpress-develop.dev/wp-json' });
+ *     wp.posts().then(function( posts ) {
+ *         console.log( posts );
+ *     }).catch(function( err ) {
+ *         console.error( err );
+ *     });
+ *
+ * @license MIT
+ })
+ */
+'use strict';
+
+var extend = require( 'node.extend' );
+var objectReduce = require( './lib/util/object-reduce' );
+
+// This JSON file provides enough data to create handler methods for all valid
+// API routes in WordPress 4.7
+var defaultRoutes = require( './lib/data/default-routes.json' );
+var buildRouteTree = require( './lib/route-tree' ).build;
+var generateEndpointFactories = require( './lib/endpoint-factories' ).generate;
+
+// The default endpoint factories will be lazy-loaded by parsing the default
+// route tree data if a default-mode WPAPI instance is created (i.e. one that
+// is to be bootstrapped with the handlers for all of the built-in routes)
+var defaultEndpointFactories;
+
+// Constant used to detect first-party WordPress REST API routes
+var apiDefaultNamespace = 'wp/v2';
+
+// Pull in autodiscovery methods
+var autodiscovery = require( './lib/autodiscovery' );
+
+// Pull in base module constructors
+var WPRequest = require( './lib/constructors/wp-request' );
+
+// Pull in default HTTP transport
+var httpTransport = require( './lib/http-transport' );
+
+/**
+ * Construct a REST API client instance object to create
+ *
+ * @constructor WPAPI
+ * @param {Object} options             An options hash to configure the instance
+ * @param {String} options.endpoint    The URI for a WP-API endpoint
+ * @param {String} [options.username]  A WP-API Basic Auth username
+ * @param {String} [options.password]  A WP-API Basic Auth password
+ * @param {String} [options.nonce]     A WP nonce for use with cookie authentication
+ * @param {Object} [options.routes]    A dictionary of API routes with which to
+ *                                     bootstrap the WPAPI instance: the instance will
+ *                                     be initialized with default routes only
+ *                                     if this property is omitted
+ * @param {String} [options.transport] An optional dictionary of HTTP transport
+ *                                     methods (.get, .post, .put, .delete, .head)
+ *                                     to use instead of the defaults, e.g. to use
+ *                                     a different HTTP library than superagent
+ */
+function WPAPI( options ) {
+
+	// Enforce `new`
+	if ( this instanceof WPAPI === false ) {
+		return new WPAPI( options );
+	}
+
+	if ( typeof options.endpoint !== 'string' ) {
+		throw new Error( 'options hash must contain an API endpoint URL string' );
+	}
+
+	// Dictionary to be filled by handlers for default namespaces
+	this._ns = {};
+
+	this._options = {
+		// Ensure trailing slash on endpoint URI
+		endpoint: options.endpoint.replace(  /\/?$/, '/' )
+	};
+
+	// If any authentication credentials were provided, assign them now
+	if ( options &amp;&amp; ( options.username || options.password || options.nonce ) ) {
+		this.auth( options );
+	}
+
+	return this
+		// Configure custom HTTP transport methods, if provided
+		.transport( options.transport )
+		// Bootstrap with a specific routes object, if provided
+		.bootstrap( options &amp;&amp; options.routes );
+}
+
+/**
+ * Set custom transport methods to use when making HTTP requests against the API
+ *
+ * Pass an object with a function for one or many of "get", "post", "put",
+ * "delete" and "head" and that function will be called when making that type
+ * of request. The provided transport functions should take a WPRequest handler
+ * instance (_e.g._ the result of a `wp.posts()...` chain or any other chaining
+ * request handler) as their first argument; a `data` object as their second
+ * argument (for POST, PUT and DELETE requests); and an optional callback as
+ * their final argument. Transport methods should invoke the callback with the
+ * response data (or error, as appropriate), and should also return a Promise.
+ *
+ * @example &lt;caption>showing how a cache hit (keyed by URI) could short-circuit a get request&lt;/caption>
+ *
+ *     var site = new WPAPI({
+ *       endpoint: 'http://my-site.com/wp-json'
+ *     });
+ *
+ *     // Overwrite the GET behavior to inject a caching layer
+ *     site.transport({
+ *       get: function( wpreq, cb ) {
+ *         var result = cache[ wpreq ];
+ *         // If a cache hit is found, return it via the same callback/promise
+ *         // signature as the default transport method
+ *         if ( result ) {
+ *           if ( cb &amp;&amp; typeof cb === 'function' ) {
+ *             cb( null, result );
+ *           }
+ *           return Promise.resolve( result );
+ *         }
+ *
+ *         // Delegate to default transport if no cached data was found
+ *         return WPAPI.transport.get( wpreq, cb ).then(function( result ) {
+ *           cache[ wpreq ] = result;
+ *           return result;
+ *         });
+ *       }
+ *     });
+ *
+ * This is advanced behavior; you will only need to utilize this functionality
+ * if your application has very specific HTTP handling or caching requirements.
+ * Refer to the "http-transport" module within this application for the code
+ * implementing the built-in transport methods.
+ *
+ * @memberof! WPAPI
+ * @method transport
+ * @chainable
+ * @param {Object}   transport          A dictionary of HTTP transport methods
+ * @param {Function} [transport.get]    The function to use for GET requests
+ * @param {Function} [transport.post]   The function to use for POST requests
+ * @param {Function} [transport.put]    The function to use for PUT requests
+ * @param {Function} [transport.delete] The function to use for DELETE requests
+ * @param {Function} [transport.head]   The function to use for HEAD requests
+ * @returns {WPAPI} The WPAPI instance, for chaining
+ */
+WPAPI.prototype.transport = function( transport ) {
+	// Local reference to avoid need to reference via `this` inside forEach
+	var _options = this._options;
+
+	// Create the default transport if it does not exist
+	if ( ! _options.transport ) {
+		_options.transport = Object.create( WPAPI.transport );
+	}
+
+	// Whitelist the methods that may be applied
+	[ 'get', 'head', 'post', 'put', 'delete' ].forEach(function( key ) {
+		if ( transport &amp;&amp; transport[ key ] ) {
+			_options.transport[ key ] = transport[ key ];
+		}
+	});
+
+	return this;
+};
+
+/**
+ * Default HTTP transport methods object for all WPAPI instances
+ *
+ * These methods may be extended or replaced on an instance-by-instance basis
+ *
+ * @memberof! WPAPI
+ * @static
+ * @property transport
+ * @type {Object}
+ */
+WPAPI.transport = Object.create( httpTransport );
+Object.freeze( WPAPI.transport );
+
+/**
+ * Convenience method for making a new WPAPI instance
+ *
+ * @example
+ * These are equivalent:
+ *
+ *     var wp = new WPAPI({ endpoint: 'http://my.blog.url/wp-json' });
+ *     var wp = WPAPI.site( 'http://my.blog.url/wp-json' );
+ *
+ * `WPAPI.site` can take an optional API root response JSON object to use when
+ * bootstrapping the client's endpoint handler methods: if no second parameter
+ * is provided, the client instance is assumed to be using the default API
+ * with no additional plugins and is initialized with handlers for only those
+ * default API routes.
+ *
+ * @example
+ * These are equivalent:
+ *
+ *     // {...} means the JSON output of http://my.blog.url/wp-json
+ *     var wp = new WPAPI({
+ *       endpoint: 'http://my.blog.url/wp-json',
+ *       json: {...}
+ *     });
+ *     var wp = WPAPI.site( 'http://my.blog.url/wp-json', {...} );
+ *
+ * @memberof! WPAPI
+ * @static
+ * @param {String} endpoint The URI for a WP-API endpoint
+ * @param {Object} routes   The "routes" object from the JSON object returned
+ *                          from the root API endpoint of a WP site, which should
+ *                          be a dictionary of route definition objects keyed by
+ *                          the route's regex pattern
+ * @returns {WPAPI} A new WPAPI instance, bound to the provided endpoint
+ */
+WPAPI.site = function( endpoint, routes ) {
+	return new WPAPI({
+		endpoint: endpoint,
+		routes: routes
+	});
+};
+
+/**
+ * Generate a request against a completely arbitrary endpoint, with no assumptions about
+ * or mutation of path, filtering, or query parameters. This request is not restricted to
+ * the endpoint specified during WPAPI object instantiation.
+ *
+ * @example
+ * Generate a request to the explicit URL "http://your.website.com/wp-json/some/custom/path"
+ *
+ *     wp.url( 'http://your.website.com/wp-json/some/custom/path' ).get()...
+ *
+ * @memberof! WPAPI
+ * @param {String} url The URL to request
+ * @returns {WPRequest} A WPRequest object bound to the provided URL
+ */
+WPAPI.prototype.url = function( url ) {
+	var options = extend( {}, this._options, {
+		endpoint: url
+	});
+	return new WPRequest( options );
+};
+
+/**
+ * Generate a query against an arbitrary path on the current endpoint. This is useful for
+ * requesting resources at custom WP-API endpoints, such as WooCommerce's `/products`.
+ *
+ * @memberof! WPAPI
+ * @param {String} [relativePath] An endpoint-relative path to which to bind the request
+ * @returns {WPRequest} A request object
+ */
+WPAPI.prototype.root = function( relativePath ) {
+	relativePath = relativePath || '';
+	var options = extend( {}, this._options );
+	// Request should be
+	var request = new WPRequest( options );
+
+	// Set the path template to the string passed in
+	request._path = { '0': relativePath };
+
+	return request;
+};
+
+/**
+ * Set the default headers to use for all HTTP requests created from this WPAPI
+ * site instance. Accepts a header name and its associated value as two strings,
+ * or multiple headers as an object of name-value pairs.
+ *
+ * @example &lt;caption>Set a single header to be used by all requests to this site&lt;/caption>
+ *
+ *     site.setHeaders( 'Authorization', 'Bearer trustme' )...
+ *
+ * @example &lt;caption>Set multiple headers to be used by all requests to this site&lt;/caption>
+ *
+ *     site.setHeaders({
+ *       Authorization: 'Bearer comeonwereoldfriendsright',
+ *       'Accept-Language': 'en-CA'
+ *     })...
+ *
+ * @memberof! WPAPI
+ * @since 1.1.0
+ * @chainable
+ * @param {String|Object} headers The name of the header to set, or an object of
+ *                                header names and their associated string values
+ * @param {String}        [value] The value of the header being set
+ * @returns {WPAPI} The WPAPI site handler instance, for chaining
+ */
+WPAPI.prototype.setHeaders = WPRequest.prototype.setHeaders;
+
+/**
+ * Set the authentication to use for a WPAPI site handler instance. Accepts basic
+ * HTTP authentication credentials (string username &amp; password) or a Nonce (for
+ * cookie authentication) by default; may be overloaded to accept OAuth credentials
+ * in the future.
+ *
+ * @example &lt;caption>Basic Authentication&lt;/caption>
+ *
+ *     site.auth({
+ *       username: 'admin',
+ *       password: 'securepass55'
+ *     })...
+ *
+ * @example &lt;caption>Cookie/Nonce Authentication&lt;/caption>
+ *
+ *     site.auth({
+ *       nonce: 'somenonce'
+ *     })...
+ *
+ * @memberof! WPAPI
+ * @method
+ * @chainable
+ * @param {Object} credentials            An authentication credentials object
+ * @param {String} [credentials.username] A WP-API Basic HTTP Authentication username
+ * @param {String} [credentials.password] A WP-API Basic HTTP Authentication password
+ * @param {String} [credentials.nonce]    A WP nonce for use with cookie authentication
+ * @returns {WPAPI} The WPAPI site handler instance, for chaining
+ */
+WPAPI.prototype.auth = WPRequest.prototype.auth;
+
+// Apply the registerRoute method to the prototype
+WPAPI.prototype.registerRoute = require( './lib/wp-register-route' );
+
+/**
+ * Deduce request methods from a provided API root JSON response object's
+ * routes dictionary, and assign those methods to the current instance. If
+ * no routes dictionary is provided then the instance will be bootstrapped
+ * with route handlers for the default API endpoints only.
+ *
+ * This method is called automatically during WPAPI instance creation.
+ *
+ * @memberof! WPAPI
+ * @chainable
+ * @param {Object} routes The "routes" object from the JSON object returned
+ *                        from the root API endpoint of a WP site, which should
+ *                        be a dictionary of route definition objects keyed by
+ *                        the route's regex pattern
+ * @returns {WPAPI} The bootstrapped WPAPI client instance (for chaining or assignment)
+ */
+WPAPI.prototype.bootstrap = function( routes ) {
+	var routesByNamespace;
+	var endpointFactoriesByNamespace;
+
+	if ( ! routes ) {
+		// Auto-generate default endpoint factories if they are not already available
+		if ( ! defaultEndpointFactories ) {
+			routesByNamespace = buildRouteTree( defaultRoutes );
+			defaultEndpointFactories = generateEndpointFactories( routesByNamespace );
+		}
+		endpointFactoriesByNamespace = defaultEndpointFactories;
+	} else {
+		routesByNamespace = buildRouteTree( routes );
+		endpointFactoriesByNamespace = generateEndpointFactories( routesByNamespace );
+	}
+
+	// For each namespace for which routes were identified, store the generated
+	// route handlers on the WPAPI instance's private _ns dictionary. These namespaced
+	// handler methods can be accessed by calling `.namespace( str )` on the
+	// client instance and passing a registered namespace string.
+	// Handlers for default (wp/v2) routes will also be assigned to the WPAPI
+	// client instance object itself, for brevity.
+	return objectReduce( endpointFactoriesByNamespace, function( wpInstance, endpointFactories, namespace ) {
+
+		// Set (or augment) the route handler factories for this namespace.
+		wpInstance._ns[ namespace ] = objectReduce( endpointFactories, function( nsHandlers, handlerFn, methodName ) {
+			nsHandlers[ methodName ] = handlerFn;
+			return nsHandlers;
+		}, wpInstance._ns[ namespace ] || {
+			// Create all namespace dictionaries with a direct reference to the main WPAPI
+			// instance's _options property so that things like auth propagate properly
+			_options: wpInstance._options
+		} );
+
+		// For the default namespace, e.g. "wp/v2" at the time this comment was
+		// written, ensure all methods are assigned to the root client object itself
+		// in addition to the private _ns dictionary: this is done so that these
+		// methods can be called with e.g. `wp.posts()` and not the more verbose
+		// `wp.namespace( 'wp/v2' ).posts()`.
+		if ( namespace === apiDefaultNamespace ) {
+			Object.keys( wpInstance._ns[ namespace ] ).forEach(function( methodName ) {
+				wpInstance[ methodName ] = wpInstance._ns[ namespace ][ methodName ];
+			});
+		}
+
+		return wpInstance;
+	}, this );
+};
+
+/**
+ * Access API endpoint handlers from a particular API namespace object
+ *
+ * @example
+ *
+ *     wp.namespace( 'myplugin/v1' ).author()...
+ *
+ *     // Default WP endpoint handlers are assigned to the wp instance itself.
+ *     // These are equivalent:
+ *     wp.namespace( 'wp/v2' ).posts()...
+ *     wp.posts()...
+ *
+ * @memberof! WPAPI
+ * @param {string} namespace A namespace string
+ * @returns {Object} An object of route endpoint handler methods for the
+ * routes within the specified namespace
+ */
+WPAPI.prototype.namespace = function( namespace ) {
+	if ( ! this._ns[ namespace ] ) {
+		throw new Error( 'Error: namespace ' + namespace + ' is not recognized' );
+	}
+	return this._ns[ namespace ];
+};
+
+/**
+ * Take an arbitrary WordPress site, deduce the WP REST API root endpoint, query
+ * that endpoint, and parse the response JSON. Use the returned JSON response
+ * to instantiate a WPAPI instance bound to the provided site.
+ *
+ * @memberof! WPAPI
+ * @static
+ * @param {string} url A URL within a REST API-enabled WordPress website
+ * @returns {Promise} A promise that resolves to a configured WPAPI instance bound
+ * to the deduced endpoint, or rejected if an endpoint is not found or the
+ * library is unable to parse the provided endpoint.
+ */
+WPAPI.discover = function( url ) {
+	// local placeholder for API root URL
+	var endpoint;
+
+	// Try HEAD request first, for smaller payload: use WPAPI.site to produce
+	// a request that utilizes the defined HTTP transports
+	var req = WPAPI.site( url ).root();
+	return req.headers()
+		.catch(function() {
+			// On the hypothesis that any error here is related to the HEAD request
+			// failing, provisionally try again using GET because that method is
+			// more widely supported
+			return req.get();
+		})
+		// Inspect response to find API location header
+		.then( autodiscovery.locateAPIRootHeader )
+		.then(function( apiRootURL ) {
+			// Set the function-scope variable that will be used to instantiate
+			// the bound WPAPI instance,
+			endpoint = apiRootURL;
+
+			// then GET the API root JSON object
+			return WPAPI.site( apiRootURL ).root().get();
+		})
+		.then(function( apiRootJSON ) {
+			// Instantiate &amp; bootstrap with the discovered methods
+			return new WPAPI({
+				endpoint: endpoint,
+				routes: apiRootJSON.routes
+			});
+		})
+		.catch(function( err ) {
+			console.error( err );
+			if ( endpoint ) {
+				console.warn( 'Endpoint detected, proceeding despite error...' );
+				console.warn( 'Binding to ' + endpoint + ' and assuming default routes' );
+				return new WPAPI.site( endpoint );
+			}
+			throw new Error( 'Autodiscovery failed' );
+		});
+};
+
+module.exports = WPAPI;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<br class="clear">
+
+<footer>
+    Generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Fri May 19 2017 17:31:57 GMT-0400 (EDT) using the Minami theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+</body>
+</html>
