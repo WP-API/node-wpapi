@@ -1,8 +1,5 @@
 'use strict';
-var chai = require( 'chai' );
-var sinon = require( 'sinon' );
-chai.use( require( 'sinon-chai' ) );
-var expect = chai.expect;
+var expect = require( 'chai' ).expect;
 
 var splitPath = require( '../../../../lib/util/split-path' );
 
@@ -31,6 +28,20 @@ describe( 'splitPath utility', function() {
 		expect( result ).to.deep.equal([
 			'plugin',
 			'(?P<plugin>[a-z\\/\\.\\-_]+)'
+		]);
+	});
+
+	it( 'correctly splits a string with levels containing text outside named groups', function() {
+		// From user-contributed example on https://developer.wordpress.org/reference/functions/register_rest_route/
+		// Note that this library does not support this syntax, but ensuring that
+		// common variants of path strings are split correctly avoids situations
+		// where an unexpected string format could cause an error.
+		var result = splitPath( '/users/market=(?P<market>[a-zA-Z0-9-]+)/lat=(?P<lat>[a-z0-9 .\\-]+)/long=(?P<long>[a-z0-9 .\\-]+)' );
+		expect( result ).to.deep.equal([
+			'users',
+			'market=(?P<market>[a-zA-Z0-9-]+)',
+			'lat=(?P<lat>[a-z0-9 .\\-]+)',
+			'long=(?P<long>[a-z0-9 .\\-]+)'
 		]);
 	});
 
