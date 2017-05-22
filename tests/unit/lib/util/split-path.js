@@ -45,4 +45,14 @@ describe( 'splitPath utility', function() {
 		]);
 	});
 
+	it( 'correctly splits a string with this situation', function() {
+		var result = splitPath( '/plugin/(?P<plugin_slug>[^/]+)/committers/?' );
+		expect( result ).to.deep.equal([
+			'plugin',
+			'(?P<plugin_slug>[^/]+)',
+			'committers',
+			'?'
+		]);
+	});
+
 });

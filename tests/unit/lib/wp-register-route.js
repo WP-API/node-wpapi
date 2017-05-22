@@ -100,6 +100,22 @@ describe( 'wp.registerRoute', function() {
 
 	});
 
+	describe( 'handler for /plugin/(?P<plugin_slug>[^/]+)/committers/?)', function() {
+
+		it( 'will ignore the trailing /? (the ? is intended to mark the / as optional', function() {
+			var factory = registerRoute( 'plugins/v1', '/plugin/(?P<plugin_slug>[^/]+)/committers/?' );
+			var handler = factory({
+				endpoint: '/'
+			});
+			expect( handler ).to.have.property( 'pluginSlug' );
+			expect( handler.pluginSlug ).to.be.a( 'function' );
+			expect( handler ).to.have.property( 'committers' );
+			expect( handler.committers ).to.be.a( 'function' );
+			expect( handler.pluginSlug( 'rest-api' ).committers().toString() ).to.equal( '/plugins/v1/plugin/rest-api/committers' );
+		});
+
+	});
+
 	describe( 'handler for unsupported route definition format', function() {
 
 		it( 'will parse the route without error but not yield functioning setters', function() {
