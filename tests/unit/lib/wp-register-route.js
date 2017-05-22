@@ -85,6 +85,22 @@ describe( 'wp.registerRoute', function() {
 
 	});
 
+	// Example of a Jetpack route with regexes containing forward slashes
+	describe( 'handler for /jetpack/v4/plugin/(?P<plugin>[a-z\\/\\.\\-_]+)', function() {
+		var handler;
+
+		it( 'permits setting path parts with forward slashes', function() {
+			var factory = registerRoute( 'jetpack/v4', '/plugin/(?P<plugin>[a-z\\/\\.\\-_]+)' );
+			handler = factory({
+				endpoint: '/'
+			});
+			expect( handler ).to.have.property( 'plugin' );
+			expect( handler.plugin ).to.be.a( 'function' );
+			expect( handler.plugin( 'a/b_c' ).toString() ).to.equal( '/jetpack/v4/plugin/a/b_c' );
+		});
+
+	});
+
 	describe( 'handler for /a/(?P<snake_cased_path_setter>\\d+)', function() {
 		var handler;
 

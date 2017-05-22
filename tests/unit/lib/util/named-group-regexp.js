@@ -1,7 +1,7 @@
 'use strict';
 var expect = require( 'chai' ).expect;
 
-var namedGroupRE = require( '../../../../lib/util/named-group-regexp' );
+var namedGroupRE = require( '../../../../lib/util/named-group-regexp' ).namedGroupRE;
 
 describe( 'named PCRE group RegExp', function() {
 
@@ -29,6 +29,14 @@ describe( 'named PCRE group RegExp', function() {
 		expect( result ).not.to.be.null;
 		expect( result[ 1 ] ).to.equal( 'id' );
 		expect( result[ 2 ] ).to.equal( '\\d+' );
+	});
+
+	it( 'identifies RE patterns including forward slashes', function() {
+		var pathComponent = '(?P<plugin>[a-z\\/\\.\\-_]+)';
+		var result = pathComponent.match( namedGroupRE );
+		expect( result ).not.to.be.null;
+		expect( result[ 1 ] ).to.equal( 'plugin' );
+		expect( result[ 2 ] ).to.equal( '[a-z\\/\\.\\-_]+' );
 	});
 
 	it( 'will match an empty string if a "RE Pattern" if the pattern is omitted', function() {
