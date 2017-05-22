@@ -85,6 +85,64 @@ describe( 'wp.registerRoute', function() {
 
 	});
 
+	// Example of a Jetpack route with regexes containing forward slashes
+	describe( 'handler for /jetpack/v4/plugin/(?P<plugin>[a-z\\/\\.\\-_]+)', function() {
+
+		it( 'permits setting path parts with forward slashes', function() {
+			var factory = registerRoute( 'jetpack/v4', '/plugin/(?P<plugin>[a-z\\/\\.\\-_]+)' );
+			var handler = factory({
+				endpoint: '/'
+			});
+			expect( handler ).to.have.property( 'plugin' );
+			expect( handler.plugin ).to.be.a( 'function' );
+			expect( handler.plugin( 'a/b_c' ).toString() ).to.equal( '/jetpack/v4/plugin/a/b_c' );
+		});
+
+	});
+
+	describe( 'handler for /plugin/(?P<plugin_slug>[^/]+)/committers/?)', function() {
+
+		it( 'will ignore the trailing /? (the ? is intended to mark the / as optional', function() {
+			var factory = registerRoute( 'plugins/v1', '/plugin/(?P<plugin_slug>[^/]+)/committers/?' );
+			var handler = factory({
+				endpoint: '/'
+			});
+			expect( handler ).to.have.property( 'pluginSlug' );
+			expect( handler.pluginSlug ).to.be.a( 'function' );
+			expect( handler ).to.have.property( 'committers' );
+			expect( handler.committers ).to.be.a( 'function' );
+			expect( handler.pluginSlug( 'rest-api' ).committers().toString() ).to.equal( '/plugins/v1/plugin/rest-api/committers' );
+		});
+
+	});
+
+	describe( 'handler for unsupported route definition format', function() {
+
+		it( 'will parse the route without error but not yield functioning setters', function() {
+			var factory;
+			expect(function() {
+				factory = registerRoute(
+					'mmw/v1',
+					'/users/market=(?P<market>[a-zA-Z0-9-]+)/lat=(?P<lat>[a-z0-9 .\\-]+)/long=(?P<long>[a-z0-9 .\\-]+)'
+				);
+			}).not.to.throw();
+			var handler = factory({
+				endpoint: '/'
+			});
+			expect( handler ).to.have.property( 'market' );
+			expect( handler.market ).to.be.a( 'function' );
+			expect( handler ).to.have.property( 'lat' );
+			expect( handler.lat ).to.be.a( 'function' );
+			expect( handler ).to.have.property( 'long' );
+			expect( handler.long ).to.be.a( 'function' );
+			// This is not "correct", but this syntax is not supported: the purpose of this
+			// test is to ensure that the code executes without error
+			expect( handler.market( 'nz' ).lat( '40.9006 S' ).long( '174.8860 E' ).toString() )
+				.to.equal( '/mmw/v1/users/nz/40.9006 S/174.8860 E' );
+		});
+
+	});
+
 	describe( 'handler for /a/(?P<snake_cased_path_setter>\\d+)', function() {
 		var handler;
 
