@@ -103,6 +103,14 @@ In a case where you would want to connect to a HTTPS WordPress installation that
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 ```
 
+### Self-signed (Insecure) HTTPS Certificates
+
+In a case where you would want to connect to a HTTPS WordPress installation that has a self-signed certificate (insecure), you will need to force a connection by placing the following line before you make any `wp` calls.
+
+```javascript
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+```
+
 ### Auto-Discovery
 
 It is also possible to leverage the [capability discovery](https://developer.wordpress.org/rest-api/using-the-rest-api/discovery/) features of the API to automatically detect and add setter methods for your custom routes, or routes added by plugins.
