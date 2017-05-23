@@ -9,6 +9,10 @@ permalink: /changelog/
 
 
 
+## v1.1.1 _Music For The Masses_
+
+- Resolves an issue where certain route paths would cause a fatal error in the route tree parser, props @obenland for diagnosing the bug
+
 ## v1.1.0 _Where's Your Head At_
 
 - Implement a `.setHeader()` method for WPAPI and WPRequest objects to send arbitrary HTTP headers with outgoing API requests, props @anagio, @andreasvirkus, @gnarf, @Matthewnie, @mnivoliez, & @mzalewski

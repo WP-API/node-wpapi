@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>lib/mixins/filters.js - Documentation</title>
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav>
+    <li class="nav-link nav-home-link"><a href="index.html">Home</a></li><li class="nav-heading">Classes</li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="WPAPI.html">WPAPI</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="WPAPI.html#..categories">.categories</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="WPAPI.html#..comments">.comments</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="WPAPI.html#..discover">.discover</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="WPAPI.html#..media">.media</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="WPAPI.html#..pages">.pages</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="WPAPI.html#..posts">.posts</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="WPAPI.html#..settings">.settings</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="WPAPI.html#..site">.site</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="WPAPI.html#..statuses">.statuses</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="WPAPI.html#..tags">.tags</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="WPAPI.html#..taxonomies">.taxonomies</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="WPAPI.html#..transport">.transport</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="WPAPI.html#..types">.types</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="WPAPI.html#..users">.users</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="WPAPI.html##auth">#auth</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="WPAPI.html##bootstrap">#bootstrap</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="WPAPI.html##namespace">#namespace</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="WPAPI.html#registerRoute">registerRoute</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="WPAPI.html##root">#root</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="WPAPI.html##url">#url</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="WPRequest.html">WPRequest</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="WPRequest.html#auth">auth</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="WPRequest.html#context">context</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="WPRequest.html#create">create</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="WPRequest.html#delete">delete</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="WPRequest.html#edit">edit</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="WPRequest.html#embed">embed</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="WPRequest.html#exclude">exclude</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="WPRequest.html#file">file</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="WPRequest.html#get">get</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="WPRequest.html#headers">headers</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="WPRequest.html#include">include</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="WPRequest.html#namespace">namespace</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="WPRequest.html#offset">offset</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="WPRequest.html#order">order</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="WPRequest.html#orderby">orderby</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="WPRequest.html#page">page</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="WPRequest.html#param">param</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="WPRequest.html#perPage">perPage</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="WPRequest.html#search">search</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="WPRequest.html#setHeaders">setHeaders</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="WPRequest.html#setPathPart">setPathPart</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="WPRequest.html#slug">slug</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="WPRequest.html#then">then</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="WPRequest.html#toString">toString</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="WPRequest.html#validatePath">validatePath</a></span></li><li class="nav-heading">Modules</li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-autodiscovery.html">autodiscovery</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-autodiscovery.html#~locateAPIRootHeader">locateAPIRootHeader</a></span></li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-endpoint-factories.html">endpoint-factories</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-endpoint-factories.html#~generate">generate</a></span></li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-endpoint-request.html">endpoint-request</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-endpoint-request.html#~create">create</a></span></li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-http-transport.html">http-transport</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-http-transport.html#~delete">delete</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-http-transport.html#~get">get</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-http-transport.html#~head">head</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-http-transport.html#~post">post</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-http-transport.html#~put">put</a></span></li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-mixins_filters.html">mixins/filters</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-mixins_filters.html#~day">day</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-mixins_filters.html#~filter">filter</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-mixins_filters.html#~month">month</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-mixins_filters.html#~path">path</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-mixins_filters.html#~taxonomy">taxonomy</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-mixins_filters.html#~year">year</a></span></li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-mixins_parameters.html">mixins/parameters</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-mixins_parameters.html#~after">after</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-mixins_parameters.html#~author">author</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-mixins_parameters.html#~before">before</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-mixins_parameters.html#~categories">categories</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-mixins_parameters.html#~excludeCategories">excludeCategories</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-mixins_parameters.html#~excludeTags">excludeTags</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-mixins_parameters.html#~parent">parent</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-mixins_parameters.html#~password">password</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-mixins_parameters.html#~post">post</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-mixins_parameters.html#~status">status</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-mixins_parameters.html#~sticky">sticky</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-mixins_parameters.html#~tag">tag</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-mixins_parameters.html#~tag">tag</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-mixins_parameters.html#~tags">tags</a></span></li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-path-part-setter.html">path-part-setter</a></span></li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-resource-handler-spec.html">resource-handler-spec</a></span></li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-route-tree.html">route-tree</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-route-tree.html#~build">build</a></span></li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-util_alphanumeric-sort.html">util/alphanumeric-sort</a></span></li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-util_apply-mixin.html">util/apply-mixin</a></span></li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-util_argument-is-numeric.html">util/argument-is-numeric</a></span></li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-util_check-method-support.html">util/check-method-support</a></span></li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-util_ensure.html">util/ensure</a></span></li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-util_is-empty-object.html">util/is-empty-object</a></span></li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-util_key-val-to-obj.html">util/key-val-to-obj</a></span></li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-util_named-group-regexp.html">util/named-group-regexp</a></span></li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-util_parameter-setter.html">util/parameter-setter</a></span></li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-util_split-path.html">util/split-path</a></span></li><li class="nav-heading">Mixins</li><li class="nav-heading"><span class="nav-item-type type-mixin">M</span><span class="nav-item-name"><a href="module-mixins_filters-filters.html">filters</a></span></li><li class="nav-heading"><span class="nav-item-type type-mixin">M</span><span class="nav-item-name"><a href="module-mixins_parameters-parameters.html">parameters</a></span></li>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">lib/mixins/filters.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @module mixins/filters
+ */
+'use strict';
+
+var _unique = require( 'lodash.uniq' );
+var extend = require( 'node.extend' );
+
+var alphaNumericSort = require( '../util/alphanumeric-sort' );
+var keyValToObj = require( '../util/key-val-to-obj' );
+
+/**
+ * Filter methods that can be mixed in to a request constructor's prototype to
+ * allow that request to take advantage of the `?filter[]=` aliases for WP_Query
+ * parameters for collection endpoints, when available.
+ *
+ * @mixin filters
+ */
+var filterMixins = {};
+
+// Filter Methods
+// ==============
+
+/**
+ * Specify key-value pairs by which to filter the API results (commonly used
+ * to retrieve only posts meeting certain criteria, such as posts within a
+ * particular category or by a particular author).
+ *
+ * @example
+ *
+ *     // Set a single property:
+ *     wp.filter( 'post_type', 'cpt_event' )...
+ *
+ *     // Set multiple properties at once:
+ *     wp.filter({
+ *         post_status: 'publish',
+ *         category_name: 'news'
+ *     })...
+ *
+ *     // Chain calls to .filter():
+ *     wp.filter( 'post_status', 'publish' ).filter( 'category_name', 'news' )...
+ *
+ * @method filter
+ * @chainable
+ * @param {String|Object} props A filter property name string, or object of name/value pairs
+ * @param {String|Number|Array} [value] The value(s) corresponding to the provided filter property
+ * @returns The request instance (for chaining)
+ */
+filterMixins.filter = function( props, value ) {
+	/* jshint validthis:true */
+
+	if ( ! props || typeof props === 'string' &amp;&amp; value === undefined ) {
+		// We have no filter to set, or no value to set for that filter
+		return this;
+	}
+
+	// convert the property name string `props` and value `value` into an object
+	if ( typeof props === 'string' ) {
+		props = keyValToObj( props, value );
+	}
+
+	this._filters = extend( this._filters, props );
+
+	return this;
+};
+
+/**
+ * Restrict the query results to posts matching one or more taxonomy terms.
+ *
+ * @method taxonomy
+ * @chainable
+ * @param {String} taxonomy The name of the taxonomy to filter by
+ * @param {String|Number|Array} term A string or integer, or array thereof, representing terms
+ * @returns The request instance (for chaining)
+ */
+filterMixins.taxonomy = function( taxonomy, term ) {
+	/* jshint validthis:true */
+	var termIsArray = Array.isArray( term );
+	var termIsNumber = termIsArray ?
+		term.reduce(function( allAreNumbers, term ) {
+			return allAreNumbers &amp;&amp; typeof term === 'number';
+		}, true ) :
+		typeof term === 'number';
+	var termIsString = termIsArray ?
+		term.reduce(function( allAreStrings, term ) {
+			return allAreStrings &amp;&amp; typeof term === 'string';
+		}, true ) :
+		typeof term === 'string';
+	var taxonomyTerms;
+
+	if ( ! termIsString &amp;&amp; ! termIsNumber ) {
+		throw new Error( 'term must be a number, string, or array of numbers or strings' );
+	}
+
+	if ( taxonomy === 'category' ) {
+		if ( termIsString ) {
+			// Query param for filtering by category slug is "category_name"
+			taxonomy = 'category_name';
+		} else {
+			// The boolean check above ensures that if taxonomy === 'category' and
+			// term is not a string, then term must be a number and therefore an ID:
+			// Query param for filtering by category ID is "cat"
+			taxonomy = 'cat';
+		}
+	} else if ( taxonomy === 'post_tag' ) {
+		// tag is used in place of post_tag in the public query variables
+		taxonomy = 'tag';
+	}
+
+	// Ensure the taxonomy filters object is available
+	this._taxonomyFilters = this._taxonomyFilters || {};
+
+	// Ensure there's an array of terms available for this taxonomy
+	taxonomyTerms = ( this._taxonomyFilters[ taxonomy ] || [] )
+		// Insert the provided terms into the specified taxonomy's terms array
+		.concat( term )
+		// Sort array
+		.sort( alphaNumericSort );
+
+	// De-dupe
+	this._taxonomyFilters[ taxonomy ] = _unique( taxonomyTerms, true );
+
+	return this;
+};
+
+/**
+ * Query for posts published in a given year.
+ *
+ * @method year
+ * @chainable
+ * @param {Number} year integer representation of year requested
+ * @returns The request instance (for chaining)
+ */
+filterMixins.year = function( year ) {
+	/* jshint validthis:true */
+	return filterMixins.filter.call( this, 'year', year );
+};
+
+/**
+ * Query for posts published in a given month, either by providing the number
+ * of the requested month (e.g. 3), or the month's name as a string (e.g. "March")
+ *
+ * @method month
+ * @chainable
+ * @param {Number|String} month Integer for month (1) or month string ("January")
+ * @returns The request instance (for chaining)
+ */
+filterMixins.month = function( month ) {
+	/* jshint validthis:true */
+	var monthDate;
+	if ( typeof month === 'string' ) {
+		// Append a arbitrary day and year to the month to parse the string into a Date
+		monthDate = new Date( Date.parse( month + ' 1, 2012' ) );
+
+		// If the generated Date is NaN, then the passed string is not a valid month
+		if ( isNaN( monthDate ) ) {
+			return this;
+		}
+
+		// JS Dates are 0 indexed, but the WP API requires a 1-indexed integer
+		month = monthDate.getMonth() + 1;
+	}
+
+	// If month is a Number, add the monthnum filter to the request
+	if ( typeof month === 'number' ) {
+		return filterMixins.filter.call( this, 'monthnum', month );
+	}
+
+	return this;
+};
+
+/**
+ * Add the day filter into the request to retrieve posts for a given day
+ *
+ * @method day
+ * @chainable
+ * @param {Number} day Integer representation of the day requested
+ * @returns The request instance (for chaining)
+ */
+filterMixins.day = function( day ) {
+	/* jshint validthis:true */
+	return filterMixins.filter.call( this, 'day', day );
+};
+
+/**
+ * Specify that we are requesting a page by its path (specific to Page resources)
+ *
+ * @method path
+ * @chainable
+ * @param {String} path The root-relative URL path for a page
+ * @returns The request instance (for chaining)
+ */
+filterMixins.path = function( path ) {
+	/* jshint validthis:true */
+	return filterMixins.filter.call( this, 'pagename', path );
+};
+
+module.exports = filterMixins;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<br class="clear">
+
+<footer>
+    Generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Mon May 22 2017 20:22:27 GMT-0400 (EDT) using the Minami theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+</body>
+</html>
