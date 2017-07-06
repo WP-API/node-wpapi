@@ -1,8 +1,15 @@
 # Changelog
 
+## v1.1.2 _If I Survive_
+
+- Resolves an issue where authentication credentials where not maintained properly when iterating through pages of a connection with `._paging.next` or `._paging.prev`, props @motleydev for the reproducible bug report
+- Introduces a `--file` flag for the `update-default-routes-json` command-line script
+
+
 ## v1.1.1 _Music For The Masses_
 
 - Resolves an issue where certain route paths would cause a fatal error in the route tree parser, props @obenland for diagnosing the bug
+
 
 ## v1.1.0 _Where's Your Head At_
 
@@ -10,9 +17,11 @@
 - Clarify CORS requirements in README, props @entr
 - Improve inline documentation & switch from YUIDoc to JSDoc
 
+
 ## v1.0.3 _Couleurs Primaires_
 
 - Properly parse API response text when response is sent back with Content-Type "text/html"
+
 
 ## v1.0.2 _Recto Verso_
 
@@ -21,12 +30,14 @@
 
 Patch release named for Paradis' 2016 LP "Recto Verso".
 
+
 ## v1.0.1 _The Only Constant is Change_
 
 - Support endpoints using "plain permalinks", props @luisherranz
 
 This patch release is named for _The Only Constant is Change_, a track from
 v1.0 namesake album _Emotional Technology_ by BT.
+
 
 ## v1.0.0 _Emotional Technology_
 
@@ -41,6 +52,14 @@ v1.0 namesake album _Emotional Technology_ by BT.
 - Replace `lodash.reduce` with custom `objectReduce` method throughout codebase to reduce browser bundle size
 
 This release is named for BT's 2003 album _Emotional Technology_.
+
+
+## v0.12.1 _You Only Live Once -Instrumental-_
+
+This patch release fixes an issue where [valid post type identifiers](https://developer.wordpress.org/reference/functions/sanitize_key/) (or [PCRE capture group](http://www.regular-expressions.info/refext.html) names) are not properly intercepted and mapped to camelCase path part setters.
+
+Props @gambry
+
 
 ## v0.12.0 _You Only Live Once_
 
@@ -69,12 +88,6 @@ _Note:_ these method names may be retained, but the functionality which delegate
 Props @joaojeronimo, @Ohar, @ryelle
 
 This release is named for w.hatano's latest EP [_You Only Live Once_](https://www.youtube.com/watch?v=V7mnNdkhciQ)
-
-## v0.12.1 _You Only Live Once -Instrumental-_
-
-This patch release fixes an issue where [valid post type identifiers](https://developer.wordpress.org/reference/functions/sanitize_key/) (or [PCRE capture group](http://www.regular-expressions.info/refext.html) names) are not properly intercepted and mapped to camelCase path part setters.
-
-Props @gambry
 
 
 ## v0.11.0 _Super_
@@ -113,10 +126,8 @@ This release is named for the Pet Shop Boys' latest album [_Super_](http://whati
 
 Props @edygar, @ludoo0d0a, @marcianosr, @sdgluck, and @stephanmax, for issues, PRs, feedback & discussions.
 
+
 ## v0.10.0 _Abaporu_
-
-
-Release v0.10.0 "Abaporu"
 
 v0.10 standardizes the name of the constructor exposed by this module as "WPAPI", and creates a seam through which HTTP interactions can be customized or overridden. This release is named for Brazilian DJ Gui Boratto's fourth studio album _Abaporu_ (Kompakt, 2014).
 
@@ -133,9 +144,32 @@ Custom HTTP transport methods may be provided to inject or short-circuit HTTP be
 Props @edygar
 
 
-## v0.9.1 _Since I Left You_
+## v0.9.3 _Frontier Psychiatrist, 85% Instrumental_
 
-(Note: v0.9.0 was beta only)
+Built bundles in `browser/` did not make it into previous publish!
+
+
+## v0.9.2 _Frontier Psychiatrist_
+
+- Added `.toString()` method to WPRequest objects, which returns the full
+  rendered URI for a query
+- Added `.before` and `.after` chaining methods to specify date queries
+- Improvements to integration tests & documentation
+
+**Deprecated Methods:**
+
+- `._renderURI()` method on WPRequest object (use `.toString`)
+- `.post()` HTTP method on WPRequest object (use `.create`)
+- `.put()` HTTP method on WPRequest object (use `.update`)
+
+**Props for this patch release:**
+
+Issues, Bugs, Documentation Requests & Discussion: @BenHen75, @brianloveswords, @gnarf, @ludoo0d0a, @nodeGarden, @preschian, @sdgluck, @tommedema, @vtripolitakis, @wblaircox, @z-avanes
+
+[I felt strangely hypnotized](https://www.youtube.com/watch?v=eS3AZ12xf6s)
+
+
+## v0.9.1 _Since I Left You_
 
 v0.9 brings two long-neglected features to the foreground: media support and browser-side usage. This release is named in homage to The Avalanches' absurdly brilliant _Since I Left You_.
 
@@ -160,28 +194,10 @@ For pull requests and patches: @bt, @sdgluck
 
 For opening issues and asking or discussing questions: @elyobo, @joneslloyd, @mrkrumhausen, @satish9323, @smedegaard, @tommedema, @vtripolitakis, @z-avanes
 
-## v0.9.2 _Frontier Psychiatrist_
 
-- Added `.toString()` method to WPRequest objects, which returns the full
-  rendered URI for a query
-- Added `.before` and `.after` chaining methods to specify date queries
-- Improvements to integration tests & documentation
+## v0.9.0
 
-**Deprecated Methods:**
-
-- `._renderURI()` method on WPRequest object (use `.toString`)
-- `.post()` HTTP method on WPRequest object (use `.create`)
-- `.put()` HTTP method on WPRequest object (use `.update`)
-
-**Props for this patch release:**
-
-Issues, Bugs, Documentation Requests & Discussion: @BenHen75, @brianloveswords, @gnarf, @ludoo0d0a, @nodeGarden, @preschian, @sdgluck, @tommedema, @vtripolitakis, @wblaircox, @z-avanes
-
-[I felt strangely hypnotized](https://www.youtube.com/watch?v=eS3AZ12xf6s)
-
-## v0.9.3 _Frontier Psychiatrist, 85% Instrumental_
-
-Built bundles in `browser/` did not make it into previous publish!
+(Note: v0.9.0 was beta only)
 
 
 ## v0.8.0 _New Eyes_
@@ -245,6 +261,11 @@ For opening issues and asking questions: @aedensixty, @dasheck0, @jsteranko, @na
 - Add support for /comments collection (props @akira28)
 
 
+## v0.6.0
+
+(v0.6.0 was lost in the endless sea)
+
+
 ## v0.5.0
 
 This release adds support for nonce-based authentication, useful when making API requests from the client side: props @gerhardsletten
@@ -255,14 +276,35 @@ This release adds support for nonce-based authentication, useful when making API
 adds .posts().meta() method
 
 
+## v0.3.1
+
+This release resolves an issue with the query string formatting encountered
+when requesting posts of multiple types in the same query
+
+
 ## v0.3.0
 
 The main new feature in 0.3.0 is initial support for collection pagination: Pagination data is exposed in a `_paging` property on response collections, if additional pages of collection objects are available.
 
-## v0.3.0
 
-This release resolves an issue with the query string formatting encountered
-when requesting posts of multiple types in the same query
+## v0.2.3
+
+This release adds basic support for working with paginated responses
+
+
+## v0.2.2
+
+This release improves the error handling around failed SuperAgent calls.
+Many thanks to @bmac for the bug fix!
+
+
+## v0.2.1
+
+Added in this release:
+
+- `wp.taxonomy()` convenience method for retrieving a taxonomy object
+- `wp.categories()` convenience method for retrieving category terms
+- `wp.tags()` convenience method for retrieving post_tag terms
 
 
 ## v0.2.0
@@ -272,7 +314,7 @@ when requesting posts of multiple types in the same query
 - Add a .root() method for querying custom endpoints
 - Add registerType custom post type request method generator
 - Introduce CollectionRequest constructor
-- Add support for .params
+- Add support for `.param`s
 - Changed PostsRequest to set comment targets via comment(), not id()
 - Remove PATCH method handling from library (After discussion with @rmccue, the recommended way to request resource updates is via PUT)
 - Add pages().path() method for querying by page path string
@@ -285,23 +327,6 @@ when requesting posts of multiple types in the same query
 - Add NPM script aliases for the registered Grunt tasks
 - Standardize constructor naming in README examples
 - Add WP.site static convenience method for creating new sites
-
-## v0.2.1
-
-Added in this release:
-
-- `wp.taxonomy()` convenience method for retrieving a taxonomy object
-- `wp.categories()` convenience method for retrieving category terms
-- `wp.tags()` convenience method for retrieving post_tag terms
-
-## v0.2.2
-
-This release improves the error handling around failed SuperAgent calls.
-Many thanks to @bmac for the bug fix!
-
-## v0.2.3
-
-This release adds basic support for working with paginated responses
 
 
 ## v0.1.1
