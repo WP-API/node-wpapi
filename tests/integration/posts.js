@@ -246,6 +246,20 @@ describe( 'integration: posts()', function() {
 			return expect( prom ).to.eventually.equal( SUCCESS );
 		});
 
+		it( 'maintains authentication across paging requests', function() {
+			var prom = authenticated.posts()
+				.context( 'edit' )
+				.get()
+				.then(function( posts ) {
+					return posts._paging.next.get();
+				})
+				.then(function( page2 ) {
+					expect( page2[0].content ).to.have.property( 'raw' );
+					return SUCCESS;
+				});
+			return expect( prom ).to.eventually.equal( SUCCESS );
+		});
+
 	});
 
 	describe( 'filter methods', function() {
