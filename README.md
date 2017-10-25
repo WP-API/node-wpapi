@@ -909,7 +909,7 @@ First localize your scripts with an object with root-url and nonce in your theme
 function my_enqueue_scripts() {
     wp_enqueue_script( 'app', get_template_directory_uri() . '/assets/dist/bundle.js', array(), false, true );
     wp_localize_script( 'app', 'WP_API_Settings', array(
-        'root' => esc_url_raw( rest_url() ),
+        'endpoint' => esc_url_raw( rest_url() ),
         'nonce' => wp_create_nonce( 'wp_rest' )
     ) );
 }
