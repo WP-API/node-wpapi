@@ -275,15 +275,9 @@ describe( 'integration: categories()', () => {
 			var prom = wp.categories()
 				.search( 'parent' )
 				.get()
-				.then( ( categories ) => {
-					// Iterating over response of search is the best we can do until
-					// filtering for taxonomy term collections is reinstated
-					for ( var i = 0; i < 4; i++ ) {
-						if ( categories[ i ].slug === 'parent' ) {
-							return categories[ i ];
-						}
-					}
-				})
+				// Iterating over response of search is the best we can do until
+				// filtering for taxonomy term collections is reinstated
+				.then( ( categories ) => categories.find( cat => cat.slug === 'parent' ) )
 				.then( ( category ) => {
 					expect( category ).to.have.property( 'slug' );
 					expect( category.slug ).to.equal( 'parent' );

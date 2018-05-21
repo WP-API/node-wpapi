@@ -179,16 +179,14 @@ describe( 'integration: posts()', () => {
 		it( 'allows access to the next page of results via .next', () => {
 			var prom = wp.posts()
 				.get()
+				.then( ( posts ) => posts._paging.next.get() )
+
 				.then( ( posts ) => {
-					return posts._paging.next
-						.get()
-						.then( ( posts ) => {
-							expect( posts ).to.be.an( 'array' );
-							// @TODO: re-enable once PPP support is merged
-							// expect( posts.length ).to.equal( 10 );
-							// expect( getTitles( posts ) ).to.deep.equal( expectedResults.titles.page2 );
-							return SUCCESS;
-						});
+					expect( posts ).to.be.an( 'array' );
+					// @TODO: re-enable once PPP support is merged
+					// expect( posts.length ).to.equal( 10 );
+					// expect( getTitles( posts ) ).to.deep.equal( expectedResults.titles.page2 );
+					return SUCCESS;
 				});
 			return expect( prom ).to.eventually.equal( SUCCESS );
 		});
@@ -197,13 +195,10 @@ describe( 'integration: posts()', () => {
 			var prom = wp.posts()
 				.param( '_wpapi_force_html', true )
 				.get()
+				.then( ( posts ) => posts._paging.next.get() )
 				.then( ( posts ) => {
-					return posts._paging.next
-						.get()
-						.then( ( posts ) => {
-							expect( posts ).to.be.an( 'array' );
-							return SUCCESS;
-						});
+					expect( posts ).to.be.an( 'array' );
+					return SUCCESS;
 				});
 			return expect( prom ).to.eventually.equal( SUCCESS );
 		});
@@ -250,9 +245,7 @@ describe( 'integration: posts()', () => {
 			var prom = authenticated.posts()
 				.context( 'edit' )
 				.get()
-				.then( ( posts ) => {
-					return posts._paging.next.get();
-				})
+				.then( ( posts ) => posts._paging.next.get() )
 				.then( ( page2 ) => {
 					expect( page2[0].content ).to.have.property( 'raw' );
 					return SUCCESS;
