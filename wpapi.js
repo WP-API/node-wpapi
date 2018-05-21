@@ -74,7 +74,7 @@ function WPAPI( options ) {
 
 	this._options = {
 		// Ensure trailing slash on endpoint URI
-		endpoint: options.endpoint.replace(  /\/?$/, '/' )
+		endpoint: options.endpoint.replace(  /\/?$/, '/' ),
 	};
 
 	// If any authentication credentials were provided, assign them now
@@ -154,11 +154,11 @@ WPAPI.prototype.transport = function( transport ) {
 	}
 
 	// Whitelist the methods that may be applied
-	[ 'get', 'head', 'post', 'put', 'delete' ].forEach(function( key ) {
+	[ 'get', 'head', 'post', 'put', 'delete' ].forEach( function( key ) {
 		if ( transport && transport[ key ] ) {
 			_options.transport[ key ] = transport[ key ];
 		}
-	});
+	} );
 
 	return this;
 };
@@ -211,10 +211,10 @@ Object.freeze( WPAPI.transport );
  * @returns {WPAPI} A new WPAPI instance, bound to the provided endpoint
  */
 WPAPI.site = function( endpoint, routes ) {
-	return new WPAPI({
+	return new WPAPI( {
 		endpoint: endpoint,
-		routes: routes
-	});
+		routes: routes,
+	} );
 };
 
 /**
@@ -233,8 +233,8 @@ WPAPI.site = function( endpoint, routes ) {
  */
 WPAPI.prototype.url = function( url ) {
 	var options = extend( {}, this._options, {
-		endpoint: url
-	});
+		endpoint: url,
+	} );
 	return new WPRequest( options );
 };
 
@@ -364,7 +364,7 @@ WPAPI.prototype.bootstrap = function( routes ) {
 		}, wpInstance._ns[ namespace ] || {
 			// Create all namespace dictionaries with a direct reference to the main WPAPI
 			// instance's _options property so that things like auth propagate properly
-			_options: wpInstance._options
+			_options: wpInstance._options,
 		} );
 
 		// For the default namespace, e.g. "wp/v2" at the time this comment was
@@ -373,9 +373,9 @@ WPAPI.prototype.bootstrap = function( routes ) {
 		// methods can be called with e.g. `wp.posts()` and not the more verbose
 		// `wp.namespace( 'wp/v2' ).posts()`.
 		if ( namespace === apiDefaultNamespace ) {
-			Object.keys( wpInstance._ns[ namespace ] ).forEach(function( methodName ) {
+			Object.keys( wpInstance._ns[ namespace ] ).forEach( function( methodName ) {
 				wpInstance[ methodName ] = wpInstance._ns[ namespace ][ methodName ];
-			});
+			} );
 		}
 
 		return wpInstance;
@@ -426,30 +426,31 @@ WPAPI.discover = function( url ) {
 	// a request that utilizes the defined HTTP transports
 	var req = WPAPI.site( url ).root();
 	return req.headers()
-		.catch(function() {
+		.catch( function() {
 			// On the hypothesis that any error here is related to the HEAD request
 			// failing, provisionally try again using GET because that method is
 			// more widely supported
 			return req.get();
-		})
+		} )
 		// Inspect response to find API location header
 		.then( autodiscovery.locateAPIRootHeader )
-		.then(function( apiRootURL ) {
+		.then( function( apiRootURL ) {
 			// Set the function-scope variable that will be used to instantiate
 			// the bound WPAPI instance,
 			endpoint = apiRootURL;
 
 			// then GET the API root JSON object
 			return WPAPI.site( apiRootURL ).root().get();
-		})
-		.then(function( apiRootJSON ) {
+		} )
+		.then( function( apiRootJSON ) {
 			// Instantiate & bootstrap with the discovered methods
-			return new WPAPI({
+			return new WPAPI( {
 				endpoint: endpoint,
-				routes: apiRootJSON.routes
-			});
-		})
-		.catch(function( err ) {
+				routes: apiRootJSON.routes,
+			} );
+		} )
+		.catch( function( err ) {
+			/* eslint-disable no-console */
 			console.error( err );
 			if ( endpoint ) {
 				console.warn( 'Endpoint detected, proceeding despite error...' );
@@ -457,7 +458,7 @@ WPAPI.discover = function( url ) {
 				return new WPAPI.site( endpoint );
 			}
 			throw new Error( 'Autodiscovery failed' );
-		});
+		} );
 };
 
 module.exports = WPAPI;

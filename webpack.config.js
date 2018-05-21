@@ -12,12 +12,12 @@ module.exports = {
 		path: outputPath,
 		filename: 'wpapi.js',
 		library: 'WPAPI',
-		libraryTarget: 'umd'
+		libraryTarget: 'umd',
 	},
 
 	module: {
 		loaders: [
-			{ test: /\.json$/, loader: 'json-loader' }
-		]
-	}
+			{ test: /\.json$/, loader: 'json-loader' },
+		],
+	},
 };
