@@ -12,9 +12,9 @@ module.exports = function( grunt ) {
 			'./_site/',
 			'./api-reference/',
 			'./css/',
-			'./index.html.combyne'
-		]
-	});
+			'./index.html.combyne',
+		],
+	} );
 
 	grunt.loadNpmTasks( 'grunt-contrib-clean' );
 };

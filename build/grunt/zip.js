@@ -5,9 +5,9 @@ module.exports = function( grunt ) {
 			bundle: {
 				cwd: 'browser',
 				src: [ 'browser/**/*', 'LICENSE' ],
-				dest: 'documentation/wpapi.zip'
-			}
-		});
+				dest: 'documentation/wpapi.zip',
+			},
+		} );
 
 	grunt.loadNpmTasks( 'grunt-zip' );
 };

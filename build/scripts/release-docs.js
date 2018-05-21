@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 'use strict';
 
 const fs = require( 'fs' );
@@ -42,13 +43,13 @@ const AFFIRMATIVE_RE = /^y(:?e[asp]?h?)?(:? [^\n]+)?\s*$/i;
 const promptYN = () => new Promise( ( resolve, reject ) => {
 	prompt.message = '';
 	prompt.start();
-	prompt.get([ 'y/n' ], ( err, result ) => {
+	prompt.get( [ 'y/n' ], ( err, result ) => {
 		if ( err ) {
 			return reject( err );
 		}
 		resolve( AFFIRMATIVE_RE.test( result[ 'y/n' ] ) );
-	});
-});
+	} );
+} );
 
 /**
  * Get the list of files in a directory, either as a list of file and subdir
@@ -66,8 +67,8 @@ const ls = ( inputDir, absolute ) => {
 			}
 
 			resolve( list );
-		});
-	});
+		} );
+	} );
 };
 
 /**
@@ -91,17 +92,17 @@ const runCommand = ( commandStr, otherArgs ) => {
 
 		const spawnedCommand = spawn( command, commandArgs, {
 			cwd: projectRoot,
-			stdio: 'inherit'
-		});
+			stdio: 'inherit',
+		} );
 
 		spawnedCommand.on( 'error', err => {
 			reject( err );
-		});
+		} );
 
 		spawnedCommand.on( 'close', code => {
 			return code ? reject( code ) : resolve();
-		});
-	});
+		} );
+	} );
 };
 
 /**
@@ -140,8 +141,8 @@ runCommand( 'rm -rf docs-tmp' )
 				// Throw a raw string to make the logging easier
 				reject( '(User aborted deployment process)' );
 			}
-		});
-	}) )
+		} );
+	} ) )
 	// Ensure the built JS library is up to date
 	.then( () => runCommand( 'npm run build' ) )
 	// Build the docs site content (web bundle .zip, generated pages, etc)
@@ -160,7 +161,7 @@ runCommand( 'rm -rf docs-tmp' )
 				.map( file => () => runCommand( `rm ${file}` ) );
 
 			return runInSequence( removeFiles );
-		})
+		} )
 	)
 	.then( () => console.log( '\nCopying files from temp directory...\n' ) )
 	// Get a list of generated files in the temp directory
@@ -177,17 +178,17 @@ runCommand( 'rm -rf docs-tmp' )
 				// Ignore errors b/c they will usually be nothing more than a warning
 				// that a file we tried to delete didn't exist to begin with
 				return () => runCommand( `rm -rf ${dir}` ).catch( err => console.log( err ) );
-			});
+			} );
 
 		return runInSequence( removeDirectories ).then( () => fileList );
-	})
+	} )
 	// Copy files over
 	.then( fileList => {
 		const copyFiles = fileList.map( file => {
 			return () => runCommand( `mv docs-tmp/${file} ./${file}` );
-		});
+		} );
 		return runInSequence( copyFiles ).then( () => fileList );
-	})
+	} )
 	.then( fileList => console.log( `${fileList.length} files moved successfully` ) )
 	// Remove the temp directory
 	.then( () => runCommand( 'rm -rf docs-tmp' ) )
@@ -206,8 +207,8 @@ runCommand( 'rm -rf docs-tmp' )
 				console.log( 'Removing unneeded wpapi.zip update from the commit' );
 				resolve( runCommand( 'git checkout gh-pages wpapi.zip' ) );
 			}
-		});
-	}) )
+		} );
+	} ) )
 	// Stage files for commit
 	.then( () => runCommand( 'git add .' ) )
 	// Require user confirmation before proceeding with the commit & push
@@ -223,8 +224,8 @@ runCommand( 'rm -rf docs-tmp' )
 				// Throw a raw string to make the logging easier
 				reject( '(User aborted deployment process)' );
 			}
-		});
-	}) )
+		} );
+	} ) )
 	// Commit files
 	.then( () => runCommand( 'git commit -m', [ `"${commitMessage}"` ] ) )
 	// Push docs branch

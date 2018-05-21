@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 'use strict';
 
 const fs = require( 'fs' );
@@ -11,7 +12,7 @@ combyne.settings.delimiters = {
 	START_PROP: '[{{',
 	END_PROP: '}}]',
 	START_EXPR: '[{%',
-	END_EXPR: '%}]'
+	END_EXPR: '%}]',
 };
 
 // Application Version
@@ -36,18 +37,18 @@ const SKIP_SECTION_LINKS = [
 	// "About" content is embedded into the index page
 	'about',
 	// API Documentation provided via YUIDoc & the link is injected into the index
-	'api-documentation'
+	'api-documentation',
 ];
 
 // This is a list of slugs to skip when generating pages from README sections
-const SKIP_SECTIONS = SKIP_SECTION_LINKS.concat([
+const SKIP_SECTIONS = SKIP_SECTION_LINKS.concat( [
 	// CONTRIBUTING.md supersedes the README's contributing section
-	'contributing'
-]);
+	'contributing',
+] );
 
 const pad = ( num, digits ) => {
 	let str = '' + parseInt( num, 10 );
-	while ( str.length < digits ) {
+	while ( str.length < digits ) {
 		str = '0' + str;
 	}
 	return str;
@@ -97,8 +98,8 @@ const readFile = sourcePath => new Promise( ( resolve, reject ) => {
 
 		// contents is a Buffer
 		resolve( contents.toString() );
-	});
-});
+	} );
+} );
 
 const writeFile = ( outputPath, fileContents ) => new Promise( ( resolve, reject ) => {
 	fs.writeFile( outputPath, fileContents, ( err, result ) => {
@@ -107,16 +108,16 @@ const writeFile = ( outputPath, fileContents ) => new Promise( ( resolve, reject
 		}
 
 		resolve();
-	});
-});
+	} );
+} );
 
 const copyFile = ( sourcePath, title ) => readFile( sourcePath ).then( contents => {
 	const outputPath = path.join( docsDir, `${ titleToSlug( title ) }.md` );
-	return writeFile( outputPath, getContents({
+	return writeFile( outputPath, getContents( {
 		title: title,
-		tokens: [ contents ]
-	}) );
-});
+		tokens: [ contents ],
+	} ) );
+} );
 
 // Break the README into individual files
 const readmeOutput = readFile( readmePath ).then( contents => {
@@ -140,11 +141,11 @@ const readmeOutput = readFile( readmePath ).then( contents => {
 			entry.tokens.push( token );
 
 			if ( level === README_SPLIT_LEVEL + 1 ) {
-				entry.subheadings.push({
+				entry.subheadings.push( {
 					slug: `${ entry.slug }#${ titleToSlug( token ) }`,
 					title: getTitle( token ),
-					level: level
-				});
+					level: level,
+				} );
 			}
 			continue;
 		}
@@ -155,7 +156,7 @@ const readmeOutput = readFile( readmePath ).then( contents => {
 			title: getTitle( token ),
 			level: level,
 			subheadings: [],
-			tokens: []
+			tokens: [],
 		};
 
 		entries.push( entry );
@@ -170,15 +171,15 @@ const readmeOutput = readFile( readmePath ).then( contents => {
 			return SKIP_SECTIONS.indexOf( entry.slug ) === -1 ?
 				writeFile( outputPath, entry.contents ) :
 				Promise.resolve();
-		});
+		} );
 	}, Promise.resolve() ).then( () => {
-		entries.push({
+		entries.push( {
 			title: 'API Documentation',
-			slug: `api-reference/wpapi/${version}/`
-		});
+			slug: `api-reference/wpapi/${version}/`,
+		} );
 		return entries;
-	});
-});
+	} );
+} );
 
 // Create the contributor guide (runs after the README files are processed in
 // order to overwrite the "contributing" README section, if present)
@@ -203,17 +204,17 @@ const templateContext = readmeOutput.then( entries => {
 		return context;
 	}, {
 		aboutContents: null,
-		readmeSections: []
-	});
-});
+		readmeSections: [],
+	} );
+} );
 
-const fileAndContext = filePath => Promise.all([
+const fileAndContext = filePath => Promise.all( [
 	readFile( filePath ),
-	templateContext
-]).then( result => ({
+	templateContext,
+] ).then( result => ( {
 	template: result[ 0 ],
-	context: result[ 1 ]
-}) );
+	context: result[ 1 ],
+} ) );
 
 // Create the index HTML page
 const indexOutput = fileAndContext( indexTemplatePath ).then( result => {
@@ -221,7 +222,7 @@ const indexOutput = fileAndContext( indexTemplatePath ).then( result => {
 	const outputPath = path.join( docsDir, 'index.html' );
 	const fileContents = combyne( result.template ).render( result.context );
 	return writeFile( outputPath, fileContents );
-});
+} );
 
 // Create the Error 404 page
 const err404Output = fileAndContext( err404TemplatePath ).then( result => {
@@ -229,14 +230,14 @@ const err404Output = fileAndContext( err404TemplatePath ).then( result => {
 	const outputPath = path.join( docsDir, '404.html' );
 	const fileContents = combyne( result.template ).render( result.context );
 	return writeFile( outputPath, fileContents );
-});
+} );
 
-module.exports = Promise.all([
+module.exports = Promise.all( [
 	readmeOutput,
 	contributingOutput,
 	changelogOutput,
 	licenseOutput,
 	indexOutput,
-	err404Output
-])
+	err404Output,
+] )
 .catch( err => console.log( err && err.stack ) );
