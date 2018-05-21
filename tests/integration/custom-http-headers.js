@@ -15,10 +15,10 @@ var WPAPI = require( '../../' );
 var getTitles = require( './helpers/get-rendered-prop' ).bind( null, 'title' );
 var base64credentials = new Buffer( 'apiuser:password' ).toString( 'base64' );
 
-describe( 'integration: custom HTTP Headers', function() {
+describe( 'integration: custom HTTP Headers', () => {
 	var wp;
 
-	beforeEach(function() {
+	beforeEach( () => {
 		wp = new WPAPI({
 			endpoint: 'http://wpapi.loc/wp-json'
 		});
@@ -26,7 +26,7 @@ describe( 'integration: custom HTTP Headers', function() {
 
 	// Testing basic authentication is an acceptable proxy for whether a header
 	// value (Authentication:, in this case) is being set
-	it( 'can be provided using WPRequest#setHeaders()', function() {
+	it( 'can be provided using WPRequest#setHeaders()', () => {
 		var prom = wp.posts()
 			.setHeaders( 'Authorization', 'Basic ' + base64credentials )
 			.status([ 'future', 'draft' ])
@@ -41,7 +41,7 @@ describe( 'integration: custom HTTP Headers', function() {
 		return expect( prom ).to.eventually.equal( SUCCESS );
 	});
 
-	it( 'can be provided at the WPAPI instance level using WPAPI#setHeaders()', function() {
+	it( 'can be provided at the WPAPI instance level using WPAPI#setHeaders()', () => {
 		var authenticated = WPAPI
 			.site( 'http://wpapi.loc/wp-json' )
 			.setHeaders( 'Authorization', 'Basic ' + base64credentials );

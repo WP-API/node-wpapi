@@ -58,16 +58,16 @@ var expectedResults = {
 	}
 };
 
-describe( 'integration: tags()', function() {
+describe( 'integration: tags()', () => {
 	var wp;
 
-	beforeEach(function() {
+	beforeEach( () => {
 		wp = new WPAPI({
 			endpoint: 'http://wpapi.loc/wp-json'
 		});
 	});
 
-	it( 'can be used to retrieve a collection of category terms', function() {
+	it( 'can be used to retrieve a collection of category terms', () => {
 		var prom = wp.tags()
 			.get()
 			.then(function( tags ) {
@@ -78,7 +78,7 @@ describe( 'integration: tags()', function() {
 		return expect( prom ).to.eventually.equal( SUCCESS );
 	});
 
-	it( 'retrieves the first 10 tags by default', function() {
+	it( 'retrieves the first 10 tags by default', () => {
 		var prom = wp.tags()
 			.get()
 			.then(function( tags ) {
@@ -89,9 +89,9 @@ describe( 'integration: tags()', function() {
 		return expect( prom ).to.eventually.equal( SUCCESS );
 	});
 
-	describe( 'paging properties', function() {
+	describe( 'paging properties', () => {
 
-		it( 'are exposed as _paging on the response array', function() {
+		it( 'are exposed as _paging on the response array', () => {
 			var prom = wp.tags()
 				.get()
 				.then(function( tags ) {
@@ -102,7 +102,7 @@ describe( 'integration: tags()', function() {
 			return expect( prom ).to.eventually.equal( SUCCESS );
 		});
 
-		it( 'include the total number of tags', function() {
+		it( 'include the total number of tags', () => {
 			var prom = wp.tags()
 				.get()
 				.then(function( tags ) {
@@ -113,7 +113,7 @@ describe( 'integration: tags()', function() {
 			return expect( prom ).to.eventually.equal( SUCCESS );
 		});
 
-		it( 'include the total number of pages available', function() {
+		it( 'include the total number of pages available', () => {
 			var prom = wp.tags()
 				.get()
 				.then(function( tags ) {
@@ -124,7 +124,7 @@ describe( 'integration: tags()', function() {
 			return expect( prom ).to.eventually.equal( SUCCESS );
 		});
 
-		it( 'provides a bound WPRequest for the next page as .next', function() {
+		it( 'provides a bound WPRequest for the next page as .next', () => {
 			var prom = wp.tags()
 				.get()
 				.then(function( tags ) {
@@ -145,7 +145,7 @@ describe( 'integration: tags()', function() {
 			return expect( prom ).to.eventually.equal( SUCCESS );
 		});
 
-		it( 'allows access to the next page of results via .next', function() {
+		it( 'allows access to the next page of results via .next', () => {
 			var prom = wp.tags()
 				.get()
 				.then(function( tags ) {
@@ -161,7 +161,7 @@ describe( 'integration: tags()', function() {
 			return expect( prom ).to.eventually.equal( SUCCESS );
 		});
 
-		it( 'provides a bound WPRequest for the previous page as .prev', function() {
+		it( 'provides a bound WPRequest for the previous page as .prev', () => {
 			var prom = wp.tags()
 				.get()
 				.then(function( tags ) {
@@ -180,7 +180,7 @@ describe( 'integration: tags()', function() {
 			return expect( prom ).to.eventually.equal( SUCCESS );
 		});
 
-		it( 'allows access to the previous page of results via .prev', function() {
+		it( 'allows access to the previous page of results via .prev', () => {
 			var prom = wp.tags()
 				.page( 2 )
 				.get()
@@ -200,9 +200,9 @@ describe( 'integration: tags()', function() {
 
 	});
 
-	describe( 'id()', function() {
+	describe( 'id()', () => {
 
-		it( 'can be used to access an individual tag term', function() {
+		it( 'can be used to access an individual tag term', () => {
 			var selectedTag;
 			var prom = wp.tags()
 				.get()
@@ -228,9 +228,9 @@ describe( 'integration: tags()', function() {
 
 	});
 
-	describe( 'search()', function() {
+	describe( 'search()', () => {
 
-		it( 'can be used to retrieve a tag by slug', function() {
+		it( 'can be used to retrieve a tag by slug', () => {
 			var selectedTag;
 			var prom = wp.tags()
 				.get()
@@ -259,7 +259,7 @@ describe( 'integration: tags()', function() {
 			return expect( prom ).to.eventually.equal( SUCCESS );
 		});
 
-		it( 'returns all tags matching the provided search string', function() {
+		it( 'returns all tags matching the provided search string', () => {
 			var prom = wp.tags()
 				.search( 'post' )
 				.get()
@@ -275,7 +275,7 @@ describe( 'integration: tags()', function() {
 			return expect( prom ).to.eventually.equal( SUCCESS );
 		});
 
-		it( 'can be used to retrieve a tag by slug from a set of search results', function() {
+		it( 'can be used to retrieve a tag by slug from a set of search results', () => {
 			var prom = wp.tags()
 				.search( 'post' )
 				.get()

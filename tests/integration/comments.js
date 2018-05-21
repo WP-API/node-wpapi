@@ -71,16 +71,16 @@ function getPostsAndAuthors( comments ) {
 	});
 }
 
-describe( 'integration: comments()', function() {
+describe( 'integration: comments()', () => {
 	var wp;
 
-	beforeEach(function() {
+	beforeEach( () => {
 		wp = new WPAPI({
 			endpoint: 'http://wpapi.loc/wp-json'
 		});
 	});
 
-	it( 'can be used to retrieve a list of comments, omitting a password-protected comment', function() {
+	it( 'can be used to retrieve a list of comments, omitting a password-protected comment', () => {
 		var prom = wp.comments()
 			.get()
 			.then(function( comments ) {
@@ -91,7 +91,7 @@ describe( 'integration: comments()', function() {
 		return expect( prom ).to.eventually.equal( SUCCESS );
 	});
 
-	it( 'fetches the first page, omitting a password-protected comment', function() {
+	it( 'fetches the first page, omitting a password-protected comment', () => {
 		var prom = wp.comments()
 			.get()
 			.then(function( comments ) {
@@ -101,7 +101,7 @@ describe( 'integration: comments()', function() {
 		return expect( prom ).to.eventually.equal( SUCCESS );
 	});
 
-	it( 'fetches the 10 oldest comments when sorted "asc"', function() {
+	it( 'fetches the 10 oldest comments when sorted "asc"', () => {
 		var prom = wp.comments()
 			.order( 'asc' )
 			.get()
@@ -112,9 +112,9 @@ describe( 'integration: comments()', function() {
 		return expect( prom ).to.eventually.equal( SUCCESS );
 	});
 
-	describe( 'paging properties', function() {
+	describe( 'paging properties', () => {
 
-		it( 'are exposed as _paging on the response array', function() {
+		it( 'are exposed as _paging on the response array', () => {
 			var prom = wp.comments()
 				.get()
 				.then(function( posts ) {
@@ -125,7 +125,7 @@ describe( 'integration: comments()', function() {
 			return expect( prom ).to.eventually.equal( SUCCESS );
 		});
 
-		it( 'include the total number of posts', function() {
+		it( 'include the total number of posts', () => {
 			var prom = wp.comments()
 				.get()
 				.then(function( posts ) {
@@ -136,7 +136,7 @@ describe( 'integration: comments()', function() {
 			return expect( prom ).to.eventually.equal( SUCCESS );
 		});
 
-		it( 'include the total number of pages available', function() {
+		it( 'include the total number of pages available', () => {
 			var prom = wp.comments()
 				.get()
 				.then(function( posts ) {
@@ -147,7 +147,7 @@ describe( 'integration: comments()', function() {
 			return expect( prom ).to.eventually.equal( SUCCESS );
 		});
 
-		it( 'provides a bound WPRequest for the next page as .next', function() {
+		it( 'provides a bound WPRequest for the next page as .next', () => {
 			var prom = wp.comments()
 				.get()
 				.then(function( posts ) {
@@ -169,7 +169,7 @@ describe( 'integration: comments()', function() {
 			return expect( prom ).to.eventually.equal( SUCCESS );
 		});
 
-		it( 'allows access to the next page of results via .next', function() {
+		it( 'allows access to the next page of results via .next', () => {
 			var prom = wp.comments()
 				.get()
 				.then(function( posts ) {
@@ -185,7 +185,7 @@ describe( 'integration: comments()', function() {
 			return expect( prom ).to.eventually.equal( SUCCESS );
 		});
 
-		it( 'provides a bound WPRequest for the previous page as .prev', function() {
+		it( 'provides a bound WPRequest for the previous page as .prev', () => {
 			var prom = wp.comments()
 				.get()
 				.then(function( posts ) {
@@ -204,7 +204,7 @@ describe( 'integration: comments()', function() {
 			return expect( prom ).to.eventually.equal( SUCCESS );
 		});
 
-		it( 'allows access to the previous page of results via .prev', function() {
+		it( 'allows access to the previous page of results via .prev', () => {
 			var prom = wp.comments()
 				.page( 2 )
 				.get()
@@ -225,12 +225,12 @@ describe( 'integration: comments()', function() {
 
 	});
 
-	describe( 'querying by ID', function() {
+	describe( 'querying by ID', () => {
 		var commentCollection;
 		var commentId;
 		var commentProm;
 
-		beforeEach(function() {
+		beforeEach( () => {
 			commentCollection = [];
 			commentProm = wp.comments()
 				.get()
@@ -243,7 +243,7 @@ describe( 'integration: comments()', function() {
 				});
 		});
 
-		it( 'returns an object, not an array', function() {
+		it( 'returns an object, not an array', () => {
 			var prom = commentProm
 				.then(function( comment ) {
 					expect( Array.isArray( comment ) ).to.equal( false );
@@ -253,7 +253,7 @@ describe( 'integration: comments()', function() {
 			return expect( prom ).to.eventually.equal( SUCCESS );
 		});
 
-		it( 'returns the correct comment', function() {
+		it( 'returns the correct comment', () => {
 			var prom = commentProm.then(function( comment ) {
 				expect( comment.id ).to.equal( commentId );
 				[ 'author_name', 'post', 'parent', 'date', 'status' ].forEach(function( prop ) {
@@ -266,11 +266,11 @@ describe( 'integration: comments()', function() {
 
 	});
 
-	describe( '.post() query', function() {
+	describe( '.post() query', () => {
 		var pageComments;
 		var commentProm;
 
-		beforeEach(function() {
+		beforeEach( () => {
 			var pageId = 155;
 			commentProm = wp.pages()
 				.id( pageId )
@@ -287,11 +287,11 @@ describe( 'integration: comments()', function() {
 				});
 		});
 
-		it( 'returns an array of posts', function() {
+		it( 'returns an array of posts', () => {
 			return expect( commentProm ).to.eventually.be.an( 'array' );
 		});
 
-		it( 'returns the correct number of comments', function() {
+		it( 'returns the correct number of comments', () => {
 			var prom = commentProm
 				.then(function( comments ) {
 					expect( comments.length ).to.equal( 3 );
@@ -301,7 +301,7 @@ describe( 'integration: comments()', function() {
 			return expect( prom ).to.eventually.equal( SUCCESS );
 		});
 
-		it( 'returns the correct comments', function() {
+		it( 'returns the correct comments', () => {
 			var prom = commentProm
 				.then(function( comments ) {
 					pageComments.forEach(function( comment, i ) {

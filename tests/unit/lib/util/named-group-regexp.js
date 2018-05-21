@@ -3,19 +3,19 @@ var expect = require( 'chai' ).expect;
 
 var namedGroupRE = require( '../../../../lib/util/named-group-regexp' ).namedGroupRE;
 
-describe( 'named PCRE group RegExp', function() {
+describe( 'named PCRE group RegExp', () => {
 
-	it( 'is a regular expression', function() {
+	it( 'is a regular expression', () => {
 		expect( namedGroupRE ).to.be.an.instanceof( RegExp );
 	});
 
-	it( 'will not match an arbitrary string', function() {
+	it( 'will not match an arbitrary string', () => {
 		var pathComponent = 'author';
 		var result = pathComponent.match( namedGroupRE );
 		expect( result ).to.be.null;
 	});
 
-	it( 'identifies the name and RE pattern for a PCRE named group', function() {
+	it( 'identifies the name and RE pattern for a PCRE named group', () => {
 		var pathComponent = '(?P<parent>[\\d]+)';
 		var result = pathComponent.match( namedGroupRE );
 		expect( result ).not.to.be.null;
@@ -23,7 +23,7 @@ describe( 'named PCRE group RegExp', function() {
 		expect( result[ 2 ] ).to.equal( '[\\d]+' );
 	});
 
-	it( 'identifies the name and RE pattern for another group', function() {
+	it( 'identifies the name and RE pattern for another group', () => {
 		var pathComponent = '(?P<id>\\d+)';
 		var result = pathComponent.match( namedGroupRE );
 		expect( result ).not.to.be.null;
@@ -31,7 +31,7 @@ describe( 'named PCRE group RegExp', function() {
 		expect( result[ 2 ] ).to.equal( '\\d+' );
 	});
 
-	it( 'identifies RE patterns including forward slashes', function() {
+	it( 'identifies RE patterns including forward slashes', () => {
 		var pathComponent = '(?P<plugin>[a-z\\/\\.\\-_]+)';
 		var result = pathComponent.match( namedGroupRE );
 		expect( result ).not.to.be.null;
@@ -39,7 +39,7 @@ describe( 'named PCRE group RegExp', function() {
 		expect( result[ 2 ] ).to.equal( '[a-z\\/\\.\\-_]+' );
 	});
 
-	it( 'will match an empty string if a "RE Pattern" if the pattern is omitted', function() {
+	it( 'will match an empty string if a "RE Pattern" if the pattern is omitted', () => {
 		var pathComponent = '(?P<id>)';
 		var result = pathComponent.match( namedGroupRE );
 		expect( result ).not.to.be.null;

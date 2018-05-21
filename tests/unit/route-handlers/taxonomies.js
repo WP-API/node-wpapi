@@ -4,11 +4,11 @@ var expect = require( 'chai' ).expect;
 var WPAPI = require( '../../../wpapi' );
 var WPRequest = require( '../../../lib/constructors/wp-request' );
 
-describe( 'wp.taxonomies', function() {
+describe( 'wp.taxonomies', () => {
 	var site;
 	var taxonomies;
 
-	beforeEach(function() {
+	beforeEach( () => {
 		site = new WPAPI({
 			endpoint: '/wp-json',
 			username: 'foouser',
@@ -17,41 +17,41 @@ describe( 'wp.taxonomies', function() {
 		taxonomies = site.taxonomies();
 	});
 
-	describe( 'constructor', function() {
+	describe( 'constructor', () => {
 
-		it( 'should set any passed-in options', function() {
+		it( 'should set any passed-in options', () => {
 			taxonomies = site.taxonomies({
 				endpoint: '/custom-endpoint/'
 			});
 			expect( taxonomies._options.endpoint ).to.equal( '/custom-endpoint/' );
 		});
 
-		it( 'should initialize _options to the site defaults', function() {
+		it( 'should initialize _options to the site defaults', () => {
 			expect( taxonomies._options.endpoint ).to.equal( '/wp-json/' );
 			expect( taxonomies._options.username ).to.equal( 'foouser' );
 			expect( taxonomies._options.password ).to.equal( 'barpass' );
 		});
 
-		it( 'should initialize the base path component', function() {
+		it( 'should initialize the base path component', () => {
 			expect( taxonomies.toString() ).to.equal( '/wp-json/wp/v2/taxonomies' );
 		});
 
-		it( 'should set a default _supportedMethods array', function() {
+		it( 'should set a default _supportedMethods array', () => {
 			expect( taxonomies ).to.have.property( '_supportedMethods' );
 			expect( taxonomies._supportedMethods ).to.be.an( 'array' );
 		});
 
-		it( 'should inherit TaxonomiesRequest from WPRequest', function() {
+		it( 'should inherit TaxonomiesRequest from WPRequest', () => {
 			expect( taxonomies instanceof WPRequest ).to.be.true;
 		});
 
 	});
 
-	describe( 'path part setters', function() {
+	describe( 'path part setters', () => {
 
-		describe( '.taxonomy()', function() {
+		describe( '.taxonomy()', () => {
 
-			it( 'provides a method to set the taxonomy', function() {
+			it( 'provides a method to set the taxonomy', () => {
 				expect( taxonomies ).to.have.property( 'taxonomy' );
 				expect( taxonomies.taxonomy ).to.be.a( 'function' );
 			});
@@ -60,14 +60,14 @@ describe( 'wp.taxonomies', function() {
 
 	});
 
-	describe( 'URL Generation', function() {
+	describe( 'URL Generation', () => {
 
-		it( 'should create the URL for retrieving all taxonomies', function() {
+		it( 'should create the URL for retrieving all taxonomies', () => {
 			var url = taxonomies.toString();
 			expect( url ).to.equal( '/wp-json/wp/v2/taxonomies' );
 		});
 
-		it( 'should create the URL for retrieving a specific taxonomy', function() {
+		it( 'should create the URL for retrieving a specific taxonomy', () => {
 			var url = taxonomies.taxonomy( 'category' ).toString();
 			expect( url ).to.equal( '/wp-json/wp/v2/taxonomies/category' );
 		});

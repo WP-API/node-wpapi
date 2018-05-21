@@ -6,12 +6,12 @@ var inherit = require( 'util' ).inherits;
 var filterMixins = require( '../../../../lib/mixins/filters' );
 var WPRequest = require( '../../../../lib/constructors/wp-request' );
 
-describe( 'mixins: filter', function() {
+describe( 'mixins: filter', () => {
 	var Req;
 	var req;
 	var getQueryStr;
 
-	beforeEach(function() {
+	beforeEach( () => {
 		Req = function() {
 			WPRequest.apply( this, arguments );
 		};
@@ -27,55 +27,55 @@ describe( 'mixins: filter', function() {
 		};
 	});
 
-	describe( '.filter()', function() {
+	describe( '.filter()', () => {
 
-		beforeEach(function() {
+		beforeEach( () => {
 			Req.prototype.filter = filterMixins.filter;
 		});
 
-		it( 'mixin method is defined', function() {
+		it( 'mixin method is defined', () => {
 			expect( filterMixins ).to.have.property( 'filter' );
 		});
 
-		it( 'is a function', function() {
+		it( 'is a function', () => {
 			expect( filterMixins.filter ).to.be.a( 'function' );
 		});
 
-		it( 'supports chaining', function() {
+		it( 'supports chaining', () => {
 			expect( req.filter() ).to.equal( req );
 		});
 
-		it( 'will nave no effect if called with no filter value', function() {
+		it( 'will nave no effect if called with no filter value', () => {
 			var result = req.filter( 'a' );
 			expect( getQueryStr( result ) ).to.equal( '' );
 		});
 
-		it( 'sets the filter query parameter on a request instance', function() {
+		it( 'sets the filter query parameter on a request instance', () => {
 			var result = req.filter( 'a', 'b' );
 			expect( getQueryStr( result ) ).to.equal( 'filter[a]=b' );
 		});
 
-		it( 'can set multiple filters on the request', function() {
+		it( 'can set multiple filters on the request', () => {
 			var result = req.filter( 'a', 'b' ).filter( 'c', 'd' );
 			expect( getQueryStr( result ) ).to.equal( 'filter[a]=b&filter[c]=d' );
 		});
 
-		it( 'will overwrite previously-set filter values', function() {
+		it( 'will overwrite previously-set filter values', () => {
 			var result = req.filter( 'a', 'b' ).filter( 'a', 'd' );
 			expect( getQueryStr( result ) ).to.equal( 'filter[a]=d' );
 		});
 
-		it( 'will unset a filter if called with an empty string', function() {
+		it( 'will unset a filter if called with an empty string', () => {
 			var result = req.filter( 'a', 'b' ).filter( 'a', '' );
 			expect( getQueryStr( result ) ).to.equal( '' );
 		});
 
-		it( 'will unset a filter if called with null', function() {
+		it( 'will unset a filter if called with null', () => {
 			var result = req.filter( 'a', 'b' ).filter( 'a', null );
 			expect( getQueryStr( result ) ).to.equal( '' );
 		});
 
-		it( 'can set multiple filters in one call when passed an object', function() {
+		it( 'can set multiple filters in one call when passed an object', () => {
 			var result = req.filter({
 				a: 'b',
 				c: 'd',
@@ -84,7 +84,7 @@ describe( 'mixins: filter', function() {
 			expect( getQueryStr( result ) ).to.equal( 'filter[a]=b&filter[c]=d&filter[e]=f' );
 		});
 
-		it( 'can set multiple filters on the request when passed an object', function() {
+		it( 'can set multiple filters on the request when passed an object', () => {
 			var result = req
 				.filter({
 					a: 'b',
@@ -96,7 +96,7 @@ describe( 'mixins: filter', function() {
 			expect( getQueryStr( result ) ).to.equal( 'filter[a]=b&filter[c]=d&filter[e]=f' );
 		});
 
-		it( 'will overwrite multiple previously-set filter values when passed an object', function() {
+		it( 'will overwrite multiple previously-set filter values when passed an object', () => {
 			var result = req
 				.filter({
 					a: 'b',
@@ -113,68 +113,68 @@ describe( 'mixins: filter', function() {
 
 	});
 
-	describe( 'taxonomy()', function() {
+	describe( 'taxonomy()', () => {
 
-		beforeEach(function() {
+		beforeEach( () => {
 			Req.prototype.taxonomy = filterMixins.taxonomy;
 		});
 
-		it( 'mixin is defined', function() {
+		it( 'mixin is defined', () => {
 			expect( filterMixins ).to.have.property( 'taxonomy' );
 		});
 
-		it( 'is a function', function() {
+		it( 'is a function', () => {
 			expect( filterMixins.taxonomy ).to.be.a( 'function' );
 		});
 
-		it( 'supports chaining', function() {
+		it( 'supports chaining', () => {
 			expect( req.taxonomy( 'tag', 'foo' ) ).to.equal( req );
 		});
 
-		describe( 'argument type check errors', function() {
+		describe( 'argument type check errors', () => {
 
-			it( 'errors if no term is provided', function() {
+			it( 'errors if no term is provided', () => {
 				expect(function() { req.taxonomy( 'tag' ); }).to.throw();
 			});
 
-			it( 'does not error if the term is a string', function() {
+			it( 'does not error if the term is a string', () => {
 				expect(function() { req.taxonomy( 'tag', 'cat' ); }).not.to.throw();
 			});
 
-			it( 'does not error if the term is an array of strings', function() {
+			it( 'does not error if the term is an array of strings', () => {
 				expect(function() { req.taxonomy( 'tag', [ 'cat', 'dog' ] ); }).not.to.throw();
 			});
 
-			it( 'does not error if term is a number', function() {
+			it( 'does not error if term is a number', () => {
 				expect(function() { req.taxonomy( 'cat', 7 ); }).not.to.throw();
 			});
 
-			it( 'does not error if term is an array of numbers', function() {
+			it( 'does not error if term is an array of numbers', () => {
 				expect(function() { req.taxonomy( 'cat', [ 7, 11 ] ); }).not.to.throw();
 			});
 
-			it( 'errors if the term is null', function() {
+			it( 'errors if the term is null', () => {
 				expect(function() { req.taxonomy( 'tag', null ); }).to.throw();
 			});
 
-			it( 'errors if the term is a boolean', function() {
+			it( 'errors if the term is a boolean', () => {
 				expect(function() { req.taxonomy( 'tag', true ); }).to.throw();
 				expect(function() { req.taxonomy( 'tag', false ); }).to.throw();
 			});
 
-			it( 'errors if the term is a Date', function() {
+			it( 'errors if the term is a Date', () => {
 				expect(function() { req.taxonomy( 'tag', new Date() ); }).to.throw();
 			});
 
-			it( 'errors if the term is an object', function() {
+			it( 'errors if the term is an object', () => {
 				expect(function() { req.taxonomy( 'tag', {} ); }).to.throw();
 			});
 
-			it( 'errors if the term is an array of types other than strings or numbers', function() {
+			it( 'errors if the term is an array of types other than strings or numbers', () => {
 				expect(function() { req.taxonomy( 'tag', [ null ] ); }).to.throw();
 			});
 
-			it( 'errors if the term is not all strings or numbers', function() {
+			it( 'errors if the term is not all strings or numbers', () => {
 				expect(function() { req.taxonomy( 'tag', [ 'cat', null ] ); }).to.throw();
 				expect(function() { req.taxonomy( 'cat', [ 7, null ] ); }).to.throw();
 				expect(function() { req.taxonomy( 'cat', [ 'foo', 7 ] ); }).to.throw();
@@ -182,33 +182,33 @@ describe( 'mixins: filter', function() {
 
 		});
 
-		describe( 'filter name aliasing behavior', function() {
+		describe( 'filter name aliasing behavior', () => {
 
-			it( 'sets the "category_name" filter for categories where the term is a string', function() {
+			it( 'sets the "category_name" filter for categories where the term is a string', () => {
 				var result = req.taxonomy( 'category', 'str' );
 				expect( getQueryStr( result ) ).to.equal( 'filter[category_name]=str' );
 			});
 
-			it( 'sets the "cat" filter for categories where the term is a number', function() {
+			it( 'sets the "cat" filter for categories where the term is a number', () => {
 				var result = req.taxonomy( 'category', 7 );
 				expect( getQueryStr( result ) ).to.equal( 'filter[cat]=7' );
 			});
 
-			it( 'sets the "tag" filter if the taxonomy is "post_tag"', function() {
+			it( 'sets the "tag" filter if the taxonomy is "post_tag"', () => {
 				var result = req.taxonomy( 'post_tag', 'sometag' );
 				expect( getQueryStr( result ) ).to.equal( 'filter[tag]=sometag' );
 			});
 
 		});
 
-		describe( 'filter value setting behavior', function() {
+		describe( 'filter value setting behavior', () => {
 
-			it( 'de-duplicates taxonomy terms (will only set a term once)', function() {
+			it( 'de-duplicates taxonomy terms (will only set a term once)', () => {
 				var result = req.taxonomy( 'tag', 'cat' ).taxonomy( 'tag', 'cat' );
 				expect( getQueryStr( result ) ).to.equal( 'filter[tag]=cat' );
 			});
 
-			it( 'de-dupes the taxonomy list when called with an array', function() {
+			it( 'de-dupes the taxonomy list when called with an array', () => {
 				req.taxonomy( 'post_tag', [
 					'disclosure',
 					'alunageorge',
@@ -222,25 +222,25 @@ describe( 'mixins: filter', function() {
 				});
 			});
 
-			it( 'supports setting an array of string terms', function() {
+			it( 'supports setting an array of string terms', () => {
 				// TODO: Multiple terms may be deprecated by API!
 				var result = req.taxonomy( 'tag', [ 'a', 'b' ] );
 				expect( getQueryStr( result ) ).to.equal( 'filter[tag]=a+b' );
 			});
 
-			it( 'supports setting an array of numeric terms', function() {
+			it( 'supports setting an array of numeric terms', () => {
 				// TODO: Multiple terms may be deprecated by API!
 				var result = req.taxonomy( 'tag', [ 1, 2 ] );
 				expect( getQueryStr( result ) ).to.equal( 'filter[tag]=1+2' );
 			});
 
-			it( 'does not overwrite previously-specified terms on subsequent calls', function() {
+			it( 'does not overwrite previously-specified terms on subsequent calls', () => {
 				// TODO: Multiple terms may be deprecated by API!
 				var result = req.taxonomy( 'tag', 'a' ).taxonomy( 'tag', [ 'b' ] );
 				expect( getQueryStr( result ) ).to.equal( 'filter[tag]=a+b' );
 			});
 
-			it( 'sorts provided terms', function() {
+			it( 'sorts provided terms', () => {
 				var result = req.taxonomy( 'tag', 'z' ).taxonomy( 'tag', 'a' );
 				expect( getQueryStr( result ) ).to.equal( 'filter[tag]=a+z' );
 			});
@@ -249,144 +249,144 @@ describe( 'mixins: filter', function() {
 
 	});
 
-	describe( '.path()', function() {
+	describe( '.path()', () => {
 
-		beforeEach(function() {
+		beforeEach( () => {
 			Req.prototype.path = filterMixins.path;
 		});
 
-		it( 'mixin is defined', function() {
+		it( 'mixin is defined', () => {
 			expect( filterMixins ).to.have.property( 'path' );
 		});
 
-		it( 'is a function', function() {
+		it( 'is a function', () => {
 			expect( filterMixins.path ).to.be.a( 'function' );
 		});
 
-		it( 'supports chaining', function() {
+		it( 'supports chaining', () => {
 			expect( req.path( 'tag', 'foo' ) ).to.equal( req );
 		});
 
-		it( 'should create the URL for retrieving a post by path', function() {
+		it( 'should create the URL for retrieving a post by path', () => {
 			var path = req.path( 'nested/page' );
 			expect( getQueryStr( path ) ).to.equal( 'filter[pagename]=nested/page' );
 		});
 
 	});
 
-	describe( 'date filters', function() {
+	describe( 'date filters', () => {
 
-		describe( 'year()', function() {
+		describe( 'year()', () => {
 
-			beforeEach(function() {
+			beforeEach( () => {
 				// By only applying .year and not .filter, we implicitly test that
 				// .year does not depend on the .filter mixin having been added
 				Req.prototype.year = filterMixins.year;
 			});
 
-			it( 'mixin is defined', function() {
+			it( 'mixin is defined', () => {
 				expect( filterMixins ).to.have.property( 'year' );
 			});
 
-			it( 'is a function', function() {
+			it( 'is a function', () => {
 				expect( filterMixins.year ).to.be.a( 'function' );
 			});
 
-			it( 'supports chaining', function() {
+			it( 'supports chaining', () => {
 				expect( req.year( 'foo' ) ).to.equal( req );
 			});
 
-			it( 'is an alias for .filter( "year", ... )', function() {
+			it( 'is an alias for .filter( "year", ... )', () => {
 				Req.prototype.filter = filterMixins.filter;
 				var result1 = ( new Req() ).year( '2015' );
 				var result2 = ( new Req() ).filter( 'year', '2015' );
 				expect( getQueryStr( result1 ) ).to.equal( getQueryStr( result2 ) );
 			});
 
-			it( 'sets the "year" filter', function() {
+			it( 'sets the "year" filter', () => {
 				var result = req.year( 'str' );
 				expect( getQueryStr( result ) ).to.equal( 'filter[year]=str' );
 			});
 
 		});
 
-		describe( 'month()', function() {
+		describe( 'month()', () => {
 
-			beforeEach(function() {
+			beforeEach( () => {
 				// By only applying .month and not .filter, we implicitly test that
 				// .month does not depend on the .filter mixin having been added
 				Req.prototype.month = filterMixins.month;
 			});
 
-			it( 'mixin is defined', function() {
+			it( 'mixin is defined', () => {
 				expect( filterMixins ).to.have.property( 'month' );
 			});
 
-			it( 'is a function', function() {
+			it( 'is a function', () => {
 				expect( filterMixins.month ).to.be.a( 'function' );
 			});
 
-			it( 'supports chaining', function() {
+			it( 'supports chaining', () => {
 				expect( req.month( 'foo' ) ).to.equal( req );
 			});
 
-			it( 'is an alias for .filter( "monthnum", ... )', function() {
+			it( 'is an alias for .filter( "monthnum", ... )', () => {
 				Req.prototype.filter = filterMixins.filter;
 				var result1 = ( new Req() ).month( 7 );
 				var result2 = ( new Req() ).filter( 'monthnum', 7 );
 				expect( getQueryStr( result1 ) ).to.equal( getQueryStr( result2 ) );
 			});
 
-			it( 'sets the "monthnum" filter', function() {
+			it( 'sets the "monthnum" filter', () => {
 				var result = req.month( 1 );
 				expect( getQueryStr( result ) ).to.equal( 'filter[monthnum]=1' );
 			});
 
-			it( 'converts named months into their numeric monthnum equivalent', function() {
+			it( 'converts named months into their numeric monthnum equivalent', () => {
 				var result = req.month( 'March' );
 				expect( getQueryStr( result ) ).to.equal( 'filter[monthnum]=3' );
 			});
 
-			it( 'returns without setting any filter if an invalid month string is provided', function() {
+			it( 'returns without setting any filter if an invalid month string is provided', () => {
 				var result = req.month( 'Not a month' ).toString();
 				expect( result.match( /filter/ ) ).to.equal( null );
 			});
 
-			it( 'returns without setting any filter if an invalid argument is provided', function() {
+			it( 'returns without setting any filter if an invalid argument is provided', () => {
 				var result = req.month( [ 'arrrr', 'i', 'be', 'an', 'array!' ] ).toString();
 				expect( result.match( /filter/ ) ).to.equal( null );
 			});
 
 		});
 
-		describe( 'day()', function() {
+		describe( 'day()', () => {
 
-			beforeEach(function() {
+			beforeEach( () => {
 				// By only applying .day and not .filter, we implicitly test that
 				// .day does not depend on the .filter mixin having been added
 				Req.prototype.day = filterMixins.day;
 			});
 
-			it( 'mixin is defined', function() {
+			it( 'mixin is defined', () => {
 				expect( filterMixins ).to.have.property( 'day' );
 			});
 
-			it( 'is a function', function() {
+			it( 'is a function', () => {
 				expect( filterMixins.day ).to.be.a( 'function' );
 			});
 
-			it( 'supports chaining', function() {
+			it( 'supports chaining', () => {
 				expect( req.day( 'foo' ) ).to.equal( req );
 			});
 
-			it( 'is an alias for .filter( "day", ... )', function() {
+			it( 'is an alias for .filter( "day", ... )', () => {
 				Req.prototype.filter = filterMixins.filter;
 				var result1 = ( new Req() ).day( '2015' );
 				var result2 = ( new Req() ).filter( 'day', '2015' );
 				expect( getQueryStr( result1 ) ).to.equal( getQueryStr( result2 ) );
 			});
 
-			it( 'sets the "day" filter', function() {
+			it( 'sets the "day" filter', () => {
 				var result = req.day( 'str' );
 				expect( getQueryStr( result ) ).to.equal( 'filter[day]=str' );
 			});

@@ -62,11 +62,11 @@ var expectedResults = {
 	}
 };
 
-describe( 'integration: posts()', function() {
+describe( 'integration: posts()', () => {
 	var wp;
 	var authenticated;
 
-	beforeEach(function() {
+	beforeEach( () => {
 		wp = new WPAPI({
 			endpoint: 'http://wpapi.loc/wp-json'
 		});
@@ -75,7 +75,7 @@ describe( 'integration: posts()', function() {
 		}).auth( credentials );
 	});
 
-	it( 'can be used to retrieve a list of recent posts', function() {
+	it( 'can be used to retrieve a list of recent posts', () => {
 		var prom = wp.posts()
 			.get()
 			.then(function( posts ) {
@@ -86,7 +86,7 @@ describe( 'integration: posts()', function() {
 		return expect( prom ).to.eventually.equal( SUCCESS );
 	});
 
-	it( 'fetches the 10 most recent posts by default', function() {
+	it( 'fetches the 10 most recent posts by default', () => {
 		var prom = wp.posts()
 			.get()
 			.then(function( posts ) {
@@ -96,7 +96,7 @@ describe( 'integration: posts()', function() {
 		return expect( prom ).to.eventually.equal( SUCCESS );
 	});
 
-	it( 'properly parses responses returned from server as text/html', function() {
+	it( 'properly parses responses returned from server as text/html', () => {
 		var prom = wp.posts()
 			.param( '_wpapi_force_html', true )
 			.get()
@@ -107,9 +107,9 @@ describe( 'integration: posts()', function() {
 		return expect( prom ).to.eventually.equal( SUCCESS );
 	});
 
-	describe( 'paging properties', function() {
+	describe( 'paging properties', () => {
 
-		it( 'are exposed as _paging on the response array', function() {
+		it( 'are exposed as _paging on the response array', () => {
 			var prom = wp.posts()
 				.get()
 				.then(function( posts ) {
@@ -120,7 +120,7 @@ describe( 'integration: posts()', function() {
 			return expect( prom ).to.eventually.equal( SUCCESS );
 		});
 
-		it( 'are exposed as _paging on the response array when response is text/html', function() {
+		it( 'are exposed as _paging on the response array when response is text/html', () => {
 			var prom = wp.posts()
 				.param( '_wpapi_force_html', true )
 				.get()
@@ -132,7 +132,7 @@ describe( 'integration: posts()', function() {
 			return expect( prom ).to.eventually.equal( SUCCESS );
 		});
 
-		it( 'include the total number of posts: use .headers() for coverage reasons', function() {
+		it( 'include the total number of posts: use .headers() for coverage reasons', () => {
 			var prom = wp.posts()
 				.headers()
 				.then(function( postHeadersResponse ) {
@@ -143,7 +143,7 @@ describe( 'integration: posts()', function() {
 			return expect( prom ).to.eventually.equal( SUCCESS );
 		});
 
-		it( 'include the total number of pages available', function() {
+		it( 'include the total number of pages available', () => {
 			var prom = wp.posts()
 				.get()
 				.then(function( posts ) {
@@ -154,7 +154,7 @@ describe( 'integration: posts()', function() {
 			return expect( prom ).to.eventually.equal( SUCCESS );
 		});
 
-		it( 'provides a bound WPRequest for the next page as .next', function() {
+		it( 'provides a bound WPRequest for the next page as .next', () => {
 			var prom = wp.posts()
 				.get()
 				.then(function( posts ) {
@@ -176,7 +176,7 @@ describe( 'integration: posts()', function() {
 			return expect( prom ).to.eventually.equal( SUCCESS );
 		});
 
-		it( 'allows access to the next page of results via .next', function() {
+		it( 'allows access to the next page of results via .next', () => {
 			var prom = wp.posts()
 				.get()
 				.then(function( posts ) {
@@ -193,7 +193,7 @@ describe( 'integration: posts()', function() {
 			return expect( prom ).to.eventually.equal( SUCCESS );
 		});
 
-		it( 'allows access to the next page of results via .next when response is text/html', function() {
+		it( 'allows access to the next page of results via .next when response is text/html', () => {
 			var prom = wp.posts()
 				.param( '_wpapi_force_html', true )
 				.get()
@@ -208,7 +208,7 @@ describe( 'integration: posts()', function() {
 			return expect( prom ).to.eventually.equal( SUCCESS );
 		});
 
-		it( 'provides a bound WPRequest for the previous page as .prev', function() {
+		it( 'provides a bound WPRequest for the previous page as .prev', () => {
 			var prom = wp.posts()
 				.get()
 				.then(function( posts ) {
@@ -227,7 +227,7 @@ describe( 'integration: posts()', function() {
 			return expect( prom ).to.eventually.equal( SUCCESS );
 		});
 
-		it( 'allows access to the previous page of results via .prev', function() {
+		it( 'allows access to the previous page of results via .prev', () => {
 			var prom = wp.posts()
 				.page( 2 )
 				.get()
@@ -246,7 +246,7 @@ describe( 'integration: posts()', function() {
 			return expect( prom ).to.eventually.equal( SUCCESS );
 		});
 
-		it( 'maintains authentication across paging requests', function() {
+		it( 'maintains authentication across paging requests', () => {
 			var prom = authenticated.posts()
 				.context( 'edit' )
 				.get()
@@ -262,11 +262,11 @@ describe( 'integration: posts()', function() {
 
 	});
 
-	describe( 'filter methods', function() {
+	describe( 'filter methods', () => {
 
-		describe( 'slug', function() {
+		describe( 'slug', () => {
 
-			it( 'can be used to return only posts with the specified slug', function() {
+			it( 'can be used to return only posts with the specified slug', () => {
 				var prom = wp.posts()
 					.slug( 'template-excerpt-generated' )
 					.get()
@@ -282,9 +282,9 @@ describe( 'integration: posts()', function() {
 
 		});
 
-		describe( 'status', function() {
+		describe( 'status', () => {
 
-			it( 'can be used to retrieve specific statuses of posts', function() {
+			it( 'can be used to retrieve specific statuses of posts', () => {
 				var prom = authenticated.posts()
 					.status([ 'future', 'draft' ])
 					.get()
@@ -300,9 +300,9 @@ describe( 'integration: posts()', function() {
 
 		});
 
-		describe( 'tags', function() {
+		describe( 'tags', () => {
 
-			it( 'can be used to return only posts with a provided tag', function() {
+			it( 'can be used to return only posts with a provided tag', () => {
 				var prom = wp.tags()
 					.slug( 'title' )
 					.get()
@@ -326,7 +326,7 @@ describe( 'integration: posts()', function() {
 				return expect( prom ).to.eventually.equal( SUCCESS );
 			});
 
-			it( 'can be used to return posts with any of the provided tags', function() {
+			it( 'can be used to return posts with any of the provided tags', () => {
 				var prom = Promise
 					.all([
 						wp.tags().search( 'featured image' ),
@@ -357,9 +357,9 @@ describe( 'integration: posts()', function() {
 
 		});
 
-		describe( 'excludeTags', function() {
+		describe( 'excludeTags', () => {
 
-			it( 'can be used to omit posts in specific tags', function() {
+			it( 'can be used to omit posts in specific tags', () => {
 				var prom = Promise
 					.all([
 						wp.tags().search( 'css' ),
@@ -393,9 +393,9 @@ describe( 'integration: posts()', function() {
 
 		});
 
-		describe( 'categories', function() {
+		describe( 'categories', () => {
 
-			it( 'can be used to return only posts with a provided category', function() {
+			it( 'can be used to return only posts with a provided category', () => {
 				var prom = wp.categories()
 					.slug( 'markup' )
 					.get()
@@ -420,7 +420,7 @@ describe( 'integration: posts()', function() {
 				return expect( prom ).to.eventually.equal( SUCCESS );
 			});
 
-			it( 'can be used to return posts with any of the provided categories', function() {
+			it( 'can be used to return posts with any of the provided categories', () => {
 				var prom = Promise
 					.all([
 						wp.categories().search( 'edge case' ),
@@ -451,9 +451,9 @@ describe( 'integration: posts()', function() {
 
 		});
 
-		describe( 'excludeCategories', function() {
+		describe( 'excludeCategories', () => {
 
-			it( 'can be used to omit posts in specific categories', function() {
+			it( 'can be used to omit posts in specific categories', () => {
 				var prom = Promise
 					.all([
 						wp.categories().slug( 'markup' ),
@@ -487,9 +487,9 @@ describe( 'integration: posts()', function() {
 
 		});
 
-		describe( 'before', function() {
+		describe( 'before', () => {
 
-			it( 'can be used to return only posts from before a certain date', function() {
+			it( 'can be used to return only posts from before a certain date', () => {
 				var prom = wp.posts()
 					.before( '2013-01-08' )
 					.then(function( posts ) {
@@ -501,9 +501,9 @@ describe( 'integration: posts()', function() {
 
 		});
 
-		describe( 'after', function() {
+		describe( 'after', () => {
 
-			it( 'can be used to return only posts from after a certain date', function() {
+			it( 'can be used to return only posts from after a certain date', () => {
 				var prom = wp.posts()
 					.after( '2013-01-08' )
 					.then(function( posts ) {
@@ -519,9 +519,9 @@ describe( 'integration: posts()', function() {
 	});
 
 	// Post creation, update & deletion suites
-	describe( 'authorization errors', function() {
+	describe( 'authorization errors', () => {
 
-		it( 'cannot use context=edit without authentication', function() {
+		it( 'cannot use context=edit without authentication', () => {
 			var prom = wp.posts()
 				.edit()
 				.get()
@@ -535,7 +535,7 @@ describe( 'integration: posts()', function() {
 			return expect( prom ).to.eventually.equal( SUCCESS );
 		});
 
-		it( 'cannot DELETE without authentication', function() {
+		it( 'cannot DELETE without authentication', () => {
 			var id;
 			var prom = wp.posts()
 				.perPage( 1 )
@@ -564,7 +564,7 @@ describe( 'integration: posts()', function() {
 			return expect( prom ).to.eventually.equal( SUCCESS );
 		});
 
-		it( 'cannot create (POST) without authentication (also tests callback-mode errors)', function() {
+		it( 'cannot create (POST) without authentication (also tests callback-mode errors)', () => {
 			var prom = new Promise(function( resolve, reject ) {
 				wp.posts().create({
 					title: 'New Post 2501',
@@ -583,7 +583,7 @@ describe( 'integration: posts()', function() {
 			return expect( prom ).to.eventually.equal( SUCCESS );
 		});
 
-		it( 'cannot update (PUT) without authentication', function() {
+		it( 'cannot update (PUT) without authentication', () => {
 			var id;
 			var prom = wp.posts()
 				.perPage( 1 )
@@ -608,7 +608,7 @@ describe( 'integration: posts()', function() {
 		});
 	});
 
-	it( 'can create, update & delete a post when authenticated', function() {
+	it( 'can create, update & delete a post when authenticated', () => {
 		var id;
 		var prom = authenticated.posts()
 			.create({
@@ -708,7 +708,7 @@ describe( 'integration: posts()', function() {
 		return expect( prom ).to.eventually.equal( SUCCESS );
 	}).timeout( 10000 );
 
-	it( 'can create a post with tags, categories and featured media', function() {
+	it( 'can create a post with tags, categories and featured media', () => {
 		var id;
 		var mediaId;
 		var filePath = path.join( __dirname, 'assets/emilygarfield-untitled.jpg' );
@@ -844,7 +844,7 @@ describe( 'integration: posts()', function() {
 
 	// Callback context
 
-	it( 'can GET posts with a context-bound callback', function( done ) {
+	it( 'can GET posts with a context-bound callback', ( done ) => {
 		function Ctor() {}
 		Ctor.prototype.setState = function( state ) {
 			this.state = state;

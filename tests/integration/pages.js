@@ -44,16 +44,16 @@ var expectedResults = {
 	}
 };
 
-describe( 'integration: pages()', function() {
+describe( 'integration: pages()', () => {
 	var wp;
 
-	beforeEach(function() {
+	beforeEach( () => {
 		wp = new WPAPI({
 			endpoint: 'http://wpapi.loc/wp-json'
 		});
 	});
 
-	it( 'can be used to retrieve a list of recent pages', function() {
+	it( 'can be used to retrieve a list of recent pages', () => {
 		var prom = wp.pages()
 			.get()
 			.then(function( pages ) {
@@ -64,7 +64,7 @@ describe( 'integration: pages()', function() {
 		return expect( prom ).to.eventually.equal( SUCCESS );
 	});
 
-	it( 'fetches the 10 most recent pages by default', function() {
+	it( 'fetches the 10 most recent pages by default', () => {
 		var prom = wp.pages()
 			.get()
 			.then(function( pages ) {
@@ -74,9 +74,9 @@ describe( 'integration: pages()', function() {
 		return expect( prom ).to.eventually.equal( SUCCESS );
 	});
 
-	describe( 'paging properties', function() {
+	describe( 'paging properties', () => {
 
-		it( 'are exposed as _paging on the response array', function() {
+		it( 'are exposed as _paging on the response array', () => {
 			var prom = wp.pages()
 				.get()
 				.then(function( pages ) {
@@ -87,7 +87,7 @@ describe( 'integration: pages()', function() {
 			return expect( prom ).to.eventually.equal( SUCCESS );
 		});
 
-		it( 'include the total number of pages', function() {
+		it( 'include the total number of pages', () => {
 			var prom = wp.pages()
 				.get()
 				.then(function( pages ) {
@@ -98,7 +98,7 @@ describe( 'integration: pages()', function() {
 			return expect( prom ).to.eventually.equal( SUCCESS );
 		});
 
-		it( 'include the total number of pages available', function() {
+		it( 'include the total number of pages available', () => {
 			var prom = wp.pages()
 				.get()
 				.then(function( pages ) {
@@ -109,7 +109,7 @@ describe( 'integration: pages()', function() {
 			return expect( prom ).to.eventually.equal( SUCCESS );
 		});
 
-		it( 'provides a bound WPRequest for the next page as .next', function() {
+		it( 'provides a bound WPRequest for the next page as .next', () => {
 			var prom = wp.pages()
 				.get()
 				.then(function( pages ) {
@@ -131,7 +131,7 @@ describe( 'integration: pages()', function() {
 			return expect( prom ).to.eventually.equal( SUCCESS );
 		});
 
-		it( 'allows access to the next page of results via .next', function() {
+		it( 'allows access to the next page of results via .next', () => {
 			var prom = wp.pages()
 				.get()
 				.then(function( pages ) {
@@ -147,7 +147,7 @@ describe( 'integration: pages()', function() {
 			return expect( prom ).to.eventually.equal( SUCCESS );
 		});
 
-		it( 'provides a bound WPRequest for the previous page as .prev', function() {
+		it( 'provides a bound WPRequest for the previous page as .prev', () => {
 			var prom = wp.pages()
 				.get()
 				.then(function( pages ) {
@@ -166,7 +166,7 @@ describe( 'integration: pages()', function() {
 			return expect( prom ).to.eventually.equal( SUCCESS );
 		});
 
-		it( 'allows access to the previous page of results via .prev', function() {
+		it( 'allows access to the previous page of results via .prev', () => {
 			var prom = wp.pages()
 				.page( 2 )
 				.get()
@@ -186,11 +186,11 @@ describe( 'integration: pages()', function() {
 
 	});
 
-	describe( 'filter methods', function() {
+	describe( 'filter methods', () => {
 
-		describe( 'slug', function() {
+		describe( 'slug', () => {
 
-			it( 'can be used to return only pages with the specified slug', function() {
+			it( 'can be used to return only pages with the specified slug', () => {
 				var prom = wp.pages()
 					.slug( 'clearing-floats' )
 					.get()

@@ -53,16 +53,16 @@ var expectedResults = {
 	}
 };
 
-describe( 'integration: categories()', function() {
+describe( 'integration: categories()', () => {
 	var wp;
 
-	beforeEach(function() {
+	beforeEach( () => {
 		wp = new WPAPI({
 			endpoint: 'http://wpapi.loc/wp-json'
 		});
 	});
 
-	it( 'can be used to retrieve a collection of category terms', function() {
+	it( 'can be used to retrieve a collection of category terms', () => {
 		var prom = wp.categories()
 			.get()
 			.then(function( categories ) {
@@ -73,7 +73,7 @@ describe( 'integration: categories()', function() {
 		return expect( prom ).to.eventually.equal( SUCCESS );
 	});
 
-	it( 'retrieves the first 10 categories by default', function() {
+	it( 'retrieves the first 10 categories by default', () => {
 		var prom = wp.categories()
 			.get()
 			.then(function( categories ) {
@@ -84,9 +84,9 @@ describe( 'integration: categories()', function() {
 		return expect( prom ).to.eventually.equal( SUCCESS );
 	});
 
-	describe( 'paging properties', function() {
+	describe( 'paging properties', () => {
 
-		it( 'are exposed as _paging on the response array', function() {
+		it( 'are exposed as _paging on the response array', () => {
 			var prom = wp.categories()
 				.get()
 				.then(function( categories ) {
@@ -97,7 +97,7 @@ describe( 'integration: categories()', function() {
 			return expect( prom ).to.eventually.equal( SUCCESS );
 		});
 
-		it( 'include the total number of categories', function() {
+		it( 'include the total number of categories', () => {
 			var prom = wp.categories()
 				.get()
 				.then(function( categories ) {
@@ -108,7 +108,7 @@ describe( 'integration: categories()', function() {
 			return expect( prom ).to.eventually.equal( SUCCESS );
 		});
 
-		it( 'include the total number of pages available', function() {
+		it( 'include the total number of pages available', () => {
 			var prom = wp.categories()
 				.get()
 				.then(function( categories ) {
@@ -119,7 +119,7 @@ describe( 'integration: categories()', function() {
 			return expect( prom ).to.eventually.equal( SUCCESS );
 		});
 
-		it( 'provides a bound WPRequest for the next page as .next', function() {
+		it( 'provides a bound WPRequest for the next page as .next', () => {
 			var prom = wp.categories()
 				.get()
 				.then(function( categories ) {
@@ -141,7 +141,7 @@ describe( 'integration: categories()', function() {
 			return expect( prom ).to.eventually.equal( SUCCESS );
 		});
 
-		it( 'allows access to the next page of results via .next', function() {
+		it( 'allows access to the next page of results via .next', () => {
 			var prom = wp.categories()
 				.get()
 				.then(function( categories ) {
@@ -157,7 +157,7 @@ describe( 'integration: categories()', function() {
 			return expect( prom ).to.eventually.equal( SUCCESS );
 		});
 
-		it( 'provides a bound WPRequest for the previous page as .prev', function() {
+		it( 'provides a bound WPRequest for the previous page as .prev', () => {
 			var prom = wp.categories()
 				.get()
 				.then(function( categories ) {
@@ -176,7 +176,7 @@ describe( 'integration: categories()', function() {
 			return expect( prom ).to.eventually.equal( SUCCESS );
 		});
 
-		it( 'allows access to the previous page of results via .prev', function() {
+		it( 'allows access to the previous page of results via .prev', () => {
 			var prom = wp.categories()
 				.page( 2 )
 				.get()
@@ -196,9 +196,9 @@ describe( 'integration: categories()', function() {
 
 	});
 
-	describe( 'id()', function() {
+	describe( 'id()', () => {
 
-		it( 'can be used to access an individual category term', function() {
+		it( 'can be used to access an individual category term', () => {
 			var selectedCategory;
 			var prom = wp.categories()
 				.get()
@@ -225,9 +225,9 @@ describe( 'integration: categories()', function() {
 
 	});
 
-	describe( 'search()', function() {
+	describe( 'search()', () => {
 
-		it( 'can be used to retrieve a category by slug', function() {
+		it( 'can be used to retrieve a category by slug', () => {
 			var selectedCategory;
 			var prom = wp.categories()
 				.get()
@@ -257,7 +257,7 @@ describe( 'integration: categories()', function() {
 			return expect( prom ).to.eventually.equal( SUCCESS );
 		});
 
-		it( 'returns all categories matching the provided search string', function() {
+		it( 'returns all categories matching the provided search string', () => {
 			var prom = wp.categories()
 				.search( 'parent' )
 				.get()
@@ -273,7 +273,7 @@ describe( 'integration: categories()', function() {
 			return expect( prom ).to.eventually.equal( SUCCESS );
 		});
 
-		it( 'can be used to retrieve a category by slug from a set of search results', function() {
+		it( 'can be used to retrieve a category by slug from a set of search results', () => {
 			var prom = wp.categories()
 				.search( 'parent' )
 				.get()
@@ -300,9 +300,9 @@ describe( 'integration: categories()', function() {
 
 	});
 
-	describe( 'parent()', function() {
+	describe( 'parent()', () => {
 
-		it( 'can be used to retrieve direct children of a specific category', function() {
+		it( 'can be used to retrieve direct children of a specific category', () => {
 			var parentCat;
 			var childCat1;
 			var childCat2;
@@ -353,9 +353,9 @@ describe( 'integration: categories()', function() {
 
 	});
 
-	describe( '.post()', function() {
+	describe( '.post()', () => {
 
-		it( 'can be used to retrieve terms for a specific post', function() {
+		it( 'can be used to retrieve terms for a specific post', () => {
 			var postCategories;
 			var prom = wp.posts()
 				.perPage( 1 )

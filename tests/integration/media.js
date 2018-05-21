@@ -64,11 +64,11 @@ var expectedResults = {
 	}
 };
 
-describe( 'integration: media()', function() {
+describe( 'integration: media()', () => {
 	var wp;
 	var authenticated;
 
-	beforeEach(function() {
+	beforeEach( () => {
 		wp = new WPAPI({
 			endpoint: 'http://wpapi.loc/wp-json'
 		});
@@ -77,7 +77,7 @@ describe( 'integration: media()', function() {
 		}).auth( credentials );
 	});
 
-	it( 'an be used to retrieve a list of media items', function() {
+	it( 'an be used to retrieve a list of media items', () => {
 		var prom = wp.media()
 			.get()
 			.then(function( media ) {
@@ -88,7 +88,7 @@ describe( 'integration: media()', function() {
 		return expect( prom ).to.eventually.equal( SUCCESS );
 	});
 
-	it( 'fetches the 10 most recent media by default', function() {
+	it( 'fetches the 10 most recent media by default', () => {
 		var prom = wp.media()
 			.get()
 			.then(function( media ) {
@@ -98,9 +98,9 @@ describe( 'integration: media()', function() {
 		return expect( prom ).to.eventually.equal( SUCCESS );
 	});
 
-	describe( 'paging properties', function() {
+	describe( 'paging properties', () => {
 
-		it( 'are exposed as _paging on the response array', function() {
+		it( 'are exposed as _paging on the response array', () => {
 			var prom = wp.media()
 				.get()
 				.then(function( media ) {
@@ -111,7 +111,7 @@ describe( 'integration: media()', function() {
 			return expect( prom ).to.eventually.equal( SUCCESS );
 		});
 
-		it( 'include the total number of media: use .headers() for coverage reasons', function() {
+		it( 'include the total number of media: use .headers() for coverage reasons', () => {
 			var prom = wp.media()
 				.headers()
 				.then(function( postHeadersResponse ) {
@@ -122,7 +122,7 @@ describe( 'integration: media()', function() {
 			return expect( prom ).to.eventually.equal( SUCCESS );
 		});
 
-		it( 'include the total number of pages available', function() {
+		it( 'include the total number of pages available', () => {
 			var prom = wp.media()
 				.get()
 				.then(function( media ) {
@@ -133,7 +133,7 @@ describe( 'integration: media()', function() {
 			return expect( prom ).to.eventually.equal( SUCCESS );
 		});
 
-		it( 'provides a bound WPRequest for the next page as .next', function() {
+		it( 'provides a bound WPRequest for the next page as .next', () => {
 			var prom = wp.media()
 				.get()
 				.then(function( media ) {
@@ -155,7 +155,7 @@ describe( 'integration: media()', function() {
 			return expect( prom ).to.eventually.equal( SUCCESS );
 		});
 
-		it( 'allows access to the next page of results via .next', function() {
+		it( 'allows access to the next page of results via .next', () => {
 			var prom = wp.media()
 				.get()
 				.then(function( media ) {
@@ -171,7 +171,7 @@ describe( 'integration: media()', function() {
 			return expect( prom ).to.eventually.equal( SUCCESS );
 		});
 
-		it( 'provides a bound WPRequest for the previous page as .prev', function() {
+		it( 'provides a bound WPRequest for the previous page as .prev', () => {
 			var prom = wp.media()
 				.get()
 				.then(function( media ) {
@@ -190,7 +190,7 @@ describe( 'integration: media()', function() {
 			return expect( prom ).to.eventually.equal( SUCCESS );
 		});
 
-		it( 'allows access to the previous page of results via .prev', function() {
+		it( 'allows access to the previous page of results via .prev', () => {
 			var prom = wp.media()
 				.page( 2 )
 				.get()
@@ -210,9 +210,9 @@ describe( 'integration: media()', function() {
 
 	});
 
-	describe( 'without authentication', function() {
+	describe( 'without authentication', () => {
 
-		it( 'cannot POST', function() {
+		it( 'cannot POST', () => {
 			var prom = wp.media()
 				.file( filePath )
 				.create({
@@ -230,7 +230,7 @@ describe( 'integration: media()', function() {
 			return expect( prom ).to.eventually.equal( SUCCESS );
 		});
 
-		it( 'cannot PUT', function() {
+		it( 'cannot PUT', () => {
 			var prom = wp.media()
 				.perPage( 1 )
 				.get()
@@ -253,7 +253,7 @@ describe( 'integration: media()', function() {
 			return expect( prom ).to.eventually.equal( SUCCESS );
 		});
 
-		it( 'cannot DELETE', function() {
+		it( 'cannot DELETE', () => {
 			var prom = wp.media()
 				.perPage( 1 )
 				.get()
@@ -276,7 +276,7 @@ describe( 'integration: media()', function() {
 
 	});
 
-	it( 'can create, update & delete media when authenticated', function() {
+	it( 'can create, update & delete media when authenticated', () => {
 		var id;
 		var imageUrl;
 

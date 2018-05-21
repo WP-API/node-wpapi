@@ -27,11 +27,11 @@ var expectedResults = {
 	firstPostTitle: 'Markup: HTML Tags and Formatting'
 };
 
-describe( 'integration: discover()', function() {
+describe( 'integration: discover()', () => {
 	var apiPromise;
 	var sinonSandbox;
 
-	beforeEach(function() {
+	beforeEach( () => {
 		apiPromise = WPAPI.discover( 'http://wpapi.loc' );
 		// Stub warn and error
 		sinonSandbox = sinon.sandbox.create();
@@ -44,11 +44,11 @@ describe( 'integration: discover()', function() {
 		sinonSandbox.restore();
 	});
 
-	it( 'returns a promise', function() {
+	it( 'returns a promise', () => {
 		expect( apiPromise ).to.be.an.instanceOf( Promise );
 	});
 
-	it( 'eventually returns a configured WP instance', function() {
+	it( 'eventually returns a configured WP instance', () => {
 		var prom = apiPromise
 			.then(function( result ) {
 				expect( result ).to.be.an.instanceOf( WPAPI );
@@ -60,7 +60,7 @@ describe( 'integration: discover()', function() {
 		return expect( prom ).to.eventually.equal( SUCCESS );
 	});
 
-	it( 'auto-binds to the detected endpoint on the provided site', function() {
+	it( 'auto-binds to the detected endpoint on the provided site', () => {
 		var prom = apiPromise
 			.then(function( site ) {
 				expect( site.posts().toString() ).to.equal( 'http://wpapi.loc/wp-json/wp/v2/posts' );
@@ -69,7 +69,7 @@ describe( 'integration: discover()', function() {
 		return expect( prom ).to.eventually.equal( SUCCESS );
 	});
 
-	it( 'can correctly instantiate requests against the detected and bound site', function() {
+	it( 'can correctly instantiate requests against the detected and bound site', () => {
 		var prom = apiPromise
 			.then(function( site ) {
 				return site.posts();
@@ -81,9 +81,9 @@ describe( 'integration: discover()', function() {
 		return expect( prom ).to.eventually.equal( SUCCESS );
 	});
 
-	describe( 'can authenticate', function() {
+	describe( 'can authenticate', () => {
 
-		it( 'requests against the detected and bound site', function() {
+		it( 'requests against the detected and bound site', () => {
 			var prom = apiPromise
 				.then(function( site ) {
 					return site.auth( credentials );
@@ -99,7 +99,7 @@ describe( 'integration: discover()', function() {
 			return expect( prom ).to.eventually.equal( SUCCESS );
 		});
 
-		it( 'one-off requests against the detected and bound site', function() {
+		it( 'one-off requests against the detected and bound site', () => {
 			var prom = apiPromise
 				.then(function( site ) {
 					return site.users()

@@ -19,13 +19,13 @@ var httpTransport = require( '../../lib/http-transport' );
 
 var credentials = require( './helpers/constants' ).credentials;
 
-describe( 'integration: custom HTTP transport methods', function() {
+describe( 'integration: custom HTTP transport methods', () => {
 	var wp;
 	var id;
 	var cache;
 	var cachingGet;
 
-	beforeEach(function() {
+	beforeEach( () => {
 		cache = {};
 		cachingGet = sinon.spy(function( wpreq, cb ) {
 			var result = cache[ wpreq ];
@@ -60,7 +60,7 @@ describe( 'integration: custom HTTP transport methods', function() {
 		httpTransport.get.restore();
 	});
 
-	it( 'can be defined to e.g. use a cache when available', function() {
+	it( 'can be defined to e.g. use a cache when available', () => {
 		var query1;
 		var query2;
 
@@ -99,7 +99,7 @@ describe( 'integration: custom HTTP transport methods', function() {
 		return expect( prom ).to.eventually.equal( SUCCESS );
 	});
 
-	it( 'can be defined to transform responses', function() {
+	it( 'can be defined to transform responses', () => {
 		function extractSlug( results ) {
 			if ( Array.isArray( results ) && results.length === 1 ) {
 				return results[0];
@@ -139,7 +139,7 @@ describe( 'integration: custom HTTP transport methods', function() {
 		return expect( prom ).to.eventually.equal( SUCCESS );
 	});
 
-	it( 'can be defined to augment responses', function() {
+	it( 'can be defined to augment responses', () => {
 		function Collection( arr ) {
 			this.data = arr;
 		}

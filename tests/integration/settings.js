@@ -12,11 +12,11 @@ var WPAPI = require( '../../' );
 
 var credentials = require( './helpers/constants' ).credentials;
 
-describe( 'integration: settings()', function() {
+describe( 'integration: settings()', () => {
 	var wp;
 	var authenticated;
 
-	beforeEach(function() {
+	beforeEach( () => {
 		wp = new WPAPI({
 			endpoint: 'http://wpapi.loc/wp-json'
 		});
@@ -25,7 +25,7 @@ describe( 'integration: settings()', function() {
 		}).auth( credentials );
 	});
 
-	it( 'cannot be used to retrieve site settings unless authenticated', function() {
+	it( 'cannot be used to retrieve site settings unless authenticated', () => {
 		var prom = wp.settings()
 			.get()
 			.catch(function( err ) {
@@ -38,7 +38,7 @@ describe( 'integration: settings()', function() {
 		return expect( prom ).to.eventually.equal( SUCCESS );
 	});
 
-	it( 'can be used to retrieve a list of site settings when authenticated', function() {
+	it( 'can be used to retrieve a list of site settings when authenticated', () => {
 		var prom = authenticated.settings()
 			.get()
 			.then(function( settings ) {
@@ -74,7 +74,7 @@ describe( 'integration: settings()', function() {
 		return expect( prom ).to.eventually.equal( SUCCESS );
 	});
 
-	it( 'can be used to update settings', function() {
+	it( 'can be used to update settings', () => {
 		var prom = authenticated.settings()
 			.get()
 			.then(function( settings ) {

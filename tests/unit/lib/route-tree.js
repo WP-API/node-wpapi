@@ -4,29 +4,29 @@ var expect = require( 'chai' ).expect;
 var routeTree = require( '../../../lib/route-tree' );
 var defaultRoutes = require( '../../../lib/data/default-routes.json' );
 
-describe( 'route-tree utility', function() {
+describe( 'route-tree utility', () => {
 
-	describe( '.build()', function() {
+	describe( '.build()', () => {
 		var tree;
 
-		beforeEach(function() {
+		beforeEach( () => {
 			tree = routeTree.build( defaultRoutes );
 		});
 
-		it( 'returns an object keyed by API namespace', function() {
+		it( 'returns an object keyed by API namespace', () => {
 			var keys = Object.keys( tree ).sort();
 			expect( keys.length ).to.equal( 2 );
 			expect( keys ).to.deep.equal([ 'oembed/1.0', 'wp/v2' ]);
 		});
 
-		it( 'includes objects for all default wp/v2 routes', function() {
+		it( 'includes objects for all default wp/v2 routes', () => {
 			var routes = Object.keys( tree[ 'wp/v2' ] ).sort();
 			expect( routes ).to.have.length( 11 );
 			expect( routes.join( ',' ) ).to
 				.equal( 'categories,comments,media,pages,posts,settings,statuses,tags,taxonomies,types,users' );
 		});
 
-		it( 'includes objects for all default oembed/1.0 routes', function() {
+		it( 'includes objects for all default oembed/1.0 routes', () => {
 			var routes = Object.keys( tree[ 'oembed/1.0' ] ).sort();
 			expect( routes ).to.have.length( 1 );
 			expect( routes.join( ',' ) ).to.equal( 'embed' );
@@ -34,19 +34,19 @@ describe( 'route-tree utility', function() {
 
 		// Inspect the .posts tree as a smoke test for whether parsing the API
 		// definition object was successful
-		describe( 'posts resource tree', function() {
+		describe( 'posts resource tree', () => {
 			var posts;
 
-			beforeEach(function() {
+			beforeEach( () => {
 				posts = tree[ 'wp/v2' ].posts;
 			});
 
-			it ( 'includes a ._getArgs property', function() {
+			it( 'includes a ._getArgs property', () => {
 				expect( posts ).to.have.property( '_getArgs' );
 				expect( posts._getArgs ).to.be.an( 'object' );
 			});
 
-			it ( '._getArgs specifies a list of supported parameters', function() {
+			it( '._getArgs specifies a list of supported parameters', () => {
 				expect( posts ).to.have.property( '_getArgs' );
 				expect( posts._getArgs ).to.be.an( 'object' );
 				expect( posts._getArgs ).to.deep.equal({
@@ -74,14 +74,14 @@ describe( 'route-tree utility', function() {
 				});
 			});
 
-			it ( 'includes a .posts property', function() {
+			it( 'includes a .posts property', () => {
 				expect( posts ).to.have.property( 'posts' );
 				expect( posts.posts ).to.be.an( 'object' );
 			});
 
 			// This is a decidedly incomplete smoke test...
 			// But if this fails, so will everything else!
-			it ( '.posts defines the top level of a route tree', function() {
+			it( '.posts defines the top level of a route tree', () => {
 				var routeTree = posts.posts;
 				expect( routeTree ).to.have.property( 'level' );
 				expect( routeTree.level ).to.equal( 0 );

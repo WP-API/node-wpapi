@@ -10,16 +10,16 @@ var expect = chai.expect;
 
 var WPAPI = require( '../../' );
 
-describe( 'integration: taxonomies()', function() {
+describe( 'integration: taxonomies()', () => {
 	var wp;
 
-	beforeEach(function() {
+	beforeEach( () => {
 		wp = new WPAPI({
 			endpoint: 'http://wpapi.loc/wp-json'
 		});
 	});
 
-	it( 'can be used to retrieve a dictionary of registered taxonomies', function() {
+	it( 'can be used to retrieve a dictionary of registered taxonomies', () => {
 		var prom = wp.taxonomies()
 			.get()
 			.then(function( taxonomies ) {
@@ -33,7 +33,7 @@ describe( 'integration: taxonomies()', function() {
 		return expect( prom ).to.eventually.equal( SUCCESS );
 	});
 
-	it( 'can be chained with a taxonomy() call to fetch the category taxonomy', function() {
+	it( 'can be chained with a taxonomy() call to fetch the category taxonomy', () => {
 		var prom = wp.taxonomies()
 			.taxonomy( 'category' )
 			.get()
@@ -48,7 +48,7 @@ describe( 'integration: taxonomies()', function() {
 		return expect( prom ).to.eventually.equal( SUCCESS );
 	});
 
-	it( 'can be chained with a taxonomy() call to fetch the post_tag taxonomy', function() {
+	it( 'can be chained with a taxonomy() call to fetch the post_tag taxonomy', () => {
 		var prom = wp.taxonomies()
 			.taxonomy( 'post_tag' )
 			.get()
