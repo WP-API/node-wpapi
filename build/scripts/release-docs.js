@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 'use strict';
 
 const fs = require( 'fs' );
@@ -25,7 +24,7 @@ const OMIT_FILE_RE = /^\.|\.lock|\.combyne$/;
 // incorrect but still helpful assumption that no file extension means that
 // something is a directory. This means Gemfile and other no-ext files are
 // unnecessarily deleted, but it makes things work with minimal complexity.
-const PROBABLY_A_DIRECTORY_RE = /^[^\.]+$/;
+const PROBABLY_A_DIRECTORY_RE = /^[^.]+$/;
 
 // RE to match the markdown files that are extracted from the README.md
 const GENERATED_MARKDOWN_RE = /^\d+-.*\.md$/;
@@ -59,7 +58,7 @@ const promptYN = () => new Promise( ( resolve, reject ) => {
  * @param {string} inputDir The file system path to the directory to read
  * @returns {Promise} A promise to the string array of file names
  */
-const ls = ( inputDir, absolute ) => {
+const ls = ( inputDir ) => {
 	return new Promise( ( resolve, reject ) => {
 		fs.readdir( inputDir, ( err, list ) => {
 			if ( err ) {
@@ -95,11 +94,11 @@ const runCommand = ( commandStr, otherArgs ) => {
 			stdio: 'inherit',
 		} );
 
-		spawnedCommand.on( 'error', err => {
+		spawnedCommand.on( 'error', ( err ) => {
 			reject( err );
 		} );
 
-		spawnedCommand.on( 'close', code => {
+		spawnedCommand.on( 'close', ( code ) => {
 			return code ? reject( code ) : resolve();
 		} );
 	} );
@@ -113,7 +112,7 @@ const runCommand = ( commandStr, otherArgs ) => {
  * @returns {Promise} A promise that will resolve once all the promises
  * returned by that function successfully complete
  */
-const runInSequence = arrOfFnsReturningPromises => {
+const runInSequence = ( arrOfFnsReturningPromises ) => {
 	return arrOfFnsReturningPromises.reduce(
 		( lastStep, startNextStep ) => lastStep.then( startNextStep ),
 		Promise.resolve()
@@ -132,7 +131,7 @@ runCommand( 'rm -rf docs-tmp' )
 		console.log( 'By proceeding, you affirm that this is not going to ruin anybody\'s day.' );
 		console.log( '\nContinue?' );
 
-		return promptYN().then( result => {
+		return promptYN().then( ( result ) => {
 			if ( result ) {
 				console.log( '\nGreat, let\'s get this show on the road...' );
 				resolve();
@@ -155,7 +154,7 @@ runCommand( 'rm -rf docs-tmp' )
 	// Remove auto-generated files from the root of the gh-pages branch, in case
 	// file names have changed since the last deploy
 	.then( () => ls( projectRoot )
-		.then( files => {
+		.then( ( files ) => {
 			const removeFiles = files
 				.filter( file => GENERATED_MARKDOWN_RE.test( file ) )
 				.map( file => () => runCommand( `rm ${file}` ) );
@@ -169,12 +168,12 @@ runCommand( 'rm -rf docs-tmp' )
 	// Filter out unneeded files from the list
 	.then( fileList => fileList.filter( result => ! OMIT_FILE_RE.test( result ) ) )
 	// Copy things from the temp directory down into the directory root
-	.then( fileList => {
+	.then( ( fileList ) => {
 		// Create an array of functions that each remove a directory in the root of
 		// this project which could block the success of the `mv` command below
 		const removeDirectories = fileList
 			.filter( file => PROBABLY_A_DIRECTORY_RE.test( file ) )
-			.map( dir => {
+			.map( ( dir ) => {
 				// Ignore errors b/c they will usually be nothing more than a warning
 				// that a file we tried to delete didn't exist to begin with
 				return () => runCommand( `rm -rf ${dir}` ).catch( err => console.log( err ) );
@@ -183,8 +182,8 @@ runCommand( 'rm -rf docs-tmp' )
 		return runInSequence( removeDirectories ).then( () => fileList );
 	} )
 	// Copy files over
-	.then( fileList => {
-		const copyFiles = fileList.map( file => {
+	.then( ( fileList ) => {
+		const copyFiles = fileList.map( ( file ) => {
 			return () => runCommand( `mv docs-tmp/${file} ./${file}` );
 		} );
 		return runInSequence( copyFiles ).then( () => fileList );
@@ -196,10 +195,10 @@ runCommand( 'rm -rf docs-tmp' )
 	// have not changed but a new .zip is generated with the same contents, Git
 	// will still regard it as an updated file and too many of those could bloat
 	// the repo. Easier to exclude it for docs-only updates.
-	.then( () => new Promise( ( resolve, reject ) => {
+	.then( () => new Promise( ( resolve ) => {
 		console.log( '\nHas the wpapi.zip bundle changed since last deploy? (If unsure, answer "Yes")' );
 
-		return promptYN().then( result => {
+		return promptYN().then( ( result ) => {
 			if ( result ) {
 				console.log( 'Including updated wpapi.zip in build...' );
 				resolve();
@@ -215,7 +214,7 @@ runCommand( 'rm -rf docs-tmp' )
 	.then( () => new Promise( ( resolve, reject ) => {
 		console.log( '\nDocumentation staged for commit. Proceed with commit & push?' );
 
-		return promptYN().then( result => {
+		return promptYN().then( ( result ) => {
 			if ( result ) {
 				console.log( '\nConfirmed, committing & pushing docs branch...' );
 				resolve();

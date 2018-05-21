@@ -8,18 +8,13 @@ root = true
 end_of_line = lf
 insert_final_newline = true
 
+[*.js]
 # Avoid trailing whitespace
-[*.js]
 trim_trailing_whitespace = true
-
 # Set default charset for JS files
-[*.js]
 charset = utf-8
-
-# Tab indentation (no size specified)
-[*.js]
+# Tab indentation
 indent_style = tab
-indent_size = tab
 tab_width = 2
 
 # Matches the exact files either package.json or .travis.yml

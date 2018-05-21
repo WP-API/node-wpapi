@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 'use strict';
 
 const fs = require( 'fs' );
@@ -61,7 +60,7 @@ const titleToSlug = title => title
 	.split( /\s+/ )
 	.join( '-' );
 
-const fileHeader = title => {
+const fileHeader = ( title ) => {
 	const slug = titleToSlug( title );
 	return `---\nlayout: page\ntitle: ${ title }\npermalink: /${ slug }/\n---`;
 };
@@ -73,12 +72,12 @@ const isTitle = token => token.match( titleRE );
 
 const getTitle = token => token.replace( titleRE, '$1' ).trim();
 
-const getLevel = mdHeading => {
+const getLevel = ( mdHeading ) => {
 	const match = mdHeading.match( /#+/ );
 	return match ? match[ 0 ].length : -1;
 };
 
-const getContents = entry => {
+const getContents = ( entry ) => {
 	// Strip any top-level headings: those are rendered as titles elsewhere
 	const fileContents = entry.tokens.join( '' ).replace( /^# [^\n]+/, '' );
 	const title = fileHeader( entry.title );
@@ -102,7 +101,7 @@ const readFile = sourcePath => new Promise( ( resolve, reject ) => {
 } );
 
 const writeFile = ( outputPath, fileContents ) => new Promise( ( resolve, reject ) => {
-	fs.writeFile( outputPath, fileContents, ( err, result ) => {
+	fs.writeFile( outputPath, fileContents, ( err ) => {
 		if ( err ) {
 			return reject( err );
 		}
@@ -111,7 +110,7 @@ const writeFile = ( outputPath, fileContents ) => new Promise( ( resolve, reject
 	} );
 } );
 
-const copyFile = ( sourcePath, title ) => readFile( sourcePath ).then( contents => {
+const copyFile = ( sourcePath, title ) => readFile( sourcePath ).then( ( contents ) => {
 	const outputPath = path.join( docsDir, `${ titleToSlug( title ) }.md` );
 	return writeFile( outputPath, getContents( {
 		title: title,
@@ -120,7 +119,7 @@ const copyFile = ( sourcePath, title ) => readFile( sourcePath ).then( contents 
 } );
 
 // Break the README into individual files
-const readmeOutput = readFile( readmePath ).then( contents => {
+const readmeOutput = readFile( readmePath ).then( ( contents ) => {
 	const tokens = contents.split( /(\n+#+ .*\n+)/ );
 	const entries = [];
 	let entry = null;
@@ -192,7 +191,7 @@ const changelogOutput = copyFile( changelogPath, 'Changelog' );
 const licenseOutput = copyFile( licensePath, 'License' );
 
 // Build the template context to use with the
-const templateContext = readmeOutput.then( entries => {
+const templateContext = readmeOutput.then( ( entries ) => {
 	return entries.reduce( ( context, entry ) => {
 		const isAboutPage = entry.slug === 'about';
 		if ( isAboutPage ) {
@@ -217,7 +216,7 @@ const fileAndContext = filePath => Promise.all( [
 } ) );
 
 // Create the index HTML page
-const indexOutput = fileAndContext( indexTemplatePath ).then( result => {
+const indexOutput = fileAndContext( indexTemplatePath ).then( ( result ) => {
 	console.log( 'index' );
 	const outputPath = path.join( docsDir, 'index.html' );
 	const fileContents = combyne( result.template ).render( result.context );
@@ -225,7 +224,7 @@ const indexOutput = fileAndContext( indexTemplatePath ).then( result => {
 } );
 
 // Create the Error 404 page
-const err404Output = fileAndContext( err404TemplatePath ).then( result => {
+const err404Output = fileAndContext( err404TemplatePath ).then( ( result ) => {
 	console.log( '404' );
 	const outputPath = path.join( docsDir, '404.html' );
 	const fileContents = combyne( result.template ).render( result.context );
@@ -240,4 +239,4 @@ module.exports = Promise.all( [
 	indexOutput,
 	err404Output,
 ] )
-.catch( err => console.log( err && err.stack ) );
+	.catch( err => console.log( err && err.stack ) );
