@@ -27,7 +27,7 @@ describe( 'integration: custom HTTP transport methods', () => {
 
 	beforeEach( () => {
 		cache = {};
-		cachingGet = sinon.spy(function( wpreq, cb ) {
+		cachingGet = sinon.spy( ( wpreq, cb ) => {
 			var result = cache[ wpreq ];
 			// If a cache hit is found, return it via the same callback/promise
 			// signature as the default transport method
@@ -39,7 +39,7 @@ describe( 'integration: custom HTTP transport methods', () => {
 			}
 
 			// Delegate to default transport if no cached data was found
-			return WPAPI.transport.get( wpreq, cb ).then(function( result ) {
+			return WPAPI.transport.get( wpreq, cb ).then( ( result ) => {
 				cache[ wpreq ] = result;
 				return result;
 			});
@@ -48,7 +48,7 @@ describe( 'integration: custom HTTP transport methods', () => {
 		return WPAPI.site( 'http://wpapi.loc/wp-json' )
 			.posts()
 			.perPage( 1 )
-			.then(function( posts ) {
+			.then( ( posts ) => {
 				id = posts[ 0 ].id;
 
 				// Set up our spy here so the request to get the ID isn't counted
@@ -56,7 +56,7 @@ describe( 'integration: custom HTTP transport methods', () => {
 			});
 	});
 
-	afterEach(function() {
+	afterEach( () => {
 		httpTransport.get.restore();
 	});
 
@@ -74,23 +74,23 @@ describe( 'integration: custom HTTP transport methods', () => {
 		query1 = wp.posts().id( id );
 		var prom = query1
 			.get()
-			.then(function( result ) {
+			.then( ( result ) => {
 				expect( result.id ).to.equal( id );
 				expect( cachingGet.callCount ).to.equal( 1 );
 				expect( httpTransport.get.callCount ).to.equal( 1 );
 				expect( httpTransport.get ).to.have.been.calledWith( query1 );
 				expect( result ).to.equal( cache[ 'http://wpapi.loc/wp-json/wp/v2/posts/' + id ] );
 			})
-			.then(function() {
+			.then( () => {
 				query2 = wp.posts().id( id );
 				return query2.get();
 			})
-			.then(function( result ) {
+			.then( ( result ) => {
 				expect( cachingGet.callCount ).to.equal( 2 );
 				expect( httpTransport.get.callCount ).to.equal( 1 );
 				// sinon will try to use toString when comparing arguments in calledWith,
 				// so we mess with that method to properly demonstrate the inequality
-				query2.toString = function() {};
+				query2.toString = () => {};
 				expect( httpTransport.get ).not.to.have.been.calledWith( query2 );
 				expect( result ).to.equal( cache[ 'http://wpapi.loc/wp-json/wp/v2/posts/' + id ] );
 				return SUCCESS;
@@ -112,7 +112,7 @@ describe( 'integration: custom HTTP transport methods', () => {
 				/* jshint validthis:true */
 				return WPAPI.transport.get.call( this, wpreq, cb );
 			}
-			return WPAPI.transport.get( wpreq ).then(function( results ) {
+			return WPAPI.transport.get( wpreq ).then( ( results ) => {
 				var result = extractSlug( results );
 				if ( cb && typeof cb === 'function' ) {
 					cb( null, result );
@@ -129,7 +129,7 @@ describe( 'integration: custom HTTP transport methods', () => {
 		});
 
 		var prom = wp.posts().slug( 'template-more-tag' )
-			.then(function( results ) {
+			.then( ( results ) => {
 				expect( results ).to.be.an( 'object' );
 				expect( Array.isArray( results ) ).to.equal( false );
 				expect( results.title.rendered ).to.equal( 'Template: More Tag' );
@@ -144,13 +144,11 @@ describe( 'integration: custom HTTP transport methods', () => {
 			this.data = arr;
 		}
 		Collection.prototype.pluck = function( key ) {
-			return this.data.map(function( val ) {
-				return val[ key ];
-			});
+			return this.data.map( ( val ) => val[ key ] );
 		};
 		function addCollectionMethodsGet( wpreq, cb ) {
 			/* jshint validthis:true */
-			return WPAPI.transport.get.call( this, wpreq, cb ).then(function( results ) {
+			return WPAPI.transport.get.call( this, wpreq, cb ).then( ( results ) => {
 				if ( Array.isArray( results ) ) {
 					return new Collection( results );
 				}
@@ -165,7 +163,7 @@ describe( 'integration: custom HTTP transport methods', () => {
 		});
 
 		var prom = wp.posts()
-			.then(function( results ) {
+			.then( ( results ) => {
 				expect( results ).to.be.an.instanceOf( Collection );
 				expect( results.pluck( 'slug' ) ).to.deep.equal([
 					'markup-html-tags-and-formatting',

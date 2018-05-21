@@ -39,7 +39,7 @@ describe( 'integration: discover()', () => {
 		sinonSandbox.stub( global.console, 'error' );
 	});
 
-	afterEach(function() {
+	afterEach( () => {
 		// Restore sandbox
 		sinonSandbox.restore();
 	});
@@ -50,7 +50,7 @@ describe( 'integration: discover()', () => {
 
 	it( 'eventually returns a configured WP instance', () => {
 		var prom = apiPromise
-			.then(function( result ) {
+			.then( ( result ) => {
 				expect( result ).to.be.an.instanceOf( WPAPI );
 				expect( result.namespace( 'wp/v2' ) ).to.be.an( 'object' );
 				expect( result.posts ).to.be.a( 'function' );
@@ -62,7 +62,7 @@ describe( 'integration: discover()', () => {
 
 	it( 'auto-binds to the detected endpoint on the provided site', () => {
 		var prom = apiPromise
-			.then(function( site ) {
+			.then( ( site ) => {
 				expect( site.posts().toString() ).to.equal( 'http://wpapi.loc/wp-json/wp/v2/posts' );
 				return SUCCESS;
 			});
@@ -71,10 +71,8 @@ describe( 'integration: discover()', () => {
 
 	it( 'can correctly instantiate requests against the detected and bound site', () => {
 		var prom = apiPromise
-			.then(function( site ) {
-				return site.posts();
-			})
-			.then(function( posts ) {
+			.then( ( site ) => site.posts() )
+			.then( ( posts ) => {
 				expect( getTitles( posts )[ 0 ] ).to.equal( expectedResults.firstPostTitle );
 				return SUCCESS;
 			});
@@ -85,13 +83,9 @@ describe( 'integration: discover()', () => {
 
 		it( 'requests against the detected and bound site', () => {
 			var prom = apiPromise
-				.then(function( site ) {
-					return site.auth( credentials );
-				})
-				.then(function( site ) {
-					return site.users().me();
-				})
-				.then(function( user ) {
+				.then( ( site ) => site.auth( credentials ) )
+				.then( ( site ) => site.users().me() )
+				.then( ( user ) => {
 					expect( user ).to.be.an( 'object' );
 					expect( user.slug ).to.equal( credentials.username );
 					return SUCCESS;
@@ -101,12 +95,8 @@ describe( 'integration: discover()', () => {
 
 		it( 'one-off requests against the detected and bound site', () => {
 			var prom = apiPromise
-				.then(function( site ) {
-					return site.users()
-						.auth( credentials )
-						.me();
-				})
-				.then(function( user ) {
+				.then( ( site ) => site.users().auth( credentials ).me() )
+				.then( ( user ) => {
 					expect( user ).to.be.an( 'object' );
 					expect( user.slug ).to.equal( credentials.username );
 					return SUCCESS;

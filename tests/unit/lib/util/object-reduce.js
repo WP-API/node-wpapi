@@ -11,9 +11,9 @@ describe( 'Object reduction tools:', () => {
 			name: 'objectReduce utility',
 			fn: require( '../../../../lib/util/object-reduce' )
 		}
-	].forEach(function( test ) {
+	].forEach( ( test ) => {
 
-		describe( test.name, function() {
+		describe( test.name, () => {
 			var objectReduce = test.fn;
 			var obj;
 
@@ -30,7 +30,7 @@ describe( 'Object reduction tools:', () => {
 			});
 
 			it( 'resolves to the provided initial value if called on an empty object', () => {
-				expect( objectReduce( {}, function() {}, 'Sasquatch' ) ).to.equal( 'Sasquatch' );
+				expect( objectReduce( {}, () => {}, 'Sasquatch' ) ).to.equal( 'Sasquatch' );
 			});
 
 			it( 'can be used to reduce over an object', () => {
@@ -38,9 +38,7 @@ describe( 'Object reduction tools:', () => {
 					key1: 'val1',
 					key2: 'val2',
 					key3: 'val3'
-				}, function( memo, val, key ) {
-					return memo + val + key;
-				}, 'result:' );
+				}, ( memo, val, key ) => memo + val + key, 'result:' );
 				expect( result ).to.equal( 'result:val1key1val2key2val3key3' );
 			});
 

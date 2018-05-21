@@ -120,7 +120,7 @@ describe( 'wp.registerRoute', () => {
 
 		it( 'will parse the route without error but not yield functioning setters', () => {
 			var factory;
-			expect(function() {
+			expect( () => {
 				factory = registerRoute(
 					'mmw/v1',
 					'/users/market=(?P<market>[a-zA-Z0-9-]+)/lat=(?P<lat>[a-z0-9 .\\-]+)/long=(?P<long>[a-z0-9 .\\-]+)'

@@ -19,7 +19,7 @@ describe( 'mixins: filter', () => {
 
 		req = new Req();
 
-		getQueryStr = function( req ) {
+		getQueryStr = ( req ) => {
 			var query = req
 				._renderQuery()
 				.replace( /^\?/, '' );
@@ -134,50 +134,50 @@ describe( 'mixins: filter', () => {
 		describe( 'argument type check errors', () => {
 
 			it( 'errors if no term is provided', () => {
-				expect(function() { req.taxonomy( 'tag' ); }).to.throw();
+				expect( () => { req.taxonomy( 'tag' ); }).to.throw();
 			});
 
 			it( 'does not error if the term is a string', () => {
-				expect(function() { req.taxonomy( 'tag', 'cat' ); }).not.to.throw();
+				expect( () => { req.taxonomy( 'tag', 'cat' ); }).not.to.throw();
 			});
 
 			it( 'does not error if the term is an array of strings', () => {
-				expect(function() { req.taxonomy( 'tag', [ 'cat', 'dog' ] ); }).not.to.throw();
+				expect( () => { req.taxonomy( 'tag', [ 'cat', 'dog' ] ); }).not.to.throw();
 			});
 
 			it( 'does not error if term is a number', () => {
-				expect(function() { req.taxonomy( 'cat', 7 ); }).not.to.throw();
+				expect( () => { req.taxonomy( 'cat', 7 ); }).not.to.throw();
 			});
 
 			it( 'does not error if term is an array of numbers', () => {
-				expect(function() { req.taxonomy( 'cat', [ 7, 11 ] ); }).not.to.throw();
+				expect( () => { req.taxonomy( 'cat', [ 7, 11 ] ); }).not.to.throw();
 			});
 
 			it( 'errors if the term is null', () => {
-				expect(function() { req.taxonomy( 'tag', null ); }).to.throw();
+				expect( () => { req.taxonomy( 'tag', null ); }).to.throw();
 			});
 
 			it( 'errors if the term is a boolean', () => {
-				expect(function() { req.taxonomy( 'tag', true ); }).to.throw();
-				expect(function() { req.taxonomy( 'tag', false ); }).to.throw();
+				expect( () => { req.taxonomy( 'tag', true ); }).to.throw();
+				expect( () => { req.taxonomy( 'tag', false ); }).to.throw();
 			});
 
 			it( 'errors if the term is a Date', () => {
-				expect(function() { req.taxonomy( 'tag', new Date() ); }).to.throw();
+				expect( () => { req.taxonomy( 'tag', new Date() ); }).to.throw();
 			});
 
 			it( 'errors if the term is an object', () => {
-				expect(function() { req.taxonomy( 'tag', {} ); }).to.throw();
+				expect( () => { req.taxonomy( 'tag', {} ); }).to.throw();
 			});
 
 			it( 'errors if the term is an array of types other than strings or numbers', () => {
-				expect(function() { req.taxonomy( 'tag', [ null ] ); }).to.throw();
+				expect( () => { req.taxonomy( 'tag', [ null ] ); }).to.throw();
 			});
 
 			it( 'errors if the term is not all strings or numbers', () => {
-				expect(function() { req.taxonomy( 'tag', [ 'cat', null ] ); }).to.throw();
-				expect(function() { req.taxonomy( 'cat', [ 7, null ] ); }).to.throw();
-				expect(function() { req.taxonomy( 'cat', [ 'foo', 7 ] ); }).to.throw();
+				expect( () => { req.taxonomy( 'tag', [ 'cat', null ] ); }).to.throw();
+				expect( () => { req.taxonomy( 'cat', [ 7, null ] ); }).to.throw();
+				expect( () => { req.taxonomy( 'cat', [ 'foo', 7 ] ); }).to.throw();
 			});
 
 		});

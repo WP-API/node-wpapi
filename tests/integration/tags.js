@@ -70,7 +70,7 @@ describe( 'integration: tags()', () => {
 	it( 'can be used to retrieve a collection of category terms', () => {
 		var prom = wp.tags()
 			.get()
-			.then(function( tags ) {
+			.then( ( tags ) => {
 				expect( tags ).to.be.an( 'array' );
 				expect( tags.length ).to.equal( 10 );
 				return SUCCESS;
@@ -81,7 +81,7 @@ describe( 'integration: tags()', () => {
 	it( 'retrieves the first 10 tags by default', () => {
 		var prom = wp.tags()
 			.get()
-			.then(function( tags ) {
+			.then( ( tags ) => {
 				expect( tags ).to.be.an( 'array' );
 				expect( tags.length ).to.equal( 10 );
 				return SUCCESS;
@@ -94,7 +94,7 @@ describe( 'integration: tags()', () => {
 		it( 'are exposed as _paging on the response array', () => {
 			var prom = wp.tags()
 				.get()
-				.then(function( tags ) {
+				.then( ( tags ) => {
 					expect( tags ).to.have.property( '_paging' );
 					expect( tags._paging ).to.be.an( 'object' );
 					return SUCCESS;
@@ -105,7 +105,7 @@ describe( 'integration: tags()', () => {
 		it( 'include the total number of tags', () => {
 			var prom = wp.tags()
 				.get()
-				.then(function( tags ) {
+				.then( ( tags ) => {
 					expect( tags._paging ).to.have.property( 'total' );
 					expect( tags._paging.total ).to.equal( '110' );
 					return SUCCESS;
@@ -116,7 +116,7 @@ describe( 'integration: tags()', () => {
 		it( 'include the total number of pages available', () => {
 			var prom = wp.tags()
 				.get()
-				.then(function( tags ) {
+				.then( ( tags ) => {
 					expect( tags._paging ).to.have.property( 'totalPages' );
 					expect( tags._paging.totalPages ).to.equal( '11' );
 					return SUCCESS;
@@ -127,7 +127,7 @@ describe( 'integration: tags()', () => {
 		it( 'provides a bound WPRequest for the next page as .next', () => {
 			var prom = wp.tags()
 				.get()
-				.then(function( tags ) {
+				.then( ( tags ) => {
 					expect( tags._paging ).to.have.property( 'next' );
 					expect( tags._paging.next ).to.be.an( 'object' );
 					expect( tags._paging.next ).to.be.an.instanceOf( WPRequest );
@@ -136,7 +136,7 @@ describe( 'integration: tags()', () => {
 					// Get last page & ensure "next" no longer appears
 					return wp.tags().page( tags._paging.totalPages )
 						.get()
-						.then(function( tags ) {
+						.then( ( tags ) => {
 							expect( tags._paging ).not.to.have.property( 'next' );
 							expect( getNames( tags ) ).to.deep.equal( expectedResults.names.pageLast );
 							return SUCCESS;
@@ -148,10 +148,10 @@ describe( 'integration: tags()', () => {
 		it( 'allows access to the next page of results via .next', () => {
 			var prom = wp.tags()
 				.get()
-				.then(function( tags ) {
+				.then( ( tags ) => {
 					return tags._paging.next
 						.get()
-						.then(function( tags ) {
+						.then( ( tags ) => {
 							expect( tags ).to.be.an( 'array' );
 							expect( tags.length ).to.equal( 10 );
 							expect( getNames( tags ) ).to.deep.equal( expectedResults.names.page2 );
@@ -164,11 +164,11 @@ describe( 'integration: tags()', () => {
 		it( 'provides a bound WPRequest for the previous page as .prev', () => {
 			var prom = wp.tags()
 				.get()
-				.then(function( tags ) {
+				.then( ( tags ) => {
 					expect( tags._paging ).not.to.have.property( 'prev' );
 					return tags._paging.next
 						.get()
-						.then(function( tags ) {
+						.then( ( tags ) => {
 							expect( tags._paging ).to.have.property( 'prev' );
 							expect( tags._paging.prev ).to.be.an( 'object' );
 							expect( tags._paging.prev ).to.be.an.instanceOf( WPRequest );
@@ -184,11 +184,11 @@ describe( 'integration: tags()', () => {
 			var prom = wp.tags()
 				.page( 2 )
 				.get()
-				.then(function( tags ) {
+				.then( ( tags ) => {
 					expect( getNames( tags ) ).to.deep.equal( expectedResults.names.page2 );
 					return tags._paging.prev
 						.get()
-						.then(function( tags ) {
+						.then( ( tags ) => {
 							expect( tags ).to.be.an( 'array' );
 							expect( tags.length ).to.equal( 10 );
 							expect( getNames( tags ) ).to.deep.equal( expectedResults.names.page1 );
@@ -206,13 +206,13 @@ describe( 'integration: tags()', () => {
 			var selectedTag;
 			var prom = wp.tags()
 				.get()
-				.then(function( tags ) {
+				.then( ( tags ) => {
 					// Pick one of the tags
 					selectedTag = tags[ 3 ];
 					// Query for that tag directly
 					return wp.tags().id( selectedTag.id );
 				})
-				.then(function( tag ) {
+				.then( ( tag ) => {
 					expect( tag ).to.be.an( 'object' );
 					expect( tag ).to.have.property( 'id' );
 					expect( tag.id ).to.equal( selectedTag.id );
@@ -234,18 +234,18 @@ describe( 'integration: tags()', () => {
 			var selectedTag;
 			var prom = wp.tags()
 				.get()
-				.then(function( tags ) {
+				.then( ( tags ) => {
 					// Pick one of the tags
 					selectedTag = tags[ 3 ];
 					// Search for that tag by slug
 					return wp.tags().search( selectedTag.slug );
 				})
-				.then(function( tags ) {
+				.then( ( tags ) => {
 					expect( tags ).to.be.an( 'array' );
 					expect( tags.length ).to.equal( 1 );
 					return tags[ 0 ];
 				})
-				.then(function( tag ) {
+				.then( ( tag ) => {
 					expect( tag ).to.be.an( 'object' );
 					expect( tag ).to.have.property( 'id' );
 					expect( tag.id ).to.equal( selectedTag.id );
@@ -263,12 +263,10 @@ describe( 'integration: tags()', () => {
 			var prom = wp.tags()
 				.search( 'post' )
 				.get()
-				.then(function( tags ) {
+				.then( ( tags ) => {
 					expect( tags ).to.be.an( 'array' );
 					expect( tags.length ).to.equal( 2 );
-					var slugs = tags.map(function( tag ) {
-						return tag.slug;
-					}).sort().join( ' ' );
+					var slugs = tags.map( ( tag ) => tag.slug ).sort().join( ' ' );
 					expect( slugs ).to.equal( 'post post-formats' );
 					return SUCCESS;
 				});
@@ -279,16 +277,10 @@ describe( 'integration: tags()', () => {
 			var prom = wp.tags()
 				.search( 'post' )
 				.get()
-				.then(function( tags ) {
-					// Iterating over response of search is the best we can do until
-					// filtering for taxonomy term collections is reinstated
-					for ( var i = 0; i < tags.length; i++ ) {
-						if ( tags[ i ].slug === 'post' ) {
-							return tags[ i ];
-						}
-					}
-				})
-				.then(function( tag ) {
+				// Iterating over response of search is the best we can do until
+				// filtering for taxonomy term collections is reinstated
+				.then( ( tags ) => tags.find( tag => tag.slug === 'post' ) )
+				.then( ( tag ) => {
 					expect( tag ).to.have.property( 'slug' );
 					expect( tag.slug ).to.equal( 'post' );
 					expect( tag ).to.have.property( 'name' );

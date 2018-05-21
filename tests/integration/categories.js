@@ -65,7 +65,7 @@ describe( 'integration: categories()', () => {
 	it( 'can be used to retrieve a collection of category terms', () => {
 		var prom = wp.categories()
 			.get()
-			.then(function( categories ) {
+			.then( ( categories ) => {
 				expect( categories ).to.be.an( 'array' );
 				expect( categories.length ).to.equal( 10 );
 				return SUCCESS;
@@ -76,7 +76,7 @@ describe( 'integration: categories()', () => {
 	it( 'retrieves the first 10 categories by default', () => {
 		var prom = wp.categories()
 			.get()
-			.then(function( categories ) {
+			.then( ( categories ) => {
 				expect( categories ).to.be.an( 'array' );
 				expect( categories.length ).to.equal( 10 );
 				return SUCCESS;
@@ -89,7 +89,7 @@ describe( 'integration: categories()', () => {
 		it( 'are exposed as _paging on the response array', () => {
 			var prom = wp.categories()
 				.get()
-				.then(function( categories ) {
+				.then( ( categories ) => {
 					expect( categories ).to.have.property( '_paging' );
 					expect( categories._paging ).to.be.an( 'object' );
 					return SUCCESS;
@@ -100,7 +100,7 @@ describe( 'integration: categories()', () => {
 		it( 'include the total number of categories', () => {
 			var prom = wp.categories()
 				.get()
-				.then(function( categories ) {
+				.then( ( categories ) => {
 					expect( categories._paging ).to.have.property( 'total' );
 					expect( categories._paging.total ).to.equal( '65' );
 					return SUCCESS;
@@ -111,7 +111,7 @@ describe( 'integration: categories()', () => {
 		it( 'include the total number of pages available', () => {
 			var prom = wp.categories()
 				.get()
-				.then(function( categories ) {
+				.then( ( categories ) => {
 					expect( categories._paging ).to.have.property( 'totalPages' );
 					expect( categories._paging.totalPages ).to.equal( '7' );
 					return SUCCESS;
@@ -122,7 +122,7 @@ describe( 'integration: categories()', () => {
 		it( 'provides a bound WPRequest for the next page as .next', () => {
 			var prom = wp.categories()
 				.get()
-				.then(function( categories ) {
+				.then( ( categories ) => {
 					expect( categories._paging ).to.have.property( 'next' );
 					expect( categories._paging.next ).to.be.an( 'object' );
 					expect( categories._paging.next ).to.be.an.instanceOf( WPRequest );
@@ -132,7 +132,7 @@ describe( 'integration: categories()', () => {
 					return wp.categories()
 						.page( categories._paging.totalPages )
 						.get()
-						.then(function( categories ) {
+						.then( ( categories ) => {
 							expect( categories._paging ).not.to.have.property( 'next' );
 							expect( getNames( categories ) ).to.deep.equal( expectedResults.names.pageLast );
 							return SUCCESS;
@@ -144,10 +144,10 @@ describe( 'integration: categories()', () => {
 		it( 'allows access to the next page of results via .next', () => {
 			var prom = wp.categories()
 				.get()
-				.then(function( categories ) {
+				.then( ( categories ) => {
 					return categories._paging.next
 						.get()
-						.then(function( categories ) {
+						.then( ( categories ) => {
 							expect( categories ).to.be.an( 'array' );
 							expect( categories.length ).to.equal( 10 );
 							expect( getNames( categories ) ).to.deep.equal( expectedResults.names.page2 );
@@ -160,11 +160,11 @@ describe( 'integration: categories()', () => {
 		it( 'provides a bound WPRequest for the previous page as .prev', () => {
 			var prom = wp.categories()
 				.get()
-				.then(function( categories ) {
+				.then( ( categories ) => {
 					expect( categories._paging ).not.to.have.property( 'prev' );
 					return categories._paging.next
 						.get()
-						.then(function( categories ) {
+						.then( ( categories ) => {
 							expect( categories._paging ).to.have.property( 'prev' );
 							expect( categories._paging.prev ).to.be.an( 'object' );
 							expect( categories._paging.prev ).to.be.an.instanceOf( WPRequest );
@@ -180,11 +180,11 @@ describe( 'integration: categories()', () => {
 			var prom = wp.categories()
 				.page( 2 )
 				.get()
-				.then(function( categories ) {
+				.then( ( categories ) => {
 					expect( getNames( categories ) ).to.deep.equal( expectedResults.names.page2 );
 					return categories._paging.prev
 						.get()
-						.then(function( categories ) {
+						.then( ( categories ) => {
 							expect( categories ).to.be.an( 'array' );
 							expect( categories.length ).to.equal( 10 );
 							expect( getNames( categories ) ).to.deep.equal( expectedResults.names.page1 );
@@ -202,13 +202,13 @@ describe( 'integration: categories()', () => {
 			var selectedCategory;
 			var prom = wp.categories()
 				.get()
-				.then(function( categories ) {
+				.then( ( categories ) => {
 					// Pick one of the categories
 					selectedCategory = categories[ 3 ];
 					// Query for that category directly
 					return wp.categories().id( selectedCategory.id );
 				})
-				.then(function( category ) {
+				.then( ( category ) => {
 					expect( category ).to.be.an( 'object' );
 					expect( category ).to.have.property( 'id' );
 					expect( category.id ).to.equal( selectedCategory.id );
@@ -231,18 +231,18 @@ describe( 'integration: categories()', () => {
 			var selectedCategory;
 			var prom = wp.categories()
 				.get()
-				.then(function( categories ) {
+				.then( ( categories ) => {
 					// Pick one of the categories
 					selectedCategory = categories[ 3 ];
 					// Search for that category by slug
 					return wp.categories().search( selectedCategory.slug );
 				})
-				.then(function( categories ) {
+				.then( ( categories ) => {
 					expect( categories ).to.be.an( 'array' );
 					expect( categories.length ).to.equal( 1 );
 					return categories[ 0 ];
 				})
-				.then(function( category ) {
+				.then( ( category ) => {
 					expect( category ).to.be.an( 'object' );
 					expect( category ).to.have.property( 'id' );
 					expect( category.id ).to.equal( selectedCategory.id );
@@ -261,12 +261,10 @@ describe( 'integration: categories()', () => {
 			var prom = wp.categories()
 				.search( 'parent' )
 				.get()
-				.then(function( categories ) {
+				.then( ( categories ) => {
 					expect( categories ).to.be.an( 'array' );
 					expect( categories.length ).to.equal( 4 );
-					var slugs = categories.map(function( cat ) {
-						return cat.slug;
-					}).sort().join( ' ' );
+					var slugs = categories.map( ( cat ) => cat.slug ).sort().join( ' ' );
 					expect( slugs ).to.equal( 'foo-a-foo-parent foo-parent parent parent-category' );
 					return SUCCESS;
 				});
@@ -277,7 +275,7 @@ describe( 'integration: categories()', () => {
 			var prom = wp.categories()
 				.search( 'parent' )
 				.get()
-				.then(function( categories ) {
+				.then( ( categories ) => {
 					// Iterating over response of search is the best we can do until
 					// filtering for taxonomy term collections is reinstated
 					for ( var i = 0; i < 4; i++ ) {
@@ -286,7 +284,7 @@ describe( 'integration: categories()', () => {
 						}
 					}
 				})
-				.then(function( category ) {
+				.then( ( category ) => {
 					expect( category ).to.have.property( 'slug' );
 					expect( category.slug ).to.equal( 'parent' );
 					expect( category ).to.have.property( 'name' );
@@ -310,16 +308,11 @@ describe( 'integration: categories()', () => {
 			var prom = wp.categories()
 				.search( 'parent' )
 				.get()
-				.then(function( categories ) {
-					for ( var i = 0; i < 4; i++ ) {
-						if ( categories[ i ].slug === 'parent' ) {
-							// Return a query for the matching category's child
-							parentCat = categories[ i ];
-							return wp.categories().parent( parentCat.id );
-						}
-					}
+				.then( ( categories ) => {
+					parentCat = categories.find( cat => cat.slug === 'parent' );
+					return wp.categories().parent( parentCat.id );
 				})
-				.then(function( categories ) {
+				.then( ( categories ) => {
 					expect( categories ).to.be.an( 'array' );
 					expect( categories.length ).to.equal( 1 );
 					var category = categories[ 0 ];
@@ -331,7 +324,7 @@ describe( 'integration: categories()', () => {
 					// Go one level deeper
 					return wp.categories().parent( childCat1.id );
 				})
-				.then(function( categories ) {
+				.then( ( categories ) => {
 					expect( categories ).to.be.an( 'array' );
 					expect( categories.length ).to.equal( 1 );
 					var category = categories[ 0 ];
@@ -343,7 +336,7 @@ describe( 'integration: categories()', () => {
 					// Go one level deeper
 					return wp.categories().parent( childCat2.id );
 				})
-				.then(function( categories ) {
+				.then( ( categories ) => {
 					expect( categories ).to.be.an( 'array' );
 					expect( categories.length ).to.equal( 0 );
 					return SUCCESS;
@@ -361,10 +354,10 @@ describe( 'integration: categories()', () => {
 				.perPage( 1 )
 				.embed()
 				.get()
-				.then(function( posts ) {
+				.then( ( posts ) => {
 					var post = posts[ 0 ];
 					// Find the categories for this post
-					post._embedded['wp:term'].forEach(function( terms ) {
+					post._embedded['wp:term'].forEach( ( terms ) => {
 						if ( terms.length && terms[ 0 ].taxonomy === 'category' ) {
 							postCategories = terms;
 						}
@@ -372,15 +365,15 @@ describe( 'integration: categories()', () => {
 					var postId = post.id;
 					return wp.categories().post( postId );
 				})
-				.then(function( categories ) {
+				.then( ( categories ) => {
 					expect( categories.length ).to.equal( postCategories.length );
-					categories.forEach(function( cat, idx ) {
+					categories.forEach( ( cat, idx ) => {
 						[
 							'id',
 							'name',
 							'slug',
 							'taxonomy'
-						].forEach(function( prop ) {
+						].forEach( ( prop ) => {
 							expect( cat[ prop ] ).to.equal( postCategories[ idx ][ prop ] );
 						});
 					});

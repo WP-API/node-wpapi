@@ -17,7 +17,7 @@ describe( 'autodiscovery helper methods', () => {
 		});
 
 		it( 'throws an error if no link header is found', () => {
-			expect(function() {
+			expect( () => {
 				locateAPIRootHeader({
 					headers: {}
 				});

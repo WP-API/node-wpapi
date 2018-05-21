@@ -31,7 +31,7 @@ describe( 'integration: custom HTTP Headers', () => {
 			.setHeaders( 'Authorization', 'Basic ' + base64credentials )
 			.status([ 'future', 'draft' ])
 			.get()
-			.then(function( posts ) {
+			.then( ( posts ) => {
 				expect( getTitles( posts ) ).to.deep.equal([
 					'Scheduled',
 					'Draft'
@@ -48,14 +48,14 @@ describe( 'integration: custom HTTP Headers', () => {
 		var prom = authenticated.posts()
 			.status([ 'future', 'draft' ])
 			.get()
-			.then(function( posts ) {
+			.then( ( posts ) => {
 				expect( getTitles( posts ) ).to.deep.equal([
 					'Scheduled',
 					'Draft'
 				]);
 				return authenticated.users().me();
 			})
-			.then(function( me ) {
+			.then( ( me ) => {
 				expect( me.slug ).to.equal( 'apiuser' );
 				return SUCCESS;
 			});

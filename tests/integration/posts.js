@@ -78,7 +78,7 @@ describe( 'integration: posts()', () => {
 	it( 'can be used to retrieve a list of recent posts', () => {
 		var prom = wp.posts()
 			.get()
-			.then(function( posts ) {
+			.then( ( posts ) => {
 				expect( posts ).to.be.an( 'array' );
 				expect( posts.length ).to.equal( 10 );
 				return SUCCESS;
@@ -89,7 +89,7 @@ describe( 'integration: posts()', () => {
 	it( 'fetches the 10 most recent posts by default', () => {
 		var prom = wp.posts()
 			.get()
-			.then(function( posts ) {
+			.then( ( posts ) => {
 				expect( getTitles( posts ) ).to.deep.equal( expectedResults.titles.page1 );
 				return SUCCESS;
 			});
@@ -100,7 +100,7 @@ describe( 'integration: posts()', () => {
 		var prom = wp.posts()
 			.param( '_wpapi_force_html', true )
 			.get()
-			.then(function( posts ) {
+			.then( ( posts ) => {
 				expect( getTitles( posts ) ).to.deep.equal( expectedResults.titles.page1 );
 				return SUCCESS;
 			});
@@ -112,7 +112,7 @@ describe( 'integration: posts()', () => {
 		it( 'are exposed as _paging on the response array', () => {
 			var prom = wp.posts()
 				.get()
-				.then(function( posts ) {
+				.then( ( posts ) => {
 					expect( posts ).to.have.property( '_paging' );
 					expect( posts._paging ).to.be.an( 'object' );
 					return SUCCESS;
@@ -124,7 +124,7 @@ describe( 'integration: posts()', () => {
 			var prom = wp.posts()
 				.param( '_wpapi_force_html', true )
 				.get()
-				.then(function( posts ) {
+				.then( ( posts ) => {
 					expect( posts ).to.have.property( '_paging' );
 					expect( posts._paging ).to.be.an( 'object' );
 					return SUCCESS;
@@ -135,7 +135,7 @@ describe( 'integration: posts()', () => {
 		it( 'include the total number of posts: use .headers() for coverage reasons', () => {
 			var prom = wp.posts()
 				.headers()
-				.then(function( postHeadersResponse ) {
+				.then( ( postHeadersResponse ) => {
 					expect( postHeadersResponse ).to.have.property( 'x-wp-total' );
 					expect( postHeadersResponse[ 'x-wp-total' ] ).to.equal( '38' );
 					return SUCCESS;
@@ -146,7 +146,7 @@ describe( 'integration: posts()', () => {
 		it( 'include the total number of pages available', () => {
 			var prom = wp.posts()
 				.get()
-				.then(function( posts ) {
+				.then( ( posts ) => {
 					expect( posts._paging ).to.have.property( 'totalPages' );
 					expect( posts._paging.totalPages ).to.equal( '4' );
 					return SUCCESS;
@@ -157,7 +157,7 @@ describe( 'integration: posts()', () => {
 		it( 'provides a bound WPRequest for the next page as .next', () => {
 			var prom = wp.posts()
 				.get()
-				.then(function( posts ) {
+				.then( ( posts ) => {
 					expect( posts._paging ).to.have.property( 'next' );
 					expect( posts._paging.next ).to.be.an( 'object' );
 					expect( posts._paging.next ).to.be.an.instanceOf( WPRequest );
@@ -167,7 +167,7 @@ describe( 'integration: posts()', () => {
 					return wp.posts()
 						.page( posts._paging.totalPages )
 						.get()
-						.then(function( posts ) {
+						.then( ( posts ) => {
 							expect( posts._paging ).not.to.have.property( 'next' );
 							expect( getTitles( posts ) ).to.deep.equal( expectedResults.titles.page4 );
 							return SUCCESS;
@@ -179,10 +179,10 @@ describe( 'integration: posts()', () => {
 		it( 'allows access to the next page of results via .next', () => {
 			var prom = wp.posts()
 				.get()
-				.then(function( posts ) {
+				.then( ( posts ) => {
 					return posts._paging.next
 						.get()
-						.then(function( posts ) {
+						.then( ( posts ) => {
 							expect( posts ).to.be.an( 'array' );
 							// @TODO: re-enable once PPP support is merged
 							// expect( posts.length ).to.equal( 10 );
@@ -197,10 +197,10 @@ describe( 'integration: posts()', () => {
 			var prom = wp.posts()
 				.param( '_wpapi_force_html', true )
 				.get()
-				.then(function( posts ) {
+				.then( ( posts ) => {
 					return posts._paging.next
 						.get()
-						.then(function( posts ) {
+						.then( ( posts ) => {
 							expect( posts ).to.be.an( 'array' );
 							return SUCCESS;
 						});
@@ -211,11 +211,11 @@ describe( 'integration: posts()', () => {
 		it( 'provides a bound WPRequest for the previous page as .prev', () => {
 			var prom = wp.posts()
 				.get()
-				.then(function( posts ) {
+				.then( ( posts ) => {
 					expect( posts._paging ).not.to.have.property( 'prev' );
 					return posts._paging.next
 						.get()
-						.then(function( posts ) {
+						.then( ( posts ) => {
 							expect( posts._paging ).to.have.property( 'prev' );
 							expect( posts._paging.prev ).to.be.an( 'object' );
 							expect( posts._paging.prev ).to.be.an.instanceOf( WPRequest );
@@ -231,12 +231,12 @@ describe( 'integration: posts()', () => {
 			var prom = wp.posts()
 				.page( 2 )
 				.get()
-				.then(function( posts ) {
+				.then( ( posts ) => {
 					// @TODO: re-enable once PPP support is merged
 					// expect( getTitles( posts ) ).to.deep.equal( expectedResults.titles.page2 );
 					return posts._paging.prev
 						.get()
-						.then(function( posts ) {
+						.then( ( posts ) => {
 							expect( posts ).to.be.an( 'array' );
 							expect( posts.length ).to.equal( 10 );
 							expect( getTitles( posts ) ).to.deep.equal( expectedResults.titles.page1 );
@@ -250,10 +250,10 @@ describe( 'integration: posts()', () => {
 			var prom = authenticated.posts()
 				.context( 'edit' )
 				.get()
-				.then(function( posts ) {
+				.then( ( posts ) => {
 					return posts._paging.next.get();
 				})
-				.then(function( page2 ) {
+				.then( ( page2 ) => {
 					expect( page2[0].content ).to.have.property( 'raw' );
 					return SUCCESS;
 				});
@@ -270,7 +270,7 @@ describe( 'integration: posts()', () => {
 				var prom = wp.posts()
 					.slug( 'template-excerpt-generated' )
 					.get()
-					.then(function( posts ) {
+					.then( ( posts ) => {
 						expect( posts.length ).to.equal( 1 );
 						expect( getTitles( posts ) ).to.deep.equal([
 							'Template: Excerpt (Generated)'
@@ -288,7 +288,7 @@ describe( 'integration: posts()', () => {
 				var prom = authenticated.posts()
 					.status([ 'future', 'draft' ])
 					.get()
-					.then(function( posts ) {
+					.then( ( posts ) => {
 						expect( getTitles( posts ) ).to.deep.equal([
 							'Scheduled',
 							'Draft'
@@ -306,13 +306,11 @@ describe( 'integration: posts()', () => {
 				var prom = wp.tags()
 					.slug( 'title' )
 					.get()
-					.then(function( tags ) {
-						var tagIDs = tags.map(function( tag ) {
-							return tag.id;
-						});
+					.then( ( tags ) => {
+						var tagIDs = tags.map( ( tag ) => tag.id );
 						return wp.posts().tags( tagIDs );
 					})
-					.then(function( posts ) {
+					.then( ( posts ) => {
 						expect( posts.length ).to.equal( 5 );
 						expect( getTitles( posts ) ).to.deep.equal([
 							'Markup: Title With Special Characters',
@@ -332,15 +330,13 @@ describe( 'integration: posts()', () => {
 						wp.tags().search( 'featured image' ),
 						wp.tags().search( 'embeds' )
 					])
-					.then(function( results ) {
-						var tagIDs = results.reduce(function( ids, arr ) {
-							return ids.concat( arr.map(function( tag ) {
-								return tag.id;
-							}) );
-						}, [] );
+					.then( ( results ) => {
+						var tagIDs = results.reduce( ( ids, arr ) => (
+							ids.concat( arr.map( ( tag ) => tag.id ) )
+						), [] );
 						return wp.posts().tags( tagIDs );
 					})
-					.then(function( posts ) {
+					.then( ( posts ) => {
 						expect( posts.length ).to.equal( 6 );
 						expect( getTitles( posts ) ).to.deep.equal([
 							'Template: Featured Image (Vertical)',
@@ -365,15 +361,13 @@ describe( 'integration: posts()', () => {
 						wp.tags().search( 'css' ),
 						wp.tags().search( 'content' )
 					])
-					.then(function( results ) {
-						var tagIDs = results.reduce(function( ids, arr ) {
-							return ids.concat( arr.map(function( tag ) {
-								return tag.id;
-							}) );
-						}, [] );
+					.then( ( results ) => {
+						var tagIDs = results.reduce( ( ids, arr ) => (
+							ids.concat( arr.map( ( tag ) => tag.id ) )
+						), [] );
 						return wp.posts().excludeTags( tagIDs );
 					})
-					.then(function( posts ) {
+					.then( ( posts ) => {
 						expect( getTitles( posts ) ).to.deep.equal([
 							'Markup: Title With Special Characters',
 							'Template: Featured Image (Vertical)',
@@ -399,13 +393,11 @@ describe( 'integration: posts()', () => {
 				var prom = wp.categories()
 					.slug( 'markup' )
 					.get()
-					.then(function( categories ) {
-						var categoryIDs = categories.map(function( cat ) {
-							return cat.id;
-						});
+					.then( ( categories ) => {
+						var categoryIDs = categories.map( ( cat ) => cat.id );
 						return wp.posts().categories( categoryIDs );
 					})
-					.then(function( posts ) {
+					.then( ( posts ) => {
 						expect( posts.length ).to.equal( 6 );
 						expect( getTitles( posts ) ).to.deep.equal([
 							'Markup: HTML Tags and Formatting',
@@ -426,15 +418,13 @@ describe( 'integration: posts()', () => {
 						wp.categories().search( 'edge case' ),
 						wp.categories().search( 'pustule' )
 					])
-					.then(function( results ) {
-						var categoriesIDs = results.reduce(function( ids, arr ) {
-							return ids.concat( arr.map(function( cat ) {
-								return cat.id;
-							}) );
-						}, [] );
+					.then( ( results ) => {
+						var categoriesIDs = results.reduce( ( ids, arr ) => (
+							ids.concat( arr.map( ( cat ) => cat.id ) )
+						), [] );
 						return wp.posts().categories( categoriesIDs );
 					})
-					.then(function( posts ) {
+					.then( ( posts ) => {
 						expect( posts.length ).to.equal( 6 );
 						expect( getTitles( posts ) ).to.deep.equal([
 							'Antidisestablishmentarianism',
@@ -459,15 +449,13 @@ describe( 'integration: posts()', () => {
 						wp.categories().slug( 'markup' ),
 						wp.categories().slug( 'post-formats' )
 					])
-					.then(function( results ) {
-						var tagIDs = results.reduce(function( ids, arr ) {
-							return ids.concat( arr.map(function( tag ) {
-								return tag.id;
-							}) );
-						}, [] );
+					.then( ( results ) => {
+						var tagIDs = results.reduce( ( ids, arr ) => (
+							ids.concat( arr.map( ( tag ) => tag.id ) )
+						), [] );
 						return wp.posts().excludeCategories( tagIDs );
 					})
-					.then(function( posts ) {
+					.then( ( posts ) => {
 						expect( getTitles( posts ) ).to.deep.equal([
 							'Template: Featured Image (Vertical)',
 							'Template: Featured Image (Horizontal)',
@@ -492,7 +480,7 @@ describe( 'integration: posts()', () => {
 			it( 'can be used to return only posts from before a certain date', () => {
 				var prom = wp.posts()
 					.before( '2013-01-08' )
-					.then(function( posts ) {
+					.then( ( posts ) => {
 						expect( posts[0].title.rendered ).to.equal( 'Markup: Title With Special Characters' );
 						return SUCCESS;
 					});
@@ -506,7 +494,7 @@ describe( 'integration: posts()', () => {
 			it( 'can be used to return only posts from after a certain date', () => {
 				var prom = wp.posts()
 					.after( '2013-01-08' )
-					.then(function( posts ) {
+					.then( ( posts ) => {
 						expect( posts.length ).to.equal( 3 );
 						expect( getTitles( posts ) ).to.deep.equal( expectedResults.titles.page1.slice( 0, 3 ) );
 						return SUCCESS;
@@ -525,7 +513,7 @@ describe( 'integration: posts()', () => {
 			var prom = wp.posts()
 				.edit()
 				.get()
-				.catch(function( err ) {
+				.catch( ( err ) => {
 					expect( err.code ).to.equal( 'rest_forbidden_context' );
 					expect( err.data ).to.deep.equal({
 						status: 401
@@ -540,13 +528,13 @@ describe( 'integration: posts()', () => {
 			var prom = wp.posts()
 				.perPage( 1 )
 				.get()
-				.then(function( posts ) {
+				.then( ( posts ) => {
 					id = posts[ 0 ].id;
 					return wp.posts()
 						.id( id )
 						.delete();
 				})
-				.catch(function( err ) {
+				.catch( ( err ) => {
 					expect( err.code ).to.equal( 'rest_cannot_delete' );
 					expect( err.data ).to.deep.equal({
 						status: 401
@@ -556,7 +544,7 @@ describe( 'integration: posts()', () => {
 						.id( id )
 						.get();
 				})
-				.then(function( result ) {
+				.then( ( result ) => {
 					expect( result ).to.have.property( 'id' );
 					expect( result.id ).to.equal( id );
 					return SUCCESS;
@@ -565,11 +553,11 @@ describe( 'integration: posts()', () => {
 		});
 
 		it( 'cannot create (POST) without authentication (also tests callback-mode errors)', () => {
-			var prom = new Promise(function( resolve, reject ) {
+			var prom = new Promise( ( resolve, reject ) => {
 				wp.posts().create({
 					title: 'New Post 2501',
 					content: 'Some Content'
-				}, function( err ) {
+				}, ( err ) => {
 					if ( ! err ) {
 						reject();
 					}
@@ -588,7 +576,7 @@ describe( 'integration: posts()', () => {
 			var prom = wp.posts()
 				.perPage( 1 )
 				.get()
-				.then(function( posts ) {
+				.then( ( posts ) => {
 					id = posts[ 0 ].id;
 					return wp.posts()
 						.id( id )
@@ -597,7 +585,7 @@ describe( 'integration: posts()', () => {
 							content: 'Some Content'
 						});
 				})
-				.catch(function( err ) {
+				.catch( ( err ) => {
 					expect( err.code ).to.equal( 'rest_cannot_edit' );
 					expect( err.data ).to.deep.equal({
 						status: 401
@@ -615,7 +603,7 @@ describe( 'integration: posts()', () => {
 				title: 'New Post 2501',
 				content: 'Some Content'
 			})
-			.then(function( createdPost ) {
+			.then( ( createdPost ) => {
 				id = createdPost.id;
 				expect( createdPost ).to.be.an( 'object' );
 				expect( createdPost ).to.have.property( 'status' );
@@ -633,7 +621,7 @@ describe( 'integration: posts()', () => {
 						status: 'publish'
 					});
 			})
-			.then(function( updatedPost ) {
+			.then( ( updatedPost ) => {
 				expect( updatedPost ).to.be.an( 'object' );
 				expect( updatedPost ).to.have.property( 'id' );
 				expect( updatedPost.id ).to.equal( id );
@@ -649,7 +637,7 @@ describe( 'integration: posts()', () => {
 				// without authentication
 				return wp.posts().id( id );
 			})
-			.then(function( post ) {
+			.then( ( post ) => {
 				expect( post ).to.be.an( 'object' );
 				expect( post ).to.have.property( 'id' );
 				expect( post.id ).to.equal( id );
@@ -658,8 +646,8 @@ describe( 'integration: posts()', () => {
 				expect( post.title.rendered ).to.equal( 'Updated Title' );
 				// Re-authenticate & delete (trash) this post
 				// Use a callback to exercise that part of the functionality
-				return new Promise(function( resolve, reject ) {
-					authenticated.posts().id( id ).delete(function( err, data ) {
+				return new Promise( ( resolve, reject ) => {
+					authenticated.posts().id( id ).delete( ( err, data ) => {
 						if ( err ) {
 							return reject( err );
 						}
@@ -667,7 +655,7 @@ describe( 'integration: posts()', () => {
 					});
 				});
 			})
-			.then(function( response ) {
+			.then( ( response ) => {
 				expect( response ).to.be.an( 'object' );
 				// DELETE action returns the post object
 				expect( response.id ).to.equal( id );
@@ -675,7 +663,7 @@ describe( 'integration: posts()', () => {
 				// the unauthenticated user does not have permissions to see it
 				return wp.posts().id( id );
 			})
-			.catch(function( error ) {
+			.catch( ( error ) => {
 				httpTestUtils.rethrowIfChaiError( error );
 				expect( error.code ).to.equal( 'rest_forbidden' );
 				expect( error.data ).to.deep.equal({
@@ -688,7 +676,7 @@ describe( 'integration: posts()', () => {
 						force: true
 					});
 			})
-			.then(function( response ) {
+			.then( ( response ) => {
 				expect( response ).to.be.an( 'object' );
 				// DELETE action returns the fully-deleted post object as .previous
 				expect( response.previous ).to.be.an( 'object' );
@@ -697,7 +685,7 @@ describe( 'integration: posts()', () => {
 				// just trashed but now deleted permanently
 				return authenticated.posts().id( id );
 			})
-			.catch(function( error ) {
+			.catch( ( error ) => {
 				httpTestUtils.rethrowIfChaiError( error );
 				expect( error.code ).to.equal( 'rest_post_invalid_id' );
 				expect( error.data ).to.deep.equal({
@@ -713,16 +701,15 @@ describe( 'integration: posts()', () => {
 		var mediaId;
 		var filePath = path.join( __dirname, 'assets/emilygarfield-untitled.jpg' );
 		// Helper function
-		function ascById( a, b ) {
-			return a.id - b.id;
-		}
+		const ascById = ( a, b ) => a.id - b.id;
+
 		var categories = [];
 		var tags = [];
 		var tagsAndPromises = Promise.all([
 			wp.categories().get(),
 			wp.tags().get()
 		])
-			.then(function( results ) {
+			.then( ( results ) => {
 				// Array to Object
 				return {
 					categories: results[ 0 ],
@@ -730,7 +717,7 @@ describe( 'integration: posts()', () => {
 				};
 			});
 		var prom = tagsAndPromises
-			.then(function( results ) {
+			.then( ( results ) => {
 				// Pick two tags and a category to assign to our new post
 				tags.push( results.tags[ 1 ], results.tags[ 4 ] );
 				categories.push( results.categories[ 3 ] );
@@ -743,11 +730,11 @@ describe( 'integration: posts()', () => {
 						title: 'New Post with Tags & Categories',
 						content: 'This post has a featured image, too',
 						status: 'publish',
-						categories: categories.map(function( cat ) { return cat.id; }),
-						tags: tags.map(function( tag ) { return tag.id; })
+						categories: categories.map( ( cat ) => cat.id ),
+						tags: tags.map( ( tag ) => tag.id )
 					});
 			})
-			.then(function( newPost ) {
+			.then( ( newPost ) => {
 				id = newPost.id;
 				// Now, upload the media we want to feature and associate with the new post
 				return authenticated.media()
@@ -756,7 +743,7 @@ describe( 'integration: posts()', () => {
 						post: id
 					});
 			})
-			.then(function( media ) {
+			.then( ( media ) => {
 				mediaId = media.id;
 				// Assign the post the associated featured media
 				return authenticated.posts()
@@ -765,14 +752,14 @@ describe( 'integration: posts()', () => {
 						featured_media: mediaId
 					});
 			})
-			.then(function() {
+			.then( () => {
 				// Re-fetch the post with embedded content to validate all is set correctly
 				return wp.posts()
 					.id( id )
 					.embed()
 					.get();
 			})
-			.then(function( post ) {
+			.then( ( post ) => {
 				// Assert that the post got formed correctly
 				// Validate featured image
 				expect( post._embedded ).to.have.property( 'wp:featuredmedia' );
@@ -786,21 +773,23 @@ describe( 'integration: posts()', () => {
 				var terms = post._embedded[ 'wp:term' ];
 				expect( terms.length ).to.equal( 2 );
 				// Validate all categories are present and accounted for
-				terms.filter(function( collection ) {
-					return collection[ 0 ].taxonomy === 'category';
-				})[ 0 ].sort( ascById ).forEach(function( cat, idx ) {
-					expect( cat.id ).to.equal( categories[ idx ].id );
-					expect( cat.name ).to.equal( categories[ idx ].name );
-				});
+				terms
+					.find( ( collection ) => collection[ 0 ].taxonomy === 'category' )
+					.sort( ascById )
+					.forEach( ( cat, idx ) => {
+						expect( cat.id ).to.equal( categories[ idx ].id );
+						expect( cat.name ).to.equal( categories[ idx ].name );
+					});
 				// Validate all tags are present and accounted for
-				terms.filter(function( collection ) {
-					return collection[ 0 ].taxonomy === 'post_tag';
-				})[ 0 ].sort( ascById ).forEach(function( tag, idx ) {
-					expect( tag.id ).to.equal( tags[ idx ].id );
-					expect( tag.name ).to.equal( tags[ idx ].name );
-				});
+				terms
+					.find( ( collection ) => collection[ 0 ].taxonomy === 'post_tag' )
+					.sort( ascById )
+					.forEach( ( tag, idx ) => {
+						expect( tag.id ).to.equal( tags[ idx ].id );
+						expect( tag.name ).to.equal( tags[ idx ].name );
+					});
 			})
-			.then(function() {
+			.then( () => {
 				// Clean up after ourselves: remove media
 				return authenticated.media()
 					.id( mediaId )
@@ -808,30 +797,25 @@ describe( 'integration: posts()', () => {
 						force: true
 					});
 			})
-			.then(function() {
-				// Query for the media, with auth: expect this to fail, since it is gone
-				return authenticated.media().id( mediaId );
-			})
-			.catch(function( error ) {
+			// Query for the media, with auth: expect this to fail, since it is gone
+			.then( () => authenticated.media().id( mediaId ) )
+			.catch( ( error ) => {
 				httpTestUtils.rethrowIfChaiError( error );
 				expect( error.code ).to.equal( 'rest_post_invalid_id' );
 				expect( error.data ).to.deep.equal({
 					status: 404
 				});
 			})
-			.then(function() {
-				// Clean up after ourselves: remove post
-				return authenticated.posts()
-					.id( id )
-					.delete({
-						force: true
-					});
-			})
-			.then(function() {
-				// Query for the post, with auth: expect this to fail, since it is gone
-				return authenticated.posts().id( id );
-			})
-			.catch(function( error ) {
+			// Clean up after ourselves: remove post
+			.then( () => authenticated.posts()
+				.id( id )
+				.delete({
+					force: true
+				})
+			)
+			// Query for the post, with auth: expect this to fail, since it is gone
+			.then( () => authenticated.posts().id( id ) )
+			.catch( ( error ) => {
 				httpTestUtils.rethrowIfChaiError( error );
 				expect( error.code ).to.equal( 'rest_post_invalid_id' );
 				expect( error.data ).to.deep.equal({

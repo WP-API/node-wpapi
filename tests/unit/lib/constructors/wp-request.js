@@ -41,7 +41,7 @@ describe( 'WPRequest', () => {
 	describe( '._renderQuery() [internal]', () => {
 
 		beforeEach( () => {
-			Object.keys( filterMixins ).forEach(function( mixin ) {
+			Object.keys( filterMixins ).forEach( ( mixin ) => {
 				if ( ! request[ mixin ] ) {
 					request[ mixin ] = filterMixins[ mixin ];
 				}
@@ -106,7 +106,7 @@ describe( 'WPRequest', () => {
 		it( 'should throw an error when called with an unsupported method', () => {
 			request._supportedMethods = [ 'get' ];
 
-			expect(function() {
+			expect( () => {
 				checkMethodSupport( 'post', request );
 			}).to.throw();
 		});
@@ -211,7 +211,7 @@ describe( 'WPRequest', () => {
 		var getQueryStr;
 
 		beforeEach( () => {
-			getQueryStr = function( req ) {
+			getQueryStr = ( req ) => {
 				var query = req
 					._renderQuery()
 					.replace( /^\?/, '' );
@@ -808,7 +808,7 @@ describe( 'WPRequest', () => {
 		});
 
 		it( 'throws an error if called multiple times for the same level', () => {
-			expect(function() {
+			expect( () => {
 				request.setPathPart( 0, 'foo' ).setPathPart( 0, 'bar' );
 			}).to.throw( 'Cannot overwrite value foo' );
 		});
@@ -838,7 +838,7 @@ describe( 'WPRequest', () => {
 
 		it( 'allows any sequence of path parts if no _levels are specified', () => {
 			delete request._levels;
-			expect(function() {
+			expect( () => {
 				request
 					.setPathPart( 0, 'foo' )
 					.setPathPart( 4, 'bar' )
@@ -853,7 +853,7 @@ describe( 'WPRequest', () => {
 				'0': [ { component: 'posts' } ],
 				'1': [ { component: '(?P<id>[\\d]+)' } ]
 			};
-			expect(function() {
+			expect( () => {
 				request.setPathPart( 0, 'posts' ).validatePath();
 			}).not.to.throw();
 			expect( request.toString() ).to.equal( '/posts' );
@@ -863,7 +863,7 @@ describe( 'WPRequest', () => {
 			request._levels = {
 				'0': [ { component: '(?P<id>[\\d]+)' } ]
 			};
-			expect(function() {
+			expect( () => {
 				request.setPathPart( 0, 'foo' ).validatePath();
 			}).not.to.throw();
 			expect( request.toString() ).to.equal( '/foo' );
@@ -873,10 +873,10 @@ describe( 'WPRequest', () => {
 			request._levels = {
 				'0': [ {
 					component: '(?P<id>[\\d]+)',
-					validate: function( val ) { return /^[\d]+$/.test( val ); }
+					validate: ( val ) => /^[\d]+$/.test( val )
 				} ]
 			};
-			expect(function() {
+			expect( () => {
 				request.setPathPart( 0, 'foo' ).validatePath();
 			}).to.throw( 'foo does not match (?P<id>[\\d]+)' );
 		});
@@ -885,10 +885,10 @@ describe( 'WPRequest', () => {
 			request._levels = {
 				'0': [ {
 					component: '(?P<id>[\\d]+)',
-					validate: function( val ) { return /^[\d]+$/.test( val ); }
+					validate: ( val ) => /^[\d]+$/.test( val )
 				} ]
 			};
-			expect(function() {
+			expect( () => {
 				request.setPathPart( 0, '42' ).validatePath();
 			}).not.to.throw();
 			expect( request.toString() ).to.equal( '/42' );
@@ -898,16 +898,16 @@ describe( 'WPRequest', () => {
 			request._levels = {
 				'0': [ {
 					component: '(?P<id>[\\d]+)',
-					validate: function( val ) { return /^[\d]+$/.test( val ); }
+					validate: ( val ) => /^[\d]+$/.test( val )
 				}, {
 					component: 'posts',
-					validate: function( val ) { return 'posts' === val; }
+					validate: ( val ) => 'posts' === val
 				}, {
 					component: 'pages',
-					validate: function( val ) { return 'pages' === val; }
+					validate: ( val ) => 'pages' === val
 				} ]
 			};
-			expect(function() {
+			expect( () => {
 				request.setPathPart( 0, 'foo' ).validatePath();
 			}).to.throw( 'foo does not match any of (?P<id>[\\d]+), posts, pages' );
 		});
@@ -916,16 +916,16 @@ describe( 'WPRequest', () => {
 			request._levels = {
 				'0': [ {
 					component: '(?P<id>[\\d]+)',
-					validate: function( val ) { return /^[\d]+$/.test( val ); }
+					validate: ( val ) => /^[\d]+$/.test( val )
 				}, {
 					component: 'posts',
-					validate: function( val ) { return 'posts' === val; }
+					validate: ( val ) => 'posts' === val
 				}, {
 					component: 'pages',
-					validate: function( val ) { return 'pages' === val; }
+					validate: ( val ) => 'pages' === val
 				} ]
 			};
-			expect(function() {
+			expect( () => {
 				request.setPathPart( 0, 'posts' ).validatePath();
 			}).not.to.throw();
 			expect( request.toString() ).to.equal( '/posts' );
@@ -937,7 +937,7 @@ describe( 'WPRequest', () => {
 				'1': [ { component: 'revisions' } ]
 				// '2': [ { component: '(?P<id>[\\d]+)' } ]
 			};
-			expect(function() {
+			expect( () => {
 				request.setPathPart( 1, 'revisions' ).validatePath();
 			}).to.throw( 'Incomplete URL! Missing component: / ??? /revisions' );
 		});

@@ -28,7 +28,7 @@ describe( 'applyMixin utility', () => {
 
 	it( 'does not mutate the object if the specified key exists already', () => {
 		obj.foo = 'bar';
-		applyMixin( obj, 'foo', function() {});
+		applyMixin( obj, 'foo', () => {});
 		expect( obj ).to.deep.equal({
 			foo: 'bar'
 		});

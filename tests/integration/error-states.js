@@ -16,7 +16,7 @@ describe( 'error states:', () => {
 		var wp = WPAPI.site( 'http://wpapi.loc/wrong-root-endpoint' );
 		var prom = wp.posts()
 			.get()
-			.catch(function( err ) {
+			.catch( ( err ) => {
 				expect( err ).to.be.an.instanceOf( Error );
 				expect( err ).to.have.property( 'status' );
 				expect( err.status ).to.equal( 404 );

@@ -19,7 +19,7 @@ describe( 'mixins: parameters', () => {
 
 		req = new Req();
 
-		getQueryStr = function( req ) {
+		getQueryStr = ( req ) => {
 			var query = req
 				._renderQuery()
 				.replace( /^\?/, '' );
@@ -48,7 +48,7 @@ describe( 'mixins: parameters', () => {
 			});
 
 			it( 'throws an error when called with a missing or invalid time', () => {
-				expect(function() {
+				expect( () => {
 					req.before();
 				}).to.throw( 'Invalid time value' );
 			});
@@ -86,7 +86,7 @@ describe( 'mixins: parameters', () => {
 			});
 
 			it( 'throws an error when called with a missing or invalid time', () => {
-				expect(function() {
+				expect( () => {
 					req.after();
 				}).to.throw( 'Invalid time value' );
 			});
@@ -131,7 +131,7 @@ describe( 'mixins: parameters', () => {
 		});
 
 		it( 'throws an error when called with a non-string, non-numeric value', () => {
-			expect(function() { req.author({}); }).to.throw();
+			expect( () => { req.author({}); }).to.throw();
 		});
 
 		it( 'sets the "author" query parameter when provided a numeric value', () => {
