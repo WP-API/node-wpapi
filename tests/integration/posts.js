@@ -667,7 +667,7 @@ describe( 'integration: posts()', () => {
 				httpTestUtils.rethrowIfChaiError( error );
 				expect( error.code ).to.equal( 'rest_forbidden' );
 				expect( error.data ).to.deep.equal({
-					status: 403
+					status: 401
 				});
 				// Re-authenticate & permanently delete this post
 				return authenticated.posts()

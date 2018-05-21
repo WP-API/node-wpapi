@@ -31,7 +31,7 @@ describe( 'integration: settings()', () => {
 			.catch( ( err ) => {
 				expect( err.code ).to.equal( 'rest_forbidden' );
 				expect( err.data ).to.deep.equal({
-					status: 403
+					status: 401
 				});
 				return SUCCESS;
 			});
