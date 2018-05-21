@@ -67,13 +67,13 @@ describe( 'integration: media()', () => {
 	let authenticated;
 
 	beforeEach( () => {
-		wp = new WPAPI({
+		wp = new WPAPI( {
 			endpoint: 'http://wpapi.loc/wp-json'
-		});
-		authenticated = new WPAPI({
+		} );
+		authenticated = new WPAPI( {
 			endpoint: 'http://wpapi.loc/wp-json'
-		}).auth( credentials );
-	});
+		} ).auth( credentials );
+	} );
 
 	it( 'an be used to retrieve a list of media items', () => {
 		const prom = wp.media()
@@ -82,9 +82,9 @@ describe( 'integration: media()', () => {
 				expect( media ).to.be.an( 'array' );
 				expect( media.length ).to.equal( 10 );
 				return SUCCESS;
-			});
+			} );
 		return expect( prom ).to.eventually.equal( SUCCESS );
-	});
+	} );
 
 	it( 'fetches the 10 most recent media by default', () => {
 		const prom = wp.media()
@@ -92,9 +92,9 @@ describe( 'integration: media()', () => {
 			.then( ( media ) => {
 				expect( getTitles( media ) ).to.deep.equal( expectedResults.titles.page1 );
 				return SUCCESS;
-			});
+			} );
 		return expect( prom ).to.eventually.equal( SUCCESS );
-	});
+	} );
 
 	describe( 'paging properties', () => {
 
@@ -105,9 +105,9 @@ describe( 'integration: media()', () => {
 					expect( media ).to.have.property( '_paging' );
 					expect( media._paging ).to.be.an( 'object' );
 					return SUCCESS;
-				});
+				} );
 			return expect( prom ).to.eventually.equal( SUCCESS );
-		});
+		} );
 
 		it( 'include the total number of media: use .headers() for coverage reasons', () => {
 			const prom = wp.media()
@@ -116,9 +116,9 @@ describe( 'integration: media()', () => {
 					expect( postHeadersResponse ).to.have.property( 'x-wp-total' );
 					expect( postHeadersResponse[ 'x-wp-total' ] ).to.equal( '38' );
 					return SUCCESS;
-				});
+				} );
 			return expect( prom ).to.eventually.equal( SUCCESS );
-		});
+		} );
 
 		it( 'include the total number of pages available', () => {
 			const prom = wp.media()
@@ -127,9 +127,9 @@ describe( 'integration: media()', () => {
 					expect( media._paging ).to.have.property( 'totalPages' );
 					expect( media._paging.totalPages ).to.equal( '4' );
 					return SUCCESS;
-				});
+				} );
 			return expect( prom ).to.eventually.equal( SUCCESS );
-		});
+		} );
 
 		it( 'provides a bound WPRequest for the next page as .next', () => {
 			const prom = wp.media()
@@ -148,10 +148,10 @@ describe( 'integration: media()', () => {
 							expect( media._paging ).not.to.have.property( 'next' );
 							expect( getTitles( media ) ).to.deep.equal( expectedResults.titles.page4 );
 							return SUCCESS;
-						});
-				});
+						} );
+				} );
 			return expect( prom ).to.eventually.equal( SUCCESS );
-		});
+		} );
 
 		it( 'allows access to the next page of results via .next', () => {
 			const prom = wp.media()
@@ -164,10 +164,10 @@ describe( 'integration: media()', () => {
 							expect( media.length ).to.equal( 10 );
 							expect( getTitles( media ) ).to.deep.equal( expectedResults.titles.page2 );
 							return SUCCESS;
-						});
-				});
+						} );
+				} );
 			return expect( prom ).to.eventually.equal( SUCCESS );
-		});
+		} );
 
 		it( 'provides a bound WPRequest for the previous page as .prev', () => {
 			const prom = wp.media()
@@ -183,10 +183,10 @@ describe( 'integration: media()', () => {
 							expect( media._paging.prev._options.endpoint ).to
 								.equal( 'http://wpapi.loc/wp-json/wp/v2/media?page=1' );
 							return SUCCESS;
-						});
-				});
+						} );
+				} );
 			return expect( prom ).to.eventually.equal( SUCCESS );
-		});
+		} );
 
 		it( 'allows access to the previous page of results via .prev', () => {
 			const prom = wp.media()
@@ -201,32 +201,32 @@ describe( 'integration: media()', () => {
 							expect( media.length ).to.equal( 10 );
 							expect( getTitles( media ) ).to.deep.equal( expectedResults.titles.page1 );
 							return SUCCESS;
-						});
-				});
+						} );
+				} );
 			return expect( prom ).to.eventually.equal( SUCCESS );
-		});
+		} );
 
-	});
+	} );
 
 	describe( 'without authentication', () => {
 
 		it( 'cannot POST', () => {
 			const prom = wp.media()
 				.file( filePath )
-				.create({
+				.create( {
 					title: 'Media File',
 					content: 'Some Content'
-				})
+				} )
 				.catch( ( err ) => {
 					httpTestUtils.rethrowIfChaiError( err );
 					expect( err.code ).to.equal( 'rest_cannot_create' );
-					expect( err.data ).to.deep.equal({
+					expect( err.data ).to.deep.equal( {
 						status: 401
-					});
+					} );
 					return SUCCESS;
-				});
+				} );
 			return expect( prom ).to.eventually.equal( SUCCESS );
-		});
+		} );
 
 		it( 'cannot PUT', () => {
 			const prom = wp.media()
@@ -236,20 +236,20 @@ describe( 'integration: media()', () => {
 					const id = media[ 0 ].id;
 					return wp.media()
 						.id( id )
-						.update({
+						.update( {
 							title: 'New Title'
-						});
-				})
+						} );
+				} )
 				.catch( ( err ) => {
 					httpTestUtils.rethrowIfChaiError( err );
 					expect( err.code ).to.equal( 'rest_cannot_edit' );
-					expect( err.data ).to.deep.equal({
+					expect( err.data ).to.deep.equal( {
 						status: 401
-					});
+					} );
 					return SUCCESS;
-				});
+				} );
 			return expect( prom ).to.eventually.equal( SUCCESS );
-		});
+		} );
 
 		it( 'cannot DELETE', () => {
 			const prom = wp.media()
@@ -257,22 +257,22 @@ describe( 'integration: media()', () => {
 				.get()
 				.then( ( media ) => {
 					const id = media[ 0 ].id;
-					return wp.media().id( id ).delete({
+					return wp.media().id( id ).delete( {
 						force: true
-					});
-				})
+					} );
+				} )
 				.catch( ( err ) => {
 					httpTestUtils.rethrowIfChaiError( err );
 					expect( err.code ).to.equal( 'rest_cannot_delete' );
-					expect( err.data ).to.deep.equal({
+					expect( err.data ).to.deep.equal( {
 						status: 401
-					});
+					} );
 					return SUCCESS;
-				});
+				} );
 			return expect( prom ).to.eventually.equal( SUCCESS );
-		});
+		} );
 
-	});
+	} );
 
 	it( 'can create, update & delete media when authenticated', () => {
 		let id;
@@ -281,10 +281,10 @@ describe( 'integration: media()', () => {
 		// CREATE
 		const prom = authenticated.media()
 			.file( filePath, 'ehg-conduits.jpg' )
-			.create({
+			.create( {
 				title: 'Untitled',
 				caption: 'A painting from Emily Garfield\'s "Conduits" series'
-			})
+			} )
 			.then( ( createdMedia ) => {
 				id = createdMedia.id;
 				imageUrl = createdMedia.source_url;
@@ -293,21 +293,21 @@ describe( 'integration: media()', () => {
 
 				// File name is correctly applied and image was uploaded to content dir
 				expect( imageUrl ).to.match( /^http:\/\/wpapi.loc\/content\/uploads\/.*\/ehg-conduits.jpg$/ );
-			})
+			} )
 			// UPDATE
 			.then( () => authenticated.media()
 				.id( id )
-				.update({
+				.update( {
 					title: 'Conduits Series',
 					alt_text: 'A photograph of an abstract painting by Emily Garfield'
-				})
+				} )
 			)
 			.then( ( result ) => {
 				expect( result.id ).to.equal( id );
 				expect( result.title.rendered ).to.equal( 'Conduits Series' );
 				expect( result.alt_text ).to.equal( 'A photograph of an abstract painting by Emily Garfield' );
 				return result;
-			})
+			} )
 			// READ
 			// Validate thumbnails were created
 			.then( ( result ) => {
@@ -319,11 +319,11 @@ describe( 'integration: media()', () => {
 				return sizeURLs.reduce( ( previous, sizeURL ) => previous.then( () => (
 					httpTestUtils.expectStatusCode( sizeURL, 200 )
 				) ), Promise.resolve() );
-			})
+			} )
 			// Validate image was uploaded correctly
 			.then( () => {
 				return httpTestUtils.expectFileEqualsURL( filePath, imageUrl );
-			})
+			} )
 			// DELETE
 			.then( () => {
 				// Attempt to delete media: expect this to fail, since media does not
@@ -331,20 +331,20 @@ describe( 'integration: media()', () => {
 				return authenticated.media()
 					.id( id )
 					.delete();
-			})
+			} )
 			.catch( ( error ) => {
 				httpTestUtils.rethrowIfChaiError( error );
 				expect( error.code ).to.equal( 'rest_trash_not_supported' );
-				expect( error.data ).to.deep.equal({
+				expect( error.data ).to.deep.equal( {
 					status: 501
-				});
+				} );
 				// Now permanently delete this media
 				return authenticated.media()
 					.id( id )
-					.delete({
+					.delete( {
 						force: true
-					});
-			})
+					} );
+			} )
 			.then( ( response ) => {
 				expect( response ).to.be.an( 'object' );
 				// DELETE action returns the media object as the .previous property
@@ -352,22 +352,22 @@ describe( 'integration: media()', () => {
 				expect( response.previous.id ).to.equal( id );
 				// Query for the media: expect this to fail, since it has been deleted
 				return wp.media().id( id );
-			})
+			} )
 			.catch( ( error ) => {
 				httpTestUtils.rethrowIfChaiError( error );
 				expect( error.code ).to.equal( 'rest_post_invalid_id' );
-				expect( error.data ).to.deep.equal({
+				expect( error.data ).to.deep.equal( {
 					status: 404
-				});
-			})
+				} );
+			} )
 			// Validate image file has been removed
 			.then( () => {
 				return httpTestUtils.expectStatusCode( imageUrl, 404 );
-			})
+			} )
 			.then( () => {
 				return SUCCESS;
-			});
+			} );
 		return expect( prom ).to.eventually.equal( SUCCESS );
-	});
+	} );
 
-});
+} );

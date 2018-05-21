@@ -34,17 +34,17 @@ describe( 'integration: discover()', () => {
 		sinonSandbox = sinon.sandbox.create();
 		sinonSandbox.stub( global.console, 'warn' );
 		sinonSandbox.stub( global.console, 'error' );
-	});
+	} );
 
 	afterEach( () => {
 		// Restore sandbox
 		sinonSandbox.restore();
-	});
+	} );
 
 	it( 'returns a promise', () => {
 		const Promise = require( 'es6-promise' );
 		expect( apiPromise ).to.be.an.instanceOf( Promise );
-	});
+	} );
 
 	it( 'eventually returns a configured WP instance', () => {
 		const prom = apiPromise
@@ -54,18 +54,18 @@ describe( 'integration: discover()', () => {
 				expect( result.posts ).to.be.a( 'function' );
 				expect( result.posts() ).to.be.an.instanceOf( WPRequest );
 				return SUCCESS;
-			});
+			} );
 		return expect( prom ).to.eventually.equal( SUCCESS );
-	});
+	} );
 
 	it( 'auto-binds to the detected endpoint on the provided site', () => {
 		const prom = apiPromise
 			.then( ( site ) => {
 				expect( site.posts().toString() ).to.equal( 'http://wpapi.loc/wp-json/wp/v2/posts' );
 				return SUCCESS;
-			});
+			} );
 		return expect( prom ).to.eventually.equal( SUCCESS );
-	});
+	} );
 
 	it( 'can correctly instantiate requests against the detected and bound site', () => {
 		const prom = apiPromise
@@ -73,9 +73,9 @@ describe( 'integration: discover()', () => {
 			.then( ( posts ) => {
 				expect( getTitles( posts )[ 0 ] ).to.equal( expectedResults.firstPostTitle );
 				return SUCCESS;
-			});
+			} );
 		return expect( prom ).to.eventually.equal( SUCCESS );
-	});
+	} );
 
 	describe( 'can authenticate', () => {
 
@@ -87,9 +87,9 @@ describe( 'integration: discover()', () => {
 					expect( user ).to.be.an( 'object' );
 					expect( user.slug ).to.equal( credentials.username );
 					return SUCCESS;
-				});
+				} );
 			return expect( prom ).to.eventually.equal( SUCCESS );
-		});
+		} );
 
 		it( 'one-off requests against the detected and bound site', () => {
 			const prom = apiPromise
@@ -98,10 +98,10 @@ describe( 'integration: discover()', () => {
 					expect( user ).to.be.an( 'object' );
 					expect( user.slug ).to.equal( credentials.username );
 					return SUCCESS;
-				});
+				} );
 			return expect( prom ).to.eventually.equal( SUCCESS );
-		});
+		} );
 
-	});
+	} );
 
-});
+} );

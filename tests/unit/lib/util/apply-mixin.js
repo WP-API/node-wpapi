@@ -8,35 +8,35 @@ describe( 'applyMixin utility', () => {
 
 	beforeEach( () => {
 		obj = {};
-	});
+	} );
 
 	it( 'is a function', () => {
 		expect( applyMixin ).to.be.a( 'function' );
-	});
+	} );
 
 	it( 'returns nothing', () => {
 		expect( applyMixin() ).to.be.undefined;
-	});
+	} );
 
 	it( 'assigns a method to the provided object', () => {
 		const bar = () => {};
 		applyMixin( obj, 'foo', bar );
-		expect( obj ).to.deep.equal({
+		expect( obj ).to.deep.equal( {
 			foo: bar
-		});
-	});
+		} );
+	} );
 
 	it( 'does not mutate the object if the specified key exists already', () => {
 		obj.foo = 'bar';
-		applyMixin( obj, 'foo', () => {});
-		expect( obj ).to.deep.equal({
+		applyMixin( obj, 'foo', () => {} );
+		expect( obj ).to.deep.equal( {
 			foo: 'bar'
-		});
-	});
+		} );
+	} );
 
 	it( 'does not mutate the object if third arg is not a function', () => {
 		applyMixin( obj, 'key', 'not a function' );
-		expect( obj ).to.deep.equal({});
-	});
+		expect( obj ).to.deep.equal( {} );
+	} );
 
-});
+} );

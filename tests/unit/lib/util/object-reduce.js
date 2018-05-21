@@ -19,31 +19,31 @@ describe( 'Object reduction tools:', () => {
 
 			beforeEach( () => {
 				obj = {};
-			});
+			} );
 
 			it( 'is defined', () => {
 				expect( objectReduce ).to.exist;
-			});
+			} );
 
 			it( 'is a function', () => {
 				expect( objectReduce ).to.be.a( 'function' );
-			});
+			} );
 
 			it( 'resolves to the provided initial value if called on an empty object', () => {
 				expect( objectReduce( {}, () => {}, 'Sasquatch' ) ).to.equal( 'Sasquatch' );
-			});
+			} );
 
 			it( 'can be used to reduce over an object', () => {
-				const result = objectReduce({
+				const result = objectReduce( {
 					key1: 'val1',
 					key2: 'val2',
 					key3: 'val3'
 				}, ( memo, val, key ) => memo + val + key, 'result:' );
 				expect( result ).to.equal( 'result:val1key1val2key2val3key3' );
-			});
+			} );
 
-		});
+		} );
 
-	});
+	} );
 
-});
+} );

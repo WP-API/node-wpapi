@@ -17,26 +17,26 @@ describe( 'integration: settings()', () => {
 	let authenticated;
 
 	beforeEach( () => {
-		wp = new WPAPI({
+		wp = new WPAPI( {
 			endpoint: 'http://wpapi.loc/wp-json'
-		});
-		authenticated = new WPAPI({
+		} );
+		authenticated = new WPAPI( {
 			endpoint: 'http://wpapi.loc/wp-json'
-		}).auth( credentials );
-	});
+		} ).auth( credentials );
+	} );
 
 	it( 'cannot be used to retrieve site settings unless authenticated', () => {
 		const prom = wp.settings()
 			.get()
 			.catch( ( err ) => {
 				expect( err.code ).to.equal( 'rest_forbidden' );
-				expect( err.data ).to.deep.equal({
+				expect( err.data ).to.deep.equal( {
 					status: 401
-				});
+				} );
 				return SUCCESS;
-			});
+			} );
 		return expect( prom ).to.eventually.equal( SUCCESS );
-	});
+	} );
 
 	it( 'can be used to retrieve a list of site settings when authenticated', () => {
 		const prom = authenticated.settings()
@@ -45,7 +45,7 @@ describe( 'integration: settings()', () => {
 				expect( settings ).to.be.an( 'object' );
 
 				// Validate existence of all expected keys
-				expect( Object.keys( settings ).sort() ).to.deep.equal([
+				expect( Object.keys( settings ).sort() ).to.deep.equal( [
 					'date_format',
 					'default_category',
 					'default_comment_status',
@@ -61,7 +61,7 @@ describe( 'integration: settings()', () => {
 					'title',
 					'url',
 					'use_smilies'
-				]);
+				] );
 
 				// Spot check specific values
 				expect( settings.title ).to.equal( 'WP-API Testbed' );
@@ -70,9 +70,9 @@ describe( 'integration: settings()', () => {
 				expect( settings.posts_per_page ).to.equal( 10 );
 
 				return SUCCESS;
-			});
+			} );
 		return expect( prom ).to.eventually.equal( SUCCESS );
-	});
+	} );
 
 	it( 'can be used to update settings', () => {
 		const prom = authenticated.settings()
@@ -80,27 +80,27 @@ describe( 'integration: settings()', () => {
 			.then( ( settings ) => {
 				expect( settings.description ).to.equal( 'Just another WordPress site' );
 				return authenticated.settings()
-					.update({
+					.update( {
 						description: 'It\'s amazing what you\'ll find face to face'
-					});
-			})
+					} );
+			} )
 			// Initialize new request to see if changes persisted
 			.then( () => authenticated.settings().get() )
 			.then( ( settings ) => {
 				expect( settings.description ).to.equal( 'It&#039;s amazing what you&#039;ll find face to face' );
 				// Reset to original value
 				return authenticated.settings()
-					.update({
+					.update( {
 						description: 'Just another WordPress site'
-					});
-			})
+					} );
+			} )
 			// Request one final time to validate value has been set back
 			.then( () => authenticated.settings().get() )
 			.then( ( settings ) => {
 				expect( settings.description ).to.equal( 'Just another WordPress site' );
 				return SUCCESS;
-			});
+			} );
 		return expect( prom ).to.eventually.equal( SUCCESS );
-	});
+	} );
 
-});
+} );

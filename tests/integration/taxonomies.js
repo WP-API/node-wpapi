@@ -14,10 +14,10 @@ describe( 'integration: taxonomies()', () => {
 	let wp;
 
 	beforeEach( () => {
-		wp = new WPAPI({
+		wp = new WPAPI( {
 			endpoint: 'http://wpapi.loc/wp-json'
-		});
-	});
+		} );
+	} );
 
 	it( 'can be used to retrieve a dictionary of registered taxonomies', () => {
 		const prom = wp.taxonomies()
@@ -29,9 +29,9 @@ describe( 'integration: taxonomies()', () => {
 				expect( taxonomies ).to.have.property( 'post_tag' );
 				expect( taxonomies.post_tag ).to.be.an( 'object' );
 				return SUCCESS;
-			});
+			} );
 		return expect( prom ).to.eventually.equal( SUCCESS );
-	});
+	} );
 
 	it( 'can be chained with a taxonomy() call to fetch the category taxonomy', () => {
 		const prom = wp.taxonomies()
@@ -44,9 +44,9 @@ describe( 'integration: taxonomies()', () => {
 				expect( category ).to.have.property( 'hierarchical' );
 				expect( category.hierarchical ).to.equal( true );
 				return SUCCESS;
-			});
+			} );
 		return expect( prom ).to.eventually.equal( SUCCESS );
-	});
+	} );
 
 	it( 'can be chained with a taxonomy() call to fetch the post_tag taxonomy', () => {
 		const prom = wp.taxonomies()
@@ -59,8 +59,8 @@ describe( 'integration: taxonomies()', () => {
 				expect( tag ).to.have.property( 'hierarchical' );
 				expect( tag.hierarchical ).to.equal( false );
 				return SUCCESS;
-			});
+			} );
 		return expect( prom ).to.eventually.equal( SUCCESS );
-	});
+	} );
 
-});
+} );

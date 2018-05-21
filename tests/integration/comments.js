@@ -72,10 +72,10 @@ describe( 'integration: comments()', () => {
 	let wp;
 
 	beforeEach( () => {
-		wp = new WPAPI({
+		wp = new WPAPI( {
 			endpoint: 'http://wpapi.loc/wp-json'
-		});
-	});
+		} );
+	} );
 
 	it( 'can be used to retrieve a list of comments, omitting a password-protected comment', () => {
 		const prom = wp.comments()
@@ -84,9 +84,9 @@ describe( 'integration: comments()', () => {
 				expect( comments ).to.be.an( 'array' );
 				expect( comments.length ).to.equal( 9 );
 				return SUCCESS;
-			});
+			} );
 		return expect( prom ).to.eventually.equal( SUCCESS );
-	});
+	} );
 
 	it( 'fetches the first page, omitting a password-protected comment', () => {
 		const prom = wp.comments()
@@ -94,9 +94,9 @@ describe( 'integration: comments()', () => {
 			.then( ( comments ) => {
 				expect( getPostsAndAuthors( comments ) ).to.deep.equal( expectedResults.postsAndAuthors.page1 );
 				return SUCCESS;
-			});
+			} );
 		return expect( prom ).to.eventually.equal( SUCCESS );
-	});
+	} );
 
 	it( 'fetches the 10 oldest comments when sorted "asc"', () => {
 		const prom = wp.comments()
@@ -105,9 +105,9 @@ describe( 'integration: comments()', () => {
 			.then( ( comments ) => {
 				expect( getPostsAndAuthors( comments ) ).to.deep.equal( expectedResults.postsAndAuthorsAsc.page1 );
 				return SUCCESS;
-			});
+			} );
 		return expect( prom ).to.eventually.equal( SUCCESS );
-	});
+	} );
 
 	describe( 'paging properties', () => {
 
@@ -118,9 +118,9 @@ describe( 'integration: comments()', () => {
 					expect( posts ).to.have.property( '_paging' );
 					expect( posts._paging ).to.be.an( 'object' );
 					return SUCCESS;
-				});
+				} );
 			return expect( prom ).to.eventually.equal( SUCCESS );
-		});
+		} );
 
 		it( 'include the total number of posts', () => {
 			const prom = wp.comments()
@@ -129,9 +129,9 @@ describe( 'integration: comments()', () => {
 					expect( posts._paging ).to.have.property( 'total' );
 					expect( posts._paging.total ).to.equal( '25' );
 					return SUCCESS;
-				});
+				} );
 			return expect( prom ).to.eventually.equal( SUCCESS );
-		});
+		} );
 
 		it( 'include the total number of pages available', () => {
 			const prom = wp.comments()
@@ -140,9 +140,9 @@ describe( 'integration: comments()', () => {
 					expect( posts._paging ).to.have.property( 'totalPages' );
 					expect( posts._paging.totalPages ).to.equal( '3' );
 					return SUCCESS;
-				});
+				} );
 			return expect( prom ).to.eventually.equal( SUCCESS );
-		});
+		} );
 
 		it( 'provides a bound WPRequest for the next page as .next', () => {
 			const prom = wp.comments()
@@ -161,10 +161,10 @@ describe( 'integration: comments()', () => {
 							expect( posts._paging ).not.to.have.property( 'next' );
 							expect( getPostsAndAuthors( posts ) ).to.deep.equal( expectedResults.postsAndAuthors.page3 );
 							return SUCCESS;
-						});
-				});
+						} );
+				} );
 			return expect( prom ).to.eventually.equal( SUCCESS );
-		});
+		} );
 
 		it( 'allows access to the next page of results via .next', () => {
 			const prom = wp.comments()
@@ -177,10 +177,10 @@ describe( 'integration: comments()', () => {
 							expect( posts.length ).to.equal( 10 );
 							expect( getPostsAndAuthors( posts ) ).to.deep.equal( expectedResults.postsAndAuthors.page2 );
 							return SUCCESS;
-						});
-				});
+						} );
+				} );
 			return expect( prom ).to.eventually.equal( SUCCESS );
-		});
+		} );
 
 		it( 'provides a bound WPRequest for the previous page as .prev', () => {
 			const prom = wp.comments()
@@ -196,10 +196,10 @@ describe( 'integration: comments()', () => {
 							expect( posts._paging.prev._options.endpoint ).to
 								.equal( 'http://wpapi.loc/wp-json/wp/v2/comments?page=1' );
 							return SUCCESS;
-						});
-				});
+						} );
+				} );
 			return expect( prom ).to.eventually.equal( SUCCESS );
-		});
+		} );
 
 		it( 'allows access to the previous page of results via .prev', () => {
 			const prom = wp.comments()
@@ -215,12 +215,12 @@ describe( 'integration: comments()', () => {
 							expect( posts.length ).to.equal( 9 );
 							expect( getPostsAndAuthors( posts ) ).to.deep.equal( expectedResults.postsAndAuthors.page1 );
 							return SUCCESS;
-						});
-				});
+						} );
+				} );
 			return expect( prom ).to.eventually.equal( SUCCESS );
-		});
+		} );
 
-	});
+	} );
 
 	describe( 'querying by ID', () => {
 		let commentCollection;
@@ -237,8 +237,8 @@ describe( 'integration: comments()', () => {
 					return wp.comments()
 						.id( commentId )
 						.get();
-				});
-		});
+				} );
+		} );
 
 		it( 'returns an object, not an array', () => {
 			const prom = commentProm
@@ -246,22 +246,22 @@ describe( 'integration: comments()', () => {
 					expect( Array.isArray( comment ) ).to.equal( false );
 					expect( comment ).to.be.an( 'object' );
 					return SUCCESS;
-				});
+				} );
 			return expect( prom ).to.eventually.equal( SUCCESS );
-		});
+		} );
 
 		it( 'returns the correct comment', () => {
 			const prom = commentProm.then( ( comment ) => {
 				expect( comment.id ).to.equal( commentId );
 				[ 'author_name', 'post', 'parent', 'date', 'status' ].forEach( ( prop ) => {
 					expect( comment[ prop ] ).to.equal( commentCollection[4][ prop ] );
-				});
+				} );
 				return SUCCESS;
-			});
+			} );
 			return expect( prom ).to.eventually.equal( SUCCESS );
-		});
+		} );
 
-	});
+	} );
 
 	describe( '.post() query', () => {
 		let pageComments;
@@ -279,12 +279,12 @@ describe( 'integration: comments()', () => {
 					return wp.comments()
 						.post( pageId )
 						.get();
-				});
-		});
+				} );
+		} );
 
 		it( 'returns an array of posts', () => {
 			return expect( commentProm ).to.eventually.be.an( 'array' );
-		});
+		} );
 
 		it( 'returns the correct number of comments', () => {
 			const prom = commentProm
@@ -292,9 +292,9 @@ describe( 'integration: comments()', () => {
 					expect( comments.length ).to.equal( 3 );
 					expect( comments.length ).to.equal( pageComments.length );
 					return SUCCESS;
-				});
+				} );
 			return expect( prom ).to.eventually.equal( SUCCESS );
-		});
+		} );
 
 		it( 'returns the correct comments', () => {
 			const prom = commentProm
@@ -302,14 +302,14 @@ describe( 'integration: comments()', () => {
 					pageComments.forEach( ( comment, i ) => {
 						[ 'id', 'parent', 'author', 'author_name' ].forEach( ( prop ) => {
 							expect( comment[ prop ] ).to.equal( comments[ i ][ prop ] );
-						});
+						} );
 						expect( comment.content.rendered ).to.equal( comments[ i ].content.rendered );
-					});
+					} );
 					return SUCCESS;
-				});
+				} );
 			return expect( prom ).to.eventually.equal( SUCCESS );
-		});
+		} );
 
-	});
+	} );
 
-});
+} );

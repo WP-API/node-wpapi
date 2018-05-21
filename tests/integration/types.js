@@ -14,10 +14,10 @@ describe( 'integration: types()', () => {
 	let wp;
 
 	beforeEach( () => {
-		wp = new WPAPI({
+		wp = new WPAPI( {
 			endpoint: 'http://wpapi.loc/wp-json'
-		});
-	});
+		} );
+	} );
 
 	it( 'can be used to retrieve a dictionary of registered types', () => {
 		const prom = wp.types()
@@ -31,9 +31,9 @@ describe( 'integration: types()', () => {
 				expect( types ).to.have.property( 'attachment' );
 				expect( types.attachment ).to.be.an( 'object' );
 				return SUCCESS;
-			});
+			} );
 		return expect( prom ).to.eventually.equal( SUCCESS );
-	});
+	} );
 
 	it( 'can be chained with a type() call to fetch the "post" type', () => {
 		const prom = wp.types()
@@ -46,9 +46,9 @@ describe( 'integration: types()', () => {
 				expect( post ).to.have.property( 'hierarchical' );
 				expect( post.hierarchical ).to.equal( false );
 				return SUCCESS;
-			});
+			} );
 		return expect( prom ).to.eventually.equal( SUCCESS );
-	});
+	} );
 
 	it( 'can be chained with a type() call to fetch the page type', () => {
 		const prom = wp.types()
@@ -61,8 +61,8 @@ describe( 'integration: types()', () => {
 				expect( page ).to.have.property( 'hierarchical' );
 				expect( page.hierarchical ).to.equal( true );
 				return SUCCESS;
-			});
+			} );
 		return expect( prom ).to.eventually.equal( SUCCESS );
-	});
+	} );
 
-});
+} );

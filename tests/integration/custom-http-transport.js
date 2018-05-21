@@ -39,8 +39,8 @@ describe( 'integration: custom HTTP transport methods', () => {
 			return WPAPI.transport.get( wpreq, cb ).then( ( result ) => {
 				cache[ wpreq ] = result;
 				return result;
-			});
-		});
+			} );
+		} );
 
 		return WPAPI.site( 'http://wpapi.loc/wp-json' )
 			.posts()
@@ -50,23 +50,23 @@ describe( 'integration: custom HTTP transport methods', () => {
 
 				// Set up our spy here so the request to get the ID isn't counted
 				sinon.spy( httpTransport, 'get' );
-			});
-	});
+			} );
+	} );
 
 	afterEach( () => {
 		httpTransport.get.restore();
-	});
+	} );
 
 	it( 'can be defined to e.g. use a cache when available', () => {
 		let query1;
 		let query2;
 
-		wp = new WPAPI({
+		wp = new WPAPI( {
 			endpoint: 'http://wpapi.loc/wp-json',
 			transport: {
 				get: cachingGet
 			}
-		}).auth( credentials );
+		} ).auth( credentials );
 
 		query1 = wp.posts().id( id );
 		const prom = query1
@@ -77,11 +77,11 @@ describe( 'integration: custom HTTP transport methods', () => {
 				expect( httpTransport.get.callCount ).to.equal( 1 );
 				expect( httpTransport.get ).to.have.been.calledWith( query1 );
 				expect( result ).to.equal( cache[ 'http://wpapi.loc/wp-json/wp/v2/posts/' + id ] );
-			})
+			} )
 			.then( () => {
 				query2 = wp.posts().id( id );
 				return query2.get();
-			})
+			} )
 			.then( ( result ) => {
 				expect( cachingGet.callCount ).to.equal( 2 );
 				expect( httpTransport.get.callCount ).to.equal( 1 );
@@ -91,10 +91,10 @@ describe( 'integration: custom HTTP transport methods', () => {
 				expect( httpTransport.get ).not.to.have.been.calledWith( query2 );
 				expect( result ).to.equal( cache[ 'http://wpapi.loc/wp-json/wp/v2/posts/' + id ] );
 				return SUCCESS;
-			});
+			} );
 
 		return expect( prom ).to.eventually.equal( SUCCESS );
-	});
+	} );
 
 	it( 'can be defined to transform responses', () => {
 		const extractSlug = ( results ) => {
@@ -104,7 +104,7 @@ describe( 'integration: custom HTTP transport methods', () => {
 			return results;
 		};
 
-		wp = new WPAPI({
+		wp = new WPAPI( {
 			endpoint: 'http://wpapi.loc/wp-json',
 			transport: {
 				// If .slug is used, auto-unwrap the returned array
@@ -119,10 +119,10 @@ describe( 'integration: custom HTTP transport methods', () => {
 							cb( null, result );
 						}
 						return result;
-					});
+					} );
 				}
 			}
-		});
+		} );
 
 		const prom = wp.posts().slug( 'template-more-tag' )
 			.then( ( results ) => {
@@ -130,10 +130,10 @@ describe( 'integration: custom HTTP transport methods', () => {
 				expect( Array.isArray( results ) ).to.equal( false );
 				expect( results.title.rendered ).to.equal( 'Template: More Tag' );
 				return SUCCESS;
-			});
+			} );
 
 		return expect( prom ).to.eventually.equal( SUCCESS );
-	});
+	} );
 
 	it( 'can be defined to augment responses', () => {
 		class Collection {
@@ -145,7 +145,7 @@ describe( 'integration: custom HTTP transport methods', () => {
 			}
 		}
 
-		wp = new WPAPI({
+		wp = new WPAPI( {
 			endpoint: 'http://wpapi.loc/wp-json',
 			transport: {
 				// Add collection helper methods to the returned arrays
@@ -155,15 +155,15 @@ describe( 'integration: custom HTTP transport methods', () => {
 						if ( Array.isArray( results ) ) {
 							return new Collection( results );
 						}
-					});
+					} );
 				}
 			}
-		});
+		} );
 
 		const prom = wp.posts()
 			.then( ( results ) => {
 				expect( results ).to.be.an.instanceOf( Collection );
-				expect( results.pluck( 'slug' ) ).to.deep.equal([
+				expect( results.pluck( 'slug' ) ).to.deep.equal( [
 					'markup-html-tags-and-formatting',
 					'markup-image-alignment',
 					'markup-text-alignment',
@@ -174,10 +174,10 @@ describe( 'integration: custom HTTP transport methods', () => {
 					'template-more-tag',
 					'template-excerpt-defined',
 					'template-excerpt-generated'
-				]);
+				] );
 				return SUCCESS;
-			});
+			} );
 		return expect( prom ).to.eventually.equal( SUCCESS );
-	});
+	} );
 
-});
+} );

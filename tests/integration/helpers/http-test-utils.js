@@ -19,8 +19,8 @@ const expectStatusCode = ( url, code ) => new Promise( ( resolve, reject ) => {
 				return checkCode( error.statusCode, error );
 			}
 			return reject( error );
-		});
-});
+		} );
+} );
 
 const expectFileEqualsURL = ( filePath, url ) => new Promise( ( resolve, reject ) => {
 	http.get( url, ( res ) => {
@@ -40,9 +40,9 @@ const expectFileEqualsURL = ( filePath, url ) => new Promise( ( resolve, reject 
 				return resolve( true );
 			}
 			reject( new Error( 'Downloaded file did not match original' ) );
-		});
-	});
-});
+		} );
+	} );
+} );
 
 const rethrowIfChaiError = ( error ) => {
 	if ( error instanceof chai.AssertionError ) {

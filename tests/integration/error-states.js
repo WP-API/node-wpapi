@@ -21,8 +21,8 @@ describe( 'error states:', () => {
 				expect( err ).to.have.property( 'status' );
 				expect( err.status ).to.equal( 404 );
 				return SUCCESS;
-			});
+			} );
 		return expect( prom ).to.eventually.equal( SUCCESS );
-	});
+	} );
 
-});
+} );

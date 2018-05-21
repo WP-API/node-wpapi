@@ -19,47 +19,47 @@ describe( 'integration: custom HTTP Headers', () => {
 	let wp;
 
 	beforeEach( () => {
-		wp = new WPAPI({
+		wp = new WPAPI( {
 			endpoint: 'http://wpapi.loc/wp-json'
-		});
-	});
+		} );
+	} );
 
 	// Testing basic authentication is an acceptable proxy for whether a header
 	// value (Authentication:, in this case) is being set
 	it( 'can be provided using WPRequest#setHeaders()', () => {
 		const prom = wp.posts()
 			.setHeaders( 'Authorization', 'Basic ' + base64credentials )
-			.status([ 'future', 'draft' ])
+			.status( [ 'future', 'draft' ] )
 			.get()
 			.then( ( posts ) => {
-				expect( getTitles( posts ) ).to.deep.equal([
+				expect( getTitles( posts ) ).to.deep.equal( [
 					'Scheduled',
 					'Draft'
-				]);
+				] );
 				return SUCCESS;
-			});
+			} );
 		return expect( prom ).to.eventually.equal( SUCCESS );
-	});
+	} );
 
 	it( 'can be provided at the WPAPI instance level using WPAPI#setHeaders()', () => {
 		const authenticated = WPAPI
 			.site( 'http://wpapi.loc/wp-json' )
 			.setHeaders( 'Authorization', 'Basic ' + base64credentials );
 		const prom = authenticated.posts()
-			.status([ 'future', 'draft' ])
+			.status( [ 'future', 'draft' ] )
 			.get()
 			.then( ( posts ) => {
-				expect( getTitles( posts ) ).to.deep.equal([
+				expect( getTitles( posts ) ).to.deep.equal( [
 					'Scheduled',
 					'Draft'
-				]);
+				] );
 				return authenticated.users().me();
-			})
+			} )
 			.then( ( me ) => {
 				expect( me.slug ).to.equal( 'apiuser' );
 				return SUCCESS;
-			});
+			} );
 		return expect( prom ).to.eventually.equal( SUCCESS );
-	});
+	} );
 
-});
+} );
