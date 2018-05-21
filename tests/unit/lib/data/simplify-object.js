@@ -1,9 +1,9 @@
 'use strict';
-var expect = require( 'chai' ).expect;
+const { expect } = require( 'chai' );
 
-var simplifyObject = require( '../../../../lib/data/simplify-object' );
+const simplifyObject = require( '../../../../lib/data/simplify-object' );
 
-var fullPostsCollectionRouteDefinition = require( './posts-collection-route-definition.json' );
+const fullPostsCollectionRouteDefinition = require( './posts-collection-route-definition.json' );
 
 describe( 'simplifyObject', () => {
 

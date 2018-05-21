@@ -1,12 +1,12 @@
 'use strict';
-var expect = require( 'chai' ).expect;
+const { expect } = require( 'chai' );
 
-var WPAPI = require( '../../../wpapi' );
-var WPRequest = require( '../../../lib/constructors/wp-request' );
+const WPAPI = require( '../../../wpapi' );
+const WPRequest = require( '../../../lib/constructors/wp-request' );
 
 describe( 'wp.comments', () => {
-	var site;
-	var comments;
+	let site;
+	let comments;
 
 	beforeEach( () => {
 		site = new WPAPI({
@@ -68,7 +68,7 @@ describe( 'wp.comments', () => {
 
 			it( 'should update the supported methods when setting ID', () => {
 				comments.id( 8 );
-				var _supportedMethods = comments._supportedMethods.sort().join( '|' );
+				const _supportedMethods = comments._supportedMethods.sort().join( '|' );
 				expect( _supportedMethods ).to.equal( 'delete|get|head|patch|post|put' );
 			});
 
@@ -79,12 +79,12 @@ describe( 'wp.comments', () => {
 	describe( 'URL Generation', () => {
 
 		it( 'should create the URL for retrieving all comments', () => {
-			var path = comments.toString();
+			const path = comments.toString();
 			expect( path ).to.equal( '/wp-json/wp/v2/comments' );
 		});
 
 		it( 'should create the URL for retrieving a specific comment', () => {
-			var path = comments.id( 1337 ).toString();
+			const path = comments.id( 1337 ).toString();
 			expect( path ).to.equal( '/wp-json/wp/v2/comments/1337' );
 		});
 
@@ -118,7 +118,7 @@ describe( 'wp.comments', () => {
 
 		it( 'should restrict path changes to a single instance', () => {
 			comments.id( 2 );
-			var newComments = site.comments().id( 3 );
+			const newComments = site.comments().id( 3 );
 			expect( comments.toString() ).to.equal( '/wp-json/wp/v2/comments/2' );
 			expect( newComments.toString() ).to.equal( '/wp-json/wp/v2/comments/3' );
 		});

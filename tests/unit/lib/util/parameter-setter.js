@@ -1,13 +1,13 @@
 'use strict';
-var chai = require( 'chai' );
-var sinon = require( 'sinon' );
+const chai = require( 'chai' );
+const sinon = require( 'sinon' );
 chai.use( require( 'sinon-chai' ) );
-var expect = chai.expect;
+const expect = chai.expect;
 
-var paramSetter = require( '../../../../lib/util/parameter-setter' );
+const paramSetter = require( '../../../../lib/util/parameter-setter' );
 
 describe( 'parameterSetter utility', () => {
-	var obj;
+	let obj;
 
 	beforeEach( () => {
 		obj = {};

@@ -1,12 +1,12 @@
 'use strict';
-var expect = require( 'chai' ).expect;
+const { expect } = require( 'chai' );
 
-var WPAPI = require( '../../../wpapi' );
-var WPRequest = require( '../../../lib/constructors/wp-request' );
+const WPAPI = require( '../../../wpapi' );
+const WPRequest = require( '../../../lib/constructors/wp-request' );
 
 describe( 'wp.pages', () => {
-	var site;
-	var pages;
+	let site;
+	let pages;
 
 	beforeEach( () => {
 		site = new WPAPI({
@@ -51,7 +51,7 @@ describe( 'wp.pages', () => {
 
 		it( 'should restrict path changes to a single instance', () => {
 			pages.id( 2 );
-			var newPages = site.pages().id( 3 ).revisions();
+			const newPages = site.pages().id( 3 ).revisions();
 			expect( pages.toString() ).to.equal( '/wp-json/wp/v2/pages/2' );
 			expect( newPages.toString() ).to.equal( '/wp-json/wp/v2/pages/3/revisions' );
 		});
@@ -65,7 +65,7 @@ describe( 'wp.pages', () => {
 			it( 'should provide filtering methods', () => {
 				expect( pages ).to.have.property( 'slug' );
 				expect( pages.slug ).to.be.a( 'function' );
-				var path = pages.slug( 'some-slug' ).toString();
+				const path = pages.slug( 'some-slug' ).toString();
 				expect( path ).to.equal( '/wp-json/wp/v2/pages?slug=some-slug' );
 			});
 
@@ -79,13 +79,13 @@ describe( 'wp.pages', () => {
 			});
 
 			it( 'should create the URL for retrieving a specific post', () => {
-				var path = pages.id( 1337 ).toString();
+				const path = pages.id( 1337 ).toString();
 				expect( path ).to.equal( '/wp-json/wp/v2/pages/1337' );
 			});
 
 			it( 'should update the supported methods when setting ID', () => {
 				pages.id( 8 );
-				var _supportedMethods = pages._supportedMethods.sort().join( '|' );
+				const _supportedMethods = pages._supportedMethods.sort().join( '|' );
 				expect( _supportedMethods ).to.equal( 'delete|get|head|patch|post|put' );
 			});
 
@@ -102,7 +102,7 @@ describe( 'wp.pages', () => {
 			});
 
 			it( 'should create the URL for retrieving the revisions for a specific post', () => {
-				var path = pages.id( 1337 ).revisions().toString();
+				const path = pages.id( 1337 ).revisions().toString();
 				expect( path ).to.equal( '/wp-json/wp/v2/pages/1337/revisions' );
 			});
 

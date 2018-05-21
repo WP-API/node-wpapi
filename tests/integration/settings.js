@@ -1,20 +1,20 @@
 'use strict';
-var chai = require( 'chai' );
+const chai = require( 'chai' );
 // Variable to use as our "success token" in promise assertions
-var SUCCESS = 'success';
+const SUCCESS = 'success';
 // Chai-as-promised and the `expect( prom ).to.eventually.equal( SUCCESS ) is
 // used to ensure that the assertions running within the promise chains are
 // actually run.
 chai.use( require( 'chai-as-promised' ) );
-var expect = chai.expect;
+const expect = chai.expect;
 
-var WPAPI = require( '../../' );
+const WPAPI = require( '../../' );
 
-var credentials = require( './helpers/constants' ).credentials;
+const credentials = require( './helpers/constants' ).credentials;
 
 describe( 'integration: settings()', () => {
-	var wp;
-	var authenticated;
+	let wp;
+	let authenticated;
 
 	beforeEach( () => {
 		wp = new WPAPI({
@@ -26,7 +26,7 @@ describe( 'integration: settings()', () => {
 	});
 
 	it( 'cannot be used to retrieve site settings unless authenticated', () => {
-		var prom = wp.settings()
+		const prom = wp.settings()
 			.get()
 			.catch( ( err ) => {
 				expect( err.code ).to.equal( 'rest_forbidden' );
@@ -39,7 +39,7 @@ describe( 'integration: settings()', () => {
 	});
 
 	it( 'can be used to retrieve a list of site settings when authenticated', () => {
-		var prom = authenticated.settings()
+		const prom = authenticated.settings()
 			.get()
 			.then( ( settings ) => {
 				expect( settings ).to.be.an( 'object' );
@@ -75,7 +75,7 @@ describe( 'integration: settings()', () => {
 	});
 
 	it( 'can be used to update settings', () => {
-		var prom = authenticated.settings()
+		const prom = authenticated.settings()
 			.get()
 			.then( ( settings ) => {
 				expect( settings.description ).to.equal( 'Just another WordPress site' );

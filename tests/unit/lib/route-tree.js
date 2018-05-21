@@ -1,33 +1,33 @@
 'use strict';
-var expect = require( 'chai' ).expect;
+const { expect } = require( 'chai' );
 
-var routeTree = require( '../../../lib/route-tree' );
-var defaultRoutes = require( '../../../lib/data/default-routes.json' );
+const routeTree = require( '../../../lib/route-tree' );
+const defaultRoutes = require( '../../../lib/data/default-routes.json' );
 
 describe( 'route-tree utility', () => {
 
 	describe( '.build()', () => {
-		var tree;
+		let tree;
 
 		beforeEach( () => {
 			tree = routeTree.build( defaultRoutes );
 		});
 
 		it( 'returns an object keyed by API namespace', () => {
-			var keys = Object.keys( tree ).sort();
+			const keys = Object.keys( tree ).sort();
 			expect( keys.length ).to.equal( 2 );
 			expect( keys ).to.deep.equal([ 'oembed/1.0', 'wp/v2' ]);
 		});
 
 		it( 'includes objects for all default wp/v2 routes', () => {
-			var routes = Object.keys( tree[ 'wp/v2' ] ).sort();
+			const routes = Object.keys( tree[ 'wp/v2' ] ).sort();
 			expect( routes ).to.have.length( 11 );
 			expect( routes.join( ',' ) ).to
 				.equal( 'categories,comments,media,pages,posts,settings,statuses,tags,taxonomies,types,users' );
 		});
 
 		it( 'includes objects for all default oembed/1.0 routes', () => {
-			var routes = Object.keys( tree[ 'oembed/1.0' ] ).sort();
+			const routes = Object.keys( tree[ 'oembed/1.0' ] ).sort();
 			expect( routes ).to.have.length( 1 );
 			expect( routes.join( ',' ) ).to.equal( 'embed' );
 		});
@@ -35,7 +35,7 @@ describe( 'route-tree utility', () => {
 		// Inspect the .posts tree as a smoke test for whether parsing the API
 		// definition object was successful
 		describe( 'posts resource tree', () => {
-			var posts;
+			let posts;
 
 			beforeEach( () => {
 				posts = tree[ 'wp/v2' ].posts;
@@ -82,7 +82,7 @@ describe( 'route-tree utility', () => {
 			// This is a decidedly incomplete smoke test...
 			// But if this fails, so will everything else!
 			it( '.posts defines the top level of a route tree', () => {
-				var routeTree = posts.posts;
+				const routeTree = posts.posts;
 				expect( routeTree ).to.have.property( 'level' );
 				expect( routeTree.level ).to.equal( 0 );
 				expect( routeTree ).to.have.property( 'methods' );

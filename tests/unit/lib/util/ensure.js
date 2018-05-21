@@ -1,10 +1,10 @@
 'use strict';
-var expect = require( 'chai' ).expect;
+const { expect } = require( 'chai' );
 
-var ensure = require( '../../../../lib/util/ensure' );
+const ensure = require( '../../../../lib/util/ensure' );
 
 describe( 'ensure utility', () => {
-	var obj;
+	let obj;
 
 	beforeEach( () => {
 		obj = {};

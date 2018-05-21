@@ -1,15 +1,15 @@
 'use strict';
-var expect = require( 'chai' ).expect;
+const { expect } = require( 'chai' );
 
-var inherit = require( 'util' ).inherits;
+const inherit = require( 'util' ).inherits;
 
-var filterMixins = require( '../../../../lib/mixins/filters' );
-var WPRequest = require( '../../../../lib/constructors/wp-request' );
+const filterMixins = require( '../../../../lib/mixins/filters' );
+const WPRequest = require( '../../../../lib/constructors/wp-request' );
 
 describe( 'mixins: filter', () => {
-	var Req;
-	var req;
-	var getQueryStr;
+	let Req;
+	let req;
+	let getQueryStr;
 
 	beforeEach( () => {
 		Req = function() {
@@ -20,7 +20,7 @@ describe( 'mixins: filter', () => {
 		req = new Req();
 
 		getQueryStr = ( req ) => {
-			var query = req
+			const query = req
 				._renderQuery()
 				.replace( /^\?/, '' );
 			return decodeURIComponent( query );
@@ -46,37 +46,37 @@ describe( 'mixins: filter', () => {
 		});
 
 		it( 'will nave no effect if called with no filter value', () => {
-			var result = req.filter( 'a' );
+			const result = req.filter( 'a' );
 			expect( getQueryStr( result ) ).to.equal( '' );
 		});
 
 		it( 'sets the filter query parameter on a request instance', () => {
-			var result = req.filter( 'a', 'b' );
+			const result = req.filter( 'a', 'b' );
 			expect( getQueryStr( result ) ).to.equal( 'filter[a]=b' );
 		});
 
 		it( 'can set multiple filters on the request', () => {
-			var result = req.filter( 'a', 'b' ).filter( 'c', 'd' );
+			const result = req.filter( 'a', 'b' ).filter( 'c', 'd' );
 			expect( getQueryStr( result ) ).to.equal( 'filter[a]=b&filter[c]=d' );
 		});
 
 		it( 'will overwrite previously-set filter values', () => {
-			var result = req.filter( 'a', 'b' ).filter( 'a', 'd' );
+			const result = req.filter( 'a', 'b' ).filter( 'a', 'd' );
 			expect( getQueryStr( result ) ).to.equal( 'filter[a]=d' );
 		});
 
 		it( 'will unset a filter if called with an empty string', () => {
-			var result = req.filter( 'a', 'b' ).filter( 'a', '' );
+			const result = req.filter( 'a', 'b' ).filter( 'a', '' );
 			expect( getQueryStr( result ) ).to.equal( '' );
 		});
 
 		it( 'will unset a filter if called with null', () => {
-			var result = req.filter( 'a', 'b' ).filter( 'a', null );
+			const result = req.filter( 'a', 'b' ).filter( 'a', null );
 			expect( getQueryStr( result ) ).to.equal( '' );
 		});
 
 		it( 'can set multiple filters in one call when passed an object', () => {
-			var result = req.filter({
+			const result = req.filter({
 				a: 'b',
 				c: 'd',
 				e: 'f'
@@ -85,7 +85,7 @@ describe( 'mixins: filter', () => {
 		});
 
 		it( 'can set multiple filters on the request when passed an object', () => {
-			var result = req
+			const result = req
 				.filter({
 					a: 'b',
 					c: 'd'
@@ -97,7 +97,7 @@ describe( 'mixins: filter', () => {
 		});
 
 		it( 'will overwrite multiple previously-set filter values when passed an object', () => {
-			var result = req
+			const result = req
 				.filter({
 					a: 'b',
 					c: 'd',
@@ -185,17 +185,17 @@ describe( 'mixins: filter', () => {
 		describe( 'filter name aliasing behavior', () => {
 
 			it( 'sets the "category_name" filter for categories where the term is a string', () => {
-				var result = req.taxonomy( 'category', 'str' );
+				const result = req.taxonomy( 'category', 'str' );
 				expect( getQueryStr( result ) ).to.equal( 'filter[category_name]=str' );
 			});
 
 			it( 'sets the "cat" filter for categories where the term is a number', () => {
-				var result = req.taxonomy( 'category', 7 );
+				const result = req.taxonomy( 'category', 7 );
 				expect( getQueryStr( result ) ).to.equal( 'filter[cat]=7' );
 			});
 
 			it( 'sets the "tag" filter if the taxonomy is "post_tag"', () => {
-				var result = req.taxonomy( 'post_tag', 'sometag' );
+				const result = req.taxonomy( 'post_tag', 'sometag' );
 				expect( getQueryStr( result ) ).to.equal( 'filter[tag]=sometag' );
 			});
 
@@ -204,7 +204,7 @@ describe( 'mixins: filter', () => {
 		describe( 'filter value setting behavior', () => {
 
 			it( 'de-duplicates taxonomy terms (will only set a term once)', () => {
-				var result = req.taxonomy( 'tag', 'cat' ).taxonomy( 'tag', 'cat' );
+				const result = req.taxonomy( 'tag', 'cat' ).taxonomy( 'tag', 'cat' );
 				expect( getQueryStr( result ) ).to.equal( 'filter[tag]=cat' );
 			});
 
@@ -224,24 +224,24 @@ describe( 'mixins: filter', () => {
 
 			it( 'supports setting an array of string terms', () => {
 				// TODO: Multiple terms may be deprecated by API!
-				var result = req.taxonomy( 'tag', [ 'a', 'b' ] );
+				const result = req.taxonomy( 'tag', [ 'a', 'b' ] );
 				expect( getQueryStr( result ) ).to.equal( 'filter[tag]=a+b' );
 			});
 
 			it( 'supports setting an array of numeric terms', () => {
 				// TODO: Multiple terms may be deprecated by API!
-				var result = req.taxonomy( 'tag', [ 1, 2 ] );
+				const result = req.taxonomy( 'tag', [ 1, 2 ] );
 				expect( getQueryStr( result ) ).to.equal( 'filter[tag]=1+2' );
 			});
 
 			it( 'does not overwrite previously-specified terms on subsequent calls', () => {
 				// TODO: Multiple terms may be deprecated by API!
-				var result = req.taxonomy( 'tag', 'a' ).taxonomy( 'tag', [ 'b' ] );
+				const result = req.taxonomy( 'tag', 'a' ).taxonomy( 'tag', [ 'b' ] );
 				expect( getQueryStr( result ) ).to.equal( 'filter[tag]=a+b' );
 			});
 
 			it( 'sorts provided terms', () => {
-				var result = req.taxonomy( 'tag', 'z' ).taxonomy( 'tag', 'a' );
+				const result = req.taxonomy( 'tag', 'z' ).taxonomy( 'tag', 'a' );
 				expect( getQueryStr( result ) ).to.equal( 'filter[tag]=a+z' );
 			});
 
@@ -268,7 +268,7 @@ describe( 'mixins: filter', () => {
 		});
 
 		it( 'should create the URL for retrieving a post by path', () => {
-			var path = req.path( 'nested/page' );
+			const path = req.path( 'nested/page' );
 			expect( getQueryStr( path ) ).to.equal( 'filter[pagename]=nested/page' );
 		});
 
@@ -298,13 +298,13 @@ describe( 'mixins: filter', () => {
 
 			it( 'is an alias for .filter( "year", ... )', () => {
 				Req.prototype.filter = filterMixins.filter;
-				var result1 = ( new Req() ).year( '2015' );
-				var result2 = ( new Req() ).filter( 'year', '2015' );
+				const result1 = ( new Req() ).year( '2015' );
+				const result2 = ( new Req() ).filter( 'year', '2015' );
 				expect( getQueryStr( result1 ) ).to.equal( getQueryStr( result2 ) );
 			});
 
 			it( 'sets the "year" filter', () => {
-				var result = req.year( 'str' );
+				const result = req.year( 'str' );
 				expect( getQueryStr( result ) ).to.equal( 'filter[year]=str' );
 			});
 
@@ -332,28 +332,28 @@ describe( 'mixins: filter', () => {
 
 			it( 'is an alias for .filter( "monthnum", ... )', () => {
 				Req.prototype.filter = filterMixins.filter;
-				var result1 = ( new Req() ).month( 7 );
-				var result2 = ( new Req() ).filter( 'monthnum', 7 );
+				const result1 = ( new Req() ).month( 7 );
+				const result2 = ( new Req() ).filter( 'monthnum', 7 );
 				expect( getQueryStr( result1 ) ).to.equal( getQueryStr( result2 ) );
 			});
 
 			it( 'sets the "monthnum" filter', () => {
-				var result = req.month( 1 );
+				const result = req.month( 1 );
 				expect( getQueryStr( result ) ).to.equal( 'filter[monthnum]=1' );
 			});
 
 			it( 'converts named months into their numeric monthnum equivalent', () => {
-				var result = req.month( 'March' );
+				const result = req.month( 'March' );
 				expect( getQueryStr( result ) ).to.equal( 'filter[monthnum]=3' );
 			});
 
 			it( 'returns without setting any filter if an invalid month string is provided', () => {
-				var result = req.month( 'Not a month' ).toString();
+				const result = req.month( 'Not a month' ).toString();
 				expect( result.match( /filter/ ) ).to.equal( null );
 			});
 
 			it( 'returns without setting any filter if an invalid argument is provided', () => {
-				var result = req.month( [ 'arrrr', 'i', 'be', 'an', 'array!' ] ).toString();
+				const result = req.month( [ 'arrrr', 'i', 'be', 'an', 'array!' ] ).toString();
 				expect( result.match( /filter/ ) ).to.equal( null );
 			});
 
@@ -381,13 +381,13 @@ describe( 'mixins: filter', () => {
 
 			it( 'is an alias for .filter( "day", ... )', () => {
 				Req.prototype.filter = filterMixins.filter;
-				var result1 = ( new Req() ).day( '2015' );
-				var result2 = ( new Req() ).filter( 'day', '2015' );
+				const result1 = ( new Req() ).day( '2015' );
+				const result2 = ( new Req() ).filter( 'day', '2015' );
 				expect( getQueryStr( result1 ) ).to.equal( getQueryStr( result2 ) );
 			});
 
 			it( 'sets the "day" filter', () => {
-				var result = req.day( 'str' );
+				const result = req.day( 'str' );
 				expect( getQueryStr( result ) ).to.equal( 'filter[day]=str' );
 			});
 

@@ -1,12 +1,12 @@
 'use strict';
-var expect = require( 'chai' ).expect;
+const { expect } = require( 'chai' );
 
-var WPAPI = require( '../../../wpapi' );
-var WPRequest = require( '../../../lib/constructors/wp-request' );
+const WPAPI = require( '../../../wpapi' );
+const WPRequest = require( '../../../lib/constructors/wp-request' );
 
 describe( 'wp.users', () => {
-	var site;
-	var users;
+	let site;
+	let users;
 
 	beforeEach( () => {
 		site = new WPAPI({
@@ -76,18 +76,18 @@ describe( 'wp.users', () => {
 	describe( 'prototype.toString', () => {
 
 		it( 'should create the URL for retrieving all users', () => {
-			var url = users.toString();
+			const url = users.toString();
 			expect( url ).to.equal( '/wp-json/wp/v2/users' );
 		});
 
 		it( 'should create the URL for retrieving the current user', () => {
-			var url = users.me().toString();
+			const url = users.me().toString();
 			expect( url ).to.equal( '/wp-json/wp/v2/users/me' );
 		});
 
 		it( 'should create the URL for retrieving a specific user by ID', () => {
-			var url = users.id( 1337 ).toString();
-			var _supportedMethods = users._supportedMethods.sort().join( '|' );
+			const url = users.id( 1337 ).toString();
+			const _supportedMethods = users._supportedMethods.sort().join( '|' );
 			expect( url ).to.equal( '/wp-json/wp/v2/users/1337' );
 			expect( _supportedMethods ).to.equal( 'delete|get|head|patch|post|put' );
 		});

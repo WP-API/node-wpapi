@@ -1,17 +1,17 @@
 'use strict';
-var chai = require( 'chai' );
+const chai = require( 'chai' );
 // Variable to use as our "success token" in promise assertions
-var SUCCESS = 'success';
+const SUCCESS = 'success';
 // Chai-as-promised and the `expect( prom ).to.eventually.equal( SUCCESS ) is
 // used to ensure that the assertions running within the promise chains are
 // actually run.
 chai.use( require( 'chai-as-promised' ) );
-var expect = chai.expect;
+const expect = chai.expect;
 
-var WPAPI = require( '../../' );
+const WPAPI = require( '../../' );
 
 describe( 'integration: taxonomies()', () => {
-	var wp;
+	let wp;
 
 	beforeEach( () => {
 		wp = new WPAPI({
@@ -20,7 +20,7 @@ describe( 'integration: taxonomies()', () => {
 	});
 
 	it( 'can be used to retrieve a dictionary of registered taxonomies', () => {
-		var prom = wp.taxonomies()
+		const prom = wp.taxonomies()
 			.get()
 			.then( ( taxonomies ) => {
 				expect( taxonomies ).to.be.an( 'object' );
@@ -34,7 +34,7 @@ describe( 'integration: taxonomies()', () => {
 	});
 
 	it( 'can be chained with a taxonomy() call to fetch the category taxonomy', () => {
-		var prom = wp.taxonomies()
+		const prom = wp.taxonomies()
 			.taxonomy( 'category' )
 			.get()
 			.then( ( category ) => {
@@ -49,7 +49,7 @@ describe( 'integration: taxonomies()', () => {
 	});
 
 	it( 'can be chained with a taxonomy() call to fetch the post_tag taxonomy', () => {
-		var prom = wp.taxonomies()
+		const prom = wp.taxonomies()
 			.taxonomy( 'post_tag' )
 			.get()
 			.then( ( tag ) => {

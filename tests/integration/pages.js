@@ -1,23 +1,23 @@
 'use strict';
-var chai = require( 'chai' );
+const chai = require( 'chai' );
 // Variable to use as our "success token" in promise assertions
-var SUCCESS = 'success';
+const SUCCESS = 'success';
 // Chai-as-promised and the `expect( prom ).to.eventually.equal( SUCCESS ) is
 // used to ensure that the assertions running within the promise chains are
 // actually run.
 chai.use( require( 'chai-as-promised' ) );
-var expect = chai.expect;
+const expect = chai.expect;
 
-var WPAPI = require( '../../' );
-var WPRequest = require( '../../lib/constructors/wp-request.js' );
+const WPAPI = require( '../../' );
+const WPRequest = require( '../../lib/constructors/wp-request.js' );
 
 // Inspecting the titles of the returned posts arrays is an easy way to
 // validate that the right page of results was returned
-var getTitles = require( './helpers/get-rendered-prop' ).bind( null, 'title' );
+const getTitles = require( './helpers/get-rendered-prop' ).bind( null, 'title' );
 
 // Define some arrays to use ensuring the returned data is what we expect
 // it to be (e.g. an array of the titles from pages on the first page)
-var expectedResults = {
+const expectedResults = {
 	titles: {
 		page1: [
 			'Page Markup And Formatting',
@@ -45,7 +45,7 @@ var expectedResults = {
 };
 
 describe( 'integration: pages()', () => {
-	var wp;
+	let wp;
 
 	beforeEach( () => {
 		wp = new WPAPI({
@@ -54,7 +54,7 @@ describe( 'integration: pages()', () => {
 	});
 
 	it( 'can be used to retrieve a list of recent pages', () => {
-		var prom = wp.pages()
+		const prom = wp.pages()
 			.get()
 			.then( ( pages ) => {
 				expect( pages ).to.be.an( 'array' );
@@ -65,7 +65,7 @@ describe( 'integration: pages()', () => {
 	});
 
 	it( 'fetches the 10 most recent pages by default', () => {
-		var prom = wp.pages()
+		const prom = wp.pages()
 			.get()
 			.then( ( pages ) => {
 				expect( getTitles( pages ) ).to.deep.equal( expectedResults.titles.page1 );
@@ -77,7 +77,7 @@ describe( 'integration: pages()', () => {
 	describe( 'paging properties', () => {
 
 		it( 'are exposed as _paging on the response array', () => {
-			var prom = wp.pages()
+			const prom = wp.pages()
 				.get()
 				.then( ( pages ) => {
 					expect( pages ).to.have.property( '_paging' );
@@ -88,7 +88,7 @@ describe( 'integration: pages()', () => {
 		});
 
 		it( 'include the total number of pages', () => {
-			var prom = wp.pages()
+			const prom = wp.pages()
 				.get()
 				.then( ( pages ) => {
 					expect( pages._paging ).to.have.property( 'total' );
@@ -99,7 +99,7 @@ describe( 'integration: pages()', () => {
 		});
 
 		it( 'include the total number of pages available', () => {
-			var prom = wp.pages()
+			const prom = wp.pages()
 				.get()
 				.then( ( pages ) => {
 					expect( pages._paging ).to.have.property( 'totalPages' );
@@ -110,7 +110,7 @@ describe( 'integration: pages()', () => {
 		});
 
 		it( 'provides a bound WPRequest for the next page as .next', () => {
-			var prom = wp.pages()
+			const prom = wp.pages()
 				.get()
 				.then( ( pages ) => {
 					expect( pages._paging ).to.have.property( 'next' );
@@ -132,7 +132,7 @@ describe( 'integration: pages()', () => {
 		});
 
 		it( 'allows access to the next page of results via .next', () => {
-			var prom = wp.pages()
+			const prom = wp.pages()
 				.get()
 				.then( ( pages ) => pages._paging.next.get() )
 				.then( ( pages ) => {
@@ -145,7 +145,7 @@ describe( 'integration: pages()', () => {
 		});
 
 		it( 'provides a bound WPRequest for the previous page as .prev', () => {
-			var prom = wp.pages()
+			const prom = wp.pages()
 				.get()
 				.then( ( pages ) => {
 					expect( pages._paging ).not.to.have.property( 'prev' );
@@ -163,7 +163,7 @@ describe( 'integration: pages()', () => {
 		});
 
 		it( 'allows access to the previous page of results via .prev', () => {
-			var prom = wp.pages()
+			const prom = wp.pages()
 				.page( 2 )
 				.get()
 				.then( ( pages ) => {
@@ -186,7 +186,7 @@ describe( 'integration: pages()', () => {
 		describe( 'slug', () => {
 
 			it( 'can be used to return only pages with the specified slug', () => {
-				var prom = wp.pages()
+				const prom = wp.pages()
 					.slug( 'clearing-floats' )
 					.get()
 					.then( ( pages ) => {

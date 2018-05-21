@@ -1,10 +1,10 @@
 'use strict';
-var expect = require( 'chai' ).expect;
+const { expect } = require( 'chai' );
 
-var keyValToObj = require( '../../../../lib/util/key-val-to-obj' );
+const keyValToObj = require( '../../../../lib/util/key-val-to-obj' );
 
 describe( 'keyValToObj utility', () => {
-	var obj;
+	let obj;
 
 	beforeEach( () => {
 		obj = {};
@@ -23,7 +23,7 @@ describe( 'keyValToObj utility', () => {
 	});
 
 	it( 'sets the specified value at the provided key on the returned object', () => {
-		var result = keyValToObj( 'propName', 123456 );
+		const result = keyValToObj( 'propName', 123456 );
 		expect( result ).to.have.property( 'propName' );
 		expect( result ).to.deep.equal({
 			propName: 123456
@@ -31,8 +31,8 @@ describe( 'keyValToObj utility', () => {
 	});
 
 	it( 'can be used to set an array, and sets values by reference', () => {
-		var arr = [ 'mimsy', 'borogoves', 'outgrabe' ];
-		var result = keyValToObj( 'words', arr );
+		const arr = [ 'mimsy', 'borogoves', 'outgrabe' ];
+		const result = keyValToObj( 'words', arr );
 		expect( result ).to.have.property( 'words' );
 		expect( result.words ).to.equal( arr );
 		expect( result ).to.deep.equal({

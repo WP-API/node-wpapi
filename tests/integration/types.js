@@ -1,17 +1,17 @@
 'use strict';
-var chai = require( 'chai' );
+const chai = require( 'chai' );
 // Variable to use as our "success token" in promise assertions
-var SUCCESS = 'success';
+const SUCCESS = 'success';
 // Chai-as-promised and the `expect( prom ).to.eventually.equal( SUCCESS ) is
 // used to ensure that the assertions running within the promise chains are
 // actually run.
 chai.use( require( 'chai-as-promised' ) );
-var expect = chai.expect;
+const expect = chai.expect;
 
-var WPAPI = require( '../../' );
+const WPAPI = require( '../../' );
 
 describe( 'integration: types()', () => {
-	var wp;
+	let wp;
 
 	beforeEach( () => {
 		wp = new WPAPI({
@@ -20,7 +20,7 @@ describe( 'integration: types()', () => {
 	});
 
 	it( 'can be used to retrieve a dictionary of registered types', () => {
-		var prom = wp.types()
+		const prom = wp.types()
 			.get()
 			.then( ( types ) => {
 				expect( types ).to.be.an( 'object' );
@@ -36,7 +36,7 @@ describe( 'integration: types()', () => {
 	});
 
 	it( 'can be chained with a type() call to fetch the "post" type', () => {
-		var prom = wp.types()
+		const prom = wp.types()
 			.type( 'post' )
 			.get()
 			.then( ( post ) => {
@@ -51,7 +51,7 @@ describe( 'integration: types()', () => {
 	});
 
 	it( 'can be chained with a type() call to fetch the page type', () => {
-		var prom = wp.types()
+		const prom = wp.types()
 			.type( 'page' )
 			.get()
 			.then( ( page ) => {

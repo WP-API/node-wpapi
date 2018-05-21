@@ -1,10 +1,10 @@
 'use strict';
-var expect = require( 'chai' ).expect;
+const { expect } = require( 'chai' );
 
-var applyMixin = require( '../../../../lib/util/apply-mixin' );
+const applyMixin = require( '../../../../lib/util/apply-mixin' );
 
 describe( 'applyMixin utility', () => {
-	var obj;
+	let obj;
 
 	beforeEach( () => {
 		obj = {};

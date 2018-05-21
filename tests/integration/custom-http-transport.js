@@ -1,34 +1,31 @@
 'use strict';
-var chai = require( 'chai' );
-var sinon = require( 'sinon' );
+const chai = require( 'chai' );
+const sinon = require( 'sinon' );
 chai.use( require( 'sinon-chai' ) );
 // Variable to use as our "success token" in promise assertions
-var SUCCESS = 'success';
+const SUCCESS = 'success';
 // Chai-as-promised and the `expect( prom ).to.eventually.equal( SUCCESS ) is
 // used to ensure that the assertions running within the promise chains are
 // actually run.
 chai.use( require( 'chai-as-promised' ) );
-var expect = chai.expect;
+const expect = chai.expect;
 
-/*jshint -W079 */// Suppress warning about redefiniton of `Promise`
-var Promise = require( 'es6-promise' ).Promise;
+const WPAPI = require( '../../' );
 
-var WPAPI = require( '../../' );
+const httpTransport = require( '../../lib/http-transport' );
 
-var httpTransport = require( '../../lib/http-transport' );
-
-var credentials = require( './helpers/constants' ).credentials;
+const credentials = require( './helpers/constants' ).credentials;
 
 describe( 'integration: custom HTTP transport methods', () => {
-	var wp;
-	var id;
-	var cache;
-	var cachingGet;
+	let wp;
+	let id;
+	let cache;
+	let cachingGet;
 
 	beforeEach( () => {
 		cache = {};
 		cachingGet = sinon.spy( ( wpreq, cb ) => {
-			var result = cache[ wpreq ];
+			const result = cache[ wpreq ];
 			// If a cache hit is found, return it via the same callback/promise
 			// signature as the default transport method
 			if ( result ) {
@@ -61,8 +58,8 @@ describe( 'integration: custom HTTP transport methods', () => {
 	});
 
 	it( 'can be defined to e.g. use a cache when available', () => {
-		var query1;
-		var query2;
+		let query1;
+		let query2;
 
 		wp = new WPAPI({
 			endpoint: 'http://wpapi.loc/wp-json',
@@ -72,7 +69,7 @@ describe( 'integration: custom HTTP transport methods', () => {
 		}).auth( credentials );
 
 		query1 = wp.posts().id( id );
-		var prom = query1
+		const prom = query1
 			.get()
 			.then( ( result ) => {
 				expect( result.id ).to.equal( id );
@@ -100,12 +97,12 @@ describe( 'integration: custom HTTP transport methods', () => {
 	});
 
 	it( 'can be defined to transform responses', () => {
-		function extractSlug( results ) {
+		const extractSlug = ( results ) => {
 			if ( Array.isArray( results ) && results.length === 1 ) {
 				return results[0];
 			}
 			return results;
-		}
+		};
 
 		function simpleSlugGet( wpreq, cb ) {
 			if ( ! wpreq._params.slug ) {
@@ -113,7 +110,7 @@ describe( 'integration: custom HTTP transport methods', () => {
 				return WPAPI.transport.get.call( this, wpreq, cb );
 			}
 			return WPAPI.transport.get( wpreq ).then( ( results ) => {
-				var result = extractSlug( results );
+				const result = extractSlug( results );
 				if ( cb && typeof cb === 'function' ) {
 					cb( null, result );
 				}
@@ -128,7 +125,7 @@ describe( 'integration: custom HTTP transport methods', () => {
 			}
 		});
 
-		var prom = wp.posts().slug( 'template-more-tag' )
+		const prom = wp.posts().slug( 'template-more-tag' )
 			.then( ( results ) => {
 				expect( results ).to.be.an( 'object' );
 				expect( Array.isArray( results ) ).to.equal( false );
@@ -162,7 +159,7 @@ describe( 'integration: custom HTTP transport methods', () => {
 			}
 		});
 
-		var prom = wp.posts()
+		const prom = wp.posts()
 			.then( ( results ) => {
 				expect( results ).to.be.an.instanceOf( Collection );
 				expect( results.pluck( 'slug' ) ).to.deep.equal([

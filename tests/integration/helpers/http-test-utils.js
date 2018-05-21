@@ -1,63 +1,54 @@
 'use strict';
-/*jshint -W079 */// Suppress warning about redefiniton of `Promise`
-var Promise = require( 'es6-promise' ).Promise;
+const chai = require( 'chai' );
+const expect = chai.expect;
+const fs = require( 'fs' );
+const http = require( 'http' );
 
-var chai = require( 'chai' );
-var expect = chai.expect;
-var fs = require( 'fs' );
-var http = require( 'http' );
-
-function expectStatusCode( url, code ) {
-	return new Promise(function( resolve, reject ) {
-		function checkCode( actual, expected ) {
-			if ( actual === expected ) {
-				return resolve( actual );
-			}
-			reject( 'Expected ' + expected + ' but received ' + actual + ' for ' + url );
+const expectStatusCode = ( url, code ) => new Promise( ( resolve, reject ) => {
+	const checkCode = ( actual, expected ) => {
+		if ( actual === expected ) {
+			return resolve( actual );
 		}
+		reject( 'Expected ' + expected + ' but received ' + actual + ' for ' + url );
+	};
 
-		http.get( url, function( res ) {
-			checkCode( res.statusCode, code );
-		}).on( 'error', function( error ) {
+	http
+		.get( url, ( res ) => checkCode( res.statusCode, code ) )
+		.on( 'error', ( error ) => {
 			if ( error.statusCode ) {
 				return checkCode( error.statusCode, error );
 			}
-			reject( error );
+			return reject( error );
+		});
+});
+
+const expectFileEqualsURL = ( filePath, url ) => new Promise( ( resolve, reject ) => {
+	http.get( url, ( res ) => {
+		const data = [];
+		res.on( 'data', ( chunk ) => data.push( chunk ) ); // Append Buffer object
+
+		res.on( 'error', ( error ) => reject( error ) );
+
+		res.on( 'end', () => {
+			const downloadedImageBuffer = Buffer.concat( data );
+			const originalFile = fs.readFileSync( filePath );
+
+			const buffersEqual = downloadedImageBuffer.equals( originalFile );
+			expect( buffersEqual ).to.equal( true );
+
+			if ( buffersEqual ) {
+				return resolve( true );
+			}
+			reject( new Error( 'Downloaded file did not match original' ) );
 		});
 	});
-}
+});
 
-function expectFileEqualsURL( filePath, url ) {
-	return new Promise(function( resolve, reject ) {
-		http.get( url, function( res ) {
-			var data = [];
-			res.on( 'data', function( chunk ) {
-				data.push( chunk ); // Append Buffer object
-			});
-			res.on( 'error', function( error ) {
-				reject( error );
-			});
-			res.on( 'end', function() {
-				var downloadedImageBuffer = Buffer.concat( data );
-				var originalFile = fs.readFileSync( filePath );
-
-				var buffersEqual = downloadedImageBuffer.equals( originalFile );
-				expect( buffersEqual ).to.equal( true );
-
-				if ( buffersEqual ) {
-					return resolve( true );
-				}
-				reject( new Error( 'Downloaded file did not match original' ) );
-			});
-		});
-	});
-}
-
-function rethrowIfChaiError( error ) {
+const rethrowIfChaiError = ( error ) => {
 	if ( error instanceof chai.AssertionError ) {
 		throw error;
 	}
-}
+};
 
 module.exports = {
 	expectStatusCode: expectStatusCode,

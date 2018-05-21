@@ -1,7 +1,7 @@
 'use strict';
-var expect = require( 'chai' ).expect;
+const { expect } = require( 'chai' );
 
-var isEmptyObject = require( '../../../../lib/util/is-empty-object' );
+const isEmptyObject = require( '../../../../lib/util/is-empty-object' );
 
 describe( 'isEmptyObject utility', () => {
 

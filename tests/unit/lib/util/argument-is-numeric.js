@@ -1,7 +1,7 @@
 'use strict';
-var expect = require( 'chai' ).expect;
+const { expect } = require( 'chai' );
 
-var argumentIsNumeric = require( '../../../../lib/util/argument-is-numeric' );
+const argumentIsNumeric = require( '../../../../lib/util/argument-is-numeric' );
 
 describe( 'argumentIsNumeric utility', () => {
 
@@ -10,47 +10,47 @@ describe( 'argumentIsNumeric utility', () => {
 	});
 
 	it( 'returns true if provided an integer', () => {
-		var result = argumentIsNumeric( 7 );
+		const result = argumentIsNumeric( 7 );
 		expect( result ).to.equal( true );
 	});
 
 	it( 'returns true if provided an integer string', () => {
-		var result = argumentIsNumeric( '2501' );
+		const result = argumentIsNumeric( '2501' );
 		expect( result ).to.equal( true );
 	});
 
 	it( 'returns true if provided an array of integers', () => {
-		var result = argumentIsNumeric([ 1, 3, 5, 8, 13 ]);
+		const result = argumentIsNumeric([ 1, 3, 5, 8, 13 ]);
 		expect( result ).to.equal( true );
 	});
 
 	it( 'returns true if provided an array of integer strings', () => {
-		var result = argumentIsNumeric([ '1', '3', '5', '8', '13' ]);
+		const result = argumentIsNumeric([ '1', '3', '5', '8', '13' ]);
 		expect( result ).to.equal( true );
 	});
 
 	it( 'returns true if provided a mixed array of integers and integer strings', () => {
-		var result = argumentIsNumeric([ 1, '3', 5, '8', 13 ]);
+		const result = argumentIsNumeric([ 1, '3', 5, '8', 13 ]);
 		expect( result ).to.equal( true );
 	});
 
 	it( 'returns false if provided a non-integer string', () => {
-		var result = argumentIsNumeric( 'WordPress' );
+		const result = argumentIsNumeric( 'WordPress' );
 		expect( result ).to.equal( false );
 	});
 
 	it( 'returns false if provided a non-integer numeric string value', () => {
-		var result = argumentIsNumeric( '3.14159' );
+		const result = argumentIsNumeric( '3.14159' );
 		expect( result ).to.equal( false );
 	});
 
 	it( 'returns false if provided an array that contains any non-numeric string', () => {
-		var result = argumentIsNumeric([ 1, 3, 5, 'Eight' ]);
+		const result = argumentIsNumeric([ 1, 3, 5, 'Eight' ]);
 		expect( result ).to.equal( false );
 	});
 
 	it( 'returns false if provided an array of strings', () => {
-		var result = argumentIsNumeric([ 'One', 'Three' ]);
+		const result = argumentIsNumeric([ 'One', 'Three' ]);
 		expect( result ).to.equal( false );
 	});
 

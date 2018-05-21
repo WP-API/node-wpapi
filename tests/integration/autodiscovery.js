@@ -1,35 +1,32 @@
 'use strict';
-var chai = require( 'chai' );
+const chai = require( 'chai' );
 // Variable to use as our "success token" in promise assertions
-var SUCCESS = 'success';
+const SUCCESS = 'success';
 // Chai-as-promised and the `expect( prom ).to.eventually.equal( SUCCESS ) is
 // used to ensure that the assertions running within the promise chains are
 // actually run.
 chai.use( require( 'chai-as-promised' ) );
 chai.use( require( 'sinon-chai' ) );
-var expect = chai.expect;
-var sinon = require( 'sinon' );
+const expect = chai.expect;
+const sinon = require( 'sinon' );
 
-/*jshint -W079 */// Suppress warning about redefiniton of `Promise`
-var Promise = require( 'es6-promise' ).Promise;
-
-var WPAPI = require( '../../' );
-var WPRequest = require( '../../lib/constructors/wp-request.js' );
+const WPAPI = require( '../../' );
+const WPRequest = require( '../../lib/constructors/wp-request.js' );
 
 // Inspecting the titles of the returned posts arrays is an easy way to
 // validate that the right page of results was returned
-var getTitles = require( './helpers/get-rendered-prop' ).bind( null, 'title' );
-var credentials = require( './helpers/constants' ).credentials;
+const getTitles = require( './helpers/get-rendered-prop' ).bind( null, 'title' );
+const credentials = require( './helpers/constants' ).credentials;
 
 // Define some arrays to use ensuring the returned data is what we expect
 // it to be (e.g. an array of the titles from posts on the first page)
-var expectedResults = {
+const expectedResults = {
 	firstPostTitle: 'Markup: HTML Tags and Formatting'
 };
 
 describe( 'integration: discover()', () => {
-	var apiPromise;
-	var sinonSandbox;
+	let apiPromise;
+	let sinonSandbox;
 
 	beforeEach( () => {
 		apiPromise = WPAPI.discover( 'http://wpapi.loc' );
@@ -45,11 +42,12 @@ describe( 'integration: discover()', () => {
 	});
 
 	it( 'returns a promise', () => {
+		const Promise = require( 'es6-promise' );
 		expect( apiPromise ).to.be.an.instanceOf( Promise );
 	});
 
 	it( 'eventually returns a configured WP instance', () => {
-		var prom = apiPromise
+		const prom = apiPromise
 			.then( ( result ) => {
 				expect( result ).to.be.an.instanceOf( WPAPI );
 				expect( result.namespace( 'wp/v2' ) ).to.be.an( 'object' );
@@ -61,7 +59,7 @@ describe( 'integration: discover()', () => {
 	});
 
 	it( 'auto-binds to the detected endpoint on the provided site', () => {
-		var prom = apiPromise
+		const prom = apiPromise
 			.then( ( site ) => {
 				expect( site.posts().toString() ).to.equal( 'http://wpapi.loc/wp-json/wp/v2/posts' );
 				return SUCCESS;
@@ -70,7 +68,7 @@ describe( 'integration: discover()', () => {
 	});
 
 	it( 'can correctly instantiate requests against the detected and bound site', () => {
-		var prom = apiPromise
+		const prom = apiPromise
 			.then( ( site ) => site.posts() )
 			.then( ( posts ) => {
 				expect( getTitles( posts )[ 0 ] ).to.equal( expectedResults.firstPostTitle );
@@ -82,7 +80,7 @@ describe( 'integration: discover()', () => {
 	describe( 'can authenticate', () => {
 
 		it( 'requests against the detected and bound site', () => {
-			var prom = apiPromise
+			const prom = apiPromise
 				.then( ( site ) => site.auth( credentials ) )
 				.then( ( site ) => site.users().me() )
 				.then( ( user ) => {
@@ -94,7 +92,7 @@ describe( 'integration: discover()', () => {
 		});
 
 		it( 'one-off requests against the detected and bound site', () => {
-			var prom = apiPromise
+			const prom = apiPromise
 				.then( ( site ) => site.users().auth( credentials ).me() )
 				.then( ( user ) => {
 					expect( user ).to.be.an( 'object' );

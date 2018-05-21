@@ -1,16 +1,16 @@
 'use strict';
-var chai = require( 'chai' );
-var expect = chai.expect;
+const chai = require( 'chai' );
+const expect = chai.expect;
 chai.use( require( 'sinon-chai' ) );
-var sinon = require( 'sinon' );
+const sinon = require( 'sinon' );
 
-var WPRequest = require( '../../../../lib/constructors/wp-request' );
-var filterMixins = require( '../../../../lib/mixins/filters' );
-var checkMethodSupport = require( '../../../../lib/util/check-method-support' );
+const WPRequest = require( '../../../../lib/constructors/wp-request' );
+const filterMixins = require( '../../../../lib/mixins/filters' );
+const checkMethodSupport = require( '../../../../lib/util/check-method-support' );
 
 describe( 'WPRequest', () => {
 
-	var request;
+	let request;
 
 	beforeEach( () => {
 		request = new WPRequest({
@@ -32,7 +32,7 @@ describe( 'WPRequest', () => {
 		});
 
 		it( 'should define a _supportedMethods array', () => {
-			var _supportedMethods = request._supportedMethods.sort().join( '|' );
+			const _supportedMethods = request._supportedMethods.sort().join( '|' );
 			expect( _supportedMethods ).to.equal( 'delete|get|head|post|put' );
 		});
 
@@ -53,7 +53,7 @@ describe( 'WPRequest', () => {
 				tag: [ 'clouds ', 'islands' ],
 				custom_tax: [ 7 ]
 			};
-			var query = request._renderQuery();
+			const query = request._renderQuery();
 			// Filters should be in alpha order, to support caching requests
 			expect( query ).to
 				.equal( '?filter%5Bcustom_tax%5D=7&filter%5Btag%5D=clouds%2Bislands' );
@@ -63,7 +63,7 @@ describe( 'WPRequest', () => {
 			request._taxonomyFilters = {
 				tag: [ 'Diamond-Dust' ]
 			};
-			var query = request._renderQuery();
+			const query = request._renderQuery();
 			expect( query ).to.equal( '?filter%5Btag%5D=diamond-dust' );
 		});
 
@@ -71,14 +71,14 @@ describe( 'WPRequest', () => {
 			request._filters = {
 				post_status: 'publish', s: 'Some search string'
 			};
-			var query = request._renderQuery();
+			const query = request._renderQuery();
 			expect( query ).to
 				.equal( '?filter%5Bpost_status%5D=publish&filter%5Bs%5D=Some%20search%20string' );
 		});
 
 		it( 'properly parses array filters', () => {
 			request._filters = { post__in: [ 0, 1 ] };
-			var query = request._renderQuery();
+			const query = request._renderQuery();
 			expect( query ).to
 				.equal( '?filter%5Bpost__in%5D%5B%5D=0&filter%5Bpost__in%5D%5B%5D=1' );
 		});
@@ -90,7 +90,7 @@ describe( 'WPRequest', () => {
 			request._filters = {
 				name: 'some-slug'
 			};
-			var query = request._renderQuery();
+			const query = request._renderQuery();
 			// Filters should be in alpha order, to support caching requests
 			expect( query ).to.equal( '?filter%5Bcat%5D=7%2B10&filter%5Bname%5D=some-slug' );
 		});
@@ -208,11 +208,11 @@ describe( 'WPRequest', () => {
 	});
 
 	describe( '.param() convenience methods', () => {
-		var getQueryStr;
+		let getQueryStr;
 
 		beforeEach( () => {
 			getQueryStr = ( req ) => {
-				var query = req
+				const query = req
 					._renderQuery()
 					.replace( /^\?/, '' );
 				return decodeURIComponent( query );
@@ -239,12 +239,12 @@ describe( 'WPRequest', () => {
 			});
 
 			it( 'should map to the "context=VALUE" query parameter', () => {
-				var path = request.context( 'edit' ).toString();
+				const path = request.context( 'edit' ).toString();
 				expect( path ).to.equal( '/?context=edit' );
 			});
 
 			it( 'should replace values when called multiple times', () => {
-				var path = request.context( 'edit' ).context( 'view' ).toString();
+				const path = request.context( 'edit' ).context( 'view' ).toString();
 				expect( path ).to.equal( '/?context=view' );
 			});
 
@@ -294,17 +294,17 @@ describe( 'WPRequest', () => {
 			});
 
 			it( 'has no effect when called with no argument', () => {
-				var result = request.page();
+				const result = request.page();
 				expect( getQueryStr( result ) ).to.equal( '' );
 			});
 
 			it( 'sets the "page" query parameter when provided a value', () => {
-				var result = request.page( 7 );
+				const result = request.page( 7 );
 				expect( getQueryStr( result ) ).to.equal( 'page=7' );
 			});
 
 			it( 'should be chainable and replace values when called multiple times', () => {
-				var result = request.page( 71 ).page( 2 );
+				const result = request.page( 71 ).page( 2 );
 				expect( getQueryStr( result ) ).to.equal( 'page=2' );
 			});
 
@@ -325,17 +325,17 @@ describe( 'WPRequest', () => {
 			});
 
 			it( 'has no effect when called with no argument', () => {
-				var result = request.perPage();
+				const result = request.perPage();
 				expect( getQueryStr( result ) ).to.equal( '' );
 			});
 
 			it( 'sets the "per_page" query parameter when provided a value', () => {
-				var result = request.perPage( 7 );
+				const result = request.perPage( 7 );
 				expect( getQueryStr( result ) ).to.equal( 'per_page=7' );
 			});
 
 			it( 'should be chainable and replace values when called multiple times', () => {
-				var result = request.perPage( 71 ).perPage( 2 );
+				const result = request.perPage( 71 ).perPage( 2 );
 				expect( getQueryStr( result ) ).to.equal( 'per_page=2' );
 			});
 
@@ -356,17 +356,17 @@ describe( 'WPRequest', () => {
 			});
 
 			it( 'has no effect when called with no argument', () => {
-				var result = request.offset();
+				const result = request.offset();
 				expect( getQueryStr( result ) ).to.equal( '' );
 			});
 
 			it( 'sets the "offset" query parameter when provided a value', () => {
-				var result = request.offset( 7 );
+				const result = request.offset( 7 );
 				expect( getQueryStr( result ) ).to.equal( 'offset=7' );
 			});
 
 			it( 'should be chainable and replace values when called multiple times', () => {
-				var result = request.offset( 71 ).offset( 2 );
+				const result = request.offset( 71 ).offset( 2 );
 				expect( getQueryStr( result ) ).to.equal( 'offset=2' );
 			});
 
@@ -387,17 +387,17 @@ describe( 'WPRequest', () => {
 			});
 
 			it( 'has no effect when called with no argument', () => {
-				var result = request.order();
+				const result = request.order();
 				expect( getQueryStr( result ) ).to.equal( '' );
 			});
 
 			it( 'sets the "order" query parameter when provided a value', () => {
-				var result = request.order( 'asc' );
+				const result = request.order( 'asc' );
 				expect( getQueryStr( result ) ).to.equal( 'order=asc' );
 			});
 
 			it( 'should be chainable and replace values when called multiple times', () => {
-				var result = request.order( 'asc' ).order( 'desc' );
+				const result = request.order( 'asc' ).order( 'desc' );
 				expect( getQueryStr( result ) ).to.equal( 'order=desc' );
 			});
 
@@ -418,17 +418,17 @@ describe( 'WPRequest', () => {
 			});
 
 			it( 'has no effect when called with no argument', () => {
-				var result = request.orderby();
+				const result = request.orderby();
 				expect( getQueryStr( result ) ).to.equal( '' );
 			});
 
 			it( 'sets the "orderby" query parameter when provided a value', () => {
-				var result = request.orderby( 'title' );
+				const result = request.orderby( 'title' );
 				expect( getQueryStr( result ) ).to.equal( 'orderby=title' );
 			});
 
 			it( 'should be chainable and replace values when called multiple times', () => {
-				var result = request.orderby( 'title' ).orderby( 'slug' );
+				const result = request.orderby( 'title' ).orderby( 'slug' );
 				expect( getQueryStr( result ) ).to.equal( 'orderby=slug' );
 			});
 
@@ -449,17 +449,17 @@ describe( 'WPRequest', () => {
 			});
 
 			it( 'has no effect when called with no argument', () => {
-				var result = request.search();
+				const result = request.search();
 				expect( getQueryStr( result ) ).to.equal( '' );
 			});
 
 			it( 'sets the "search" query parameter when provided a value', () => {
-				var result = request.search( 'my search string' );
+				const result = request.search( 'my search string' );
 				expect( getQueryStr( result ) ).to.equal( 'search=my search string' );
 			});
 
 			it( 'overwrites previously-set values on subsequent calls', () => {
-				var result = request.search( 'query' ).search( 'newquery' );
+				const result = request.search( 'query' ).search( 'newquery' );
 				expect( getQueryStr( result ) ).to.equal( 'search=newquery' );
 			});
 
@@ -480,22 +480,22 @@ describe( 'WPRequest', () => {
 			});
 
 			it( 'has no effect when called with no argument', () => {
-				var result = request.include();
+				const result = request.include();
 				expect( getQueryStr( result ) ).to.equal( '' );
 			});
 
 			it( 'sets the "include" query parameter when provided a value', () => {
-				var result = request.include( 7 );
+				const result = request.include( 7 );
 				expect( getQueryStr( result ) ).to.equal( 'include=7' );
 			});
 
 			it( 'can set an array of "include" values', () => {
-				var result = request.include([ 7, 41, 98 ]);
+				const result = request.include([ 7, 41, 98 ]);
 				expect( getQueryStr( result ) ).to.equal( 'include[]=41&include[]=7&include[]=98' );
 			});
 
 			it( 'should be chainable and replace values when called multiple times', () => {
-				var result = request.include( 71 ).include( 2 );
+				const result = request.include( 71 ).include( 2 );
 				expect( getQueryStr( result ) ).to.equal( 'include=2' );
 			});
 
@@ -516,22 +516,22 @@ describe( 'WPRequest', () => {
 			});
 
 			it( 'has no effect when called with no argument', () => {
-				var result = request.exclude();
+				const result = request.exclude();
 				expect( getQueryStr( result ) ).to.equal( '' );
 			});
 
 			it( 'sets the "exclude" query parameter when provided a value', () => {
-				var result = request.exclude( 7 );
+				const result = request.exclude( 7 );
 				expect( getQueryStr( result ) ).to.equal( 'exclude=7' );
 			});
 
 			it( 'can set an array of "exclude" values', () => {
-				var result = request.exclude([ 7, 41, 98 ]);
+				const result = request.exclude([ 7, 41, 98 ]);
 				expect( getQueryStr( result ) ).to.equal( 'exclude[]=41&exclude[]=7&exclude[]=98' );
 			});
 
 			it( 'should be chainable and replace values when called multiple times', () => {
-				var result = request.exclude( 71 ).exclude( 2 );
+				const result = request.exclude( 71 ).exclude( 2 );
 				expect( getQueryStr( result ) ).to.equal( 'exclude=2' );
 			});
 
@@ -552,12 +552,12 @@ describe( 'WPRequest', () => {
 			});
 
 			it( 'has no effect when called with no argument', () => {
-				var result = request.slug();
+				const result = request.slug();
 				expect( getQueryStr( result ) ).to.equal( '' );
 			});
 
 			it( 'sets the "slug" query parameter when provided a value', () => {
-				var result = request.slug( 'bran-van' );
+				const result = request.slug( 'bran-van' );
 				expect( getQueryStr( result ) ).to.equal( 'slug=bran-van' );
 			});
 
@@ -759,12 +759,12 @@ describe( 'WPRequest', () => {
 		});
 
 		it( 'renders the URL to a string', () => {
-			var str = request.param( 'a', 7 ).param( 'b', [ 1, 2 ] ).toString();
+			const str = request.param( 'a', 7 ).param( 'b', [ 1, 2 ] ).toString();
 			expect( str ).to.equal( 'http://blogoblog.com/wp-json?a=7&b%5B%5D=1&b%5B%5D=2' );
 		});
 
 		it( 'exhibits normal toString() behavior via coercion', () => {
-			var str = '' + request.param( 'a', 7 ).param( 'b', [ 1, 2 ] );
+			const str = '' + request.param( 'a', 7 ).param( 'b', [ 1, 2 ] );
 			expect( str ).to.equal( 'http://blogoblog.com/wp-json?a=7&b%5B%5D=1&b%5B%5D=2' );
 		});
 
@@ -772,7 +772,7 @@ describe( 'WPRequest', () => {
 			request = new WPRequest({
 				endpoint: 'https://blogoblog.com?rest_route=/'
 			});
-			var str = request.param( 'a', 7 ).param( 'b', [ 1, 2 ] ).toString();
+			const str = request.param( 'a', 7 ).param( 'b', [ 1, 2 ] ).toString();
 			expect( str ).to.equal( 'https://blogoblog.com?rest_route=/&a=7&b%5B%5D=1&b%5B%5D=2' );
 		});
 

@@ -1,20 +1,20 @@
 'use strict';
 /*jshint -W106 */// Disable underscore_case warnings in this file b/c WP uses them
-var chai = require( 'chai' );
+const chai = require( 'chai' );
 // Variable to use as our 'success token' in promise assertions
-var SUCCESS = 'success';
+const SUCCESS = 'success';
 // Chai-as-promised and the `expect( prom ).to.eventually.equal( SUCCESS ) is
 // used to ensure that the assertions running within the promise chains are
 // actually run.
 chai.use( require( 'chai-as-promised' ) );
-var expect = chai.expect;
+const expect = chai.expect;
 
-var WPAPI = require( '../../' );
-var WPRequest = require( '../../lib/constructors/wp-request.js' );
+const WPAPI = require( '../../' );
+const WPRequest = require( '../../lib/constructors/wp-request.js' );
 
 // Define some arrays to use ensuring the returned data is what we expect
 // it to be (e.g. an array of the titles from posts on the first page)
-var expectedResults = {
+const expectedResults = {
 	postsAndAuthors: {
 		page1: [
 			'1170John Doe',
@@ -65,12 +65,11 @@ var expectedResults = {
 
 // Inspecting the posts and authors of the returned comments arrays is an easy
 // way to validate that the right page of results was returned
-function getPostsAndAuthors( comments ) {
-	return comments.map( ( comment ) => comment.post + comment.author_name );
-}
+const getPostsAndAuthors = ( comments ) => comments
+	.map( ( comment ) => comment.post + comment.author_name );
 
 describe( 'integration: comments()', () => {
-	var wp;
+	let wp;
 
 	beforeEach( () => {
 		wp = new WPAPI({
@@ -79,7 +78,7 @@ describe( 'integration: comments()', () => {
 	});
 
 	it( 'can be used to retrieve a list of comments, omitting a password-protected comment', () => {
-		var prom = wp.comments()
+		const prom = wp.comments()
 			.get()
 			.then( ( comments ) => {
 				expect( comments ).to.be.an( 'array' );
@@ -90,7 +89,7 @@ describe( 'integration: comments()', () => {
 	});
 
 	it( 'fetches the first page, omitting a password-protected comment', () => {
-		var prom = wp.comments()
+		const prom = wp.comments()
 			.get()
 			.then( ( comments ) => {
 				expect( getPostsAndAuthors( comments ) ).to.deep.equal( expectedResults.postsAndAuthors.page1 );
@@ -100,7 +99,7 @@ describe( 'integration: comments()', () => {
 	});
 
 	it( 'fetches the 10 oldest comments when sorted "asc"', () => {
-		var prom = wp.comments()
+		const prom = wp.comments()
 			.order( 'asc' )
 			.get()
 			.then( ( comments ) => {
@@ -113,7 +112,7 @@ describe( 'integration: comments()', () => {
 	describe( 'paging properties', () => {
 
 		it( 'are exposed as _paging on the response array', () => {
-			var prom = wp.comments()
+			const prom = wp.comments()
 				.get()
 				.then( ( posts ) => {
 					expect( posts ).to.have.property( '_paging' );
@@ -124,7 +123,7 @@ describe( 'integration: comments()', () => {
 		});
 
 		it( 'include the total number of posts', () => {
-			var prom = wp.comments()
+			const prom = wp.comments()
 				.get()
 				.then( ( posts ) => {
 					expect( posts._paging ).to.have.property( 'total' );
@@ -135,7 +134,7 @@ describe( 'integration: comments()', () => {
 		});
 
 		it( 'include the total number of pages available', () => {
-			var prom = wp.comments()
+			const prom = wp.comments()
 				.get()
 				.then( ( posts ) => {
 					expect( posts._paging ).to.have.property( 'totalPages' );
@@ -146,7 +145,7 @@ describe( 'integration: comments()', () => {
 		});
 
 		it( 'provides a bound WPRequest for the next page as .next', () => {
-			var prom = wp.comments()
+			const prom = wp.comments()
 				.get()
 				.then( ( posts ) => {
 					expect( posts._paging ).to.have.property( 'next' );
@@ -168,7 +167,7 @@ describe( 'integration: comments()', () => {
 		});
 
 		it( 'allows access to the next page of results via .next', () => {
-			var prom = wp.comments()
+			const prom = wp.comments()
 				.get()
 				.then( ( posts ) => {
 					return posts._paging.next
@@ -184,7 +183,7 @@ describe( 'integration: comments()', () => {
 		});
 
 		it( 'provides a bound WPRequest for the previous page as .prev', () => {
-			var prom = wp.comments()
+			const prom = wp.comments()
 				.get()
 				.then( ( posts ) => {
 					expect( posts._paging ).not.to.have.property( 'prev' );
@@ -203,7 +202,7 @@ describe( 'integration: comments()', () => {
 		});
 
 		it( 'allows access to the previous page of results via .prev', () => {
-			var prom = wp.comments()
+			const prom = wp.comments()
 				.page( 2 )
 				.get()
 				.then( ( posts ) => {
@@ -224,9 +223,9 @@ describe( 'integration: comments()', () => {
 	});
 
 	describe( 'querying by ID', () => {
-		var commentCollection;
-		var commentId;
-		var commentProm;
+		let commentCollection;
+		let commentId;
+		let commentProm;
 
 		beforeEach( () => {
 			commentCollection = [];
@@ -242,7 +241,7 @@ describe( 'integration: comments()', () => {
 		});
 
 		it( 'returns an object, not an array', () => {
-			var prom = commentProm
+			const prom = commentProm
 				.then( ( comment ) => {
 					expect( Array.isArray( comment ) ).to.equal( false );
 					expect( comment ).to.be.an( 'object' );
@@ -252,7 +251,7 @@ describe( 'integration: comments()', () => {
 		});
 
 		it( 'returns the correct comment', () => {
-			var prom = commentProm.then( ( comment ) => {
+			const prom = commentProm.then( ( comment ) => {
 				expect( comment.id ).to.equal( commentId );
 				[ 'author_name', 'post', 'parent', 'date', 'status' ].forEach( ( prop ) => {
 					expect( comment[ prop ] ).to.equal( commentCollection[4][ prop ] );
@@ -265,11 +264,11 @@ describe( 'integration: comments()', () => {
 	});
 
 	describe( '.post() query', () => {
-		var pageComments;
-		var commentProm;
+		let pageComments;
+		let commentProm;
 
 		beforeEach( () => {
-			var pageId = 155;
+			const pageId = 155;
 			commentProm = wp.pages()
 				.id( pageId )
 				.embed()
@@ -288,7 +287,7 @@ describe( 'integration: comments()', () => {
 		});
 
 		it( 'returns the correct number of comments', () => {
-			var prom = commentProm
+			const prom = commentProm
 				.then( ( comments ) => {
 					expect( comments.length ).to.equal( 3 );
 					expect( comments.length ).to.equal( pageComments.length );
@@ -298,7 +297,7 @@ describe( 'integration: comments()', () => {
 		});
 
 		it( 'returns the correct comments', () => {
-			var prom = commentProm
+			const prom = commentProm
 				.then( ( comments ) => {
 					pageComments.forEach( ( comment, i ) => {
 						[ 'id', 'parent', 'author', 'author_name' ].forEach( ( prop ) => {

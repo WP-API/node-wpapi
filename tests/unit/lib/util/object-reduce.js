@@ -1,5 +1,5 @@
 'use strict';
-var expect = require( 'chai' ).expect;
+const { expect } = require( 'chai' );
 
 describe( 'Object reduction tools:', () => {
 	// Ensure parity with the relevant signature & functionality of lodash.reduce
@@ -14,8 +14,8 @@ describe( 'Object reduction tools:', () => {
 	].forEach( ( test ) => {
 
 		describe( test.name, () => {
-			var objectReduce = test.fn;
-			var obj;
+			const objectReduce = test.fn;
+			let obj;
 
 			beforeEach( () => {
 				obj = {};
@@ -34,7 +34,7 @@ describe( 'Object reduction tools:', () => {
 			});
 
 			it( 'can be used to reduce over an object', () => {
-				var result = objectReduce({
+				const result = objectReduce({
 					key1: 'val1',
 					key2: 'val2',
 					key3: 'val3'

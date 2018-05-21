@@ -8,12 +8,12 @@
  *
  * @example <caption>Pluck the rendered titles from the post</caption>
  *
- *     var titles = getRenderedProp( collection, 'title' );
+ *     const titles = getRenderedProp( collection, 'title' );
  *
  * @example <caption>Create a bound variant that always plucks titles</caption>
  *
- *     var getTitles = getRenderedProp.bind( null, 'title' );
- *     var titles = getTitles( collection );
+ *     const getTitles = getRenderedProp.bind( null, 'title' );
+ *     const titles = getTitles( collection );
  *
  * @private
  * @param {String}   property   The name of the rendered property to pluck
@@ -21,8 +21,5 @@
  * @returns {String[]} The collection of values for the rendered variants of
  * the specified response object property
  */
-module.exports = function( property, collection ) {
-	return collection.map(function( item ) {
-		return item[ property ].rendered;
-	});
-};
+module.exports = ( property, collection ) => collection
+	.map( ( item ) => item[ property ].rendered );

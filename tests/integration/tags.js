@@ -1,23 +1,23 @@
 'use strict';
-var chai = require( 'chai' );
+const chai = require( 'chai' );
 // Variable to use as our "success token" in promise assertions
-var SUCCESS = 'success';
+const SUCCESS = 'success';
 // Chai-as-promised and the `expect( prom ).to.eventually.equal( SUCCESS ) is
 // used to ensure that the assertions running within the promise chains are
 // actually run.
 chai.use( require( 'chai-as-promised' ) );
-var expect = chai.expect;
+const expect = chai.expect;
 
-var WPAPI = require( '../../' );
-var WPRequest = require( '../../lib/constructors/wp-request.js' );
+const WPAPI = require( '../../' );
+const WPRequest = require( '../../lib/constructors/wp-request.js' );
 
 // Inspecting the names of the returned terms is an easy way to validate
 // that the right page of results was returned
-var getNames = require( './helpers/get-prop' ).bind( null, 'name' );
+const getNames = require( './helpers/get-prop' ).bind( null, 'name' );
 
 // Define some arrays to use ensuring the returned data is what we expect
 // it to be (e.g. an array of the names from tags on the first page)
-var expectedResults = {
+const expectedResults = {
 	names: {
 		page1: [
 			'8BIT',
@@ -59,7 +59,7 @@ var expectedResults = {
 };
 
 describe( 'integration: tags()', () => {
-	var wp;
+	let wp;
 
 	beforeEach( () => {
 		wp = new WPAPI({
@@ -68,7 +68,7 @@ describe( 'integration: tags()', () => {
 	});
 
 	it( 'can be used to retrieve a collection of category terms', () => {
-		var prom = wp.tags()
+		const prom = wp.tags()
 			.get()
 			.then( ( tags ) => {
 				expect( tags ).to.be.an( 'array' );
@@ -79,7 +79,7 @@ describe( 'integration: tags()', () => {
 	});
 
 	it( 'retrieves the first 10 tags by default', () => {
-		var prom = wp.tags()
+		const prom = wp.tags()
 			.get()
 			.then( ( tags ) => {
 				expect( tags ).to.be.an( 'array' );
@@ -92,7 +92,7 @@ describe( 'integration: tags()', () => {
 	describe( 'paging properties', () => {
 
 		it( 'are exposed as _paging on the response array', () => {
-			var prom = wp.tags()
+			const prom = wp.tags()
 				.get()
 				.then( ( tags ) => {
 					expect( tags ).to.have.property( '_paging' );
@@ -103,7 +103,7 @@ describe( 'integration: tags()', () => {
 		});
 
 		it( 'include the total number of tags', () => {
-			var prom = wp.tags()
+			const prom = wp.tags()
 				.get()
 				.then( ( tags ) => {
 					expect( tags._paging ).to.have.property( 'total' );
@@ -114,7 +114,7 @@ describe( 'integration: tags()', () => {
 		});
 
 		it( 'include the total number of pages available', () => {
-			var prom = wp.tags()
+			const prom = wp.tags()
 				.get()
 				.then( ( tags ) => {
 					expect( tags._paging ).to.have.property( 'totalPages' );
@@ -125,7 +125,7 @@ describe( 'integration: tags()', () => {
 		});
 
 		it( 'provides a bound WPRequest for the next page as .next', () => {
-			var prom = wp.tags()
+			const prom = wp.tags()
 				.get()
 				.then( ( tags ) => {
 					expect( tags._paging ).to.have.property( 'next' );
@@ -146,7 +146,7 @@ describe( 'integration: tags()', () => {
 		});
 
 		it( 'allows access to the next page of results via .next', () => {
-			var prom = wp.tags()
+			const prom = wp.tags()
 				.get()
 				.then( ( tags ) => {
 					return tags._paging.next
@@ -162,7 +162,7 @@ describe( 'integration: tags()', () => {
 		});
 
 		it( 'provides a bound WPRequest for the previous page as .prev', () => {
-			var prom = wp.tags()
+			const prom = wp.tags()
 				.get()
 				.then( ( tags ) => {
 					expect( tags._paging ).not.to.have.property( 'prev' );
@@ -181,7 +181,7 @@ describe( 'integration: tags()', () => {
 		});
 
 		it( 'allows access to the previous page of results via .prev', () => {
-			var prom = wp.tags()
+			const prom = wp.tags()
 				.page( 2 )
 				.get()
 				.then( ( tags ) => {
@@ -203,8 +203,8 @@ describe( 'integration: tags()', () => {
 	describe( 'id()', () => {
 
 		it( 'can be used to access an individual tag term', () => {
-			var selectedTag;
-			var prom = wp.tags()
+			let selectedTag;
+			const prom = wp.tags()
 				.get()
 				.then( ( tags ) => {
 					// Pick one of the tags
@@ -231,8 +231,8 @@ describe( 'integration: tags()', () => {
 	describe( 'search()', () => {
 
 		it( 'can be used to retrieve a tag by slug', () => {
-			var selectedTag;
-			var prom = wp.tags()
+			let selectedTag;
+			const prom = wp.tags()
 				.get()
 				.then( ( tags ) => {
 					// Pick one of the tags
@@ -260,13 +260,13 @@ describe( 'integration: tags()', () => {
 		});
 
 		it( 'returns all tags matching the provided search string', () => {
-			var prom = wp.tags()
+			const prom = wp.tags()
 				.search( 'post' )
 				.get()
 				.then( ( tags ) => {
 					expect( tags ).to.be.an( 'array' );
 					expect( tags.length ).to.equal( 2 );
-					var slugs = tags.map( ( tag ) => tag.slug ).sort().join( ' ' );
+					const slugs = tags.map( ( tag ) => tag.slug ).sort().join( ' ' );
 					expect( slugs ).to.equal( 'post post-formats' );
 					return SUCCESS;
 				});
@@ -274,7 +274,7 @@ describe( 'integration: tags()', () => {
 		});
 
 		it( 'can be used to retrieve a tag by slug from a set of search results', () => {
-			var prom = wp.tags()
+			const prom = wp.tags()
 				.search( 'post' )
 				.get()
 				// Iterating over response of search is the best we can do until

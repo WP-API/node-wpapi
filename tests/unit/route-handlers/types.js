@@ -1,12 +1,12 @@
 'use strict';
-var expect = require( 'chai' ).expect;
+const { expect } = require( 'chai' );
 
-var WPAPI = require( '../../../wpapi' );
-var WPRequest = require( '../../../lib/constructors/wp-request' );
+const WPAPI = require( '../../../wpapi' );
+const WPRequest = require( '../../../lib/constructors/wp-request' );
 
 describe( 'wp.types', () => {
-	var site;
-	var types;
+	let site;
+	let types;
 
 	beforeEach( () => {
 		site = new WPAPI({
@@ -50,12 +50,12 @@ describe( 'wp.types', () => {
 	describe( 'URL Generation', () => {
 
 		it( 'should create the URL for retrieving all types', () => {
-			var url = types.toString();
+			const url = types.toString();
 			expect( url ).to.equal( '/wp-json/wp/v2/types' );
 		});
 
 		it( 'should create the URL for retrieving a specific term', () => {
-			var url = types.type( 'some_type' ).toString();
+			const url = types.type( 'some_type' ).toString();
 			expect( url ).to.equal( '/wp-json/wp/v2/types/some_type' );
 		});
 

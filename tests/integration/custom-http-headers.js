@@ -1,22 +1,22 @@
 'use strict';
-var chai = require( 'chai' );
+const chai = require( 'chai' );
 // Variable to use as our "success token" in promise assertions
-var SUCCESS = 'success';
+const SUCCESS = 'success';
 // Chai-as-promised and the `expect( prom ).to.eventually.equal( SUCCESS ) is
 // used to ensure that the assertions running within the promise chains are
 // actually run.
 chai.use( require( 'chai-as-promised' ) );
-var expect = chai.expect;
+const expect = chai.expect;
 
-var WPAPI = require( '../../' );
+const WPAPI = require( '../../' );
 
 // Inspecting the titles of the returned posts arrays is an easy way to
 // validate that the right page of results was returned
-var getTitles = require( './helpers/get-rendered-prop' ).bind( null, 'title' );
-var base64credentials = new Buffer( 'apiuser:password' ).toString( 'base64' );
+const getTitles = require( './helpers/get-rendered-prop' ).bind( null, 'title' );
+const base64credentials = new Buffer( 'apiuser:password' ).toString( 'base64' );
 
 describe( 'integration: custom HTTP Headers', () => {
-	var wp;
+	let wp;
 
 	beforeEach( () => {
 		wp = new WPAPI({
@@ -27,7 +27,7 @@ describe( 'integration: custom HTTP Headers', () => {
 	// Testing basic authentication is an acceptable proxy for whether a header
 	// value (Authentication:, in this case) is being set
 	it( 'can be provided using WPRequest#setHeaders()', () => {
-		var prom = wp.posts()
+		const prom = wp.posts()
 			.setHeaders( 'Authorization', 'Basic ' + base64credentials )
 			.status([ 'future', 'draft' ])
 			.get()
@@ -42,10 +42,10 @@ describe( 'integration: custom HTTP Headers', () => {
 	});
 
 	it( 'can be provided at the WPAPI instance level using WPAPI#setHeaders()', () => {
-		var authenticated = WPAPI
+		const authenticated = WPAPI
 			.site( 'http://wpapi.loc/wp-json' )
 			.setHeaders( 'Authorization', 'Basic ' + base64credentials );
-		var prom = authenticated.posts()
+		const prom = authenticated.posts()
 			.status([ 'future', 'draft' ])
 			.get()
 			.then( ( posts ) => {

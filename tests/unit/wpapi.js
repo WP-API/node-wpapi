@@ -1,29 +1,26 @@
 'use strict';
-var chai = require( 'chai' );
+const chai = require( 'chai' );
 // Variable to use as our "success token" in promise assertions
-var SUCCESS = 'success';
+const SUCCESS = 'success';
 // Chai-as-promised and the `expect( prom ).to.eventually.equal( SUCCESS ) is
 // used to ensure that the assertions running within the promise chains are
 // actually run.
 chai.use( require( 'chai-as-promised' ) );
 chai.use( require( 'sinon-chai' ) );
-var expect = chai.expect;
-var sinon = require( 'sinon' );
+const expect = chai.expect;
+const sinon = require( 'sinon' );
 
-/*jshint -W079 */// Suppress warning about redefiniton of `Promise`
-var Promise = require( 'es6-promise' ).Promise;
-
-var WPAPI = require( '../../' );
+const WPAPI = require( '../../' );
 
 // Constructors, for use with instanceof checks
-var WPRequest = require( '../../lib/constructors/wp-request' );
+const WPRequest = require( '../../lib/constructors/wp-request' );
 
 // HTTP transport, for stubbing
-var httpTransport = require( '../../lib/http-transport' );
+const httpTransport = require( '../../lib/http-transport' );
 
 describe( 'WPAPI', () => {
 
-	var site;
+	let site;
 
 	beforeEach( () => {
 		site = new WPAPI({ endpoint: 'endpoint/url' });
@@ -32,9 +29,9 @@ describe( 'WPAPI', () => {
 	describe( 'constructor', () => {
 
 		it( 'enforces new', () => {
-			var site1 = new WPAPI({ endpoint: '/' });
+			const site1 = new WPAPI({ endpoint: '/' });
 			expect( site1 instanceof WPAPI ).to.be.true;
-			var site2 = WPAPI({ endpoint: '/' });
+			const site2 = WPAPI({ endpoint: '/' });
 			expect( site2 instanceof WPAPI ).to.be.true;
 		});
 
@@ -60,7 +57,7 @@ describe( 'WPAPI', () => {
 		});
 
 		it( 'sets options on an instance variable', () => {
-			var site = new WPAPI({
+			const site = new WPAPI({
 				endpoint: 'http://some.url.com/wp-json',
 				username: 'fyodor',
 				password: 'dostoyevsky'
@@ -71,7 +68,7 @@ describe( 'WPAPI', () => {
 		});
 
 		it( 'activates authentication when credentials are provided', () => {
-			var site = new WPAPI({
+			const site = new WPAPI({
 				endpoint: 'http://some.url.com/wp-json',
 				username: 'fyodor',
 				password: 'dostoyevsky'
@@ -85,10 +82,10 @@ describe( 'WPAPI', () => {
 
 			it( 'for GET requests', () => {
 				sinon.stub( httpTransport, 'get' );
-				var site = new WPAPI({
+				const site = new WPAPI({
 					endpoint: 'http://some.url.com/wp-json'
 				});
-				var query = site.root( '' );
+				const query = site.root( '' );
 				query.get();
 				expect( httpTransport.get ).to.have.been.calledWith( query );
 				httpTransport.get.restore();
@@ -96,11 +93,11 @@ describe( 'WPAPI', () => {
 
 			it( 'for POST requests', () => {
 				sinon.stub( httpTransport, 'post' );
-				var site = new WPAPI({
+				const site = new WPAPI({
 					endpoint: 'http://some.url.com/wp-json'
 				});
-				var query = site.root( '' );
-				var data = {};
+				const query = site.root( '' );
+				const data = {};
 				query.create( data );
 				expect( httpTransport.post ).to.have.been.calledWith( query, data );
 				httpTransport.post.restore();
@@ -108,11 +105,11 @@ describe( 'WPAPI', () => {
 
 			it( 'for POST requests', () => {
 				sinon.stub( httpTransport, 'post' );
-				var site = new WPAPI({
+				const site = new WPAPI({
 					endpoint: 'http://some.url.com/wp-json'
 				});
-				var query = site.root( '' );
-				var data = {};
+				const query = site.root( '' );
+				const data = {};
 				query.create( data );
 				expect( httpTransport.post ).to.have.been.calledWith( query, data );
 				httpTransport.post.restore();
@@ -120,11 +117,11 @@ describe( 'WPAPI', () => {
 
 			it( 'for PUT requests', () => {
 				sinon.stub( httpTransport, 'put' );
-				var site = new WPAPI({
+				const site = new WPAPI({
 					endpoint: 'http://some.url.com/wp-json'
 				});
-				var query = site.root( 'a-resource' );
-				var data = {};
+				const query = site.root( 'a-resource' );
+				const data = {};
 				query.update( data );
 				expect( httpTransport.put ).to.have.been.calledWith( query, data );
 				httpTransport.put.restore();
@@ -132,11 +129,11 @@ describe( 'WPAPI', () => {
 
 			it( 'for DELETE requests', () => {
 				sinon.stub( httpTransport, 'delete' );
-				var site = new WPAPI({
+				const site = new WPAPI({
 					endpoint: 'http://some.url.com/wp-json'
 				});
-				var query = site.root( 'a-resource' );
-				var data = {
+				const query = site.root( 'a-resource' );
+				const data = {
 					force: true
 				};
 				query.delete( data );
@@ -150,14 +147,14 @@ describe( 'WPAPI', () => {
 
 			it( 'can be set for an individual HTTP action', () => {
 				sinon.stub( httpTransport, 'get' );
-				var customGet = sinon.stub();
-				var site = new WPAPI({
+				const customGet = sinon.stub();
+				const site = new WPAPI({
 					endpoint: 'http://some.url.com/wp-json',
 					transport: {
 						get: customGet
 					}
 				});
-				var query = site.root( '' );
+				const query = site.root( '' );
 				query.get();
 				expect( httpTransport.get ).not.to.have.been.called;
 				expect( customGet ).to.have.been.calledWith( query );
@@ -166,16 +163,16 @@ describe( 'WPAPI', () => {
 
 			it( 'can extend the default HTTP transport methods', () => {
 				sinon.stub( httpTransport, 'get' );
-				var customGet = sinon.spy(function() {
+				const customGet = sinon.spy(function() {
 					WPAPI.transport.get.apply( null, arguments );
 				});
-				var site = new WPAPI({
+				const site = new WPAPI({
 					endpoint: 'http://some.url.com/wp-json',
 					transport: {
 						get: customGet
 					}
 				});
-				var query = site.root( '' );
+				const query = site.root( '' );
 				query.get();
 				expect( customGet ).to.have.been.calledWith( query );
 				expect( httpTransport.get ).to.have.been.calledWith( query );
@@ -185,17 +182,17 @@ describe( 'WPAPI', () => {
 			it( 'can be set for multiple HTTP actions', () => {
 				sinon.stub( httpTransport, 'post' );
 				sinon.stub( httpTransport, 'put' );
-				var customPost = sinon.stub();
-				var customPut = sinon.stub();
-				var site = new WPAPI({
+				const customPost = sinon.stub();
+				const customPut = sinon.stub();
+				const site = new WPAPI({
 					endpoint: 'http://some.url.com/wp-json',
 					transport: {
 						post: customPost,
 						put: customPut
 					}
 				});
-				var query = site.root( 'a-resource' );
-				var data = {};
+				const query = site.root( 'a-resource' );
+				const data = {};
 				query.create( data );
 				expect( httpTransport.post ).not.to.have.been.called;
 				expect( customPost ).to.have.been.calledWith( query, data );
@@ -208,18 +205,18 @@ describe( 'WPAPI', () => {
 
 			it( 'only apply to a specific WPAPI instance', () => {
 				sinon.stub( httpTransport, 'get' );
-				var customGet = sinon.stub();
-				var site = new WPAPI({
+				const customGet = sinon.stub();
+				const site = new WPAPI({
 					endpoint: 'http://some.url.com/wp-json',
 					transport: {
 						get: customGet
 					}
 				});
-				var site2 = new WPAPI({
+				const site2 = new WPAPI({
 					endpoint: 'http://some.url.com/wp-json'
 				});
 				expect( site ).not.to.equal( site2 );
-				var query = site2.root( '' );
+				const query = site2.root( '' );
 				query.get();
 				expect( httpTransport.get ).to.have.been.calledWith( query );
 				expect( customGet ).not.to.have.been.called;
@@ -264,13 +261,13 @@ describe( 'WPAPI', () => {
 		});
 
 		it( 'creates and returns a new WPAPI instance', () => {
-			var site = WPAPI.site( 'endpoint/url' );
+			const site = WPAPI.site( 'endpoint/url' );
 			expect( site instanceof WPAPI ).to.be.true;
 			expect( site._options.endpoint ).to.equal( 'endpoint/url/' );
 		});
 
 		it( 'can take a routes configuration object to bootstrap the returned instance', () => {
-			var site = WPAPI.site( 'endpoint/url', {
+			const site = WPAPI.site( 'endpoint/url', {
 				'/wp/v2/posts': {
 					namespace: 'wp/v2',
 					methods: [ 'GET' ],
@@ -293,8 +290,8 @@ describe( 'WPAPI', () => {
 	});
 
 	describe( '.discover() constructor method', () => {
-		var responses;
-		var sinonSandbox;
+		let responses;
+		let sinonSandbox;
 
 		beforeEach( () => {
 			responses = {
@@ -351,10 +348,10 @@ describe( 'WPAPI', () => {
 		});
 
 		it( 'throws an error if no API endpoint can be discovered', () => {
-			var url = 'http://we.made.it/to/mozarts/house';
+			const url = 'http://we.made.it/to/mozarts/house';
 			httpTransport.head.onFirstCall().returns( Promise.reject() );
 			httpTransport.get.onFirstCall().returns( Promise.reject( 'Some error' ) );
-			var prom = WPAPI.discover( url )
+			const prom = WPAPI.discover( url )
 				.catch(function( err ) {
 					expect( global.console.error ).to.have.been.calledWith( 'Some error' );
 					expect( err.message ).to.equal( 'Autodiscovery failed' );
@@ -364,10 +361,10 @@ describe( 'WPAPI', () => {
 		});
 
 		it( 'discovers the API root with a HEAD request', () => {
-			var url = 'http://mozarts.house';
+			const url = 'http://mozarts.house';
 			httpTransport.head.returns( Promise.resolve( responses.head.withLink ) );
 			httpTransport.get.returns( Promise.resolve( responses.apiRoot ) );
-			var prom = WPAPI.discover( url )
+			const prom = WPAPI.discover( url )
 				.then(function( result ) {
 					expect( result ).to.be.an.instanceOf( WPAPI );
 					expect( httpTransport.head.calledOnce ).to.equal( true );
@@ -379,9 +376,9 @@ describe( 'WPAPI', () => {
 		});
 
 		it( 'throws an error if HEAD succeeds but no link is present', () => {
-			var url = 'http://we.made.it/to/mozarts/house';
+			const url = 'http://we.made.it/to/mozarts/house';
 			httpTransport.head.onFirstCall().returns( Promise.resolve( responses.head.withoutLink ) );
-			var prom = WPAPI.discover( url )
+			const prom = WPAPI.discover( url )
 				.catch(function( err ) {
 					expect( global.console.error ).to.have.been
 						.calledWith( new Error( 'No header link found with rel="https://api.w.org/"' ) );
@@ -392,11 +389,11 @@ describe( 'WPAPI', () => {
 		});
 
 		it( 'retries the initial site request as a GET if HEAD fails', () => {
-			var url = 'http://mozarts.house';
+			const url = 'http://mozarts.house';
 			httpTransport.head.returns( Promise.reject() );
 			httpTransport.get.onFirstCall().returns( Promise.resolve( responses.get.withLink ) );
 			httpTransport.get.onSecondCall().returns( Promise.resolve( responses.apiRoot ) );
-			var prom = WPAPI.discover( url )
+			const prom = WPAPI.discover( url )
 				.then(function( result ) {
 					expect( result ).to.be.an.instanceOf( WPAPI );
 					expect( httpTransport.head.calledOnce ).to.equal( true );
@@ -408,10 +405,10 @@ describe( 'WPAPI', () => {
 		});
 
 		it( 'throws an error if GET retry succeeds but no link is present', () => {
-			var url = 'http://we.made.it/to/mozarts/house';
+			const url = 'http://we.made.it/to/mozarts/house';
 			httpTransport.head.returns( Promise.reject() );
 			httpTransport.get.onFirstCall().returns( Promise.resolve( responses.get.withoutLink ) );
-			var prom = WPAPI.discover( url )
+			const prom = WPAPI.discover( url )
 				.catch(function( err ) {
 					expect( global.console.error ).to.have.been
 						.calledWith( new Error( 'No header link found with rel="https://api.w.org/"' ) );
@@ -422,11 +419,11 @@ describe( 'WPAPI', () => {
 		});
 
 		it( 'returns WPAPI instance bound to discovered root even when route request errors', () => {
-			var url = 'http://mozarts.house';
+			const url = 'http://mozarts.house';
 			httpTransport.head.returns( Promise.reject() );
 			httpTransport.get.onFirstCall().returns( Promise.resolve( responses.get.withLink ) );
 			httpTransport.get.onSecondCall().returns( Promise.reject( 'Some error' ) );
-			var prom = WPAPI.discover( url )
+			const prom = WPAPI.discover( url )
 				.then(function( result ) {
 					expect( result ).to.be.an.instanceOf( WPAPI );
 					expect( httpTransport.head.calledOnce ).to.equal( true );
@@ -451,7 +448,7 @@ describe( 'WPAPI', () => {
 			});
 
 			it( 'returns a namespace object with relevant endpoint handler methods', () => {
-				var wpV2 = site.namespace( 'wp/v2' );
+				const wpV2 = site.namespace( 'wp/v2' );
 				// Spot check
 				expect( wpV2 ).to.be.an( 'object' );
 				expect( wpV2 ).to.have.property( 'posts' );
@@ -465,7 +462,7 @@ describe( 'WPAPI', () => {
 					username: 'u',
 					password: 'p'
 				});
-				var pages = site.namespace( 'wp/v2' ).pages();
+				const pages = site.namespace( 'wp/v2' ).pages();
 				expect( pages._options ).to.be.an( 'object' );
 				expect( pages._options ).to.have.property( 'username' );
 				expect( pages._options.username ).to.equal( 'u' );
@@ -478,8 +475,8 @@ describe( 'WPAPI', () => {
 					username: 'u',
 					password: 'p'
 				});
-				var wpV2 = site.namespace( 'wp/v2' );
-				var pages = wpV2.pages();
+				const wpV2 = site.namespace( 'wp/v2' );
+				const pages = wpV2.pages();
 				expect( pages._options ).to.be.an( 'object' );
 				expect( pages._options ).to.have.property( 'username' );
 				expect( pages._options.username ).to.equal( 'u' );
@@ -547,18 +544,18 @@ describe( 'WPAPI', () => {
 			});
 
 			it( 'properly assigns setter methods for detected path parts', () => {
-				var thingHandler = site.customendpoint();
+				const thingHandler = site.customendpoint();
 				expect( thingHandler ).to.have.property( 'thing' );
 				expect( thingHandler.thing ).to.be.a( 'function' );
 				expect( thingHandler.thing( 'foobar' ).toString() ).to.equal( 'endpoint/url/wp/v2/customendpoint/foobar' );
 			});
 
 			it( 'assigns any mixins for detected GET arguments for custom namespace handlers', () => {
-				var authorsHandler = site.namespace( 'myplugin/v1' ).authors();
+				const authorsHandler = site.namespace( 'myplugin/v1' ).authors();
 				expect( authorsHandler ).to.have.property( 'name' );
 				expect( authorsHandler ).not.to.have.ownProperty( 'name' );
 				expect( authorsHandler.name ).to.be.a( 'function' );
-				var customEndpoint = site.customendpoint();
+				const customEndpoint = site.customendpoint();
 				expect( customEndpoint ).to.have.property( 'parent' );
 				expect( customEndpoint ).not.to.have.ownProperty( 'parent' );
 				expect( customEndpoint.parent ).to.be.a( 'function' );
@@ -588,12 +585,12 @@ describe( 'WPAPI', () => {
 
 			it( 'sets transport methods on the instance', () => {
 				sinon.stub( httpTransport, 'get' );
-				var customGet = sinon.stub();
+				const customGet = sinon.stub();
 				site.transport({
 					get: customGet
 				});
 				function cb() {}
-				var query = site.root( '' );
+				const query = site.root( '' );
 				query.get( cb );
 				expect( httpTransport.get ).not.to.have.been.called;
 				expect( customGet ).to.have.been.calledWith( query, cb );
@@ -601,12 +598,12 @@ describe( 'WPAPI', () => {
 			});
 
 			it( 'does not impact or overwrite unspecified transport methods', () => {
-				var originalMethods = Object.assign( {}, site._options.transport );
+				const originalMethods = Object.assign( {}, site._options.transport );
 				site.transport({
 					get: function() {},
 					put: function() {}
 				});
-				var newMethods = Object.assign( {}, site._options.transport );
+				const newMethods = Object.assign( {}, site._options.transport );
 				expect( newMethods.delete ).to.equal( originalMethods.delete );
 				expect( newMethods.post ).to.equal( originalMethods.post );
 
@@ -624,23 +621,7 @@ describe( 'WPAPI', () => {
 			});
 
 			it( 'creates a basic WPRequest object bound to the provided URL', () => {
-				var request = site.url( 'http://some.arbitrary.url' );
-				expect( request instanceof WPRequest ).to.be.true;
-				expect( request._options.endpoint ).to.equal( 'http://some.arbitrary.url' );
-			});
-
-			it( 'maps requests directly onto the provided URL', () => {
-				var request = site.url( 'http://some.url.com/wp-json?filter[name]=some-slug' );
-				var path = request.toString();
-				expect( path ).to.equal( 'http://some.url.com/wp-json?filter[name]=some-slug' );
-			});
-
-			it( 'inherits whitelisted non-endpoint options from the parent WPAPI instance', () => {
-				var site = new WPAPI({
-					endpoint: 'http://website.com/',
-					identifier: 'some unique value'
-				});
-				var request = site.url( 'http://new-endpoint.com/' );
+				const request = site.url( 'http://new-endpoint.com/' );
 				expect( request._options ).to.have.property( 'endpoint' );
 				expect( request._options.endpoint ).to.equal( 'http://new-endpoint.com/' );
 				expect( request._options ).not.to.have.property( 'identifier' );
@@ -660,25 +641,15 @@ describe( 'WPAPI', () => {
 			});
 
 			it( 'creates a get request against the root endpoint', () => {
-				var request = site.root();
-				expect( request.toString() ).to.equal( 'http://my.site.com/wp-json/' );
-			});
-
-			it( 'takes a "path" argument to query a root-relative path', () => {
-				var request = site.root( 'custom/endpoint' );
-				expect( request.toString() ).to.equal( 'http://my.site.com/wp-json/custom/endpoint' );
-			});
-
-			it( 'creates a WPRequest object', () => {
-				var pathRequest = site.root( 'some/collection/endpoint' );
+				const pathRequest = site.root( 'some/collection/endpoint' );
 				expect( pathRequest instanceof WPRequest ).to.be.true;
 			});
 
 			it( 'inherits options from the parent WPAPI instance', () => {
-				var site = new WPAPI({
+				const site = new WPAPI({
 					endpoint: 'http://cat.website.com/'
 				});
-				var request = site.root( 'custom-path' );
+				const request = site.root( 'custom-path' );
 				expect( request._options ).to.have.property( 'endpoint' );
 				expect( request._options.endpoint ).to.equal( 'http://cat.website.com/' );
 			});
@@ -759,7 +730,7 @@ describe( 'WPAPI', () => {
 					username: 'user',
 					password: 'pass'
 				});
-				var req = site.root( '' );
+				const req = site.root( '' );
 				expect( req ).to.have.property( '_options' );
 				expect( req._options ).to.be.an( 'object' );
 				expect( req._options ).to.have.property( 'username' );
@@ -815,7 +786,7 @@ describe( 'WPAPI', () => {
 					'Accept-Language': 'en-IL',
 					Authorization: 'Bearer chicagostylepizza'
 				});
-				var req = site.root( '' );
+				const req = site.root( '' );
 				expect( req ).to.have.property( '_options' );
 				expect( req._options ).to.be.an( 'object' );
 				expect( req._options ).to.have.property( 'headers' );

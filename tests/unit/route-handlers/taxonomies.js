@@ -1,12 +1,12 @@
 'use strict';
-var expect = require( 'chai' ).expect;
+const { expect } = require( 'chai' );
 
-var WPAPI = require( '../../../wpapi' );
-var WPRequest = require( '../../../lib/constructors/wp-request' );
+const WPAPI = require( '../../../wpapi' );
+const WPRequest = require( '../../../lib/constructors/wp-request' );
 
 describe( 'wp.taxonomies', () => {
-	var site;
-	var taxonomies;
+	let site;
+	let taxonomies;
 
 	beforeEach( () => {
 		site = new WPAPI({
@@ -63,12 +63,12 @@ describe( 'wp.taxonomies', () => {
 	describe( 'URL Generation', () => {
 
 		it( 'should create the URL for retrieving all taxonomies', () => {
-			var url = taxonomies.toString();
+			const url = taxonomies.toString();
 			expect( url ).to.equal( '/wp-json/wp/v2/taxonomies' );
 		});
 
 		it( 'should create the URL for retrieving a specific taxonomy', () => {
-			var url = taxonomies.taxonomy( 'category' ).toString();
+			const url = taxonomies.taxonomy( 'category' ).toString();
 			expect( url ).to.equal( '/wp-json/wp/v2/taxonomies/category' );
 		});
 

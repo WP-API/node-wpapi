@@ -1,12 +1,12 @@
 'use strict';
-var expect = require( 'chai' ).expect;
+const { expect } = require( 'chai' );
 
-var WPAPI = require( '../../../wpapi' );
-var WPRequest = require( '../../../lib/constructors/wp-request' );
+const WPAPI = require( '../../../wpapi' );
+const WPRequest = require( '../../../lib/constructors/wp-request' );
 
 describe( 'wp.media', () => {
-	var site;
-	var media;
+	let site;
+	let media;
 
 	beforeEach( () => {
 		site = new WPAPI({
@@ -64,7 +64,7 @@ describe( 'wp.media', () => {
 
 		it( 'should update the supported methods', () => {
 			media.id( 8 );
-			var _supportedMethods = media._supportedMethods.sort().join( '|' );
+			const _supportedMethods = media._supportedMethods.sort().join( '|' );
 			expect( _supportedMethods ).to.equal( 'delete|get|head|patch|post|put' );
 		});
 
@@ -97,17 +97,17 @@ describe( 'wp.media', () => {
 	describe( 'url generation', () => {
 
 		it( 'should create the URL for the media collection', () => {
-			var uri = media.toString();
+			const uri = media.toString();
 			expect( uri ).to.equal( '/wp-json/wp/v2/media' );
 		});
 
 		it( 'can paginate the media collection responses', () => {
-			var uri = media.page( 4 ).toString();
+			const uri = media.page( 4 ).toString();
 			expect( uri ).to.equal( '/wp-json/wp/v2/media?page=4' );
 		});
 
 		it( 'should create the URL for a specific media object', () => {
-			var uri = media.id( 1492 ).toString();
+			const uri = media.id( 1492 ).toString();
 			expect( uri ).to.equal( '/wp-json/wp/v2/media/1492' );
 		});
 

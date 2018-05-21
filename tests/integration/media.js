@@ -1,31 +1,29 @@
 'use strict';
-var chai = require( 'chai' );
+const chai = require( 'chai' );
 // Variable to use as our "success token" in promise assertions
-var SUCCESS = 'success';
+const SUCCESS = 'success';
 // Chai-as-promised and the `expect( prom ).to.eventually.equal( SUCCESS ) is
 // used to ensure that the assertions running within the promise chains are
 // actually run.
 chai.use( require( 'chai-as-promised' ) );
-var expect = chai.expect;
+const expect = chai.expect;
 
-/*jshint -W079 */// Suppress warning about redefiniton of `Promise`
-var Promise = require( 'es6-promise' ).Promise;
-var path = require( 'path' );
-var _unique = require( 'lodash.uniq' );
-var objectReduce = require( '../../lib/util/object-reduce' );
-var httpTestUtils = require( './helpers/http-test-utils' );
+const path = require( 'path' );
+const _unique = require( 'lodash.uniq' );
+const objectReduce = require( '../../lib/util/object-reduce' );
+const httpTestUtils = require( './helpers/http-test-utils' );
 
-var WPAPI = require( '../../' );
-var WPRequest = require( '../../lib/constructors/wp-request.js' );
+const WPAPI = require( '../../' );
+const WPRequest = require( '../../lib/constructors/wp-request.js' );
 
 // Inspecting the titles of the returned posts arrays is an easy way to
 // validate that the right page of results was returned
-var getTitles = require( './helpers/get-rendered-prop' ).bind( null, 'title' );
-var credentials = require( './helpers/constants' ).credentials;
+const getTitles = require( './helpers/get-rendered-prop' ).bind( null, 'title' );
+const credentials = require( './helpers/constants' ).credentials;
 
-var filePath = path.join( __dirname, 'assets/emilygarfield-untitled.jpg' );
+const filePath = path.join( __dirname, 'assets/emilygarfield-untitled.jpg' );
 
-var expectedResults = {
+const expectedResults = {
 	titles: {
 		page1: [
 			'spectacles',
@@ -65,8 +63,8 @@ var expectedResults = {
 };
 
 describe( 'integration: media()', () => {
-	var wp;
-	var authenticated;
+	let wp;
+	let authenticated;
 
 	beforeEach( () => {
 		wp = new WPAPI({
@@ -78,7 +76,7 @@ describe( 'integration: media()', () => {
 	});
 
 	it( 'an be used to retrieve a list of media items', () => {
-		var prom = wp.media()
+		const prom = wp.media()
 			.get()
 			.then( ( media ) => {
 				expect( media ).to.be.an( 'array' );
@@ -89,7 +87,7 @@ describe( 'integration: media()', () => {
 	});
 
 	it( 'fetches the 10 most recent media by default', () => {
-		var prom = wp.media()
+		const prom = wp.media()
 			.get()
 			.then( ( media ) => {
 				expect( getTitles( media ) ).to.deep.equal( expectedResults.titles.page1 );
@@ -101,7 +99,7 @@ describe( 'integration: media()', () => {
 	describe( 'paging properties', () => {
 
 		it( 'are exposed as _paging on the response array', () => {
-			var prom = wp.media()
+			const prom = wp.media()
 				.get()
 				.then( ( media ) => {
 					expect( media ).to.have.property( '_paging' );
@@ -112,7 +110,7 @@ describe( 'integration: media()', () => {
 		});
 
 		it( 'include the total number of media: use .headers() for coverage reasons', () => {
-			var prom = wp.media()
+			const prom = wp.media()
 				.headers()
 				.then( ( postHeadersResponse ) => {
 					expect( postHeadersResponse ).to.have.property( 'x-wp-total' );
@@ -123,7 +121,7 @@ describe( 'integration: media()', () => {
 		});
 
 		it( 'include the total number of pages available', () => {
-			var prom = wp.media()
+			const prom = wp.media()
 				.get()
 				.then( ( media ) => {
 					expect( media._paging ).to.have.property( 'totalPages' );
@@ -134,7 +132,7 @@ describe( 'integration: media()', () => {
 		});
 
 		it( 'provides a bound WPRequest for the next page as .next', () => {
-			var prom = wp.media()
+			const prom = wp.media()
 				.get()
 				.then( ( media ) => {
 					expect( media._paging ).to.have.property( 'next' );
@@ -156,7 +154,7 @@ describe( 'integration: media()', () => {
 		});
 
 		it( 'allows access to the next page of results via .next', () => {
-			var prom = wp.media()
+			const prom = wp.media()
 				.get()
 				.then( ( media ) => {
 					return media._paging.next
@@ -172,7 +170,7 @@ describe( 'integration: media()', () => {
 		});
 
 		it( 'provides a bound WPRequest for the previous page as .prev', () => {
-			var prom = wp.media()
+			const prom = wp.media()
 				.get()
 				.then( ( media ) => {
 					expect( media._paging ).not.to.have.property( 'prev' );
@@ -191,7 +189,7 @@ describe( 'integration: media()', () => {
 		});
 
 		it( 'allows access to the previous page of results via .prev', () => {
-			var prom = wp.media()
+			const prom = wp.media()
 				.page( 2 )
 				.get()
 				.then( ( media ) => {
@@ -213,7 +211,7 @@ describe( 'integration: media()', () => {
 	describe( 'without authentication', () => {
 
 		it( 'cannot POST', () => {
-			var prom = wp.media()
+			const prom = wp.media()
 				.file( filePath )
 				.create({
 					title: 'Media File',
@@ -231,11 +229,11 @@ describe( 'integration: media()', () => {
 		});
 
 		it( 'cannot PUT', () => {
-			var prom = wp.media()
+			const prom = wp.media()
 				.perPage( 1 )
 				.get()
 				.then( ( media ) => {
-					var id = media[ 0 ].id;
+					const id = media[ 0 ].id;
 					return wp.media()
 						.id( id )
 						.update({
@@ -254,11 +252,11 @@ describe( 'integration: media()', () => {
 		});
 
 		it( 'cannot DELETE', () => {
-			var prom = wp.media()
+			const prom = wp.media()
 				.perPage( 1 )
 				.get()
 				.then( ( media ) => {
-					var id = media[ 0 ].id;
+					const id = media[ 0 ].id;
 					return wp.media().id( id ).delete({
 						force: true
 					});
@@ -277,11 +275,11 @@ describe( 'integration: media()', () => {
 	});
 
 	it( 'can create, update & delete media when authenticated', () => {
-		var id;
-		var imageUrl;
+		let id;
+		let imageUrl;
 
 		// CREATE
-		var prom = authenticated.media()
+		const prom = authenticated.media()
 			.file( filePath, 'ehg-conduits.jpg' )
 			.create({
 				title: 'Untitled',
@@ -313,8 +311,8 @@ describe( 'integration: media()', () => {
 			// READ
 			// Validate thumbnails were created
 			.then( ( result ) => {
-				var sizes = result.media_details.sizes;
-				var sizeURLs = objectReduce( sizes, ( urls, size ) => urls.concat( size.source_url ), [] );
+				const sizes = result.media_details.sizes;
+				const sizeURLs = objectReduce( sizes, ( urls, size ) => urls.concat( size.source_url ), [] );
 
 				// Expect all sizes to have different URLs
 				expect( Object.keys( sizes ).length ).to.equal( _unique( sizeURLs ).length );

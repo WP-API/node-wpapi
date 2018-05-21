@@ -1,12 +1,12 @@
 'use strict';
-var expect = require( 'chai' ).expect;
+const { expect } = require( 'chai' );
 
-var autodiscovery = require( '../../../lib/autodiscovery' );
+const autodiscovery = require( '../../../lib/autodiscovery' );
 
 describe( 'autodiscovery helper methods', () => {
 
 	describe( '.locateAPIRootHeader()', () => {
-		var locateAPIRootHeader;
+		let locateAPIRootHeader;
 
 		beforeEach( () => {
 			locateAPIRootHeader = autodiscovery.locateAPIRootHeader;
@@ -25,7 +25,7 @@ describe( 'autodiscovery helper methods', () => {
 		});
 
 		it( 'parsed and returns the header with the rel for the REST API endpoint', () => {
-			var result = locateAPIRootHeader({
+			const result = locateAPIRootHeader({
 				headers: {
 					link: '<http://wpapi.loc/wp-json/>; rel="https://api.w.org/"'
 				}

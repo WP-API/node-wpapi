@@ -1,5 +1,5 @@
 'use strict';
-var MockAgent = function() {};
+const MockAgent = function() {};
 
 function noop() {}
 

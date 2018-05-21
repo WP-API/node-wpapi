@@ -1,12 +1,12 @@
 'use strict';
-var expect = require( 'chai' ).expect;
+const { expect } = require( 'chai' );
 
-var WPAPI = require( '../../../wpapi' );
-var WPRequest = require( '../../../lib/constructors/wp-request' );
+const WPAPI = require( '../../../wpapi' );
+const WPRequest = require( '../../../lib/constructors/wp-request' );
 
 describe( 'wp.posts', () => {
-	var site;
-	var posts;
+	let site;
+	let posts;
 
 	beforeEach( () => {
 		site = new WPAPI({
@@ -68,7 +68,7 @@ describe( 'wp.posts', () => {
 
 			it( 'should update the supported methods when setting ID', () => {
 				posts.id( 8 );
-				var _supportedMethods = posts._supportedMethods.sort().join( '|' );
+				const _supportedMethods = posts._supportedMethods.sort().join( '|' );
 				expect( _supportedMethods ).to.equal( 'delete|get|head|patch|post|put' );
 			});
 
@@ -97,12 +97,12 @@ describe( 'wp.posts', () => {
 	describe( 'URL Generation', () => {
 
 		it( 'should create the URL for retrieving all posts', () => {
-			var path = posts.toString();
+			const path = posts.toString();
 			expect( path ).to.equal( '/wp-json/wp/v2/posts' );
 		});
 
 		it( 'should create the URL for retrieving a specific post', () => {
-			var path = posts.id( 1337 ).toString();
+			const path = posts.id( 1337 ).toString();
 			expect( path ).to.equal( '/wp-json/wp/v2/posts/1337' );
 		});
 
@@ -135,18 +135,18 @@ describe( 'wp.posts', () => {
 		});
 
 		it( 'should create the URL for retrieving the revisions for a specific post', () => {
-			var path = posts.id( 1337 ).revisions().toString();
+			const path = posts.id( 1337 ).revisions().toString();
 			expect( path ).to.equal( '/wp-json/wp/v2/posts/1337/revisions' );
 		});
 
 		it( 'should create the URL for retrieving a specific revision item', () => {
-			var path = posts.id( 1337 ).revisions( 2001 ).toString();
+			const path = posts.id( 1337 ).revisions( 2001 ).toString();
 			expect( path ).to.equal( '/wp-json/wp/v2/posts/1337/revisions/2001' );
 		});
 
 		it( 'should restrict path changes to a single instance', () => {
 			posts.id( 2 );
-			var newPosts = site.posts().id( 3 ).revisions();
+			const newPosts = site.posts().id( 3 ).revisions();
 			expect( posts.toString() ).to.equal( '/wp-json/wp/v2/posts/2' );
 			expect( newPosts.toString() ).to.equal( '/wp-json/wp/v2/posts/3/revisions' );
 		});
