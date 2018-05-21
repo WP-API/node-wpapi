@@ -12,11 +12,11 @@ var WPAPI = require( '../../' );
 
 var credentials = require( './helpers/constants' ).credentials;
 
-describe( 'integration: settings()', function() {
+describe( 'integration: settings()', () => {
 	var wp;
 	var authenticated;
 
-	beforeEach(function() {
+	beforeEach( () => {
 		wp = new WPAPI({
 			endpoint: 'http://wpapi.loc/wp-json'
 		});
@@ -25,23 +25,23 @@ describe( 'integration: settings()', function() {
 		}).auth( credentials );
 	});
 
-	it( 'cannot be used to retrieve site settings unless authenticated', function() {
+	it( 'cannot be used to retrieve site settings unless authenticated', () => {
 		var prom = wp.settings()
 			.get()
-			.catch(function( err ) {
+			.catch( ( err ) => {
 				expect( err.code ).to.equal( 'rest_forbidden' );
 				expect( err.data ).to.deep.equal({
-					status: 403
+					status: 401
 				});
 				return SUCCESS;
 			});
 		return expect( prom ).to.eventually.equal( SUCCESS );
 	});
 
-	it( 'can be used to retrieve a list of site settings when authenticated', function() {
+	it( 'can be used to retrieve a list of site settings when authenticated', () => {
 		var prom = authenticated.settings()
 			.get()
-			.then(function( settings ) {
+			.then( ( settings ) => {
 				expect( settings ).to.be.an( 'object' );
 
 				// Validate existence of all expected keys
@@ -74,21 +74,19 @@ describe( 'integration: settings()', function() {
 		return expect( prom ).to.eventually.equal( SUCCESS );
 	});
 
-	it( 'can be used to update settings', function() {
+	it( 'can be used to update settings', () => {
 		var prom = authenticated.settings()
 			.get()
-			.then(function( settings ) {
+			.then( ( settings ) => {
 				expect( settings.description ).to.equal( 'Just another WordPress site' );
 				return authenticated.settings()
 					.update({
 						description: 'It\'s amazing what you\'ll find face to face'
 					});
 			})
-			.then(function() {
-				// Initialize new request to see if changes persisted
-				return authenticated.settings().get();
-			})
-			.then(function( settings ) {
+			// Initialize new request to see if changes persisted
+			.then( () => authenticated.settings().get() )
+			.then( ( settings ) => {
 				expect( settings.description ).to.equal( 'It&#039;s amazing what you&#039;ll find face to face' );
 				// Reset to original value
 				return authenticated.settings()
@@ -96,11 +94,9 @@ describe( 'integration: settings()', function() {
 						description: 'Just another WordPress site'
 					});
 			})
-			.then(function() {
-				// Request one final time to validate value has been set back
-				return authenticated.settings().get();
-			})
-			.then(function( settings ) {
+			// Request one final time to validate value has been set back
+			.then( () => authenticated.settings().get() )
+			.then( ( settings ) => {
 				expect( settings.description ).to.equal( 'Just another WordPress site' );
 				return SUCCESS;
 			});

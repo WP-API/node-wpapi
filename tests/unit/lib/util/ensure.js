@@ -3,22 +3,22 @@ var expect = require( 'chai' ).expect;
 
 var ensure = require( '../../../../lib/util/ensure' );
 
-describe( 'ensure utility', function() {
+describe( 'ensure utility', () => {
 	var obj;
 
-	beforeEach(function() {
+	beforeEach( () => {
 		obj = {};
 	});
 
-	it( 'is defined', function() {
+	it( 'is defined', () => {
 		expect( ensure ).to.exist;
 	});
 
-	it( 'is a function', function() {
+	it( 'is a function', () => {
 		expect( ensure ).to.be.a( 'function' );
 	});
 
-	it( 'sets a default property value on an object', function() {
+	it( 'sets a default property value on an object', () => {
 		expect( obj ).not.to.have.property( 'foo' );
 		ensure( obj, 'foo', 'bar' );
 		expect( obj ).to.have.property( 'foo' );
@@ -26,7 +26,7 @@ describe( 'ensure utility', function() {
 		expect( obj.foo ).to.equal( 'bar' );
 	});
 
-	it( 'will not overwrite an existing value on an object', function() {
+	it( 'will not overwrite an existing value on an object', () => {
 		obj.foo = 'baz';
 		expect( obj ).to.have.property( 'foo' );
 		ensure( obj, 'foo', 'bar' );
@@ -35,7 +35,7 @@ describe( 'ensure utility', function() {
 		expect( obj.foo ).to.equal( 'baz' );
 	});
 
-	it( 'will not overwrite a falsy value on an object', function() {
+	it( 'will not overwrite a falsy value on an object', () => {
 		obj.foo = 0;
 		expect( obj ).to.have.property( 'foo' );
 		ensure( obj, 'foo', 'bar' );

@@ -64,11 +64,11 @@ var expectedResults = {
 	}
 };
 
-describe( 'integration: media()', function() {
+describe( 'integration: media()', () => {
 	var wp;
 	var authenticated;
 
-	beforeEach(function() {
+	beforeEach( () => {
 		wp = new WPAPI({
 			endpoint: 'http://wpapi.loc/wp-json'
 		});
@@ -77,10 +77,10 @@ describe( 'integration: media()', function() {
 		}).auth( credentials );
 	});
 
-	it( 'an be used to retrieve a list of media items', function() {
+	it( 'an be used to retrieve a list of media items', () => {
 		var prom = wp.media()
 			.get()
-			.then(function( media ) {
+			.then( ( media ) => {
 				expect( media ).to.be.an( 'array' );
 				expect( media.length ).to.equal( 10 );
 				return SUCCESS;
@@ -88,22 +88,22 @@ describe( 'integration: media()', function() {
 		return expect( prom ).to.eventually.equal( SUCCESS );
 	});
 
-	it( 'fetches the 10 most recent media by default', function() {
+	it( 'fetches the 10 most recent media by default', () => {
 		var prom = wp.media()
 			.get()
-			.then(function( media ) {
+			.then( ( media ) => {
 				expect( getTitles( media ) ).to.deep.equal( expectedResults.titles.page1 );
 				return SUCCESS;
 			});
 		return expect( prom ).to.eventually.equal( SUCCESS );
 	});
 
-	describe( 'paging properties', function() {
+	describe( 'paging properties', () => {
 
-		it( 'are exposed as _paging on the response array', function() {
+		it( 'are exposed as _paging on the response array', () => {
 			var prom = wp.media()
 				.get()
-				.then(function( media ) {
+				.then( ( media ) => {
 					expect( media ).to.have.property( '_paging' );
 					expect( media._paging ).to.be.an( 'object' );
 					return SUCCESS;
@@ -111,10 +111,10 @@ describe( 'integration: media()', function() {
 			return expect( prom ).to.eventually.equal( SUCCESS );
 		});
 
-		it( 'include the total number of media: use .headers() for coverage reasons', function() {
+		it( 'include the total number of media: use .headers() for coverage reasons', () => {
 			var prom = wp.media()
 				.headers()
-				.then(function( postHeadersResponse ) {
+				.then( ( postHeadersResponse ) => {
 					expect( postHeadersResponse ).to.have.property( 'x-wp-total' );
 					expect( postHeadersResponse[ 'x-wp-total' ] ).to.equal( '38' );
 					return SUCCESS;
@@ -122,10 +122,10 @@ describe( 'integration: media()', function() {
 			return expect( prom ).to.eventually.equal( SUCCESS );
 		});
 
-		it( 'include the total number of pages available', function() {
+		it( 'include the total number of pages available', () => {
 			var prom = wp.media()
 				.get()
-				.then(function( media ) {
+				.then( ( media ) => {
 					expect( media._paging ).to.have.property( 'totalPages' );
 					expect( media._paging.totalPages ).to.equal( '4' );
 					return SUCCESS;
@@ -133,10 +133,10 @@ describe( 'integration: media()', function() {
 			return expect( prom ).to.eventually.equal( SUCCESS );
 		});
 
-		it( 'provides a bound WPRequest for the next page as .next', function() {
+		it( 'provides a bound WPRequest for the next page as .next', () => {
 			var prom = wp.media()
 				.get()
-				.then(function( media ) {
+				.then( ( media ) => {
 					expect( media._paging ).to.have.property( 'next' );
 					expect( media._paging.next ).to.be.an( 'object' );
 					expect( media._paging.next ).to.be.an.instanceOf( WPRequest );
@@ -146,7 +146,7 @@ describe( 'integration: media()', function() {
 					return wp.media()
 						.page( media._paging.totalPages )
 						.get()
-						.then(function( media ) {
+						.then( ( media ) => {
 							expect( media._paging ).not.to.have.property( 'next' );
 							expect( getTitles( media ) ).to.deep.equal( expectedResults.titles.page4 );
 							return SUCCESS;
@@ -155,13 +155,13 @@ describe( 'integration: media()', function() {
 			return expect( prom ).to.eventually.equal( SUCCESS );
 		});
 
-		it( 'allows access to the next page of results via .next', function() {
+		it( 'allows access to the next page of results via .next', () => {
 			var prom = wp.media()
 				.get()
-				.then(function( media ) {
+				.then( ( media ) => {
 					return media._paging.next
 						.get()
-						.then(function( media ) {
+						.then( ( media ) => {
 							expect( media ).to.be.an( 'array' );
 							expect( media.length ).to.equal( 10 );
 							expect( getTitles( media ) ).to.deep.equal( expectedResults.titles.page2 );
@@ -171,14 +171,14 @@ describe( 'integration: media()', function() {
 			return expect( prom ).to.eventually.equal( SUCCESS );
 		});
 
-		it( 'provides a bound WPRequest for the previous page as .prev', function() {
+		it( 'provides a bound WPRequest for the previous page as .prev', () => {
 			var prom = wp.media()
 				.get()
-				.then(function( media ) {
+				.then( ( media ) => {
 					expect( media._paging ).not.to.have.property( 'prev' );
 					return media._paging.next
 						.get()
-						.then(function( media ) {
+						.then( ( media ) => {
 							expect( media._paging ).to.have.property( 'prev' );
 							expect( media._paging.prev ).to.be.an( 'object' );
 							expect( media._paging.prev ).to.be.an.instanceOf( WPRequest );
@@ -190,15 +190,15 @@ describe( 'integration: media()', function() {
 			return expect( prom ).to.eventually.equal( SUCCESS );
 		});
 
-		it( 'allows access to the previous page of results via .prev', function() {
+		it( 'allows access to the previous page of results via .prev', () => {
 			var prom = wp.media()
 				.page( 2 )
 				.get()
-				.then(function( media ) {
+				.then( ( media ) => {
 					expect( getTitles( media ) ).to.deep.equal( expectedResults.titles.page2 );
 					return media._paging.prev
 						.get()
-						.then(function( media ) {
+						.then( ( media ) => {
 							expect( media ).to.be.an( 'array' );
 							expect( media.length ).to.equal( 10 );
 							expect( getTitles( media ) ).to.deep.equal( expectedResults.titles.page1 );
@@ -210,16 +210,16 @@ describe( 'integration: media()', function() {
 
 	});
 
-	describe( 'without authentication', function() {
+	describe( 'without authentication', () => {
 
-		it( 'cannot POST', function() {
+		it( 'cannot POST', () => {
 			var prom = wp.media()
 				.file( filePath )
 				.create({
 					title: 'Media File',
 					content: 'Some Content'
 				})
-				.catch(function( err ) {
+				.catch( ( err ) => {
 					httpTestUtils.rethrowIfChaiError( err );
 					expect( err.code ).to.equal( 'rest_cannot_create' );
 					expect( err.data ).to.deep.equal({
@@ -230,11 +230,11 @@ describe( 'integration: media()', function() {
 			return expect( prom ).to.eventually.equal( SUCCESS );
 		});
 
-		it( 'cannot PUT', function() {
+		it( 'cannot PUT', () => {
 			var prom = wp.media()
 				.perPage( 1 )
 				.get()
-				.then(function( media ) {
+				.then( ( media ) => {
 					var id = media[ 0 ].id;
 					return wp.media()
 						.id( id )
@@ -242,7 +242,7 @@ describe( 'integration: media()', function() {
 							title: 'New Title'
 						});
 				})
-				.catch(function( err ) {
+				.catch( ( err ) => {
 					httpTestUtils.rethrowIfChaiError( err );
 					expect( err.code ).to.equal( 'rest_cannot_edit' );
 					expect( err.data ).to.deep.equal({
@@ -253,17 +253,17 @@ describe( 'integration: media()', function() {
 			return expect( prom ).to.eventually.equal( SUCCESS );
 		});
 
-		it( 'cannot DELETE', function() {
+		it( 'cannot DELETE', () => {
 			var prom = wp.media()
 				.perPage( 1 )
 				.get()
-				.then(function( media ) {
+				.then( ( media ) => {
 					var id = media[ 0 ].id;
 					return wp.media().id( id ).delete({
 						force: true
 					});
 				})
-				.catch(function( err ) {
+				.catch( ( err ) => {
 					httpTestUtils.rethrowIfChaiError( err );
 					expect( err.code ).to.equal( 'rest_cannot_delete' );
 					expect( err.data ).to.deep.equal({
@@ -276,7 +276,7 @@ describe( 'integration: media()', function() {
 
 	});
 
-	it( 'can create, update & delete media when authenticated', function() {
+	it( 'can create, update & delete media when authenticated', () => {
 		var id;
 		var imageUrl;
 
@@ -287,7 +287,7 @@ describe( 'integration: media()', function() {
 				title: 'Untitled',
 				caption: 'A painting from Emily Garfield\'s "Conduits" series'
 			})
-			.then(function( createdMedia ) {
+			.then( ( createdMedia ) => {
 				id = createdMedia.id;
 				imageUrl = createdMedia.source_url;
 				expect( createdMedia.title.rendered ).to.equal( 'Untitled' );
@@ -297,15 +297,14 @@ describe( 'integration: media()', function() {
 				expect( imageUrl ).to.match( /^http:\/\/wpapi.loc\/content\/uploads\/.*\/ehg-conduits.jpg$/ );
 			})
 			// UPDATE
-			.then(function() {
-				return authenticated.media()
-					.id( id )
-					.update({
-						title: 'Conduits Series',
-						alt_text: 'A photograph of an abstract painting by Emily Garfield'
-					});
-			})
-			.then(function( result ) {
+			.then( () => authenticated.media()
+				.id( id )
+				.update({
+					title: 'Conduits Series',
+					alt_text: 'A photograph of an abstract painting by Emily Garfield'
+				})
+			)
+			.then( ( result ) => {
 				expect( result.id ).to.equal( id );
 				expect( result.title.rendered ).to.equal( 'Conduits Series' );
 				expect( result.alt_text ).to.equal( 'A photograph of an abstract painting by Emily Garfield' );
@@ -313,32 +312,29 @@ describe( 'integration: media()', function() {
 			})
 			// READ
 			// Validate thumbnails were created
-			.then(function( result ) {
+			.then( ( result ) => {
 				var sizes = result.media_details.sizes;
-				var sizeURLs = objectReduce( sizes, function( urls, size ) {
-					return urls.concat( size.source_url );
-				}, [] );
+				var sizeURLs = objectReduce( sizes, ( urls, size ) => urls.concat( size.source_url ), [] );
+
 				// Expect all sizes to have different URLs
 				expect( Object.keys( sizes ).length ).to.equal( _unique( sizeURLs ).length );
-				return sizeURLs.reduce(function( previous, sizeURL ) {
-					return previous.then(function() {
-						return httpTestUtils.expectStatusCode( sizeURL, 200 );
-					});
-				}, Promise.resolve() );
+				return sizeURLs.reduce( ( previous, sizeURL ) => previous.then( () => (
+					httpTestUtils.expectStatusCode( sizeURL, 200 )
+				) ), Promise.resolve() );
 			})
 			// Validate image was uploaded correctly
-			.then(function() {
+			.then( () => {
 				return httpTestUtils.expectFileEqualsURL( filePath, imageUrl );
 			})
 			// DELETE
-			.then(function() {
+			.then( () => {
 				// Attempt to delete media: expect this to fail, since media does not
 				// support being trashed and can only be permanently removed
 				return authenticated.media()
 					.id( id )
 					.delete();
 			})
-			.catch(function( error ) {
+			.catch( ( error ) => {
 				httpTestUtils.rethrowIfChaiError( error );
 				expect( error.code ).to.equal( 'rest_trash_not_supported' );
 				expect( error.data ).to.deep.equal({
@@ -351,7 +347,7 @@ describe( 'integration: media()', function() {
 						force: true
 					});
 			})
-			.then(function( response ) {
+			.then( ( response ) => {
 				expect( response ).to.be.an( 'object' );
 				// DELETE action returns the media object as the .previous property
 				expect( response.previous ).to.be.an( 'object' );
@@ -359,7 +355,7 @@ describe( 'integration: media()', function() {
 				// Query for the media: expect this to fail, since it has been deleted
 				return wp.media().id( id );
 			})
-			.catch(function( error ) {
+			.catch( ( error ) => {
 				httpTestUtils.rethrowIfChaiError( error );
 				expect( error.code ).to.equal( 'rest_post_invalid_id' );
 				expect( error.data ).to.deep.equal({
@@ -367,10 +363,10 @@ describe( 'integration: media()', function() {
 				});
 			})
 			// Validate image file has been removed
-			.then(function() {
+			.then( () => {
 				return httpTestUtils.expectStatusCode( imageUrl, 404 );
 			})
-			.then(function() {
+			.then( () => {
 				return SUCCESS;
 			});
 		return expect( prom ).to.eventually.equal( SUCCESS );

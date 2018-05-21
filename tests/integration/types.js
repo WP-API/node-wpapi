@@ -10,19 +10,19 @@ var expect = chai.expect;
 
 var WPAPI = require( '../../' );
 
-describe( 'integration: types()', function() {
+describe( 'integration: types()', () => {
 	var wp;
 
-	beforeEach(function() {
+	beforeEach( () => {
 		wp = new WPAPI({
 			endpoint: 'http://wpapi.loc/wp-json'
 		});
 	});
 
-	it( 'can be used to retrieve a dictionary of registered types', function() {
+	it( 'can be used to retrieve a dictionary of registered types', () => {
 		var prom = wp.types()
 			.get()
-			.then(function( types ) {
+			.then( ( types ) => {
 				expect( types ).to.be.an( 'object' );
 				expect( types ).to.have.property( 'post' );
 				expect( types.post ).to.be.an( 'object' );
@@ -35,11 +35,11 @@ describe( 'integration: types()', function() {
 		return expect( prom ).to.eventually.equal( SUCCESS );
 	});
 
-	it( 'can be chained with a type() call to fetch the "post" type', function() {
+	it( 'can be chained with a type() call to fetch the "post" type', () => {
 		var prom = wp.types()
 			.type( 'post' )
 			.get()
-			.then(function( post ) {
+			.then( ( post ) => {
 				expect( post ).to.be.an( 'object' );
 				expect( post ).to.have.property( 'slug' );
 				expect( post.slug ).to.equal( 'post' );
@@ -50,11 +50,11 @@ describe( 'integration: types()', function() {
 		return expect( prom ).to.eventually.equal( SUCCESS );
 	});
 
-	it( 'can be chained with a type() call to fetch the page type', function() {
+	it( 'can be chained with a type() call to fetch the page type', () => {
 		var prom = wp.types()
 			.type( 'page' )
 			.get()
-			.then(function( page ) {
+			.then( ( page ) => {
 				expect( page ).to.be.an( 'object' );
 				expect( page ).to.have.property( 'slug' );
 				expect( page.slug ).to.equal( 'page' );

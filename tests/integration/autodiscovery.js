@@ -27,11 +27,11 @@ var expectedResults = {
 	firstPostTitle: 'Markup: HTML Tags and Formatting'
 };
 
-describe( 'integration: discover()', function() {
+describe( 'integration: discover()', () => {
 	var apiPromise;
 	var sinonSandbox;
 
-	beforeEach(function() {
+	beforeEach( () => {
 		apiPromise = WPAPI.discover( 'http://wpapi.loc' );
 		// Stub warn and error
 		sinonSandbox = sinon.sandbox.create();
@@ -39,18 +39,18 @@ describe( 'integration: discover()', function() {
 		sinonSandbox.stub( global.console, 'error' );
 	});
 
-	afterEach(function() {
+	afterEach( () => {
 		// Restore sandbox
 		sinonSandbox.restore();
 	});
 
-	it( 'returns a promise', function() {
+	it( 'returns a promise', () => {
 		expect( apiPromise ).to.be.an.instanceOf( Promise );
 	});
 
-	it( 'eventually returns a configured WP instance', function() {
+	it( 'eventually returns a configured WP instance', () => {
 		var prom = apiPromise
-			.then(function( result ) {
+			.then( ( result ) => {
 				expect( result ).to.be.an.instanceOf( WPAPI );
 				expect( result.namespace( 'wp/v2' ) ).to.be.an( 'object' );
 				expect( result.posts ).to.be.a( 'function' );
@@ -60,38 +60,32 @@ describe( 'integration: discover()', function() {
 		return expect( prom ).to.eventually.equal( SUCCESS );
 	});
 
-	it( 'auto-binds to the detected endpoint on the provided site', function() {
+	it( 'auto-binds to the detected endpoint on the provided site', () => {
 		var prom = apiPromise
-			.then(function( site ) {
+			.then( ( site ) => {
 				expect( site.posts().toString() ).to.equal( 'http://wpapi.loc/wp-json/wp/v2/posts' );
 				return SUCCESS;
 			});
 		return expect( prom ).to.eventually.equal( SUCCESS );
 	});
 
-	it( 'can correctly instantiate requests against the detected and bound site', function() {
+	it( 'can correctly instantiate requests against the detected and bound site', () => {
 		var prom = apiPromise
-			.then(function( site ) {
-				return site.posts();
-			})
-			.then(function( posts ) {
+			.then( ( site ) => site.posts() )
+			.then( ( posts ) => {
 				expect( getTitles( posts )[ 0 ] ).to.equal( expectedResults.firstPostTitle );
 				return SUCCESS;
 			});
 		return expect( prom ).to.eventually.equal( SUCCESS );
 	});
 
-	describe( 'can authenticate', function() {
+	describe( 'can authenticate', () => {
 
-		it( 'requests against the detected and bound site', function() {
+		it( 'requests against the detected and bound site', () => {
 			var prom = apiPromise
-				.then(function( site ) {
-					return site.auth( credentials );
-				})
-				.then(function( site ) {
-					return site.users().me();
-				})
-				.then(function( user ) {
+				.then( ( site ) => site.auth( credentials ) )
+				.then( ( site ) => site.users().me() )
+				.then( ( user ) => {
 					expect( user ).to.be.an( 'object' );
 					expect( user.slug ).to.equal( credentials.username );
 					return SUCCESS;
@@ -99,14 +93,10 @@ describe( 'integration: discover()', function() {
 			return expect( prom ).to.eventually.equal( SUCCESS );
 		});
 
-		it( 'one-off requests against the detected and bound site', function() {
+		it( 'one-off requests against the detected and bound site', () => {
 			var prom = apiPromise
-				.then(function( site ) {
-					return site.users()
-						.auth( credentials )
-						.me();
-				})
-				.then(function( user ) {
+				.then( ( site ) => site.users().auth( credentials ).me() )
+				.then( ( user ) => {
 					expect( user ).to.be.an( 'object' );
 					expect( user.slug ).to.equal( credentials.username );
 					return SUCCESS;

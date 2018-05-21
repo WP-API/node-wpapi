@@ -10,13 +10,13 @@ var expect = chai.expect;
 
 var WPAPI = require( '../../' );
 
-describe( 'error states:', function() {
+describe( 'error states:', () => {
 
-	it( 'invalid root endpoint causes a transport-level (superagent) 404 error', function() {
+	it( 'invalid root endpoint causes a transport-level (superagent) 404 error', () => {
 		var wp = WPAPI.site( 'http://wpapi.loc/wrong-root-endpoint' );
 		var prom = wp.posts()
 			.get()
-			.catch(function( err ) {
+			.catch( ( err ) => {
 				expect( err ).to.be.an.instanceOf( Error );
 				expect( err ).to.have.property( 'status' );
 				expect( err.status ).to.equal( 404 );
