@@ -12,7 +12,7 @@ describe( 'wp.users', () => {
 		site = new WPAPI( {
 			endpoint: '/wp-json',
 			username: 'foouser',
-			password: 'barpass'
+			password: 'barpass',
 		} );
 		users = site.users();
 	} );
@@ -21,7 +21,7 @@ describe( 'wp.users', () => {
 
 		it( 'should set any passed-in options', () => {
 			users = site.users( {
-				endpoint: '/custom-endpoint/'
+				endpoint: '/custom-endpoint/',
 			} );
 			expect( users._options.endpoint ).to.equal( '/custom-endpoint/' );
 		} );

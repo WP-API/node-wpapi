@@ -29,7 +29,7 @@ const expectedResults = {
 			'Page B',
 			'Page A',
 			'Blog',
-			'Front Page'
+			'Front Page',
 		],
 		page2: [
 			'Clearing Floats',
@@ -39,9 +39,9 @@ const expectedResults = {
 			'Level 3',
 			'Page with comments disabled',
 			'Page with comments',
-			'Lorem Ipsum'
-		]
-	}
+			'Lorem Ipsum',
+		],
+	},
 };
 
 describe( 'integration: pages()', () => {
@@ -49,7 +49,7 @@ describe( 'integration: pages()', () => {
 
 	beforeEach( () => {
 		wp = new WPAPI( {
-			endpoint: 'http://wpapi.loc/wp-json'
+			endpoint: 'http://wpapi.loc/wp-json',
 		} );
 	} );
 
@@ -134,7 +134,7 @@ describe( 'integration: pages()', () => {
 		it( 'allows access to the next page of results via .next', () => {
 			const prom = wp.pages()
 				.get()
-				.then( ( pages ) => pages._paging.next.get() )
+				.then( pages => pages._paging.next.get() )
 				.then( ( pages ) => {
 					expect( pages ).to.be.an( 'array' );
 					expect( pages.length ).to.equal( 8 );
@@ -192,7 +192,7 @@ describe( 'integration: pages()', () => {
 					.then( ( pages ) => {
 						expect( pages.length ).to.equal( 1 );
 						expect( getTitles( pages ) ).to.deep.equal( [
-							'Clearing Floats'
+							'Clearing Floats',
 						] );
 						return SUCCESS;
 					} );

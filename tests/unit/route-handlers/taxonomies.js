@@ -12,7 +12,7 @@ describe( 'wp.taxonomies', () => {
 		site = new WPAPI( {
 			endpoint: '/wp-json',
 			username: 'foouser',
-			password: 'barpass'
+			password: 'barpass',
 		} );
 		taxonomies = site.taxonomies();
 	} );
@@ -21,7 +21,7 @@ describe( 'wp.taxonomies', () => {
 
 		it( 'should set any passed-in options', () => {
 			taxonomies = site.taxonomies( {
-				endpoint: '/custom-endpoint/'
+				endpoint: '/custom-endpoint/',
 			} );
 			expect( taxonomies._options.endpoint ).to.equal( '/custom-endpoint/' );
 		} );

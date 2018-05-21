@@ -29,7 +29,7 @@ const expectedResults = {
 			'categories',
 			'chat',
 			'chattels',
-			'cienaga'
+			'cienaga',
 		],
 		page2: [
 			'claycold',
@@ -41,7 +41,7 @@ const expectedResults = {
 			'depo',
 			'dinarchy',
 			'doolie',
-			'dowork'
+			'dowork',
 		],
 		pageLast: [
 			'trackbacks',
@@ -53,9 +53,9 @@ const expectedResults = {
 			'withered brandnew',
 			'WordPress',
 			'wordpress.tv',
-			'xanthopsia'
-		]
-	}
+			'xanthopsia',
+		],
+	},
 };
 
 describe( 'integration: tags()', () => {
@@ -63,7 +63,7 @@ describe( 'integration: tags()', () => {
 
 	beforeEach( () => {
 		wp = new WPAPI( {
-			endpoint: 'http://wpapi.loc/wp-json'
+			endpoint: 'http://wpapi.loc/wp-json',
 		} );
 	} );
 
@@ -266,7 +266,7 @@ describe( 'integration: tags()', () => {
 				.then( ( tags ) => {
 					expect( tags ).to.be.an( 'array' );
 					expect( tags.length ).to.equal( 2 );
-					const slugs = tags.map( ( tag ) => tag.slug ).sort().join( ' ' );
+					const slugs = tags.map( tag => tag.slug ).sort().join( ' ' );
 					expect( slugs ).to.equal( 'post post-formats' );
 					return SUCCESS;
 				} );
@@ -279,7 +279,7 @@ describe( 'integration: tags()', () => {
 				.get()
 				// Iterating over response of search is the best we can do until
 				// filtering for taxonomy term collections is reinstated
-				.then( ( tags ) => tags.find( tag => tag.slug === 'post' ) )
+				.then( tags => tags.find( tag => tag.slug === 'post' ) )
 				.then( ( tag ) => {
 					expect( tag ).to.have.property( 'slug' );
 					expect( tag.slug ).to.equal( 'post' );

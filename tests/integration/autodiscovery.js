@@ -21,7 +21,7 @@ const credentials = require( './helpers/constants' ).credentials;
 // Define some arrays to use ensuring the returned data is what we expect
 // it to be (e.g. an array of the titles from posts on the first page)
 const expectedResults = {
-	firstPostTitle: 'Markup: HTML Tags and Formatting'
+	firstPostTitle: 'Markup: HTML Tags and Formatting',
 };
 
 describe( 'integration: discover()', () => {
@@ -69,7 +69,7 @@ describe( 'integration: discover()', () => {
 
 	it( 'can correctly instantiate requests against the detected and bound site', () => {
 		const prom = apiPromise
-			.then( ( site ) => site.posts() )
+			.then( site => site.posts() )
 			.then( ( posts ) => {
 				expect( getTitles( posts )[ 0 ] ).to.equal( expectedResults.firstPostTitle );
 				return SUCCESS;
@@ -81,8 +81,8 @@ describe( 'integration: discover()', () => {
 
 		it( 'requests against the detected and bound site', () => {
 			const prom = apiPromise
-				.then( ( site ) => site.auth( credentials ) )
-				.then( ( site ) => site.users().me() )
+				.then( site => site.auth( credentials ) )
+				.then( site => site.users().me() )
 				.then( ( user ) => {
 					expect( user ).to.be.an( 'object' );
 					expect( user.slug ).to.equal( credentials.username );
@@ -93,7 +93,7 @@ describe( 'integration: discover()', () => {
 
 		it( 'one-off requests against the detected and bound site', () => {
 			const prom = apiPromise
-				.then( ( site ) => site.users().auth( credentials ).me() )
+				.then( site => site.users().auth( credentials ).me() )
 				.then( ( user ) => {
 					expect( user ).to.be.an( 'object' );
 					expect( user.slug ).to.equal( credentials.username );

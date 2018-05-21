@@ -12,7 +12,7 @@ describe( 'wp.pages', () => {
 		site = new WPAPI( {
 			endpoint: '/wp-json',
 			username: 'foouser',
-			password: 'barpass'
+			password: 'barpass',
 		} );
 		pages = site.pages();
 	} );
@@ -21,7 +21,7 @@ describe( 'wp.pages', () => {
 
 		it( 'should set any passed-in options', () => {
 			pages = site.pages( {
-				endpoint: '/custom-endpoint/'
+				endpoint: '/custom-endpoint/',
 			} );
 			expect( pages._options.endpoint ).to.equal( '/custom-endpoint/' );
 		} );

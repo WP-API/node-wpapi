@@ -70,7 +70,7 @@ describe( 'route-tree utility', () => {
 					categories: {},
 					categories_exclude: {},
 					tags: {},
-					tags_exclude: {}
+					tags_exclude: {},
 				} );
 			} );
 

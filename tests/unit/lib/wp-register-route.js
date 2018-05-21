@@ -35,7 +35,7 @@ describe( 'wp.registerRoute', () => {
 	it( 'factory-generated handlers have all the expected WPRequest methods', () => {
 		const factory = registerRoute( 'a', 'b' );
 		const handler = factory( {
-			endpoint: '/'
+			endpoint: '/',
 		} );
 		// spot check
 		expect( handler.page ).to.be.a( 'function' );
@@ -55,7 +55,7 @@ describe( 'wp.registerRoute', () => {
 		beforeEach( () => {
 			const factory = registerRoute( 'myplugin/v1', '/author/(?P<id>\\d+)' );
 			handler = factory( {
-				endpoint: '/'
+				endpoint: '/',
 			} );
 		} );
 
@@ -91,7 +91,7 @@ describe( 'wp.registerRoute', () => {
 		it( 'permits setting path parts with forward slashes', () => {
 			const factory = registerRoute( 'jetpack/v4', '/plugin/(?P<plugin>[a-z\\/\\.\\-_]+)' );
 			const handler = factory( {
-				endpoint: '/'
+				endpoint: '/',
 			} );
 			expect( handler ).to.have.property( 'plugin' );
 			expect( handler.plugin ).to.be.a( 'function' );
@@ -105,7 +105,7 @@ describe( 'wp.registerRoute', () => {
 		it( 'will ignore the trailing /? (the ? is intended to mark the / as optional', () => {
 			const factory = registerRoute( 'plugins/v1', '/plugin/(?P<plugin_slug>[^/]+)/committers/?' );
 			const handler = factory( {
-				endpoint: '/'
+				endpoint: '/',
 			} );
 			expect( handler ).to.have.property( 'pluginSlug' );
 			expect( handler.pluginSlug ).to.be.a( 'function' );
@@ -127,7 +127,7 @@ describe( 'wp.registerRoute', () => {
 				);
 			} ).not.to.throw();
 			const handler = factory( {
-				endpoint: '/'
+				endpoint: '/',
 			} );
 			expect( handler ).to.have.property( 'market' );
 			expect( handler.market ).to.be.a( 'function' );
@@ -149,7 +149,7 @@ describe( 'wp.registerRoute', () => {
 		beforeEach( () => {
 			const factory = registerRoute( 'ns', '/a/(?P<snake_cased_path_setter>\\d+)' );
 			handler = factory( {
-				endpoint: '/'
+				endpoint: '/',
 			} );
 		} );
 
@@ -167,7 +167,7 @@ describe( 'wp.registerRoute', () => {
 		beforeEach( () => {
 			const factory = registerRoute( 'ns', '/a/(?P<kebab-cased-path-setter>\\d+)' );
 			handler = factory( {
-				endpoint: '/'
+				endpoint: '/',
 			} );
 		} );
 
@@ -185,7 +185,7 @@ describe( 'wp.registerRoute', () => {
 		beforeEach( () => {
 			const factory = registerRoute( 'ns', '/a/(?P<camelCasedPathSetter>\\d+)' );
 			handler = factory( {
-				endpoint: '/'
+				endpoint: '/',
 			} );
 		} );
 
@@ -203,7 +203,7 @@ describe( 'wp.registerRoute', () => {
 		beforeEach( () => {
 			const factory = registerRoute( 'ns', '/route/(?P<param>)' );
 			handler = factory( {
-				endpoint: '/'
+				endpoint: '/',
 			} );
 		} );
 
@@ -221,7 +221,7 @@ describe( 'wp.registerRoute', () => {
 		beforeEach( () => {
 			const factory = registerRoute( 'ns', '/resource/(?P<part1>\\d+)/(?P<part2>\\d+)' );
 			handler = factory( {
-				endpoint: '/'
+				endpoint: '/',
 			} );
 		} );
 
@@ -264,10 +264,10 @@ describe( 'wp.registerRoute', () => {
 
 		it( 'assign any mixins that match provided parameter names', () => {
 			const factory = registerRoute( 'a', '/b', {
-				params: [ 'filter', 'author' ]
+				params: [ 'filter', 'author' ],
 			} );
 			handler = factory( {
-				endpoint: '/'
+				endpoint: '/',
 			} );
 			expect( handler ).to.have.property( 'filter' );
 			expect( handler.filter ).to.equal( mixins.filter.filter );
@@ -278,13 +278,13 @@ describe( 'wp.registerRoute', () => {
 		it( 'does nothing if non-string parameters are provided', () => {
 			const factory1 = registerRoute( 'a', 'b' );
 			const factory2 = registerRoute( 'a', 'b', {
-				params: [ null, () => {} ]
+				params: [ null, () => {} ],
 			} );
 			expect( factory1 ).not.to.equal( factory2 );
 			expect( factory1.Ctor ).not.to.equal( factory2.Ctor );
 			const getPrototypeMethods = ( factoryFn ) => {
 				const proto = factoryFn.Ctor.prototype;
-				return Object.keys( proto ).filter( ( key ) => typeof proto[ key ] === 'function' );
+				return Object.keys( proto ).filter( key => typeof proto[ key ] === 'function' );
 			};
 			const factory1PrototypeMethods = getPrototypeMethods( factory1 );
 			const factory2PrototypeMethods = getPrototypeMethods( factory2 );
@@ -293,10 +293,10 @@ describe( 'wp.registerRoute', () => {
 
 		it( 'creates a .param() wrapper for params that do not match existing mixins', () => {
 			const factory = registerRoute( 'a', 'b', {
-				params: [ 'customtax', 'someparam' ]
+				params: [ 'customtax', 'someparam' ],
 			} );
 			handler = factory( {
-				endpoint: '/'
+				endpoint: '/',
 			} );
 			expect( handler ).to.have.property( 'customtax' );
 			expect( handler.customtax ).to.be.a( 'function' );
@@ -304,17 +304,17 @@ describe( 'wp.registerRoute', () => {
 			expect( handler.someparam ).to.be.a( 'function' );
 			const result = handler.customtax( 'techno' ).someparam( [
 				'tech',
-				'yes'
+				'yes',
 			] );
 			expect( result.toString() ).to.equal( '/a/b?customtax=techno&someparam%5B%5D=tech&someparam%5B%5D=yes' );
 		} );
 
 		it( 'will not overwrite existing methods', () => {
 			const factory = registerRoute( 'myplugin/v1', '/author/(?P<id>\\d+)', {
-				params: [ 'param', 'edit', 'id' ]
+				params: [ 'param', 'edit', 'id' ],
 			} );
 			handler = factory( {
-				endpoint: '/'
+				endpoint: '/',
 			} );
 			const result = handler.id( 7 ).param( 'a', 'b' ).edit().toString();
 			expect( result ).to.equal( '/myplugin/v1/author/7?a=b&context=edit' );
@@ -333,11 +333,11 @@ describe( 'wp.registerRoute', () => {
 					},
 					bar( val ) {
 						return this.param( 'bar', val );
-					}
-				}
+					},
+				},
 			} );
 			handler = factory( {
-				endpoint: '/'
+				endpoint: '/',
 			} );
 		} );
 
@@ -363,11 +363,11 @@ describe( 'wp.registerRoute', () => {
 				mixins: {
 					id() {
 						return this.param( 'id', 'as_a_param' );
-					}
-				}
+					},
+				},
 			} );
 			const result = factory( {
-				endpoint: '/'
+				endpoint: '/',
 			} ).id( 7 ).toString();
 			expect( result ).not.to.equal( '/myplugin/v1/author?id=as_a_param' );
 			expect( result ).to.equal( '/myplugin/v1/author/7' );
@@ -378,11 +378,11 @@ describe( 'wp.registerRoute', () => {
 				mixins: {
 					param() {
 						throw new Error();
-					}
-				}
+					},
+				},
 			} );
 			const result = factory( {
-				endpoint: '/'
+				endpoint: '/',
 			} ).id( 7 ).param( 'a', 'b' ).toString();
 			expect( result ).to.equal( '/myplugin/v1/author/7?a=b' );
 		} );
@@ -395,7 +395,7 @@ describe( 'wp.registerRoute', () => {
 		beforeEach( () => {
 			const factory = registerRoute( 'wp/v2', 'pages/(?P<parent>[\\d]+)/revisions/(?P<id>[\\d]+)' );
 			handler = factory( {
-				endpoint: '/'
+				endpoint: '/',
 			} );
 		} );
 
@@ -429,7 +429,7 @@ describe( 'wp.registerRoute', () => {
 		it( 'can be enforced by providing a regex for a capture group', () => {
 			const factory = registerRoute( 'myplugin', 'one/(?P<a>\\w+_\\d+)' );
 			handler = factory( {
-				endpoint: '/'
+				endpoint: '/',
 			} );
 			expect( () => {
 				handler.a( 'foo' ).toString();
@@ -440,7 +440,7 @@ describe( 'wp.registerRoute', () => {
 		it( 'can be bypassed if no regex is provided for a capture group', () => {
 			const factory = registerRoute( 'myplugin', 'one/(?P<a>)/two/(?P<b>)' );
 			handler = factory( {
-				endpoint: '/'
+				endpoint: '/',
 			} );
 			expect( () => {
 				handler.a( 'foo' ).two().b( 1000 ).toString();
@@ -455,10 +455,10 @@ describe( 'wp.registerRoute', () => {
 
 		beforeEach( () => {
 			const factory = registerRoute( 'myplugin', 'one/(?P<a>)/(?P<b>)', {
-				methods: [ 'GET', 'POST' ]
+				methods: [ 'GET', 'POST' ],
 			} );
 			handler = factory( {
-				endpoint: '/'
+				endpoint: '/',
 			} );
 		} );
 
@@ -496,10 +496,10 @@ describe( 'wp.registerRoute', () => {
 
 			it( 'support "get" implicitly if "head" is whitelisted', () => {
 				const factory = registerRoute( 'myplugin', 'one/(?P<a>)/(?P<b>)', {
-					methods: [ 'HEAD' ]
+					methods: [ 'HEAD' ],
 				} );
 				handler = factory( {
-					endpoint: '/'
+					endpoint: '/',
 				} );
 				expect( () => {
 					checkMethodSupport( 'head', handler.a( 1 ).b( 2 ) );
@@ -528,10 +528,10 @@ describe( 'wp.registerRoute', () => {
 
 			beforeEach( () => {
 				const factory = registerRoute( 'myplugin', 'one/(?P<a>)/(?P<b>)', {
-					methods: 'POST'
+					methods: 'POST',
 				} );
 				handler = factory( {
-					endpoint: '/'
+					endpoint: '/',
 				} );
 			} );
 
@@ -568,8 +568,8 @@ describe( 'wp.registerRoute', () => {
 			const obj = {
 				factory: registerRoute( 'myplugin', 'myroute' ),
 				_options: {
-					endpoint: '/foo/'
-				}
+					endpoint: '/foo/',
+				},
 			};
 			expect( obj.factory().toString() ).to.equal( '/foo/myplugin/myroute' );
 		} );

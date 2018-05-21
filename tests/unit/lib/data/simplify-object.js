@@ -39,19 +39,19 @@ describe( 'simplifyObject', () => {
 			of: 'basic',
 			nested: {
 				properties: [ 'of', 'no', {
-					particular: 'consequence'
+					particular: 'consequence',
 				} ],
-				nr: 7
-			}
+				nr: 7,
+			},
 		} ) ).to.deep.equal( {
 			some: 'set',
 			of: 'basic',
 			nested: {
 				properties: [ 'of', 'no', {
-					particular: 'consequence'
+					particular: 'consequence',
 				} ],
-				nr: 7
-			}
+				nr: 7,
+			},
 		} );
 	} );
 
@@ -59,10 +59,10 @@ describe( 'simplifyObject', () => {
 		expect( simplifyObject( {
 			some: 'object with a',
 			_links: {
-				prop: 'within it'
-			}
+				prop: 'within it',
+			},
 		} ) ).to.deep.equal( {
-			some: 'object with a'
+			some: 'object with a',
 		} );
 	} );
 
@@ -72,13 +72,13 @@ describe( 'simplifyObject', () => {
 				context: {
 					required: false,
 					other: 'properties',
-					go: 'here'
-				}
-			}
+					go: 'here',
+				},
+			},
 		} ) ).to.deep.equal( {
 			args: {
-				context: {}
-			}
+				context: {},
+			},
 		} );
 	} );
 
@@ -106,8 +106,8 @@ describe( 'simplifyObject', () => {
 					status: {},
 					filter: {},
 					categories: {},
-					tags: {}
-				}
+					tags: {},
+				},
 			}, {
 				methods: [ 'POST' ],
 				args: {
@@ -126,9 +126,9 @@ describe( 'simplifyObject', () => {
 					format: {},
 					sticky: {},
 					categories: {},
-					tags: {}
-				}
-			} ]
+					tags: {},
+				},
+			} ],
 		} );
 	} );
 

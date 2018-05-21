@@ -21,7 +21,7 @@ describe( 'keyValToObj utility', () => {
 		const result = keyValToObj( 'propName', 123456 );
 		expect( result ).to.have.property( 'propName' );
 		expect( result ).to.deep.equal( {
-			propName: 123456
+			propName: 123456,
 		} );
 	} );
 
@@ -31,7 +31,7 @@ describe( 'keyValToObj utility', () => {
 		expect( result ).to.have.property( 'words' );
 		expect( result.words ).to.equal( arr );
 		expect( result ).to.deep.equal( {
-			words: [ 'mimsy', 'borogoves', 'outgrabe' ]
+			words: [ 'mimsy', 'borogoves', 'outgrabe' ],
 		} );
 	} );
 

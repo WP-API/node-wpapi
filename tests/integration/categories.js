@@ -29,7 +29,7 @@ const expectedResults = {
 			'buying',
 			'Cat A',
 			'Cat B',
-			'Cat C'
+			'Cat C',
 		],
 		page2: [
 			'championship',
@@ -41,16 +41,16 @@ const expectedResults = {
 			'Child Category 03',
 			'Child Category 04',
 			'Child Category 05',
-			'clerkship'
+			'clerkship',
 		],
 		pageLast: [
 			'ween',
 			'wellhead',
 			'wellintentioned',
 			'whetstone',
-			'years'
-		]
-	}
+			'years',
+		],
+	},
 };
 
 describe( 'integration: categories()', () => {
@@ -58,7 +58,7 @@ describe( 'integration: categories()', () => {
 
 	beforeEach( () => {
 		wp = new WPAPI( {
-			endpoint: 'http://wpapi.loc/wp-json'
+			endpoint: 'http://wpapi.loc/wp-json',
 		} );
 	} );
 
@@ -264,7 +264,7 @@ describe( 'integration: categories()', () => {
 				.then( ( categories ) => {
 					expect( categories ).to.be.an( 'array' );
 					expect( categories.length ).to.equal( 4 );
-					const slugs = categories.map( ( cat ) => cat.slug ).sort().join( ' ' );
+					const slugs = categories.map( cat => cat.slug ).sort().join( ' ' );
 					expect( slugs ).to.equal( 'foo-a-foo-parent foo-parent parent parent-category' );
 					return SUCCESS;
 				} );
@@ -277,7 +277,7 @@ describe( 'integration: categories()', () => {
 				.get()
 				// Iterating over response of search is the best we can do until
 				// filtering for taxonomy term collections is reinstated
-				.then( ( categories ) => categories.find( cat => cat.slug === 'parent' ) )
+				.then( categories => categories.find( cat => cat.slug === 'parent' ) )
 				.then( ( category ) => {
 					expect( category ).to.have.property( 'slug' );
 					expect( category.slug ).to.equal( 'parent' );
@@ -366,7 +366,7 @@ describe( 'integration: categories()', () => {
 							'id',
 							'name',
 							'slug',
-							'taxonomy'
+							'taxonomy',
 						].forEach( ( prop ) => {
 							expect( cat[ prop ] ).to.equal( postCategories[ idx ][ prop ] );
 						} );

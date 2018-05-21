@@ -13,7 +13,7 @@ const expectStatusCode = ( url, code ) => new Promise( ( resolve, reject ) => {
 	};
 
 	http
-		.get( url, ( res ) => checkCode( res.statusCode, code ) )
+		.get( url, res => checkCode( res.statusCode, code ) )
 		.on( 'error', ( error ) => {
 			if ( error.statusCode ) {
 				return checkCode( error.statusCode, error );
@@ -25,9 +25,9 @@ const expectStatusCode = ( url, code ) => new Promise( ( resolve, reject ) => {
 const expectFileEqualsURL = ( filePath, url ) => new Promise( ( resolve, reject ) => {
 	http.get( url, ( res ) => {
 		const data = [];
-		res.on( 'data', ( chunk ) => data.push( chunk ) ); // Append Buffer object
+		res.on( 'data', chunk => data.push( chunk ) ); // Append Buffer object
 
-		res.on( 'error', ( error ) => reject( error ) );
+		res.on( 'error', error => reject( error ) );
 
 		res.on( 'end', () => {
 			const downloadedImageBuffer = Buffer.concat( data );
@@ -53,5 +53,5 @@ const rethrowIfChaiError = ( error ) => {
 module.exports = {
 	expectStatusCode: expectStatusCode,
 	expectFileEqualsURL: expectFileEqualsURL,
-	rethrowIfChaiError: rethrowIfChaiError
+	rethrowIfChaiError: rethrowIfChaiError,
 };

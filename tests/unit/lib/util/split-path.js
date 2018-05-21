@@ -19,7 +19,7 @@ describe( 'splitPath utility', () => {
 			'posts',
 			'(?P<parent>[\\d]+)',
 			'revisions',
-			'(?P<id>[\\d]+)'
+			'(?P<id>[\\d]+)',
 		] );
 	} );
 
@@ -27,7 +27,7 @@ describe( 'splitPath utility', () => {
 		const result = splitPath( '/plugin/(?P<plugin>[a-z\\/\\.\\-_]+)' );
 		expect( result ).to.deep.equal( [
 			'plugin',
-			'(?P<plugin>[a-z\\/\\.\\-_]+)'
+			'(?P<plugin>[a-z\\/\\.\\-_]+)',
 		] );
 	} );
 
@@ -41,7 +41,7 @@ describe( 'splitPath utility', () => {
 			'users',
 			'market=(?P<market>[a-zA-Z0-9-]+)',
 			'lat=(?P<lat>[a-z0-9 .\\-]+)',
-			'long=(?P<long>[a-z0-9 .\\-]+)'
+			'long=(?P<long>[a-z0-9 .\\-]+)',
 		] );
 	} );
 
@@ -51,7 +51,7 @@ describe( 'splitPath utility', () => {
 			'plugin',
 			'(?P<plugin_slug>[^/]+)',
 			'committers',
-			'?'
+			'?',
 		] );
 	} );
 

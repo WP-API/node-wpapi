@@ -12,7 +12,7 @@ describe( 'wp.comments', () => {
 		site = new WPAPI( {
 			endpoint: '/wp-json',
 			username: 'foouser',
-			password: 'barpass'
+			password: 'barpass',
 		} );
 		comments = site.comments();
 	} );
@@ -21,7 +21,7 @@ describe( 'wp.comments', () => {
 
 		it( 'should set any passed-in options', () => {
 			comments = site.comments( {
-				endpoint: '/custom-endpoint/'
+				endpoint: '/custom-endpoint/',
 			} );
 			expect( comments._options.endpoint ).to.equal( '/custom-endpoint/' );
 		} );

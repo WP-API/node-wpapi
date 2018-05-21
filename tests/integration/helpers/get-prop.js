@@ -20,4 +20,4 @@
  * @returns {String[]} The values of that property from each collection member
  */
 module.exports = ( property, collection ) => collection
-	.map( ( item ) => item[ property ] );
+	.map( item => item[ property ] );

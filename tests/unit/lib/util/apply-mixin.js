@@ -22,7 +22,7 @@ describe( 'applyMixin utility', () => {
 		const bar = () => {};
 		applyMixin( obj, 'foo', bar );
 		expect( obj ).to.deep.equal( {
-			foo: bar
+			foo: bar,
 		} );
 	} );
 
@@ -30,7 +30,7 @@ describe( 'applyMixin utility', () => {
 		obj.foo = 'bar';
 		applyMixin( obj, 'foo', () => {} );
 		expect( obj ).to.deep.equal( {
-			foo: 'bar'
+			foo: 'bar',
 		} );
 	} );
 

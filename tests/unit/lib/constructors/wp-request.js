@@ -14,7 +14,7 @@ describe( 'WPRequest', () => {
 
 	beforeEach( () => {
 		request = new WPRequest( {
-			endpoint: '/'
+			endpoint: '/',
 		} );
 	} );
 
@@ -26,7 +26,7 @@ describe( 'WPRequest', () => {
 
 		it( 'should set any passed-in options', () => {
 			request = new WPRequest( {
-				endpoint: '/custom-endpoint/'
+				endpoint: '/custom-endpoint/',
 			} );
 			expect( request.toString() ).to.equal( '/custom-endpoint/' );
 		} );
@@ -51,7 +51,7 @@ describe( 'WPRequest', () => {
 		it( 'properly parses taxonomy filters', () => {
 			request._taxonomyFilters = {
 				tag: [ 'clouds ', 'islands' ],
-				custom_tax: [ 7 ]
+				custom_tax: [ 7 ],
 			};
 			const query = request._renderQuery();
 			// Filters should be in alpha order, to support caching requests
@@ -61,7 +61,7 @@ describe( 'WPRequest', () => {
 
 		it( 'lower-cases taxonomy terms', () => {
 			request._taxonomyFilters = {
-				tag: [ 'Diamond-Dust' ]
+				tag: [ 'Diamond-Dust' ],
 			};
 			const query = request._renderQuery();
 			expect( query ).to.equal( '?filter%5Btag%5D=diamond-dust' );
@@ -69,7 +69,8 @@ describe( 'WPRequest', () => {
 
 		it( 'properly parses regular filters', () => {
 			request._filters = {
-				post_status: 'publish', s: 'Some search string'
+				post_status: 'publish',
+				s: 'Some search string',
 			};
 			const query = request._renderQuery();
 			expect( query ).to
@@ -85,10 +86,10 @@ describe( 'WPRequest', () => {
 
 		it( 'correctly merges taxonomy and regular filters & renders them in order', () => {
 			request._taxonomyFilters = {
-				cat: [ 7, 10 ]
+				cat: [ 7, 10 ],
 			};
 			request._filters = {
-				name: 'some-slug'
+				name: 'some-slug',
 			};
 			const query = request._renderQuery();
 			// Filters should be in alpha order, to support caching requests
@@ -195,7 +196,7 @@ describe( 'WPRequest', () => {
 		it( 'should set multiple parameters by passing a hash object', () => {
 			request.param( {
 				page: 309,
-				context: 'view'
+				context: 'view',
 			} );
 			expect( request._renderQuery() ).to.equal( '?context=view&page=309' );
 		} );
@@ -223,7 +224,7 @@ describe( 'WPRequest', () => {
 
 			beforeEach( () => {
 				request = new WPRequest( {
-					endpoint: '/'
+					endpoint: '/',
 				} );
 			} );
 
@@ -584,7 +585,7 @@ describe( 'WPRequest', () => {
 			expect( request._options ).not.to.have.property( 'password' );
 			request.auth( {
 				username: 'user',
-				password: 'pass'
+				password: 'pass',
 			} );
 			expect( request._options ).to.have.property( 'username' );
 			expect( request._options ).to.have.property( 'password' );
@@ -599,7 +600,7 @@ describe( 'WPRequest', () => {
 			expect( request._options ).not.to.have.property( 'password' );
 			request.auth( {
 				username: 123,
-				password: false
+				password: false,
 			} );
 			expect( request._options ).not.to.have.property( 'username' );
 			expect( request._options ).not.to.have.property( 'password' );
@@ -610,7 +611,7 @@ describe( 'WPRequest', () => {
 		it( 'sets the nonce when provided in an object', () => {
 			expect( request._options ).not.to.have.property( 'nonce' );
 			request.auth( {
-				nonce: 'nonceynonce'
+				nonce: 'nonceynonce',
 			} );
 			expect( request._options ).to.have.property( 'nonce' );
 			expect( request._options.nonce ).to.equal( 'nonceynonce' );
@@ -620,9 +621,9 @@ describe( 'WPRequest', () => {
 
 		it( 'can update nonce credentials', () => {
 			request.auth( {
-				nonce: 'nonceynonce'
+				nonce: 'nonceynonce',
 			} ).auth( {
-				nonce: 'refreshednonce'
+				nonce: 'refreshednonce',
 			} );
 			expect( request._options ).to.have.property( 'nonce' );
 			expect( request._options.nonce ).to.equal( 'refreshednonce' );
@@ -686,7 +687,7 @@ describe( 'WPRequest', () => {
 		it( 'will set a header key/value pair', () => {
 			request.setHeaders( 'Authorization', 'Bearer sometoken' );
 			expect( request._options.headers ).to.deep.equal( {
-				Authorization: 'Bearer sometoken'
+				Authorization: 'Bearer sometoken',
 			} );
 		} );
 
@@ -695,7 +696,7 @@ describe( 'WPRequest', () => {
 				.setHeaders( 'Authorization', 'Bearer sometoken' )
 				.setHeaders( 'Authorization', 'Basic QWxhZGRpbjpvcGVuIHNlc2FtZQ==' );
 			expect( request._options.headers ).to.deep.equal( {
-				Authorization: 'Basic QWxhZGRpbjpvcGVuIHNlc2FtZQ=='
+				Authorization: 'Basic QWxhZGRpbjpvcGVuIHNlc2FtZQ==',
 			} );
 		} );
 
@@ -705,18 +706,18 @@ describe( 'WPRequest', () => {
 				.setHeaders( 'Authorization', 'Bearer sometoken' );
 			expect( request._options.headers ).to.deep.equal( {
 				'Accept-Language': 'en-US',
-				Authorization: 'Bearer sometoken'
+				Authorization: 'Bearer sometoken',
 			} );
 		} );
 
 		it( 'will set multiple header key/value pairs when passed an object', () => {
 			request.setHeaders( {
 				'Accept-Language': 'en-US',
-				Authorization: 'Bearer sometoken'
+				Authorization: 'Bearer sometoken',
 			} );
 			expect( request._options.headers ).to.deep.equal( {
 				'Accept-Language': 'en-US',
-				Authorization: 'Bearer sometoken'
+				Authorization: 'Bearer sometoken',
 			} );
 		} );
 
@@ -724,15 +725,15 @@ describe( 'WPRequest', () => {
 			request
 				.setHeaders( {
 					'Accept-Language': 'en-US',
-					Authorization: 'Bearer sometoken'
+					Authorization: 'Bearer sometoken',
 				} )
 				.setHeaders( {
 					'Accept-Language': 'pt-BR',
-					Authorization: 'Basic QWxhZGRpbjpvcGVuIHNlc2FtZQ=='
+					Authorization: 'Basic QWxhZGRpbjpvcGVuIHNlc2FtZQ==',
 				} );
 			expect( request._options.headers ).to.deep.equal( {
 				'Accept-Language': 'pt-BR',
-				Authorization: 'Basic QWxhZGRpbjpvcGVuIHNlc2FtZQ=='
+				Authorization: 'Basic QWxhZGRpbjpvcGVuIHNlc2FtZQ==',
 			} );
 		} );
 
@@ -740,11 +741,11 @@ describe( 'WPRequest', () => {
 			request = new WPRequest( {
 				endpoint: '/',
 				headers: {
-					'Accept-Language': 'pt-BR'
-				}
+					'Accept-Language': 'pt-BR',
+				},
 			} );
 			expect( request._options.headers ).to.deep.equal( {
-				'Accept-Language': 'pt-BR'
+				'Accept-Language': 'pt-BR',
 			} );
 		} );
 
@@ -754,7 +755,7 @@ describe( 'WPRequest', () => {
 
 		beforeEach( () => {
 			request = new WPRequest( {
-				endpoint: 'http://blogoblog.com/wp-json'
+				endpoint: 'http://blogoblog.com/wp-json',
 			} );
 		} );
 
@@ -770,7 +771,7 @@ describe( 'WPRequest', () => {
 
 		it( 'correctly merges query strings for "plain permalinks" endpoints', () => {
 			request = new WPRequest( {
-				endpoint: 'https://blogoblog.com?rest_route=/'
+				endpoint: 'https://blogoblog.com?rest_route=/',
 			} );
 			const str = request.param( 'a', 7 ).param( 'b', [ 1, 2 ] ).toString();
 			expect( str ).to.equal( 'https://blogoblog.com?rest_route=/&a=7&b%5B%5D=1&b%5B%5D=2' );
@@ -851,7 +852,7 @@ describe( 'WPRequest', () => {
 		it( 'allows omitted _levels so long as there are no gaps', () => {
 			request._levels = {
 				'0': [ { component: 'posts' } ],
-				'1': [ { component: '(?P<id>[\\d]+)' } ]
+				'1': [ { component: '(?P<id>[\\d]+)' } ],
 			};
 			expect( () => {
 				request.setPathPart( 0, 'posts' ).validatePath();
@@ -861,7 +862,7 @@ describe( 'WPRequest', () => {
 
 		it( 'allows any value for a level if no validate function is specified', () => {
 			request._levels = {
-				'0': [ { component: '(?P<id>[\\d]+)' } ]
+				'0': [ { component: '(?P<id>[\\d]+)' } ],
 			};
 			expect( () => {
 				request.setPathPart( 0, 'foo' ).validatePath();
@@ -873,8 +874,8 @@ describe( 'WPRequest', () => {
 			request._levels = {
 				'0': [ {
 					component: '(?P<id>[\\d]+)',
-					validate: ( val ) => /^[\d]+$/.test( val )
-				} ]
+					validate: val => /^[\d]+$/.test( val ),
+				} ],
 			};
 			expect( () => {
 				request.setPathPart( 0, 'foo' ).validatePath();
@@ -885,8 +886,8 @@ describe( 'WPRequest', () => {
 			request._levels = {
 				'0': [ {
 					component: '(?P<id>[\\d]+)',
-					validate: ( val ) => /^[\d]+$/.test( val )
-				} ]
+					validate: val => /^[\d]+$/.test( val ),
+				} ],
 			};
 			expect( () => {
 				request.setPathPart( 0, '42' ).validatePath();
@@ -898,14 +899,14 @@ describe( 'WPRequest', () => {
 			request._levels = {
 				'0': [ {
 					component: '(?P<id>[\\d]+)',
-					validate: ( val ) => /^[\d]+$/.test( val )
+					validate: val => /^[\d]+$/.test( val ),
 				}, {
 					component: 'posts',
-					validate: ( val ) => 'posts' === val
+					validate: val => val === 'posts',
 				}, {
 					component: 'pages',
-					validate: ( val ) => 'pages' === val
-				} ]
+					validate: val => val === 'pages',
+				} ],
 			};
 			expect( () => {
 				request.setPathPart( 0, 'foo' ).validatePath();
@@ -916,14 +917,14 @@ describe( 'WPRequest', () => {
 			request._levels = {
 				'0': [ {
 					component: '(?P<id>[\\d]+)',
-					validate: ( val ) => /^[\d]+$/.test( val )
+					validate: val => /^[\d]+$/.test( val ),
 				}, {
 					component: 'posts',
-					validate: ( val ) => 'posts' === val
+					validate: val => val === 'posts',
 				}, {
 					component: 'pages',
-					validate: ( val ) => 'pages' === val
-				} ]
+					validate: val => val === 'pages',
+				} ],
 			};
 			expect( () => {
 				request.setPathPart( 0, 'posts' ).validatePath();
@@ -934,7 +935,7 @@ describe( 'WPRequest', () => {
 		it( 'catches missing path parts if _levels are specified', () => {
 			request._levels = {
 				'0': [ { component: '(?P<parent>[\\d]+)' } ],
-				'1': [ { component: 'revisions' } ]
+				'1': [ { component: 'revisions' } ],
 				// '2': [ { component: '(?P<id>[\\d]+)' } ]
 			};
 			expect( () => {

@@ -79,7 +79,7 @@ describe( 'mixins: filter', () => {
 			const result = req.filter( {
 				a: 'b',
 				c: 'd',
-				e: 'f'
+				e: 'f',
 			} );
 			expect( getQueryStr( result ) ).to.equal( 'filter[a]=b&filter[c]=d&filter[e]=f' );
 		} );
@@ -88,10 +88,10 @@ describe( 'mixins: filter', () => {
 			const result = req
 				.filter( {
 					a: 'b',
-					c: 'd'
+					c: 'd',
 				} )
 				.filter( {
-					e: 'f'
+					e: 'f',
 				} );
 			expect( getQueryStr( result ) ).to.equal( 'filter[a]=b&filter[c]=d&filter[e]=f' );
 		} );
@@ -101,12 +101,12 @@ describe( 'mixins: filter', () => {
 				.filter( {
 					a: 'b',
 					c: 'd',
-					e: 'f'
+					e: 'f',
 				} )
 				.filter( {
 					a: 'g',
 					c: 'h',
-					i: 'j'
+					i: 'j',
 				} );
 			expect( getQueryStr( result ) ).to.equal( 'filter[a]=g&filter[c]=h&filter[e]=f&filter[i]=j' );
 		} );
@@ -215,10 +215,10 @@ describe( 'mixins: filter', () => {
 					'disclosure',
 					'lorde',
 					'lorde',
-					'clean-bandit'
+					'clean-bandit',
 				] );
 				expect( req._taxonomyFilters ).to.deep.equal( {
-					tag: [ 'alunageorge', 'clean-bandit', 'disclosure', 'lorde' ]
+					tag: [ 'alunageorge', 'clean-bandit', 'disclosure', 'lorde' ],
 				} );
 			} );
 

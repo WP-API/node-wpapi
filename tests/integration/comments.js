@@ -25,7 +25,7 @@ const expectedResults = {
 			'1148John Doe',
 			'1148Joe Bloggs',
 			'1148Jane Bloggs',
-			'1148Joe Bloggs'
+			'1148Joe Bloggs',
 		],
 		page2: [
 			'1148Jane Bloggs',
@@ -37,15 +37,15 @@ const expectedResults = {
 			'1148John Doe',
 			'1148John Doe',
 			'1148Jane Doe',
-			'1148Anonymous User'
+			'1148Anonymous User',
 		],
 		page3: [
 			'1148John Doe',
 			'1149John Doe',
 			'155John Doe',
 			'155Anon',
-			'155tellyworthtest2'
-		]
+			'155tellyworthtest2',
+		],
 	},
 	postsAndAuthorsAsc: {
 		page1: [
@@ -58,22 +58,22 @@ const expectedResults = {
 			'1148Jane Doe',
 			'1148John Doe',
 			'1148John Doe',
-			'1148John Doe'
-		]
-	}
+			'1148John Doe',
+		],
+	},
 };
 
 // Inspecting the posts and authors of the returned comments arrays is an easy
 // way to validate that the right page of results was returned
-const getPostsAndAuthors = ( comments ) => comments
-	.map( ( comment ) => comment.post + comment.author_name );
+const getPostsAndAuthors = comments => comments
+	.map( comment => comment.post + comment.author_name );
 
 describe( 'integration: comments()', () => {
 	let wp;
 
 	beforeEach( () => {
 		wp = new WPAPI( {
-			endpoint: 'http://wpapi.loc/wp-json'
+			endpoint: 'http://wpapi.loc/wp-json',
 		} );
 	} );
 

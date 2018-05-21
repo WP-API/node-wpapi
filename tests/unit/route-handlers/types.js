@@ -12,7 +12,7 @@ describe( 'wp.types', () => {
 		site = new WPAPI( {
 			endpoint: '/wp-json',
 			username: 'foouser',
-			password: 'barpass'
+			password: 'barpass',
 		} );
 		types = site.types();
 	} );
@@ -21,7 +21,7 @@ describe( 'wp.types', () => {
 
 		it( 'should set any passed-in options', () => {
 			types = site.types( {
-				endpoint: '/custom-endpoint/'
+				endpoint: '/custom-endpoint/',
 			} );
 			expect( types._options.endpoint ).to.equal( '/custom-endpoint/' );
 		} );

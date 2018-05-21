@@ -18,10 +18,10 @@ describe( 'integration: settings()', () => {
 
 	beforeEach( () => {
 		wp = new WPAPI( {
-			endpoint: 'http://wpapi.loc/wp-json'
+			endpoint: 'http://wpapi.loc/wp-json',
 		} );
 		authenticated = new WPAPI( {
-			endpoint: 'http://wpapi.loc/wp-json'
+			endpoint: 'http://wpapi.loc/wp-json',
 		} ).auth( credentials );
 	} );
 
@@ -31,7 +31,7 @@ describe( 'integration: settings()', () => {
 			.catch( ( err ) => {
 				expect( err.code ).to.equal( 'rest_forbidden' );
 				expect( err.data ).to.deep.equal( {
-					status: 401
+					status: 401,
 				} );
 				return SUCCESS;
 			} );
@@ -60,7 +60,7 @@ describe( 'integration: settings()', () => {
 					'timezone',
 					'title',
 					'url',
-					'use_smilies'
+					'use_smilies',
 				] );
 
 				// Spot check specific values
@@ -81,7 +81,7 @@ describe( 'integration: settings()', () => {
 				expect( settings.description ).to.equal( 'Just another WordPress site' );
 				return authenticated.settings()
 					.update( {
-						description: 'It\'s amazing what you\'ll find face to face'
+						description: 'It\'s amazing what you\'ll find face to face',
 					} );
 			} )
 			// Initialize new request to see if changes persisted
@@ -91,7 +91,7 @@ describe( 'integration: settings()', () => {
 				// Reset to original value
 				return authenticated.settings()
 					.update( {
-						description: 'Just another WordPress site'
+						description: 'Just another WordPress site',
 					} );
 			} )
 			// Request one final time to validate value has been set back

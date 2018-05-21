@@ -22,4 +22,4 @@
  * the specified response object property
  */
 module.exports = ( property, collection ) => collection
-	.map( ( item ) => item[ property ].rendered );
+	.map( item => item[ property ].rendered );

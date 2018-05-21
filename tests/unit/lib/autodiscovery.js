@@ -19,7 +19,7 @@ describe( 'autodiscovery helper methods', () => {
 		it( 'throws an error if no link header is found', () => {
 			expect( () => {
 				locateAPIRootHeader( {
-					headers: {}
+					headers: {},
 				} );
 			} ).to.throw( 'No header link found with rel="https://api.w.org/"' );
 		} );
@@ -27,8 +27,8 @@ describe( 'autodiscovery helper methods', () => {
 		it( 'parsed and returns the header with the rel for the REST API endpoint', () => {
 			const result = locateAPIRootHeader( {
 				headers: {
-					link: '<http://wpapi.loc/wp-json/>; rel="https://api.w.org/"'
-				}
+					link: '<http://wpapi.loc/wp-json/>; rel="https://api.w.org/"',
+				},
 			} );
 			expect( result ).to.equal( 'http://wpapi.loc/wp-json/' );
 		} );

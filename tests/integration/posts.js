@@ -32,7 +32,7 @@ const expectedResults = {
 			'Template: Featured Image (Horizontal)',
 			'Template: More Tag',
 			'Template: Excerpt (Defined)',
-			'Template: Excerpt (Generated)'
+			'Template: Excerpt (Generated)',
 		],
 		page2: [
 			'Template: Paginated',
@@ -44,7 +44,7 @@ const expectedResults = {
 			'Media: Twitter Embeds',
 			'Post Format: Standard',
 			'Post Format: Gallery',
-			'Post Format: Gallery (Tiled)'
+			'Post Format: Gallery (Tiled)',
 		],
 		page4: [
 			'Post Format: Quote',
@@ -54,9 +54,9 @@ const expectedResults = {
 			'Edge Case: No Content',
 			'Edge Case: Many Categories',
 			'Edge Case: Many Tags',
-			'Edge Case: Nested And Mixed Lists'
-		]
-	}
+			'Edge Case: Nested And Mixed Lists',
+		],
+	},
 };
 
 describe( 'integration: posts()', () => {
@@ -65,10 +65,10 @@ describe( 'integration: posts()', () => {
 
 	beforeEach( () => {
 		wp = new WPAPI( {
-			endpoint: 'http://wpapi.loc/wp-json'
+			endpoint: 'http://wpapi.loc/wp-json',
 		} );
 		authenticated = new WPAPI( {
-			endpoint: 'http://wpapi.loc/wp-json'
+			endpoint: 'http://wpapi.loc/wp-json',
 		} ).auth( credentials );
 	} );
 
@@ -176,7 +176,7 @@ describe( 'integration: posts()', () => {
 		it( 'allows access to the next page of results via .next', () => {
 			const prom = wp.posts()
 				.get()
-				.then( ( posts ) => posts._paging.next.get() )
+				.then( posts => posts._paging.next.get() )
 
 				.then( ( posts ) => {
 					expect( posts ).to.be.an( 'array' );
@@ -192,7 +192,7 @@ describe( 'integration: posts()', () => {
 			const prom = wp.posts()
 				.param( '_wpapi_force_html', true )
 				.get()
-				.then( ( posts ) => posts._paging.next.get() )
+				.then( posts => posts._paging.next.get() )
 				.then( ( posts ) => {
 					expect( posts ).to.be.an( 'array' );
 					return SUCCESS;
@@ -242,7 +242,7 @@ describe( 'integration: posts()', () => {
 			const prom = authenticated.posts()
 				.context( 'edit' )
 				.get()
-				.then( ( posts ) => posts._paging.next.get() )
+				.then( posts => posts._paging.next.get() )
 				.then( ( page2 ) => {
 					expect( page2[0].content ).to.have.property( 'raw' );
 					return SUCCESS;
@@ -263,7 +263,7 @@ describe( 'integration: posts()', () => {
 					.then( ( posts ) => {
 						expect( posts.length ).to.equal( 1 );
 						expect( getTitles( posts ) ).to.deep.equal( [
-							'Template: Excerpt (Generated)'
+							'Template: Excerpt (Generated)',
 						] );
 						return SUCCESS;
 					} );
@@ -281,7 +281,7 @@ describe( 'integration: posts()', () => {
 					.then( ( posts ) => {
 						expect( getTitles( posts ) ).to.deep.equal( [
 							'Scheduled',
-							'Draft'
+							'Draft',
 						] );
 						return SUCCESS;
 					} );
@@ -297,7 +297,7 @@ describe( 'integration: posts()', () => {
 					.slug( 'title' )
 					.get()
 					.then( ( tags ) => {
-						const tagIDs = tags.map( ( tag ) => tag.id );
+						const tagIDs = tags.map( tag => tag.id );
 						return wp.posts().tags( tagIDs );
 					} )
 					.then( ( posts ) => {
@@ -307,7 +307,7 @@ describe( 'integration: posts()', () => {
 							'Markup: Title With Markup',
 							'Antidisestablishmentarianism',
 							'',
-							'Edge Case: Many Tags'
+							'Edge Case: Many Tags',
 						] );
 						return SUCCESS;
 					} );
@@ -318,11 +318,11 @@ describe( 'integration: posts()', () => {
 				const prom = Promise
 					.all( [
 						wp.tags().search( 'featured image' ),
-						wp.tags().search( 'embeds' )
+						wp.tags().search( 'embeds' ),
 					] )
 					.then( ( results ) => {
 						const tagIDs = results.reduce( ( ids, arr ) => (
-							ids.concat( arr.map( ( tag ) => tag.id ) )
+							ids.concat( arr.map( tag => tag.id ) )
 						), [] );
 						return wp.posts().tags( tagIDs );
 					} )
@@ -334,7 +334,7 @@ describe( 'integration: posts()', () => {
 							'Media: Twitter Embeds',
 							'Post Format: Video (WordPress.tv)',
 							'Post Format: Video (VideoPress)',
-							'Edge Case: Many Tags'
+							'Edge Case: Many Tags',
 						] );
 						return SUCCESS;
 					} );
@@ -349,11 +349,11 @@ describe( 'integration: posts()', () => {
 				const prom = Promise
 					.all( [
 						wp.tags().search( 'css' ),
-						wp.tags().search( 'content' )
+						wp.tags().search( 'content' ),
 					] )
 					.then( ( results ) => {
 						const tagIDs = results.reduce( ( ids, arr ) => (
-							ids.concat( arr.map( ( tag ) => tag.id ) )
+							ids.concat( arr.map( tag => tag.id ) )
 						), [] );
 						return wp.posts().excludeTags( tagIDs );
 					} )
@@ -368,7 +368,7 @@ describe( 'integration: posts()', () => {
 							'Template: Comments Disabled',
 							'Template: Pingbacks And Trackbacks',
 							'Post Format: Standard',
-							'Post Format: Gallery'
+							'Post Format: Gallery',
 						] );
 						return SUCCESS;
 					} );
@@ -384,7 +384,7 @@ describe( 'integration: posts()', () => {
 					.slug( 'markup' )
 					.get()
 					.then( ( categories ) => {
-						const categoryIDs = categories.map( ( cat ) => cat.id );
+						const categoryIDs = categories.map( cat => cat.id );
 						return wp.posts().categories( categoryIDs );
 					} )
 					.then( ( posts ) => {
@@ -395,7 +395,7 @@ describe( 'integration: posts()', () => {
 							'Markup: Text Alignment',
 							'Markup: Title With Special Characters',
 							'Markup: Title With Markup',
-							'Edge Case: Many Categories'
+							'Edge Case: Many Categories',
 						] );
 						return SUCCESS;
 					} );
@@ -406,11 +406,11 @@ describe( 'integration: posts()', () => {
 				const prom = Promise
 					.all( [
 						wp.categories().search( 'edge case' ),
-						wp.categories().search( 'pustule' )
+						wp.categories().search( 'pustule' ),
 					] )
 					.then( ( results ) => {
 						const categoriesIDs = results.reduce( ( ids, arr ) => (
-							ids.concat( arr.map( ( cat ) => cat.id ) )
+							ids.concat( arr.map( cat => cat.id ) )
 						), [] );
 						return wp.posts().categories( categoriesIDs );
 					} )
@@ -422,7 +422,7 @@ describe( 'integration: posts()', () => {
 							'Edge Case: No Content',
 							'Edge Case: Many Categories',
 							'Edge Case: Many Tags',
-							'Edge Case: Nested And Mixed Lists'
+							'Edge Case: Nested And Mixed Lists',
 						] );
 						return SUCCESS;
 					} );
@@ -437,11 +437,11 @@ describe( 'integration: posts()', () => {
 				const prom = Promise
 					.all( [
 						wp.categories().slug( 'markup' ),
-						wp.categories().slug( 'post-formats' )
+						wp.categories().slug( 'post-formats' ),
 					] )
 					.then( ( results ) => {
 						const tagIDs = results.reduce( ( ids, arr ) => (
-							ids.concat( arr.map( ( tag ) => tag.id ) )
+							ids.concat( arr.map( tag => tag.id ) )
 						), [] );
 						return wp.posts().excludeCategories( tagIDs );
 					} )
@@ -456,7 +456,7 @@ describe( 'integration: posts()', () => {
 							'Template: Sticky',
 							'Template: Password Protected (the password is &#8220;enter&#8221;)',
 							'Template: Comments',
-							'Template: Comments Disabled'
+							'Template: Comments Disabled',
 						] );
 						return SUCCESS;
 					} );
@@ -506,7 +506,7 @@ describe( 'integration: posts()', () => {
 				.catch( ( err ) => {
 					expect( err.code ).to.equal( 'rest_forbidden_context' );
 					expect( err.data ).to.deep.equal( {
-						status: 401
+						status: 401,
 					} );
 					return SUCCESS;
 				} );
@@ -527,7 +527,7 @@ describe( 'integration: posts()', () => {
 				.catch( ( err ) => {
 					expect( err.code ).to.equal( 'rest_cannot_delete' );
 					expect( err.data ).to.deep.equal( {
-						status: 401
+						status: 401,
 					} );
 					// Ensure that the post was NOT deleted by querying for it again
 					return wp.posts()
@@ -546,14 +546,14 @@ describe( 'integration: posts()', () => {
 			const prom = new Promise( ( resolve, reject ) => {
 				wp.posts().create( {
 					title: 'New Post 2501',
-					content: 'Some Content'
+					content: 'Some Content',
 				}, ( err ) => {
 					if ( ! err ) {
 						reject();
 					}
 					expect( err.code ).to.equal( 'rest_cannot_create' );
 					expect( err.data ).to.deep.equal( {
-						status: 401
+						status: 401,
 					} );
 					resolve( SUCCESS );
 				} );
@@ -572,13 +572,13 @@ describe( 'integration: posts()', () => {
 						.id( id )
 						.update( {
 							title: 'New Post 2501',
-							content: 'Some Content'
+							content: 'Some Content',
 						} );
 				} )
 				.catch( ( err ) => {
 					expect( err.code ).to.equal( 'rest_cannot_edit' );
 					expect( err.data ).to.deep.equal( {
-						status: 401
+						status: 401,
 					} );
 					return SUCCESS;
 				} );
@@ -591,7 +591,7 @@ describe( 'integration: posts()', () => {
 		const prom = authenticated.posts()
 			.create( {
 				title: 'New Post 2501',
-				content: 'Some Content'
+				content: 'Some Content',
 			} )
 			.then( ( createdPost ) => {
 				id = createdPost.id;
@@ -608,7 +608,7 @@ describe( 'integration: posts()', () => {
 					.id( id )
 					.update( {
 						title: 'Updated Title',
-						status: 'publish'
+						status: 'publish',
 					} );
 			} )
 			.then( ( updatedPost ) => {
@@ -657,13 +657,13 @@ describe( 'integration: posts()', () => {
 				httpTestUtils.rethrowIfChaiError( error );
 				expect( error.code ).to.equal( 'rest_forbidden' );
 				expect( error.data ).to.deep.equal( {
-					status: 401
+					status: 401,
 				} );
 				// Re-authenticate & permanently delete this post
 				return authenticated.posts()
 					.id( id )
 					.delete( {
-						force: true
+						force: true,
 					} );
 			} )
 			.then( ( response ) => {
@@ -679,7 +679,7 @@ describe( 'integration: posts()', () => {
 				httpTestUtils.rethrowIfChaiError( error );
 				expect( error.code ).to.equal( 'rest_post_invalid_id' );
 				expect( error.data ).to.deep.equal( {
-					status: 404
+					status: 404,
 				} );
 				return SUCCESS;
 			} );
@@ -697,13 +697,13 @@ describe( 'integration: posts()', () => {
 		const tags = [];
 		const tagsAndPromises = Promise.all( [
 			wp.categories().get(),
-			wp.tags().get()
+			wp.tags().get(),
 		] )
 			.then( ( results ) => {
 				// Array to Object
 				return {
 					categories: results[ 0 ],
-					tags: results[ 1 ]
+					tags: results[ 1 ],
 				};
 			} );
 		const prom = tagsAndPromises
@@ -720,8 +720,8 @@ describe( 'integration: posts()', () => {
 						title: 'New Post with Tags & Categories',
 						content: 'This post has a featured image, too',
 						status: 'publish',
-						categories: categories.map( ( cat ) => cat.id ),
-						tags: tags.map( ( tag ) => tag.id )
+						categories: categories.map( cat => cat.id ),
+						tags: tags.map( tag => tag.id ),
 					} );
 			} )
 			.then( ( newPost ) => {
@@ -730,7 +730,7 @@ describe( 'integration: posts()', () => {
 				return authenticated.media()
 					.file( filePath )
 					.create( {
-						post: id
+						post: id,
 					} );
 			} )
 			.then( ( media ) => {
@@ -739,7 +739,7 @@ describe( 'integration: posts()', () => {
 				return authenticated.posts()
 					.id( id )
 					.update( {
-						featured_media: mediaId
+						featured_media: mediaId,
 					} );
 			} )
 			.then( () => {
@@ -764,7 +764,7 @@ describe( 'integration: posts()', () => {
 				expect( terms.length ).to.equal( 2 );
 				// Validate all categories are present and accounted for
 				terms
-					.find( ( collection ) => collection[ 0 ].taxonomy === 'category' )
+					.find( collection => collection[ 0 ].taxonomy === 'category' )
 					.sort( ascById )
 					.forEach( ( cat, idx ) => {
 						expect( cat.id ).to.equal( categories[ idx ].id );
@@ -772,7 +772,7 @@ describe( 'integration: posts()', () => {
 					} );
 				// Validate all tags are present and accounted for
 				terms
-					.find( ( collection ) => collection[ 0 ].taxonomy === 'post_tag' )
+					.find( collection => collection[ 0 ].taxonomy === 'post_tag' )
 					.sort( ascById )
 					.forEach( ( tag, idx ) => {
 						expect( tag.id ).to.equal( tags[ idx ].id );
@@ -784,7 +784,7 @@ describe( 'integration: posts()', () => {
 				return authenticated.media()
 					.id( mediaId )
 					.delete( {
-						force: true
+						force: true,
 					} );
 			} )
 			// Query for the media, with auth: expect this to fail, since it is gone
@@ -793,14 +793,14 @@ describe( 'integration: posts()', () => {
 				httpTestUtils.rethrowIfChaiError( error );
 				expect( error.code ).to.equal( 'rest_post_invalid_id' );
 				expect( error.data ).to.deep.equal( {
-					status: 404
+					status: 404,
 				} );
 			} )
 			// Clean up after ourselves: remove post
 			.then( () => authenticated.posts()
 				.id( id )
 				.delete( {
-					force: true
+					force: true,
 				} )
 			)
 			// Query for the post, with auth: expect this to fail, since it is gone
@@ -809,7 +809,7 @@ describe( 'integration: posts()', () => {
 				httpTestUtils.rethrowIfChaiError( error );
 				expect( error.code ).to.equal( 'rest_post_invalid_id' );
 				expect( error.data ).to.deep.equal( {
-					status: 404
+					status: 404,
 				} );
 				return SUCCESS;
 			} );
@@ -832,7 +832,7 @@ describe( 'integration: posts()', () => {
 					// Context is maintained
 					expect( this ).to.equal( self );
 					this.setState( {
-						data: data
+						data: data,
 					} );
 
 					expect( this ).to.have.property( 'state' );

@@ -12,7 +12,7 @@ describe( 'wp.media', () => {
 		site = new WPAPI( {
 			endpoint: '/wp-json',
 			username: 'foouser',
-			password: 'barpass'
+			password: 'barpass',
 		} );
 		media = site.media();
 	} );
@@ -21,7 +21,7 @@ describe( 'wp.media', () => {
 
 		it( 'should set any passed-in options', () => {
 			media = site.media( {
-				endpoint: '/custom-endpoint/'
+				endpoint: '/custom-endpoint/',
 			} );
 			expect( media._options.endpoint ).to.equal( '/custom-endpoint/' );
 		} );

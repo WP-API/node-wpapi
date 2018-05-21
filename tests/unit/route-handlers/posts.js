@@ -12,7 +12,7 @@ describe( 'wp.posts', () => {
 		site = new WPAPI( {
 			endpoint: '/wp-json',
 			username: 'foouser',
-			password: 'barpass'
+			password: 'barpass',
 		} );
 		posts = site.posts();
 	} );
@@ -21,7 +21,7 @@ describe( 'wp.posts', () => {
 
 		it( 'should set any passed-in options', () => {
 			posts = site.posts( {
-				endpoint: '/custom-endpoint/'
+				endpoint: '/custom-endpoint/',
 			} );
 			expect( posts._options.endpoint ).to.equal( '/custom-endpoint/' );
 		} );
@@ -87,7 +87,7 @@ describe( 'wp.posts', () => {
 			'slug',
 			'password',
 			'status',
-			'sticky'
+			'sticky',
 		].forEach( ( methodName ) => {
 			expect( posts ).to.have.property( methodName );
 			expect( posts[ methodName ] ).to.be.a( 'function' );

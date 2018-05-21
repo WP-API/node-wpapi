@@ -20,7 +20,7 @@ describe( 'integration: custom HTTP Headers', () => {
 
 	beforeEach( () => {
 		wp = new WPAPI( {
-			endpoint: 'http://wpapi.loc/wp-json'
+			endpoint: 'http://wpapi.loc/wp-json',
 		} );
 	} );
 
@@ -34,7 +34,7 @@ describe( 'integration: custom HTTP Headers', () => {
 			.then( ( posts ) => {
 				expect( getTitles( posts ) ).to.deep.equal( [
 					'Scheduled',
-					'Draft'
+					'Draft',
 				] );
 				return SUCCESS;
 			} );
@@ -51,7 +51,7 @@ describe( 'integration: custom HTTP Headers', () => {
 			.then( ( posts ) => {
 				expect( getTitles( posts ) ).to.deep.equal( [
 					'Scheduled',
-					'Draft'
+					'Draft',
 				] );
 				return authenticated.users().me();
 			} )

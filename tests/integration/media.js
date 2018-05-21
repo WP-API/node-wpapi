@@ -35,7 +35,7 @@ const expectedResults = {
 			'Horizontal Featured Image',
 			'Unicorn Wallpaper',
 			'Image Alignment 1200&#215;4002',
-			'Image Alignment 580&#215;300'
+			'Image Alignment 580&#215;300',
 		],
 		page2: [
 			'Image Alignment 300&#215;200',
@@ -47,7 +47,7 @@ const expectedResults = {
 			'dsc20040724_152504_532',
 			'Boat Barco Texture',
 			'Huatulco Coastline',
-			'Brazil Beach'
+			'Brazil Beach',
 		],
 		page4: [
 			'Yachtsody in Blue',
@@ -57,9 +57,9 @@ const expectedResults = {
 			'Bell on Wharf',
 			'dsc20050813_115856_52',
 			'dsc20050727_091048_222',
-			'canola2'
-		]
-	}
+			'canola2',
+		],
+	},
 };
 
 describe( 'integration: media()', () => {
@@ -68,10 +68,10 @@ describe( 'integration: media()', () => {
 
 	beforeEach( () => {
 		wp = new WPAPI( {
-			endpoint: 'http://wpapi.loc/wp-json'
+			endpoint: 'http://wpapi.loc/wp-json',
 		} );
 		authenticated = new WPAPI( {
-			endpoint: 'http://wpapi.loc/wp-json'
+			endpoint: 'http://wpapi.loc/wp-json',
 		} ).auth( credentials );
 	} );
 
@@ -215,13 +215,13 @@ describe( 'integration: media()', () => {
 				.file( filePath )
 				.create( {
 					title: 'Media File',
-					content: 'Some Content'
+					content: 'Some Content',
 				} )
 				.catch( ( err ) => {
 					httpTestUtils.rethrowIfChaiError( err );
 					expect( err.code ).to.equal( 'rest_cannot_create' );
 					expect( err.data ).to.deep.equal( {
-						status: 401
+						status: 401,
 					} );
 					return SUCCESS;
 				} );
@@ -237,14 +237,14 @@ describe( 'integration: media()', () => {
 					return wp.media()
 						.id( id )
 						.update( {
-							title: 'New Title'
+							title: 'New Title',
 						} );
 				} )
 				.catch( ( err ) => {
 					httpTestUtils.rethrowIfChaiError( err );
 					expect( err.code ).to.equal( 'rest_cannot_edit' );
 					expect( err.data ).to.deep.equal( {
-						status: 401
+						status: 401,
 					} );
 					return SUCCESS;
 				} );
@@ -258,14 +258,14 @@ describe( 'integration: media()', () => {
 				.then( ( media ) => {
 					const id = media[ 0 ].id;
 					return wp.media().id( id ).delete( {
-						force: true
+						force: true,
 					} );
 				} )
 				.catch( ( err ) => {
 					httpTestUtils.rethrowIfChaiError( err );
 					expect( err.code ).to.equal( 'rest_cannot_delete' );
 					expect( err.data ).to.deep.equal( {
-						status: 401
+						status: 401,
 					} );
 					return SUCCESS;
 				} );
@@ -283,7 +283,7 @@ describe( 'integration: media()', () => {
 			.file( filePath, 'ehg-conduits.jpg' )
 			.create( {
 				title: 'Untitled',
-				caption: 'A painting from Emily Garfield\'s "Conduits" series'
+				caption: 'A painting from Emily Garfield\'s "Conduits" series',
 			} )
 			.then( ( createdMedia ) => {
 				id = createdMedia.id;
@@ -299,7 +299,7 @@ describe( 'integration: media()', () => {
 				.id( id )
 				.update( {
 					title: 'Conduits Series',
-					alt_text: 'A photograph of an abstract painting by Emily Garfield'
+					alt_text: 'A photograph of an abstract painting by Emily Garfield',
 				} )
 			)
 			.then( ( result ) => {
@@ -336,13 +336,13 @@ describe( 'integration: media()', () => {
 				httpTestUtils.rethrowIfChaiError( error );
 				expect( error.code ).to.equal( 'rest_trash_not_supported' );
 				expect( error.data ).to.deep.equal( {
-					status: 501
+					status: 501,
 				} );
 				// Now permanently delete this media
 				return authenticated.media()
 					.id( id )
 					.delete( {
-						force: true
+						force: true,
 					} );
 			} )
 			.then( ( response ) => {
@@ -357,7 +357,7 @@ describe( 'integration: media()', () => {
 				httpTestUtils.rethrowIfChaiError( error );
 				expect( error.code ).to.equal( 'rest_post_invalid_id' );
 				expect( error.data ).to.deep.equal( {
-					status: 404
+					status: 404,
 				} );
 			} )
 			// Validate image file has been removed

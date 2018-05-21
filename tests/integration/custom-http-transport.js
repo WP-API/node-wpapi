@@ -64,8 +64,8 @@ describe( 'integration: custom HTTP transport methods', () => {
 		wp = new WPAPI( {
 			endpoint: 'http://wpapi.loc/wp-json',
 			transport: {
-				get: cachingGet
-			}
+				get: cachingGet,
+			},
 		} ).auth( credentials );
 
 		query1 = wp.posts().id( id );
@@ -120,8 +120,8 @@ describe( 'integration: custom HTTP transport methods', () => {
 						}
 						return result;
 					} );
-				}
-			}
+				},
+			},
 		} );
 
 		const prom = wp.posts().slug( 'template-more-tag' )
@@ -141,7 +141,7 @@ describe( 'integration: custom HTTP transport methods', () => {
 				this.data = arr;
 			}
 			pluck( key ) {
-				return this.data.map( ( val ) => val[ key ] );
+				return this.data.map( val => val[ key ] );
 			}
 		}
 
@@ -156,8 +156,8 @@ describe( 'integration: custom HTTP transport methods', () => {
 							return new Collection( results );
 						}
 					} );
-				}
-			}
+				},
+			},
 		} );
 
 		const prom = wp.posts()
@@ -173,7 +173,7 @@ describe( 'integration: custom HTTP transport methods', () => {
 					'template-featured-image-horizontal',
 					'template-more-tag',
 					'template-excerpt-defined',
-					'template-excerpt-generated'
+					'template-excerpt-generated',
 				] );
 				return SUCCESS;
 			} );

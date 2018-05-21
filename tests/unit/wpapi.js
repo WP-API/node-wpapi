@@ -60,7 +60,7 @@ describe( 'WPAPI', () => {
 			const site = new WPAPI( {
 				endpoint: 'http://some.url.com/wp-json',
 				username: 'fyodor',
-				password: 'dostoyevsky'
+				password: 'dostoyevsky',
 			} );
 			expect( site._options.endpoint ).to.equal( 'http://some.url.com/wp-json/' );
 			expect( site._options.username ).to.equal( 'fyodor' );
@@ -71,7 +71,7 @@ describe( 'WPAPI', () => {
 			const site = new WPAPI( {
 				endpoint: 'http://some.url.com/wp-json',
 				username: 'fyodor',
-				password: 'dostoyevsky'
+				password: 'dostoyevsky',
 			} );
 			expect( site._options.username ).to.equal( 'fyodor' );
 			expect( site._options.password ).to.equal( 'dostoyevsky' );
@@ -83,7 +83,7 @@ describe( 'WPAPI', () => {
 			it( 'for GET requests', () => {
 				sinon.stub( httpTransport, 'get' );
 				const site = new WPAPI( {
-					endpoint: 'http://some.url.com/wp-json'
+					endpoint: 'http://some.url.com/wp-json',
 				} );
 				const query = site.root( '' );
 				query.get();
@@ -94,7 +94,7 @@ describe( 'WPAPI', () => {
 			it( 'for POST requests', () => {
 				sinon.stub( httpTransport, 'post' );
 				const site = new WPAPI( {
-					endpoint: 'http://some.url.com/wp-json'
+					endpoint: 'http://some.url.com/wp-json',
 				} );
 				const query = site.root( '' );
 				const data = {};
@@ -106,7 +106,7 @@ describe( 'WPAPI', () => {
 			it( 'for POST requests', () => {
 				sinon.stub( httpTransport, 'post' );
 				const site = new WPAPI( {
-					endpoint: 'http://some.url.com/wp-json'
+					endpoint: 'http://some.url.com/wp-json',
 				} );
 				const query = site.root( '' );
 				const data = {};
@@ -118,7 +118,7 @@ describe( 'WPAPI', () => {
 			it( 'for PUT requests', () => {
 				sinon.stub( httpTransport, 'put' );
 				const site = new WPAPI( {
-					endpoint: 'http://some.url.com/wp-json'
+					endpoint: 'http://some.url.com/wp-json',
 				} );
 				const query = site.root( 'a-resource' );
 				const data = {};
@@ -130,11 +130,11 @@ describe( 'WPAPI', () => {
 			it( 'for DELETE requests', () => {
 				sinon.stub( httpTransport, 'delete' );
 				const site = new WPAPI( {
-					endpoint: 'http://some.url.com/wp-json'
+					endpoint: 'http://some.url.com/wp-json',
 				} );
 				const query = site.root( 'a-resource' );
 				const data = {
-					force: true
+					force: true,
 				};
 				query.delete( data );
 				expect( httpTransport.delete ).to.have.been.calledWith( query, data );
@@ -151,8 +151,8 @@ describe( 'WPAPI', () => {
 				const site = new WPAPI( {
 					endpoint: 'http://some.url.com/wp-json',
 					transport: {
-						get: customGet
-					}
+						get: customGet,
+					},
 				} );
 				const query = site.root( '' );
 				query.get();
@@ -169,8 +169,8 @@ describe( 'WPAPI', () => {
 				const site = new WPAPI( {
 					endpoint: 'http://some.url.com/wp-json',
 					transport: {
-						get: customGet
-					}
+						get: customGet,
+					},
 				} );
 				const query = site.root( '' );
 				query.get();
@@ -188,8 +188,8 @@ describe( 'WPAPI', () => {
 					endpoint: 'http://some.url.com/wp-json',
 					transport: {
 						post: customPost,
-						put: customPut
-					}
+						put: customPut,
+					},
 				} );
 				const query = site.root( 'a-resource' );
 				const data = {};
@@ -209,11 +209,11 @@ describe( 'WPAPI', () => {
 				const site = new WPAPI( {
 					endpoint: 'http://some.url.com/wp-json',
 					transport: {
-						get: customGet
-					}
+						get: customGet,
+					},
 				} );
 				const site2 = new WPAPI( {
-					endpoint: 'http://some.url.com/wp-json'
+					endpoint: 'http://some.url.com/wp-json',
 				} );
 				expect( site ).not.to.equal( site2 );
 				const query = site2.root( '' );
@@ -274,10 +274,10 @@ describe( 'WPAPI', () => {
 					endpoints: [ {
 						methods: [ 'GET' ],
 						args: {
-							filter: {}
-						}
-					} ]
-				}
+							filter: {},
+						},
+					} ],
+				},
 			} );
 			expect( site instanceof WPAPI ).to.be.true;
 			expect( site.posts ).to.be.a( 'function' );
@@ -296,25 +296,25 @@ describe( 'WPAPI', () => {
 		beforeEach( () => {
 			responses = {
 				head: {},
-				get: {}
+				get: {},
 			};
 			responses.head.withLink = {
 				'content-type': 'text/html; charset=UTF-8',
-				link: '<http://mozarts.house/wp-json/>; rel="https://api.w.org/"'
+				link: '<http://mozarts.house/wp-json/>; rel="https://api.w.org/"',
 			};
 			responses.head.withoutLink = {
-				'content-type': 'text/html; charset=utf-8'
+				'content-type': 'text/html; charset=utf-8',
 			};
 			responses.get.withLink = {
 				headers: {
 					'content-type': 'text/html; charset=UTF-8',
-					link: '<http://mozarts.house/wp-json/>; rel="https://api.w.org/"'
-				}
+					link: '<http://mozarts.house/wp-json/>; rel="https://api.w.org/"',
+				},
 			};
 			responses.get.withoutLink = {
 				headers: {
-					'content-type': 'text/html; charset=UTF-8'
-				}
+					'content-type': 'text/html; charset=UTF-8',
+				},
 			};
 			responses.apiRoot = {
 				name: 'Skip Beats',
@@ -322,8 +322,8 @@ describe( 'WPAPI', () => {
 				routes: {
 					'list': {},
 					'of': {},
-					'routes': {}
-				}
+					'routes': {},
+				},
 			};
 			// Stub HTTP methods
 			sinon.stub( httpTransport, 'head' );
@@ -460,7 +460,7 @@ describe( 'WPAPI', () => {
 			it( 'passes options from the parent WPAPI instance to the namespaced handlers', () => {
 				site.auth( {
 					username: 'u',
-					password: 'p'
+					password: 'p',
 				} );
 				const pages = site.namespace( 'wp/v2' ).pages();
 				expect( pages._options ).to.be.an( 'object' );
@@ -473,7 +473,7 @@ describe( 'WPAPI', () => {
 			it( 'permits the namespace to be stored in a variable without disrupting options', () => {
 				site.auth( {
 					username: 'u',
-					password: 'p'
+					password: 'p',
 				} );
 				const wpV2 = site.namespace( 'wp/v2' );
 				const pages = wpV2.pages();
@@ -508,9 +508,9 @@ describe( 'WPAPI', () => {
 						endpoints: [ {
 							methods: [ 'GET' ],
 							args: {
-								name: {}
-							}
-						} ]
+								name: {},
+							},
+						} ],
 					},
 					'/wp/v2/customendpoint/(?P<thing>[\\w-]+)': {
 						namespace: 'wp/v2',
@@ -518,10 +518,10 @@ describe( 'WPAPI', () => {
 						endpoints: [ {
 							methods: [ 'GET' ],
 							args: {
-								parent: {}
-							}
-						} ]
-					}
+								parent: {},
+							},
+						} ],
+					},
 				} );
 			} );
 
@@ -587,7 +587,7 @@ describe( 'WPAPI', () => {
 				sinon.stub( httpTransport, 'get' );
 				const customGet = sinon.stub();
 				site.transport( {
-					get: customGet
+					get: customGet,
 				} );
 				const cb = () => {};
 				const query = site.root( '' );
@@ -601,7 +601,7 @@ describe( 'WPAPI', () => {
 				const originalMethods = Object.assign( {}, site._options.transport );
 				site.transport( {
 					get() {},
-					put() {}
+					put() {},
 				} );
 				const newMethods = Object.assign( {}, site._options.transport );
 				expect( newMethods.delete ).to.equal( originalMethods.delete );
@@ -647,7 +647,7 @@ describe( 'WPAPI', () => {
 
 			it( 'inherits options from the parent WPAPI instance', () => {
 				const site = new WPAPI( {
-					endpoint: 'http://cat.website.com/'
+					endpoint: 'http://cat.website.com/',
 				} );
 				const request = site.root( 'custom-path' );
 				expect( request._options ).to.have.property( 'endpoint' );
@@ -677,7 +677,7 @@ describe( 'WPAPI', () => {
 			it( 'sets the username and password when provided in an object', () => {
 				site.auth( {
 					username: 'user1',
-					password: 'pass1'
+					password: 'pass1',
 				} );
 				expect( site._options ).to.have.property( 'username' );
 				expect( site._options ).to.have.property( 'password' );
@@ -690,10 +690,10 @@ describe( 'WPAPI', () => {
 			it( 'can update previously-set usernames and passwords', () => {
 				site.auth( {
 					username: 'user1',
-					password: 'pass1'
+					password: 'pass1',
 				} ).auth( {
 					username: 'admin',
-					password: 'sandwich'
+					password: 'sandwich',
 				} );
 				expect( site._options ).to.have.property( 'username' );
 				expect( site._options ).to.have.property( 'password' );
@@ -705,7 +705,7 @@ describe( 'WPAPI', () => {
 
 			it( 'sets the nonce when provided in an object', () => {
 				site.auth( {
-					nonce: 'somenonce'
+					nonce: 'somenonce',
 				} );
 				expect( site._options ).to.have.property( 'nonce' );
 				expect( site._options.nonce ).to.equal( 'somenonce' );
@@ -715,9 +715,9 @@ describe( 'WPAPI', () => {
 
 			it( 'can update nonce credentials', () => {
 				site.auth( {
-					nonce: 'somenonce'
+					nonce: 'somenonce',
 				} ).auth( {
-					nonce: 'refreshednonce'
+					nonce: 'refreshednonce',
 				} );
 				expect( site._options ).to.have.property( 'nonce' );
 				expect( site._options.nonce ).to.equal( 'refreshednonce' );
@@ -728,7 +728,7 @@ describe( 'WPAPI', () => {
 			it( 'passes authentication status to all subsequently-instantiated handlers', () => {
 				site.auth( {
 					username: 'user',
-					password: 'pass'
+					password: 'pass',
 				} );
 				const req = site.root( '' );
 				expect( req ).to.have.property( '_options' );
@@ -765,26 +765,26 @@ describe( 'WPAPI', () => {
 				site.setHeaders( 'Accept-Language', 'en-US' );
 				expect( site._options ).to.have.property( 'headers' );
 				expect( site._options.headers ).to.deep.equal( {
-					'Accept-Language': 'en-US'
+					'Accept-Language': 'en-US',
 				} );
 			} );
 
 			it( 'sets site-wide headers when provided an object of header name-value pairs', () => {
 				site.setHeaders( {
 					'Accept-Language': 'en-CA',
-					Authorization: 'Bearer sometoken'
+					Authorization: 'Bearer sometoken',
 				} );
 				expect( site._options ).to.have.property( 'headers' );
 				expect( site._options.headers ).to.deep.equal( {
 					'Accept-Language': 'en-CA',
-					Authorization: 'Bearer sometoken'
+					Authorization: 'Bearer sometoken',
 				} );
 			} );
 
 			it( 'passes headers to all subsequently-instantiated handlers', () => {
 				site.setHeaders( {
 					'Accept-Language': 'en-IL',
-					Authorization: 'Bearer chicagostylepizza'
+					Authorization: 'Bearer chicagostylepizza',
 				} );
 				const req = site.root( '' );
 				expect( req ).to.have.property( '_options' );
@@ -792,7 +792,7 @@ describe( 'WPAPI', () => {
 				expect( req._options ).to.have.property( 'headers' );
 				expect( req._options.headers ).to.deep.equal( {
 					'Accept-Language': 'en-IL',
-					Authorization: 'Bearer chicagostylepizza'
+					Authorization: 'Bearer chicagostylepizza',
 				} );
 			} );
 

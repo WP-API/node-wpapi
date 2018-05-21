@@ -3,6 +3,6 @@
 module.exports = {
 	credentials: {
 		username: 'apiuser',
-		password: 'password'
-	}
+		password: 'password',
+	},
 };
