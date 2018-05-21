@@ -1,23 +1,41 @@
 'use strict';
-const MockAgent = function() {};
 
-function noop() {}
+const noop = () => {};
 
-MockAgent.prototype = {
-	get: function() { return this; },
-	post: function() { return this; },
-	put: function() { return this; },
-	del: function() { return this; },
-	head: function() { return this; },
-	send: function( data ) {
+class MockAgent {
+	get() {
+		return this;
+	}
+
+	post() {
+		return this;
+	}
+
+	put() {
+		return this;
+	}
+
+	del() {
+		return this;
+	}
+
+	head() {
+		return this;
+	}
+
+	send( data ) {
 		this._data = data;
 		return this;
-	},
-	auth: function() { return this; },
-	end: function( cb ) {
+	}
+
+	auth() {
+		return this;
+	}
+
+	end( cb ) {
 		cb = cb || noop;
 		cb( this._err || null, this._response || {} );
 	}
-};
+}
 
 module.exports = MockAgent;

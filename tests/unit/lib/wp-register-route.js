@@ -278,16 +278,14 @@ describe( 'wp.registerRoute', () => {
 		it( 'does nothing if non-string parameters are provided', () => {
 			const factory1 = registerRoute( 'a', 'b' );
 			const factory2 = registerRoute( 'a', 'b', {
-				params: [ null, function() {} ]
+				params: [ null, () => {} ]
 			});
 			expect( factory1 ).not.to.equal( factory2 );
 			expect( factory1.Ctor ).not.to.equal( factory2.Ctor );
-			function getPrototypeMethods( factoryFn ) {
+			const getPrototypeMethods = ( factoryFn ) => {
 				const proto = factoryFn.Ctor.prototype;
-				return Object.keys( proto ).filter(function( key ) {
-					return typeof proto[ key ] === 'function';
-				});
-			}
+				return Object.keys( proto ).filter( ( key ) => typeof proto[ key ] === 'function' );
+			};
 			const factory1PrototypeMethods = getPrototypeMethods( factory1 );
 			const factory2PrototypeMethods = getPrototypeMethods( factory2 );
 			expect( factory1PrototypeMethods ).to.deep.equal( factory2PrototypeMethods );
@@ -330,10 +328,10 @@ describe( 'wp.registerRoute', () => {
 		beforeEach( () => {
 			const factory = registerRoute( 'myplugin/v1', '/author/(?P<id>\\d+)', {
 				mixins: {
-					foo: function() {
+					foo() {
 						return this.param( 'foo', true );
 					},
-					bar: function( val ) {
+					bar( val ) {
 						return this.param( 'bar', val );
 					}
 				}
@@ -363,7 +361,7 @@ describe( 'wp.registerRoute', () => {
 		it( 'will not overwrite existing endpoint handler prototype methods', () => {
 			const factory = registerRoute( 'myplugin/v1', '/author/(?P<id>\\d+)', {
 				mixins: {
-					id: function() {
+					id() {
 						return this.param( 'id', 'as_a_param' );
 					}
 				}
@@ -378,7 +376,7 @@ describe( 'wp.registerRoute', () => {
 		it( 'will not overwrite WPRequest default methods', () => {
 			const factory = registerRoute( 'myplugin/v1', '/author/(?P<id>\\d+)', {
 				mixins: {
-					param: function() {
+					param() {
 						throw new Error();
 					}
 				}
@@ -418,7 +416,7 @@ describe( 'wp.registerRoute', () => {
 		});
 
 		it( 'throws an error if the parts of the route provided are not contiguous', () => {
-			expect(function() {
+			expect( () => {
 				handler.parent( 101 ).id( 102 ).toString();
 			}).to.throw();
 		});
@@ -433,7 +431,7 @@ describe( 'wp.registerRoute', () => {
 			handler = factory({
 				endpoint: '/'
 			});
-			expect(function() {
+			expect( () => {
 				handler.a( 'foo' ).toString();
 			}).to.throw;
 			expect( handler.a( 'foo_100' ).toString() ).to.equal( '/myplugin/one/foo_100' );
@@ -444,7 +442,7 @@ describe( 'wp.registerRoute', () => {
 			handler = factory({
 				endpoint: '/'
 			});
-			expect(function() {
+			expect( () => {
 				handler.a( 'foo' ).two().b( 1000 ).toString();
 			}).not.to.throw;
 			expect( handler.a( 'foo' ).two( 1000 ).toString() ).to.equal( '/myplugin/one/foo/two/1000' );
@@ -468,9 +466,9 @@ describe( 'wp.registerRoute', () => {
 
 			describe( 'support whitelisted method', () => {
 
-				[ 'get', 'post' ].forEach(function( method ) {
-					it( method, function() {
-						expect(function() {
+				[ 'get', 'post' ].forEach( ( method ) => {
+					it( method, () => {
+						expect( () => {
 							checkMethodSupport( method, handler.a( 1 ).b( 2 ) );
 						}).not.to.throw();
 					});
@@ -480,9 +478,9 @@ describe( 'wp.registerRoute', () => {
 
 			describe( 'blacklist method', () => {
 
-				[ 'delete', 'put' ].forEach(function( method ) {
-					it( method, function() {
-						expect(function() {
+				[ 'delete', 'put' ].forEach( ( method ) => {
+					it( method, () => {
+						expect( () => {
 							checkMethodSupport( method, handler.a( 1 ).b( 2 ) );
 						}).to.throw();
 					});
@@ -491,7 +489,7 @@ describe( 'wp.registerRoute', () => {
 			});
 
 			it( 'support "head" implicitly if "get" is whitelisted', () => {
-				expect(function() {
+				expect( () => {
 					checkMethodSupport( 'head', handler.a( 1 ).b( 2 ) );
 				}).not.to.throw();
 			});
@@ -503,7 +501,7 @@ describe( 'wp.registerRoute', () => {
 				handler = factory({
 					endpoint: '/'
 				});
-				expect(function() {
+				expect( () => {
 					checkMethodSupport( 'head', handler.a( 1 ).b( 2 ) );
 				}).not.to.throw();
 			});
@@ -514,9 +512,9 @@ describe( 'wp.registerRoute', () => {
 
 			describe( 'support all methods', () => {
 
-				[ 'get', 'post', 'head', 'put', 'delete' ].forEach(function( method ) {
-					it( method, function() {
-						expect(function() {
+				[ 'get', 'post', 'head', 'put', 'delete' ].forEach( ( method ) => {
+					it( method, () => {
+						expect( () => {
 							checkMethodSupport( method, handler.a( 1 ) );
 						}).not.to.throw();
 					});
@@ -538,16 +536,16 @@ describe( 'wp.registerRoute', () => {
 			});
 
 			it( 'is properly whitelisted', () => {
-				expect(function() {
+				expect( () => {
 					checkMethodSupport( 'post', handler.a( 1 ).b( 2 ) );
 				}).not.to.throw();
 			});
 
 			describe( 'implicitly blacklists other method', () => {
 
-				[ 'get', 'head', 'delete', 'put' ].forEach(function( method ) {
-					it( method, function() {
-						expect(function() {
+				[ 'get', 'head', 'delete', 'put' ].forEach( ( method ) => {
+					it( method, () => {
+						expect( () => {
 							checkMethodSupport( method, handler.a( 1 ).b( 2 ) );
 						}).to.throw();
 					});

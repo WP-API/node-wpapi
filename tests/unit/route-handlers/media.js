@@ -69,25 +69,25 @@ describe( 'wp.media', () => {
 		});
 
 		it( 'throws an error on successive calls', () => {
-			expect(function successiveCallsThrowsError() {
+			expect( () => {
 				media.id( 8 ).id( 3 );
 			}).to.throw();
 		});
 
 		it( 'passes validation when called with a number', () => {
-			expect(function numberPassesValidation() {
+			expect( () => {
 				media.id( 8 )._renderPath();
 			}).not.to.throw();
 		});
 
 		it( 'passes validation when called with a number formatted as a string', () => {
-			expect(function numberAsStringPassesValidation() {
+			expect( () => {
 				media.id( '9' )._renderPath();
 			}).not.to.throw();
 		});
 
 		it( 'causes a validation error when called with a non-number', () => {
-			expect(function stringFailsValidation() {
+			expect( () => {
 				media.id( 'wombat' )._renderPath();
 			}).to.throw();
 		});

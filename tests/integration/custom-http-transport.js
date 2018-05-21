@@ -104,24 +104,23 @@ describe( 'integration: custom HTTP transport methods', () => {
 			return results;
 		};
 
-		function simpleSlugGet( wpreq, cb ) {
-			if ( ! wpreq._params.slug ) {
-				/* jshint validthis:true */
-				return WPAPI.transport.get.call( this, wpreq, cb );
-			}
-			return WPAPI.transport.get( wpreq ).then( ( results ) => {
-				const result = extractSlug( results );
-				if ( cb && typeof cb === 'function' ) {
-					cb( null, result );
-				}
-				return result;
-			});
-		}
-
 		wp = new WPAPI({
 			endpoint: 'http://wpapi.loc/wp-json',
 			transport: {
-				get: simpleSlugGet
+				// If .slug is used, auto-unwrap the returned array
+				get( wpreq, cb ) {
+					if ( ! wpreq._params.slug ) {
+						/* jshint validthis:true */
+						return WPAPI.transport.get.call( this, wpreq, cb );
+					}
+					return WPAPI.transport.get( wpreq ).then( ( results ) => {
+						const result = extractSlug( results );
+						if ( cb && typeof cb === 'function' ) {
+							cb( null, result );
+						}
+						return result;
+					});
+				}
 			}
 		});
 
@@ -137,25 +136,27 @@ describe( 'integration: custom HTTP transport methods', () => {
 	});
 
 	it( 'can be defined to augment responses', () => {
-		function Collection( arr ) {
-			this.data = arr;
-		}
-		Collection.prototype.pluck = function( key ) {
-			return this.data.map( ( val ) => val[ key ] );
-		};
-		function addCollectionMethodsGet( wpreq, cb ) {
-			/* jshint validthis:true */
-			return WPAPI.transport.get.call( this, wpreq, cb ).then( ( results ) => {
-				if ( Array.isArray( results ) ) {
-					return new Collection( results );
-				}
-			});
+		class Collection {
+			constructor( arr ) {
+				this.data = arr;
+			}
+			pluck( key ) {
+				return this.data.map( ( val ) => val[ key ] );
+			}
 		}
 
 		wp = new WPAPI({
 			endpoint: 'http://wpapi.loc/wp-json',
 			transport: {
-				get: addCollectionMethodsGet
+				// Add collection helper methods to the returned arrays
+				get( wpreq, cb ) {
+					/* jshint validthis:true */
+					return WPAPI.transport.get.call( this, wpreq, cb ).then( ( results ) => {
+						if ( Array.isArray( results ) ) {
+							return new Collection( results );
+						}
+					});
+				}
 			}
 		});
 

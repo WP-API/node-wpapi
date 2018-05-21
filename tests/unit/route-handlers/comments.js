@@ -89,28 +89,28 @@ describe( 'wp.comments', () => {
 		});
 
 		it( 'does not throw an error if a valid numeric ID is specified', () => {
-			expect(function numberPassesValidation() {
+			expect( () => {
 				comments.id( 8 );
 				comments.validatePath();
 			}).not.to.throw();
 		});
 
 		it( 'does not throw an error if a valid numeric ID is specified as a string', () => {
-			expect( function numberAsStringPassesValidation() {
+			expect( () => {
 				comments.id( '8' );
 				comments.validatePath();
 			}).not.to.throw();
 		});
 
 		it( 'throws an error if a non-integer numeric string ID is specified', () => {
-			expect( function nonIntegerNumberAsStringFailsValidation() {
+			expect( () => {
 				comments.id( 4.019 );
 				comments.validatePath();
 			}).to.throw();
 		});
 
 		it( 'throws an error if a non-numeric string ID is specified', () => {
-			expect(function stringFailsValidation() {
+			expect( () => {
 				comments.id( 'wombat' );
 				comments.validatePath();
 			}).to.throw();

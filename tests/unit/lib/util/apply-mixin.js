@@ -19,7 +19,7 @@ describe( 'applyMixin utility', () => {
 	});
 
 	it( 'assigns a method to the provided object', () => {
-		function bar() {}
+		const bar = () => {};
 		applyMixin( obj, 'foo', bar );
 		expect( obj ).to.deep.equal({
 			foo: bar

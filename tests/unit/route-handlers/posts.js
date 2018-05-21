@@ -88,7 +88,7 @@ describe( 'wp.posts', () => {
 			'password',
 			'status',
 			'sticky'
-		].forEach(function( methodName ) {
+		].forEach( ( methodName ) => {
 			expect( posts ).to.have.property( methodName );
 			expect( posts[ methodName ] ).to.be.a( 'function' );
 		});
@@ -107,28 +107,28 @@ describe( 'wp.posts', () => {
 		});
 
 		it( 'does not throw an error if a valid numeric ID is specified', () => {
-			expect(function numberPassesValidation() {
+			expect( () => {
 				posts.id( 8 );
 				posts.validatePath();
 			}).not.to.throw();
 		});
 
 		it( 'does not throw an error if a valid numeric ID is specified as a string', () => {
-			expect( function numberAsStringPassesValidation() {
+			expect( () => {
 				posts.id( '8' );
 				posts.validatePath();
 			}).not.to.throw();
 		});
 
 		it( 'throws an error if a non-integer numeric string ID is specified', () => {
-			expect( function nonIntegerNumberAsStringFailsValidation() {
+			expect( () => {
 				posts.id( 4.019 );
 				posts.validatePath();
 			}).to.throw();
 		});
 
 		it( 'throws an error if a non-numeric string ID is specified', () => {
-			expect(function stringFailsValidation() {
+			expect( () => {
 				posts.id( 'wombat' );
 				posts.validatePath();
 			}).to.throw();

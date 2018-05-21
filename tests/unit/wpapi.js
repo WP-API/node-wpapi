@@ -36,22 +36,22 @@ describe( 'WPAPI', () => {
 		});
 
 		it( 'throws an error if no endpoint is provided', () => {
-			expect(function() {
+			expect( () => {
 				new WPAPI({ endpoint: '/' });
 			}).not.to.throw();
-			expect(function() {
+			expect( () => {
 				new WPAPI();
 			}).to.throw();
 		});
 
 		it( 'throws an error if a non-string endpoint is provided', () => {
-			expect(function() {
+			expect( () => {
 				new WPAPI({ endpoint: 42 });
 			}).to.throw();
-			expect(function() {
+			expect( () => {
 				new WPAPI({ endpoint: [] });
 			}).to.throw();
-			expect(function() {
+			expect( () => {
 				new WPAPI({ endpoint: { lob: 'ster' } });
 			}).to.throw();
 		});
@@ -163,8 +163,8 @@ describe( 'WPAPI', () => {
 
 			it( 'can extend the default HTTP transport methods', () => {
 				sinon.stub( httpTransport, 'get' );
-				const customGet = sinon.spy(function() {
-					WPAPI.transport.get.apply( null, arguments );
+				const customGet = sinon.spy( ( ...args ) => {
+					WPAPI.transport.get.apply( null, args );
 				});
 				const site = new WPAPI({
 					endpoint: 'http://some.url.com/wp-json',
@@ -246,8 +246,8 @@ describe( 'WPAPI', () => {
 		});
 
 		it( 'is frozen (properties cannot be modified directly)', () => {
-			expect(function() {
-				WPAPI.transport.get = function() {};
+			expect( () => {
+				WPAPI.transport.get = () => {};
 			}).to.throw();
 		});
 
@@ -334,7 +334,7 @@ describe( 'WPAPI', () => {
 			sinonSandbox.stub( global.console, 'error' );
 		});
 
-		afterEach(function() {
+		afterEach( () => {
 			// Restore HTTP methods
 			httpTransport.head.restore();
 			httpTransport.get.restore();
@@ -352,7 +352,7 @@ describe( 'WPAPI', () => {
 			httpTransport.head.onFirstCall().returns( Promise.reject() );
 			httpTransport.get.onFirstCall().returns( Promise.reject( 'Some error' ) );
 			const prom = WPAPI.discover( url )
-				.catch(function( err ) {
+				.catch( ( err ) => {
 					expect( global.console.error ).to.have.been.calledWith( 'Some error' );
 					expect( err.message ).to.equal( 'Autodiscovery failed' );
 					return SUCCESS;
@@ -365,7 +365,7 @@ describe( 'WPAPI', () => {
 			httpTransport.head.returns( Promise.resolve( responses.head.withLink ) );
 			httpTransport.get.returns( Promise.resolve( responses.apiRoot ) );
 			const prom = WPAPI.discover( url )
-				.then(function( result ) {
+				.then( ( result ) => {
 					expect( result ).to.be.an.instanceOf( WPAPI );
 					expect( httpTransport.head.calledOnce ).to.equal( true );
 					expect( httpTransport.get.calledOnce ).to.equal( true );
@@ -379,7 +379,7 @@ describe( 'WPAPI', () => {
 			const url = 'http://we.made.it/to/mozarts/house';
 			httpTransport.head.onFirstCall().returns( Promise.resolve( responses.head.withoutLink ) );
 			const prom = WPAPI.discover( url )
-				.catch(function( err ) {
+				.catch( ( err ) => {
 					expect( global.console.error ).to.have.been
 						.calledWith( new Error( 'No header link found with rel="https://api.w.org/"' ) );
 					expect( err.message ).to.equal( 'Autodiscovery failed' );
@@ -394,7 +394,7 @@ describe( 'WPAPI', () => {
 			httpTransport.get.onFirstCall().returns( Promise.resolve( responses.get.withLink ) );
 			httpTransport.get.onSecondCall().returns( Promise.resolve( responses.apiRoot ) );
 			const prom = WPAPI.discover( url )
-				.then(function( result ) {
+				.then( ( result ) => {
 					expect( result ).to.be.an.instanceOf( WPAPI );
 					expect( httpTransport.head.calledOnce ).to.equal( true );
 					expect( httpTransport.get.calledTwice ).to.equal( true );
@@ -409,7 +409,7 @@ describe( 'WPAPI', () => {
 			httpTransport.head.returns( Promise.reject() );
 			httpTransport.get.onFirstCall().returns( Promise.resolve( responses.get.withoutLink ) );
 			const prom = WPAPI.discover( url )
-				.catch(function( err ) {
+				.catch( ( err ) => {
 					expect( global.console.error ).to.have.been
 						.calledWith( new Error( 'No header link found with rel="https://api.w.org/"' ) );
 					expect( err.message ).to.equal( 'Autodiscovery failed' );
@@ -424,7 +424,7 @@ describe( 'WPAPI', () => {
 			httpTransport.get.onFirstCall().returns( Promise.resolve( responses.get.withLink ) );
 			httpTransport.get.onSecondCall().returns( Promise.reject( 'Some error' ) );
 			const prom = WPAPI.discover( url )
-				.then(function( result ) {
+				.then( ( result ) => {
 					expect( result ).to.be.an.instanceOf( WPAPI );
 					expect( httpTransport.head.calledOnce ).to.equal( true );
 					expect( httpTransport.get.calledTwice ).to.equal( true );
@@ -485,13 +485,13 @@ describe( 'WPAPI', () => {
 			});
 
 			it( 'throws an error when provided no namespace', () => {
-				expect(function() {
+				expect( () => {
 					site.namespace();
 				}).to.throw();
 			});
 
 			it( 'throws an error when provided an unregistered namespace', () => {
-				expect(function() {
+				expect( () => {
 					site.namespace( 'foo/baz' );
 				}).to.throw();
 			});
@@ -589,7 +589,7 @@ describe( 'WPAPI', () => {
 				site.transport({
 					get: customGet
 				});
-				function cb() {}
+				const cb = () => {};
 				const query = site.root( '' );
 				query.get( cb );
 				expect( httpTransport.get ).not.to.have.been.called;
@@ -600,8 +600,8 @@ describe( 'WPAPI', () => {
 			it( 'does not impact or overwrite unspecified transport methods', () => {
 				const originalMethods = Object.assign( {}, site._options.transport );
 				site.transport({
-					get: function() {},
-					put: function() {}
+					get() {},
+					put() {}
 				});
 				const newMethods = Object.assign( {}, site._options.transport );
 				expect( newMethods.delete ).to.equal( originalMethods.delete );

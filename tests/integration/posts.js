@@ -819,29 +819,31 @@ describe( 'integration: posts()', () => {
 	// Callback context
 
 	it( 'can GET posts with a context-bound callback', ( done ) => {
-		function Ctor() {}
-		Ctor.prototype.setState = function( state ) {
-			this.state = state;
-		};
-		Ctor.prototype.request = function( cb ) {
-			const self = this;
-			wp.posts().get(function( err, data ) {
-				expect( err ).to.be.null;
+		class Ctor {
+			setState( state ) {
+				this.state = state;
+			}
 
-				// Context is maintained
-				expect( this ).to.equal( self );
-				this.setState({
-					data: data
-				});
+			request( cb ) {
+				const self = this;
+				wp.posts().get(function( err, data ) {
+					expect( err ).to.be.null;
 
-				expect( this ).to.have.property( 'state' );
-				expect( this.state ).to.be.an( 'object' );
-				expect( this.state ).to.have.property( 'data' );
-				expect( this.state.data ).to.be.an( 'array' );
-				expect( this.state.data.length ).to.equal( 10 );
-				cb();
-			}.bind( this ) );
-		};
+					// Context is maintained
+					expect( this ).to.equal( self );
+					this.setState({
+						data: data
+					});
+
+					expect( this ).to.have.property( 'state' );
+					expect( this.state ).to.be.an( 'object' );
+					expect( this.state ).to.have.property( 'data' );
+					expect( this.state.data ).to.be.an( 'array' );
+					expect( this.state.data.length ).to.equal( 10 );
+					cb();
+				}.bind( this ) );
+			}
+		}
 		( new Ctor() ).request( done );
 	});
 
