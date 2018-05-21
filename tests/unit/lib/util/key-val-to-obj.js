@@ -4,11 +4,6 @@ const { expect } = require( 'chai' );
 const keyValToObj = require( '../../../../lib/util/key-val-to-obj' );
 
 describe( 'keyValToObj utility', () => {
-	let obj;
-
-	beforeEach( () => {
-		obj = {};
-	} );
 
 	it( 'is defined', () => {
 		expect( keyValToObj ).to.exist;

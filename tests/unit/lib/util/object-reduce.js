@@ -15,11 +15,6 @@ describe( 'Object reduction tools:', () => {
 
 		describe( test.name, () => {
 			const objectReduce = test.fn;
-			let obj;
-
-			beforeEach( () => {
-				obj = {};
-			} );
 
 			it( 'is defined', () => {
 				expect( objectReduce ).to.exist;

@@ -1,5 +1,5 @@
 'use strict';
-const { expect } = require( 'chai' );
+const { expect } = require( 'chai' );
 
 const WPAPI = require( '../../../wpapi' );
 const WPRequest = require( '../../../lib/constructors/wp-request' );
