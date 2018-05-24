@@ -928,7 +928,7 @@ var wp = new WPAPI({
 
 ## API Documentation
 
-In addition to the above getting-started guide, we have automatically-generated [API documentation](http://wp-api.github.io/node-wpapi/api-reference/).
+In addition to the above getting-started guide, we have automatically-generated [API documentation](http://wp-api.org/node-wpapi/api-reference/wpapi/1.1.2/).
 
 
 ## Issues
