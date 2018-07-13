@@ -3,7 +3,7 @@
  */
 'use strict';
 
-var objectReduce = require( '../util/object-reduce' );
+var objectReduce = require( '../../lib/util/object-reduce' );
 
 /**
  * Walk through the keys and values of a provided object, removing any properties

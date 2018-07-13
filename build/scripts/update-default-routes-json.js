@@ -70,13 +70,31 @@ var simplifyObject = require( './simplify-object' );
 // Parse the arguments object
 var argv = require( 'minimist' )( process.argv.slice( 2 ) );
 
+if ( argv.h || argv.help ) {
+	console.log( `
+Available options:
+
+--endpoint The fully-qualified URI of an API root endpoint to scrape.
+--output   The directory to which to output the scraped JSON.
+--file     The filename to which to output the scraped JSON.
+
+Examples:
+
+update-default-routes-json \\
+  --endpoint=https://wordpress.org/wp-json \\
+  --output=lib/data \\
+  --file=default-routes.json\n` );
+	process.exit();
+}
+
 // The output directory defaults to the lib/data directory. To customize it,
 // specify your own directory with --output=your/output/directory (supports
 // both relative and absolute paths)
 var outputPath = argv.output ?
 	// Nested ternary, don't try this at home: this is to support absolute paths
 	argv.output[ 0 ] === '/' ? argv.output : path.join( process.cwd(), argv.output ) :
-	path.dirname( __filename );
+	// Output to lib/data/ by default
+	path.resolve( process.cwd(), 'lib', 'data' );
 
 // Specify your own API endpoint with --endpoint=http://your-endpoint.com/wp-json
 var endpoint = argv.endpoint || 'http://wpapi.loc/wp-json';
