@@ -58,7 +58,7 @@ describe( 'integration: categories()', () => {
 
 	beforeEach( () => {
 		wp = new WPAPI( {
-			endpoint: 'http://wpapi.loc/wp-json',
+			endpoint: 'http://wpapi.local/wp-json',
 		} );
 	} );
 
@@ -127,7 +127,7 @@ describe( 'integration: categories()', () => {
 					expect( categories._paging.next ).to.be.an( 'object' );
 					expect( categories._paging.next ).to.be.an.instanceOf( WPRequest );
 					expect( categories._paging.next._options.endpoint ).to
-						.equal( 'http://wpapi.loc/wp-json/wp/v2/categories?page=2' );
+						.equal( 'http://wpapi.local/wp-json/wp/v2/categories?page=2' );
 					// Get last page & ensure "next" no longer appears
 					return wp.categories()
 						.page( categories._paging.totalPages )
@@ -169,7 +169,7 @@ describe( 'integration: categories()', () => {
 							expect( categories._paging.prev ).to.be.an( 'object' );
 							expect( categories._paging.prev ).to.be.an.instanceOf( WPRequest );
 							expect( categories._paging.prev._options.endpoint ).to
-								.equal( 'http://wpapi.loc/wp-json/wp/v2/categories?page=1' );
+								.equal( 'http://wpapi.local/wp-json/wp/v2/categories?page=1' );
 							return SUCCESS;
 						} );
 				} );

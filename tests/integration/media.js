@@ -68,10 +68,10 @@ describe( 'integration: media()', () => {
 
 	beforeEach( () => {
 		wp = new WPAPI( {
-			endpoint: 'http://wpapi.loc/wp-json',
+			endpoint: 'http://wpapi.local/wp-json',
 		} );
 		authenticated = new WPAPI( {
-			endpoint: 'http://wpapi.loc/wp-json',
+			endpoint: 'http://wpapi.local/wp-json',
 		} ).auth( credentials );
 	} );
 
@@ -139,7 +139,7 @@ describe( 'integration: media()', () => {
 					expect( media._paging.next ).to.be.an( 'object' );
 					expect( media._paging.next ).to.be.an.instanceOf( WPRequest );
 					expect( media._paging.next._options.endpoint ).to
-						.equal( 'http://wpapi.loc/wp-json/wp/v2/media?page=2' );
+						.equal( 'http://wpapi.local/wp-json/wp/v2/media?page=2' );
 					// Get last page & ensure "next" no longer appears
 					return wp.media()
 						.page( media._paging.totalPages )
@@ -181,7 +181,7 @@ describe( 'integration: media()', () => {
 							expect( media._paging.prev ).to.be.an( 'object' );
 							expect( media._paging.prev ).to.be.an.instanceOf( WPRequest );
 							expect( media._paging.prev._options.endpoint ).to
-								.equal( 'http://wpapi.loc/wp-json/wp/v2/media?page=1' );
+								.equal( 'http://wpapi.local/wp-json/wp/v2/media?page=1' );
 							return SUCCESS;
 						} );
 				} );
@@ -292,7 +292,7 @@ describe( 'integration: media()', () => {
 				expect( createdMedia.caption.raw ).to.equal( 'A painting from Emily Garfield\'s "Conduits" series' );
 
 				// File name is correctly applied and image was uploaded to content dir
-				expect( imageUrl ).to.match( /^http:\/\/wpapi.loc\/content\/uploads\/.*\/ehg-conduits.jpg$/ );
+				expect( imageUrl ).to.match( /^http:\/\/wpapi.local\/content\/uploads\/.*\/ehg-conduits.jpg$/ );
 			} )
 			// UPDATE
 			.then( () => authenticated.media()

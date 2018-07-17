@@ -15,7 +15,7 @@ describe( 'integration: types()', () => {
 
 	beforeEach( () => {
 		wp = new WPAPI( {
-			endpoint: 'http://wpapi.loc/wp-json',
+			endpoint: 'http://wpapi.local/wp-json',
 		} );
 	} );
 

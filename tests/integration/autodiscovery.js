@@ -29,7 +29,7 @@ describe( 'integration: discover()', () => {
 	let sinonSandbox;
 
 	beforeEach( () => {
-		apiPromise = WPAPI.discover( 'http://wpapi.loc' );
+		apiPromise = WPAPI.discover( 'http://wpapi.local' );
 		// Stub warn and error
 		sinonSandbox = sinon.sandbox.create();
 		sinonSandbox.stub( global.console, 'warn' );
@@ -61,7 +61,7 @@ describe( 'integration: discover()', () => {
 	it( 'auto-binds to the detected endpoint on the provided site', () => {
 		const prom = apiPromise
 			.then( ( site ) => {
-				expect( site.posts().toString() ).to.equal( 'http://wpapi.loc/wp-json/wp/v2/posts' );
+				expect( site.posts().toString() ).to.equal( 'http://wpapi.local/wp-json/wp/v2/posts' );
 				return SUCCESS;
 			} );
 		return expect( prom ).to.eventually.equal( SUCCESS );

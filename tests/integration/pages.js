@@ -49,7 +49,7 @@ describe( 'integration: pages()', () => {
 
 	beforeEach( () => {
 		wp = new WPAPI( {
-			endpoint: 'http://wpapi.loc/wp-json',
+			endpoint: 'http://wpapi.local/wp-json',
 		} );
 	} );
 
@@ -117,7 +117,7 @@ describe( 'integration: pages()', () => {
 					expect( pages._paging.next ).to.be.an( 'object' );
 					expect( pages._paging.next ).to.be.an.instanceOf( WPRequest );
 					expect( pages._paging.next._options.endpoint ).to
-						.equal( 'http://wpapi.loc/wp-json/wp/v2/pages?page=2' );
+						.equal( 'http://wpapi.local/wp-json/wp/v2/pages?page=2' );
 					// Get last page & ensure "next" no longer appears
 					return wp.pages()
 						.page( pages._paging.totalPages )
@@ -156,7 +156,7 @@ describe( 'integration: pages()', () => {
 					expect( pages._paging.prev ).to.be.an( 'object' );
 					expect( pages._paging.prev ).to.be.an.instanceOf( WPRequest );
 					expect( pages._paging.prev._options.endpoint ).to
-						.equal( 'http://wpapi.loc/wp-json/wp/v2/pages?page=1' );
+						.equal( 'http://wpapi.local/wp-json/wp/v2/pages?page=1' );
 					return SUCCESS;
 				} );
 			return expect( prom ).to.eventually.equal( SUCCESS );

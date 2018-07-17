@@ -27,10 +27,10 @@ describe( 'autodiscovery helper methods', () => {
 		it( 'parsed and returns the header with the rel for the REST API endpoint', () => {
 			const result = locateAPIRootHeader( {
 				headers: {
-					link: '<http://wpapi.loc/wp-json/>; rel="https://api.w.org/"',
+					link: '<http://wpapi.local/wp-json/>; rel="https://api.w.org/"',
 				},
 			} );
-			expect( result ).to.equal( 'http://wpapi.loc/wp-json/' );
+			expect( result ).to.equal( 'http://wpapi.local/wp-json/' );
 		} );
 
 	} );

@@ -18,10 +18,10 @@ describe( 'integration: settings()', () => {
 
 	beforeEach( () => {
 		wp = new WPAPI( {
-			endpoint: 'http://wpapi.loc/wp-json',
+			endpoint: 'http://wpapi.local/wp-json',
 		} );
 		authenticated = new WPAPI( {
-			endpoint: 'http://wpapi.loc/wp-json',
+			endpoint: 'http://wpapi.local/wp-json',
 		} ).auth( credentials );
 	} );
 

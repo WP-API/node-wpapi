@@ -2,7 +2,7 @@
 
 module.exports = {
 	credentials: {
-		username: 'apiuser',
+		username: 'admin',
 		password: 'password',
 	},
 };

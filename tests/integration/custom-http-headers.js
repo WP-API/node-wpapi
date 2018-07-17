@@ -20,7 +20,7 @@ describe( 'integration: custom HTTP Headers', () => {
 
 	beforeEach( () => {
 		wp = new WPAPI( {
-			endpoint: 'http://wpapi.loc/wp-json',
+			endpoint: 'http://wpapi.local/wp-json',
 		} );
 	} );
 
@@ -43,7 +43,7 @@ describe( 'integration: custom HTTP Headers', () => {
 
 	it( 'can be provided at the WPAPI instance level using WPAPI#setHeaders()', () => {
 		const authenticated = WPAPI
-			.site( 'http://wpapi.loc/wp-json' )
+			.site( 'http://wpapi.local/wp-json' )
 			.setHeaders( 'Authorization', 'Basic ' + base64credentials );
 		const prom = authenticated.posts()
 			.status( [ 'future', 'draft' ] )

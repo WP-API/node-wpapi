@@ -13,7 +13,7 @@ const WPAPI = require( '../../' );
 describe( 'error states:', () => {
 
 	it( 'invalid root endpoint causes a transport-level (superagent) 404 error', () => {
-		const wp = WPAPI.site( 'http://wpapi.loc/wrong-root-endpoint' );
+		const wp = WPAPI.site( 'http://wpapi.local/wrong-root-endpoint' );
 		const prom = wp.posts()
 			.get()
 			.catch( ( err ) => {

@@ -42,7 +42,7 @@ describe( 'integration: custom HTTP transport methods', () => {
 			} );
 		} );
 
-		return WPAPI.site( 'http://wpapi.loc/wp-json' )
+		return WPAPI.site( 'http://wpapi.local/wp-json' )
 			.posts()
 			.perPage( 1 )
 			.then( ( posts ) => {
@@ -62,7 +62,7 @@ describe( 'integration: custom HTTP transport methods', () => {
 		let query2;
 
 		wp = new WPAPI( {
-			endpoint: 'http://wpapi.loc/wp-json',
+			endpoint: 'http://wpapi.local/wp-json',
 			transport: {
 				get: cachingGet,
 			},
@@ -76,7 +76,7 @@ describe( 'integration: custom HTTP transport methods', () => {
 				expect( cachingGet.callCount ).to.equal( 1 );
 				expect( httpTransport.get.callCount ).to.equal( 1 );
 				expect( httpTransport.get ).to.have.been.calledWith( query1 );
-				expect( result ).to.equal( cache[ 'http://wpapi.loc/wp-json/wp/v2/posts/' + id ] );
+				expect( result ).to.equal( cache[ 'http://wpapi.local/wp-json/wp/v2/posts/' + id ] );
 			} )
 			.then( () => {
 				query2 = wp.posts().id( id );
@@ -89,7 +89,7 @@ describe( 'integration: custom HTTP transport methods', () => {
 				// so we mess with that method to properly demonstrate the inequality
 				query2.toString = () => {};
 				expect( httpTransport.get ).not.to.have.been.calledWith( query2 );
-				expect( result ).to.equal( cache[ 'http://wpapi.loc/wp-json/wp/v2/posts/' + id ] );
+				expect( result ).to.equal( cache[ 'http://wpapi.local/wp-json/wp/v2/posts/' + id ] );
 				return SUCCESS;
 			} );
 
@@ -105,7 +105,7 @@ describe( 'integration: custom HTTP transport methods', () => {
 		};
 
 		wp = new WPAPI( {
-			endpoint: 'http://wpapi.loc/wp-json',
+			endpoint: 'http://wpapi.local/wp-json',
 			transport: {
 				// If .slug is used, auto-unwrap the returned array
 				get( wpreq, cb ) {
@@ -146,7 +146,7 @@ describe( 'integration: custom HTTP transport methods', () => {
 		}
 
 		wp = new WPAPI( {
-			endpoint: 'http://wpapi.loc/wp-json',
+			endpoint: 'http://wpapi.local/wp-json',
 			transport: {
 				// Add collection helper methods to the returned arrays
 				get( wpreq, cb ) {

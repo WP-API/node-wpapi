@@ -73,7 +73,7 @@ describe( 'integration: comments()', () => {
 
 	beforeEach( () => {
 		wp = new WPAPI( {
-			endpoint: 'http://wpapi.loc/wp-json',
+			endpoint: 'http://wpapi.local/wp-json',
 		} );
 	} );
 
@@ -152,7 +152,7 @@ describe( 'integration: comments()', () => {
 					expect( posts._paging.next ).to.be.an( 'object' );
 					expect( posts._paging.next ).to.be.an.instanceOf( WPRequest );
 					expect( posts._paging.next._options.endpoint ).to
-						.equal( 'http://wpapi.loc/wp-json/wp/v2/comments?page=2' );
+						.equal( 'http://wpapi.local/wp-json/wp/v2/comments?page=2' );
 					// Get last page & ensure 'next' no longer appears
 					return wp.comments()
 						.page( posts._paging.totalPages )
@@ -194,7 +194,7 @@ describe( 'integration: comments()', () => {
 							expect( posts._paging.prev ).to.be.an( 'object' );
 							expect( posts._paging.prev ).to.be.an.instanceOf( WPRequest );
 							expect( posts._paging.prev._options.endpoint ).to
-								.equal( 'http://wpapi.loc/wp-json/wp/v2/comments?page=1' );
+								.equal( 'http://wpapi.local/wp-json/wp/v2/comments?page=1' );
 							return SUCCESS;
 						} );
 				} );

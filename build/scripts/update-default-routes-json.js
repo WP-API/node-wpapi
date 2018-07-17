@@ -27,7 +27,7 @@
  *     # Invoke with npm script alias, and run against a custom endpoint
  *     npm run update-default-routes-json -- --endpoint=http://my-site.com/wp-json
  *
- * This script runs against http://wpapi.loc/wp-json by default, but it can be
+ * This script runs against http://wpapi.local/wp-json by default, but it can be
  * run against an arbitrary WordPress REST API endpoint by passing the --endpoint
  * argument on the CLI:
  *
@@ -97,7 +97,7 @@ var outputPath = argv.output ?
 	path.resolve( process.cwd(), 'lib', 'data' );
 
 // Specify your own API endpoint with --endpoint=http://your-endpoint.com/wp-json
-var endpoint = argv.endpoint || 'http://wpapi.loc/wp-json';
+var endpoint = argv.endpoint || 'http://wpapi.local/wp-json';
 
 // Specify a custom output file name with --file=custom-api-routes-filename.json
 var fileName = argv.file || 'default-routes.json';

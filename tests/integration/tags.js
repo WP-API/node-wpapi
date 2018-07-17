@@ -63,7 +63,7 @@ describe( 'integration: tags()', () => {
 
 	beforeEach( () => {
 		wp = new WPAPI( {
-			endpoint: 'http://wpapi.loc/wp-json',
+			endpoint: 'http://wpapi.local/wp-json',
 		} );
 	} );
 
@@ -132,7 +132,7 @@ describe( 'integration: tags()', () => {
 					expect( tags._paging.next ).to.be.an( 'object' );
 					expect( tags._paging.next ).to.be.an.instanceOf( WPRequest );
 					expect( tags._paging.next._options.endpoint ).to
-						.equal( 'http://wpapi.loc/wp-json/wp/v2/tags?page=2' );
+						.equal( 'http://wpapi.local/wp-json/wp/v2/tags?page=2' );
 					// Get last page & ensure "next" no longer appears
 					return wp.tags().page( tags._paging.totalPages )
 						.get()
@@ -173,7 +173,7 @@ describe( 'integration: tags()', () => {
 							expect( tags._paging.prev ).to.be.an( 'object' );
 							expect( tags._paging.prev ).to.be.an.instanceOf( WPRequest );
 							expect( tags._paging.prev._options.endpoint ).to
-								.equal( 'http://wpapi.loc/wp-json/wp/v2/tags?page=1' );
+								.equal( 'http://wpapi.local/wp-json/wp/v2/tags?page=1' );
 							return SUCCESS;
 						} );
 				} );
