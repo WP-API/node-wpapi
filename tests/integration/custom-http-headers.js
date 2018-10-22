@@ -13,14 +13,15 @@ var WPAPI = require( '../../' );
 // Inspecting the titles of the returned posts arrays is an easy way to
 // validate that the right page of results was returned
 var getTitles = require( './helpers/get-rendered-prop' ).bind( null, 'title' );
-var base64credentials = new Buffer( 'apiuser:password' ).toString( 'base64' );
+var credentials = require( './helpers/constants' ).credentials;
+var base64credentials = new Buffer( `${credentials.username}:${credentials.password}` ).toString( 'base64' );
 
 describe( 'integration: custom HTTP Headers', () => {
 	var wp;
 
 	beforeEach( () => {
 		wp = new WPAPI({
-			endpoint: 'http://wpapi.loc/wp-json'
+			endpoint: 'http://wpapi.local/wp-json'
 		});
 	});
 
@@ -43,7 +44,7 @@ describe( 'integration: custom HTTP Headers', () => {
 
 	it( 'can be provided at the WPAPI instance level using WPAPI#setHeaders()', () => {
 		var authenticated = WPAPI
-			.site( 'http://wpapi.loc/wp-json' )
+			.site( 'http://wpapi.local/wp-json' )
 			.setHeaders( 'Authorization', 'Basic ' + base64credentials );
 		var prom = authenticated.posts()
 			.status([ 'future', 'draft' ])
@@ -56,7 +57,7 @@ describe( 'integration: custom HTTP Headers', () => {
 				return authenticated.users().me();
 			})
 			.then( ( me ) => {
-				expect( me.slug ).to.equal( 'apiuser' );
+				expect( me.slug ).to.equal( credentials.username );
 				return SUCCESS;
 			});
 		return expect( prom ).to.eventually.equal( SUCCESS );

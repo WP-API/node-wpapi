@@ -18,10 +18,10 @@ describe( 'integration: settings()', () => {
 
 	beforeEach( () => {
 		wp = new WPAPI({
-			endpoint: 'http://wpapi.loc/wp-json'
+			endpoint: 'http://wpapi.local/wp-json'
 		});
 		authenticated = new WPAPI({
-			endpoint: 'http://wpapi.loc/wp-json'
+			endpoint: 'http://wpapi.local/wp-json'
 		}).auth( credentials );
 	});
 
@@ -64,7 +64,7 @@ describe( 'integration: settings()', () => {
 				]);
 
 				// Spot check specific values
-				expect( settings.title ).to.equal( 'WP-API Testbed' );
+				expect( settings.title ).to.equal( 'Chassis Site' );
 				expect( settings.description ).to.equal( 'Just another WordPress site' );
 				expect( settings.language ).to.equal( 'en_US' );
 				expect( settings.posts_per_page ).to.equal( 10 );
