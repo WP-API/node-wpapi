@@ -66,7 +66,6 @@ describe( 'integration: settings()', () => {
 				// Spot check specific values
 				expect( settings.title ).to.equal( 'WP-API Testbed' );
 				expect( settings.description ).to.equal( 'Just another WordPress site' );
-				expect( settings.language ).to.equal( 'en_US' );
 				expect( settings.posts_per_page ).to.equal( 10 );
 
 				return SUCCESS;
