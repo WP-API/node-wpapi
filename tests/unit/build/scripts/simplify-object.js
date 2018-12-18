@@ -1,7 +1,7 @@
 'use strict';
 const { expect } = require( 'chai' );
 
-const simplifyObject = require( '../../../../lib/data/simplify-object' );
+const simplifyObject = require( '../../../../build/scripts/simplify-object' );
 
 const fullPostsCollectionRouteDefinition = require( './posts-collection-route-definition.json' );
 

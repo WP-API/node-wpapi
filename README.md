@@ -191,7 +191,7 @@ var site = new WPAPI({
 site.namespace( 'myplugin/v1' ).authors()...
 ```
 
-To create a slimmed JSON file dedicated to this particular purpose, see the Node script [lib/data/update-default-routes-json.js](https://github.com/wp-api/node-wpapi/tree/master/lib/data/update-default-routes-json.js), which will let you download and save an endpoint response to your local project.
+To create a slimmed JSON file dedicated to this particular purpose, see the npm script [npm run update-default-routes-json](https://github.com/wp-api/node-wpapi/tree/master/build/scripts/update-default-routes-json.js), which will let you download and save an endpoint response to your local project.
 
 In addition to retrieving the specified resource with `.get()`, you can also `.create()`, `.update()` and `.delete()` resources:
 
