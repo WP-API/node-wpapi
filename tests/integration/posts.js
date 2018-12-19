@@ -684,7 +684,7 @@ describe( 'integration: posts()', () => {
 				return SUCCESS;
 			} );
 		return expect( prom ).to.eventually.equal( SUCCESS );
-	} ).timeout( 10000 );
+	}, 10000 );
 
 	it( 'can create a post with tags, categories and featured media', () => {
 		let id;
@@ -814,7 +814,7 @@ describe( 'integration: posts()', () => {
 				return SUCCESS;
 			} );
 		return expect( prom ).to.eventually.equal( SUCCESS );
-	} ).timeout( 10000 );
+	}, 10000 );
 
 	// Callback context
 

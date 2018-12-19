@@ -44,11 +44,10 @@
     "mocha": "_mocha tests --recursive --reporter=nyan",
     "jest": "jest",
     "jest:unit": "jest tests/unit",
-    "jest:integration": "jest tests/integration",
     "watch": "grunt watch",
     "test:all": "_mocha tests --recursive --reporter=nyan",
     "test:unit": "_mocha tests/unit --recursive --reporter=nyan",
-    "test:integration": "_mocha tests/integration --recursive --reporter=nyan",
+    "test:integration": "jest tests/integration",
     "test:ci": "npm run lint && istanbul cover _mocha -- tests/unit --recursive --reporter=list",
     "pretest": "npm run lint",
     "test": "istanbul cover _mocha -- tests --recursive --reporter=nyan"
