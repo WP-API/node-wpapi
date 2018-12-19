@@ -47,3 +47,6 @@ documentation/index.html
 
 # Built files (for use in browser)
 browser/
+
+# Consuming applications should maintain their own lockfile.
+package-lock.json
