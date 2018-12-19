@@ -14,7 +14,7 @@ const WPAPI = require( '../../' );
 // validate that the right page of results was returned
 const getTitles = require( '../helpers/get-rendered-prop' ).bind( null, 'title' );
 const credentials = require( '../helpers/constants' ).credentials;
-const base64credentials = new Buffer( `${ credentials.username }:${ credentials.password }` ).toString( 'base64' );
+const base64credentials = Buffer.from( `${ credentials.username }:${ credentials.password }` ).toString( 'base64' );
 
 describe( 'integration: custom HTTP Headers', () => {
 	let wp;
