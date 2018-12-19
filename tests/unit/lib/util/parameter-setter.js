@@ -1,8 +1,4 @@
 'use strict';
-const chai = require( 'chai' );
-const sinon = require( 'sinon' );
-chai.use( require( 'sinon-chai' ) );
-const expect = chai.expect;
 
 const paramSetter = require( '../../../../lib/util/parameter-setter' );
 
@@ -14,18 +10,18 @@ describe( 'parameterSetter utility', () => {
 	} );
 
 	it( 'is a function', () => {
-		expect( paramSetter ).to.be.a( 'function' );
+		expect( typeof paramSetter ).toBe( 'function' );
 	} );
 
 	it( 'returns a function', () => {
-		expect( paramSetter() ).to.be.a( 'function' );
+		expect( typeof paramSetter() ).toBe( 'function' );
 	} );
 
 	it( 'creates a setter that calls this.param()', () => {
-		obj.param = sinon.stub();
+		obj.param = jest.fn();
 		obj.setter = paramSetter( 'foo' );
 		obj.setter( 'bar' );
-		expect( obj.param ).to.have.been.calledWith( 'foo', 'bar' );
+		expect( obj.param ).toHaveBeenCalledWith( 'foo', 'bar' );
 	} );
 
 } );

@@ -1,5 +1,4 @@
 'use strict';
-const { expect } = require( 'chai' );
 
 const applyMixin = require( '../../../../lib/util/apply-mixin' );
 
@@ -11,17 +10,17 @@ describe( 'applyMixin utility', () => {
 	} );
 
 	it( 'is a function', () => {
-		expect( applyMixin ).to.be.a( 'function' );
+		expect( typeof applyMixin ).toBe( 'function' );
 	} );
 
 	it( 'returns nothing', () => {
-		expect( applyMixin() ).to.be.undefined;
+		expect( applyMixin() ).toBeUndefined();
 	} );
 
 	it( 'assigns a method to the provided object', () => {
 		const bar = () => {};
 		applyMixin( obj, 'foo', bar );
-		expect( obj ).to.deep.equal( {
+		expect( obj ).toEqual( {
 			foo: bar,
 		} );
 	} );
@@ -29,14 +28,14 @@ describe( 'applyMixin utility', () => {
 	it( 'does not mutate the object if the specified key exists already', () => {
 		obj.foo = 'bar';
 		applyMixin( obj, 'foo', () => {} );
-		expect( obj ).to.deep.equal( {
+		expect( obj ).toEqual( {
 			foo: 'bar',
 		} );
 	} );
 
 	it( 'does not mutate the object if third arg is not a function', () => {
 		applyMixin( obj, 'key', 'not a function' );
-		expect( obj ).to.deep.equal( {} );
+		expect( obj ).toEqual( {} );
 	} );
 
 } );

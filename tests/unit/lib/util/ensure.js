@@ -1,5 +1,4 @@
 'use strict';
-const { expect } = require( 'chai' );
 
 const ensure = require( '../../../../lib/util/ensure' );
 
@@ -11,37 +10,37 @@ describe( 'ensure utility', () => {
 	} );
 
 	it( 'is defined', () => {
-		expect( ensure ).to.exist;
+		expect( ensure ).toBeDefined();
 	} );
 
 	it( 'is a function', () => {
-		expect( ensure ).to.be.a( 'function' );
+		expect( typeof ensure ).toBe( 'function' );
 	} );
 
 	it( 'sets a default property value on an object', () => {
-		expect( obj ).not.to.have.property( 'foo' );
+		expect( obj ).not.toHaveProperty( 'foo' );
 		ensure( obj, 'foo', 'bar' );
-		expect( obj ).to.have.property( 'foo' );
-		expect( obj.foo ).to.be.a( 'string' );
-		expect( obj.foo ).to.equal( 'bar' );
+		expect( obj ).toHaveProperty( 'foo' );
+		expect( typeof obj.foo ).toBe( 'string' );
+		expect( obj.foo ).toBe( 'bar' );
 	} );
 
 	it( 'will not overwrite an existing value on an object', () => {
 		obj.foo = 'baz';
-		expect( obj ).to.have.property( 'foo' );
+		expect( obj ).toHaveProperty( 'foo' );
 		ensure( obj, 'foo', 'bar' );
-		expect( obj ).to.have.property( 'foo' );
-		expect( obj.foo ).to.be.a( 'string' );
-		expect( obj.foo ).to.equal( 'baz' );
+		expect( obj ).toHaveProperty( 'foo' );
+		expect( typeof obj.foo ).toBe( 'string' );
+		expect( obj.foo ).toBe( 'baz' );
 	} );
 
 	it( 'will not overwrite a falsy value on an object', () => {
 		obj.foo = 0;
-		expect( obj ).to.have.property( 'foo' );
+		expect( obj ).toHaveProperty( 'foo' );
 		ensure( obj, 'foo', 'bar' );
-		expect( obj ).to.have.property( 'foo' );
-		expect( obj.foo ).to.be.a( 'number' );
-		expect( obj.foo ).to.equal( 0 );
+		expect( obj ).toHaveProperty( 'foo' );
+		expect( typeof obj.foo ).toBe( 'number' );
+		expect( obj.foo ).toBe( 0 );
 	} );
 
 } );

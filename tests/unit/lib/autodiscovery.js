@@ -1,5 +1,4 @@
 'use strict';
-const { expect } = require( 'chai' );
 
 const autodiscovery = require( '../../../lib/autodiscovery' );
 
@@ -13,7 +12,7 @@ describe( 'autodiscovery helper methods', () => {
 		} );
 
 		it( 'is a function', () => {
-			expect( locateAPIRootHeader ).to.be.a( 'function' );
+			expect( typeof locateAPIRootHeader ).toBe( 'function' );
 		} );
 
 		it( 'throws an error if no link header is found', () => {
@@ -21,7 +20,7 @@ describe( 'autodiscovery helper methods', () => {
 				locateAPIRootHeader( {
 					headers: {},
 				} );
-			} ).to.throw( 'No header link found with rel="https://api.w.org/"' );
+			} ).toThrow( 'No header link found with rel="https://api.w.org/"' );
 		} );
 
 		it( 'parsed and returns the header with the rel for the REST API endpoint', () => {
@@ -30,7 +29,7 @@ describe( 'autodiscovery helper methods', () => {
 					link: '<http://wpapi.local/wp-json/>; rel="https://api.w.org/"',
 				},
 			} );
-			expect( result ).to.equal( 'http://wpapi.local/wp-json/' );
+			expect( result ).toBe( 'http://wpapi.local/wp-json/' );
 		} );
 
 	} );

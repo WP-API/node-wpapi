@@ -1,5 +1,4 @@
 'use strict';
-const { expect } = require( 'chai' );
 
 const routeTree = require( '../../../lib/route-tree' );
 const defaultRoutes = require( '../../../lib/data/default-routes.json' );
@@ -15,21 +14,21 @@ describe( 'route-tree utility', () => {
 
 		it( 'returns an object keyed by API namespace', () => {
 			const keys = Object.keys( tree ).sort();
-			expect( keys.length ).to.equal( 2 );
-			expect( keys ).to.deep.equal( [ 'oembed/1.0', 'wp/v2' ] );
+			expect( keys.length ).toBe( 2 );
+			expect( keys ).toEqual( [ 'oembed/1.0', 'wp/v2' ] );
 		} );
 
 		it( 'includes objects for all default wp/v2 routes', () => {
 			const routes = Object.keys( tree[ 'wp/v2' ] ).sort();
-			expect( routes ).to.have.length( 11 );
-			expect( routes.join( ',' ) ).to
-				.equal( 'categories,comments,media,pages,posts,settings,statuses,tags,taxonomies,types,users' );
+			expect( routes.length ).toBe( 11 );
+			expect( routes.join( ',' ) )
+				.toBe( 'categories,comments,media,pages,posts,settings,statuses,tags,taxonomies,types,users' );
 		} );
 
 		it( 'includes objects for all default oembed/1.0 routes', () => {
 			const routes = Object.keys( tree[ 'oembed/1.0' ] ).sort();
-			expect( routes ).to.have.length( 1 );
-			expect( routes.join( ',' ) ).to.equal( 'embed' );
+			expect( routes.length ).toBe( 1 );
+			expect( routes.join( ',' ) ).toBe( 'embed' );
 		} );
 
 		// Inspect the .posts tree as a smoke test for whether parsing the API
@@ -42,14 +41,14 @@ describe( 'route-tree utility', () => {
 			} );
 
 			it( 'includes a ._getArgs property', () => {
-				expect( posts ).to.have.property( '_getArgs' );
-				expect( posts._getArgs ).to.be.an( 'object' );
+				expect( posts ).toHaveProperty( '_getArgs' );
+				expect( typeof posts._getArgs ).toBe( 'object' );
 			} );
 
 			it( '._getArgs specifies a list of supported parameters', () => {
-				expect( posts ).to.have.property( '_getArgs' );
-				expect( posts._getArgs ).to.be.an( 'object' );
-				expect( posts._getArgs ).to.deep.equal( {
+				expect( posts ).toHaveProperty( '_getArgs' );
+				expect( typeof posts._getArgs ).toBe( 'object' );
+				expect( posts._getArgs ).toEqual( {
 					context: {},
 					page: {},
 					per_page: {},
@@ -75,26 +74,26 @@ describe( 'route-tree utility', () => {
 			} );
 
 			it( 'includes a .posts property', () => {
-				expect( posts ).to.have.property( 'posts' );
-				expect( posts.posts ).to.be.an( 'object' );
+				expect( posts ).toHaveProperty( 'posts' );
+				expect( typeof posts.posts ).toBe( 'object' );
 			} );
 
 			// This is a decidedly incomplete smoke test...
 			// But if this fails, so will everything else!
 			it( '.posts defines the top level of a route tree', () => {
 				const routeTree = posts.posts;
-				expect( routeTree ).to.have.property( 'level' );
-				expect( routeTree.level ).to.equal( 0 );
-				expect( routeTree ).to.have.property( 'methods' );
-				expect( routeTree.methods.sort().join( '|' ) ).to.equal( 'get|head|post' );
-				expect( routeTree ).to.have.property( 'namedGroup' );
-				expect( routeTree.namedGroup ).to.equal( false );
-				expect( routeTree ).to.have.property( 'names' );
-				expect( routeTree.names ).to.deep.equal( [ 'posts' ] );
-				expect( routeTree ).to.have.property( 'validate' );
-				expect( routeTree.validate ).to.be.a( 'function' );
-				expect( routeTree ).to.have.property( 'children' );
-				expect( routeTree.children ).to.be.an( 'object' );
+				expect( routeTree ).toHaveProperty( 'level' );
+				expect( routeTree.level ).toBe( 0 );
+				expect( routeTree ).toHaveProperty( 'methods' );
+				expect( routeTree.methods.sort().join( '|' ) ).toBe( 'get|head|post' );
+				expect( routeTree ).toHaveProperty( 'namedGroup' );
+				expect( routeTree.namedGroup ).toBe( false );
+				expect( routeTree ).toHaveProperty( 'names' );
+				expect( routeTree.names ).toEqual( [ 'posts' ] );
+				expect( routeTree ).toHaveProperty( 'validate' );
+				expect( typeof routeTree.validate ).toBe( 'function' );
+				expect( routeTree ).toHaveProperty( 'children' );
+				expect( typeof routeTree.children ).toBe( 'object' );
 			} );
 
 		} );

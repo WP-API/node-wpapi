@@ -1,5 +1,4 @@
 'use strict';
-const { expect } = require( 'chai' );
 
 describe( 'Object reduction tools:', () => {
 	// Ensure parity with the relevant signature & functionality of lodash.reduce
@@ -17,15 +16,15 @@ describe( 'Object reduction tools:', () => {
 			const objectReduce = test.fn;
 
 			it( 'is defined', () => {
-				expect( objectReduce ).to.exist;
+				expect( objectReduce ).toBeDefined();
 			} );
 
 			it( 'is a function', () => {
-				expect( objectReduce ).to.be.a( 'function' );
+				expect( typeof objectReduce ).toBe( 'function' );
 			} );
 
 			it( 'resolves to the provided initial value if called on an empty object', () => {
-				expect( objectReduce( {}, () => {}, 'Sasquatch' ) ).to.equal( 'Sasquatch' );
+				expect( objectReduce( {}, () => {}, 'Sasquatch' ) ).toBe( 'Sasquatch' );
 			} );
 
 			it( 'can be used to reduce over an object', () => {
@@ -34,7 +33,7 @@ describe( 'Object reduction tools:', () => {
 					key2: 'val2',
 					key3: 'val3',
 				}, ( memo, val, key ) => memo + val + key, 'result:' );
-				expect( result ).to.equal( 'result:val1key1val2key2val3key3' );
+				expect( result ).toBe( 'result:val1key1val2key2val3key3' );
 			} );
 
 		} );

@@ -1,5 +1,4 @@
 'use strict';
-const { expect } = require( 'chai' );
 
 const WPAPI = require( '../../../wpapi' );
 const WPRequest = require( '../../../lib/constructors/wp-request' );
@@ -23,26 +22,26 @@ describe( 'wp.types', () => {
 			types = site.types( {
 				endpoint: '/custom-endpoint/',
 			} );
-			expect( types._options.endpoint ).to.equal( '/custom-endpoint/' );
+			expect( types._options.endpoint ).toBe( '/custom-endpoint/' );
 		} );
 
 		it( 'should initialize _options to the site defaults', () => {
-			expect( types._options.endpoint ).to.equal( '/wp-json/' );
-			expect( types._options.username ).to.equal( 'foouser' );
-			expect( types._options.password ).to.equal( 'barpass' );
+			expect( types._options.endpoint ).toBe( '/wp-json/' );
+			expect( types._options.username ).toBe( 'foouser' );
+			expect( types._options.password ).toBe( 'barpass' );
 		} );
 
 		it( 'should initialize the base path component', () => {
-			expect( types.toString() ).to.equal( '/wp-json/wp/v2/types' );
+			expect( types.toString() ).toBe( '/wp-json/wp/v2/types' );
 		} );
 
 		it( 'should set a default _supportedMethods array', () => {
-			expect( types ).to.have.property( '_supportedMethods' );
-			expect( types._supportedMethods ).to.be.an( 'array' );
+			expect( types ).toHaveProperty( '_supportedMethods' );
+			expect( Array.isArray( types._supportedMethods ) ).toBe( true );
 		} );
 
 		it( 'should inherit PostsRequest from WPRequest', () => {
-			expect( types instanceof WPRequest ).to.be.true;
+			expect( types instanceof WPRequest ).toBe( true );
 		} );
 
 	} );
@@ -51,12 +50,12 @@ describe( 'wp.types', () => {
 
 		it( 'should create the URL for retrieving all types', () => {
 			const url = types.toString();
-			expect( url ).to.equal( '/wp-json/wp/v2/types' );
+			expect( url ).toBe( '/wp-json/wp/v2/types' );
 		} );
 
 		it( 'should create the URL for retrieving a specific term', () => {
 			const url = types.type( 'some_type' ).toString();
-			expect( url ).to.equal( '/wp-json/wp/v2/types/some_type' );
+			expect( url ).toBe( '/wp-json/wp/v2/types/some_type' );
 		} );
 
 	} );

@@ -1,5 +1,4 @@
 'use strict';
-const { expect } = require( 'chai' );
 
 const simplifyObject = require( '../../../../build/scripts/simplify-object' );
 
@@ -8,29 +7,29 @@ const fullPostsCollectionRouteDefinition = require( './posts-collection-route-de
 describe( 'simplifyObject', () => {
 
 	it( 'is a function', () => {
-		expect( simplifyObject ).to.be.a( 'function' );
+		expect( typeof simplifyObject ).toBe( 'function' );
 	} );
 
 	it( 'passes through strings without modification', () => {
-		expect( simplifyObject( 'foo' ) ).to.be.a( 'string' );
-		expect( simplifyObject( 'foo' ) ).to.equal( 'foo' );
+		expect( typeof simplifyObject( 'foo' ) ).toBe( 'string' );
+		expect( simplifyObject( 'foo' ) ).toBe( 'foo' );
 	} );
 
 	it( 'passes through numbers without modification', () => {
-		expect( simplifyObject( 7 ) ).to.be.a( 'number' );
-		expect( simplifyObject( 7 ) ).to.equal( 7 );
+		expect( typeof simplifyObject( 7 ) ).toBe( 'number' );
+		expect( simplifyObject( 7 ) ).toBe( 7 );
 	} );
 
 	it( 'passes through booleans without modification', () => {
-		expect( simplifyObject( true ) ).to.be.a( 'boolean' );
-		expect( simplifyObject( true ) ).to.equal( true );
+		expect( typeof simplifyObject( true ) ).toBe( 'boolean' );
+		expect( simplifyObject( true ) ).toBe( true );
 	} );
 
 	it( 'passes through arrays of simple values without modification', () => {
-		expect( simplifyObject( [] ) ).to.be.an( 'array' );
-		expect( simplifyObject( [ 1, 2, 3 ] ) ).to.deep.equal( [ 1, 2, 3 ] );
-		expect( simplifyObject( [ 'a', 'b', 'c' ] ) ).to.deep.equal( [ 'a', 'b', 'c' ] );
-		expect( simplifyObject( [ true, false ] ) ).to.deep.equal( [ true, false ] );
+		expect( Array.isArray( simplifyObject( [] ) ) ).toBe( true );
+		expect( simplifyObject( [ 1, 2, 3 ] ) ).toEqual( [ 1, 2, 3 ] );
+		expect( simplifyObject( [ 'a', 'b', 'c' ] ) ).toEqual( [ 'a', 'b', 'c' ] );
+		expect( simplifyObject( [ true, false ] ) ).toEqual( [ true, false ] );
 	} );
 
 	it( 'passes through most objects without modification', () => {
@@ -43,7 +42,7 @@ describe( 'simplifyObject', () => {
 				} ],
 				nr: 7,
 			},
-		} ) ).to.deep.equal( {
+		} ) ).toEqual( {
 			some: 'set',
 			of: 'basic',
 			nested: {
@@ -61,7 +60,7 @@ describe( 'simplifyObject', () => {
 			_links: {
 				prop: 'within it',
 			},
-		} ) ).to.deep.equal( {
+		} ) ).toEqual( {
 			some: 'object with a',
 		} );
 	} );
@@ -75,7 +74,7 @@ describe( 'simplifyObject', () => {
 					go: 'here',
 				},
 			},
-		} ) ).to.deep.equal( {
+		} ) ).toEqual( {
 			args: {
 				context: {},
 			},
@@ -83,7 +82,7 @@ describe( 'simplifyObject', () => {
 	} );
 
 	it( 'properly transforms a full route definition object', () => {
-		expect( simplifyObject( fullPostsCollectionRouteDefinition ) ).to.deep.equal( {
+		expect( simplifyObject( fullPostsCollectionRouteDefinition ) ).toEqual( {
 			namespace: 'wp/v2',
 			methods: [ 'GET', 'POST' ],
 			endpoints: [ {
