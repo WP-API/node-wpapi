@@ -48,7 +48,7 @@
     "release-npm": "npm run build && npm test && npm publish",
     "eslint": "eslint Gruntfile.js wpapi.js bin build lib tests",
     "lint": "npm run eslint",
-    "watch": "grunt watch",
+    "watch": "jest --watch",
     "test:all": "jest",
     "test:unit": "jest tests/unit",
     "test:integration": "jest tests/integration",
