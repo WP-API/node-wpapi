@@ -27,6 +27,13 @@
       "**/__tests__/**/*.js",
       "**/?(*.)+(spec|test).js",
       "**/tests/**/*.js"
+    ],
+    "testPathIgnorePatterns": [
+      ".eslintrc.js",
+      "/tests/helpers/"
+    ],
+    "coveragePathIgnorePatterns": [
+      "/tests/helpers/"
     ]
   },
   "scripts": {
@@ -40,17 +47,14 @@
     "release-docs": "node build/scripts/release-docs",
     "release-npm": "npm run build && npm test && npm publish",
     "eslint": "eslint Gruntfile.js wpapi.js bin build lib tests",
-    "lint": "npm run eslint || true",
-    "mocha": "_mocha tests --recursive --reporter=nyan",
-    "jest": "jest",
-    "jest:unit": "jest tests/unit",
+    "lint": "npm run eslint",
     "watch": "grunt watch",
-    "test:all": "_mocha tests --recursive --reporter=nyan",
-    "test:unit": "_mocha tests/unit --recursive --reporter=nyan",
+    "test:all": "jest",
+    "test:unit": "jest tests/unit",
     "test:integration": "jest tests/integration",
-    "test:ci": "npm run lint && istanbul cover _mocha -- tests/unit --recursive --reporter=list",
-    "pretest": "npm run lint",
-    "test": "istanbul cover _mocha -- tests --recursive --reporter=nyan"
+    "test:ci": "eslint && jest tests/unit --coverage",
+    "pretest": "npm run lint || true",
+    "test": "jest --coverage"
   },
   "dependencies": {
     "es6-promise": "^3.2.1",
