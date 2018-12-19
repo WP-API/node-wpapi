@@ -22,6 +22,13 @@
     "cms",
     "wordpress"
   ],
+  "jest": {
+    "testMatch": [
+      "**/__tests__/**/*.js",
+      "**/?(*.)+(spec|test).js",
+      "**/tests/**/*.js"
+    ]
+  },
   "scripts": {
     "build": "webpack && webpack --config webpack.config.minified.js",
     "zip": "npm run build && grunt zip",
@@ -35,6 +42,8 @@
     "eslint": "eslint Gruntfile.js wpapi.js bin build lib tests",
     "lint": "npm run eslint || true",
     "mocha": "_mocha tests --recursive --reporter=nyan",
+    "jest": "jest",
+    "jest:unit": "jest tests/unit",
     "watch": "grunt watch",
     "test:all": "_mocha tests --recursive --reporter=nyan",
     "test:unit": "_mocha tests/unit --recursive --reporter=nyan",
@@ -63,6 +72,7 @@
     "grunt-contrib-clean": "^1.0.0",
     "grunt-zip": "^0.17.1",
     "istanbul": "^0.4.4",
+    "jest": "^23.6.0",
     "jsdoc": "^3.4.3",
     "json-loader": "^0.5.4",
     "kramed": "^0.5.6",

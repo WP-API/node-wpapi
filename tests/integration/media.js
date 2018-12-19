@@ -11,15 +11,15 @@ const expect = chai.expect;
 const path = require( 'path' );
 const _unique = require( 'lodash.uniq' );
 const objectReduce = require( '../../lib/util/object-reduce' );
-const httpTestUtils = require( './helpers/http-test-utils' );
+const httpTestUtils = require( '../helpers/http-test-utils' );
 
 const WPAPI = require( '../../' );
 const WPRequest = require( '../../lib/constructors/wp-request.js' );
 
 // Inspecting the titles of the returned posts arrays is an easy way to
 // validate that the right page of results was returned
-const getTitles = require( './helpers/get-rendered-prop' ).bind( null, 'title' );
-const credentials = require( './helpers/constants' ).credentials;
+const getTitles = require( '../helpers/get-rendered-prop' ).bind( null, 'title' );
+const credentials = require( '../helpers/constants' ).credentials;
 
 const filePath = path.join( __dirname, 'assets/emilygarfield-untitled.jpg' );
 

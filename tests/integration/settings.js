@@ -10,7 +10,7 @@ const expect = chai.expect;
 
 const WPAPI = require( '../../' );
 
-const credentials = require( './helpers/constants' ).credentials;
+const credentials = require( '../helpers/constants' ).credentials;
 
 describe( 'integration: settings()', () => {
 	let wp;

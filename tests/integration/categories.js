@@ -13,7 +13,7 @@ const WPRequest = require( '../../lib/constructors/wp-request.js' );
 
 // Inspecting the names of the returned categories is an easy way to validate
 // that the right page of results was returned
-const getNames = require( './helpers/get-prop' ).bind( null, 'name' );
+const getNames = require( '../helpers/get-prop' ).bind( null, 'name' );
 
 // Define some arrays to use ensuring the returned data is what we expect
 // it to be (e.g. an array of the names from categories on the first page)

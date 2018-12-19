@@ -13,7 +13,7 @@ const WPRequest = require( '../../lib/constructors/wp-request.js' );
 
 // Inspecting the titles of the returned posts arrays is an easy way to
 // validate that the right page of results was returned
-const getTitles = require( './helpers/get-rendered-prop' ).bind( null, 'title' );
+const getTitles = require( '../helpers/get-rendered-prop' ).bind( null, 'title' );
 
 // Define some arrays to use ensuring the returned data is what we expect
 // it to be (e.g. an array of the titles from pages on the first page)

@@ -14,7 +14,7 @@ const WPAPI = require( '../../' );
 
 const httpTransport = require( '../../lib/http-transport' );
 
-const credentials = require( './helpers/constants' ).credentials;
+const credentials = require( '../helpers/constants' ).credentials;
 
 describe( 'integration: custom HTTP transport methods', () => {
 	let wp;

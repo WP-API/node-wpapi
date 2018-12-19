@@ -12,8 +12,8 @@ const WPAPI = require( '../../' );
 
 // Inspecting the titles of the returned posts arrays is an easy way to
 // validate that the right page of results was returned
-const getTitles = require( './helpers/get-rendered-prop' ).bind( null, 'title' );
-const credentials = require( './helpers/constants' ).credentials;
+const getTitles = require( '../helpers/get-rendered-prop' ).bind( null, 'title' );
+const credentials = require( '../helpers/constants' ).credentials;
 const base64credentials = new Buffer( `${ credentials.username }:${ credentials.password }` ).toString( 'base64' );
 
 describe( 'integration: custom HTTP Headers', () => {
