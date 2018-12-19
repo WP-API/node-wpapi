@@ -1,12 +1,4 @@
 'use strict';
-const chai = require( 'chai' );
-// Variable to use as our "success token" in promise assertions
-const SUCCESS = 'success';
-// Chai-as-promised and the `expect( prom ).to.eventually.equal( SUCCESS ) is
-// used to ensure that the assertions running within the promise chains are
-// actually run.
-chai.use( require( 'chai-as-promised' ) );
-const expect = chai.expect;
 
 const WPAPI = require( '../../' );
 
@@ -15,6 +7,9 @@ const WPAPI = require( '../../' );
 const getTitles = require( '../helpers/get-rendered-prop' ).bind( null, 'title' );
 const credentials = require( '../helpers/constants' ).credentials;
 const base64credentials = Buffer.from( `${ credentials.username }:${ credentials.password }` ).toString( 'base64' );
+
+// Variable to use as our "success token" in promise assertions
+const SUCCESS = 'success';
 
 describe( 'integration: custom HTTP Headers', () => {
 	let wp;
@@ -33,13 +28,13 @@ describe( 'integration: custom HTTP Headers', () => {
 			.status( [ 'future', 'draft' ] )
 			.get()
 			.then( ( posts ) => {
-				expect( getTitles( posts ) ).to.deep.equal( [
+				expect( getTitles( posts ) ).toEqual( [
 					'Scheduled',
 					'Draft',
 				] );
 				return SUCCESS;
 			} );
-		return expect( prom ).to.eventually.equal( SUCCESS );
+		return expect( prom ).resolves.toBe( SUCCESS );
 	} );
 
 	it( 'can be provided at the WPAPI instance level using WPAPI#setHeaders()', () => {
@@ -50,17 +45,17 @@ describe( 'integration: custom HTTP Headers', () => {
 			.status( [ 'future', 'draft' ] )
 			.get()
 			.then( ( posts ) => {
-				expect( getTitles( posts ) ).to.deep.equal( [
+				expect( getTitles( posts ) ).toEqual( [
 					'Scheduled',
 					'Draft',
 				] );
 				return authenticated.users().me();
 			} )
 			.then( ( me ) => {
-				expect( me.slug ).to.equal( 'admin' );
+				expect( me.slug ).toBe( 'admin' );
 				return SUCCESS;
 			} );
-		return expect( prom ).to.eventually.equal( SUCCESS );
+		return expect( prom ).resolves.toBe( SUCCESS );
 	} );
 
 } );

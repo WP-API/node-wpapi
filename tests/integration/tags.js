@@ -1,12 +1,4 @@
 'use strict';
-const chai = require( 'chai' );
-// Variable to use as our "success token" in promise assertions
-const SUCCESS = 'success';
-// Chai-as-promised and the `expect( prom ).to.eventually.equal( SUCCESS ) is
-// used to ensure that the assertions running within the promise chains are
-// actually run.
-chai.use( require( 'chai-as-promised' ) );
-const expect = chai.expect;
 
 const WPAPI = require( '../../' );
 const WPRequest = require( '../../lib/constructors/wp-request.js' );
@@ -14,6 +6,9 @@ const WPRequest = require( '../../lib/constructors/wp-request.js' );
 // Inspecting the names of the returned terms is an easy way to validate
 // that the right page of results was returned
 const getNames = require( '../helpers/get-prop' ).bind( null, 'name' );
+
+// Variable to use as our "success token" in promise assertions
+const SUCCESS = 'success';
 
 // Define some arrays to use ensuring the returned data is what we expect
 // it to be (e.g. an array of the names from tags on the first page)
@@ -71,22 +66,22 @@ describe( 'integration: tags()', () => {
 		const prom = wp.tags()
 			.get()
 			.then( ( tags ) => {
-				expect( tags ).to.be.an( 'array' );
-				expect( tags.length ).to.equal( 10 );
+				expect( Array.isArray( tags ) ).toBe( true );
+				expect( tags.length ).toBe( 10 );
 				return SUCCESS;
 			} );
-		return expect( prom ).to.eventually.equal( SUCCESS );
+		return expect( prom ).resolves.toBe( SUCCESS );
 	} );
 
 	it( 'retrieves the first 10 tags by default', () => {
 		const prom = wp.tags()
 			.get()
 			.then( ( tags ) => {
-				expect( tags ).to.be.an( 'array' );
-				expect( tags.length ).to.equal( 10 );
+				expect( Array.isArray( tags ) ).toBe( true );
+				expect( tags.length ).toBe( 10 );
 				return SUCCESS;
 			} );
-		return expect( prom ).to.eventually.equal( SUCCESS );
+		return expect( prom ).resolves.toBe( SUCCESS );
 	} );
 
 	describe( 'paging properties', () => {
@@ -95,54 +90,54 @@ describe( 'integration: tags()', () => {
 			const prom = wp.tags()
 				.get()
 				.then( ( tags ) => {
-					expect( tags ).to.have.property( '_paging' );
-					expect( tags._paging ).to.be.an( 'object' );
+					expect( tags ).toHaveProperty( '_paging' );
+					expect( typeof tags._paging ).toBe( 'object' );
 					return SUCCESS;
 				} );
-			return expect( prom ).to.eventually.equal( SUCCESS );
+			return expect( prom ).resolves.toBe( SUCCESS );
 		} );
 
 		it( 'include the total number of tags', () => {
 			const prom = wp.tags()
 				.get()
 				.then( ( tags ) => {
-					expect( tags._paging ).to.have.property( 'total' );
-					expect( tags._paging.total ).to.equal( '110' );
+					expect( tags._paging ).toHaveProperty( 'total' );
+					expect( tags._paging.total ).toBe( '110' );
 					return SUCCESS;
 				} );
-			return expect( prom ).to.eventually.equal( SUCCESS );
+			return expect( prom ).resolves.toBe( SUCCESS );
 		} );
 
 		it( 'include the total number of pages available', () => {
 			const prom = wp.tags()
 				.get()
 				.then( ( tags ) => {
-					expect( tags._paging ).to.have.property( 'totalPages' );
-					expect( tags._paging.totalPages ).to.equal( '11' );
+					expect( tags._paging ).toHaveProperty( 'totalPages' );
+					expect( tags._paging.totalPages ).toBe( '11' );
 					return SUCCESS;
 				} );
-			return expect( prom ).to.eventually.equal( SUCCESS );
+			return expect( prom ).resolves.toBe( SUCCESS );
 		} );
 
 		it( 'provides a bound WPRequest for the next page as .next', () => {
 			const prom = wp.tags()
 				.get()
 				.then( ( tags ) => {
-					expect( tags._paging ).to.have.property( 'next' );
-					expect( tags._paging.next ).to.be.an( 'object' );
-					expect( tags._paging.next ).to.be.an.instanceOf( WPRequest );
-					expect( tags._paging.next._options.endpoint ).to
-						.equal( 'http://wpapi.local/wp-json/wp/v2/tags?page=2' );
+					expect( tags._paging ).toHaveProperty( 'next' );
+					expect( typeof tags._paging.next ).toBe( 'object' );
+					expect( tags._paging.next ).toBeInstanceOf( WPRequest );
+					expect( tags._paging.next._options.endpoint )
+						.toEqual( 'http://wpapi.local/wp-json/wp/v2/tags?page=2' );
 					// Get last page & ensure "next" no longer appears
 					return wp.tags().page( tags._paging.totalPages )
 						.get()
 						.then( ( tags ) => {
-							expect( tags._paging ).not.to.have.property( 'next' );
-							expect( getNames( tags ) ).to.deep.equal( expectedResults.names.pageLast );
+							expect( tags._paging ).not.toHaveProperty( 'next' );
+							expect( getNames( tags ) ).toEqual( expectedResults.names.pageLast );
 							return SUCCESS;
 						} );
 				} );
-			return expect( prom ).to.eventually.equal( SUCCESS );
+			return expect( prom ).resolves.toBe( SUCCESS );
 		} );
 
 		it( 'allows access to the next page of results via .next', () => {
@@ -152,32 +147,32 @@ describe( 'integration: tags()', () => {
 					return tags._paging.next
 						.get()
 						.then( ( tags ) => {
-							expect( tags ).to.be.an( 'array' );
-							expect( tags.length ).to.equal( 10 );
-							expect( getNames( tags ) ).to.deep.equal( expectedResults.names.page2 );
+							expect( Array.isArray( tags ) ).toBe( true );
+							expect( tags.length ).toBe( 10 );
+							expect( getNames( tags ) ).toEqual( expectedResults.names.page2 );
 							return SUCCESS;
 						} );
 				} );
-			return expect( prom ).to.eventually.equal( SUCCESS );
+			return expect( prom ).resolves.toBe( SUCCESS );
 		} );
 
 		it( 'provides a bound WPRequest for the previous page as .prev', () => {
 			const prom = wp.tags()
 				.get()
 				.then( ( tags ) => {
-					expect( tags._paging ).not.to.have.property( 'prev' );
+					expect( tags._paging ).not.toHaveProperty( 'prev' );
 					return tags._paging.next
 						.get()
 						.then( ( tags ) => {
-							expect( tags._paging ).to.have.property( 'prev' );
-							expect( tags._paging.prev ).to.be.an( 'object' );
-							expect( tags._paging.prev ).to.be.an.instanceOf( WPRequest );
-							expect( tags._paging.prev._options.endpoint ).to
-								.equal( 'http://wpapi.local/wp-json/wp/v2/tags?page=1' );
+							expect( tags._paging ).toHaveProperty( 'prev' );
+							expect( typeof tags._paging.prev ).toBe( 'object' );
+							expect( tags._paging.prev ).toBeInstanceOf( WPRequest );
+							expect( tags._paging.prev._options.endpoint )
+								.toEqual( 'http://wpapi.local/wp-json/wp/v2/tags?page=1' );
 							return SUCCESS;
 						} );
 				} );
-			return expect( prom ).to.eventually.equal( SUCCESS );
+			return expect( prom ).resolves.toBe( SUCCESS );
 		} );
 
 		it( 'allows access to the previous page of results via .prev', () => {
@@ -185,17 +180,17 @@ describe( 'integration: tags()', () => {
 				.page( 2 )
 				.get()
 				.then( ( tags ) => {
-					expect( getNames( tags ) ).to.deep.equal( expectedResults.names.page2 );
+					expect( getNames( tags ) ).toEqual( expectedResults.names.page2 );
 					return tags._paging.prev
 						.get()
 						.then( ( tags ) => {
-							expect( tags ).to.be.an( 'array' );
-							expect( tags.length ).to.equal( 10 );
-							expect( getNames( tags ) ).to.deep.equal( expectedResults.names.page1 );
+							expect( Array.isArray( tags ) ).toBe( true );
+							expect( tags.length ).toBe( 10 );
+							expect( getNames( tags ) ).toEqual( expectedResults.names.page1 );
 							return SUCCESS;
 						} );
 				} );
-			return expect( prom ).to.eventually.equal( SUCCESS );
+			return expect( prom ).resolves.toBe( SUCCESS );
 		} );
 
 	} );
@@ -213,17 +208,17 @@ describe( 'integration: tags()', () => {
 					return wp.tags().id( selectedTag.id );
 				} )
 				.then( ( tag ) => {
-					expect( tag ).to.be.an( 'object' );
-					expect( tag ).to.have.property( 'id' );
-					expect( tag.id ).to.equal( selectedTag.id );
-					expect( tag ).to.have.property( 'slug' );
-					expect( tag.slug ).to.equal( selectedTag.slug );
-					expect( tag ).to.have.property( 'taxonomy' );
-					expect( tag.taxonomy ).to.equal( 'post_tag' );
-					expect( tag ).not.to.have.property( 'parent' );
+					expect( typeof tag ).toBe( 'object' );
+					expect( tag ).toHaveProperty( 'id' );
+					expect( tag.id ).toBe( selectedTag.id );
+					expect( tag ).toHaveProperty( 'slug' );
+					expect( tag.slug ).toBe( selectedTag.slug );
+					expect( tag ).toHaveProperty( 'taxonomy' );
+					expect( tag.taxonomy ).toBe( 'post_tag' );
+					expect( tag ).not.toHaveProperty( 'parent' );
 					return SUCCESS;
 				} );
-			return expect( prom ).to.eventually.equal( SUCCESS );
+			return expect( prom ).resolves.toBe( SUCCESS );
 		} );
 
 	} );
@@ -241,22 +236,22 @@ describe( 'integration: tags()', () => {
 					return wp.tags().search( selectedTag.slug );
 				} )
 				.then( ( tags ) => {
-					expect( tags ).to.be.an( 'array' );
-					expect( tags.length ).to.equal( 1 );
+					expect( Array.isArray( tags ) ).toBe( true );
+					expect( tags.length ).toBe( 1 );
 					return tags[ 0 ];
 				} )
 				.then( ( tag ) => {
-					expect( tag ).to.be.an( 'object' );
-					expect( tag ).to.have.property( 'id' );
-					expect( tag.id ).to.equal( selectedTag.id );
-					expect( tag ).to.have.property( 'slug' );
-					expect( tag.slug ).to.equal( selectedTag.slug );
-					expect( tag ).to.have.property( 'taxonomy' );
-					expect( tag.taxonomy ).to.equal( 'post_tag' );
-					expect( tag ).not.to.have.property( 'parent' );
+					expect( typeof tag ).toBe( 'object' );
+					expect( tag ).toHaveProperty( 'id' );
+					expect( tag.id ).toBe( selectedTag.id );
+					expect( tag ).toHaveProperty( 'slug' );
+					expect( tag.slug ).toBe( selectedTag.slug );
+					expect( tag ).toHaveProperty( 'taxonomy' );
+					expect( tag.taxonomy ).toBe( 'post_tag' );
+					expect( tag ).not.toHaveProperty( 'parent' );
 					return SUCCESS;
 				} );
-			return expect( prom ).to.eventually.equal( SUCCESS );
+			return expect( prom ).resolves.toBe( SUCCESS );
 		} );
 
 		it( 'returns all tags matching the provided search string', () => {
@@ -264,13 +259,13 @@ describe( 'integration: tags()', () => {
 				.search( 'post' )
 				.get()
 				.then( ( tags ) => {
-					expect( tags ).to.be.an( 'array' );
-					expect( tags.length ).to.equal( 2 );
+					expect( Array.isArray( tags ) ).toBe( true );
+					expect( tags.length ).toBe( 2 );
 					const slugs = tags.map( tag => tag.slug ).sort().join( ' ' );
-					expect( slugs ).to.equal( 'post post-formats' );
+					expect( slugs ).toBe( 'post post-formats' );
 					return SUCCESS;
 				} );
-			return expect( prom ).to.eventually.equal( SUCCESS );
+			return expect( prom ).resolves.toBe( SUCCESS );
 		} );
 
 		it( 'can be used to retrieve a tag by slug from a set of search results', () => {
@@ -281,14 +276,14 @@ describe( 'integration: tags()', () => {
 				// filtering for taxonomy term collections is reinstated
 				.then( tags => tags.find( tag => tag.slug === 'post' ) )
 				.then( ( tag ) => {
-					expect( tag ).to.have.property( 'slug' );
-					expect( tag.slug ).to.equal( 'post' );
-					expect( tag ).to.have.property( 'name' );
-					expect( tag.name ).to.equal( 'post' );
-					expect( tag ).not.to.have.property( 'parent' );
+					expect( tag ).toHaveProperty( 'slug' );
+					expect( tag.slug ).toBe( 'post' );
+					expect( tag ).toHaveProperty( 'name' );
+					expect( tag.name ).toBe( 'post' );
+					expect( tag ).not.toHaveProperty( 'parent' );
 					return SUCCESS;
 				} );
-			return expect( prom ).to.eventually.equal( SUCCESS );
+			return expect( prom ).resolves.toBe( SUCCESS );
 		} );
 
 	} );

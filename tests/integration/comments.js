@@ -1,16 +1,11 @@
-'use strict';
 /*jshint -W106 */// Disable underscore_case warnings in this file b/c WP uses them
-const chai = require( 'chai' );
-// Variable to use as our 'success token' in promise assertions
-const SUCCESS = 'success';
-// Chai-as-promised and the `expect( prom ).to.eventually.equal( SUCCESS ) is
-// used to ensure that the assertions running within the promise chains are
-// actually run.
-chai.use( require( 'chai-as-promised' ) );
-const expect = chai.expect;
+'use strict';
 
 const WPAPI = require( '../../' );
 const WPRequest = require( '../../lib/constructors/wp-request.js' );
+
+// Variable to use as our 'success token' in promise assertions
+const SUCCESS = 'success';
 
 // Define some arrays to use ensuring the returned data is what we expect
 // it to be (e.g. an array of the titles from posts on the first page)
@@ -81,21 +76,21 @@ describe( 'integration: comments()', () => {
 		const prom = wp.comments()
 			.get()
 			.then( ( comments ) => {
-				expect( comments ).to.be.an( 'array' );
-				expect( comments.length ).to.equal( 9 );
+				expect( Array.isArray( comments ) ).toBe( true );
+				expect( comments.length ).toBe( 9 );
 				return SUCCESS;
 			} );
-		return expect( prom ).to.eventually.equal( SUCCESS );
+		return expect( prom ).resolves.toBe( SUCCESS );
 	} );
 
 	it( 'fetches the first page, omitting a password-protected comment', () => {
 		const prom = wp.comments()
 			.get()
 			.then( ( comments ) => {
-				expect( getPostsAndAuthors( comments ) ).to.deep.equal( expectedResults.postsAndAuthors.page1 );
+				expect( getPostsAndAuthors( comments ) ).toEqual( expectedResults.postsAndAuthors.page1 );
 				return SUCCESS;
 			} );
-		return expect( prom ).to.eventually.equal( SUCCESS );
+		return expect( prom ).resolves.toBe( SUCCESS );
 	} );
 
 	it( 'fetches the 10 oldest comments when sorted "asc"', () => {
@@ -103,10 +98,10 @@ describe( 'integration: comments()', () => {
 			.order( 'asc' )
 			.get()
 			.then( ( comments ) => {
-				expect( getPostsAndAuthors( comments ) ).to.deep.equal( expectedResults.postsAndAuthorsAsc.page1 );
+				expect( getPostsAndAuthors( comments ) ).toEqual( expectedResults.postsAndAuthorsAsc.page1 );
 				return SUCCESS;
 			} );
-		return expect( prom ).to.eventually.equal( SUCCESS );
+		return expect( prom ).resolves.toBe( SUCCESS );
 	} );
 
 	describe( 'paging properties', () => {
@@ -115,55 +110,55 @@ describe( 'integration: comments()', () => {
 			const prom = wp.comments()
 				.get()
 				.then( ( posts ) => {
-					expect( posts ).to.have.property( '_paging' );
-					expect( posts._paging ).to.be.an( 'object' );
+					expect( posts ).toHaveProperty( '_paging' );
+					expect( typeof posts._paging ).toBe( 'object' );
 					return SUCCESS;
 				} );
-			return expect( prom ).to.eventually.equal( SUCCESS );
+			return expect( prom ).resolves.toBe( SUCCESS );
 		} );
 
 		it( 'include the total number of posts', () => {
 			const prom = wp.comments()
 				.get()
 				.then( ( posts ) => {
-					expect( posts._paging ).to.have.property( 'total' );
-					expect( posts._paging.total ).to.equal( '25' );
+					expect( posts._paging ).toHaveProperty( 'total' );
+					expect( posts._paging.total ).toBe( '25' );
 					return SUCCESS;
 				} );
-			return expect( prom ).to.eventually.equal( SUCCESS );
+			return expect( prom ).resolves.toBe( SUCCESS );
 		} );
 
 		it( 'include the total number of pages available', () => {
 			const prom = wp.comments()
 				.get()
 				.then( ( posts ) => {
-					expect( posts._paging ).to.have.property( 'totalPages' );
-					expect( posts._paging.totalPages ).to.equal( '3' );
+					expect( posts._paging ).toHaveProperty( 'totalPages' );
+					expect( posts._paging.totalPages ).toBe( '3' );
 					return SUCCESS;
 				} );
-			return expect( prom ).to.eventually.equal( SUCCESS );
+			return expect( prom ).resolves.toBe( SUCCESS );
 		} );
 
 		it( 'provides a bound WPRequest for the next page as .next', () => {
 			const prom = wp.comments()
 				.get()
 				.then( ( posts ) => {
-					expect( posts._paging ).to.have.property( 'next' );
-					expect( posts._paging.next ).to.be.an( 'object' );
-					expect( posts._paging.next ).to.be.an.instanceOf( WPRequest );
-					expect( posts._paging.next._options.endpoint ).to
-						.equal( 'http://wpapi.local/wp-json/wp/v2/comments?page=2' );
+					expect( posts._paging ).toHaveProperty( 'next' );
+					expect( typeof posts._paging.next ).toBe( 'object' );
+					expect( posts._paging.next ).toBeInstanceOf( WPRequest );
+					expect( posts._paging.next._options.endpoint )
+						.toEqual( 'http://wpapi.local/wp-json/wp/v2/comments?page=2' );
 					// Get last page & ensure 'next' no longer appears
 					return wp.comments()
 						.page( posts._paging.totalPages )
 						.get()
 						.then( ( posts ) => {
-							expect( posts._paging ).not.to.have.property( 'next' );
-							expect( getPostsAndAuthors( posts ) ).to.deep.equal( expectedResults.postsAndAuthors.page3 );
+							expect( posts._paging ).not.toHaveProperty( 'next' );
+							expect( getPostsAndAuthors( posts ) ).toEqual( expectedResults.postsAndAuthors.page3 );
 							return SUCCESS;
 						} );
 				} );
-			return expect( prom ).to.eventually.equal( SUCCESS );
+			return expect( prom ).resolves.toBe( SUCCESS );
 		} );
 
 		it( 'allows access to the next page of results via .next', () => {
@@ -173,32 +168,32 @@ describe( 'integration: comments()', () => {
 					return posts._paging.next
 						.get()
 						.then( ( posts ) => {
-							expect( posts ).to.be.an( 'array' );
-							expect( posts.length ).to.equal( 10 );
-							expect( getPostsAndAuthors( posts ) ).to.deep.equal( expectedResults.postsAndAuthors.page2 );
+							expect( Array.isArray( posts ) ).toBe( true );
+							expect( posts.length ).toBe( 10 );
+							expect( getPostsAndAuthors( posts ) ).toEqual( expectedResults.postsAndAuthors.page2 );
 							return SUCCESS;
 						} );
 				} );
-			return expect( prom ).to.eventually.equal( SUCCESS );
+			return expect( prom ).resolves.toBe( SUCCESS );
 		} );
 
 		it( 'provides a bound WPRequest for the previous page as .prev', () => {
 			const prom = wp.comments()
 				.get()
 				.then( ( posts ) => {
-					expect( posts._paging ).not.to.have.property( 'prev' );
+					expect( posts._paging ).not.toHaveProperty( 'prev' );
 					return posts._paging.next
 						.get()
 						.then( ( posts ) => {
-							expect( posts._paging ).to.have.property( 'prev' );
-							expect( posts._paging.prev ).to.be.an( 'object' );
-							expect( posts._paging.prev ).to.be.an.instanceOf( WPRequest );
-							expect( posts._paging.prev._options.endpoint ).to
-								.equal( 'http://wpapi.local/wp-json/wp/v2/comments?page=1' );
+							expect( posts._paging ).toHaveProperty( 'prev' );
+							expect( typeof posts._paging.prev ).toBe( 'object' );
+							expect( posts._paging.prev ).toBeInstanceOf( WPRequest );
+							expect( posts._paging.prev._options.endpoint )
+								.toEqual( 'http://wpapi.local/wp-json/wp/v2/comments?page=1' );
 							return SUCCESS;
 						} );
 				} );
-			return expect( prom ).to.eventually.equal( SUCCESS );
+			return expect( prom ).resolves.toBe( SUCCESS );
 		} );
 
 		it( 'allows access to the previous page of results via .prev', () => {
@@ -206,18 +201,18 @@ describe( 'integration: comments()', () => {
 				.page( 2 )
 				.get()
 				.then( ( posts ) => {
-					expect( getPostsAndAuthors( posts ) ).to.deep.equal( expectedResults.postsAndAuthors.page2 );
+					expect( getPostsAndAuthors( posts ) ).toEqual( expectedResults.postsAndAuthors.page2 );
 					return posts._paging.prev
 						.get()
 						.then( ( posts ) => {
-							expect( posts ).to.be.an( 'array' );
+							expect( Array.isArray( posts ) ).toBe( true );
 							// 9 because one comment is for a password-protected post
-							expect( posts.length ).to.equal( 9 );
-							expect( getPostsAndAuthors( posts ) ).to.deep.equal( expectedResults.postsAndAuthors.page1 );
+							expect( posts.length ).toBe( 9 );
+							expect( getPostsAndAuthors( posts ) ).toEqual( expectedResults.postsAndAuthors.page1 );
 							return SUCCESS;
 						} );
 				} );
-			return expect( prom ).to.eventually.equal( SUCCESS );
+			return expect( prom ).resolves.toBe( SUCCESS );
 		} );
 
 	} );
@@ -243,22 +238,22 @@ describe( 'integration: comments()', () => {
 		it( 'returns an object, not an array', () => {
 			const prom = commentProm
 				.then( ( comment ) => {
-					expect( Array.isArray( comment ) ).to.equal( false );
-					expect( comment ).to.be.an( 'object' );
+					expect( Array.isArray( comment ) ).toBe( false );
+					expect( typeof comment ).toBe( 'object' );
 					return SUCCESS;
 				} );
-			return expect( prom ).to.eventually.equal( SUCCESS );
+			return expect( prom ).resolves.toBe( SUCCESS );
 		} );
 
 		it( 'returns the correct comment', () => {
 			const prom = commentProm.then( ( comment ) => {
-				expect( comment.id ).to.equal( commentId );
+				expect( comment.id ).toBe( commentId );
 				[ 'author_name', 'post', 'parent', 'date', 'status' ].forEach( ( prop ) => {
-					expect( comment[ prop ] ).to.equal( commentCollection[4][ prop ] );
+					expect( comment[ prop ] ).toBe( commentCollection[4][ prop ] );
 				} );
 				return SUCCESS;
 			} );
-			return expect( prom ).to.eventually.equal( SUCCESS );
+			return expect( prom ).resolves.toBe( SUCCESS );
 		} );
 
 	} );
@@ -283,17 +278,22 @@ describe( 'integration: comments()', () => {
 		} );
 
 		it( 'returns an array of posts', () => {
-			return expect( commentProm ).to.eventually.be.an( 'array' );
+			const prom = commentProm
+				.then( ( comments ) => {
+					expect( Array.isArray( comments ) ).toBe( true );
+					return SUCCESS;
+				} );
+			return expect( prom ).resolves.toBe( SUCCESS );
 		} );
 
 		it( 'returns the correct number of comments', () => {
 			const prom = commentProm
 				.then( ( comments ) => {
-					expect( comments.length ).to.equal( 3 );
-					expect( comments.length ).to.equal( pageComments.length );
+					expect( comments.length ).toBe( 3 );
+					expect( comments.length ).toBe( pageComments.length );
 					return SUCCESS;
 				} );
-			return expect( prom ).to.eventually.equal( SUCCESS );
+			return expect( prom ).resolves.toBe( SUCCESS );
 		} );
 
 		it( 'returns the correct comments', () => {
@@ -301,13 +301,13 @@ describe( 'integration: comments()', () => {
 				.then( ( comments ) => {
 					pageComments.forEach( ( comment, i ) => {
 						[ 'id', 'parent', 'author', 'author_name' ].forEach( ( prop ) => {
-							expect( comment[ prop ] ).to.equal( comments[ i ][ prop ] );
+							expect( comment[ prop ] ).toBe( comments[ i ][ prop ] );
 						} );
-						expect( comment.content.rendered ).to.equal( comments[ i ].content.rendered );
+						expect( comment.content.rendered ).toBe( comments[ i ].content.rendered );
 					} );
 					return SUCCESS;
 				} );
-			return expect( prom ).to.eventually.equal( SUCCESS );
+			return expect( prom ).resolves.toBe( SUCCESS );
 		} );
 
 	} );

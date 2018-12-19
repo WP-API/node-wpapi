@@ -1,12 +1,4 @@
 'use strict';
-const chai = require( 'chai' );
-// Variable to use as our "success token" in promise assertions
-const SUCCESS = 'success';
-// Chai-as-promised and the `expect( prom ).to.eventually.equal( SUCCESS ) is
-// used to ensure that the assertions running within the promise chains are
-// actually run.
-chai.use( require( 'chai-as-promised' ) );
-const expect = chai.expect;
 
 const WPAPI = require( '../../' );
 const WPRequest = require( '../../lib/constructors/wp-request.js' );
@@ -14,6 +6,9 @@ const WPRequest = require( '../../lib/constructors/wp-request.js' );
 // Inspecting the titles of the returned posts arrays is an easy way to
 // validate that the right page of results was returned
 const getTitles = require( '../helpers/get-rendered-prop' ).bind( null, 'title' );
+
+// Variable to use as our "success token" in promise assertions
+const SUCCESS = 'success';
 
 // Define some arrays to use ensuring the returned data is what we expect
 // it to be (e.g. an array of the titles from pages on the first page)
@@ -57,21 +52,21 @@ describe( 'integration: pages()', () => {
 		const prom = wp.pages()
 			.get()
 			.then( ( pages ) => {
-				expect( pages ).to.be.an( 'array' );
-				expect( pages.length ).to.equal( 10 );
+				expect( Array.isArray( pages ) ).toBe( true );
+				expect( pages.length ).toBe( 10 );
 				return SUCCESS;
 			} );
-		return expect( prom ).to.eventually.equal( SUCCESS );
+		return expect( prom ).resolves.toBe( SUCCESS );
 	} );
 
 	it( 'fetches the 10 most recent pages by default', () => {
 		const prom = wp.pages()
 			.get()
 			.then( ( pages ) => {
-				expect( getTitles( pages ) ).to.deep.equal( expectedResults.titles.page1 );
+				expect( getTitles( pages ) ).toEqual( expectedResults.titles.page1 );
 				return SUCCESS;
 			} );
-		return expect( prom ).to.eventually.equal( SUCCESS );
+		return expect( prom ).resolves.toBe( SUCCESS );
 	} );
 
 	describe( 'paging properties', () => {
@@ -80,55 +75,55 @@ describe( 'integration: pages()', () => {
 			const prom = wp.pages()
 				.get()
 				.then( ( pages ) => {
-					expect( pages ).to.have.property( '_paging' );
-					expect( pages._paging ).to.be.an( 'object' );
+					expect( pages ).toHaveProperty( '_paging' );
+					expect( typeof pages._paging ).toBe( 'object' );
 					return SUCCESS;
 				} );
-			return expect( prom ).to.eventually.equal( SUCCESS );
+			return expect( prom ).resolves.toBe( SUCCESS );
 		} );
 
 		it( 'include the total number of pages', () => {
 			const prom = wp.pages()
 				.get()
 				.then( ( pages ) => {
-					expect( pages._paging ).to.have.property( 'total' );
-					expect( pages._paging.total ).to.equal( '18' );
+					expect( pages._paging ).toHaveProperty( 'total' );
+					expect( pages._paging.total ).toBe( '18' );
 					return SUCCESS;
 				} );
-			return expect( prom ).to.eventually.equal( SUCCESS );
+			return expect( prom ).resolves.toBe( SUCCESS );
 		} );
 
 		it( 'include the total number of pages available', () => {
 			const prom = wp.pages()
 				.get()
 				.then( ( pages ) => {
-					expect( pages._paging ).to.have.property( 'totalPages' );
-					expect( pages._paging.totalPages ).to.equal( '2' );
+					expect( pages._paging ).toHaveProperty( 'totalPages' );
+					expect( pages._paging.totalPages ).toBe( '2' );
 					return SUCCESS;
 				} );
-			return expect( prom ).to.eventually.equal( SUCCESS );
+			return expect( prom ).resolves.toBe( SUCCESS );
 		} );
 
 		it( 'provides a bound WPRequest for the next page as .next', () => {
 			const prom = wp.pages()
 				.get()
 				.then( ( pages ) => {
-					expect( pages._paging ).to.have.property( 'next' );
-					expect( pages._paging.next ).to.be.an( 'object' );
-					expect( pages._paging.next ).to.be.an.instanceOf( WPRequest );
-					expect( pages._paging.next._options.endpoint ).to
-						.equal( 'http://wpapi.local/wp-json/wp/v2/pages?page=2' );
+					expect( pages._paging ).toHaveProperty( 'next' );
+					expect( typeof pages._paging.next ).toBe( 'object' );
+					expect( pages._paging.next ).toBeInstanceOf( WPRequest );
+					expect( pages._paging.next._options.endpoint )
+						.toEqual( 'http://wpapi.local/wp-json/wp/v2/pages?page=2' );
 					// Get last page & ensure "next" no longer appears
 					return wp.pages()
 						.page( pages._paging.totalPages )
 						.get()
 						.then( ( pages ) => {
-							expect( pages._paging ).not.to.have.property( 'next' );
-							expect( getTitles( pages ) ).to.deep.equal( expectedResults.titles.page2 );
+							expect( pages._paging ).not.toHaveProperty( 'next' );
+							expect( getTitles( pages ) ).toEqual( expectedResults.titles.page2 );
 							return SUCCESS;
 						} );
 				} );
-			return expect( prom ).to.eventually.equal( SUCCESS );
+			return expect( prom ).resolves.toBe( SUCCESS );
 		} );
 
 		it( 'allows access to the next page of results via .next', () => {
@@ -136,30 +131,30 @@ describe( 'integration: pages()', () => {
 				.get()
 				.then( pages => pages._paging.next.get() )
 				.then( ( pages ) => {
-					expect( pages ).to.be.an( 'array' );
-					expect( pages.length ).to.equal( 8 );
-					expect( getTitles( pages ) ).to.deep.equal( expectedResults.titles.page2 );
+					expect( Array.isArray( pages ) ).toBe( true );
+					expect( pages.length ).toBe( 8 );
+					expect( getTitles( pages ) ).toEqual( expectedResults.titles.page2 );
 					return SUCCESS;
 				} );
-			return expect( prom ).to.eventually.equal( SUCCESS );
+			return expect( prom ).resolves.toBe( SUCCESS );
 		} );
 
 		it( 'provides a bound WPRequest for the previous page as .prev', () => {
 			const prom = wp.pages()
 				.get()
 				.then( ( pages ) => {
-					expect( pages._paging ).not.to.have.property( 'prev' );
+					expect( pages._paging ).not.toHaveProperty( 'prev' );
 					return pages._paging.next.get();
 				} )
 				.then( ( pages ) => {
-					expect( pages._paging ).to.have.property( 'prev' );
-					expect( pages._paging.prev ).to.be.an( 'object' );
-					expect( pages._paging.prev ).to.be.an.instanceOf( WPRequest );
-					expect( pages._paging.prev._options.endpoint ).to
-						.equal( 'http://wpapi.local/wp-json/wp/v2/pages?page=1' );
+					expect( pages._paging ).toHaveProperty( 'prev' );
+					expect( typeof pages._paging.prev ).toBe( 'object' );
+					expect( pages._paging.prev ).toBeInstanceOf( WPRequest );
+					expect( pages._paging.prev._options.endpoint )
+						.toEqual( 'http://wpapi.local/wp-json/wp/v2/pages?page=1' );
 					return SUCCESS;
 				} );
-			return expect( prom ).to.eventually.equal( SUCCESS );
+			return expect( prom ).resolves.toBe( SUCCESS );
 		} );
 
 		it( 'allows access to the previous page of results via .prev', () => {
@@ -167,16 +162,16 @@ describe( 'integration: pages()', () => {
 				.page( 2 )
 				.get()
 				.then( ( pages ) => {
-					expect( getTitles( pages ) ).to.deep.equal( expectedResults.titles.page2 );
+					expect( getTitles( pages ) ).toEqual( expectedResults.titles.page2 );
 					return pages._paging.prev.get();
 				} )
 				.then( ( pages ) => {
-					expect( pages ).to.be.an( 'array' );
-					expect( pages.length ).to.equal( 10 );
-					expect( getTitles( pages ) ).to.deep.equal( expectedResults.titles.page1 );
+					expect( Array.isArray( pages ) ).toBe( true );
+					expect( pages.length ).toBe( 10 );
+					expect( getTitles( pages ) ).toEqual( expectedResults.titles.page1 );
 					return SUCCESS;
 				} );
-			return expect( prom ).to.eventually.equal( SUCCESS );
+			return expect( prom ).resolves.toBe( SUCCESS );
 		} );
 
 	} );
@@ -190,13 +185,13 @@ describe( 'integration: pages()', () => {
 					.slug( 'clearing-floats' )
 					.get()
 					.then( ( pages ) => {
-						expect( pages.length ).to.equal( 1 );
-						expect( getTitles( pages ) ).to.deep.equal( [
+						expect( pages.length ).toBe( 1 );
+						expect( getTitles( pages ) ).toEqual( [
 							'Clearing Floats',
 						] );
 						return SUCCESS;
 					} );
-				return expect( prom ).to.eventually.equal( SUCCESS );
+				return expect( prom ).resolves.toBe( SUCCESS );
 			} );
 
 		} );

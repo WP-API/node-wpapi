@@ -1,20 +1,13 @@
 'use strict';
-const chai = require( 'chai' );
-const sinon = require( 'sinon' );
-chai.use( require( 'sinon-chai' ) );
-// Variable to use as our "success token" in promise assertions
-const SUCCESS = 'success';
-// Chai-as-promised and the `expect( prom ).to.eventually.equal( SUCCESS ) is
-// used to ensure that the assertions running within the promise chains are
-// actually run.
-chai.use( require( 'chai-as-promised' ) );
-const expect = chai.expect;
 
 const WPAPI = require( '../../' );
 
 const httpTransport = require( '../../lib/http-transport' );
 
 const credentials = require( '../helpers/constants' ).credentials;
+
+// Variable to use as our "success token" in promise assertions
+const SUCCESS = 'success';
 
 describe( 'integration: custom HTTP transport methods', () => {
 	let wp;
@@ -24,7 +17,7 @@ describe( 'integration: custom HTTP transport methods', () => {
 
 	beforeEach( () => {
 		cache = {};
-		cachingGet = sinon.spy( ( wpreq, cb ) => {
+		cachingGet = jest.fn( ( wpreq, cb ) => {
 			const result = cache[ wpreq ];
 			// If a cache hit is found, return it via the same callback/promise
 			// signature as the default transport method
@@ -49,12 +42,12 @@ describe( 'integration: custom HTTP transport methods', () => {
 				id = posts[ 0 ].id;
 
 				// Set up our spy here so the request to get the ID isn't counted
-				sinon.spy( httpTransport, 'get' );
+				jest.spyOn( httpTransport, 'get' );
 			} );
 	} );
 
 	afterEach( () => {
-		httpTransport.get.restore();
+		httpTransport.get.mockRestore();
 	} );
 
 	it( 'can be defined to e.g. use a cache when available', () => {
@@ -72,28 +65,28 @@ describe( 'integration: custom HTTP transport methods', () => {
 		const prom = query1
 			.get()
 			.then( ( result ) => {
-				expect( result.id ).to.equal( id );
-				expect( cachingGet.callCount ).to.equal( 1 );
-				expect( httpTransport.get.callCount ).to.equal( 1 );
-				expect( httpTransport.get ).to.have.been.calledWith( query1 );
-				expect( result ).to.equal( cache[ 'http://wpapi.local/wp-json/wp/v2/posts/' + id ] );
+				expect( result.id ).toBe( id );
+				expect( cachingGet ).toBeCalledTimes( 1 );
+				expect( httpTransport.get ).toHaveBeenCalledTimes( 1 );
+				expect( httpTransport.get ).toHaveBeenCalledWith( query1, undefined );
+				expect( result ).toBe( cache[ 'http://wpapi.local/wp-json/wp/v2/posts/' + id ] );
 			} )
 			.then( () => {
 				query2 = wp.posts().id( id );
 				return query2.get();
 			} )
 			.then( ( result ) => {
-				expect( cachingGet.callCount ).to.equal( 2 );
-				expect( httpTransport.get.callCount ).to.equal( 1 );
-				// sinon will try to use toString when comparing arguments in calledWith,
-				// so we mess with that method to properly demonstrate the inequality
-				query2.toString = () => {};
-				expect( httpTransport.get ).not.to.have.been.calledWith( query2 );
-				expect( result ).to.equal( cache[ 'http://wpapi.local/wp-json/wp/v2/posts/' + id ] );
+				expect( cachingGet ).toBeCalledTimes( 2 );
+				expect( httpTransport.get ).toHaveBeenCalledTimes( 1 );
+				expect( httpTransport.get ).toHaveBeenLastCalledWith( query1, undefined );
+				expect( httpTransport.get.mock.calls[0][0] ).not.toBe( query2 );
+				expect( result ).toBe( cache[ 'http://wpapi.local/wp-json/wp/v2/posts/' + id ] );
 				return SUCCESS;
 			} );
 
-		return expect( prom ).to.eventually.equal( SUCCESS );
+		return prom;
+
+		// return expect( prom ).resolves.toBe( SUCCESS );
 	} );
 
 	it( 'can be defined to transform responses', () => {
@@ -126,13 +119,13 @@ describe( 'integration: custom HTTP transport methods', () => {
 
 		const prom = wp.posts().slug( 'template-more-tag' )
 			.then( ( results ) => {
-				expect( results ).to.be.an( 'object' );
-				expect( Array.isArray( results ) ).to.equal( false );
-				expect( results.title.rendered ).to.equal( 'Template: More Tag' );
+				expect( typeof results ).toBe( 'object' );
+				expect( Array.isArray( results ) ).toBe( false );
+				expect( results.title.rendered ).toBe( 'Template: More Tag' );
 				return SUCCESS;
 			} );
 
-		return expect( prom ).to.eventually.equal( SUCCESS );
+		return expect( prom ).resolves.toBe( SUCCESS );
 	} );
 
 	it( 'can be defined to augment responses', () => {
@@ -162,8 +155,8 @@ describe( 'integration: custom HTTP transport methods', () => {
 
 		const prom = wp.posts()
 			.then( ( results ) => {
-				expect( results ).to.be.an.instanceOf( Collection );
-				expect( results.pluck( 'slug' ) ).to.deep.equal( [
+				expect( results ).toBeInstanceOf( Collection );
+				expect( results.pluck( 'slug' ) ).toEqual( [
 					'markup-html-tags-and-formatting',
 					'markup-image-alignment',
 					'markup-text-alignment',
@@ -177,7 +170,7 @@ describe( 'integration: custom HTTP transport methods', () => {
 				] );
 				return SUCCESS;
 			} );
-		return expect( prom ).to.eventually.equal( SUCCESS );
+		return expect( prom ).resolves.toBe( SUCCESS );
 	} );
 
 } );

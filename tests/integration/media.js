@@ -1,12 +1,4 @@
 'use strict';
-const chai = require( 'chai' );
-// Variable to use as our "success token" in promise assertions
-const SUCCESS = 'success';
-// Chai-as-promised and the `expect( prom ).to.eventually.equal( SUCCESS ) is
-// used to ensure that the assertions running within the promise chains are
-// actually run.
-chai.use( require( 'chai-as-promised' ) );
-const expect = chai.expect;
 
 const path = require( 'path' );
 const _unique = require( 'lodash.uniq' );
@@ -22,6 +14,9 @@ const getTitles = require( '../helpers/get-rendered-prop' ).bind( null, 'title' 
 const credentials = require( '../helpers/constants' ).credentials;
 
 const filePath = path.join( __dirname, 'assets/emilygarfield-untitled.jpg' );
+
+// Variable to use as our "success token" in promise assertions
+const SUCCESS = 'success';
 
 const expectedResults = {
 	titles: {
@@ -79,21 +74,21 @@ describe( 'integration: media()', () => {
 		const prom = wp.media()
 			.get()
 			.then( ( media ) => {
-				expect( media ).to.be.an( 'array' );
-				expect( media.length ).to.equal( 10 );
+				expect( Array.isArray( media ) ).toBe( true );
+				expect( media.length ).toBe( 10 );
 				return SUCCESS;
 			} );
-		return expect( prom ).to.eventually.equal( SUCCESS );
+		return expect( prom ).resolves.toBe( SUCCESS );
 	} );
 
 	it( 'fetches the 10 most recent media by default', () => {
 		const prom = wp.media()
 			.get()
 			.then( ( media ) => {
-				expect( getTitles( media ) ).to.deep.equal( expectedResults.titles.page1 );
+				expect( getTitles( media ) ).toEqual( expectedResults.titles.page1 );
 				return SUCCESS;
 			} );
-		return expect( prom ).to.eventually.equal( SUCCESS );
+		return expect( prom ).resolves.toBe( SUCCESS );
 	} );
 
 	describe( 'paging properties', () => {
@@ -102,55 +97,55 @@ describe( 'integration: media()', () => {
 			const prom = wp.media()
 				.get()
 				.then( ( media ) => {
-					expect( media ).to.have.property( '_paging' );
-					expect( media._paging ).to.be.an( 'object' );
+					expect( media ).toHaveProperty( '_paging' );
+					expect( typeof media._paging ).toBe( 'object' );
 					return SUCCESS;
 				} );
-			return expect( prom ).to.eventually.equal( SUCCESS );
+			return expect( prom ).resolves.toBe( SUCCESS );
 		} );
 
 		it( 'include the total number of media: use .headers() for coverage reasons', () => {
 			const prom = wp.media()
 				.headers()
 				.then( ( postHeadersResponse ) => {
-					expect( postHeadersResponse ).to.have.property( 'x-wp-total' );
-					expect( postHeadersResponse[ 'x-wp-total' ] ).to.equal( '38' );
+					expect( postHeadersResponse ).toHaveProperty( 'x-wp-total' );
+					expect( postHeadersResponse[ 'x-wp-total' ] ).toBe( '38' );
 					return SUCCESS;
 				} );
-			return expect( prom ).to.eventually.equal( SUCCESS );
+			return expect( prom ).resolves.toBe( SUCCESS );
 		} );
 
 		it( 'include the total number of pages available', () => {
 			const prom = wp.media()
 				.get()
 				.then( ( media ) => {
-					expect( media._paging ).to.have.property( 'totalPages' );
-					expect( media._paging.totalPages ).to.equal( '4' );
+					expect( media._paging ).toHaveProperty( 'totalPages' );
+					expect( media._paging.totalPages ).toBe( '4' );
 					return SUCCESS;
 				} );
-			return expect( prom ).to.eventually.equal( SUCCESS );
+			return expect( prom ).resolves.toBe( SUCCESS );
 		} );
 
 		it( 'provides a bound WPRequest for the next page as .next', () => {
 			const prom = wp.media()
 				.get()
 				.then( ( media ) => {
-					expect( media._paging ).to.have.property( 'next' );
-					expect( media._paging.next ).to.be.an( 'object' );
-					expect( media._paging.next ).to.be.an.instanceOf( WPRequest );
-					expect( media._paging.next._options.endpoint ).to
-						.equal( 'http://wpapi.local/wp-json/wp/v2/media?page=2' );
+					expect( media._paging ).toHaveProperty( 'next' );
+					expect( typeof media._paging.next ).toBe( 'object' );
+					expect( media._paging.next ).toBeInstanceOf( WPRequest );
+					expect( media._paging.next._options.endpoint )
+						.toEqual( 'http://wpapi.local/wp-json/wp/v2/media?page=2' );
 					// Get last page & ensure "next" no longer appears
 					return wp.media()
 						.page( media._paging.totalPages )
 						.get()
 						.then( ( media ) => {
-							expect( media._paging ).not.to.have.property( 'next' );
-							expect( getTitles( media ) ).to.deep.equal( expectedResults.titles.page4 );
+							expect( media._paging ).not.toHaveProperty( 'next' );
+							expect( getTitles( media ) ).toEqual( expectedResults.titles.page4 );
 							return SUCCESS;
 						} );
 				} );
-			return expect( prom ).to.eventually.equal( SUCCESS );
+			return expect( prom ).resolves.toBe( SUCCESS );
 		} );
 
 		it( 'allows access to the next page of results via .next', () => {
@@ -160,32 +155,32 @@ describe( 'integration: media()', () => {
 					return media._paging.next
 						.get()
 						.then( ( media ) => {
-							expect( media ).to.be.an( 'array' );
-							expect( media.length ).to.equal( 10 );
-							expect( getTitles( media ) ).to.deep.equal( expectedResults.titles.page2 );
+							expect( Array.isArray( media ) ).toBe( true );
+							expect( media.length ).toBe( 10 );
+							expect( getTitles( media ) ).toEqual( expectedResults.titles.page2 );
 							return SUCCESS;
 						} );
 				} );
-			return expect( prom ).to.eventually.equal( SUCCESS );
+			return expect( prom ).resolves.toBe( SUCCESS );
 		} );
 
 		it( 'provides a bound WPRequest for the previous page as .prev', () => {
 			const prom = wp.media()
 				.get()
 				.then( ( media ) => {
-					expect( media._paging ).not.to.have.property( 'prev' );
+					expect( media._paging ).not.toHaveProperty( 'prev' );
 					return media._paging.next
 						.get()
 						.then( ( media ) => {
-							expect( media._paging ).to.have.property( 'prev' );
-							expect( media._paging.prev ).to.be.an( 'object' );
-							expect( media._paging.prev ).to.be.an.instanceOf( WPRequest );
-							expect( media._paging.prev._options.endpoint ).to
-								.equal( 'http://wpapi.local/wp-json/wp/v2/media?page=1' );
+							expect( media._paging ).toHaveProperty( 'prev' );
+							expect( typeof media._paging.prev ).toBe( 'object' );
+							expect( media._paging.prev ).toBeInstanceOf( WPRequest );
+							expect( media._paging.prev._options.endpoint )
+								.toEqual( 'http://wpapi.local/wp-json/wp/v2/media?page=1' );
 							return SUCCESS;
 						} );
 				} );
-			return expect( prom ).to.eventually.equal( SUCCESS );
+			return expect( prom ).resolves.toBe( SUCCESS );
 		} );
 
 		it( 'allows access to the previous page of results via .prev', () => {
@@ -193,17 +188,17 @@ describe( 'integration: media()', () => {
 				.page( 2 )
 				.get()
 				.then( ( media ) => {
-					expect( getTitles( media ) ).to.deep.equal( expectedResults.titles.page2 );
+					expect( getTitles( media ) ).toEqual( expectedResults.titles.page2 );
 					return media._paging.prev
 						.get()
 						.then( ( media ) => {
-							expect( media ).to.be.an( 'array' );
-							expect( media.length ).to.equal( 10 );
-							expect( getTitles( media ) ).to.deep.equal( expectedResults.titles.page1 );
+							expect( Array.isArray( media ) ).toBe( true );
+							expect( media.length ).toBe( 10 );
+							expect( getTitles( media ) ).toEqual( expectedResults.titles.page1 );
 							return SUCCESS;
 						} );
 				} );
-			return expect( prom ).to.eventually.equal( SUCCESS );
+			return expect( prom ).resolves.toBe( SUCCESS );
 		} );
 
 	} );
@@ -218,14 +213,14 @@ describe( 'integration: media()', () => {
 					content: 'Some Content',
 				} )
 				.catch( ( err ) => {
-					httpTestUtils.rethrowIfChaiError( err );
-					expect( err.code ).to.equal( 'rest_cannot_create' );
-					expect( err.data ).to.deep.equal( {
+					// httpTestUtils.rethrowIfChaiError( err );
+					expect( err.code ).toBe( 'rest_cannot_create' );
+					expect( err.data ).toEqual( {
 						status: 401,
 					} );
 					return SUCCESS;
 				} );
-			return expect( prom ).to.eventually.equal( SUCCESS );
+			return expect( prom ).resolves.toBe( SUCCESS );
 		} );
 
 		it( 'cannot PUT', () => {
@@ -241,14 +236,14 @@ describe( 'integration: media()', () => {
 						} );
 				} )
 				.catch( ( err ) => {
-					httpTestUtils.rethrowIfChaiError( err );
-					expect( err.code ).to.equal( 'rest_cannot_edit' );
-					expect( err.data ).to.deep.equal( {
+					// httpTestUtils.rethrowIfChaiError( err );
+					expect( err.code ).toBe( 'rest_cannot_edit' );
+					expect( err.data ).toEqual( {
 						status: 401,
 					} );
 					return SUCCESS;
 				} );
-			return expect( prom ).to.eventually.equal( SUCCESS );
+			return expect( prom ).resolves.toBe( SUCCESS );
 		} );
 
 		it( 'cannot DELETE', () => {
@@ -262,14 +257,14 @@ describe( 'integration: media()', () => {
 					} );
 				} )
 				.catch( ( err ) => {
-					httpTestUtils.rethrowIfChaiError( err );
-					expect( err.code ).to.equal( 'rest_cannot_delete' );
-					expect( err.data ).to.deep.equal( {
+					// httpTestUtils.rethrowIfChaiError( err );
+					expect( err.code ).toBe( 'rest_cannot_delete' );
+					expect( err.data ).toEqual( {
 						status: 401,
 					} );
 					return SUCCESS;
 				} );
-			return expect( prom ).to.eventually.equal( SUCCESS );
+			return expect( prom ).resolves.toBe( SUCCESS );
 		} );
 
 	} );
@@ -288,11 +283,11 @@ describe( 'integration: media()', () => {
 			.then( ( createdMedia ) => {
 				id = createdMedia.id;
 				imageUrl = createdMedia.source_url;
-				expect( createdMedia.title.rendered ).to.equal( 'Untitled' );
-				expect( createdMedia.caption.raw ).to.equal( 'A painting from Emily Garfield\'s "Conduits" series' );
+				expect( createdMedia.title.rendered ).toBe( 'Untitled' );
+				expect( createdMedia.caption.raw ).toBe( 'A painting from Emily Garfield\'s "Conduits" series' );
 
 				// File name is correctly applied and image was uploaded to content dir
-				expect( imageUrl ).to.match( /^http:\/\/wpapi.local\/content\/uploads\/.*\/ehg-conduits.jpg$/ );
+				expect( imageUrl ).toMatch( /^http:\/\/wpapi.local\/content\/uploads\/.*\/ehg-conduits.jpg$/ );
 			} )
 			// UPDATE
 			.then( () => authenticated.media()
@@ -303,9 +298,9 @@ describe( 'integration: media()', () => {
 				} )
 			)
 			.then( ( result ) => {
-				expect( result.id ).to.equal( id );
-				expect( result.title.rendered ).to.equal( 'Conduits Series' );
-				expect( result.alt_text ).to.equal( 'A photograph of an abstract painting by Emily Garfield' );
+				expect( result.id ).toBe( id );
+				expect( result.title.rendered ).toBe( 'Conduits Series' );
+				expect( result.alt_text ).toBe( 'A photograph of an abstract painting by Emily Garfield' );
 				return result;
 			} )
 			// READ
@@ -315,7 +310,7 @@ describe( 'integration: media()', () => {
 				const sizeURLs = objectReduce( sizes, ( urls, size ) => urls.concat( size.source_url ), [] );
 
 				// Expect all sizes to have different URLs
-				expect( Object.keys( sizes ).length ).to.equal( _unique( sizeURLs ).length );
+				expect( Object.keys( sizes ).length ).toBe( _unique( sizeURLs ).length );
 				return sizeURLs.reduce( ( previous, sizeURL ) => previous.then( () => (
 					httpTestUtils.expectStatusCode( sizeURL, 200 )
 				) ), Promise.resolve() );
@@ -333,9 +328,9 @@ describe( 'integration: media()', () => {
 					.delete();
 			} )
 			.catch( ( error ) => {
-				httpTestUtils.rethrowIfChaiError( error );
-				expect( error.code ).to.equal( 'rest_trash_not_supported' );
-				expect( error.data ).to.deep.equal( {
+				// httpTestUtils.rethrowIfChaiError( error );
+				expect( error.code ).toBe( 'rest_trash_not_supported' );
+				expect( error.data ).toEqual( {
 					status: 501,
 				} );
 				// Now permanently delete this media
@@ -346,17 +341,17 @@ describe( 'integration: media()', () => {
 					} );
 			} )
 			.then( ( response ) => {
-				expect( response ).to.be.an( 'object' );
+				expect( typeof response ).toBe( 'object' );
 				// DELETE action returns the media object as the .previous property
-				expect( response.previous ).to.be.an( 'object' );
-				expect( response.previous.id ).to.equal( id );
+				expect( typeof response.previous ).toBe( 'object' );
+				expect( response.previous.id ).toBe( id );
 				// Query for the media: expect this to fail, since it has been deleted
 				return wp.media().id( id );
 			} )
 			.catch( ( error ) => {
-				httpTestUtils.rethrowIfChaiError( error );
-				expect( error.code ).to.equal( 'rest_post_invalid_id' );
-				expect( error.data ).to.deep.equal( {
+				// httpTestUtils.rethrowIfChaiError( error );
+				expect( error.code ).toBe( 'rest_post_invalid_id' );
+				expect( error.data ).toEqual( {
 					status: 404,
 				} );
 			} )
@@ -367,7 +362,7 @@ describe( 'integration: media()', () => {
 			.then( () => {
 				return SUCCESS;
 			} );
-		return expect( prom ).to.eventually.equal( SUCCESS );
+		return expect( prom ).resolves.toBe( SUCCESS );
 	} );
 
 } );
