@@ -52,7 +52,7 @@
     "test:all": "jest",
     "test:unit": "jest tests/unit",
     "test:integration": "jest tests/integration",
-    "test:ci": "eslint && jest tests/unit --coverage",
+    "test:ci": "npm run eslint && jest tests/unit --coverage",
     "pretest": "npm run lint || true",
     "test": "jest --coverage"
   },
