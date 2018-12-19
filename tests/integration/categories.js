@@ -1,12 +1,4 @@
 'use strict';
-const chai = require( 'chai' );
-// Variable to use as our "success token" in promise assertions
-const SUCCESS = 'success';
-// Chai-as-promised and the `expect( prom ).to.eventually.equal( SUCCESS ) is
-// used to ensure that the assertions running within the promise chains are
-// actually run.
-chai.use( require( 'chai-as-promised' ) );
-const expect = chai.expect;
 
 const WPAPI = require( '../../' );
 const WPRequest = require( '../../lib/constructors/wp-request.js' );
@@ -14,6 +6,9 @@ const WPRequest = require( '../../lib/constructors/wp-request.js' );
 // Inspecting the names of the returned categories is an easy way to validate
 // that the right page of results was returned
 const getNames = require( '../helpers/get-prop' ).bind( null, 'name' );
+
+// Variable to use as our "success token" in promise assertions
+const SUCCESS = 'success';
 
 // Define some arrays to use ensuring the returned data is what we expect
 // it to be (e.g. an array of the names from categories on the first page)
@@ -66,22 +61,22 @@ describe( 'integration: categories()', () => {
 		const prom = wp.categories()
 			.get()
 			.then( ( categories ) => {
-				expect( categories ).to.be.an( 'array' );
-				expect( categories.length ).to.equal( 10 );
+				expect( Array.isArray( categories ) ).toBe( true );
+				expect( categories.length ).toBe( 10 );
 				return SUCCESS;
 			} );
-		return expect( prom ).to.eventually.equal( SUCCESS );
+		return expect( prom ).resolves.toBe( SUCCESS );
 	} );
 
 	it( 'retrieves the first 10 categories by default', () => {
 		const prom = wp.categories()
 			.get()
 			.then( ( categories ) => {
-				expect( categories ).to.be.an( 'array' );
-				expect( categories.length ).to.equal( 10 );
+				expect( Array.isArray( categories ) ).toBe( true );
+				expect( categories.length ).toBe( 10 );
 				return SUCCESS;
 			} );
-		return expect( prom ).to.eventually.equal( SUCCESS );
+		return expect( prom ).resolves.toBe( SUCCESS );
 	} );
 
 	describe( 'paging properties', () => {
@@ -90,55 +85,55 @@ describe( 'integration: categories()', () => {
 			const prom = wp.categories()
 				.get()
 				.then( ( categories ) => {
-					expect( categories ).to.have.property( '_paging' );
-					expect( categories._paging ).to.be.an( 'object' );
+					expect( categories ).toHaveProperty( '_paging' );
+					expect( typeof categories._paging ).toBe( 'object' );
 					return SUCCESS;
 				} );
-			return expect( prom ).to.eventually.equal( SUCCESS );
+			return expect( prom ).resolves.toBe( SUCCESS );
 		} );
 
 		it( 'include the total number of categories', () => {
 			const prom = wp.categories()
 				.get()
 				.then( ( categories ) => {
-					expect( categories._paging ).to.have.property( 'total' );
-					expect( categories._paging.total ).to.equal( '65' );
+					expect( categories._paging ).toHaveProperty( 'total' );
+					expect( categories._paging.total ).toBe( '65' );
 					return SUCCESS;
 				} );
-			return expect( prom ).to.eventually.equal( SUCCESS );
+			return expect( prom ).resolves.toBe( SUCCESS );
 		} );
 
 		it( 'include the total number of pages available', () => {
 			const prom = wp.categories()
 				.get()
 				.then( ( categories ) => {
-					expect( categories._paging ).to.have.property( 'totalPages' );
-					expect( categories._paging.totalPages ).to.equal( '7' );
+					expect( categories._paging ).toHaveProperty( 'totalPages' );
+					expect( categories._paging.totalPages ).toBe( '7' );
 					return SUCCESS;
 				} );
-			return expect( prom ).to.eventually.equal( SUCCESS );
+			return expect( prom ).resolves.toBe( SUCCESS );
 		} );
 
 		it( 'provides a bound WPRequest for the next page as .next', () => {
 			const prom = wp.categories()
 				.get()
 				.then( ( categories ) => {
-					expect( categories._paging ).to.have.property( 'next' );
-					expect( categories._paging.next ).to.be.an( 'object' );
-					expect( categories._paging.next ).to.be.an.instanceOf( WPRequest );
-					expect( categories._paging.next._options.endpoint ).to
-						.equal( 'http://wpapi.local/wp-json/wp/v2/categories?page=2' );
+					expect( categories._paging ).toHaveProperty( 'next' );
+					expect( typeof categories._paging.next ).toBe( 'object' );
+					expect( categories._paging.next ).toBeInstanceOf( WPRequest );
+					expect( categories._paging.next._options.endpoint )
+						.toEqual( 'http://wpapi.local/wp-json/wp/v2/categories?page=2' );
 					// Get last page & ensure "next" no longer appears
 					return wp.categories()
 						.page( categories._paging.totalPages )
 						.get()
 						.then( ( categories ) => {
-							expect( categories._paging ).not.to.have.property( 'next' );
-							expect( getNames( categories ) ).to.deep.equal( expectedResults.names.pageLast );
+							expect( categories._paging ).not.toHaveProperty( 'next' );
+							expect( getNames( categories ) ).toEqual( expectedResults.names.pageLast );
 							return SUCCESS;
 						} );
 				} );
-			return expect( prom ).to.eventually.equal( SUCCESS );
+			return expect( prom ).resolves.toBe( SUCCESS );
 		} );
 
 		it( 'allows access to the next page of results via .next', () => {
@@ -148,32 +143,32 @@ describe( 'integration: categories()', () => {
 					return categories._paging.next
 						.get()
 						.then( ( categories ) => {
-							expect( categories ).to.be.an( 'array' );
-							expect( categories.length ).to.equal( 10 );
-							expect( getNames( categories ) ).to.deep.equal( expectedResults.names.page2 );
+							expect( Array.isArray( categories ) ).toBe( true );
+							expect( categories.length ).toBe( 10 );
+							expect( getNames( categories ) ).toEqual( expectedResults.names.page2 );
 							return SUCCESS;
 						} );
 				} );
-			return expect( prom ).to.eventually.equal( SUCCESS );
+			return expect( prom ).resolves.toBe( SUCCESS );
 		} );
 
 		it( 'provides a bound WPRequest for the previous page as .prev', () => {
 			const prom = wp.categories()
 				.get()
 				.then( ( categories ) => {
-					expect( categories._paging ).not.to.have.property( 'prev' );
+					expect( categories._paging ).not.toHaveProperty( 'prev' );
 					return categories._paging.next
 						.get()
 						.then( ( categories ) => {
-							expect( categories._paging ).to.have.property( 'prev' );
-							expect( categories._paging.prev ).to.be.an( 'object' );
-							expect( categories._paging.prev ).to.be.an.instanceOf( WPRequest );
-							expect( categories._paging.prev._options.endpoint ).to
-								.equal( 'http://wpapi.local/wp-json/wp/v2/categories?page=1' );
+							expect( categories._paging ).toHaveProperty( 'prev' );
+							expect( typeof categories._paging.prev ).toBe( 'object' );
+							expect( categories._paging.prev ).toBeInstanceOf( WPRequest );
+							expect( categories._paging.prev._options.endpoint )
+								.toEqual( 'http://wpapi.local/wp-json/wp/v2/categories?page=1' );
 							return SUCCESS;
 						} );
 				} );
-			return expect( prom ).to.eventually.equal( SUCCESS );
+			return expect( prom ).resolves.toBe( SUCCESS );
 		} );
 
 		it( 'allows access to the previous page of results via .prev', () => {
@@ -181,17 +176,17 @@ describe( 'integration: categories()', () => {
 				.page( 2 )
 				.get()
 				.then( ( categories ) => {
-					expect( getNames( categories ) ).to.deep.equal( expectedResults.names.page2 );
+					expect( getNames( categories ) ).toEqual( expectedResults.names.page2 );
 					return categories._paging.prev
 						.get()
 						.then( ( categories ) => {
-							expect( categories ).to.be.an( 'array' );
-							expect( categories.length ).to.equal( 10 );
-							expect( getNames( categories ) ).to.deep.equal( expectedResults.names.page1 );
+							expect( Array.isArray( categories ) ).toBe( true );
+							expect( categories.length ).toBe( 10 );
+							expect( getNames( categories ) ).toEqual( expectedResults.names.page1 );
 							return SUCCESS;
 						} );
 				} );
-			return expect( prom ).to.eventually.equal( SUCCESS );
+			return expect( prom ).resolves.toBe( SUCCESS );
 		} );
 
 	} );
@@ -209,18 +204,18 @@ describe( 'integration: categories()', () => {
 					return wp.categories().id( selectedCategory.id );
 				} )
 				.then( ( category ) => {
-					expect( category ).to.be.an( 'object' );
-					expect( category ).to.have.property( 'id' );
-					expect( category.id ).to.equal( selectedCategory.id );
-					expect( category ).to.have.property( 'slug' );
-					expect( category.slug ).to.equal( selectedCategory.slug );
-					expect( category ).to.have.property( 'taxonomy' );
-					expect( category.taxonomy ).to.equal( 'category' );
-					expect( category ).to.have.property( 'parent' );
-					expect( category.parent ).to.equal( 0 );
+					expect( typeof category ).toBe( 'object' );
+					expect( category ).toHaveProperty( 'id' );
+					expect( category.id ).toBe( selectedCategory.id );
+					expect( category ).toHaveProperty( 'slug' );
+					expect( category.slug ).toBe( selectedCategory.slug );
+					expect( category ).toHaveProperty( 'taxonomy' );
+					expect( category.taxonomy ).toBe( 'category' );
+					expect( category ).toHaveProperty( 'parent' );
+					expect( category.parent ).toBe( 0 );
 					return SUCCESS;
 				} );
-			return expect( prom ).to.eventually.equal( SUCCESS );
+			return expect( prom ).resolves.toBe( SUCCESS );
 		} );
 
 	} );
@@ -238,23 +233,23 @@ describe( 'integration: categories()', () => {
 					return wp.categories().search( selectedCategory.slug );
 				} )
 				.then( ( categories ) => {
-					expect( categories ).to.be.an( 'array' );
-					expect( categories.length ).to.equal( 1 );
+					expect( Array.isArray( categories ) ).toBe( true );
+					expect( categories.length ).toBe( 1 );
 					return categories[ 0 ];
 				} )
 				.then( ( category ) => {
-					expect( category ).to.be.an( 'object' );
-					expect( category ).to.have.property( 'id' );
-					expect( category.id ).to.equal( selectedCategory.id );
-					expect( category ).to.have.property( 'slug' );
-					expect( category.slug ).to.equal( selectedCategory.slug );
-					expect( category ).to.have.property( 'taxonomy' );
-					expect( category.taxonomy ).to.equal( 'category' );
-					expect( category ).to.have.property( 'parent' );
-					expect( category.parent ).to.equal( 0 );
+					expect( typeof category ).toBe( 'object' );
+					expect( category ).toHaveProperty( 'id' );
+					expect( category.id ).toBe( selectedCategory.id );
+					expect( category ).toHaveProperty( 'slug' );
+					expect( category.slug ).toBe( selectedCategory.slug );
+					expect( category ).toHaveProperty( 'taxonomy' );
+					expect( category.taxonomy ).toBe( 'category' );
+					expect( category ).toHaveProperty( 'parent' );
+					expect( category.parent ).toBe( 0 );
 					return SUCCESS;
 				} );
-			return expect( prom ).to.eventually.equal( SUCCESS );
+			return expect( prom ).resolves.toBe( SUCCESS );
 		} );
 
 		it( 'returns all categories matching the provided search string', () => {
@@ -262,13 +257,13 @@ describe( 'integration: categories()', () => {
 				.search( 'parent' )
 				.get()
 				.then( ( categories ) => {
-					expect( categories ).to.be.an( 'array' );
-					expect( categories.length ).to.equal( 4 );
+					expect( Array.isArray( categories ) ).toBe( true );
+					expect( categories.length ).toBe( 4 );
 					const slugs = categories.map( cat => cat.slug ).sort().join( ' ' );
-					expect( slugs ).to.equal( 'foo-a-foo-parent foo-parent parent parent-category' );
+					expect( slugs ).toBe( 'foo-a-foo-parent foo-parent parent parent-category' );
 					return SUCCESS;
 				} );
-			return expect( prom ).to.eventually.equal( SUCCESS );
+			return expect( prom ).resolves.toBe( SUCCESS );
 		} );
 
 		it( 'can be used to retrieve a category by slug from a set of search results', () => {
@@ -279,15 +274,15 @@ describe( 'integration: categories()', () => {
 				// filtering for taxonomy term collections is reinstated
 				.then( categories => categories.find( cat => cat.slug === 'parent' ) )
 				.then( ( category ) => {
-					expect( category ).to.have.property( 'slug' );
-					expect( category.slug ).to.equal( 'parent' );
-					expect( category ).to.have.property( 'name' );
-					expect( category.name ).to.equal( 'Parent' );
-					expect( category ).to.have.property( 'parent' );
-					expect( category.parent ).to.equal( 0 );
+					expect( category ).toHaveProperty( 'slug' );
+					expect( category.slug ).toBe( 'parent' );
+					expect( category ).toHaveProperty( 'name' );
+					expect( category.name ).toBe( 'Parent' );
+					expect( category ).toHaveProperty( 'parent' );
+					expect( category.parent ).toBe( 0 );
 					return SUCCESS;
 				} );
-			return expect( prom ).to.eventually.equal( SUCCESS );
+			return expect( prom ).resolves.toBe( SUCCESS );
 		} );
 
 	} );
@@ -307,35 +302,35 @@ describe( 'integration: categories()', () => {
 					return wp.categories().parent( parentCat.id );
 				} )
 				.then( ( categories ) => {
-					expect( categories ).to.be.an( 'array' );
-					expect( categories.length ).to.equal( 1 );
+					expect( Array.isArray( categories ) ).toBe( true );
+					expect( categories.length ).toBe( 1 );
 					const category = categories[ 0 ];
-					expect( category ).to.have.property( 'name' );
-					expect( category.name ).to.equal( 'Child 1' );
-					expect( category ).to.have.property( 'parent' );
-					expect( category.parent ).to.equal( parentCat.id );
+					expect( category ).toHaveProperty( 'name' );
+					expect( category.name ).toBe( 'Child 1' );
+					expect( category ).toHaveProperty( 'parent' );
+					expect( category.parent ).toBe( parentCat.id );
 					childCat1 = category;
 					// Go one level deeper
 					return wp.categories().parent( childCat1.id );
 				} )
 				.then( ( categories ) => {
-					expect( categories ).to.be.an( 'array' );
-					expect( categories.length ).to.equal( 1 );
+					expect( Array.isArray( categories ) ).toBe( true );
+					expect( categories.length ).toBe( 1 );
 					const category = categories[ 0 ];
-					expect( category ).to.have.property( 'name' );
-					expect( category.name ).to.equal( 'Child 2' );
-					expect( category ).to.have.property( 'parent' );
-					expect( category.parent ).to.equal( childCat1.id );
+					expect( category ).toHaveProperty( 'name' );
+					expect( category.name ).toBe( 'Child 2' );
+					expect( category ).toHaveProperty( 'parent' );
+					expect( category.parent ).toBe( childCat1.id );
 					childCat2 = category;
 					// Go one level deeper
 					return wp.categories().parent( childCat2.id );
 				} )
 				.then( ( categories ) => {
-					expect( categories ).to.be.an( 'array' );
-					expect( categories.length ).to.equal( 0 );
+					expect( Array.isArray( categories ) ).toBe( true );
+					expect( categories.length ).toBe( 0 );
 					return SUCCESS;
 				} );
-			return expect( prom ).to.eventually.equal( SUCCESS );
+			return expect( prom ).resolves.toBe( SUCCESS );
 		} );
 
 	} );
@@ -360,7 +355,7 @@ describe( 'integration: categories()', () => {
 					return wp.categories().post( postId );
 				} )
 				.then( ( categories ) => {
-					expect( categories.length ).to.equal( postCategories.length );
+					expect( categories.length ).toBe( postCategories.length );
 					categories.forEach( ( cat, idx ) => {
 						[
 							'id',
@@ -368,12 +363,12 @@ describe( 'integration: categories()', () => {
 							'slug',
 							'taxonomy',
 						].forEach( ( prop ) => {
-							expect( cat[ prop ] ).to.equal( postCategories[ idx ][ prop ] );
+							expect( cat[ prop ] ).toBe( postCategories[ idx ][ prop ] );
 						} );
 					} );
 					return SUCCESS;
 				} );
-			return expect( prom ).to.eventually.equal( SUCCESS );
+			return expect( prom ).resolves.toBe( SUCCESS );
 		} );
 
 	} );
