@@ -10,7 +10,7 @@ New features in this library should be accompanied by unit tests demonstrating t
 
 Our tests are broken down into a unit test suite, and an integration test suite. When you add a feature, you should ensure that your changes pass all tests in both suites. And if you find a bug, a test demonstrating that bug is just as useful as a patch that actually solves the problem!
 
-The unit tests can be run without any additional setup with `npm run test:unit`, but running more comprehensive tests (e.g. `npm test`, `npm run mocha`, etc.) requires additional work as described below in Integration Tests.
+The unit tests can be run without any additional setup with `npm run test:unit`, but running more comprehensive tests (e.g. `npm test`, `npm run test:integration`, etc.) requires additional work as described below in Integration Tests.
 
 ### Integration Tests
 
@@ -18,19 +18,17 @@ In order to run the integration tests you will need to run a specifically-config
 
 ### Adding Tests
 
-Adding new code, or submitting a pull request? If it does something, it should have tests! Under the hood we use [Mocha](visionmedia.github.io/mocha/) to run our tests, and write our assertions using [Chai's "expect" BDD syntax](http://chaijs.com/api/bdd/), *e.g.*:
+Adding new code, or submitting a pull request? If it does something, it should have tests! Under the hood we use [Jest](https://jestjs.io/) to run our tests, and write our assertions using [Jest's "expect" BDD syntax](https://jestjs.io/docs/en/expect), *e.g.*:
 ```javascript
-expect( wp._options.endpoint ).to.equal( 'http://some.url.com/wp-json/' );
+expect( wp._options.endpoint ).toBe( 'http://some.url.com/wp-json/' );
 ```
 
-**If you are uncomfortable or unfamiliar with writing unit tests, you should feel free to submit a pull request without them!** We'll work with you in the PR comments to walk you through how to test the code.
+**If you are uncomfortable or unfamiliar with writing unit tests,** that's fine! You should feel free to submit a pull request without them. We'll work with you in the PR comments to walk you through how to test the code.
 
 #### This Function Is Totally Not A Spy
 
-We use [Sinon.js](sinonjs.org/docs/) for [spying on](sinonjs.org/docs/#spies) and [stubbing](http://sinonjs.org/docs/#stubs) functionality. Sinon assertions should also be written with the BDD style, which is enabled via [sinon-chai](https://www.npmjs.org/package/sinon-chai):
-```javascript
-expect( mockAgent.get ).to.have.been.calledWith( 'url/' );
-```
+When writing unit tests we want to test only a specific piece of logic, without causing side-effects. To prevent our tests from doing things like actually sending real HTTP requests, we use Jest's [spy](https://jestjs.io/docs/en/jest-object.html#jestspyonobject-methodname), [mocking & stubbing](https://jestjs.io/docs/en/mock-functions) functionality.
+
 See the [existing test files](https://github.com/wp-api/node-wpapi/tree/master/tests) for more examples.
 
 ## Best Practices for Commits
