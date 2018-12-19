@@ -1,7 +1,0 @@
-_site
-.sass-cache
-.jekyll-metadata
-
-*.lock
-
-api-reference/
