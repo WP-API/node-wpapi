@@ -1,6 +1,4 @@
 'use strict';
-const chai = require( 'chai' );
-const expect = chai.expect;
 const fs = require( 'fs' );
 const http = require( 'http' );
 
@@ -34,7 +32,7 @@ const expectFileEqualsURL = ( filePath, url ) => new Promise( ( resolve, reject 
 			const originalFile = fs.readFileSync( filePath );
 
 			const buffersEqual = downloadedImageBuffer.equals( originalFile );
-			expect( buffersEqual ).to.equal( true );
+			expect( buffersEqual ).toBe( true );
 
 			if ( buffersEqual ) {
 				return resolve( true );
@@ -44,14 +42,7 @@ const expectFileEqualsURL = ( filePath, url ) => new Promise( ( resolve, reject 
 	} );
 } );
 
-const rethrowIfChaiError = ( error ) => {
-	if ( error instanceof chai.AssertionError ) {
-		throw error;
-	}
-};
-
 module.exports = {
 	expectStatusCode: expectStatusCode,
 	expectFileEqualsURL: expectFileEqualsURL,
-	rethrowIfChaiError: rethrowIfChaiError,
 };

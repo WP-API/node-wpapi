@@ -213,7 +213,6 @@ describe( 'integration: media()', () => {
 					content: 'Some Content',
 				} )
 				.catch( ( err ) => {
-					// httpTestUtils.rethrowIfChaiError( err );
 					expect( err.code ).toBe( 'rest_cannot_create' );
 					expect( err.data ).toEqual( {
 						status: 401,
@@ -236,7 +235,6 @@ describe( 'integration: media()', () => {
 						} );
 				} )
 				.catch( ( err ) => {
-					// httpTestUtils.rethrowIfChaiError( err );
 					expect( err.code ).toBe( 'rest_cannot_edit' );
 					expect( err.data ).toEqual( {
 						status: 401,
@@ -257,7 +255,6 @@ describe( 'integration: media()', () => {
 					} );
 				} )
 				.catch( ( err ) => {
-					// httpTestUtils.rethrowIfChaiError( err );
 					expect( err.code ).toBe( 'rest_cannot_delete' );
 					expect( err.data ).toEqual( {
 						status: 401,
@@ -328,7 +325,6 @@ describe( 'integration: media()', () => {
 					.delete();
 			} )
 			.catch( ( error ) => {
-				// httpTestUtils.rethrowIfChaiError( error );
 				expect( error.code ).toBe( 'rest_trash_not_supported' );
 				expect( error.data ).toEqual( {
 					status: 501,
@@ -349,7 +345,6 @@ describe( 'integration: media()', () => {
 				return wp.media().id( id );
 			} )
 			.catch( ( error ) => {
-				// httpTestUtils.rethrowIfChaiError( error );
 				expect( error.code ).toBe( 'rest_post_invalid_id' );
 				expect( error.data ).toEqual( {
 					status: 404,

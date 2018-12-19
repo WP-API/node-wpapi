@@ -649,7 +649,6 @@ describe( 'integration: posts()', () => {
 				return wp.posts().id( id );
 			} )
 			.catch( ( error ) => {
-				// httpTestUtils.rethrowIfChaiError( error );
 				expect( error.code ).toBe( 'rest_forbidden' );
 				expect( error.data ).toEqual( {
 					status: 401,
@@ -671,7 +670,6 @@ describe( 'integration: posts()', () => {
 				return authenticated.posts().id( id );
 			} )
 			.catch( ( error ) => {
-				// httpTestUtils.rethrowIfChaiError( error );
 				expect( error.code ).toBe( 'rest_post_invalid_id' );
 				expect( error.data ).toEqual( {
 					status: 404,
@@ -785,7 +783,6 @@ describe( 'integration: posts()', () => {
 			// Query for the media, with auth: expect this to fail, since it is gone
 			.then( () => authenticated.media().id( mediaId ) )
 			.catch( ( error ) => {
-				// httpTestUtils.rethrowIfChaiError( error );
 				expect( error.code ).toBe( 'rest_post_invalid_id' );
 				expect( error.data ).toEqual( {
 					status: 404,
@@ -801,7 +798,6 @@ describe( 'integration: posts()', () => {
 			// Query for the post, with auth: expect this to fail, since it is gone
 			.then( () => authenticated.posts().id( id ) )
 			.catch( ( error ) => {
-				// httpTestUtils.rethrowIfChaiError( error );
 				expect( error.code ).toBe( 'rest_post_invalid_id' );
 				expect( error.data ).toEqual( {
 					status: 404,
