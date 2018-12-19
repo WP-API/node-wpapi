@@ -30,7 +30,6 @@ describe( 'integration: discover()', () => {
 	} );
 
 	it( 'returns a promise', () => {
-		const Promise = require( 'es6-promise' );
 		expect( apiPromise ).toBeInstanceOf( Promise );
 	} );
 

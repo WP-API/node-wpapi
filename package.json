@@ -57,7 +57,6 @@
     "test": "jest --coverage"
   },
   "dependencies": {
-    "es6-promise": "^3.2.1",
     "li": "^1.0.1",
     "lodash.uniq": "^4.3.0",
     "node.extend": "^1.1.5",
