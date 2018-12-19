@@ -67,8 +67,6 @@
     "superagent": "^3.3.1"
   },
   "devDependencies": {
-    "chai": "^3.5.0",
-    "chai-as-promised": "^5.3.0",
     "combyne": "^2.0.0",
     "eslint": "^4.19.1",
     "grunt": "^1.0.1",
@@ -86,8 +84,6 @@
     "minimist": "^1.2.0",
     "prompt": "^1.0.0",
     "rimraf": "^2.6.1",
-    "sinon": "^1.17.4",
-    "sinon-chai": "^2.8.0",
     "webpack": "^1.13.1"
   }
 }
