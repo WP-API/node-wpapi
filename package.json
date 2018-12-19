@@ -44,6 +44,7 @@
     "mocha": "_mocha tests --recursive --reporter=nyan",
     "jest": "jest",
     "jest:unit": "jest tests/unit",
+    "jest:integration": "jest tests/integration",
     "watch": "grunt watch",
     "test:all": "_mocha tests --recursive --reporter=nyan",
     "test:unit": "_mocha tests/unit --recursive --reporter=nyan",
