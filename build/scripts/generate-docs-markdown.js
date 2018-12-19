@@ -125,7 +125,7 @@ const readmeOutput = readFile( readmePath ).then( ( contents ) => {
 	let entry = null;
 
 	for ( let i = 0; i < tokens.length; i++ ) {
-		let token = tokens[ i ];
+		const token = tokens[ i ];
 
 		if ( ! isTitle( token ) ) {
 			if ( entry && entry.tokens ) {

@@ -62,13 +62,13 @@
  */
 'use strict';
 
-var agent = require( 'superagent' );
-var fs = require( 'fs' );
-var path = require( 'path' );
-var simplifyObject = require( './simplify-object' );
+const agent = require( 'superagent' );
+const fs = require( 'fs' );
+const path = require( 'path' );
+const simplifyObject = require( './simplify-object' );
 
 // Parse the arguments object
-var argv = require( 'minimist' )( process.argv.slice( 2 ) );
+const argv = require( 'minimist' )( process.argv.slice( 2 ) );
 
 if ( argv.h || argv.help ) {
 	console.log( `
@@ -90,17 +90,17 @@ update-default-routes-json \\
 // The output directory defaults to the lib/data directory. To customize it,
 // specify your own directory with --output=your/output/directory (supports
 // both relative and absolute paths)
-var outputPath = argv.output ?
+const outputPath = argv.output ?
 	// Nested ternary, don't try this at home: this is to support absolute paths
 	argv.output[ 0 ] === '/' ? argv.output : path.join( process.cwd(), argv.output ) :
 	// Output to lib/data/ by default
 	path.resolve( process.cwd(), 'lib', 'data' );
 
 // Specify your own API endpoint with --endpoint=http://your-endpoint.com/wp-json
-var endpoint = argv.endpoint || 'http://wpapi.local/wp-json';
+const endpoint = argv.endpoint || 'http://wpapi.local/wp-json';
 
 // Specify a custom output file name with --file=custom-api-routes-filename.json
-var fileName = argv.file || 'default-routes.json';
+const fileName = argv.file || 'default-routes.json';
 
 // This directory will be called to kick off the JSON download: it uses
 // superagent internally for HTTP transport that respects HTTP redirects.
@@ -152,12 +152,12 @@ fs.stat( outputPath, function( err, stats ) {
 	// If we made it this far, our arguments look good! Carry on.
 	getJSON( function( response ) {
 		// Extract the JSON
-		var endpointJSON = JSON.parse( JSON.stringify( response.body ) );
+		const endpointJSON = JSON.parse( JSON.stringify( response.body ) );
 		// Simplify the JSON structure and pick out the routes dictionary
-		var slimJSON = simplifyObject( endpointJSON ).routes;
+		const slimJSON = simplifyObject( endpointJSON ).routes;
 
 		// Save the file
-		var outputFilePath = path.join( outputPath, fileName );
+		const outputFilePath = path.join( outputPath, fileName );
 		fs.writeFile( outputFilePath, JSON.stringify( slimJSON ), function( err ) {
 			if ( err ) {
 				console.error( '\nSomething went wrong! Could not save ' + outputFilePath );

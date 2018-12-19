@@ -6,7 +6,7 @@ module.exports = function( grunt ) {
 		'can be rendered with Jekyll.',
 	].join( ' ' ), function() {
 		// Force task into async mode and grab a handle to the "done" function.
-		var done = this.async();
+		const done = this.async();
 
 		grunt.log.writeln( 'Extracting page content from README.md...' );
 

@@ -51,9 +51,6 @@ describe( 'integration: custom HTTP transport methods', () => {
 	} );
 
 	it( 'can be defined to e.g. use a cache when available', () => {
-		let query1;
-		let query2;
-
 		wp = new WPAPI( {
 			endpoint: 'http://wpapi.local/wp-json',
 			transport: {
@@ -61,7 +58,9 @@ describe( 'integration: custom HTTP transport methods', () => {
 			},
 		} ).auth( credentials );
 
-		query1 = wp.posts().id( id );
+		const query1 = wp.posts().id( id );
+		let query2;
+
 		const prom = query1
 			.get()
 			.then( ( result ) => {

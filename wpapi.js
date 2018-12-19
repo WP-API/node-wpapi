@@ -14,31 +14,31 @@
  */
 'use strict';
 
-var extend = require( 'node.extend' );
-var objectReduce = require( './lib/util/object-reduce' );
+const extend = require( 'node.extend' );
+const objectReduce = require( './lib/util/object-reduce' );
 
 // This JSON file provides enough data to create handler methods for all valid
 // API routes in WordPress 4.7
-var defaultRoutes = require( './lib/data/default-routes.json' );
-var buildRouteTree = require( './lib/route-tree' ).build;
-var generateEndpointFactories = require( './lib/endpoint-factories' ).generate;
+const defaultRoutes = require( './lib/data/default-routes.json' );
+const buildRouteTree = require( './lib/route-tree' ).build;
+const generateEndpointFactories = require( './lib/endpoint-factories' ).generate;
 
 // The default endpoint factories will be lazy-loaded by parsing the default
 // route tree data if a default-mode WPAPI instance is created (i.e. one that
 // is to be bootstrapped with the handlers for all of the built-in routes)
-var defaultEndpointFactories;
+let defaultEndpointFactories;
 
 // Constant used to detect first-party WordPress REST API routes
-var apiDefaultNamespace = 'wp/v2';
+const apiDefaultNamespace = 'wp/v2';
 
 // Pull in autodiscovery methods
-var autodiscovery = require( './lib/autodiscovery' );
+const autodiscovery = require( './lib/autodiscovery' );
 
 // Pull in base module constructors
-var WPRequest = require( './lib/constructors/wp-request' );
+const WPRequest = require( './lib/constructors/wp-request' );
 
 // Pull in default HTTP transport
-var httpTransport = require( './lib/http-transport' );
+const httpTransport = require( './lib/http-transport' );
 
 /**
  * Construct a REST API client instance object to create
@@ -146,7 +146,7 @@ function WPAPI( options ) {
  */
 WPAPI.prototype.transport = function( transport ) {
 	// Local reference to avoid need to reference via `this` inside forEach
-	var _options = this._options;
+	const _options = this._options;
 
 	// Create the default transport if it does not exist
 	if ( ! _options.transport ) {
@@ -232,7 +232,7 @@ WPAPI.site = function( endpoint, routes ) {
  * @returns {WPRequest} A WPRequest object bound to the provided URL
  */
 WPAPI.prototype.url = function( url ) {
-	var options = extend( {}, this._options, {
+	const options = extend( {}, this._options, {
 		endpoint: url,
 	} );
 	return new WPRequest( options );
@@ -248,9 +248,9 @@ WPAPI.prototype.url = function( url ) {
  */
 WPAPI.prototype.root = function( relativePath ) {
 	relativePath = relativePath || '';
-	var options = extend( {}, this._options );
+	const options = extend( {}, this._options );
 	// Request should be
-	var request = new WPRequest( options );
+	const request = new WPRequest( options );
 
 	// Set the path template to the string passed in
 	request._path = { '0': relativePath };
@@ -334,8 +334,8 @@ WPAPI.prototype.registerRoute = require( './lib/wp-register-route' );
  * @returns {WPAPI} The bootstrapped WPAPI client instance (for chaining or assignment)
  */
 WPAPI.prototype.bootstrap = function( routes ) {
-	var routesByNamespace;
-	var endpointFactoriesByNamespace;
+	let routesByNamespace;
+	let endpointFactoriesByNamespace;
 
 	if ( ! routes ) {
 		// Auto-generate default endpoint factories if they are not already available
@@ -420,11 +420,11 @@ WPAPI.prototype.namespace = function( namespace ) {
  */
 WPAPI.discover = function( url ) {
 	// local placeholder for API root URL
-	var endpoint;
+	let endpoint;
 
 	// Try HEAD request first, for smaller payload: use WPAPI.site to produce
 	// a request that utilizes the defined HTTP transports
-	var req = WPAPI.site( url ).root();
+	const req = WPAPI.site( url ).root();
 	return req.headers()
 		.catch( function() {
 			// On the hypothesis that any error here is related to the HEAD request

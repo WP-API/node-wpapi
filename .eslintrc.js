@@ -34,6 +34,7 @@ module.exports = {
 		'no-multiple-empty-lines': [ 'error', {
 			'max': 1,
 		} ],
+		'no-var': [ 'error' ],
 		'object-curly-newline': [ 'error', {
 			'ObjectExpression': {
 				'consistent': true,
@@ -56,6 +57,7 @@ module.exports = {
 		} ],
 		'object-curly-spacing': [ 'error', 'always' ],
 		'object-property-newline': [ 'error' ],
+		'prefer-const': [ 'error' ],
 		'quotes': [ 'error', 'single' ],
 		'semi': [ 'error', 'always' ],
 		'semi-spacing': [ 'error', {
