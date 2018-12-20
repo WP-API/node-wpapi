@@ -14,13 +14,4 @@ module.exports = {
 		library: 'WPAPI',
 		libraryTarget: 'umd',
 	},
-
-	module: {
-		loaders: [
-			{
-				test: /\.json$/,
-				loader: 'json-loader',
-			},
-		],
-	},
 };
