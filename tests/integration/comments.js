@@ -1,4 +1,3 @@
-/*jshint -W106 */// Disable underscore_case warnings in this file b/c WP uses them
 'use strict';
 
 const WPAPI = require( '../../' );
