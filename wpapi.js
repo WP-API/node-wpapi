@@ -14,7 +14,6 @@
  */
 'use strict';
 
-const extend = require( 'node.extend' );
 const objectReduce = require( './lib/util/object-reduce' );
 
 // This JSON file provides enough data to create handler methods for all valid
@@ -232,10 +231,10 @@ WPAPI.site = function( endpoint, routes ) {
  * @returns {WPRequest} A WPRequest object bound to the provided URL
  */
 WPAPI.prototype.url = function( url ) {
-	const options = extend( {}, this._options, {
+	return new WPRequest( {
+		...this._options,
 		endpoint: url,
 	} );
-	return new WPRequest( options );
 };
 
 /**
@@ -248,7 +247,9 @@ WPAPI.prototype.url = function( url ) {
  */
 WPAPI.prototype.root = function( relativePath ) {
 	relativePath = relativePath || '';
-	const options = extend( {}, this._options );
+	const options = {
+		...this._options,
+	};
 	// Request should be
 	const request = new WPRequest( options );
 
