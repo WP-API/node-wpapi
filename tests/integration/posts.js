@@ -817,7 +817,7 @@ describe( 'integration: posts()', () => {
 
 			request( cb ) {
 				const self = this;
-				wp.posts().get( function( err, data ) {
+				wp.posts().get( ( err, data ) => {
 					expect( err ).toBeNull();
 
 					// Context is maintained
@@ -832,7 +832,7 @@ describe( 'integration: posts()', () => {
 					expect( Array.isArray( this.state.data ) ).toBe( true );
 					expect( this.state.data.length ).toBe( 10 );
 					cb();
-				}.bind( this ) );
+				} );
 			}
 		}
 		( new Ctor() ).request( done );

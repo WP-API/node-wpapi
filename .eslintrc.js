@@ -57,6 +57,7 @@ module.exports = {
 		} ],
 		'object-curly-spacing': [ 'error', 'always' ],
 		'object-property-newline': [ 'error' ],
+		'prefer-arrow-callback': [ 'error' ],
 		'prefer-const': [ 'error' ],
 		'quotes': [ 'error', 'single' ],
 		'semi': [ 'error', 'always' ],

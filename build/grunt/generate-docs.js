@@ -11,7 +11,7 @@ module.exports = function( grunt ) {
 		grunt.log.writeln( 'Extracting page content from README.md...' );
 
 		// Kick off generation
-		require( '../scripts/generate-docs-markdown' ).then( function() {
+		require( '../scripts/generate-docs-markdown' ).then( () => {
 			grunt.log.writeln( 'Pages generated successfully' );
 			done();
 		} );

@@ -102,7 +102,6 @@ describe( 'integration: custom HTTP transport methods', () => {
 				// If .slug is used, auto-unwrap the returned array
 				get( wpreq, cb ) {
 					if ( ! wpreq._params.slug ) {
-						/* jshint validthis:true */
 						return WPAPI.transport.get.call( this, wpreq, cb );
 					}
 					return WPAPI.transport.get( wpreq ).then( ( results ) => {
@@ -142,7 +141,6 @@ describe( 'integration: custom HTTP transport methods', () => {
 			transport: {
 				// Add collection helper methods to the returned arrays
 				get( wpreq, cb ) {
-					/* jshint validthis:true */
 					return WPAPI.transport.get.call( this, wpreq, cb ).then( ( results ) => {
 						if ( Array.isArray( results ) ) {
 							return new Collection( results );

@@ -104,11 +104,11 @@ const fileName = argv.file || 'default-routes.json';
 
 // This directory will be called to kick off the JSON download: it uses
 // superagent internally for HTTP transport that respects HTTP redirects.
-function getJSON( cbFn ) {
+const getJSON = ( cbFn ) => {
 	agent
 		.get( endpoint )
 		.set( 'Accept', 'application/json' )
-		.end( function( err, res ) {
+		.end( ( err, res ) => {
 			// Inspect the error and then the response to infer various error states
 			if ( err ) {
 				console.error( '\nSomething went wrong! Could not download endpoint JSON.' );
@@ -129,7 +129,7 @@ function getJSON( cbFn ) {
 
 			cbFn( res );
 		} );
-}
+};
 
 // The only assumption we want to make about the URL is that it should be a web
 // URL of _some_ sort, which generally means it has "http" in it somewhere. We
@@ -142,7 +142,7 @@ if ( ! /http/i.test( endpoint ) ) {
 	process.exit( 1 );
 }
 
-fs.stat( outputPath, function( err, stats ) {
+fs.stat( outputPath, ( err, stats ) => {
 	if ( err || ! stats.isDirectory() ) {
 		console.error( '\nError: ' + outputPath );
 		console.error( 'This is not a valid directory. Please double-check the path and try again.' );
@@ -150,7 +150,7 @@ fs.stat( outputPath, function( err, stats ) {
 	}
 
 	// If we made it this far, our arguments look good! Carry on.
-	getJSON( function( response ) {
+	getJSON( ( response ) => {
 		// Extract the JSON
 		const endpointJSON = JSON.parse( JSON.stringify( response.body ) );
 		// Simplify the JSON structure and pick out the routes dictionary
@@ -158,7 +158,7 @@ fs.stat( outputPath, function( err, stats ) {
 
 		// Save the file
 		const outputFilePath = path.join( outputPath, fileName );
-		fs.writeFile( outputFilePath, JSON.stringify( slimJSON ), function( err ) {
+		fs.writeFile( outputFilePath, JSON.stringify( slimJSON ), ( err ) => {
 			if ( err ) {
 				console.error( '\nSomething went wrong! Could not save ' + outputFilePath );
 				return process.exit( 1 );

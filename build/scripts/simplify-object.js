@@ -17,7 +17,7 @@ const objectReduce = require( '../../lib/util/object-reduce' );
  * @returns {*} The passed-in value, with non-essential args properties and all
  * _links properties removes.
  */
-function simplifyObject( obj ) {
+const simplifyObject = ( obj ) => {
 	// Pass through falsy values, Dates and RegExp values without modification
 	if ( ! obj || obj instanceof Date || obj instanceof RegExp ) {
 		return obj;
@@ -30,29 +30,36 @@ function simplifyObject( obj ) {
 
 	// Reduce through objects to run each property through simplifyObject
 	if ( typeof obj === 'object' ) {
-		return objectReduce( obj, function( newObj, val, key ) {
-			// Omit _links objects entirely
-			if ( key === '_links' ) {
-				return newObj;
-			}
+		return objectReduce(
+			obj,
+			( newObj, val, key ) => {
+				// Omit _links objects entirely
+				if ( key === '_links' ) {
+					return newObj;
+				}
 
-			// If the key is "args", omit all keys of second-level descendants
-			// other than "required"
-			if ( key === 'args' ) {
-				newObj.args = objectReduce( val, function( slimArgs, argVal, argKey ) {
-					slimArgs[ argKey ] = {};
-					return slimArgs;
-				}, {} );
-			} else {
-				// Pass all other objects through simplifyObject
-				newObj[ key ] = simplifyObject( obj[ key ] );
-			}
-			return newObj;
-		}, {} );
+				// If the key is "args", omit all keys of second-level descendants
+				if ( key === 'args' ) {
+					newObj.args = objectReduce(
+						val,
+						( slimArgs, argVal, argKey ) => {
+							slimArgs[ argKey ] = {};
+							return slimArgs;
+						},
+						{}
+					);
+				} else {
+					// Pass all other objects through simplifyObject
+					newObj[ key ] = simplifyObject( obj[ key ] );
+				}
+				return newObj;
+			},
+			{}
+		);
 	}
 
 	// All other types pass through without modification
 	return obj;
-}
+};
 
 module.exports = simplifyObject;

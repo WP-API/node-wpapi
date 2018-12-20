@@ -154,7 +154,7 @@ WPAPI.prototype.transport = function( transport ) {
 	}
 
 	// Whitelist the methods that may be applied
-	[ 'get', 'head', 'post', 'put', 'delete' ].forEach( function( key ) {
+	[ 'get', 'head', 'post', 'put', 'delete' ].forEach( ( key ) => {
 		if ( transport && transport[ key ] ) {
 			_options.transport[ key ] = transport[ key ];
 		}
@@ -355,17 +355,21 @@ WPAPI.prototype.bootstrap = function( routes ) {
 	// client instance and passing a registered namespace string.
 	// Handlers for default (wp/v2) routes will also be assigned to the WPAPI
 	// client instance object itself, for brevity.
-	return objectReduce( endpointFactoriesByNamespace, function( wpInstance, endpointFactories, namespace ) {
+	return objectReduce( endpointFactoriesByNamespace, ( wpInstance, endpointFactories, namespace ) => {
 
 		// Set (or augment) the route handler factories for this namespace.
-		wpInstance._ns[ namespace ] = objectReduce( endpointFactories, function( nsHandlers, handlerFn, methodName ) {
-			nsHandlers[ methodName ] = handlerFn;
-			return nsHandlers;
-		}, wpInstance._ns[ namespace ] || {
-			// Create all namespace dictionaries with a direct reference to the main WPAPI
-			// instance's _options property so that things like auth propagate properly
-			_options: wpInstance._options,
-		} );
+		wpInstance._ns[ namespace ] = objectReduce(
+			endpointFactories,
+			( nsHandlers, handlerFn, methodName ) => {
+				nsHandlers[ methodName ] = handlerFn;
+				return nsHandlers;
+			},
+			wpInstance._ns[ namespace ] || {
+				// Create all namespace dictionaries with a direct reference to the main WPAPI
+				// instance's _options property so that things like auth propagate properly
+				_options: wpInstance._options,
+			}
+		);
 
 		// For the default namespace, e.g. "wp/v2" at the time this comment was
 		// written, ensure all methods are assigned to the root client object itself
@@ -373,7 +377,7 @@ WPAPI.prototype.bootstrap = function( routes ) {
 		// methods can be called with e.g. `wp.posts()` and not the more verbose
 		// `wp.namespace( 'wp/v2' ).posts()`.
 		if ( namespace === apiDefaultNamespace ) {
-			Object.keys( wpInstance._ns[ namespace ] ).forEach( function( methodName ) {
+			Object.keys( wpInstance._ns[ namespace ] ).forEach( ( methodName ) => {
 				wpInstance[ methodName ] = wpInstance._ns[ namespace ][ methodName ];
 			} );
 		}
@@ -418,7 +422,7 @@ WPAPI.prototype.namespace = function( namespace ) {
  * to the deduced endpoint, or rejected if an endpoint is not found or the
  * library is unable to parse the provided endpoint.
  */
-WPAPI.discover = function( url ) {
+WPAPI.discover = ( url ) => {
 	// local placeholder for API root URL
 	let endpoint;
 
@@ -426,7 +430,7 @@ WPAPI.discover = function( url ) {
 	// a request that utilizes the defined HTTP transports
 	const req = WPAPI.site( url ).root();
 	return req.headers()
-		.catch( function() {
+		.catch( () => {
 			// On the hypothesis that any error here is related to the HEAD request
 			// failing, provisionally try again using GET because that method is
 			// more widely supported
@@ -434,7 +438,7 @@ WPAPI.discover = function( url ) {
 		} )
 		// Inspect response to find API location header
 		.then( autodiscovery.locateAPIRootHeader )
-		.then( function( apiRootURL ) {
+		.then( ( apiRootURL ) => {
 			// Set the function-scope variable that will be used to instantiate
 			// the bound WPAPI instance,
 			endpoint = apiRootURL;
@@ -442,14 +446,14 @@ WPAPI.discover = function( url ) {
 			// then GET the API root JSON object
 			return WPAPI.site( apiRootURL ).root().get();
 		} )
-		.then( function( apiRootJSON ) {
+		.then( ( apiRootJSON ) => {
 			// Instantiate & bootstrap with the discovered methods
 			return new WPAPI( {
 				endpoint: endpoint,
 				routes: apiRootJSON.routes,
 			} );
 		} )
-		.catch( function( err ) {
+		.catch( ( err ) => {
 			/* eslint-disable no-console */
 			console.error( err );
 			if ( endpoint ) {
