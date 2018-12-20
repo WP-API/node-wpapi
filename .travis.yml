@@ -5,6 +5,5 @@ node_js:
   - "lts/*"
   - "10"
   - "8"
-  - "6"
 # Opt-in to travis container infrastructure
 sudo: false

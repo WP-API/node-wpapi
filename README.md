@@ -41,7 +41,9 @@ To get started, `npm install wpapi` or [download the browser build](https://wp-a
 
 ## Installation
 
-`node-wpapi` works both on the server or in the browser. Node.js version 4.0 or higher is required.
+`node-wpapi` works both on the server or in the browser. Node.js version 8 or higher is required, and the latest LTS release is recommended.
+
+In the browser `node-wpapi` officially supports the latest two versions of all evergreen browsers, and Internet Explorer 11.
 
 ### Install with NPM
 
