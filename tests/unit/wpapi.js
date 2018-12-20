@@ -588,12 +588,16 @@ describe( 'WPAPI', () => {
 			} );
 
 			it( 'does not impact or overwrite unspecified transport methods', () => {
-				const originalMethods = Object.assign( {}, site._options.transport );
+				const originalMethods = {
+					...site._options.transport,
+				};
 				site.transport( {
 					get() {},
 					put() {},
 				} );
-				const newMethods = Object.assign( {}, site._options.transport );
+				const newMethods = {
+					...site._options.transport,
+				};
 				expect( newMethods.delete ).toBe( originalMethods.delete );
 				expect( newMethods.post ).toBe( originalMethods.post );
 
