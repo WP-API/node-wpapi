@@ -1,7 +1,5 @@
 'use strict';
 
-const inherit = require( 'util' ).inherits;
-
 const parameterMixins = require( '../../../../lib/mixins/parameters' );
 const WPRequest = require( '../../../../lib/constructors/wp-request' );
 
@@ -11,11 +9,8 @@ describe( 'mixins: parameters', () => {
 	let getQueryStr;
 
 	beforeEach( () => {
-		Req = function() {
-			WPRequest.apply( this, arguments );
-		};
-		inherit( Req, WPRequest );
-
+		class Request extends WPRequest {}
+		Req = Request;
 		req = new Req();
 
 		getQueryStr = ( req ) => {
