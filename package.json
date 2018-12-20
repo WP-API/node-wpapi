@@ -22,6 +22,7 @@
     "cms",
     "wordpress"
   ],
+  "browserslist": "last 2 versions, ie 11, not dead",
   "jest": {
     "testMatch": [
       "**/__tests__/**/*.js",
@@ -66,6 +67,9 @@
     "superagent": "^3.3.1"
   },
   "devDependencies": {
+    "@babel/core": "^7.2.2",
+    "@babel/plugin-proposal-object-rest-spread": "^7.2.0",
+    "@babel/preset-env": "^7.2.3",
     "babel-loader": "^8.0.4",
     "combyne": "^2.0.0",
     "eslint": "^4.19.1",
@@ -83,6 +87,7 @@
     "minimist": "^1.2.0",
     "prompt": "^1.0.0",
     "rimraf": "^2.6.1",
-    "webpack": "^4.28.1"
+    "webpack": "^4.28.1",
+    "webpack-cli": "^3.1.2"
   }
 }
