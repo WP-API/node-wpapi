@@ -109,24 +109,7 @@ describe( 'simplifyObject', () => {
 				},
 			}, {
 				methods: [ 'POST' ],
-				args: {
-					date: {},
-					date_gmt: {},
-					password: {},
-					slug: {},
-					status: {},
-					title: {},
-					content: {},
-					author: {},
-					excerpt: {},
-					featured_media: {},
-					comment_status: {},
-					ping_status: {},
-					format: {},
-					sticky: {},
-					categories: {},
-					tags: {},
-				},
+				args: {},
 			} ],
 		} );
 	} );

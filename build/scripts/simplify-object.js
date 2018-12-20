@@ -23,6 +23,14 @@ const simplifyObject = ( obj ) => {
 		return obj;
 	}
 
+	if ( obj.methods && obj.args ) {
+		// If the key is an object with "methods" and "args" properties, only
+		// include the full "args" object if "methods" contains GET.
+		if ( ! obj.methods.map( str => str.toLowerCase() ).includes( 'get' ) ) {
+			obj.args = {};
+		}
+	}
+
 	// Map arrays through simplifyObject
 	if ( Array.isArray( obj ) ) {
 		return obj.map( simplifyObject );
