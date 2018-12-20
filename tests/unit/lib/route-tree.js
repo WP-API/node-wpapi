@@ -20,15 +20,30 @@ describe( 'route-tree utility', () => {
 
 		it( 'includes objects for all default wp/v2 routes', () => {
 			const routes = Object.keys( tree[ 'wp/v2' ] ).sort();
-			expect( routes.length ).toBe( 11 );
-			expect( routes.join( ',' ) )
-				.toBe( 'categories,comments,media,pages,posts,settings,statuses,tags,taxonomies,types,users' );
+			expect( routes.length ).toBe( 15 );
+			expect( routes.sort() ).toEqual( [
+				'block-renderer',
+				'blocks',
+				'categories',
+				'comments',
+				'media',
+				'pages',
+				'posts',
+				'search',
+				'settings',
+				'statuses',
+				'tags',
+				'taxonomies',
+				'themes',
+				'types',
+				'users',
+			] );
 		} );
 
 		it( 'includes objects for all default oembed/1.0 routes', () => {
 			const routes = Object.keys( tree[ 'oembed/1.0' ] ).sort();
-			expect( routes.length ).toBe( 1 );
-			expect( routes.join( ',' ) ).toBe( 'embed' );
+			expect( routes.length ).toBe( 2 );
+			expect( routes.sort().join( ',' ) ).toBe( 'embed,proxy' );
 		} );
 
 		// Inspect the .posts tree as a smoke test for whether parsing the API
@@ -58,10 +73,12 @@ describe( 'route-tree utility', () => {
 					author_exclude: {},
 					before: {},
 					exclude: {},
+					id: {},
 					include: {},
 					offset: {},
 					order: {},
 					orderby: {},
+					parent: {},
 					password: {},
 					slug: {},
 					status: {},
