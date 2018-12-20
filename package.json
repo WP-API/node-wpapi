@@ -87,6 +87,7 @@
     "prompt": "^1.0.0",
     "rimraf": "^2.6.1",
     "webpack": "^4.28.1",
+    "webpack-bundle-analyzer": "^3.0.3",
     "webpack-cli": "^3.1.2"
   }
 }
