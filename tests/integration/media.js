@@ -120,7 +120,7 @@ describe( 'integration: media()', () => {
 				.get()
 				.then( ( media ) => {
 					expect( media._paging ).toHaveProperty( 'totalPages' );
-					expect( media._paging.totalPages ).toBe( '4' );
+					expect( media._paging.totalPages ).toBe( 4 );
 					return SUCCESS;
 				} );
 			return expect( prom ).resolves.toBe( SUCCESS );

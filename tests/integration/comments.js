@@ -121,7 +121,7 @@ describe( 'integration: comments()', () => {
 				.get()
 				.then( ( posts ) => {
 					expect( posts._paging ).toHaveProperty( 'total' );
-					expect( posts._paging.total ).toBe( '25' );
+					expect( posts._paging.total ).toBe( 25 );
 					return SUCCESS;
 				} );
 			return expect( prom ).resolves.toBe( SUCCESS );
@@ -132,7 +132,7 @@ describe( 'integration: comments()', () => {
 				.get()
 				.then( ( posts ) => {
 					expect( posts._paging ).toHaveProperty( 'totalPages' );
-					expect( posts._paging.totalPages ).toBe( '3' );
+					expect( posts._paging.totalPages ).toBe( 3 );
 					return SUCCESS;
 				} );
 			return expect( prom ).resolves.toBe( SUCCESS );

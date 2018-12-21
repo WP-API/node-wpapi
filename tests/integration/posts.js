@@ -140,7 +140,7 @@ describe( 'integration: posts()', () => {
 				.get()
 				.then( ( posts ) => {
 					expect( posts._paging ).toHaveProperty( 'totalPages' );
-					expect( posts._paging.totalPages ).toBe( '4' );
+					expect( posts._paging.totalPages ).toBe( 4 );
 					return SUCCESS;
 				} );
 			return expect( prom ).resolves.toBe( SUCCESS );

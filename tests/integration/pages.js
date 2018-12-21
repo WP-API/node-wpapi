@@ -87,7 +87,7 @@ describe( 'integration: pages()', () => {
 				.get()
 				.then( ( pages ) => {
 					expect( pages._paging ).toHaveProperty( 'total' );
-					expect( pages._paging.total ).toBe( '18' );
+					expect( pages._paging.total ).toBe( 18 );
 					return SUCCESS;
 				} );
 			return expect( prom ).resolves.toBe( SUCCESS );
@@ -98,7 +98,7 @@ describe( 'integration: pages()', () => {
 				.get()
 				.then( ( pages ) => {
 					expect( pages._paging ).toHaveProperty( 'totalPages' );
-					expect( pages._paging.totalPages ).toBe( '2' );
+					expect( pages._paging.totalPages ).toBe( 2 );
 					return SUCCESS;
 				} );
 			return expect( prom ).resolves.toBe( SUCCESS );

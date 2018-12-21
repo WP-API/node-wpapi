@@ -102,7 +102,7 @@ describe( 'integration: tags()', () => {
 				.get()
 				.then( ( tags ) => {
 					expect( tags._paging ).toHaveProperty( 'total' );
-					expect( tags._paging.total ).toBe( '110' );
+					expect( tags._paging.total ).toBe( 110 );
 					return SUCCESS;
 				} );
 			return expect( prom ).resolves.toBe( SUCCESS );
@@ -113,7 +113,7 @@ describe( 'integration: tags()', () => {
 				.get()
 				.then( ( tags ) => {
 					expect( tags._paging ).toHaveProperty( 'totalPages' );
-					expect( tags._paging.totalPages ).toBe( '11' );
+					expect( tags._paging.totalPages ).toBe( 11 );
 					return SUCCESS;
 				} );
 			return expect( prom ).resolves.toBe( SUCCESS );
