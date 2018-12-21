@@ -1,11 +1,11 @@
 'use strict';
 
-const WPAPI = require( '../../superagent' );
-
 // Variable to use as our "success token" in promise assertions
 const SUCCESS = 'success';
 
-describe( 'error states:', () => {
+describe.each( [
+	[ 'wpapi/superagent', require( '../../superagent' ) ],
+] )( '%s integration: error states:', ( transportName, WPAPI ) => {
 
 	it( 'invalid root endpoint causes a transport-level (superagent) 404 error', () => {
 		const wp = WPAPI.site( 'http://wpapi.local/wrong-root-endpoint' );

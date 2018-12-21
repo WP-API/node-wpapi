@@ -1,11 +1,11 @@
 'use strict';
 
-const WPAPI = require( '../../superagent' );
-
 // Variable to use as our "success token" in promise assertions
 const SUCCESS = 'success';
 
-describe( 'integration: taxonomies()', () => {
+describe.each( [
+	[ 'wpapi/superagent', require( '../../superagent' ) ],
+] )( '%s integration: taxonomies()', ( transportName, WPAPI ) => {
 	let wp;
 
 	beforeEach( () => {

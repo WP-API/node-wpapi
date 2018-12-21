@@ -1,13 +1,13 @@
 'use strict';
 
-const WPAPI = require( '../../superagent' );
-
 const credentials = require( '../helpers/constants' ).credentials;
 
 // Variable to use as our "success token" in promise assertions
 const SUCCESS = 'success';
 
-describe( 'integration: settings()', () => {
+describe.each( [
+	[ 'wpapi/superagent', require( '../../superagent' ) ],
+] )( '%s integration: settings()', ( transportName, WPAPI ) => {
 	let wp;
 	let authenticated;
 

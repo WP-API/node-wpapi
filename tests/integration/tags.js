@@ -1,6 +1,5 @@
 'use strict';
 
-const WPAPI = require( '../../superagent' );
 const WPRequest = require( '../../lib/constructors/wp-request.js' );
 
 // Inspecting the names of the returned terms is an easy way to validate
@@ -53,7 +52,9 @@ const expectedResults = {
 	},
 };
 
-describe( 'integration: tags()', () => {
+describe.each( [
+	[ 'wpapi/superagent', require( '../../superagent' ) ],
+] )( '%s integration: tags()', ( transportName, WPAPI ) => {
 	let wp;
 
 	beforeEach( () => {
