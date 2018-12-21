@@ -1,9 +1,9 @@
 'use strict';
 
 const path = require( 'path' );
-const _unique = require( 'lodash.uniq' );
 const objectReduce = require( '../../lib/util/object-reduce' );
 const httpTestUtils = require( '../helpers/http-test-utils' );
+const unique = require( '../../lib/util/unique' );
 
 const WPAPI = require( '../../' );
 const WPRequest = require( '../../lib/constructors/wp-request.js' );
@@ -307,7 +307,7 @@ describe( 'integration: media()', () => {
 				const sizeURLs = objectReduce( sizes, ( urls, size ) => urls.concat( size.source_url ), [] );
 
 				// Expect all sizes to have different URLs
-				expect( Object.keys( sizes ).length ).toBe( _unique( sizeURLs ).length );
+				expect( Object.keys( sizes ).length ).toBe( unique( sizeURLs ).length );
 				return sizeURLs.reduce( ( previous, sizeURL ) => previous.then( () => (
 					httpTestUtils.expectStatusCode( sizeURL, 200 )
 				) ), Promise.resolve() );
