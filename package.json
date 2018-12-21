@@ -58,11 +58,9 @@
     "test": "jest --coverage"
   },
   "dependencies": {
-    "li": "^1.0.1",
-    "parse-link-header": "^0.4.1",
-    "qs": "^6.2.0",
-    "route-parser": "0.0.4",
-    "superagent": "^3.3.1"
+    "parse-link-header": "^1.0.1",
+    "qs": "^6.6.0",
+    "superagent": "^4.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.2.2",
