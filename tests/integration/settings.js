@@ -1,6 +1,6 @@
 'use strict';
 
-const WPAPI = require( '../../' );
+const WPAPI = require( '../../superagent' );
 
 const credentials = require( '../helpers/constants' ).credentials;
 

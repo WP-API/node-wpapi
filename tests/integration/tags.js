@@ -1,6 +1,6 @@
 'use strict';
 
-const WPAPI = require( '../../' );
+const WPAPI = require( '../../superagent' );
 const WPRequest = require( '../../lib/constructors/wp-request.js' );
 
 // Inspecting the names of the returned terms is an easy way to validate

@@ -52,7 +52,7 @@
     "lint": "npm run eslint",
     "watch": "jest --watch",
     "test:all": "jest",
-    "test:unit": "jest tests/unit",
+    "test:unit": "jest tests/unit superagent/tests/unit",
     "test:integration": "jest tests/integration",
     "test:ci": "npm run eslint && jest tests/unit --coverage",
     "pretest": "npm run lint || true",

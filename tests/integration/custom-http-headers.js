@@ -1,6 +1,6 @@
 'use strict';
 
-const WPAPI = require( '../../' );
+const WPAPI = require( '../../superagent' );
 
 // Inspecting the titles of the returned posts arrays is an easy way to
 // validate that the right page of results was returned

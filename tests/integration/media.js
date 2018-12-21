@@ -5,7 +5,7 @@ const objectReduce = require( '../../lib/util/object-reduce' );
 const httpTestUtils = require( '../helpers/http-test-utils' );
 const unique = require( '../../lib/util/unique' );
 
-const WPAPI = require( '../../' );
+const WPAPI = require( '../../superagent' );
 const WPRequest = require( '../../lib/constructors/wp-request.js' );
 
 // Inspecting the titles of the returned posts arrays is an easy way to

@@ -1,6 +1,6 @@
 'use strict';
 
-const WPAPI = require( '../../' );
+const WPAPI = require( '../../superagent' );
 
 const httpTransport = require( '../../lib/http-transport' );
 

@@ -1,6 +1,6 @@
 'use strict';
 
-const WPAPI = require( '../../' );
+const WPAPI = require( '../../superagent' );
 const WPRequest = require( '../../lib/constructors/wp-request.js' );
 
 // Variable to use as our 'success token' in promise assertions

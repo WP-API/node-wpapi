@@ -1,6 +1,6 @@
 'use strict';
 
-const WPAPI = require( '../../' );
+const WPAPI = require( '../../superagent' );
 
 // Variable to use as our "success token" in promise assertions
 const SUCCESS = 'success';
