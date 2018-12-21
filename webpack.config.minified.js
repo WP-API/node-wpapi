@@ -22,6 +22,11 @@ module.exports = {
 	},
 
 	plugins: [
-		new BundleAnalyzerPlugin(),
+		...( config.plugins || [] ),
 	],
 };
+
+// Conditionally opt-in to stats reporting UI.
+if ( process.argv.includes( '--stats' ) ) {
+	module.exports.plugins.push( new BundleAnalyzerPlugin() );
+}

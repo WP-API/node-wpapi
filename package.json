@@ -39,6 +39,7 @@
   },
   "scripts": {
     "build": "webpack && webpack --config webpack.config.minified.js",
+    "build:stats": "webpack && webpack --config webpack.config.minified.js --stats",
     "zip": "npm run build && grunt zip",
     "update-default-routes-json": "node build/scripts/update-default-routes-json",
     "predocs": "rimraf documentation/api-reference",
