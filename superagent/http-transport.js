@@ -6,10 +6,10 @@
 const agent = require( 'superagent' );
 const parseLinkHeader = require( 'li' ).parse;
 
-const WPRequest = require( './constructors/wp-request' );
-const checkMethodSupport = require( './util/check-method-support' );
-const objectReduce = require( './util/object-reduce' );
-const isEmptyObject = require( './util/is-empty-object' );
+const WPRequest = require( '../lib/constructors/wp-request' );
+const checkMethodSupport = require( '../lib/util/check-method-support' );
+const objectReduce = require( '../lib/util/object-reduce' );
+const isEmptyObject = require( '../lib/util/is-empty-object' );
 
 /**
  * Set any provided headers on the outgoing request object. Runs after _auth.

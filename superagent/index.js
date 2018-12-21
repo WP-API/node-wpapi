@@ -1,7 +1,7 @@
 const WPAPI = require( '../wpapi' );
 
 // Pull in default HTTP transport
-const httpTransport = require( '../lib/http-transport' );
+const httpTransport = require( './http-transport' );
 
 /**
  * Default HTTP transport methods object for all WPAPI instances

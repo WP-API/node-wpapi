@@ -1,15 +1,13 @@
 'use strict';
 
-const httpTransport = require( '../../lib/http-transport' );
-
 const credentials = require( '../helpers/constants' ).credentials;
 
 // Variable to use as our "success token" in promise assertions
 const SUCCESS = 'success';
 
 describe.each( [
-	[ 'wpapi/superagent', require( '../../superagent' ) ],
-] )( '%s integration: custom HTTP transport methods', ( transportName, WPAPI ) => {
+	[ 'wpapi/superagent', require( '../../superagent' ), require( '../../superagent/http-transport' ) ],
+] )( '%s integration: custom HTTP transport methods', ( transportName, WPAPI, httpTransport ) => {
 	let wp;
 	let id;
 	let cache;

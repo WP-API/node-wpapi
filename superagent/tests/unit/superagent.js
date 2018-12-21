@@ -3,7 +3,7 @@
 const WPAPI = require( '../../' );
 
 // HTTP transport, for stubbing
-const httpTransport = require( '../../../lib/http-transport' );
+const httpTransport = require( '../../http-transport' );
 
 // Variable to use as our "success token" in promise assertions
 const SUCCESS = 'success';
