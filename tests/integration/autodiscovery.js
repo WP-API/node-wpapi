@@ -17,16 +17,14 @@ const expectedResults = {
 	firstPostTitle: 'Markup: HTML Tags and Formatting',
 };
 
-const noop = () => {};
-
 describe( 'integration: discover()', () => {
 	let apiPromise;
 
 	beforeAll( () => {
 		apiPromise = WPAPI.discover( 'http://wpapi.local' );
 		// Stub warn and error
-		jest.spyOn( global.console, 'warn' ).mockImplementation( noop );
-		jest.spyOn( global.console, 'error' ).mockImplementation( noop );
+		jest.spyOn( global.console, 'warn' ).mockImplementation( () => {} );
+		jest.spyOn( global.console, 'error' ).mockImplementation( () => {} );
 	} );
 
 	it( 'returns a promise', () => {
