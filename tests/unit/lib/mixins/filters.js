@@ -3,22 +3,20 @@
 const filterMixins = require( '../../../../lib/mixins/filters' );
 const WPRequest = require( '../../../../lib/constructors/wp-request' );
 
+const getQueryStr = ( req ) => {
+	const query = req
+		._renderQuery()
+		.replace( /^\?/, '' );
+	return decodeURIComponent( query );
+};
+
 describe( 'mixins: filter', () => {
 	let Req;
 	let req;
-	let getQueryStr;
 
 	beforeEach( () => {
-		class Request extends WPRequest {}
-		Req = Request;
+		Req = class extends WPRequest {};
 		req = new Req();
-
-		getQueryStr = ( req ) => {
-			const query = req
-				._renderQuery()
-				.replace( /^\?/, '' );
-			return decodeURIComponent( query );
-		};
 	} );
 
 	describe( '.filter()', () => {

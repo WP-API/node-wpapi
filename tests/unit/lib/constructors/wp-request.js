@@ -4,6 +4,13 @@ const WPRequest = require( '../../../../lib/constructors/wp-request' );
 const filterMixins = require( '../../../../lib/mixins/filters' );
 const checkMethodSupport = require( '../../../../lib/util/check-method-support' );
 
+const getQueryStr = ( req ) => {
+	const query = req
+		._renderQuery()
+		.replace( /^\?/, '' );
+	return decodeURIComponent( query );
+};
+
 describe( 'WPRequest', () => {
 
 	let request;
@@ -205,16 +212,6 @@ describe( 'WPRequest', () => {
 	} );
 
 	describe( '.param() convenience methods', () => {
-		let getQueryStr;
-
-		beforeEach( () => {
-			getQueryStr = ( req ) => {
-				const query = req
-					._renderQuery()
-					.replace( /^\?/, '' );
-				return decodeURIComponent( query );
-			};
-		} );
 
 		describe( '.context()', () => {
 

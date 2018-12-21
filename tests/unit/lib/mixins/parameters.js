@@ -3,22 +3,20 @@
 const parameterMixins = require( '../../../../lib/mixins/parameters' );
 const WPRequest = require( '../../../../lib/constructors/wp-request' );
 
+const getQueryStr = ( req ) => {
+	const query = req
+		._renderQuery()
+		.replace( /^\?/, '' );
+	return decodeURIComponent( query );
+};
+
 describe( 'mixins: parameters', () => {
 	let Req;
 	let req;
-	let getQueryStr;
 
 	beforeEach( () => {
-		class Request extends WPRequest {}
-		Req = Request;
+		Req = class extends WPRequest {};
 		req = new Req();
-
-		getQueryStr = ( req ) => {
-			const query = req
-				._renderQuery()
-				.replace( /^\?/, '' );
-			return decodeURIComponent( query );
-		};
 	} );
 
 	describe( 'date parameters', () => {
