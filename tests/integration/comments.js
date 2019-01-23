@@ -63,7 +63,7 @@ const getPostsAndAuthors = comments => comments
 
 describe.each( [
 	[ 'wpapi/superagent', require( '../../superagent' ) ],
-] )( '%s integration: comments()', ( transportName, WPAPI ) => {
+] )( '%s: comments()', ( transportName, WPAPI ) => {
 	let wp;
 
 	beforeEach( () => {

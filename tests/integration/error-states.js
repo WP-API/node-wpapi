@@ -5,7 +5,7 @@ const SUCCESS = 'success';
 
 describe.each( [
 	[ 'wpapi/superagent', require( '../../superagent' ) ],
-] )( '%s integration: error states:', ( transportName, WPAPI ) => {
+] )( '%s: error states:', ( transportName, WPAPI ) => {
 
 	it( 'invalid root endpoint causes a transport-level (superagent) 404 error', () => {
 		const wp = WPAPI.site( 'http://wpapi.local/wrong-root-endpoint' );

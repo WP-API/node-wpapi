@@ -7,7 +7,7 @@ const SUCCESS = 'success';
 
 describe.each( [
 	[ 'wpapi/superagent', require( '../../superagent' ) ],
-] )( '%s integration: settings()', ( transportName, WPAPI ) => {
+] )( '%s: settings()', ( transportName, WPAPI ) => {
 	let wp;
 	let authenticated;
 

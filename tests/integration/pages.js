@@ -40,7 +40,7 @@ const expectedResults = {
 
 describe.each( [
 	[ 'wpapi/superagent', require( '../../superagent' ) ],
-] )( '%s integration: pages()', ( transportName, WPAPI ) => {
+] )( '%s: pages()', ( transportName, WPAPI ) => {
 	let wp;
 
 	beforeEach( () => {

@@ -58,7 +58,7 @@ const expectedResults = {
 
 describe.each( [
 	[ 'wpapi/superagent', require( '../../superagent' ) ],
-] )( '%s integration: media()', ( transportName, WPAPI ) => {
+] )( '%s: media()', ( transportName, WPAPI ) => {
 	let wp;
 	let authenticated;
 

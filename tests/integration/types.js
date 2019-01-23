@@ -5,7 +5,7 @@ const SUCCESS = 'success';
 
 describe.each( [
 	[ 'wpapi/superagent', require( '../../superagent' ) ],
-] )( '%s integration: types()', ( transportName, WPAPI ) => {
+] )( '%s: types()', ( transportName, WPAPI ) => {
 	let wp;
 
 	beforeEach( () => {

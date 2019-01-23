@@ -11,7 +11,7 @@ const SUCCESS = 'success';
 
 describe.each( [
 	[ 'wpapi/superagent', require( '../../superagent' ) ],
-] )( '%s integration: custom HTTP Headers', ( transportName, WPAPI ) => {
+] )( '%s: custom HTTP Headers', ( transportName, WPAPI ) => {
 	let wp;
 
 	beforeEach( () => {

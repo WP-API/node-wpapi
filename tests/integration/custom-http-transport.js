@@ -7,7 +7,7 @@ const SUCCESS = 'success';
 
 describe.each( [
 	[ 'wpapi/superagent', require( '../../superagent' ), require( '../../superagent/http-transport' ) ],
-] )( '%s integration: custom HTTP transport methods', ( transportName, WPAPI, httpTransport ) => {
+] )( '%s: custom HTTP transport methods', ( transportName, WPAPI, httpTransport ) => {
 	let wp;
 	let id;
 	let cache;
