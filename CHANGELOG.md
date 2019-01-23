@@ -1,8 +1,15 @@
 # Changelog
 
+
+## v1.2.2 _(future release)_
+
+- Throw an error early when `.file()` is passed a Buffer object without an accompanying name string, props @cungminh2710 & @mvhirsch
+
+
 ## v1.2.1 _Colomb_
 
 - Fix issue where `li` was improperly declared as a dev-only dependency, props @el-lsan & @jerolan.
+
 
 ## v1.2.0 _Space Is Only Noise_
 
