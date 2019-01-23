@@ -1,6 +1,5 @@
 'use strict';
 
-const WPAPI = require( '../../' );
 const WPRequest = require( '../../lib/constructors/wp-request.js' );
 
 // Inspecting the names of the returned categories is an easy way to validate
@@ -48,7 +47,9 @@ const expectedResults = {
 	},
 };
 
-describe( 'integration: categories()', () => {
+describe.each( [
+	[ 'wpapi/superagent', require( '../../superagent' ) ],
+] )( '%s: categories()', ( transportName, WPAPI ) => {
 	let wp;
 
 	beforeEach( () => {

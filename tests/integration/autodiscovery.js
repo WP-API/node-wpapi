@@ -1,6 +1,5 @@
 'use strict';
 
-const WPAPI = require( '../../' );
 const WPRequest = require( '../../lib/constructors/wp-request.js' );
 
 // Inspecting the titles of the returned posts arrays is an easy way to
@@ -17,7 +16,9 @@ const expectedResults = {
 	firstPostTitle: 'Markup: HTML Tags and Formatting',
 };
 
-describe( 'integration: discover()', () => {
+describe.each( [
+	[ 'wpapi/superagent', require( '../../superagent' ) ],
+] )( '%s: discover', ( transportName, WPAPI ) => {
 	let apiPromise;
 
 	beforeAll( () => {

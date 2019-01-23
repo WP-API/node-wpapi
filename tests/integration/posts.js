@@ -2,7 +2,6 @@
 
 const path = require( 'path' );
 
-const WPAPI = require( '../../' );
 const WPRequest = require( '../../lib/constructors/wp-request.js' );
 
 // Inspecting the titles of the returned posts arrays is an easy way to
@@ -54,7 +53,9 @@ const expectedResults = {
 	},
 };
 
-describe( 'integration: posts()', () => {
+describe.each( [
+	[ 'wpapi/superagent', require( '../../superagent' ) ],
+] )( '%s: posts()', ( transportName, WPAPI ) => {
 	let wp;
 	let authenticated;
 

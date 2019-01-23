@@ -11,6 +11,7 @@ This library is an isomorphic client for the [WordPress REST API](http://develop
 
 - [About](#about)
 - [Installation](#installation)
+  - [Upgrading from v1](#upgrading-from-v1)
 - [Using the Client](#using-the-client)
   - [Auto-Discovery](#auto-discovery)
   - [Creating Posts](#creating-posts)
@@ -18,7 +19,7 @@ This library is an isomorphic client for the [WordPress REST API](http://develop
   - [Requesting Different Resources](#requesting-different-resources)
   - [API Query Parameters & Filtering Collections](#api-query-parameters)
   - [Uploading Media](#uploading-media)
-- [Custom Routes](#custom-routes)
+- [Querying Custom Routes](#custom-routes)
   - [Setter Method Naming](#setter-method-naming-for-named-route-components)
   - [Query Parameters & Filtering](#query-parameters--filtering-custom-routes)
   - [Mixins](#mixins)
@@ -35,7 +36,7 @@ This library is an isomorphic client for the [WordPress REST API](http://develop
 
 `node-wpapi` is an isomorphic JavaScript client for the [WordPress REST API](https://developer.wordpress.org/rest-api) that makes it easy for your JavaScript application to request specific resources from a [WordPress](https://wordpress.org) website. It uses a query builder-style syntax to let you craft the request being made to REST API endpoints, then returns the API's response to your application as a JSON object. And don't let the name fool you: with [Webpack](https://webpack.github.io/) or [Browserify](http://browserify.org/), `node-wpapi` works just as well in the browser as it does on the server!
 
-This library is maintained by K. Adam White at [Bocoup](https://bocoup.com), with contributions from a [great community](https://github.com/WP-API/node-wpapi/graphs/contributors) of WordPress and JavaScript developers.
+This library is maintained by K. Adam White at [Human Made](https://humanmade.com), with contributions from a [great community](https://github.com/WP-API/node-wpapi/graphs/contributors) of WordPress and JavaScript developers.
 
 To get started, `npm install wpapi` or [download the browser build](https://wp-api.github.io/node-wpapi/wpapi.zip) and check out "Installation" and "Using the Client" below.
 
@@ -53,24 +54,51 @@ To use the library from Node, install it with [npm](http://npmjs.org):
 npm install --save wpapi
 ```
 
-Then, within your application's script files, `require` the module to gain access to it:
+Then, within your application's script files, `require` the module to gain access to it. As `wpapi` is both a query builder and a transport layer (_i.e._ a tool for getting and sending HTTP requests), we leave it up to you as the author of your application whether you need both parts of this functionality. You may use `wpapi` with [superagent](https://www.npmjs.com/package/superagent) if you wish to send and receive HTTP requests using this library, but you may also use only the query builder part of the library if you intend to submit your HTTP requests with `fetch`, `axios` or other tools.
+
+To import only the query builder (without the `.get()`, `.create()`, `.delete()`, `.update()` or `.then()` chaining methods):
 
 ```javascript
 var WPAPI = require( 'wpapi' );
 ```
 
-This library is designed to work in the browser as well, via a build system such as Browserify or Webpack; just install the package and `require( 'wpapi' )` from your application code.
+To import the superagent bundle, which contains the full suite of HTTP interaction methods:
+
+```js
+var WPAPI = require( 'wpapi/superagent' );
+```
+
+This library is designed to work in the browser as well, via a build system such as Browserify or Webpack; just install the package and `require( 'wpapi' )` (or `'wpapi/superagent'`) from your application code.
 
 ### Download the UMD Bundle
 
 Alternatively, you may download a [ZIP archive of the bundled library code](https://wp-api.github.io/node-wpapi/wpapi.zip). These files are UMD modules, which may be included directly on a page using a regular `<script>` tag _or_ required via AMD or CommonJS module systems. In the absence of a module system, the UMD modules will export the browser global variable `WPAPI`, which can be used in place of `require( 'wpapi' )` to access the library from your code.
+
+At present this browser bundle tracks the `wpapi/superagent` module, and includes Superagent itself.
+
+### Upgrading from v1
+
+Prior to version 2.0 (currently `alpha` status) this library shipped with built-in HTTP functionality using Superagent.
+
+If you maintain an existing project which uses this library and wish to upgrade to v2, you may do so by manually installing Superagent:
+
+```sh
+npm i --save wpapi@alpha superagent
+```
+
+and then changing your `require` statements to use the `wpapi/superagent` entrypoint:
+
+```diff
+--- const WPAPI = require( 'wpapi' );
++++ const WPAPI = require( 'wpapi/superagent' );
+```
 
 ## Using the Client
 
 The module is a constructor, so you can create an instance of the API client bound to the endpoint for your WordPress install:
 
 ```javascript
-var WPAPI = require( 'wpapi' );
+var WPAPI = require( 'wpapi/superagent' );
 var wp = new WPAPI({ endpoint: 'http://src.wordpress-develop.dev/wp-json' });
 ```
 Once an instance is constructed, you can chain off of it to construct a specific request. (Think of it as a query-builder for WordPress!)
@@ -263,8 +291,11 @@ A WPAPI instance object provides the following basic request methods:
 * `wp.categories()...`: Get or create categories with the `/categories` endpoint
 * `wp.statuses()...`: Get resources within the `/statuses` endpoints
 * `wp.users()...`: Get resources within the `/users` endpoints
+* `wp.search()...`: Find resources of any [REST-enabled] post type matching a `?search=` string
 * `wp.media()...`: Get Media collections and objects from the `/media` endpoints
+* `wp.themes()...`: Read information about the active theme from the `/themes` endpoint (always requires authentication)
 * `wp.settings()...`: Read or update site settings from the `/settings` endpoint (always requires authentication)
+* `wp.blocks()...`: Create queries against the `blocks` endpoint
 
 All of these methods return a customizable request object. The request object can be further refined with chaining methods, and/or sent to the server via `.get()`, `.create()`, `.update()`, `.delete()`, `.headers()`, or `.then()`. (Not all endpoints support all methods; for example, you cannot POST or PUT records on `/types`, as these are defined in WordPress plugin or theme code.)
 
@@ -921,7 +952,7 @@ add_action( 'wp_enqueue_scripts', 'my_enqueue_scripts' );
 And then use this nonce when initializing the library:
 
 ```javascript
-var WPAPI = require( 'wpapi' );
+var WPAPI = require( 'wpapi/superagent' );
 var wp = new WPAPI({
     endpoint: window.WP_API_Settings.endpoint,
     nonce: window.WP_API_Settings.nonce

@@ -1,7 +1,5 @@
 'use strict';
 
-const WPAPI = require( '../../' );
-
 // Inspecting the titles of the returned posts arrays is an easy way to
 // validate that the right page of results was returned
 const getTitles = require( '../helpers/get-rendered-prop' ).bind( null, 'title' );
@@ -11,7 +9,9 @@ const base64credentials = Buffer.from( `${ credentials.username }:${ credentials
 // Variable to use as our "success token" in promise assertions
 const SUCCESS = 'success';
 
-describe( 'integration: custom HTTP Headers', () => {
+describe.each( [
+	[ 'wpapi/superagent', require( '../../superagent' ) ],
+] )( '%s: custom HTTP Headers', ( transportName, WPAPI ) => {
 	let wp;
 
 	beforeEach( () => {

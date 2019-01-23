@@ -36,9 +36,6 @@ const autodiscovery = require( './lib/autodiscovery' );
 // Pull in base module constructors
 const WPRequest = require( './lib/constructors/wp-request' );
 
-// Pull in default HTTP transport
-const httpTransport = require( './lib/http-transport' );
-
 /**
  * Construct a REST API client instance object to create
  *
@@ -149,7 +146,9 @@ WPAPI.prototype.transport = function( transport ) {
 
 	// Create the default transport if it does not exist
 	if ( ! _options.transport ) {
-		_options.transport = Object.create( WPAPI.transport );
+		_options.transport = WPAPI.transport ?
+			Object.create( WPAPI.transport ) :
+			{};
 	}
 
 	// Whitelist the methods that may be applied
@@ -161,19 +160,6 @@ WPAPI.prototype.transport = function( transport ) {
 
 	return this;
 };
-
-/**
- * Default HTTP transport methods object for all WPAPI instances
- *
- * These methods may be extended or replaced on an instance-by-instance basis
- *
- * @memberof! WPAPI
- * @static
- * @property transport
- * @type {Object}
- */
-WPAPI.transport = Object.create( httpTransport );
-Object.freeze( WPAPI.transport );
 
 /**
  * Convenience method for making a new WPAPI instance

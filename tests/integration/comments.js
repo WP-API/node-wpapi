@@ -1,6 +1,5 @@
 'use strict';
 
-const WPAPI = require( '../../' );
 const WPRequest = require( '../../lib/constructors/wp-request.js' );
 
 // Variable to use as our 'success token' in promise assertions
@@ -62,7 +61,9 @@ const expectedResults = {
 const getPostsAndAuthors = comments => comments
 	.map( comment => comment.post + comment.author_name );
 
-describe( 'integration: comments()', () => {
+describe.each( [
+	[ 'wpapi/superagent', require( '../../superagent' ) ],
+] )( '%s: comments()', ( transportName, WPAPI ) => {
 	let wp;
 
 	beforeEach( () => {
