@@ -65,6 +65,91 @@ describe( 'WPAPI', () => {
 			expect( site._options.auth ).toBe( true );
 		} );
 
+		describe( 'custom HTTP transport methods', () => {
+
+			beforeEach( () => {
+				WPAPI.transport = {
+					get: jest.fn().mockImplementation( () => {} ),
+					post: jest.fn().mockImplementation( () => {} ),
+					put: jest.fn().mockImplementation( () => {} ),
+				};
+			} );
+
+			it( 'can be set for an individual HTTP action', () => {
+				const customGet = jest.fn();
+				const site = new WPAPI( {
+					endpoint: 'http://some.url.com/wp-json',
+					transport: {
+						get: customGet,
+					},
+				} );
+				const query = site.root( '' );
+				query.get();
+				expect( customGet ).toHaveBeenCalledWith( query, undefined );
+				expect( WPAPI.transport.get ).not.toHaveBeenCalled();
+				WPAPI.transport.get.mockRestore();
+			} );
+
+			it( 'can extend the default HTTP transport methods', () => {
+				const customGet = jest.fn( ( ...args ) => {
+					WPAPI.transport.get.apply( null, args );
+				} );
+				const site = new WPAPI( {
+					endpoint: 'http://some.url.com/wp-json',
+					transport: {
+						get: customGet,
+					},
+				} );
+				const query = site.root( '' );
+				query.get();
+				expect( customGet ).toHaveBeenCalledWith( query, undefined );
+				expect( WPAPI.transport.get ).toHaveBeenCalledWith( query, undefined );
+				WPAPI.transport.get.mockRestore();
+			} );
+
+			it( 'can be set for multiple HTTP actions', () => {
+				const customPost = jest.fn();
+				const customPut = jest.fn();
+				const site = new WPAPI( {
+					endpoint: 'http://some.url.com/wp-json',
+					transport: {
+						post: customPost,
+						put: customPut,
+					},
+				} );
+				const query = site.root( 'a-resource' );
+				const data = {};
+				query.create( data );
+				expect( customPost ).toHaveBeenCalledWith( query, data, undefined );
+				expect( WPAPI.transport.post ).not.toHaveBeenCalled();
+				query.update( data );
+				expect( customPut ).toHaveBeenCalledWith( query, data, undefined );
+				expect( WPAPI.transport.put ).not.toHaveBeenCalled();
+				WPAPI.transport.post.mockRestore();
+				WPAPI.transport.put.mockRestore();
+			} );
+
+			it( 'only apply to a specific WPAPI instance', () => {
+				const customGet = jest.fn();
+				const site = new WPAPI( {
+					endpoint: 'http://some.url.com/wp-json',
+					transport: {
+						get: customGet,
+					},
+				} );
+				const site2 = new WPAPI( {
+					endpoint: 'http://some.url.com/wp-json',
+				} );
+				expect( site ).not.toBe( site2 );
+				const query = site2.root( '' );
+				query.get();
+				expect( WPAPI.transport.get ).toHaveBeenCalledWith( query, undefined );
+				expect( customGet ).not.toHaveBeenCalled();
+				WPAPI.transport.get.mockRestore();
+			} );
+
+		} );
+
 	} );
 
 	describe( '.site() constructor method', () => {
