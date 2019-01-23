@@ -1,6 +1,6 @@
 # Changelog
 
-## v1.2 _Space Is Only Noise_
+## v1.2.0 _Space Is Only Noise_
 
 - **BREAKING**: The minimum supported node version is now v8.
 - **BREAKING**: `._paging.total` and `._paging.totalPages` response properties are now returned as integers, not strings.
