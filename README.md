@@ -78,12 +78,12 @@ At present this browser bundle tracks the `wpapi/superagent` module, and include
 
 ### Upgrading from v1
 
-Prior to version 2.0 this library shipped with built-in HTTP functionality using [superagent]().
+Prior to version 2.0 (currently `alpha` status) this library shipped with built-in HTTP functionality using Superagent.
 
 If you maintain an existing project which uses this library and wish to upgrade to v2, you may do so by manually installing Superagent:
 
 ```sh
-npm i --save wpapi@2 superagent
+npm i --save wpapi@alpha superagent
 ```
 
 and then changing your `require` statements to use the `wpapi/superagent` entrypoint:
