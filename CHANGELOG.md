@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.2.1 _Colomb_
+
+- Fix issue where `li` was improperly declared as a dev-only dependency, props @el-lsan & @jerolan.
+
 ## v1.2.0 _Space Is Only Noise_
 
 - **BREAKING**: The minimum supported node version is now v8.
