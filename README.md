@@ -11,6 +11,7 @@ This library is an isomorphic client for the [WordPress REST API](http://develop
 
 - [About](#about)
 - [Installation](#installation)
+  - [Upgrading from v1](#upgrading-from-v1)
 - [Using the Client](#using-the-client)
   - [Auto-Discovery](#auto-discovery)
   - [Creating Posts](#creating-posts)
@@ -18,7 +19,7 @@ This library is an isomorphic client for the [WordPress REST API](http://develop
   - [Requesting Different Resources](#requesting-different-resources)
   - [API Query Parameters & Filtering Collections](#api-query-parameters)
   - [Uploading Media](#uploading-media)
-- [Custom Routes](#custom-routes)
+- [Querying Custom Routes](#custom-routes)
   - [Setter Method Naming](#setter-method-naming-for-named-route-components)
   - [Query Parameters & Filtering](#query-parameters--filtering-custom-routes)
   - [Mixins](#mixins)
@@ -53,23 +54,44 @@ To use the library from Node, install it with [npm](http://npmjs.org):
 npm install --save wpapi
 ```
 
-Then, within your application's script files, `require` the module to gain access to it. As `wpapi` is both a query builder and a transport layer (_i.e._ a tool for getting and sending HTTP requests), we leave it up to you as the author of your application whether you need both parts of this functionality. `wpapi` comes with [superagent](https://www.npmjs.com/package/superagent) if you wish to send and receive HTTP requests using this library, but you can also use only the query builder part of the library if you intend to submit your HTTP requests with `fetch`, `axios` or other tools.
+Then, within your application's script files, `require` the module to gain access to it. As `wpapi` is both a query builder and a transport layer (_i.e._ a tool for getting and sending HTTP requests), we leave it up to you as the author of your application whether you need both parts of this functionality. You may use `wpapi` with [superagent](https://www.npmjs.com/package/superagent) if you wish to send and receive HTTP requests using this library, but you may also use only the query builder part of the library if you intend to submit your HTTP requests with `fetch`, `axios` or other tools.
 
 To import only the query builder (without the `.get()`, `.create()`, `.delete()`, `.update()` or `.then()` chaining methods):
+
 ```javascript
 var WPAPI = require( 'wpapi' );
 ```
 
 To import the superagent bundle, which contains the full suite of HTTP interaction methods:
+
 ```js
 var WPAPI = require( 'wpapi/superagent' );
 ```
 
-This library is designed to work in the browser as well, via a build system such as Browserify or Webpack; just install the package and `require( 'wpapi' )` from your application code. At present the browser bundle tracks the `wpapi/superagent` module.
+This library is designed to work in the browser as well, via a build system such as Browserify or Webpack; just install the package and `require( 'wpapi' )` (or `'wpapi/superagent'`) from your application code.
 
 ### Download the UMD Bundle
 
 Alternatively, you may download a [ZIP archive of the bundled library code](https://wp-api.github.io/node-wpapi/wpapi.zip). These files are UMD modules, which may be included directly on a page using a regular `<script>` tag _or_ required via AMD or CommonJS module systems. In the absence of a module system, the UMD modules will export the browser global variable `WPAPI`, which can be used in place of `require( 'wpapi' )` to access the library from your code.
+
+At present this browser bundle tracks the `wpapi/superagent` module, and includes Superagent itself.
+
+### Upgrading from v1
+
+Prior to version 2.0 this library shipped with built-in HTTP functionality using [superagent]().
+
+If you maintain an existing project which uses this library and wish to upgrade to v2, you may do so by manually installing Superagent:
+
+```sh
+npm i --save wpapi@2 superagent
+```
+
+and then changing your `require` statements to use the `wpapi/superagent` entrypoint:
+
+```diff
+--- const WPAPI = require( 'wpapi' );
++++ const WPAPI = require( 'wpapi/superagent' );
+```
 
 ## Using the Client
 
