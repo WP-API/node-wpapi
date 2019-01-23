@@ -60,8 +60,10 @@
   },
   "dependencies": {
     "parse-link-header": "^1.0.1",
-    "qs": "^6.6.0",
-    "superagent": "^4.0.0"
+    "qs": "^6.6.0"
+  },
+  "optionalDependencies": {
+    "superagent": "^4.1.0"
   },
   "devDependencies": {
     "@babel/core": "^7.2.2",
