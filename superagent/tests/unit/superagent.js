@@ -106,51 +106,12 @@ describe( 'WPAPI', () => {
 	} );
 
 	describe( '.discover() constructor method', () => {
-		let responses;
 
 		beforeEach( () => {
-			responses = {
-				head: {},
-				get: {},
-			};
-			responses.head.withLink = {
-				'content-type': 'text/html; charset=UTF-8',
-				link: '<http://mozarts.house/wp-json/>; rel="https://api.w.org/"',
-			};
-			responses.head.withoutLink = {
-				'content-type': 'text/html; charset=utf-8',
-			};
-			responses.get.withLink = {
-				headers: {
-					'content-type': 'text/html; charset=UTF-8',
-					link: '<http://mozarts.house/wp-json/>; rel="https://api.w.org/"',
-				},
-			};
-			responses.get.withoutLink = {
-				headers: {
-					'content-type': 'text/html; charset=UTF-8',
-				},
-			};
-			responses.apiRoot = {
-				name: 'Skip Beats',
-				descrition: 'Just another WordPress weblog',
-				routes: {
-					'list': {},
-					'of': {},
-					'routes': {},
-				},
-			};
-			// Stub HTTP methods
-			jest.spyOn( httpTransport, 'head' ).mockImplementation( () => {} );
 			jest.spyOn( httpTransport, 'get' ).mockImplementation( () => {} );
-			// Stub warn and error
-			jest.spyOn( global.console, 'warn' ).mockImplementation( () => {} );
-			jest.spyOn( global.console, 'error' ).mockImplementation( () => {} );
 		} );
 
 		afterEach( () => {
-			// Restore HTTP methods
-			httpTransport.head.mockRestore();
 			httpTransport.get.mockRestore();
 		} );
 
@@ -159,93 +120,40 @@ describe( 'WPAPI', () => {
 			expect( typeof WPAPI.discover ).toBe( 'function' );
 		} );
 
+		it( 'discovers the API root with a GET request', () => {
+			const url = 'http://mozarts.house';
+			httpTransport.get.mockImplementation( () => Promise.resolve( {
+				name: 'Skip Beats',
+				descrition: 'Just another WordPress weblog',
+				routes: {
+					'/': {
+						_links: {
+							self: 'http://mozarts.house/wp-json/',
+						},
+					},
+					'list': {},
+					'of': {},
+					'routes': {},
+				},
+			} ) );
+			const prom = WPAPI.discover( url )
+				.then( ( result ) => {
+					expect( result ).toBeInstanceOf( WPAPI );
+					expect( result.root().toString() ).toBe( 'http://mozarts.house/wp-json/' );
+					expect( httpTransport.get ).toBeCalledTimes( 1 );
+					const indexRequestObject = httpTransport.get.mock.calls[0][0];
+					expect( indexRequestObject.toString() ).toBe( 'http://mozarts.house/?rest_route=%2F' );
+					return SUCCESS;
+				} );
+			return expect( prom ).resolves.toBe( SUCCESS );
+		} );
+
 		it( 'throws an error if no API endpoint can be discovered', () => {
 			const url = 'http://we.made.it/to/mozarts/house';
-			httpTransport.head.mockImplementationOnce( () => Promise.reject() );
 			httpTransport.get.mockImplementationOnce( () => Promise.reject( 'Some error' ) );
 			const prom = WPAPI.discover( url )
 				.catch( ( err ) => {
-					expect( global.console.error ).toHaveBeenCalledWith( 'Some error' );
-					expect( err.message ).toBe( 'Autodiscovery failed' );
-					return SUCCESS;
-				} );
-			return expect( prom ).resolves.toBe( SUCCESS );
-		} );
-
-		it( 'discovers the API root with a HEAD request', () => {
-			const url = 'http://mozarts.house';
-			httpTransport.head.mockImplementation( () => Promise.resolve( responses.head.withLink ) );
-			httpTransport.get.mockImplementation( () => Promise.resolve( responses.apiRoot ) );
-			const prom = WPAPI.discover( url )
-				.then( ( result ) => {
-					expect( result ).toBeInstanceOf( WPAPI );
-					expect( httpTransport.head ).toBeCalledTimes( 1 );
-					expect( httpTransport.get ).toBeCalledTimes( 1 );
-					expect( result.root().toString() ).toBe( 'http://mozarts.house/wp-json/' );
-					return SUCCESS;
-				} );
-			return expect( prom ).resolves.toBe( SUCCESS );
-		} );
-
-		it( 'throws an error if HEAD succeeds but no link is present', () => {
-			const url = 'http://we.made.it/to/mozarts/house';
-			httpTransport.head.mockImplementationOnce( () => Promise.resolve( responses.head.withoutLink ) );
-			const prom = WPAPI.discover( url )
-				.catch( ( err ) => {
-					expect( global.console.error ).toHaveBeenCalledWith(
-						new Error( 'No header link found with rel="https://api.w.org/"' )
-					);
-					expect( err.message ).toBe( 'Autodiscovery failed' );
-					return SUCCESS;
-				} );
-			return expect( prom ).resolves.toBe( SUCCESS );
-		} );
-
-		it( 'retries the initial site request as a GET if HEAD fails', () => {
-			const url = 'http://mozarts.house';
-			httpTransport.head.mockImplementation( () => Promise.reject() );
-			httpTransport.get.mockImplementationOnce( () => Promise.resolve( responses.get.withLink ) );
-			httpTransport.get.mockImplementationOnce( () => Promise.resolve( responses.apiRoot ) );
-			const prom = WPAPI.discover( url )
-				.then( ( result ) => {
-					expect( result ).toBeInstanceOf( WPAPI );
-					expect( httpTransport.head ).toBeCalledTimes( 1 );
-					expect( httpTransport.get ).toBeCalledTimes( 2 );
-					expect( result.root().toString() ).toBe( 'http://mozarts.house/wp-json/' );
-					return SUCCESS;
-				} );
-			return expect( prom ).resolves.toBe( SUCCESS );
-		} );
-
-		it( 'throws an error if GET retry succeeds but no link is present', () => {
-			const url = 'http://we.made.it/to/mozarts/house';
-			httpTransport.head.mockImplementation( () => Promise.reject() );
-			httpTransport.get.mockImplementationOnce( () => Promise.resolve( responses.get.withoutLink ) );
-			const prom = WPAPI.discover( url )
-				.catch( ( err ) => {
-					expect( global.console.error ).toHaveBeenCalledWith(
-						new Error( 'No header link found with rel="https://api.w.org/"' )
-					);
-					expect( err.message ).toBe( 'Autodiscovery failed' );
-					return SUCCESS;
-				} );
-			return expect( prom ).resolves.toBe( SUCCESS );
-		} );
-
-		it( 'returns WPAPI instance bound to discovered root even when route request errors', () => {
-			const url = 'http://mozarts.house';
-			httpTransport.head.mockImplementation( () => Promise.reject() );
-			httpTransport.get
-				.mockImplementationOnce( () => Promise.resolve( responses.get.withLink ) )
-				.mockImplementationOnce( () => Promise.reject( 'Some error' ) );
-			const prom = WPAPI.discover( url )
-				.then( ( result ) => {
-					expect( result ).toBeInstanceOf( WPAPI );
-					expect( httpTransport.head ).toBeCalledTimes( 1 );
-					expect( httpTransport.get ).toBeCalledTimes( 2 );
-					expect( global.console.error ).toHaveBeenCalledWith( 'Some error' );
-					expect( global.console.warn ).toHaveBeenCalledWith( 'Endpoint detected, proceeding despite error...' );
-					expect( result.root().toString() ).toBe( 'http://mozarts.house/wp-json/' );
+					expect( err ).toBe( 'Some error' );
 					return SUCCESS;
 				} );
 			return expect( prom ).resolves.toBe( SUCCESS );

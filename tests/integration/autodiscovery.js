@@ -53,6 +53,24 @@ describe.each( [
 		return expect( prom ).resolves.toBe( SUCCESS );
 	} );
 
+	it( 'resolves to correct endpoint if discovery targets /wp-json', () => {
+		const prom = WPAPI.discover( 'http://wpapi.local/wp-json' )
+			.then( ( site ) => {
+				expect( site.posts().toString() ).toBe( 'http://wpapi.local/wp-json/wp/v2/posts' );
+				return SUCCESS;
+			} );
+		return expect( prom ).resolves.toBe( SUCCESS );
+	} );
+
+	it( 'resolves to correct endpoint if discovery targets ?rest_route=/', () => {
+		const prom = WPAPI.discover( 'http://wpapi.local/?rest_route=/' )
+			.then( ( site ) => {
+				expect( site.posts().toString() ).toBe( 'http://wpapi.local/wp-json/wp/v2/posts' );
+				return SUCCESS;
+			} );
+		return expect( prom ).resolves.toBe( SUCCESS );
+	} );
+
 	it( 'can correctly instantiate requests against the detected and bound site', () => {
 		const prom = apiPromise
 			.then( site => site.posts() )

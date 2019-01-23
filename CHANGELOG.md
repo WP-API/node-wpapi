@@ -1,8 +1,9 @@
 # Changelog
 
-## v2.0.0 _Second Toughest in the Infants_
+## v2.0.0 [**alpha**] _Second Toughest in the Infants_
 
-- **BREAKING**: `wpapi` module no longer includes HTTP methods. Install superagent as a peer dependency and `require( 'wpapi/superagent' )` in order to make HTTP requests.
+- **BREAKING**: The module exported as `wpapi` no longer includes HTTP methods. Install `superagent` as a peer dependency and `require( 'wpapi/superagent' )` in order to make HTTP requests.
+- **BREAKING**: Autodiscovery now either succeeds or fails; a WPAPI instance configured with default routes will no longer be returned.
 
 
 ## v1.2.0 _Space Is Only Noise_
