@@ -6,6 +6,11 @@
 - **BREAKING**: Autodiscovery now either succeeds or fails; a WPAPI instance configured with default routes will no longer be returned.
 
 
+## v1.2.2 _(future release)_
+
+- Throw an error early when `.file()` is passed a Buffer object without an accompanying name string, props @cungminh2710 & @mvhirsch
+
+
 
 ## v1.2.1 _Colomb_
 
