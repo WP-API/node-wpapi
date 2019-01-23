@@ -1,5 +1,14 @@
 # Changelog
 
+## v1.2 _Space Is Only Noise_
+
+- **BREAKING**: The minimum supported node version is now v8.
+- **BREAKING**: `._paging.total` and `._paging.totalPages` response properties are now returned as integers, not strings.
+- Bundled route handlers are now available for new first-party endpoints in WordPress 5.0.
+- The project now uses Jest and ESLint in place of Mocha, Chai, JSCS and JSHint. Thank you for your years of service, ["nyan" reporter](https://mochajs.org/#nyan)!
+- Browser bundle size has been reduced.
+
+
 ## v1.1.2 _If I Survive_
 
 - Resolves an issue where authentication credentials where not maintained properly when iterating through pages of a connection with `._paging.next` or `._paging.prev`, props @motleydev for the reproducible bug report
@@ -43,9 +52,9 @@ v1.0 namesake album _Emotional Technology_ by BT.
 
 - Add CHANGELOG.md
 - Reduce complexity of, and rename, default routes JSON file
-- BREAKING: Remove third "merge" argument from `.param()` method signature
+- **BREAKING**: Remove third "merge" argument from `.param()` method signature
 - Document `.settings()` top-level route handler
-- BREAKING: Return API error objects directly from HTTP transport: only return a transport-level error object in the event of a non-API error
+- **BREAKING**: Return API error objects directly from HTTP transport: only return a transport-level error object in the event of a non-API error
 - Add `.status()` parameter method mixin
 - Properly register `.password()` and `.sticky()` parameter mixins
 - Utilize the HTTP transport methods during auto-discovery process
