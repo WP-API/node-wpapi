@@ -59,6 +59,7 @@
     "test": "jest --coverage"
   },
   "dependencies": {
+    "li": "^1.3.0",
     "parse-link-header": "^1.0.1",
     "qs": "^6.6.0"
   },
@@ -80,7 +81,6 @@
     "jest": "^23.6.0",
     "jsdoc": "^3.4.3",
     "kramed": "^0.5.6",
-    "li": "^1.3.0",
     "load-grunt-tasks": "^3.5.0",
     "lodash.reduce": "^4.6.0",
     "minami": "^1.2.3",
