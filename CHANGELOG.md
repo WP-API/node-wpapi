@@ -1,5 +1,10 @@
 # Changelog
 
+## v2.0.0 _Second Toughest in the Infants_
+
+- **BREAKING**: `wpapi` module no longer includes HTTP methods. Install superagent as a peer dependency and `require( 'wpapi/superagent' )` in order to make HTTP requests.
+
+
 ## v1.2.0 _Space Is Only Noise_
 
 - **BREAKING**: The minimum supported node version is now v8.
