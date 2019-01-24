@@ -13,7 +13,7 @@
 
 ## v1.2.0 _Space Is Only Noise_
 
-- **BREAKING**: The minimum supported node version is now v8.
+- **BREAKING**: The minimum supported node version is now v8.6, or v8.2.1 with the `--harmony` flag.
 - **BREAKING**: `._paging.total` and `._paging.totalPages` response properties are now returned as integers, not strings.
 - Bundled route handlers are now available for new first-party endpoints in WordPress 5.0.
 - The project now uses Jest and ESLint in place of Mocha, Chai, JSCS and JSHint. Thank you for your years of service, ["nyan" reporter](https://mochajs.org/#nyan)!
