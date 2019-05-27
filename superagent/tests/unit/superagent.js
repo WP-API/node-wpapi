@@ -3,7 +3,7 @@
 const WPAPI = require( '../../' );
 
 // HTTP transport, for stubbing
-const httpTransport = require( '../../http-transport' );
+const superagentTransport = require( '../../superagent-transport' );
 
 // Variable to use as our "success token" in promise assertions
 const SUCCESS = 'success';
@@ -15,54 +15,54 @@ describe( 'WPAPI', () => {
 		describe( 'assigns default HTTP transport', () => {
 
 			it( 'for GET requests', () => {
-				jest.spyOn( httpTransport, 'get' ).mockImplementation( () => {} );
+				jest.spyOn( superagentTransport, 'get' ).mockImplementation( () => {} );
 				const site = new WPAPI( {
 					endpoint: 'http://some.url.com/wp-json',
 				} );
 				const query = site.root( '' );
 				query.get();
-				expect( httpTransport.get ).toHaveBeenCalledWith( query, undefined );
-				httpTransport.get.mockRestore();
+				expect( superagentTransport.get ).toHaveBeenCalledWith( query, undefined );
+				superagentTransport.get.mockRestore();
 			} );
 
 			it( 'for POST requests', () => {
-				jest.spyOn( httpTransport, 'post' ).mockImplementation( () => {} );
+				jest.spyOn( superagentTransport, 'post' ).mockImplementation( () => {} );
 				const site = new WPAPI( {
 					endpoint: 'http://some.url.com/wp-json',
 				} );
 				const query = site.root( '' );
 				const data = {};
 				query.create( data );
-				expect( httpTransport.post ).toHaveBeenCalledWith( query, data, undefined );
-				httpTransport.post.mockRestore();
+				expect( superagentTransport.post ).toHaveBeenCalledWith( query, data, undefined );
+				superagentTransport.post.mockRestore();
 			} );
 
 			it( 'for POST requests', () => {
-				jest.spyOn( httpTransport, 'post' ).mockImplementation( () => {} );
+				jest.spyOn( superagentTransport, 'post' ).mockImplementation( () => {} );
 				const site = new WPAPI( {
 					endpoint: 'http://some.url.com/wp-json',
 				} );
 				const query = site.root( '' );
 				const data = {};
 				query.create( data );
-				expect( httpTransport.post ).toHaveBeenCalledWith( query, data, undefined );
-				httpTransport.post.mockRestore();
+				expect( superagentTransport.post ).toHaveBeenCalledWith( query, data, undefined );
+				superagentTransport.post.mockRestore();
 			} );
 
 			it( 'for PUT requests', () => {
-				jest.spyOn( httpTransport, 'put' ).mockImplementation( () => {} );
+				jest.spyOn( superagentTransport, 'put' ).mockImplementation( () => {} );
 				const site = new WPAPI( {
 					endpoint: 'http://some.url.com/wp-json',
 				} );
 				const query = site.root( 'a-resource' );
 				const data = {};
 				query.update( data );
-				expect( httpTransport.put ).toHaveBeenCalledWith( query, data, undefined );
-				httpTransport.put.mockRestore();
+				expect( superagentTransport.put ).toHaveBeenCalledWith( query, data, undefined );
+				superagentTransport.put.mockRestore();
 			} );
 
 			it( 'for DELETE requests', () => {
-				jest.spyOn( httpTransport, 'delete' ).mockImplementation( () => {} );
+				jest.spyOn( superagentTransport, 'delete' ).mockImplementation( () => {} );
 				const site = new WPAPI( {
 					endpoint: 'http://some.url.com/wp-json',
 				} );
@@ -71,8 +71,8 @@ describe( 'WPAPI', () => {
 					force: true,
 				};
 				query.delete( data );
-				expect( httpTransport.delete ).toHaveBeenCalledWith( query, data, undefined );
-				httpTransport.delete.mockRestore();
+				expect( superagentTransport.delete ).toHaveBeenCalledWith( query, data, undefined );
+				superagentTransport.delete.mockRestore();
 			} );
 
 		} );
@@ -108,11 +108,11 @@ describe( 'WPAPI', () => {
 	describe( '.discover() constructor method', () => {
 
 		beforeEach( () => {
-			jest.spyOn( httpTransport, 'get' ).mockImplementation( () => {} );
+			jest.spyOn( superagentTransport, 'get' ).mockImplementation( () => {} );
 		} );
 
 		afterEach( () => {
-			httpTransport.get.mockRestore();
+			superagentTransport.get.mockRestore();
 		} );
 
 		it( 'is a function', () => {
@@ -122,7 +122,7 @@ describe( 'WPAPI', () => {
 
 		it( 'discovers the API root with a GET request', () => {
 			const url = 'http://mozarts.house';
-			httpTransport.get.mockImplementation( () => Promise.resolve( {
+			superagentTransport.get.mockImplementation( () => Promise.resolve( {
 				name: 'Skip Beats',
 				descrition: 'Just another WordPress weblog',
 				routes: {
@@ -140,8 +140,8 @@ describe( 'WPAPI', () => {
 				.then( ( result ) => {
 					expect( result ).toBeInstanceOf( WPAPI );
 					expect( result.root().toString() ).toBe( 'http://mozarts.house/wp-json/' );
-					expect( httpTransport.get ).toBeCalledTimes( 1 );
-					const indexRequestObject = httpTransport.get.mock.calls[0][0];
+					expect( superagentTransport.get ).toBeCalledTimes( 1 );
+					const indexRequestObject = superagentTransport.get.mock.calls[0][0];
 					expect( indexRequestObject.toString() ).toBe( 'http://mozarts.house/?rest_route=%2F' );
 					return SUCCESS;
 				} );
@@ -150,7 +150,7 @@ describe( 'WPAPI', () => {
 
 		it( 'throws an error if no API endpoint can be discovered', () => {
 			const url = 'http://we.made.it/to/mozarts/house';
-			httpTransport.get.mockImplementationOnce( () => Promise.reject( 'Some error' ) );
+			superagentTransport.get.mockImplementationOnce( () => Promise.reject( 'Some error' ) );
 			const prom = WPAPI.discover( url )
 				.catch( ( err ) => {
 					expect( err ).toBe( 'Some error' );

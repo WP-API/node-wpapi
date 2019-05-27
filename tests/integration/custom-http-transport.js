@@ -6,7 +6,7 @@ const credentials = require( '../helpers/constants' ).credentials;
 const SUCCESS = 'success';
 
 describe.each( [
-	[ 'wpapi/superagent', require( '../../superagent' ), require( '../../superagent/http-transport' ) ],
+	[ 'wpapi/superagent', require( '../../superagent' ), require( '../../superagent/superagent-transport' ) ],
 ] )( '%s: custom HTTP transport methods', ( transportName, WPAPI, httpTransport ) => {
 	let wp;
 	let id;
