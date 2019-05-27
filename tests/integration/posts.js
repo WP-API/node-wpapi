@@ -538,22 +538,19 @@ describe.each( [
 			return expect( prom ).resolves.toBe( SUCCESS );
 		} );
 
-		it( 'cannot create (POST) without authentication (also tests callback-mode errors)', () => {
-			const prom = new Promise( ( resolve, reject ) => {
-				wp.posts().create( {
+		it( 'cannot create (POST) without authentication', () => {
+			const prom = wp.posts()
+				.create( {
 					title: 'New Post 2501',
 					content: 'Some Content',
-				}, ( err ) => {
-					if ( ! err ) {
-						reject();
-					}
+				} )
+				.catch( ( err ) => {
 					expect( err.code ).toBe( 'rest_cannot_create' );
 					expect( err.data ).toEqual( {
 						status: 401,
 					} );
-					resolve( SUCCESS );
+					return SUCCESS;
 				} );
-			} );
 			return expect( prom ).resolves.toBe( SUCCESS );
 		} );
 
@@ -631,15 +628,7 @@ describe.each( [
 				expect( post.title ).toHaveProperty( 'rendered' );
 				expect( post.title.rendered ).toBe( 'Updated Title' );
 				// Re-authenticate & delete (trash) this post
-				// Use a callback to exercise that part of the functionality
-				return new Promise( ( resolve, reject ) => {
-					authenticated.posts().id( id ).delete( ( err, data ) => {
-						if ( err ) {
-							return reject( err );
-						}
-						resolve( data );
-					} );
-				} );
+				return authenticated.posts().id( id ).delete();
 			} )
 			.then( ( response ) => {
 				expect( typeof response ).toBe( 'object' );
@@ -807,36 +796,5 @@ describe.each( [
 			} );
 		return expect( prom ).resolves.toBe( SUCCESS );
 	}, 10000 );
-
-	// Callback context
-
-	it( 'can GET posts with a context-bound callback', ( done ) => {
-		class Ctor {
-			setState( state ) {
-				this.state = state;
-			}
-
-			request( cb ) {
-				const self = this;
-				wp.posts().get( ( err, data ) => {
-					expect( err ).toBeNull();
-
-					// Context is maintained
-					expect( this ).toBe( self );
-					this.setState( {
-						data: data,
-					} );
-
-					expect( this ).toHaveProperty( 'state' );
-					expect( typeof this.state ).toBe( 'object' );
-					expect( this.state ).toHaveProperty( 'data' );
-					expect( Array.isArray( this.state.data ) ).toBe( true );
-					expect( this.state.data.length ).toBe( 10 );
-					cb();
-				} );
-			}
-		}
-		( new Ctor() ).request( done );
-	} );
 
 } );

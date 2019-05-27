@@ -30,6 +30,7 @@
       "**/tests/**/*.js"
     ],
     "testPathIgnorePatterns": [
+      "test.js",
       ".eslintrc.js",
       "/tests/helpers/"
     ],

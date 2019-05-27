@@ -15,19 +15,16 @@ describe.each( [
 
 	beforeEach( () => {
 		cache = {};
-		cachingGet = jest.fn( ( wpreq, cb ) => {
+		cachingGet = jest.fn( ( wpreq ) => {
 			const result = cache[ wpreq ];
-			// If a cache hit is found, return it via the same callback/promise
-			// signature as the default transport method
+			// If a cache hit is found, return it via the same promise
+			// signature as that of the default transport method
 			if ( result ) {
-				if ( cb && typeof cb === 'function' ) {
-					cb( null, result );
-				}
 				return Promise.resolve( result );
 			}
 
 			// Delegate to default transport if no cached data was found
-			return WPAPI.transport.get( wpreq, cb ).then( ( result ) => {
+			return WPAPI.transport.get( wpreq ).then( ( result ) => {
 				cache[ wpreq ] = result;
 				return result;
 			} );
@@ -65,7 +62,7 @@ describe.each( [
 				expect( result.id ).toBe( id );
 				expect( cachingGet ).toBeCalledTimes( 1 );
 				expect( httpTransport.get ).toHaveBeenCalledTimes( 1 );
-				expect( httpTransport.get ).toHaveBeenCalledWith( query1, undefined );
+				expect( httpTransport.get ).toHaveBeenCalledWith( query1 );
 				expect( result ).toBe( cache[ 'http://wpapi.local/wp-json/wp/v2/posts/' + id ] );
 			} )
 			.then( () => {
@@ -75,7 +72,7 @@ describe.each( [
 			.then( ( result ) => {
 				expect( cachingGet ).toBeCalledTimes( 2 );
 				expect( httpTransport.get ).toHaveBeenCalledTimes( 1 );
-				expect( httpTransport.get ).toHaveBeenLastCalledWith( query1, undefined );
+				expect( httpTransport.get ).toHaveBeenLastCalledWith( query1 );
 				expect( httpTransport.get.mock.calls[0][0] ).not.toBe( query2 );
 				expect( result ).toBe( cache[ 'http://wpapi.local/wp-json/wp/v2/posts/' + id ] );
 				return SUCCESS;
@@ -98,16 +95,12 @@ describe.each( [
 			endpoint: 'http://wpapi.local/wp-json',
 			transport: {
 				// If .slug is used, auto-unwrap the returned array
-				get( wpreq, cb ) {
+				get( wpreq ) {
 					if ( ! wpreq._params.slug ) {
-						return WPAPI.transport.get.call( this, wpreq, cb );
+						return WPAPI.transport.get.call( this, wpreq );
 					}
 					return WPAPI.transport.get( wpreq ).then( ( results ) => {
-						const result = extractSlug( results );
-						if ( cb && typeof cb === 'function' ) {
-							cb( null, result );
-						}
-						return result;
+						return extractSlug( results );
 					} );
 				},
 			},
