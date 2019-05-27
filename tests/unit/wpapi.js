@@ -85,7 +85,7 @@ describe( 'WPAPI', () => {
 				} );
 				const query = site.root( '' );
 				query.get();
-				expect( customGet ).toHaveBeenCalledWith( query, undefined );
+				expect( customGet ).toHaveBeenCalledWith( query );
 				expect( WPAPI.transport.get ).not.toHaveBeenCalled();
 				WPAPI.transport.get.mockRestore();
 			} );
@@ -102,8 +102,8 @@ describe( 'WPAPI', () => {
 				} );
 				const query = site.root( '' );
 				query.get();
-				expect( customGet ).toHaveBeenCalledWith( query, undefined );
-				expect( WPAPI.transport.get ).toHaveBeenCalledWith( query, undefined );
+				expect( customGet ).toHaveBeenCalledWith( query );
+				expect( WPAPI.transport.get ).toHaveBeenCalledWith( query );
 				WPAPI.transport.get.mockRestore();
 			} );
 
@@ -120,10 +120,10 @@ describe( 'WPAPI', () => {
 				const query = site.root( 'a-resource' );
 				const data = {};
 				query.create( data );
-				expect( customPost ).toHaveBeenCalledWith( query, data, undefined );
+				expect( customPost ).toHaveBeenCalledWith( query, data );
 				expect( WPAPI.transport.post ).not.toHaveBeenCalled();
 				query.update( data );
-				expect( customPut ).toHaveBeenCalledWith( query, data, undefined );
+				expect( customPut ).toHaveBeenCalledWith( query, data );
 				expect( WPAPI.transport.put ).not.toHaveBeenCalled();
 				WPAPI.transport.post.mockRestore();
 				WPAPI.transport.put.mockRestore();
@@ -143,7 +143,7 @@ describe( 'WPAPI', () => {
 				expect( site ).not.toBe( site2 );
 				const query = site2.root( '' );
 				query.get();
-				expect( WPAPI.transport.get ).toHaveBeenCalledWith( query, undefined );
+				expect( WPAPI.transport.get ).toHaveBeenCalledWith( query );
 				expect( customGet ).not.toHaveBeenCalled();
 				WPAPI.transport.get.mockRestore();
 			} );
@@ -336,10 +336,9 @@ describe( 'WPAPI', () => {
 				site.transport( {
 					get: customGet,
 				} );
-				const cb = () => {};
 				const query = site.root( '' );
-				query.get( cb );
-				expect( customGet ).toHaveBeenCalledWith( query, cb );
+				query.get();
+				expect( customGet ).toHaveBeenCalledWith( query );
 			} );
 
 			it( 'does not impact or overwrite unspecified transport methods', () => {

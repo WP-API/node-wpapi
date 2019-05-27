@@ -21,7 +21,7 @@ describe( 'WPAPI', () => {
 				} );
 				const query = site.root( '' );
 				query.get();
-				expect( superagentTransport.get ).toHaveBeenCalledWith( query, undefined );
+				expect( superagentTransport.get ).toHaveBeenCalledWith( query );
 				superagentTransport.get.mockRestore();
 			} );
 
@@ -33,7 +33,7 @@ describe( 'WPAPI', () => {
 				const query = site.root( '' );
 				const data = {};
 				query.create( data );
-				expect( superagentTransport.post ).toHaveBeenCalledWith( query, data, undefined );
+				expect( superagentTransport.post ).toHaveBeenCalledWith( query, data );
 				superagentTransport.post.mockRestore();
 			} );
 
@@ -45,7 +45,7 @@ describe( 'WPAPI', () => {
 				const query = site.root( '' );
 				const data = {};
 				query.create( data );
-				expect( superagentTransport.post ).toHaveBeenCalledWith( query, data, undefined );
+				expect( superagentTransport.post ).toHaveBeenCalledWith( query, data );
 				superagentTransport.post.mockRestore();
 			} );
 
@@ -57,7 +57,7 @@ describe( 'WPAPI', () => {
 				const query = site.root( 'a-resource' );
 				const data = {};
 				query.update( data );
-				expect( superagentTransport.put ).toHaveBeenCalledWith( query, data, undefined );
+				expect( superagentTransport.put ).toHaveBeenCalledWith( query, data );
 				superagentTransport.put.mockRestore();
 			} );
 
@@ -71,7 +71,7 @@ describe( 'WPAPI', () => {
 					force: true,
 				};
 				query.delete( data );
-				expect( superagentTransport.delete ).toHaveBeenCalledWith( query, data, undefined );
+				expect( superagentTransport.delete ).toHaveBeenCalledWith( query, data );
 				superagentTransport.delete.mockRestore();
 			} );
 
