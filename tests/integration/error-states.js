@@ -5,6 +5,8 @@ const SUCCESS = 'success';
 
 describe.each( [
 	[ 'wpapi/superagent', require( '../../superagent' ) ],
+	// TODO: Reinstate once invalid route handling is supported properly in fetch transport
+	// [ 'wpapi/fetch', require( '../../fetch' ) ],
 ] )( '%s: error states:', ( transportName, WPAPI ) => {
 
 	it( 'invalid root endpoint causes a transport-level (superagent) 404 error', () => {

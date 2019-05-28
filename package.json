@@ -65,8 +65,8 @@
     "qs": "^6.6.0"
   },
   "optionalDependencies": {
-    "axios": "^0.18.0",
     "form-data": "^2.3.3",
+    "isomorphic-unfetch": "^3.0.0",
     "superagent": "^4.1.0"
   },
   "devDependencies": {

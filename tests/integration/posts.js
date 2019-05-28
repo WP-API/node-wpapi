@@ -55,6 +55,7 @@ const expectedResults = {
 
 describe.each( [
 	[ 'wpapi/superagent', require( '../../superagent' ) ],
+	[ 'wpapi/fetch', require( '../../fetch' ) ],
 ] )( '%s: posts()', ( transportName, WPAPI ) => {
 	let wp;
 	let authenticated;
@@ -669,7 +670,8 @@ describe.each( [
 		return expect( prom ).resolves.toBe( SUCCESS );
 	}, 10000 );
 
-	it( 'can create a post with tags, categories and featured media', () => {
+	// TODO: Un-skip once image uploading is reinstated.
+	it.skip( 'can create a post with tags, categories and featured media', () => {
 		let id;
 		let mediaId;
 		const filePath = path.join( __dirname, 'assets/emilygarfield-untitled.jpg' );

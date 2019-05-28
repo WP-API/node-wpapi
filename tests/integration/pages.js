@@ -40,6 +40,7 @@ const expectedResults = {
 
 describe.each( [
 	[ 'wpapi/superagent', require( '../../superagent' ) ],
+	[ 'wpapi/fetch', require( '../../fetch' ) ],
 ] )( '%s: pages()', ( transportName, WPAPI ) => {
 	let wp;
 

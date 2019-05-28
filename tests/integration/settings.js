@@ -7,6 +7,7 @@ const SUCCESS = 'success';
 
 describe.each( [
 	[ 'wpapi/superagent', require( '../../superagent' ) ],
+	[ 'wpapi/fetch', require( '../../fetch' ) ],
 ] )( '%s: settings()', ( transportName, WPAPI ) => {
 	let wp;
 	let authenticated;
