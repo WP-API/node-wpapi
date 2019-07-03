@@ -78,6 +78,8 @@ At present this browser bundle tracks the `wpapi/superagent` module, and include
 
 ### Upgrading from v1
 
+### Require `wpapi/superagent`
+
 Prior to version 2.0 (currently `alpha` status) this library shipped with built-in HTTP functionality using Superagent.
 
 If you maintain an existing project which uses this library and wish to upgrade to v2, you may do so by manually installing Superagent:
@@ -91,6 +93,21 @@ and then changing your `require` statements to use the `wpapi/superagent` entryp
 ```diff
 --- const WPAPI = require( 'wpapi' );
 +++ const WPAPI = require( 'wpapi/superagent' );
+```
+
+### Use Promises instead of Callbacks
+
+In version 1, you could use "Node-style" error-first callback functions instead of chaining promises. As of version 2, this callback style is no longer supported; use Promise `.then` syntax or [`async`/`await`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function) instead.
+
+```js
+// Version 1
+wp.posts().get( function( error, posts ) { /* ... */ } );
+
+// Version 2, Promises syntax
+wp.posts().get().then( posts => { /* ... */ } );
+
+// Version 2, await syntax
+await wp.posts().get();
 ```
 
 ## Using the Client
