@@ -78,6 +78,8 @@ At present this browser bundle tracks the `wpapi/superagent` module, and include
 
 ### Upgrading from v1
 
+### Require `wpapi/superagent`
+
 Prior to version 2.0 (currently `alpha` status) this library shipped with built-in HTTP functionality using Superagent.
 
 If you maintain an existing project which uses this library and wish to upgrade to v2, you may do so by manually installing Superagent:
@@ -93,6 +95,21 @@ and then changing your `require` statements to use the `wpapi/superagent` entryp
 +++ const WPAPI = require( 'wpapi/superagent' );
 ```
 
+### Use Promises instead of Callbacks
+
+In version 1, you could use "Node-style" error-first callback functions instead of chaining promises. As of version 2, this callback style is no longer supported; use Promise `.then` syntax or [`async`/`await`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function) instead.
+
+```js
+// Version 1
+wp.posts().get( function( error, posts ) { /* ... */ } );
+
+// Version 2, Promises syntax
+wp.posts().get().then( posts => { /* ... */ } );
+
+// Version 2, await syntax
+await wp.posts().get();
+```
+
 ## Using the Client
 
 The module is a constructor, so you can create an instance of the API client bound to the endpoint for your WordPress install:
@@ -103,23 +120,17 @@ var wp = new WPAPI({ endpoint: 'http://src.wordpress-develop.dev/wp-json' });
 ```
 Once an instance is constructed, you can chain off of it to construct a specific request. (Think of it as a query-builder for WordPress!)
 
-We support requesting posts using either a callback-style or promise-style syntax:
+**Compatibility Note:** As of Version 2.0, Node-style error-first callbacks are no longer supported by this library. All request methods return Promises.
 
 ```javascript
-// Callbacks
-wp.posts().get(function( err, data ) {
-    if ( err ) {
-        // handle err
-    }
-    // do something with the returned posts
-});
-
-// Promises
-wp.posts().then(function( data ) {
-    // do something with the returned posts
-}).catch(function( err ) {
-    // handle error
-});
+// Request methods return Promises.
+wp.posts().get()
+    .then(function( data ) {
+        // do something with the returned posts
+    })
+    .catch(function( err ) {
+        // handle error
+    });
 ```
 The `wp` object has endpoint handler methods for every endpoint that ships with the default WordPress REST API plugin.
 
@@ -798,7 +809,9 @@ By default `node-wpapi` uses the [superagent](https://www.npmjs.com/package/supe
 
 **This is advanced behavior; you will only need to utilize this functionality if your application has very specific HTTP handling or caching requirements.**
 
-In order to maintain consistency with the rest of the API, custom transport methods should take in a WordPress API route handler query object (_e.g._ the result of calling `wp.posts()...` or any of the other chaining resource handlers), a `data` object (for POST, PUT and DELETE requests), and an optional callback function (as `node-wpapi` transport methods both return Promise objects _and_ support traditional `function( err, response )` callbacks).
+In order to maintain consistency with the rest of the API, custom transport methods should take in a WordPress API route handler query object (_e.g._ the result of calling `wp.posts()...` or any of the other chaining resource handlers)and a `data` object (for POST, PUT and DELETE requests).
+
+**Note:** Node-style error-first callbacks are no longer supported by this library as of version 2.0. Custom transport methods should therefore not accept or expect a third optional callback parameter.
 
 The default HTTP transport methods are available as `WPAPI.transport` (a property of the constructor object) and may be called within your transports if you wish to extend the existing behavior, as in the example below.
 
@@ -809,16 +822,11 @@ var site = new WPAPI({
   endpoint: 'http://my-site.com/wp-json',
   transport: {
     // Only override the transport for the GET method, in this example
-    // Transport methods should take a wpreq object and a callback:
-    get: function( wpreq, cb ) {
+    // Transport methods should take a wpreq object:
+    get: function( wpreq ) {
       var result = cache[ wpreq ];
-      // If a cache hit is found, return it via the same callback/promise
-      // signature as the default transport method:
+      // If a cache hit is found, return it wrapped in a Promise:
       if ( result ) {
-        if ( cb && typeof cb === 'function' ) {
-          // Invoke the callback function, if one was provided
-          cb( null, result );
-        }
         // Return the data as a promise
         return Promise.resolve( result );
       }
@@ -837,8 +845,8 @@ You may set one or many custom HTTP transport methods on an existing WP site cli
 
 ```js
 site.transport({
-    get: function( wpreq, callbackFn ) { /* ... */},
-    put: function( wpreq, callbackFn ) { /* ... */}
+    get: function( wpreq ) { /* ... */},
+    put: function( wpreq, data ) { /* ... */}
 });
 ```
 

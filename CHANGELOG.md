@@ -1,7 +1,7 @@
 # Changelog
 
 ## v2.0.0 [**alpha**] _Second Toughest in the Infants_
-
+- **BREAKING**: "Node-style" error-first callbacks (_e.g._ `.get( ( err, data ) => {} )`) are no longer supported. All transport request methods return Promises.
 - **BREAKING**: The module exported as `wpapi` no longer includes HTTP methods. Install `superagent` as a peer dependency and `require( 'wpapi/superagent' )` in order to make HTTP requests.
 - **BREAKING**: Autodiscovery now either succeeds or fails; a WPAPI instance configured with default routes will no longer be returned.
 
@@ -11,11 +11,9 @@
 - Throw an error early when `.file()` is passed a Buffer object without an accompanying name string, props @cungminh2710 & @mvhirsch
 
 
-
 ## v1.2.1 _Colomb_
 
 - Fix issue where `li` was improperly declared as a dev-only dependency, props @el-lsan & @jerolan.
-
 
 
 ## v1.2.0 _Space Is Only Noise_

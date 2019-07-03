@@ -102,19 +102,16 @@ function WPAPI( options ) {
  *
  *     // Overwrite the GET behavior to inject a caching layer
  *     site.transport({
- *       get: function( wpreq, cb ) {
+ *       get: function( wpreq ) {
  *         var result = cache[ wpreq ];
- *         // If a cache hit is found, return it via the same callback/promise
- *         // signature as the default transport method
+ *         // If a cache hit is found, return it via the same promise
+ *         // signature as that of the default transport method
  *         if ( result ) {
- *           if ( cb && typeof cb === 'function' ) {
- *             cb( null, result );
- *           }
  *           return Promise.resolve( result );
  *         }
  *
  *         // Delegate to default transport if no cached data was found
- *         return WPAPI.transport.get( wpreq, cb ).then(function( result ) {
+ *         return WPAPI.transport.get( wpreq ).then(function( result ) {
  *           cache[ wpreq ] = result;
  *           return result;
  *         });

@@ -1,19 +1,6 @@
 const WPAPI = require( '../wpapi' );
+const superagentTransport = require( './superagent-transport' );
+const bindTransport = require( '../lib/bind-transport' );
 
-// Pull in superagent-based HTTP transport
-const httpTransport = require( './http-transport' );
-
-/**
- * The HTTP transport methods object used by all WPAPI instances
- *
- * These methods may be extended or replaced on an instance-by-instance basis
- *
- * @memberof! WPAPI
- * @static
- * @property transport
- * @type {Object}
- */
-WPAPI.transport = Object.create( httpTransport );
-Object.freeze( WPAPI.transport );
-
-module.exports = WPAPI;
+// Bind the superagent-based HTTP transport to the WPAPI constructor
+module.exports = bindTransport( WPAPI, superagentTransport );

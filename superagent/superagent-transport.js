@@ -179,16 +179,15 @@ function createPaginationObject( result, options, httpTransport ) {
 // ====================
 
 /**
- * Submit the provided superagent request object, invoke a callback (if it was
- * provided), and return a promise to the response from the HTTP request.
+ * Submit the provided superagent request object and return a promise which
+ * resolves to the response from the HTTP request.
  *
  * @private
  * @param {Object} request A superagent request object
- * @param {Function} callback A callback function (optional)
  * @param {Function} transform A function to transform the result data
  * @returns {Promise} A promise to the superagent request
  */
-function invokeAndPromisify( request, callback, transform ) {
+function invokeAndPromisify( request, transform ) {
 	return new Promise( ( resolve, reject ) => {
 		// Fire off the result
 		request.end( ( err, result ) => {
@@ -200,14 +199,7 @@ function invokeAndPromisify( request, callback, transform ) {
 				resolve( result );
 			}
 		} );
-	} ).then( transform ).then( ( result ) => {
-		// If a node-style callback was provided, call it, but also return the
-		// result value for use via the returned Promise
-		if ( callback && typeof callback === 'function' ) {
-			callback( null, result );
-		}
-		return result;
-	}, ( err ) => {
+	} ).then( transform ).catch( ( err ) => {
 		// If the API provided an error object, it will be available within the
 		// superagent response object as response.body (containing the response
 		// JSON). If that object exists, it will have a .code property if it is
@@ -217,13 +209,8 @@ function invokeAndPromisify( request, callback, transform ) {
 			// all transport-specific (superagent-specific) properties
 			err = err.response.body;
 		}
-		// If a callback was provided, ensure it is called with the error; otherwise
-		// re-throw the error so that it can be handled by a Promise .catch or .then
-		if ( callback && typeof callback === 'function' ) {
-			callback( err );
-		} else {
-			throw err;
-		}
+		// Re-throw the error so that it can be handled by a Promise .catch or .then
+		throw err;
 	} );
 }
 
@@ -264,17 +251,16 @@ function returnHeaders( result ) {
  * @method get
  * @async
  * @param {WPRequest} wpreq A WPRequest query object
- * @param {Function} [callback] A callback to invoke with the results of the GET request
  * @returns {Promise} A promise to the results of the HTTP request
  */
-function _httpGet( wpreq, callback ) {
+function _httpGet( wpreq ) {
 	checkMethodSupport( 'get', wpreq );
 	const url = wpreq.toString();
 
 	let request = _auth( agent.get( url ), wpreq._options );
 	request = _setHeaders( request, wpreq._options );
 
-	return invokeAndPromisify( request, callback, returnBody.bind( null, wpreq ) );
+	return invokeAndPromisify( request, returnBody.bind( null, wpreq ) );
 }
 
 /**
@@ -283,10 +269,9 @@ function _httpGet( wpreq, callback ) {
  * @async
  * @param {WPRequest} wpreq A WPRequest query object
  * @param {Object} data The data for the POST request
- * @param {Function} [callback] A callback to invoke with the results of the POST request
  * @returns {Promise} A promise to the results of the HTTP request
  */
-function _httpPost( wpreq, data, callback ) {
+function _httpPost( wpreq, data ) {
 	checkMethodSupport( 'post', wpreq );
 	const url = wpreq.toString();
 	data = data || {};
@@ -304,7 +289,7 @@ function _httpPost( wpreq, data, callback ) {
 		request = request.send( data );
 	}
 
-	return invokeAndPromisify( request, callback, returnBody.bind( null, wpreq ) );
+	return invokeAndPromisify( request, returnBody.bind( null, wpreq ) );
 }
 
 /**
@@ -312,10 +297,9 @@ function _httpPost( wpreq, data, callback ) {
  * @async
  * @param {WPRequest} wpreq A WPRequest query object
  * @param {Object} data The data for the PUT request
- * @param {Function} [callback] A callback to invoke with the results of the PUT request
  * @returns {Promise} A promise to the results of the HTTP request
  */
-function _httpPut( wpreq, data, callback ) {
+function _httpPut( wpreq, data ) {
 	checkMethodSupport( 'put', wpreq );
 	const url = wpreq.toString();
 	data = data || {};
@@ -323,7 +307,7 @@ function _httpPut( wpreq, data, callback ) {
 	let request = _auth( agent.put( url ), wpreq._options, true ).send( data );
 	request = _setHeaders( request, wpreq._options );
 
-	return invokeAndPromisify( request, callback, returnBody.bind( null, wpreq ) );
+	return invokeAndPromisify( request, returnBody.bind( null, wpreq ) );
 }
 
 /**
@@ -331,36 +315,30 @@ function _httpPut( wpreq, data, callback ) {
  * @async
  * @param {WPRequest} wpreq A WPRequest query object
  * @param {Object} [data] Data to send along with the DELETE request
- * @param {Function} [callback] A callback to invoke with the results of the DELETE request
  * @returns {Promise} A promise to the results of the HTTP request
  */
-function _httpDelete( wpreq, data, callback ) {
-	if ( ! callback && typeof data === 'function' ) {
-		callback = data;
-		data = null;
-	}
+function _httpDelete( wpreq, data ) {
 	checkMethodSupport( 'delete', wpreq );
 	const url = wpreq.toString();
 	let request = _auth( agent.del( url ), wpreq._options, true ).send( data );
 	request = _setHeaders( request, wpreq._options );
 
-	return invokeAndPromisify( request, callback, returnBody.bind( null, wpreq ) );
+	return invokeAndPromisify( request, returnBody.bind( null, wpreq ) );
 }
 
 /**
  * @method head
  * @async
  * @param {WPRequest} wpreq A WPRequest query object
- * @param {Function} [callback] A callback to invoke with the results of the HEAD request
  * @returns {Promise} A promise to the header results of the HTTP request
  */
-function _httpHead( wpreq, callback ) {
+function _httpHead( wpreq ) {
 	checkMethodSupport( 'head', wpreq );
 	const url = wpreq.toString();
 	let request = _auth( agent.head( url ), wpreq._options );
 	request = _setHeaders( request, wpreq._options );
 
-	return invokeAndPromisify( request, callback, returnHeaders );
+	return invokeAndPromisify( request, returnHeaders );
 }
 
 module.exports = {
