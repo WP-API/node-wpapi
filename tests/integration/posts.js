@@ -670,8 +670,7 @@ describe.each( [
 		return expect( prom ).resolves.toBe( SUCCESS );
 	}, 10000 );
 
-	// TODO: Un-skip once image uploading is reinstated.
-	it.skip( 'can create a post with tags, categories and featured media', () => {
+	it( 'can create a post with tags, categories and featured media', () => {
 		let id;
 		let mediaId;
 		const filePath = path.join( __dirname, 'assets/emilygarfield-untitled.jpg' );

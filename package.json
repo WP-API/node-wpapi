@@ -53,7 +53,7 @@
     "lint": "npm run eslint",
     "watch": "jest --watch",
     "test:all": "jest",
-    "test:unit": "jest tests/unit superagent/tests/unit",
+    "test:unit": "jest tests/unit superagent/tests/unit fetch/tests/unit",
     "test:integration": "jest tests/integration",
     "test:ci": "npm run eslint && jest tests/unit --coverage",
     "pretest": "npm run lint || true",
@@ -65,7 +65,7 @@
     "qs": "^6.6.0"
   },
   "optionalDependencies": {
-    "form-data": "^2.3.3",
+    "form-data": "^2.5.0",
     "isomorphic-unfetch": "^3.0.0",
     "superagent": "^4.1.0"
   },

@@ -4,7 +4,8 @@
 'use strict';
 
 const fetch = require( 'isomorphic-unfetch' );
-// const FormData = require( 'form-data' );
+const FormData = require( 'form-data' );
+const fs = require( 'fs' );
 
 const objectReduce = require( '../lib/util/object-reduce' );
 const { createPaginationObject } = require( '../lib/pagination' );
@@ -171,21 +172,25 @@ function _httpGet( wpreq ) {
  * @returns {Promise} A promise to the results of the HTTP request
  */
 function _httpPost( wpreq, data = {} ) {
-	// if ( wpreq._attachment ) {
-	// 	// Data must be form-encoded alongside image attachment
-	// 	const form = new FormData();
-	// 	data = objectReduce(
-	// 		data,
-	// 		( form, value, key ) => form.append( key, value ),
-	// 		// TODO: Probably need to read in the file if a string path is given
-	// 		form.append( 'file', wpreq._attachment, wpreq._attachmentName )
-	// 	);
-	// 	config = objectReduce(
-	// 		form.getHeaders(),
-	// 		( config, value, key ) => _setHeader( config, key, value ),
-	// 		config
-	// 	);
-	// }
+	let file = wpreq._attachment;
+	if ( file ) {
+		// Handle files provided as a path string
+		if ( typeof file === 'string' ) {
+			file = fs.createReadStream( file );
+		}
+
+		// Build the form data object
+		const form = new FormData();
+		form.append( 'file', file, wpreq._attachmentName );
+		Object.keys( data ).forEach( key => form.append( key, data[ key ] ) );
+
+		// Fire off the media upload request
+		return send( wpreq, {
+			method: 'POST',
+			redirect: 'follow',
+			body: form,
+		} );
+	}
 
 	return send( wpreq, {
 		method: 'POST',
