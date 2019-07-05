@@ -1,7 +1,3 @@
-#!/bin/sh
-':' //; exec "$(command -v nodejs || command -v node)" "$0" "$@"
-// ^^^ Lovely polyglot script to permit usage via node _or_ via bash: see
-// http://unix.stackexchange.com/questions/65235/universal-node-js-shebang
 /**
  * This script will start the Jekyll server in the context of the docs
  * directory. It is only for use in local development, and sets the --baseurl
