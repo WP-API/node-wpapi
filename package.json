@@ -62,7 +62,7 @@
   "dependencies": {
     "li": "^1.3.0",
     "parse-link-header": "^1.0.1",
-    "qs": "^6.6.0"
+    "qs": "^6.7.0"
   },
   "optionalDependencies": {
     "form-data": "^2.5.0",
