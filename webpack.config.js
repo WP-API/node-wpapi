@@ -10,7 +10,7 @@ module.exports = {
 
 	// Use browser builtins instead of Node packages where appropriate.
 	externals: {
-		'isomorphic-unfetch': 'fetch',
+		'node-fetch': 'fetch',
 		'form-data': 'FormData',
 	},
 

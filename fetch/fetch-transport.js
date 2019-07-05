@@ -3,7 +3,7 @@
  */
 'use strict';
 
-const fetch = require( 'isomorphic-unfetch' );
+const fetch = require( 'node-fetch' );
 const FormData = require( 'form-data' );
 const fs = require( 'fs' );
 
