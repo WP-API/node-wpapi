@@ -75,7 +75,7 @@
     "@babel/preset-env": "^7.5.0",
     "babel-loader": "^8.0.6",
     "combyne": "^2.0.0",
-    "eslint": "^6.0.1",
+    "eslint": "^4.19.1",
     "grunt": "^1.0.4",
     "grunt-cli": "^1.2.0",
     "grunt-contrib-clean": "^1.0.0",
