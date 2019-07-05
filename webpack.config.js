@@ -3,7 +3,20 @@
 const { join } = require( 'path' );
 
 module.exports = {
-	entry: './wpapi.js',
+	entry: {
+		wpapi: './fetch',
+		'wpapi-superagent': './superagent',
+	},
+
+	// Use browser builtins instead of Node packages where appropriate.
+	externals: {
+		'isomorphic-unfetch': 'fetch',
+		'form-data': 'FormData',
+	},
+
+	node: {
+		fs: 'empty',
+	},
 
 	mode: 'development',
 
@@ -21,7 +34,7 @@ module.exports = {
 
 	output: {
 		path: join( process.cwd(), 'browser' ),
-		filename: 'wpapi.js',
+		filename: '[name].js',
 		library: 'WPAPI',
 		libraryTarget: 'umd',
 	},
@@ -30,7 +43,7 @@ module.exports = {
 		rules: [
 			{
 				test: /\.js$/,
-				exclude: /(node_modules|bower_components)/,
+				exclude: /(node_modules)/,
 				loader: require.resolve( 'babel-loader' ),
 				options: {
 					presets: [ '@babel/preset-env' ],
