@@ -2,18 +2,18 @@
 
 const { BundleAnalyzerPlugin } = require( 'webpack-bundle-analyzer' );
 
-const config = require( './webpack.config' );
+const umdConfig = require( './webpack.config' )[0];
 
 // Re-use normal Webpack build config, just adding minification
 module.exports = {
-	...config,
+	...umdConfig,
 
 	mode: 'production',
 
 	devtool: 'hidden-source-map',
 
 	output: {
-		...config.output,
+		...umdConfig.output,
 		filename: 'wpapi.min.js',
 	},
 
@@ -22,7 +22,7 @@ module.exports = {
 	},
 
 	plugins: [
-		...( config.plugins || [] ),
+		...( umdConfig.plugins || [] ),
 	],
 };
 

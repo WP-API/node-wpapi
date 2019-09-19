@@ -2,8 +2,8 @@
 
 const { join } = require( 'path' );
 
-module.exports = {
-	entry: './wpapi.js',
+const config = {
+	entry: './src/wpapi.js',
 
 	mode: 'development',
 
@@ -17,13 +17,6 @@ module.exports = {
 		performance: true,
 		timings: true,
 		warnings: true,
-	},
-
-	output: {
-		path: join( process.cwd(), 'browser' ),
-		filename: 'wpapi.js',
-		library: 'WPAPI',
-		libraryTarget: 'umd',
 	},
 
 	module: {
@@ -43,3 +36,23 @@ module.exports = {
 	},
 
 };
+
+const umd = {
+	...config,
+	output: {
+		path: join( process.cwd(), 'dist/umd' ),
+		filename: 'wpapi.js',
+		library: 'WPAPI',
+		libraryTarget: 'umd',
+	},
+};
+
+const es = {
+	...config,
+	output: {
+		path: join( process.cwd(), 'dist/es' ),
+		filename: 'wpapi.js',
+	},
+};
+
+module.exports = [ umd, es ];
