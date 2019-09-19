@@ -50,3 +50,4 @@ browser/
 
 # Consuming applications should maintain their own lockfile.
 package-lock.json
+yarn.lock
