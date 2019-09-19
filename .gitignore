@@ -46,7 +46,7 @@ documentation/index.html
 .ruby-version
 
 # Built files (for use in browser)
-browser/
+dist/
 
 # Consuming applications should maintain their own lockfile.
 package-lock.json
