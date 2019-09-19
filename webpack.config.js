@@ -3,7 +3,7 @@
 const { join } = require( 'path' );
 
 const config = {
-	entry: './src/wpapi.js',
+	entry: './wpapi.js',
 
 	mode: 'development',
 
