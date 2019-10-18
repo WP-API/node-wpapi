@@ -111,7 +111,7 @@ function WPAPI( options ) {
  *         }
  *
  *         // Delegate to default transport if no cached data was found
- *         return WPAPI.transport.get( wpreq ).then(function( result ) {
+ *         return this.constructor.transport.get( wpreq ).then(function( result ) {
  *           cache[ wpreq ] = result;
  *           return result;
  *         });
@@ -138,10 +138,10 @@ WPAPI.prototype.transport = function( transport ) {
 	// Local reference to avoid need to reference via `this` inside forEach
 	const _options = this._options;
 
-	// Create the default transport if it does not exist
+	// Attempt to use the default transport if no override was provided
 	if ( ! _options.transport ) {
-		_options.transport = WPAPI.transport ?
-			Object.create( WPAPI.transport ) :
+		_options.transport = this.constructor.transport ?
+			Object.create( this.constructor.transport ) :
 			{};
 	}
 
@@ -153,47 +153,6 @@ WPAPI.prototype.transport = function( transport ) {
 	} );
 
 	return this;
-};
-
-/**
- * Convenience method for making a new WPAPI instance
- *
- * @example
- * These are equivalent:
- *
- *     var wp = new WPAPI({ endpoint: 'http://my.blog.url/wp-json' });
- *     var wp = WPAPI.site( 'http://my.blog.url/wp-json' );
- *
- * `WPAPI.site` can take an optional API root response JSON object to use when
- * bootstrapping the client's endpoint handler methods: if no second parameter
- * is provided, the client instance is assumed to be using the default API
- * with no additional plugins and is initialized with handlers for only those
- * default API routes.
- *
- * @example
- * These are equivalent:
- *
- *     // {...} means the JSON output of http://my.blog.url/wp-json
- *     var wp = new WPAPI({
- *       endpoint: 'http://my.blog.url/wp-json',
- *       json: {...}
- *     });
- *     var wp = WPAPI.site( 'http://my.blog.url/wp-json', {...} );
- *
- * @memberof! WPAPI
- * @static
- * @param {String} endpoint The URI for a WP-API endpoint
- * @param {Object} routes   The "routes" object from the JSON object returned
- *                          from the root API endpoint of a WP site, which should
- *                          be a dictionary of route definition objects keyed by
- *                          the route's regex pattern
- * @returns {WPAPI} A new WPAPI instance, bound to the provided endpoint
- */
-WPAPI.site = function( endpoint, routes ) {
-	return new WPAPI( {
-		endpoint: endpoint,
-		routes: routes,
-	} );
 };
 
 /**
@@ -392,28 +351,43 @@ WPAPI.prototype.namespace = function( namespace ) {
 };
 
 /**
- * Take an arbitrary WordPress site, deduce the WP REST API root endpoint, query
- * that endpoint, and parse the response JSON. Use the returned JSON response
- * to instantiate a WPAPI instance bound to the provided site.
+ * Convenience method for making a new WPAPI instance for a given API root
+ *
+ * @example
+ * These are equivalent:
+ *
+ *     var wp = new WPAPI({ endpoint: 'http://my.blog.url/wp-json' });
+ *     var wp = WPAPI.site( 'http://my.blog.url/wp-json' );
+ *
+ * `WPAPI.site` can take an optional API root response JSON object to use when
+ * bootstrapping the client's endpoint handler methods: if no second parameter
+ * is provided, the client instance is assumed to be using the default API
+ * with no additional plugins and is initialized with handlers for only those
+ * default API routes.
+ *
+ * @example
+ * These are equivalent:
+ *
+ *     // {...} means the JSON output of http://my.blog.url/wp-json
+ *     var wp = new WPAPI({
+ *       endpoint: 'http://my.blog.url/wp-json',
+ *       json: {...}
+ *     });
+ *     var wp = WPAPI.site( 'http://my.blog.url/wp-json', {...} );
  *
  * @memberof! WPAPI
  * @static
- * @param {string} url A URL within a REST API-enabled WordPress website
- * @returns {Promise} A promise that resolves to a configured WPAPI instance bound
- * to the deduced endpoint, or rejected if an endpoint is not found or the
- * library is unable to parse the provided endpoint.
+ * @param {String} endpoint The URI for a WP-API endpoint
+ * @param {Object} routes   The "routes" object from the JSON object returned
+ *                          from the root API endpoint of a WP site, which should
+ *                          be a dictionary of route definition objects keyed by
+ *                          the route's regex pattern
+ * @returns {WPAPI} A new WPAPI instance, bound to the provided endpoint
  */
-WPAPI.discover = ( url ) => {
-	// Use WPAPI.site to make a request using the defined transport
-	const req = WPAPI.site( url ).root().param( 'rest_route', '/' );
-	return req.get().then( ( apiRootJSON ) => {
-		const routes = apiRootJSON.routes;
-		return new WPAPI( {
-			// Derive the endpoint from the self link for the / root
-			endpoint: routes['/']._links.self,
-			// Bootstrap returned WPAPI instance with the discovered routes
-			routes: routes,
-		} );
+WPAPI.site = ( endpoint, routes ) => {
+	return new WPAPI( {
+		endpoint: endpoint,
+		routes: routes,
 	} );
 };
 
