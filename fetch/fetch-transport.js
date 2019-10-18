@@ -122,6 +122,9 @@ const parseFetchResponse = ( response, wpreq ) => {
 		return response.json().then( ( err ) => {
 			// Throw the error object to permit proper error handling.
 			throw err;
+		}, () => {
+			// JSON serialization failed; throw the underlying response.
+			throw response;
 		} );
 	}
 

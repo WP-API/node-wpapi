@@ -5,7 +5,7 @@ const SUCCESS = 'success';
 
 describe.each( [
 	[ 'wpapi/superagent', require( '../../superagent' ) ],
-	// [ 'wpapi/fetch', require( '../../fetch' ) ],
+	[ 'wpapi/fetch', require( '../../fetch' ) ],
 ] )( '%s: error states:', ( transportName, WPAPI ) => {
 
 	it( 'invalid root endpoint causes a transport-level 404 error', () => {
