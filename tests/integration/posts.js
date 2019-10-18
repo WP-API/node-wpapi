@@ -177,9 +177,8 @@ describe.each( [
 
 				.then( ( posts ) => {
 					expect( Array.isArray( posts ) ).toBe( true );
-					// @TODO: re-enable once PPP support is merged
-					// expect( posts.length ).toBe( 10 );
-					// expect( getTitles( posts ) ).toEqual( expectedResults.titles.page2 );
+					expect( posts.length ).toBe( 10 );
+					expect( getTitles( posts ) ).toEqual( expectedResults.titles.page2 );
 					return SUCCESS;
 				} );
 			return expect( prom ).resolves.toBe( SUCCESS );
@@ -221,8 +220,7 @@ describe.each( [
 				.page( 2 )
 				.get()
 				.then( ( posts ) => {
-					// @TODO: re-enable once PPP support is merged
-					// expect( getTitles( posts ) ).toEqual( expectedResults.titles.page2 );
+					expect( getTitles( posts ) ).toEqual( expectedResults.titles.page2 );
 					return posts._paging.prev
 						.get()
 						.then( ( posts ) => {
