@@ -14,7 +14,7 @@ module.exports = {
 
 	output: {
 		...config.output,
-		filename: 'wpapi.min.js',
+		filename: '[name].min.js',
 	},
 
 	optimization: {
