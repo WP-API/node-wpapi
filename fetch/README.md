@@ -4,8 +4,20 @@ This endpoint returns a version of the WPAPI library configured to use Fetch for
 
 ## Installation & Usage
 
-Install both `wpapi` and `isomorphic-unfetch` using the command `npm install --save wpapi isomorphic-unfetch`.
+### Install
+Install both `wpapi` and `isomorphic-unfetch`.
 
+Using npm: 
+```bash
+npm install --save wpapi isomorphic-unfetch
+```
+
+Or Yarn: 
+```bash
+yarn add wpapi isomorphic-unfetch
+```
+
+### Usage
 ```js
 import WPAPI from 'wpapi/fetch';
 
