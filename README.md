@@ -54,6 +54,12 @@ To use the library from Node, install it with [npm](http://npmjs.org):
 npm install --save wpapi
 ```
 
+Or to install the libaray with [Yarn](https://yarnpkg.com/):
+
+```bash
+yarn add wpapi
+```
+
 Then, within your application's script files, `require` the module to gain access to it. As `wpapi` is both a query builder and a transport layer (_i.e._ a tool for getting and sending HTTP requests), we leave it up to you as the author of your application whether you need both parts of this functionality. You may use `wpapi` with [superagent](https://www.npmjs.com/package/superagent) if you wish to send and receive HTTP requests using this library, but you may also use only the query builder part of the library if you intend to submit your HTTP requests with `fetch`, `axios` or other tools.
 
 To import only the query builder (without the `.get()`, `.create()`, `.delete()`, `.update()` or `.then()` chaining methods):
