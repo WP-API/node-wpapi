@@ -46,4 +46,12 @@ describe( 'named PCRE group RegExp', () => {
 		expect( result[ 2 ] ).toBe( '' );
 	} );
 
+	it( 'correctly handles WP 5.5 plugins routes', () => {
+		const path = '(?P<plugin>[^.\\/]+(?:\\/[^.\\/]+)?)';
+		const result = path.match( namedGroupRE );
+		expect( result ).not.toBeNull();
+		expect( result[ 1 ] ).toBe( 'plugin' );
+		expect( result[ 2 ] ).toBe( '[^.\\/]+(?:\\/[^.\\/]+)?' );
+	} );
+
 } );
