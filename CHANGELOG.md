@@ -1,8 +1,9 @@
 # Changelog
 
 
-## v1.2.2 _(future release)_
+## v1.2.2 _Metaphorical Music_
 
+- Fix route match error with WordPress 5.5, props socrates77
 - Throw an error early when `.file()` is passed a Buffer object without an accompanying name string, props @cungminh2710 & @mvhirsch
 
 
