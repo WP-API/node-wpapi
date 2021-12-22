@@ -266,7 +266,7 @@ This will work in the same manner for resources other than `post`: you can see t
 
 ### Updating Posts
 
-To create posts, use the `.update()` method on a single-item query to PUT (the HTTP verb for "update") a data object to the server:
+To update posts, use the `.update()` method on a single-item query to PUT (the HTTP verb for "update") a data object to the server:
 
 ```js
 // You must authenticate to be able to PUT (update) a post
