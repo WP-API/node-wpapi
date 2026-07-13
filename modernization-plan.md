@@ -47,3 +47,29 @@ Get to "current baseline functionality, but working with modern WP", then move o
 Using the `gh` CLI, look through the issues backlog and make me a report of which can be closed (dependencies, vulnerabilities, etc), which deserve human responses (there's a lot of support requests so categorize as support, feature request, etc) and evaluate which are highest-value to action.
 
 NEVER UPDATE ISSUES DIRECTLY. Tell me recommendations, and I will execute.
+
+## Backlog notes
+
+### Expand the integration test-data set (Phase 5 sub-task, not urgent)
+
+The classic Theme Unit Test WXR (`tests/fixtures/theme-unit-test-data.xml`) predates the
+block editor: it's all classic-markup posts/pages/comments. It exercises the `wp/v2`
+content endpoints (posts, pages, media, taxonomies, pagination) well — exactly what the
+current integration suite asserts — so it remains fit as the Phase 0 regression net.
+
+It does not cover the modern surface Phase 5 targets: no block content, reusable blocks,
+templates/template-parts, global styles, navigation/menus, or font-family data. It won't
+meaningfully test the FSE/block-editor routes.
+
+When Phase 5 adds those route handlers, add a **secondary** block/FSE-oriented seed
+(keep the classic WXR as the stable baseline; don't replace it). Options to evaluate:
+
+- Gutenberg's own block-markup fixtures / E2E content (canonical block serialization).
+- WordPress/theme-test-data's block-based additions (check current state).
+- A `wp-cli` script that activates a block theme (Twenty Twenty-Four/Five) and seeds
+  templates, template-parts, global styles, `wp_block` reusable blocks, and a nav menu.
+  Stays maintainable and mirrors how modern WP state is actually created — recommended.
+- A small hand-authored block WXR committed as a second fixture.
+
+Recommendation: classic WXR proves we didn't regress; a block/FSE seed (likely the
+wp-cli-script approach) proves the new routes work. Keep the two concerns separate.
