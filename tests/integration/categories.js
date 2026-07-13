@@ -1,6 +1,7 @@
 'use strict';
 
 const WPRequest = require( '../../lib/constructors/wp-request.js' );
+const { endpoint } = require( '../helpers/constants' );
 
 // Inspecting the names of the returned categories is an easy way to validate
 // that the right page of results was returned
@@ -55,7 +56,7 @@ describe.each( [
 
 	beforeEach( () => {
 		wp = new WPAPI( {
-			endpoint: 'http://wpapi.local/wp-json',
+			endpoint: endpoint,
 		} );
 	} );
 
@@ -124,7 +125,7 @@ describe.each( [
 					expect( typeof categories._paging.next ).toBe( 'object' );
 					expect( categories._paging.next ).toBeInstanceOf( WPRequest );
 					expect( categories._paging.next._options.endpoint )
-						.toEqual( 'http://wpapi.local/wp-json/wp/v2/categories?page=2' );
+						.toEqual( `${ endpoint }/wp/v2/categories?page=2` );
 					// Get last page & ensure "next" no longer appears
 					return wp.categories()
 						.page( categories._paging.totalPages )
@@ -166,7 +167,7 @@ describe.each( [
 							expect( typeof categories._paging.prev ).toBe( 'object' );
 							expect( categories._paging.prev ).toBeInstanceOf( WPRequest );
 							expect( categories._paging.prev._options.endpoint )
-								.toEqual( 'http://wpapi.local/wp-json/wp/v2/categories?page=1' );
+								.toEqual( `${ endpoint }/wp/v2/categories?page=1` );
 							return SUCCESS;
 						} );
 				} );
