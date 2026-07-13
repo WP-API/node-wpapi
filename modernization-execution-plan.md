@@ -18,7 +18,7 @@ This plan sequences that work into independently-mergeable phases, each with a r
 
 - **Test runner:** Jest 24 → **Vitest**. Runs `.ts` with zero config; Jest-compatible globals so the existing test files port mechanically.
 - **Lint/format:** ESLint 9 flat config + `typescript-eslint` + Prettier. Prefer `eslint --fix` / `prettier` over manual style edits.
-- **CI:** GitHub Actions. Unit + lint on push/PR; integration job spins up `@wordpress/env`.
+- **CI/CD:** GitHub Actions for everything (see the dedicated section below).
 - **Version target:** finalize the alpha line as **`2.0.0`**.
 - **Docs:** deferred. Later phase replaces JSDoc/minami + Jekyll with **TypeDoc** + a simple modern docs site.
 
@@ -30,6 +30,25 @@ This plan sequences that work into independently-mergeable phases, each with a r
 - Reusable throwaway scripts go in `.scratchpad/` with a brief purpose/usage comment.
 - Delegate mechanical conversion to cheaper agents; use **Fable as a review gate** before a feature is considered solved.
 - **Never modify GitHub issues** — recommend only.
+
+## CI/CD: migrate all automation to GitHub Actions
+
+Travis is dead and the docs/release flows are hand-run scripts. Move everything to
+GitHub Actions. Three workflows, landing across the phases they belong to:
+
+- **`ci.yml`** (Phase 1) — on push/PR. Lint + typecheck + unit tests on a Node
+  matrix (18/20/latest). A separate integration job boots `@wordpress/env`, runs
+  `npm run env:seed`, then `test:integration`. Replaces `.travis.yml`.
+- **`docs.yml`** (Phase 6) — on push to `main` (or release tag). Builds the docs
+  (TypeDoc + the new site) and deploys to GitHub Pages, replacing the manual
+  `build/scripts/release-docs.js` → gh-pages flow.
+- **`release.yml`** (Phase 1 scaffold, wired when publishing resumes) — on a
+  version tag / GitHub Release. Builds, tests, and `npm publish` with provenance,
+  replacing the local `release-npm` script. Needs an `NPM_TOKEN` secret.
+
+Keep workflows minimal and legible; use official actions (`actions/checkout`,
+`actions/setup-node`, `actions/deploy-pages`). No third-party actions without a
+pinned SHA.
 
 ---
 
@@ -51,7 +70,7 @@ Swap infrastructure with no source-language change, so regressions are isolated 
 - Migrate Jest → Vitest; port test files.
 - ESLint 9 flat + typescript-eslint + Prettier; run `eslint --fix`/`prettier` to settle style.
 - `package.json`: `engines.node >=18`, remove `browserslist`/IE11, add `exports`/`module`/`types`.
-- Add `.github/workflows/` CI. Remove `.travis.yml`.
+- Stand up the `ci.yml` workflow (see CI/CD section). Remove `.travis.yml`.
 
 **Verify:** full suite green under Vitest; `npm run build` emits ESM+CJS+UMD+`.d.ts`; CI green.
 
