@@ -1,6 +1,7 @@
 'use strict';
 
 const path = require( 'path' );
+const { endpoint } = require( '../helpers/constants' );
 
 const WPRequest = require( '../../lib/constructors/wp-request.js' );
 
@@ -17,6 +18,7 @@ const SUCCESS = 'success';
 const expectedResults = {
 	titles: {
 		page1: [
+			'Scheduled',
 			'Markup: HTML Tags and Formatting',
 			'Markup: Image Alignment',
 			'Markup: Text Alignment',
@@ -26,9 +28,9 @@ const expectedResults = {
 			'Template: Featured Image (Horizontal)',
 			'Template: More Tag',
 			'Template: Excerpt (Defined)',
-			'Template: Excerpt (Generated)',
 		],
 		page2: [
+			'Template: Excerpt (Generated)',
 			'Template: Paginated',
 			'Template: Sticky',
 			'Template: Password Protected (the password is &#8220;enter&#8221;)',
@@ -38,9 +40,9 @@ const expectedResults = {
 			'Media: Twitter Embeds',
 			'Post Format: Standard',
 			'Post Format: Gallery',
-			'Post Format: Gallery (Tiled)',
 		],
 		page4: [
+			'Post Format: Link',
 			'Post Format: Quote',
 			'Post Format: Chat',
 			'Antidisestablishmentarianism',
@@ -62,10 +64,10 @@ describe.each( [
 
 	beforeEach( () => {
 		wp = new WPAPI( {
-			endpoint: 'http://wpapi.local/wp-json',
+			endpoint: endpoint,
 		} );
 		authenticated = new WPAPI( {
-			endpoint: 'http://wpapi.local/wp-json',
+			endpoint: endpoint,
 		} ).auth( credentials );
 	} );
 
@@ -131,7 +133,7 @@ describe.each( [
 				.headers()
 				.then( ( postHeadersResponse ) => {
 					expect( postHeadersResponse ).toHaveProperty( 'x-wp-total' );
-					expect( postHeadersResponse[ 'x-wp-total' ] ).toBe( '38' );
+					expect( postHeadersResponse[ 'x-wp-total' ] ).toBe( '39' );
 					return SUCCESS;
 				} );
 			return expect( prom ).resolves.toBe( SUCCESS );
@@ -156,7 +158,7 @@ describe.each( [
 					expect( typeof posts._paging.next ).toBe( 'object' );
 					expect( posts._paging.next ).toBeInstanceOf( WPRequest );
 					expect( posts._paging.next._options.endpoint )
-						.toEqual( 'http://wpapi.local/wp-json/wp/v2/posts?page=2' );
+						.toEqual( `${ endpoint }/wp/v2/posts?page=2` );
 					// Get last page & ensure "next" no longer appears
 					return wp.posts()
 						.page( posts._paging.totalPages )
@@ -208,7 +210,7 @@ describe.each( [
 							expect( typeof posts._paging.prev ).toBe( 'object' );
 							expect( posts._paging.prev ).toBeInstanceOf( WPRequest );
 							expect( posts._paging.prev._options.endpoint )
-								.toEqual( 'http://wpapi.local/wp-json/wp/v2/posts?page=1' );
+								.toEqual( `${ endpoint }/wp/v2/posts?page=1` );
 							return SUCCESS;
 						} );
 				} );
@@ -275,7 +277,6 @@ describe.each( [
 					.get()
 					.then( ( posts ) => {
 						expect( getTitles( posts ) ).toEqual( [
-							'Scheduled',
 							'Draft',
 						] );
 						return SUCCESS;
@@ -442,6 +443,7 @@ describe.each( [
 					} )
 					.then( ( posts ) => {
 						expect( getTitles( posts ) ).toEqual( [
+							'Scheduled',
 							'Template: Featured Image (Vertical)',
 							'Template: Featured Image (Horizontal)',
 							'Template: More Tag',
@@ -451,7 +453,6 @@ describe.each( [
 							'Template: Sticky',
 							'Template: Password Protected (the password is &#8220;enter&#8221;)',
 							'Template: Comments',
-							'Template: Comments Disabled',
 						] );
 						return SUCCESS;
 					} );
@@ -480,8 +481,8 @@ describe.each( [
 				const prom = wp.posts()
 					.after( '2013-01-08' )
 					.then( ( posts ) => {
-						expect( posts.length ).toBe( 3 );
-						expect( getTitles( posts ) ).toEqual( expectedResults.titles.page1.slice( 0, 3 ) );
+						expect( posts.length ).toBe( 4 );
+						expect( getTitles( posts ) ).toEqual( expectedResults.titles.page1.slice( 0, 4 ) );
 						return SUCCESS;
 					} );
 				return expect( prom ).resolves.toBe( SUCCESS );

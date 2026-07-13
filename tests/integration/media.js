@@ -1,5 +1,6 @@
 'use strict';
 
+const { host, endpoint } = require( '../helpers/constants' );
 const path = require( 'path' );
 const objectReduce = require( '../../lib/util/object-reduce' );
 const httpTestUtils = require( '../helpers/http-test-utils' );
@@ -65,10 +66,10 @@ describe.each( [
 
 	beforeEach( () => {
 		wp = new WPAPI( {
-			endpoint: 'http://wpapi.local/wp-json',
+			endpoint: endpoint,
 		} );
 		authenticated = new WPAPI( {
-			endpoint: 'http://wpapi.local/wp-json',
+			endpoint: endpoint,
 		} ).auth( credentials );
 	} );
 
@@ -136,7 +137,7 @@ describe.each( [
 					expect( typeof media._paging.next ).toBe( 'object' );
 					expect( media._paging.next ).toBeInstanceOf( WPRequest );
 					expect( media._paging.next._options.endpoint )
-						.toEqual( 'http://wpapi.local/wp-json/wp/v2/media?page=2' );
+						.toEqual( `${ endpoint }/wp/v2/media?page=2` );
 					// Get last page & ensure "next" no longer appears
 					return wp.media()
 						.page( media._paging.totalPages )
@@ -178,7 +179,7 @@ describe.each( [
 							expect( typeof media._paging.prev ).toBe( 'object' );
 							expect( media._paging.prev ).toBeInstanceOf( WPRequest );
 							expect( media._paging.prev._options.endpoint )
-								.toEqual( 'http://wpapi.local/wp-json/wp/v2/media?page=1' );
+								.toEqual( `${ endpoint }/wp/v2/media?page=1` );
 							return SUCCESS;
 						} );
 				} );
@@ -285,8 +286,9 @@ describe.each( [
 				expect( createdMedia.title.rendered ).toBe( 'Untitled' );
 				expect( createdMedia.caption.raw ).toBe( 'A painting from Emily Garfield\'s "Conduits" series' );
 
-				// File name is correctly applied and image was uploaded to content dir
-				expect( imageUrl ).toMatch( /^http:\/\/wpapi.local\/content\/uploads\/.*\/ehg-conduits.jpg$/ );
+				// File name is correctly applied and image was uploaded to the uploads dir
+				const escapedHost = host.replace( /[.*+?^${}()|[\]\\]/g, '\\$&' );
+				expect( imageUrl ).toMatch( new RegExp( `^${ escapedHost }/wp-content/uploads/.*/ehg-conduits\\.jpg$` ) );
 			} )
 			// UPDATE
 			.then( () => authenticated.media()

@@ -1,5 +1,7 @@
 'use strict';
 
+const { endpoint } = require( '../helpers/constants' );
+
 // Variable to use as our "success token" in promise assertions
 const SUCCESS = 'success';
 
@@ -11,7 +13,7 @@ describe.each( [
 
 	beforeEach( () => {
 		wp = new WPAPI( {
-			endpoint: 'http://wpapi.local/wp-json',
+			endpoint: endpoint,
 		} );
 	} );
 

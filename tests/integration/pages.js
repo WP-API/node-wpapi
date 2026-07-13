@@ -1,6 +1,7 @@
 'use strict';
 
 const WPRequest = require( '../../lib/constructors/wp-request.js' );
+const { endpoint } = require( '../helpers/constants' );
 
 // Inspecting the titles of the returned posts arrays is an easy way to
 // validate that the right page of results was returned
@@ -46,7 +47,7 @@ describe.each( [
 
 	beforeEach( () => {
 		wp = new WPAPI( {
-			endpoint: 'http://wpapi.local/wp-json',
+			endpoint: endpoint,
 		} );
 	} );
 
@@ -114,7 +115,7 @@ describe.each( [
 					expect( typeof pages._paging.next ).toBe( 'object' );
 					expect( pages._paging.next ).toBeInstanceOf( WPRequest );
 					expect( pages._paging.next._options.endpoint )
-						.toEqual( 'http://wpapi.local/wp-json/wp/v2/pages?page=2' );
+						.toEqual( `${ endpoint }/wp/v2/pages?page=2` );
 					// Get last page & ensure "next" no longer appears
 					return wp.pages()
 						.page( pages._paging.totalPages )
@@ -153,7 +154,7 @@ describe.each( [
 					expect( typeof pages._paging.prev ).toBe( 'object' );
 					expect( pages._paging.prev ).toBeInstanceOf( WPRequest );
 					expect( pages._paging.prev._options.endpoint )
-						.toEqual( 'http://wpapi.local/wp-json/wp/v2/pages?page=1' );
+						.toEqual( `${ endpoint }/wp/v2/pages?page=1` );
 					return SUCCESS;
 				} );
 			return expect( prom ).resolves.toBe( SUCCESS );
