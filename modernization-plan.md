@@ -36,6 +36,10 @@ Keep a "handoff.md" document updated when you hit major checkpoints, describing 
 
 We do want to migrate to TypeScript, and we'd like to pre-compute the initialization of the package to save startup processing time (can we render that out in some way? There was a nascent "precompute things you can determine statically" node project, but it never went anywhere...) but not at the expense of maintainability; the more we can mirror and _gradually_ shift the shape of this repo, the better. It should look like a modern, professional project at the end, and be easily comprehensible by contributors of a variety of skill levels.
 
+### Back Compat
+
+We will want this to be an easy upgrade for consumers of the library. That probably means shipping a compatibility shim if API signatures or function names change. While you work, keep in mind a desire to minimize downstream impact; only change the overall structure or API signature if it's really architecturally necessary. And keep thinking about whether/how we can provide a shim if needed.
+
 ## Issues triage
 
 Get to "current baseline functionality, but working with modern WP", then move on to docs triage.
