@@ -9,6 +9,7 @@
 	},
 	"plugins": [
 		".",
-		"https://downloads.wordpress.org/plugin/query-monitor.zip"
+		"https://downloads.wordpress.org/plugin/query-monitor.zip",
+		"https://github.com/WP-API/Basic-Auth/archive/refs/heads/master.zip"
 	]
 }

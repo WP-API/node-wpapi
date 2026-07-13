@@ -46,6 +46,7 @@
 		"env:db": "npx @wordpress/env run cli -- mysql -uroot -ppassword wordpress --host=mysql",
 		"env:destroy": "npx @wordpress/env destroy",
 		"env:logs": "npx @wordpress/env logs development | grep -v -E '\"(GET|OPTIONS|HEAD|POST|PUT)'",
+		"env:seed": "bash bin/seed-wp-env.sh",
 		"env:start": "npx @wordpress/env start",
 		"env:stop": "npx @wordpress/env stop",
     "update-default-routes-json": "node build/scripts/update-default-routes-json",
