@@ -976,6 +976,24 @@ In addition to the above getting-started guide, we have automatically-generated 
 
 If you identify any errors in this module, or have an idea for an improvement, please [open an issue](https://github.com/wp-api/node-wpapi/issues). We're excited to see what the community thinks of this project, and we would love your input!
 
+## Local Environment
+
+This project uses [wp-env](https://developer.wordpress.org/block-editor/reference-guides/packages/packages-env/) to run a lightweight, containerized WordPress instance at [localhost:2747](http://localhost:2747) (2747 is the [phoneword](https://en.wikipedia.org/wiki/Phoneword) equivalent for `apis`) for testing purposes. The default username for the localhost environment is `admin`, with the password `password`.
+
+These commands can be used to interact with the environment:
+
+Command | Purpose
+---- | ----
+`npm run env:start` | Start the local environment at http://localhost:2747
+`npm run env:stop` | Turn off the local environment
+`npm run env:cli -- wp ...` | Run WP-CLI commands within the environment
+`npm run env:logs` | Open (and tail) the error logs for the application<sup>&ddagger;</sup>
+`npm run env:db` | Open the database in the mysql command line
+`npm run env:destroy` | Fully destroy the local environment (deletes container database)
+
+<sup>&ddagger;</sup> This command deliberately filters out GET/OPTIONS/HEAD/POST/PUT access log entries
+
+
 ## Contributing
 
 We welcome contributions large and small. See our [contributor guide](CONTRIBUTING.md) for more information.
