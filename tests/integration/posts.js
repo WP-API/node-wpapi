@@ -783,7 +783,7 @@ describe.each( [
 				.id( id )
 				.delete( {
 					force: true,
-				} )
+				} ),
 			)
 			// Query for the post, with auth: expect this to fail, since it is gone
 			.then( () => authenticated.posts().id( id ) )

@@ -296,7 +296,7 @@ describe.each( [
 				.update( {
 					title: 'Conduits Series',
 					alt_text: 'A photograph of an abstract painting by Emily Garfield',
-				} )
+				} ),
 			)
 			.then( ( result ) => {
 				expect( result.id ).toBe( id );

@@ -115,7 +115,7 @@ const runCommand = ( commandStr, otherArgs ) => {
 const runInSequence = ( arrOfFnsReturningPromises ) => {
 	return arrOfFnsReturningPromises.reduce(
 		( lastStep, startNextStep ) => lastStep.then( startNextStep ),
-		Promise.resolve()
+		Promise.resolve(),
 	);
 };
 
@@ -160,7 +160,7 @@ runCommand( 'rm -rf docs-tmp' )
 				.map( file => () => runCommand( `rm ${file}` ) );
 
 			return runInSequence( removeFiles );
-		} )
+		} ),
 	)
 	.then( () => console.log( '\nCopying files from temp directory...\n' ) )
 	// Get a list of generated files in the temp directory
