@@ -45,8 +45,5 @@ documentation/index.html
 *.sublime-*
 .ruby-version
 
-# Built files (for use in browser)
-browser/
-
-# Consuming applications should maintain their own lockfile.
-package-lock.json
+# Built files (tsdown output: ESM/CJS/UMD + .d.ts)
+dist/

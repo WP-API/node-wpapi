@@ -167,7 +167,7 @@ WPAPI.prototype.transport = function( transport ) {
  *
  * @memberof! WPAPI
  * @param {String} url The URL to request
- * @returns {WPRequest} A WPRequest object bound to the provided URL
+ * @returns {Object} A WPRequest object bound to the provided URL
  */
 WPAPI.prototype.url = function( url ) {
 	return new WPRequest( {
@@ -182,7 +182,7 @@ WPAPI.prototype.url = function( url ) {
  *
  * @memberof! WPAPI
  * @param {String} [relativePath] An endpoint-relative path to which to bind the request
- * @returns {WPRequest} A request object
+ * @returns {Object} A request object
  */
 WPAPI.prototype.root = function( relativePath ) {
 	relativePath = relativePath || '';
@@ -308,7 +308,7 @@ WPAPI.prototype.bootstrap = function( routes ) {
 				// Create all namespace dictionaries with a direct reference to the main WPAPI
 				// instance's _options property so that things like auth propagate properly
 				_options: wpInstance._options,
-			}
+			},
 		);
 
 		// For the default namespace, e.g. "wp/v2" at the time this comment was
