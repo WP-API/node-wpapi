@@ -148,7 +148,7 @@ const parseFetchResponse = ( response, wpreq ) => {
 
 const send = ( wpreq, config ) => fetch(
 	wpreq.toString(),
-	_setHeaders( _auth( config, wpreq._options ), wpreq._options )
+	_setHeaders( _auth( config, wpreq._options ), wpreq._options ),
 ).then( ( response ) => {
 	// return response.headers.get( 'Link' );
 	return parseFetchResponse( response, wpreq );

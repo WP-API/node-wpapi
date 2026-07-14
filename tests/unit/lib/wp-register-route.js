@@ -121,7 +121,7 @@ describe( 'wp.registerRoute', () => {
 			expect( () => {
 				factory = registerRoute(
 					'mmw/v1',
-					'/users/market=(?P<market>[a-zA-Z0-9-]+)/lat=(?P<lat>[a-z0-9 .\\-]+)/long=(?P<long>[a-z0-9 .\\-]+)'
+					'/users/market=(?P<market>[a-zA-Z0-9-]+)/lat=(?P<lat>[a-z0-9 .\\-]+)/long=(?P<long>[a-z0-9 .\\-]+)',
 				);
 			} ).not.toThrow();
 			const handler = factory( {
@@ -341,10 +341,10 @@ describe( 'wp.registerRoute', () => {
 
 		it( 'are set on the prototype of the handler constructor', () => {
 			expect( handler ).toHaveProperty( 'foo' );
-			expect( handler.hasOwnProperty( 'foo' ) ).toBe( false );
+			expect( Object.prototype.hasOwnProperty.call( handler, 'foo' ) ).toBe( false );
 			expect( typeof handler.foo ).toBe( 'function' );
 			expect( handler ).toHaveProperty( 'bar' );
-			expect( handler.hasOwnProperty( 'bar' ) ).toBe( false );
+			expect( Object.prototype.hasOwnProperty.call( handler, 'bar' ) ).toBe( false );
 			expect( typeof handler.bar ).toBe( 'function' );
 		} );
 

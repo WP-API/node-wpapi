@@ -28,7 +28,7 @@ function _setHeaders( request, options ) {
 	return objectReduce(
 		options.headers,
 		( request, value, key ) => request.set( key, value ),
-		request
+		request,
 	);
 }
 
@@ -87,7 +87,7 @@ function extractResponseBody( response ) {
 		// the response text into JSON
 		try {
 			responseBody = JSON.parse( response.text );
-		} catch ( e ) {
+		} catch {
 			// Swallow errors, it's OK to fall back to returning the body
 		}
 	}
@@ -202,7 +202,7 @@ function _httpPost( wpreq, data ) {
 		request = objectReduce(
 			data,
 			( req, value, key ) => req.field( key, value ),
-			request.attach( 'file', wpreq._attachment, wpreq._attachmentName )
+			request.attach( 'file', wpreq._attachment, wpreq._attachmentName ),
 		);
 	} else {
 		request = request.send( data );

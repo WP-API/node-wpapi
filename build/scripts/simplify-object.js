@@ -54,7 +54,7 @@ const simplifyObject = ( obj ) => {
 							slimArgs[ argKey ] = {};
 							return slimArgs;
 						},
-						{}
+						{},
 					);
 				} else {
 					// Pass all other objects through simplifyObject
@@ -62,7 +62,7 @@ const simplifyObject = ( obj ) => {
 				}
 				return newObj;
 			},
-			{}
+			{},
 		);
 	}
 

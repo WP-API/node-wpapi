@@ -1,0 +1,16 @@
+{
+	"compilerOptions": {
+		"target": "es2020",
+		"module": "commonjs",
+		"moduleResolution": "node10",
+		"allowJs": true,
+		"checkJs": false,
+		"declaration": true,
+		"emitDeclarationOnly": true,
+		"esModuleInterop": true,
+		"skipLibCheck": true,
+		"strict": false
+	},
+	"include": [ "wpapi.js", "lib/**/*.js", "fetch/**/*.js", "superagent/**/*.js" ],
+	"exclude": [ "**/tests/**", "node_modules", "dist" ]
+}

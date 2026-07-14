@@ -1,6 +1,6 @@
 'use strict';
 
-const WPAPI = require( '../../' );
+const WPAPI = require( '../../wpapi' );
 
 // Constructors, for use with instanceof checks
 const WPRequest = require( '../../lib/constructors/wp-request' );
