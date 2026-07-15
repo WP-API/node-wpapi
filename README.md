@@ -563,7 +563,7 @@ The file is passed into the `.file()` method:
 wp.media().file(content [, name])...
 ```
 
-The optional second string argument specifies the file name to use for the uploaded media. If the name argument is omitted `file()` will infer a filename from the provided file path or `File` object. Note that when uploading a `Buffer` or a plain `Blob` a `name` (including a file extension) is a required argument, because no name can be automatically inferred from raw data.
+The optional second string argument specifies the file name to use for the uploaded media. If the name argument is omitted `file()` will infer a filename from the provided file path or `File` object. Note that when uploading a `Buffer` or a plain `Blob` a `name` (including a file extension) is a required argument, because no name can be automatically inferred from raw data. WordPress determines the uploaded file's type from that name; to set an explicit MIME type on the request itself, pass a `Blob` or `File` constructed with a `type`.
 
 #### Adding Media to a Post
 
