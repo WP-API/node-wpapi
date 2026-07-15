@@ -662,6 +662,30 @@ describe( 'WPRequest', () => {
 			expect( request._attachmentName ).toBeUndefined();
 		} );
 
+		it( 'will accept a Blob when an attachment name is provided', () => {
+			const blob = new Blob( [ 'file content' ] );
+			request.file( blob, 'file.txt' );
+			expect( request._attachment ).toBe( blob );
+		} );
+
+		it( 'will accept a File object without an attachment name', () => {
+			const file = new File( [ 'file content' ], 'file.txt' );
+			request.file( file );
+			expect( request._attachment ).toBe( file );
+		} );
+
+		it( 'requires an attachment name when uploading a Buffer', () => {
+			expect( () => {
+				request.file( Buffer.from( 'file content' ) );
+			} ).toThrow( /name is a required argument/ );
+		} );
+
+		it( 'requires an attachment name when uploading a Blob which is not a File', () => {
+			expect( () => {
+				request.file( new Blob( [ 'file content' ] ) );
+			} ).toThrow( /name is a required argument/ );
+		} );
+
 	} );
 
 	describe( '.setHeaders()', () => {

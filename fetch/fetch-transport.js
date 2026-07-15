@@ -3,10 +3,6 @@
  */
 'use strict';
 
-const fetch = require( 'node-fetch' );
-const FormData = require( 'form-data' );
-const fs = require( 'fs' );
-
 const objectReduce = require( '../lib/util/object-reduce' );
 const { createPaginationObject } = require( '../lib/pagination' );
 
@@ -143,6 +139,43 @@ const parseFetchResponse = ( response, wpreq ) => {
 	} );
 };
 
+/**
+ * Build a native FormData instance for a media upload request, normalizing the
+ * attachment into a Blob: Blob/File attachments are appended as-is, Buffers are
+ * wrapped, and string paths are read from disk (Node only). Any additional data
+ * values are appended as plain form fields.
+ *
+ * @private
+ * @param {string|Buffer|Blob} file   The ._attachment value from a WPRequest
+ * @param {string}             [name] The ._attachmentName value from a WPRequest
+ * @param {Object}             [data] Additional form fields to append
+ * @returns {Promise} A promise to a populated FormData instance
+ */
+const createUploadForm = async ( file, name, data = {} ) => {
+	if ( typeof file === 'string' ) {
+		// A string is a file system path: read it into a Blob. The lazy require
+		// keeps the node built-in out of browser bundles, where paths on disk
+		// are not a meaningful input.
+		const { readFile } = require( 'node:fs/promises' );
+		const fileContents = await readFile( file );
+		// Uploads need a file name with an extension for WordPress to accept
+		// them; default to the name of the file on disk.
+		name = name || file.split( /[\\/]/ ).pop();
+		file = new Blob( [ fileContents ] );
+	} else if ( global.Buffer && file instanceof global.Buffer ) {
+		file = new Blob( [ file ] );
+	}
+
+	const form = new FormData();
+	if ( name ) {
+		form.append( 'file', file, name );
+	} else {
+		form.append( 'file', file );
+	}
+	Object.keys( data ).forEach( key => form.append( key, data[ key ] ) );
+	return form;
+};
+
 // HTTP Methods: Private HTTP-verb versions
 // ========================================
 
@@ -150,7 +183,6 @@ const send = ( wpreq, config ) => fetch(
 	wpreq.toString(),
 	_setHeaders( _auth( config, wpreq._options ), wpreq._options ),
 ).then( ( response ) => {
-	// return response.headers.get( 'Link' );
 	return parseFetchResponse( response, wpreq );
 } );
 
@@ -175,24 +207,13 @@ function _httpGet( wpreq ) {
  * @returns {Promise} A promise to the results of the HTTP request
  */
 function _httpPost( wpreq, data = {} ) {
-	let file = wpreq._attachment;
-	if ( file ) {
-		// Handle files provided as a path string
-		if ( typeof file === 'string' ) {
-			file = fs.createReadStream( file );
-		}
-
-		// Build the form data object
-		const form = new FormData();
-		form.append( 'file', file, wpreq._attachmentName );
-		Object.keys( data ).forEach( key => form.append( key, data[ key ] ) );
-
-		// Fire off the media upload request
-		return send( wpreq, {
-			method: 'POST',
-			redirect: 'follow',
-			body: form,
-		} );
+	if ( wpreq._attachment ) {
+		return createUploadForm( wpreq._attachment, wpreq._attachmentName, data )
+			.then( form => send( wpreq, {
+				method: 'POST',
+				redirect: 'follow',
+				body: form,
+			} ) );
 	}
 
 	return send( wpreq, {
