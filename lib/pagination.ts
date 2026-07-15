@@ -2,6 +2,8 @@ import li = require( 'li' );
 
 const parseLinkHeader = li.parse;
 
+type HTTPTransport = import( './types' ).HTTPTransport;
+
 import WPRequest = require( '../lib/constructors/wp-request' );
 
 /**
@@ -48,7 +50,7 @@ interface Paging {
 function createPaginationObject(
 	result: PagingResult,
 	options: Record<string, unknown>,
-	httpTransport: object,
+	httpTransport: HTTPTransport,
 ): Paging | null {
 	let _paging: Paging | null = null;
 

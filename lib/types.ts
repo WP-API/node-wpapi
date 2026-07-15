@@ -149,3 +149,33 @@ export interface FilterRequestLike extends ParamRequestLike {
 	_taxonomyFilters?: Record<string, Array<string | number>>;
 	param( key: string, value: unknown ): FilterRequestLike;
 }
+
+/**
+ * The HTTP transport methods (.get, .post, .put, .delete, .head) a WPRequest
+ * uses to dispatch the requests it builds. `request` is `unknown` because the
+ * concrete transports (fetch-transport.js, and any consumer-supplied
+ * transport) are not yet converted to TypeScript and read a WPRequest's shape
+ * dynamically (`.toString()`, `._options`, etc).
+ */
+/* eslint-disable @typescript-eslint/no-explicit-any -- HTTP response payloads are arbitrary JSON */
+export interface HTTPTransport {
+	get: ( request: unknown ) => Promise<any>;
+	head: ( request: unknown ) => Promise<any>;
+	post: ( request: unknown, data?: unknown ) => Promise<any>;
+	put: ( request: unknown, data?: unknown ) => Promise<any>;
+	delete: ( request: unknown, data?: unknown ) => Promise<any>;
+}
+/* eslint-enable @typescript-eslint/no-explicit-any */
+
+/**
+ * The options hash a WPRequest (and its subclasses) is constructed with.
+ */
+export interface WPRequestOptions {
+	endpoint: string;
+	transport: HTTPTransport;
+	auth?: boolean;
+	headers?: Record<string, string>;
+	username?: string;
+	password?: string;
+	nonce?: string;
+}

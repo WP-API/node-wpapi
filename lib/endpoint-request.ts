@@ -78,8 +78,9 @@ function createEndpointRequest( handlerSpec: HandlerSpec, resource: string, name
 	// EndpointRequestCtor is a shared, deliberately loose shape (its instance
 	// type is `unknown`, reused by later, non-resource-specific consumers);
 	// EndpointRequest's real constructor requires WPRequest's specific options
-	// shape, so the cast just widens back to that shared shape.
-	return EndpointRequest as EndpointRequestCtor;
+	// shape (now that WPRequest is typed), so the cast has to go through
+	// `unknown` first to widen back to that shared, looser shape.
+	return EndpointRequest as unknown as EndpointRequestCtor;
 }
 
 export = {
