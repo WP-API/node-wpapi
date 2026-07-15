@@ -1,3 +1,4 @@
+// @ts-nocheck -- pending Phase 3 TypeScript conversion.
 /**
  * A WP REST API client for Node.js
  *

@@ -1,6 +1,6 @@
 'use strict';
 
-const WPRequest = require( '../../lib/constructors/wp-request.js' );
+const WPRequest = require( '../../lib/constructors/wp-request' );
 const { host, endpoint } = require( '../helpers/constants' );
 
 // Inspecting the titles of the returned posts arrays is an easy way to

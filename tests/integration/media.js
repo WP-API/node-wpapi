@@ -6,7 +6,7 @@ const objectReduce = require( '../../lib/util/object-reduce' );
 const httpTestUtils = require( '../helpers/http-test-utils' );
 const unique = require( '../../lib/util/unique' );
 
-const WPRequest = require( '../../lib/constructors/wp-request.js' );
+const WPRequest = require( '../../lib/constructors/wp-request' );
 
 // Inspecting the titles of the returned posts arrays is an easy way to
 // validate that the right page of results was returned

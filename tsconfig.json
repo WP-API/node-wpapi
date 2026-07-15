@@ -4,13 +4,24 @@
 		"module": "commonjs",
 		"moduleResolution": "node10",
 		"allowJs": true,
-		"checkJs": false,
+		"checkJs": true,
 		"declaration": true,
 		"emitDeclarationOnly": true,
 		"esModuleInterop": true,
+		"resolveJsonModule": true,
 		"skipLibCheck": true,
-		"strict": false
+		"strict": true
 	},
-	"include": [ "wpapi.js", "lib/**/*.js", "fetch/**/*.js", "superagent/**/*.js" ],
+	"include": [
+		"wpapi.js",
+		"wpapi.ts",
+		"lib/**/*.js",
+		"lib/**/*.ts",
+		"fetch/**/*.js",
+		"fetch/**/*.ts",
+		"superagent/**/*.js",
+		"superagent/**/*.ts",
+		"types/**/*.d.ts"
+	],
 	"exclude": [ "**/tests/**", "node_modules", "dist" ]
 }

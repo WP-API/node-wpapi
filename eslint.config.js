@@ -129,4 +129,18 @@ module.exports = tseslint.config(
 		...config,
 		files: [ '**/*.ts' ],
 	} ) ),
+	{
+		files: [ '**/*.ts' ],
+		languageOptions: {
+			globals: {
+				...globals.node,
+			},
+		},
+		rules: {
+			...styleRules,
+			// Converted source keeps CommonJS semantics during the migration;
+			// `import x = require( ... )` is the typed form of that.
+			'@typescript-eslint/no-require-imports': [ 'error', { allowAsImport: true } ],
+		},
+	},
 );
