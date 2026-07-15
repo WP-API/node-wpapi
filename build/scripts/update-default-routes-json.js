@@ -124,9 +124,11 @@ const getJSON = ( cbFn ) => {
 				return process.exit( 1 );
 			}
 
-			return response.json().then( cbFn );
+			return response.json();
 		} )
-		.catch( ( err ) => {
+		.then( cbFn, ( err ) => {
+			// Rejection handler alongside cbFn (rather than a trailing .catch) so
+			// errors thrown downstream in cbFn are not misreported as download failures.
 			console.error( '\nSomething went wrong! Could not download endpoint JSON.' );
 			console.error( err );
 			process.exit( 1 );

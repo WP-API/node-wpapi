@@ -13,7 +13,6 @@ module.exports = defineConfig( {
 		include: [
 			'tests/**/*.js',
 			'fetch/tests/**/*.js',
-			'superagent/tests/**/*.js',
 		],
 		exclude: [
 			'**/node_modules/**',

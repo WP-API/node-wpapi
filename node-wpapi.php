@@ -15,10 +15,7 @@ add_action( 'wp_enqueue_scripts', __NAMESPACE__ . '\\enqueue_scripts' );
  * @return void
  */
 function enqueue_scripts() {
-  $uri = plugin_dir_url( __FILE__ ) . 'browser/wpapi.min.js';
-  if ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) {
-    $uri = plugin_dir_url( __FILE__ ) . 'browser/wpapi.js';
-  }
+  $uri = plugin_dir_url( __FILE__ ) . 'dist/browser/wpapi.umd.js';
 
   // Read the package.json to derive the version number.
   $package = read_json( plugin_dir_path( __FILE__ ) . '/package.json' );

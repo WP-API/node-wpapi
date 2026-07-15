@@ -114,7 +114,7 @@ module.exports = tseslint.config(
 		rules: styleRules,
 	},
 	{
-		files: [ 'tests/**/*.js', 'fetch/tests/**/*.js', 'superagent/tests/**/*.js' ],
+		files: [ 'tests/**/*.js', 'fetch/tests/**/*.js' ],
 		languageOptions: {
 			globals: testGlobals,
 		},

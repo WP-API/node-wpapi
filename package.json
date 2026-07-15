@@ -47,9 +47,9 @@
     "format:check": "prettier --check .",
     "watch": "vitest",
     "test:all": "vitest run",
-    "test:unit": "vitest run tests/unit fetch/tests/unit superagent/tests/unit",
+    "test:unit": "vitest run tests/unit fetch/tests/unit",
     "test:integration": "vitest run tests/integration --no-file-parallelism",
-    "test:ci": "npm run eslint && vitest run tests/unit fetch/tests/unit superagent/tests/unit --coverage",
+    "test:ci": "npm run eslint && vitest run tests/unit fetch/tests/unit --coverage",
     "pretest": "npm run lint || true",
     "test": "vitest run --coverage"
   },
