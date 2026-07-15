@@ -7,10 +7,12 @@ const path = require( 'node:path' );
 const transport = require( '../../fetch-transport' );
 
 // Minimal stand-in for a WPRequest object: the transport only consumes
-// .toString(), ._options, ._attachment, ._attachmentName and .transport.
+// .toString(), ._options, ._supportedMethods, ._attachment, ._attachmentName
+// and .transport.
 const mockWPReq = ( options = {}, props = {} ) => ( {
 	toString: () => 'http://some.url.com/wp-json/wp/v2/posts',
 	_options: options,
+	_supportedMethods: [ 'head', 'get', 'put', 'post', 'delete' ],
 	...props,
 } );
 
@@ -81,6 +83,13 @@ describe( 'fetch-transport', () => {
 				headers: { 'X-Custom': 'header-value' },
 			} ) );
 			expect( lastFetchConfig().headers[ 'X-Custom' ] ).toBe( 'header-value' );
+		} );
+
+		it( 'throws before dispatch when the route does not support the method', () => {
+			expect( () => {
+				transport.get( mockWPReq( {}, { _supportedMethods: [ 'post' ] } ) );
+			} ).toThrow( /Unsupported method/ );
+			expect( fetchMock ).not.toHaveBeenCalled();
 		} );
 
 		it( 'rejects with the API-provided error object on HTTP error responses', () => {
@@ -230,6 +239,11 @@ describe( 'fetch-transport', () => {
 			} ) );
 			expect( lastFetchConfig().headers.Authorization )
 				.toBe( `Basic ${ Buffer.from( 'user:pass' ).toString( 'base64' ) }` );
+		} );
+
+		it( 'rejects on HTTP error responses', () => {
+			fetchMock.mockResolvedValue( new Response( null, { status: 404 } ) );
+			return expect( transport.head( mockWPReq() ) ).rejects.toMatchObject( { status: 404 } );
 		} );
 
 	} );

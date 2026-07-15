@@ -3,6 +3,7 @@
  */
 'use strict';
 
+const checkMethodSupport = require( '../lib/util/check-method-support' );
 const objectReduce = require( '../lib/util/object-reduce' );
 const { createPaginationObject } = require( '../lib/pagination' );
 
@@ -75,10 +76,10 @@ function _auth( config, options, forceAuthentication ) {
 
 	// Can authenticate: set basic auth parameters on the config
 	let authorization = `${ options.username }:${ options.password }`;
-	if ( global.Buffer ) {
-		authorization = global.Buffer.from( authorization ).toString( 'base64' );
-	} else if ( global.btoa ) {
-		authorization = global.btoa( authorization );
+	if ( globalThis.Buffer ) {
+		authorization = globalThis.Buffer.from( authorization ).toString( 'base64' );
+	} else if ( globalThis.btoa ) {
+		authorization = globalThis.btoa( authorization );
 	}
 
 	return _setHeader( config, 'Authorization', `Basic ${ authorization }` );
@@ -162,16 +163,13 @@ const createUploadForm = async ( file, name, data = {} ) => {
 		// them; default to the name of the file on disk.
 		name = name || file.split( /[\\/]/ ).pop();
 		file = new Blob( [ fileContents ] );
-	} else if ( global.Buffer && file instanceof global.Buffer ) {
+	} else if ( globalThis.Buffer && file instanceof globalThis.Buffer ) {
 		file = new Blob( [ file ] );
 	}
 
 	const form = new FormData();
-	if ( name ) {
-		form.append( 'file', file, name );
-	} else {
-		form.append( 'file', file );
-	}
+	// An undefined name is treated as omitted: File attachments keep their own name.
+	form.append( 'file', file, name );
 	Object.keys( data ).forEach( key => form.append( key, data[ key ] ) );
 	return form;
 };
@@ -193,6 +191,7 @@ const send = ( wpreq, config ) => fetch(
  * @returns {Promise} A promise to the results of the HTTP request
  */
 function _httpGet( wpreq ) {
+	checkMethodSupport( 'get', wpreq );
 	return send( wpreq, {
 		method: 'GET',
 	} );
@@ -207,6 +206,7 @@ function _httpGet( wpreq ) {
  * @returns {Promise} A promise to the results of the HTTP request
  */
 function _httpPost( wpreq, data = {} ) {
+	checkMethodSupport( 'post', wpreq );
 	if ( wpreq._attachment ) {
 		return createUploadForm( wpreq._attachment, wpreq._attachmentName, data )
 			.then( form => send( wpreq, {
@@ -234,6 +234,7 @@ function _httpPost( wpreq, data = {} ) {
  * @returns {Promise} A promise to the results of the HTTP request
  */
 function _httpPut( wpreq, data = {} ) {
+	checkMethodSupport( 'put', wpreq );
 	return send( wpreq, {
 		method: 'PUT',
 		headers: {
@@ -252,6 +253,7 @@ function _httpPut( wpreq, data = {} ) {
  * @returns {Promise} A promise to the results of the HTTP request
  */
 function _httpDelete( wpreq, data ) {
+	checkMethodSupport( 'delete', wpreq );
 	const config = {
 		method: 'DELETE',
 		headers: {
@@ -274,13 +276,21 @@ function _httpDelete( wpreq, data ) {
  * @returns {Promise} A promise to the header results of the HTTP request
  */
 function _httpHead( wpreq ) {
+	checkMethodSupport( 'head', wpreq );
 	const url = wpreq.toString();
 	const config = _setHeaders( _auth( {
 		method: 'HEAD',
 	}, wpreq._options, true ), wpreq._options );
 
 	return fetch( url, config )
-		.then( response => getHeaders( response ) );
+		.then( ( response ) => {
+			// HEAD responses have no body to extract an API error from; reject
+			// with the underlying response so HTTP errors are not swallowed.
+			if ( ! response.ok ) {
+				throw response;
+			}
+			return getHeaders( response );
+		} );
 }
 
 module.exports = {
