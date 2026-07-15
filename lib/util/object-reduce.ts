@@ -1,6 +1,3 @@
-// @ts-nocheck -- pending Phase 3 TypeScript conversion.
-'use strict';
-
 /**
  * Utility method to permit Array#reduce-like operations over objects
  *
@@ -15,14 +12,20 @@
  *
  * @module util/object-reduce
  * @private
- * @param {Object} obj An object of key-value pairs
- * @param {Function} iterator A function to use to reduce the object
- * @param {*} initialState The initial value to pass to the reducer function
+ * @param obj          An object of key-value pairs
+ * @param iterator     A function to use to reduce the object
+ * @param initialState The initial value to pass to the reducer function
  * @returns The result of the reduction operation
  */
-module.exports = ( obj, iterator, initialState ) => Object
-	.keys( obj )
-	.reduce(
-		( memo, key ) => iterator( memo, obj[ key ], key ),
-		initialState,
-	);
+const objectReduce = <V, R>(
+	obj: Record<string, V>,
+	iterator: ( memo: R, value: V, key: string ) => R,
+	initialState: R,
+): R => Object
+		.keys( obj )
+		.reduce(
+			( memo, key ) => iterator( memo, obj[ key ], key ),
+			initialState,
+		);
+
+export = objectReduce;

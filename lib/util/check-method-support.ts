@@ -1,15 +1,14 @@
-// @ts-nocheck -- pending Phase 3 TypeScript conversion.
-'use strict';
+type MethodSupportRequestLike = import( '../types' ).MethodSupportRequestLike;
 
 /**
  * Verify that a specific HTTP method is supported by the provided WPRequest
  *
  * @module util/check-method-support
- * @param {String} method An HTTP method to check ('get', 'post', etc)
- * @param {WPRequest} request A WPRequest object with a _supportedMethods array
+ * @param method  An HTTP method to check ('get', 'post', etc)
+ * @param request A WPRequest object with a _supportedMethods array
  * @returns true iff the method is within request._supportedMethods
  */
-module.exports = ( method, request ) => {
+const checkMethodSupport = ( method: string, request: MethodSupportRequestLike ): true => {
 	if ( request._supportedMethods.indexOf( method.toLowerCase() ) === -1 ) {
 		throw new Error(
 			'Unsupported method; supported methods are: ' +
@@ -19,3 +18,5 @@ module.exports = ( method, request ) => {
 
 	return true;
 };
+
+export = checkMethodSupport;

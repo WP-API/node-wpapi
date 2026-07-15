@@ -1,17 +1,12 @@
-// @ts-nocheck -- pending Phase 3 TypeScript conversion.
-'use strict';
-
 /**
  * Return true if the provided argument is a number, a numeric string, or an
- * array of numbers or numeric strings
+ * array of numbers or numeric strings.
  *
  * @module util/argument-is-numeric
- * @param {Number|String|Number[]|String[]} val The value to inspect
- * @param {String} key The property to which the mixin method should be assigned
- * @param {Function} mixin The mixin method
- * @returns {void}
+ * @param val The value to inspect
+ * @returns Whether the provided value is numeric
  */
-const argumentIsNumeric = ( val ) => {
+const argumentIsNumeric = ( val: number | string | Array<number | string> ): boolean => {
 	if ( typeof val === 'number' ) {
 		return true;
 	}
@@ -35,4 +30,4 @@ const argumentIsNumeric = ( val ) => {
 	return false;
 };
 
-module.exports = argumentIsNumeric;
+export = argumentIsNumeric;

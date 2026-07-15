@@ -1,15 +1,12 @@
-// @ts-nocheck -- pending Phase 3 TypeScript conversion.
-'use strict';
-
 /**
  * Utility function for sorting arrays of numbers or strings.
  *
  * @module util/alphanumeric-sort
- * @param {String|Number} a The first comparator operand
- * @param {String|Number} a The second comparator operand
+ * @param a The first comparator operand
+ * @param b The second comparator operand
  * @returns -1 if the values are backwards, 1 if they're ordered, and 0 if they're the same
  */
-module.exports = ( a, b ) => {
+const alphanumericSort = ( a: string, b: string ): number => {
 	if ( a > b ) {
 		return 1;
 	}
@@ -18,3 +15,5 @@ module.exports = ( a, b ) => {
 	}
 	return 0;
 };
+
+export = alphanumericSort;

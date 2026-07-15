@@ -1,10 +1,10 @@
-// @ts-nocheck -- pending Phase 3 TypeScript conversion.
 /**
  * @module util/split-path
  */
-'use strict';
 
-const namedGroupPattern = require( './named-group-regexp' ).pattern;
+import namedGroupRegexp = require( './named-group-regexp' );
+
+const namedGroupPattern = namedGroupRegexp.pattern;
 
 // Convert capture groups to non-matching groups, because all capture groups
 // are included in the resulting array when an RE is passed to `.split()`
@@ -27,17 +27,17 @@ const namedGroupRE = new RegExp( '([^/]*' + patternWithoutSubgroups + '[^/]*)' )
  * groups which also contain forward slashes, so those groups have to be pulled
  * out first before the remainder of the string can be .split() as normal.
  *
- * @param {String} pathStr A route path string to break into components
- * @returns {String[]} An array of route component strings
+ * @param pathStr A route path string to break into components
+ * @returns An array of route component strings
  */
-module.exports = pathStr => pathStr
+const splitPath = ( pathStr: string ): string[] => pathStr
 	// Divide a string like "/some/path/(?P<with_named_groups>)/etc" into an
 	// array `[ "/some/path/", "(?P<with_named_groups>)", "/etc" ]`.
 	.split( namedGroupRE )
 	// Then, reduce through the array of parts, splitting any non-capture-group
 	// parts on forward slashes and discarding empty strings to create the final
 	// array of path components.
-	.reduce( ( components, part ) => {
+	.reduce<string[]>( ( components, part ) => {
 		if ( ! part ) {
 			// Ignore empty strings parts
 			return components;
@@ -51,3 +51,5 @@ module.exports = pathStr => pathStr
 		// Split the part on / and filter out empty strings
 		return components.concat( part.split( '/' ).filter( Boolean ) );
 	}, [] );
+
+export = splitPath;

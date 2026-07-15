@@ -1,19 +1,20 @@
-'use strict';
+import util = require( 'util' );
 
-const inspect = require( 'util' ).inspect;
+const inspect = util.inspect;
 
 /**
  * Helper method for debugging only: use util.inspect to log a full object
  *
  * @module util/log-obj
  * @private
- * @param {object} obj The object to log
- * @returns {void}
+ * @param obj The object to log
  */
-module.exports = ( obj ) => {
+const logObj = ( obj: unknown ): void => {
 	// eslint-disable-next-line no-console
 	console.log( inspect( obj, {
 		colors: true,
 		depth: null,
 	} ) );
 };
+
+export = logObj;
