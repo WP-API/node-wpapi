@@ -23,7 +23,6 @@ const expectedResults = {
 // route-tree regex parser cannot yet handle those and throws "Unterminated
 // group". Default-mode instances are unaffected (they use default-routes.json).
 describe.skip.each( [
-	[ 'wpapi/superagent', require( '../../superagent' ) ],
 	[ 'wpapi/fetch', require( '../../fetch' ) ],
 ] )( '%s: discover', ( transportName, WPAPI ) => {
 	let apiPromise;

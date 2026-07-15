@@ -11,7 +11,6 @@ const base64credentials = Buffer.from( `${ credentials.username }:${ credentials
 const SUCCESS = 'success';
 
 describe.each( [
-	[ 'wpapi/superagent', require( '../../superagent' ) ],
 	[ 'wpapi/fetch', require( '../../fetch' ) ],
 ] )( '%s: custom HTTP Headers', ( transportName, WPAPI ) => {
 	let wp;

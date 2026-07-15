@@ -6,7 +6,6 @@ const { endpoint } = require( '../helpers/constants' );
 const SUCCESS = 'success';
 
 describe.each( [
-	[ 'wpapi/superagent', require( '../../superagent' ) ],
 	[ 'wpapi/fetch', require( '../../fetch' ) ],
 ] )( '%s: taxonomies()', ( transportName, WPAPI ) => {
 	let wp;

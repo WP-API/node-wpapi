@@ -39,14 +39,15 @@ const browserEntry = ( name, input ) => ( {
 		'form-data': shim( 'form-data' ),
 	},
 	deps: {
-		alwaysBundle: [ 'node-fetch', 'form-data', 'qs', 'li', 'superagent' ],
+		alwaysBundle: [ 'node-fetch', 'form-data', 'qs', 'li' ],
 	},
 } );
 
+// `superagent` is a stub which throws a migration error; it remains an entry so
+// the package keeps exporting the wpapi/superagent subpath removed in 2.0.0.
 export default defineConfig( [
 	nodeEntry( 'index', 'wpapi.js' ),
 	nodeEntry( 'fetch', 'fetch/index.js' ),
 	nodeEntry( 'superagent', 'superagent/index.js' ),
 	browserEntry( 'wpapi', 'fetch/index.js' ),
-	browserEntry( 'wpapi-superagent', 'superagent/index.js' ),
 ] );
