@@ -58,10 +58,6 @@
     "parse-link-header": "^1.0.1",
     "qs": "^6.7.0"
   },
-  "optionalDependencies": {
-    "form-data": "^2.5.0",
-    "node-fetch": "^2.6.0"
-  },
   "devDependencies": {
     "@eslint/js": "^9.39.5",
     "@vitest/coverage-v8": "^4.1.10",
