@@ -686,6 +686,12 @@ describe( 'WPRequest', () => {
 			} ).toThrow( /name is a required argument/ );
 		} );
 
+		it( 'rejects attachments which are not a path, Buffer, Blob or File', () => {
+			expect( () => {
+				request.file( { pipe: () => {} }, 'stream.jpg' );
+			} ).toThrow( /Streams are no longer supported/ );
+		} );
+
 	} );
 
 	describe( '.setHeaders()', () => {
