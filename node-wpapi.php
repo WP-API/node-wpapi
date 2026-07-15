@@ -7,7 +7,7 @@
 
 namespace WPAPI;
 
-add_action( 'wp enqueue scripts', __NAMESPACE__ . '\\enqueue_scripts' );
+add_action( 'wp_enqueue_scripts', __NAMESPACE__ . '\\enqueue_scripts' );
 
 /**
  * Enqueue the wpapi script package.
@@ -21,7 +21,7 @@ function enqueue_scripts() {
   }
 
   // Read the package.json to derive the version number.
-  $package = read_json( plugin_dir_path( __FILE ) . '/package.json' );
+  $package = read_json( plugin_dir_path( __FILE__ ) . '/package.json' );
 
   // Enqueue the script itself.
   wp_enqueue_script(
