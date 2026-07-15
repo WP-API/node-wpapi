@@ -1,13 +1,19 @@
-// @ts-nocheck -- pending Phase 3 TypeScript conversion.
+type RouteTreeNode = import( './types' ).RouteTreeNode;
+type RouteTreeLevels = import( './types' ).RouteTreeLevels;
+type HandlerSpec = import( './types' ).HandlerSpec;
+type LevelOption = import( './types' ).LevelOption;
+type PathPartSetterFn = import( './types' ).PathPartSetterFn;
+
 /**
  * @module resource-handler-spec
  */
-'use strict';
 
-const createPathPartSetter = require( './path-part-setter' ).create;
+import pathPartSetter = require( './path-part-setter' );
+
+const createPathPartSetter = pathPartSetter.create;
 
 /** @private */
-function addLevelOption( levelsObj, level, obj ) {
+function addLevelOption( levelsObj: Record<number, LevelOption[]>, level: number, obj: LevelOption ): void {
 	levelsObj[ level ] = levelsObj[ level ] || [];
 	levelsObj[ level ].push( obj );
 }
@@ -17,11 +23,11 @@ function addLevelOption( levelsObj, level, obj ) {
  * handler object setters dictionary (mutates handler by reference).
  *
  * @private
- * @param {Object} handler A route handler definition object
- * @param {Object} node    A route hierarchy level node object
+ * @param handler A route handler definition object
+ * @param node    A route hierarchy level node object
  */
-function assignSetterFnForNode( handler, node ) {
-	let setterFn;
+function assignSetterFnForNode( handler: HandlerSpec, node: RouteTreeNode ): void {
+	let setterFn: PathPartSetterFn;
 
 	// For each node, add its handler to the relevant "level" representation
 	addLevelOption( handler._levels, node.level, {
@@ -66,18 +72,20 @@ function assignSetterFnForNode( handler, node ) {
  * specific resource.
  *
  * @private
- * @param  {Object} node            A node object
- * @param  {Object} [node.children] An object of child nodes
- * // @returns {isLeaf} A boolean indicating whether the processed node is a leaf
+ * @param handler        A handler spec object, mutated by reference
+ * @param node           A node object
+ * @param [node.children] An object of child nodes
  */
-function extractSetterFromNode( handler, node ) {
+function extractSetterFromNode( handler: HandlerSpec, node: RouteTreeNode ): void {
 
 	assignSetterFnForNode( handler, node );
 
 	if ( node.children ) {
-		// Recurse down to this node's children
-		Object.keys( node.children ).forEach( ( key ) => {
-			extractSetterFromNode( handler, node.children[ key ] );
+		// Recurse down to this node's children. Reference `children` locally
+		// so its non-optional type carries into the forEach closure below.
+		const children = node.children;
+		Object.keys( children ).forEach( ( key ) => {
+			extractSetterFromNode( handler, children[ key ] );
 		} );
 	}
 }
@@ -85,14 +93,14 @@ function extractSetterFromNode( handler, node ) {
 /**
  * Create a node handler specification object from a route definition object
  *
- * @name create
- * @param {object} routeDefinition A route definition object
- * @param {string} resource The string key of the resource for which to create a handler
- * @returns {object} A handler spec object with _path, _levels and _setters properties
+ * @alias module:lib/resource-handler-spec.create
+ * @param routeDefinition A route definition object
+ * @param resource The string key of the resource for which to create a handler
+ * @returns A handler spec object with _path, _levels and _setters properties
  */
-function createNodeHandlerSpec( routeDefinition, resource ) {
+function createNodeHandlerSpec( routeDefinition: RouteTreeLevels, resource: string ): HandlerSpec {
 
-	const handler = {
+	const handler: HandlerSpec = {
 		// A "path" is an ordered (by key) set of values composed into the final URL
 		_path: {
 			'0': resource,
@@ -122,6 +130,6 @@ function createNodeHandlerSpec( routeDefinition, resource ) {
 	return handler;
 }
 
-module.exports = {
+export = {
 	create: createNodeHandlerSpec,
 };

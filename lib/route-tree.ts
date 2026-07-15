@@ -1,29 +1,41 @@
-// @ts-nocheck -- pending Phase 3 TypeScript conversion.
+type RouteTreeNode = import( './types' ).RouteTreeNode;
+type RouteDefinition = import( './types' ).RouteDefinition;
+type RouteTreeLevels = import( './types' ).RouteTreeLevels;
+type RouteTree = import( './types' ).RouteTree;
+
 /**
  * @module route-tree
  */
-'use strict';
 
-const namedGroupRE = require( './util/named-group-regexp' ).namedGroupRE;
-const splitPath = require( './util/split-path' );
-const ensure = require( './util/ensure' );
-const objectReduce = require( './util/object-reduce' );
+import namedGroupRegexp = require( './util/named-group-regexp' );
+import splitPath = require( './util/split-path' );
+import ensure = require( './util/ensure' );
+import objectReduce = require( './util/object-reduce' );
+
+const namedGroupRE = namedGroupRegexp.namedGroupRE;
 
 /**
  * Method to use when reducing route components array.
  *
  * @private
- * @param {object} routeObj     A route definition object (set via .bind partial application)
- * @param {object} topLevel     The top-level route tree object for this set of routes (set
- *                              via .bind partial application)
- * @param {object} parentLevel  The memo object, which is mutated as the reducer adds
- *                              a new level handler for each level in the route
- * @param {string} component    The string defining this route component
- * @param {number} idx          The index of this component within the components array
- * @param {string[]} components The array of all components
- * @returns {object} The child object of the level being reduced
+ * @param routeObj     A route definition object (set via .bind partial application)
+ * @param topLevel     The top-level route tree object for this set of routes (set
+ *                     via .bind partial application)
+ * @param parentLevel  The memo object, which is mutated as the reducer adds
+ *                     a new level handler for each level in the route
+ * @param component    The string defining this route component
+ * @param idx          The index of this component within the components array
+ * @param components   The array of all components
+ * @returns The child object of the level being reduced
  */
-function reduceRouteComponents( routeObj, topLevel, parentLevel, component, idx, components ) {
+function reduceRouteComponents(
+	routeObj: RouteDefinition,
+	topLevel: RouteTreeLevels,
+	parentLevel: Record<string, RouteTreeNode>,
+	component: string,
+	idx: number,
+	components: string[],
+): Record<string, RouteTreeNode> | undefined {
 	// Check to see if this component is a dynamic URL segment (i.e. defined by
 	// a named capture group regular expression). namedGroup will be `null` if
 	// the regexp does not match, or else an array defining the RegExp match, e.g.
@@ -50,22 +62,29 @@ function reduceRouteComponents( routeObj, topLevel, parentLevel, component, idx,
 	// a custom route via `.registerRoute` that does not include parameter
 	// validation. In this case we assume the groupName is sufficiently unique,
 	// and fall back to `|| groupName` for the levelKey string.
-	const levelKey = namedGroup ? ( groupPattern || groupName ) : component;
+	//
+	// Both capture groups are mandatory in namedGroupRE, so whenever `namedGroup`
+	// is non-null, `groupName` and `groupPattern` are always real strings rather
+	// than `null`; the casts below just narrow past the wider type of the
+	// standalone `namedGroup && ...` expressions above.
+	const levelKey = namedGroup ? ( ( groupPattern || groupName ) as string ) : component;
 
 	// Level name on the other hand takes its value from the group's name, if
 	// defined, and falls back to the component string to handle situations where
 	// `component` is a collection (e.g. "revisions")
-	const levelName = namedGroup ? groupName : component;
+	const levelName = namedGroup ? ( groupName as string ) : component;
 
 	// Check whether we have a preexisting node at this level of the tree, and
 	// create a new level object if not. The component string is included so that
-	// validators can throw meaningful errors as appropriate.
-	const currentLevel = parentLevel[ levelKey ] || {
+	// validators can throw meaningful errors as appropriate. (`validate` is
+	// completed by the unconditional assignment below, so the fallback literal
+	// is cast rather than given a throwaway placeholder validator.)
+	const currentLevel: RouteTreeNode = parentLevel[ levelKey ] || {
 		component: component,
 		namedGroup: namedGroup ? true : false,
 		level: idx,
 		names: [],
-	};
+	} as unknown as RouteTreeNode;
 
 	// A level's "names" correspond to the list of strings which could describe
 	// an endpoint's component setter functions: "id", "revisions", etc.
@@ -113,8 +132,10 @@ function reduceRouteComponents( routeObj, topLevel, parentLevel, component, idx,
 				endpoint.methods.forEach( ( method ) => {
 					if ( method.toLowerCase() === 'get' ) {
 						Object.keys( endpoint.args ).forEach( ( argKey ) => {
-							// Reference param definition objects in the top _getArgs dictionary
-							topLevel._getArgs[ argKey ] = endpoint.args[ argKey ];
+							// Reference param definition objects in the top _getArgs dictionary.
+							// (Asserted non-null: TS can't carry the assignment above's
+							// narrowing across these nested closures.)
+							( topLevel._getArgs as Record<string, unknown> )[ argKey ] = endpoint.args[ argKey ];
 						} );
 					}
 				} );
@@ -130,13 +151,13 @@ function reduceRouteComponents( routeObj, topLevel, parentLevel, component, idx,
 /**
  *
  * @private
- * @param {object}   namespaces The memo object that becomes a dictionary mapping API
- *                              namespaces to an object of the namespace's routes
- * @param {object}   routeObj   A route definition object
- * @param {string}   route      The string key of the `routeObj` route object
- * @returns {object} The namespaces dictionary memo object
+ * @param namespaces The memo object that becomes a dictionary mapping API
+ *                   namespaces to an object of the namespace's routes
+ * @param routeObj   A route definition object
+ * @param route      The string key of the `routeObj` route object
+ * @returns The namespaces dictionary memo object
  */
-function reduceRouteTree( namespaces, routeObj, route ) {
+function reduceRouteTree( namespaces: RouteTree, routeObj: RouteDefinition, route: string ): RouteTree {
 	const nsForRoute = routeObj.namespace;
 
 	const routeString = route
@@ -166,7 +187,7 @@ function reduceRouteTree( namespaces, routeObj, route ) {
 	// The first element of the route tells us what type of resource this route
 	// is for, e.g. "posts" or "comments": we build one handler per resource
 	// type, so we group like resource paths together.
-	const resource = routeComponents[0];
+	const resource = routeComponents[ 0 ];
 
 	// @TODO: This code above currently precludes baseless routes, e.g.
 	// myplugin/v2/(?P<resource>\w+) -- should those be supported?
@@ -177,13 +198,21 @@ function reduceRouteTree( namespaces, routeObj, route ) {
 	ensure( ns, resource, {} );
 	const levels = ns[ resource ];
 
+	// `.bind()` can't infer the remaining-parameter signature correctly across
+	// the whole reduce() chain (the leaf-node return is `undefined`, which
+	// only ever feeds an iteration that never happens); the cast restates the
+	// true call signature without changing reduceRouteComponents itself.
+	const boundReduceComponents = reduceRouteComponents.bind( null, routeObj, levels ) as (
+		parentLevel: Record<string, RouteTreeNode> | undefined,
+		component: string,
+		idx: number,
+		components: string[],
+	) => Record<string, RouteTreeNode> | undefined;
+
 	// Recurse through the route components, mutating levels with information about
 	// each child node encountered while walking through the routes tree and what
 	// arguments (parameters) are available for GET requests to this endpoint.
-	routeComponents.reduce(
-		reduceRouteComponents.bind( null, routeObj, levels ),
-		levels,
-	);
+	routeComponents.reduce( boundReduceComponents, levels );
 
 	return namespaces;
 }
@@ -192,15 +221,15 @@ function reduceRouteTree( namespaces, routeObj, route ) {
  * Build a route tree by reducing over a routes definition object from the API
  * root endpoint response object
  *
- * @method build
- * @param {object} routes A dictionary of routes keyed by route regex strings
- * @returns {object} A dictionary, keyed by namespace, of resource handler
+ * @alias module:lib/route-tree.build
+ * @param routes A dictionary of routes keyed by route regex strings
+ * @returns A dictionary, keyed by namespace, of resource handler
  * factory methods for each namespace's resources
  */
-function buildRouteTree( routes ) {
+function buildRouteTree( routes: Record<string, RouteDefinition> ): RouteTree {
 	return objectReduce( routes, reduceRouteTree, {} );
 }
 
-module.exports = {
+export = {
 	build: buildRouteTree,
 };
