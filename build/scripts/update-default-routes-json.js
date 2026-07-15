@@ -62,7 +62,6 @@
  */
 'use strict';
 
-const agent = require( 'superagent' );
 const fs = require( 'fs' );
 const path = require( 'path' );
 const simplifyObject = require( './simplify-object' );
@@ -102,32 +101,37 @@ const endpoint = argv.endpoint || 'http://wpapi.local/wp-json';
 // Specify a custom output file name with --file=custom-api-routes-filename.json
 const fileName = argv.file || 'default-routes.json';
 
-// This directory will be called to kick off the JSON download: it uses
-// superagent internally for HTTP transport that respects HTTP redirects.
+// This method will be called to kick off the JSON download, following any
+// HTTP redirects along the way. It resolves the endpoint's parsed JSON body.
 const getJSON = ( cbFn ) => {
-	agent
-		.get( endpoint )
-		.set( 'Accept', 'application/json' )
-		.end( ( err, res ) => {
-			// Inspect the error and then the response to infer various error states
-			if ( err ) {
+	fetch( endpoint, {
+		headers: {
+			Accept: 'application/json',
+		},
+		redirect: 'follow',
+	} )
+		.then( ( response ) => {
+			if ( ! response.ok ) {
 				console.error( '\nSomething went wrong! Could not download endpoint JSON.' );
-				if ( err.status ) {
-					console.error( 'Error ' + err.status );
-				}
-				if ( err.response && err.response.error ) {
-					console.error( err.response.error );
-				}
+				console.error( 'Error ' + response.status );
 				return process.exit( 1 );
 			}
 
-			if ( res.type !== 'application/json' ) {
-				console.error( '\nError: expected response type "application/json", got ' + res.type );
+			const type = response.headers.get( 'content-type' ) || '';
+			if ( ! type.startsWith( 'application/json' ) ) {
+				console.error( '\nError: expected response type "application/json", got ' + type );
 				console.error( 'Could not save ' + fileName );
 				return process.exit( 1 );
 			}
 
-			cbFn( res );
+			return response.json();
+		} )
+		.then( cbFn, ( err ) => {
+			// Rejection handler alongside cbFn (rather than a trailing .catch) so
+			// errors thrown downstream in cbFn are not misreported as download failures.
+			console.error( '\nSomething went wrong! Could not download endpoint JSON.' );
+			console.error( err );
+			process.exit( 1 );
 		} );
 };
 
@@ -150,9 +154,7 @@ fs.stat( outputPath, ( err, stats ) => {
 	}
 
 	// If we made it this far, our arguments look good! Carry on.
-	getJSON( ( response ) => {
-		// Extract the JSON
-		const endpointJSON = JSON.parse( JSON.stringify( response.body ) );
+	getJSON( ( endpointJSON ) => {
 		// Simplify the JSON structure and pick out the routes dictionary
 		const slimJSON = simplifyObject( endpointJSON ).routes;
 

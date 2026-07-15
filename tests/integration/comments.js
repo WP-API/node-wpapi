@@ -63,7 +63,6 @@ const getPostsAndAuthors = comments => comments
 	.map( comment => comment.post + comment.author_name );
 
 describe.each( [
-	[ 'wpapi/superagent', require( '../../superagent' ) ],
 	[ 'wpapi/fetch', require( '../../fetch' ) ],
 ] )( '%s: comments()', ( transportName, WPAPI ) => {
 	let wp;

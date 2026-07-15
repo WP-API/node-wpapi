@@ -56,7 +56,6 @@ const expectedResults = {
 };
 
 describe.each( [
-	[ 'wpapi/superagent', require( '../../superagent' ) ],
 	[ 'wpapi/fetch', require( '../../fetch' ) ],
 ] )( '%s: posts()', ( transportName, WPAPI ) => {
 	let wp;

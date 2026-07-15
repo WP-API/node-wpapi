@@ -57,11 +57,18 @@ jobs:
             const WPAPI = require('./dist/index.cjs');
             const wp = new WPAPI({ endpoint: 'http://localhost/wp-json' });
             if (typeof wp.posts !== 'function') throw new Error('CJS entry did not bootstrap');
+            if (typeof WPAPI.transport.get !== 'function') throw new Error('CJS entry has no bound transport');
           "
           node --input-type=module -e "
             import WPAPI from './dist/index.mjs';
             const wp = new WPAPI({ endpoint: 'http://localhost/wp-json' });
             if (typeof wp.posts !== 'function') throw new Error('ESM entry did not bootstrap');
+            if (typeof WPAPI.transport.get !== 'function') throw new Error('ESM entry has no bound transport');
+          "
+          node -e "
+            try { require('./dist/superagent.cjs'); }
+            catch (e) { if (/wpapi.superagent was removed/.test(e.message)) process.exit(0); throw e; }
+            throw new Error('superagent stub did not throw its migration error');
           "
 
   integration:

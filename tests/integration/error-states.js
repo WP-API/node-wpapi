@@ -6,7 +6,6 @@ const { host } = require( '../helpers/constants' );
 const SUCCESS = 'success';
 
 describe.each( [
-	[ 'wpapi/superagent', require( '../../superagent' ) ],
 	[ 'wpapi/fetch', require( '../../fetch' ) ],
 ] )( '%s: error states:', ( transportName, WPAPI ) => {
 

@@ -26,7 +26,7 @@
     "node": ">=18"
   },
   "scripts": {
-    "build": "rimraf dist && tsdown",
+    "build": "rimraf dist && tsdown && node build/scripts/finalize-dist.js",
     "env:cli": "npx @wordpress/env run cli",
     "env:db": "npx @wordpress/env run cli -- mysql -uroot -ppassword wordpress --host=mysql",
     "env:destroy": "npx @wordpress/env destroy",
@@ -47,9 +47,9 @@
     "format:check": "prettier --check .",
     "watch": "vitest",
     "test:all": "vitest run",
-    "test:unit": "vitest run tests/unit fetch/tests/unit superagent/tests/unit",
+    "test:unit": "vitest run tests/unit fetch/tests/unit",
     "test:integration": "vitest run tests/integration --no-file-parallelism",
-    "test:ci": "npm run eslint && vitest run tests/unit fetch/tests/unit superagent/tests/unit --coverage",
+    "test:ci": "npm run eslint && vitest run tests/unit fetch/tests/unit --coverage",
     "pretest": "npm run lint || true",
     "test": "vitest run --coverage"
   },
@@ -57,11 +57,6 @@
     "li": "^1.3.0",
     "parse-link-header": "^1.0.1",
     "qs": "^6.7.0"
-  },
-  "optionalDependencies": {
-    "form-data": "^2.5.0",
-    "node-fetch": "^2.6.0",
-    "superagent": "^4.1.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.5",
@@ -102,7 +97,6 @@
   "inlinedDependencies": {
     "call-bind-apply-helpers": "1.0.2",
     "call-bound": "1.0.4",
-    "component-emitter": "1.3.1",
     "dunder-proto": "1.0.1",
     "es-define-property": "1.0.1",
     "es-errors": "1.3.0",
@@ -120,7 +114,6 @@
     "side-channel": "1.1.1",
     "side-channel-list": "1.0.1",
     "side-channel-map": "1.0.1",
-    "side-channel-weakmap": "1.0.2",
-    "superagent": "4.1.0"
+    "side-channel-weakmap": "1.0.2"
   }
 }

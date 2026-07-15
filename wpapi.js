@@ -49,7 +49,7 @@ const WPRequest = require( './lib/constructors/wp-request' );
  * @param {String} [options.transport] An optional dictionary of HTTP transport
  *                                     methods (.get, .post, .put, .delete, .head)
  *                                     to use instead of the defaults, e.g. to use
- *                                     a different HTTP library than superagent
+ *                                     a different HTTP library than native fetch
  */
 function WPAPI( options ) {
 
