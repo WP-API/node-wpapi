@@ -26,7 +26,7 @@
     "node": ">=18"
   },
   "scripts": {
-    "build": "rimraf dist && tsdown",
+    "build": "rimraf dist && tsdown && node build/scripts/finalize-dist.js",
     "env:cli": "npx @wordpress/env run cli",
     "env:db": "npx @wordpress/env run cli -- mysql -uroot -ppassword wordpress --host=mysql",
     "env:destroy": "npx @wordpress/env destroy",
