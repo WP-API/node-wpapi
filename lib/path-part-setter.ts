@@ -1,8 +1,9 @@
-// @ts-nocheck -- pending Phase 3 TypeScript conversion.
+type RouteTreeNode = import( './types' ).RouteTreeNode;
+type PathPartRequestLike = import( './types' ).PathPartRequestLike;
+
 /**
  * @module path-part-setter
  */
-'use strict';
 
 /**
  * Return a function to set part of the request URL path.
@@ -13,17 +14,18 @@
  * returned depends on whether a given route has one or many sub-resources.
  *
  * @alias module:lib/path-part-setter.create
- * @param {Object} node An object representing a level of an endpoint path hierarchy
- * @returns {Function} A path part setter function
+ * @param node An object representing a level of an endpoint path hierarchy
+ * @returns A path part setter function
  */
-function createPathPartSetter( node ) {
+function createPathPartSetter( node: RouteTreeNode ) {
 	// Local references to `node` properties used by returned functions
 	const nodeLevel = node.level;
 	const nodeName = node.names[ 0 ];
 	const supportedMethods = node.methods || [];
-	const dynamicChildren = node.children ?
-		Object.keys( node.children )
-			.map( key => node.children[ key ] )
+	const children = node.children;
+	const dynamicChildren = children ?
+		Object.keys( children )
+			.map( key => children[ key ] )
 			.filter( childNode => ( childNode.namedGroup === true ) ) :
 		[];
 	const dynamicChild = dynamicChildren.length === 1 && dynamicChildren[ 0 ];
@@ -39,10 +41,10 @@ function createPathPartSetter( node ) {
 		 *     wp.posts().id( 7 ); // Get posts/7
 		 *
 		 * @chainable
-		 * @param  {String|Number} val The path part value to set
-		 * @returns {Object} The handler instance (for chaining)
+		 * @param val The path part value to set
+		 * @returns The handler instance (for chaining)
 		 */
-		return function( val ) {
+		return function( this: PathPartRequestLike, val: string | number ): PathPartRequestLike {
 			this.setPathPart( nodeLevel, val );
 			if ( supportedMethods.length ) {
 				this._supportedMethods = supportedMethods;
@@ -62,11 +64,11 @@ function createPathPartSetter( node ) {
 		 *     wp.posts().id( 4 ).revisions( 1372 ); // Get posts/4/revisions/1372
 		 *
 		 * @chainable
-		 * @param  {String|Number} [val] The path part value to set (if provided)
-		 *                               for a subresource within this resource
-		 * @returns {Object} The handler instance (for chaining)
+		 * @param [val] The path part value to set (if provided) for a
+		 *              subresource within this resource
+		 * @returns The handler instance (for chaining)
 		 */
-		return function( val ) {
+		return function( this: PathPartRequestLike, val?: string | number ): PathPartRequestLike {
 			// If the path part is not a namedGroup, it should have exactly one
 			// entry in the names array: use that as the value for this setter,
 			// as it will usually correspond to a collection endpoint.
@@ -83,6 +85,6 @@ function createPathPartSetter( node ) {
 	}
 }
 
-module.exports = {
+export = {
 	create: createPathPartSetter,
 };

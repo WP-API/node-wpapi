@@ -1,4 +1,9 @@
-// @ts-nocheck -- pending Phase 3 TypeScript conversion.
+type FilterRequestLike = import( '../types' ).FilterRequestLike;
+
+import paramSetter = require( '../util/parameter-setter' );
+import argumentIsNumeric = require( '../util/argument-is-numeric' );
+import filters = require( './filters' );
+
 /**
  * Filter methods that can be mixed in to a request constructor's prototype to
  * allow that request to take advantage of top-level query parameters for
@@ -7,17 +12,32 @@
  *
  * @module mixins/parameters
  */
-'use strict';
 
-const paramSetter = require( '../util/parameter-setter' );
-const argumentIsNumeric = require( '../util/argument-is-numeric' );
+/**
+ * The methods mixed in to a request constructor's prototype by this module.
+ */
+interface ParameterMixins {
+	author: ( this: FilterRequestLike, author?: string | number | null ) => FilterRequestLike;
+	parent: ( this: FilterRequestLike, value: unknown ) => FilterRequestLike;
+	post: ( this: FilterRequestLike, value: unknown ) => FilterRequestLike;
+	password: ( this: FilterRequestLike, value: unknown ) => FilterRequestLike;
+	status: ( this: FilterRequestLike, value: unknown ) => FilterRequestLike;
+	sticky: ( this: FilterRequestLike, value: unknown ) => FilterRequestLike;
+	categories: ( this: FilterRequestLike, value: unknown ) => FilterRequestLike;
+	category: ( this: FilterRequestLike, category: string | number | Array<string | number> ) => FilterRequestLike;
+	excludeCategories: ( this: FilterRequestLike, value: unknown ) => FilterRequestLike;
+	tags: ( this: FilterRequestLike, value: unknown ) => FilterRequestLike;
+	tag: ( this: FilterRequestLike, tag: string | number | Array<string | number> ) => FilterRequestLike;
+	excludeTags: ( this: FilterRequestLike, value: unknown ) => FilterRequestLike;
+	before: ( this: FilterRequestLike, date: string | Date ) => FilterRequestLike;
+	after: ( this: FilterRequestLike, date: string | Date ) => FilterRequestLike;
+}
 
 /**
  * @mixin parameters
  */
-const parameterMixins = {};
+const parameterMixins = {} as ParameterMixins;
 
-const filters = require( './filters' );
 // Needed for .author mixin, as author by ID is a parameter and by Name is a filter
 const filter = filters.filter;
 // Needed for .tag and .category mixin, for deprecated query-by-slug support
@@ -40,7 +60,7 @@ const taxonomy = filters.taxonomy;
  *
  * @method author
  * @chainable
- * @param {String|Number} author The nicename or ID for a particular author
+ * @param author The nicename or ID for a particular author
  * @returns The request instance (for chaining)
  */
 parameterMixins.author = function( author ) {
@@ -80,7 +100,7 @@ parameterMixins.author = function( author ) {
  *
  * @method parent
  * @chainable
- * @param {Number} parentId The ID of a (hierarchical) taxonomy term
+ * @param parentId The ID of a (hierarchical) taxonomy term
  * @returns The request instance (for chaining)
  */
 parameterMixins.parent = paramSetter( 'parent' );
@@ -91,7 +111,7 @@ parameterMixins.parent = paramSetter( 'parent' );
  *
  * @method post
  * @chainable
- * @param {String|Number} post The ID of the post for which to retrieve terms
+ * @param post The ID of the post for which to retrieve terms
  * @returns The request instance (for chaining)
  */
 parameterMixins.post = paramSetter( 'post' );
@@ -101,7 +121,7 @@ parameterMixins.post = paramSetter( 'post' );
  *
  * @method password
  * @chainable
- * @param {string} password A string password to access protected content within a post
+ * @param password A string password to access protected content within a post
  * @returns The request instance (for chaining)
  */
 parameterMixins.password = paramSetter( 'password' );
@@ -116,7 +136,7 @@ parameterMixins.password = paramSetter( 'password' );
  *
  * @method status
  * @chainable
- * @param {string|string[]} status A status name string or array of strings
+ * @param status A status name string or array of strings
  * @returns The request instance (for chaining)
  */
 parameterMixins.status = paramSetter( 'status' );
@@ -126,8 +146,8 @@ parameterMixins.status = paramSetter( 'status' );
  *
  * @method sticky
  * @chainable
- * @param {boolean} sticky A boolean value for whether ONLY sticky posts (true) or
- *                         NO sticky posts (false) should be returned in the query
+ * @param sticky A boolean value for whether ONLY sticky posts (true) or
+ *               NO sticky posts (false) should be returned in the query
  * @returns The request instance (for chaining)
  */
 parameterMixins.sticky = paramSetter( 'sticky' );
@@ -140,7 +160,7 @@ parameterMixins.sticky = paramSetter( 'sticky' );
  *
  * @method categories
  * @chainable
- * @param {String|Number|Array} categories A term ID integer or numeric string, or array thereof
+ * @param categories A term ID integer or numeric string, or array thereof
  * @returns The request instance (for chaining)
  */
 parameterMixins.categories = paramSetter( 'categories' );
@@ -148,10 +168,10 @@ parameterMixins.categories = paramSetter( 'categories' );
 /**
  * Legacy wrapper for `.categories()` that uses `?filter` to query by slug if available
  *
- * @method tag
+ * @method category
  * @deprecated Use `.categories()` and query by category IDs
  * @chainable
- * @param {String|Number|Array} tag A category term slug string, numeric ID, or array of numeric IDs
+ * @param category A category term slug string, numeric ID, or array of numeric IDs
  * @returns The request instance (for chaining)
  */
 parameterMixins.category = function( category ) {
@@ -166,7 +186,7 @@ parameterMixins.category = function( category ) {
  *
  * @method excludeCategories
  * @chainable
- * @param {String|Number|Array} category A term ID integer or numeric string, or array thereof
+ * @param category A term ID integer or numeric string, or array thereof
  * @returns The request instance (for chaining)
  */
 parameterMixins.excludeCategories = paramSetter( 'categories_exclude' );
@@ -176,7 +196,7 @@ parameterMixins.excludeCategories = paramSetter( 'categories_exclude' );
  *
  * @method tags
  * @chainable
- * @param {String|Number|Array} tags A term ID integer or numeric string, or array thereof
+ * @param tags A term ID integer or numeric string, or array thereof
  * @returns The request instance (for chaining)
  */
 parameterMixins.tags = paramSetter( 'tags' );
@@ -187,7 +207,7 @@ parameterMixins.tags = paramSetter( 'tags' );
  * @method tag
  * @deprecated Use `.tags()` and query by term IDs
  * @chainable
- * @param {String|Number|Array} tag A tag term slug string, numeric ID, or array of numeric IDs
+ * @param tag A tag term slug string, numeric ID, or array of numeric IDs
  * @returns The request instance (for chaining)
  */
 parameterMixins.tag = function( tag ) {
@@ -202,7 +222,7 @@ parameterMixins.tag = function( tag ) {
  *
  * @method excludeTags
  * @chainable
- * @param {String|Number|Array} category A term ID integer or numeric string, or array thereof
+ * @param tag A term ID integer or numeric string, or array thereof
  * @returns The request instance (for chaining)
  */
 parameterMixins.excludeTags = paramSetter( 'tags_exclude' );
@@ -223,11 +243,13 @@ parameterMixins.excludeTags = paramSetter( 'tags_exclude' );
  *
  * @method before
  * @chainable
- * @param {String|Date} date An ISO 8601-compliant date string, or Date object
+ * @param date An ISO 8601-compliant date string, or Date object
  * @returns The request instance (for chaining)
  */
 parameterMixins.before = function( date ) {
-	return this.param( 'before', new Date( date ).toISOString() );
+	// The Date constructor's TS overloads don't include `new Date( aDateInstance )`,
+	// though the runtime accepts and clones a Date argument just as it does here.
+	return this.param( 'before', new Date( date as string | number ).toISOString() );
 };
 
 /**
@@ -243,11 +265,13 @@ parameterMixins.before = function( date ) {
  *
  * @method after
  * @chainable
- * @param {String|Date} date An ISO 8601-compliant date string, or Date object
+ * @param date An ISO 8601-compliant date string, or Date object
  * @returns The request instance (for chaining)
  */
 parameterMixins.after = function( date ) {
-	return this.param( 'after', new Date( date ).toISOString() );
+	// The Date constructor's TS overloads don't include `new Date( aDateInstance )`,
+	// though the runtime accepts and clones a Date argument just as it does here.
+	return this.param( 'after', new Date( date as string | number ).toISOString() );
 };
 
-module.exports = parameterMixins;
+export = parameterMixins;

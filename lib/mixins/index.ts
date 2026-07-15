@@ -1,12 +1,19 @@
-// @ts-nocheck -- pending Phase 3 TypeScript conversion.
+type FilterRequestLike = import( '../types' ).FilterRequestLike;
+
 /**
  * This module defines a mapping between supported GET request query parameter
  * arguments and their corresponding mixin, if available.
  */
-'use strict';
 
-const filterMixins = require( './filters' );
-const parameterMixins = require( './parameters' );
+import filterMixins = require( './filters' );
+import parameterMixins = require( './parameters' );
+
+/**
+ * A mixin method assignable onto a request prototype: returns the
+ * (mixin-augmented) request instance for chaining. `never` args accept any
+ * concrete mixin's specific parameter list without widening it to `any`.
+ */
+type MixinMethod = ( this: FilterRequestLike, ...args: never[] ) => FilterRequestLike;
 
 // `.context`, `.embed`, and `.edit` (a shortcut for `context(edit, true)`) are
 // supported by default in WPRequest, as is the base `.param` method. Any GET
@@ -16,7 +23,7 @@ const parameterMixins = require( './parameters' );
 // accepted by the API endpoint corresponds to multiple individual mixin
 // functions, or where the name we use for the function diverges from that
 // of the query parameter that the mixin sets.
-const mixins = {
+const mixins: Record<string, Record<string, MixinMethod>> = {
 	categories: {
 		categories: parameterMixins.categories,
 		/** @deprecated use .categories() */
@@ -33,7 +40,7 @@ const mixins = {
 	tags_exclude: {
 		excludeTags: parameterMixins.excludeTags,
 	},
-	filter: filterMixins,
+	filter: filterMixins as unknown as Record<string, MixinMethod>,
 	post: {
 		post: parameterMixins.post,
 		/** @deprecated use .post() */
@@ -45,7 +52,7 @@ const mixins = {
 // property that the function sets, but they must still be provided in wrapper
 // objects so that the mixin can be `.assign`ed correctly: wrap & assign each
 // setter to the mixins dictionary object.
-[
+( [
 	'after',
 	'author',
 	'before',
@@ -53,9 +60,9 @@ const mixins = {
 	'password',
 	'status',
 	'sticky',
-].forEach( ( mixinName ) => {
+] as const ).forEach( ( mixinName ) => {
 	mixins[ mixinName ] = {};
 	mixins[ mixinName ][ mixinName ] = parameterMixins[ mixinName ];
 } );
 
-module.exports = mixins;
+export = mixins;

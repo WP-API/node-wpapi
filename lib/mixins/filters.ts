@@ -1,12 +1,24 @@
-// @ts-nocheck -- pending Phase 3 TypeScript conversion.
+type FilterRequestLike = import( '../types' ).FilterRequestLike;
+
+import alphaNumericSort = require( '../util/alphanumeric-sort' );
+import keyValToObj = require( '../util/key-val-to-obj' );
+import unique = require( '../util/unique' );
+
 /**
  * @module mixins/filters
  */
-'use strict';
 
-const alphaNumericSort = require( '../util/alphanumeric-sort' );
-const keyValToObj = require( '../util/key-val-to-obj' );
-const unique = require( '../util/unique' );
+/**
+ * The methods mixed in to a request constructor's prototype by this module.
+ */
+interface FilterMixins {
+	filter: ( this: FilterRequestLike, props: string | Record<string, unknown>, value?: unknown ) => FilterRequestLike;
+	taxonomy: ( this: FilterRequestLike, taxonomy: string, term: string | number | Array<string | number> ) => FilterRequestLike;
+	year: ( this: FilterRequestLike, year: number ) => FilterRequestLike;
+	month: ( this: FilterRequestLike, month: number | string ) => FilterRequestLike;
+	day: ( this: FilterRequestLike, day: number ) => FilterRequestLike;
+	path: ( this: FilterRequestLike, path: string ) => FilterRequestLike;
+}
 
 /**
  * Filter methods that can be mixed in to a request constructor's prototype to
@@ -15,7 +27,7 @@ const unique = require( '../util/unique' );
  *
  * @mixin filters
  */
-const filterMixins = {};
+const filterMixins = {} as FilterMixins;
 
 // Filter Methods
 // ==============
@@ -41,8 +53,8 @@ const filterMixins = {};
  *
  * @method filter
  * @chainable
- * @param {String|Object} props A filter property name string, or object of name/value pairs
- * @param {String|Number|Array} [value] The value(s) corresponding to the provided filter property
+ * @param props A filter property name string, or object of name/value pairs
+ * @param [value] The value(s) corresponding to the provided filter property
  * @returns The request instance (for chaining)
  */
 filterMixins.filter = function( props, value ) {
@@ -69,22 +81,22 @@ filterMixins.filter = function( props, value ) {
  *
  * @method taxonomy
  * @chainable
- * @param {String} taxonomy The name of the taxonomy to filter by
- * @param {String|Number|Array} term A string or integer, or array thereof, representing terms
+ * @param taxonomy The name of the taxonomy to filter by
+ * @param term A string or integer, or array thereof, representing terms
  * @returns The request instance (for chaining)
  */
 filterMixins.taxonomy = function( taxonomy, term ) {
 	const termIsArray = Array.isArray( term );
 
 	const termIsNumber = termIsArray ?
-		term.reduce(
+		( term as Array<string | number> ).reduce(
 			( allAreNumbers, term ) => allAreNumbers && typeof term === 'number',
 			true,
 		) :
 		typeof term === 'number';
 
 	const termIsString = termIsArray ?
-		term.reduce(
+		( term as Array<string | number> ).reduce(
 			( allAreStrings, term ) => allAreStrings && typeof term === 'string',
 			true,
 		) :
@@ -120,7 +132,7 @@ filterMixins.taxonomy = function( taxonomy, term ) {
 		.sort( alphaNumericSort );
 
 	// De-dupe
-	this._taxonomyFilters[ taxonomy ] = unique( taxonomyTerms, true );
+	this._taxonomyFilters[ taxonomy ] = unique( taxonomyTerms );
 
 	return this;
 };
@@ -130,7 +142,7 @@ filterMixins.taxonomy = function( taxonomy, term ) {
  *
  * @method year
  * @chainable
- * @param {Number} year integer representation of year requested
+ * @param year integer representation of year requested
  * @returns The request instance (for chaining)
  */
 filterMixins.year = function( year ) {
@@ -143,7 +155,7 @@ filterMixins.year = function( year ) {
  *
  * @method month
  * @chainable
- * @param {Number|String} month Integer for month (1) or month string ("January")
+ * @param month Integer for month (1) or month string ("January")
  * @returns The request instance (for chaining)
  */
 filterMixins.month = function( month ) {
@@ -153,7 +165,7 @@ filterMixins.month = function( month ) {
 		monthDate = new Date( Date.parse( month + ' 1, 2012' ) );
 
 		// If the generated Date is NaN, then the passed string is not a valid month
-		if ( isNaN( monthDate ) ) {
+		if ( isNaN( monthDate.getTime() ) ) {
 			return this;
 		}
 
@@ -174,7 +186,7 @@ filterMixins.month = function( month ) {
  *
  * @method day
  * @chainable
- * @param {Number} day Integer representation of the day requested
+ * @param day Integer representation of the day requested
  * @returns The request instance (for chaining)
  */
 filterMixins.day = function( day ) {
@@ -186,11 +198,11 @@ filterMixins.day = function( day ) {
  *
  * @method path
  * @chainable
- * @param {String} path The root-relative URL path for a page
+ * @param path The root-relative URL path for a page
  * @returns The request instance (for chaining)
  */
 filterMixins.path = function( path ) {
 	return filterMixins.filter.call( this, 'pagename', path );
 };
 
-module.exports = filterMixins;
+export = filterMixins;
