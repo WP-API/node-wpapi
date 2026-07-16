@@ -205,10 +205,10 @@ const createUploadForm = async (
 	}
 
 	const form = new FormData();
-	// An undefined name must be genuinely omitted, not passed as an explicit third
-	// argument: FormData coerces a present-but-undefined filename to the string
-	// "undefined" on Node 18-22, clobbering a File attachment's own name. (Node 24+
-	// treats a trailing undefined as absent, which masked this in local dev.)
+	// An undefined name is genuinely omitted rather than passed as an explicit third
+	// argument: some FormData implementations (Node <=22 among them) coerce a
+	// present-but-undefined filename to the string "undefined", clobbering a File
+	// attachment's own name, and browser bundles run on engines we don't control.
 	// Cast: by this point `file` is always a Blob at runtime (the `string` and
 	// `Buffer` cases above always reassign it to one), but TS can't prove the
 	// `globalThis.Buffer &&`-guarded branch always narrows away `Buffer`.

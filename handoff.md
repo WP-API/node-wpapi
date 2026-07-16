@@ -65,23 +65,34 @@ the exportless superagent stub (emits `export {}` — correct).
 Main's CI Node 22 leg had been red since the Phase 2 merge, unnoticed
 (local dev runs Node 24). Cause: `FormData#append( name, file, undefined )`
 with an explicit third argument coerces the filename to the string
-`"undefined"` on Node 18-22, clobbering a File attachment's own name;
+`"undefined"` on Node <=22, clobbering a File attachment's own name;
 Node 24+ treats a trailing undefined as absent. Fixed in fetch-transport's
-`createUploadForm` by omitting the argument when there is no name override.
-Lesson: run the transport suite under the oldest CI Node before merging
-transport changes (`nvm exec 22 npx vitest run fetch/tests/unit`).
+`createUploadForm` by omitting the argument when there is no name override
+(kept after the Node 24 floor bump: explicit omission also protects
+browser-bundle consumers on engines we don't control). Lesson: run the
+transport suite under the oldest supported Node before merging transport
+changes.
+
+### Node floor raised to 24 (post-Phase 3)
+
+`engines.node >=24`; CI test matrix is 24/latest, integration and
+dist-smoke run on 24 (dist-smoke retained for its production-only-install
+check of the built artifact, not for old-Node coverage). `@types/node@^24`.
+Newly unlocked, not yet used (candidates for Phase 4+): `File` global and
+`instanceof File` checks, `fs.openAsBlob()` to stream path uploads instead
+of buffering whole files, raising tsconfig `target` beyond es2020.
 
 ### Dependency notes
 
-- Added `@types/node@^20` (vitest 4's peer floor; the published runtime
-  floor is still Node 18 — types won't catch Node 19/20-only API use, so
-  keep runtime code 18-safe; CI dist-smoke on 18 covers require-ability
-  only), `@types/qs`, and an ambient `types/li.d.ts` (li has no published
-  types).
-- `parse-link-header` is a declared runtime dependency that nothing
-  imports (pagination uses `li`). Candidate for removal — human call.
-- The Dependabot alert (1 high) noted after the Phase 2 push is still
-  unaddressed and unrelated to this phase.
+- `parse-link-header` removed — it was dead weight since Dec 2018 (commit
+  4bf3a31 switched pagination back to `li` for bundle size but never
+  dropped it from package.json), and it was the repo's 1-high Dependabot
+  alert (runtime scope), now resolved.
+- `@types/qs` and an ambient `types/li.d.ts` added in Phase 3 (li has no
+  published types).
+- `npm audit` still reports 4 high in dev-only paths, all under
+  `jsdoc@3.6` (linkify-it, taffydb) — goes away when Phase 6 replaces
+  jsdoc with TypeDoc.
 
 ## Dev workflow
 
@@ -105,8 +116,9 @@ npm run test:integration
   rolldown trap above).
 - **One tsdown config per Node entry, each bundling its full closure** (a
   shared chunk breaks rolldown's CJS `module.exports` codegen).
-- **Build tooling needs Node 22+**; published dist supports 18+ (CI
-  dist-smoke checks that separately).
+- **Node 24+ everywhere** since the floor bump: runtime, build tooling,
+  and CI all share the same floor (this retired the old split where dist
+  supported 18+ but the toolchain needed 22+).
 - **Integration tests share one wp-env DB**: keep `--no-file-parallelism`.
 
 ## Known gap (deferred to Phase 5)
