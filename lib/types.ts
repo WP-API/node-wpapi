@@ -28,13 +28,19 @@ export interface ParamRequestLike {
  * of a resource's URL path hierarchy. Non-leaf nodes branch into `children`
  * keyed by the next path segment; leaf nodes carry the HTTP `methods` they
  * support.
+ *
+ * Nodes are pure data (JSON-serializable) so that a parsed tree can be
+ * precomputed at build time: `validatePattern` holds the source string of
+ * the case-insensitive RegExp used to validate path-part input for this
+ * node, with '' meaning "accept any input". The validator function itself
+ * is derived downstream by lib/resource-handler-spec.ts.
  */
 export interface RouteTreeNode {
 	component: string;
 	namedGroup: boolean;
 	level: number;
 	names: string[];
-	validate: ( input: string ) => boolean;
+	validatePattern: string;
 	children?: Record<string, RouteTreeNode>;
 	methods?: string[];
 }

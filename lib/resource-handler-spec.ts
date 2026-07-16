@@ -19,6 +19,22 @@ function addLevelOption( levelsObj: Record<number, LevelOption[]>, level: number
 }
 
 /**
+ * Derive a path-part validator function from a node's validate pattern (route
+ * tree nodes are pure data, so the RegExp is compiled here). An empty pattern
+ * means "accept any input without validation".
+ *
+ * @private
+ * @param node A route hierarchy level node object
+ * @returns A function checking an input string against the node's pattern
+ */
+function createNodeValidator( node: RouteTreeNode ): LevelOption[ 'validate' ] {
+	const patternRE = node.validatePattern === '' ?
+		/.*/ :
+		new RegExp( node.validatePattern, 'i' );
+	return input => patternRE.test( input );
+}
+
+/**
  * Assign a setter function for the provided node to the provided route
  * handler object setters dictionary (mutates handler by reference).
  *
@@ -32,7 +48,7 @@ function assignSetterFnForNode( handler: HandlerSpec, node: RouteTreeNode ): voi
 	// For each node, add its handler to the relevant "level" representation
 	addLevelOption( handler._levels, node.level, {
 		component: node.component,
-		validate: node.validate,
+		validate: createNodeValidator( node ),
 		methods: node.methods,
 	} );
 
