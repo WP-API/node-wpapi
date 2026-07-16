@@ -76,9 +76,9 @@ function reduceRouteComponents(
 
 	// Check whether we have a preexisting node at this level of the tree, and
 	// create a new level object if not. The component string is included so that
-	// validators can throw meaningful errors as appropriate. (`validate` is
-	// completed by the unconditional assignment below, so the fallback literal
-	// is cast rather than given a throwaway placeholder validator.)
+	// validators can throw meaningful errors as appropriate. (`validatePattern`
+	// is completed by the unconditional assignment below, so the fallback
+	// literal is cast rather than given a throwaway placeholder pattern.)
 	const currentLevel: RouteTreeNode = parentLevel[ levelKey ] || {
 		component: component,
 		namedGroup: namedGroup ? true : false,

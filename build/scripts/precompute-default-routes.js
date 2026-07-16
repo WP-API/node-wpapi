@@ -333,7 +333,10 @@ export type DefaultRouteHandlers = DefaultNamespaceHandlers[ 'wp/v2' ];
 
 const tree = routeTree.build( defaultRoutes );
 
-fs.writeFileSync( treeOutputPath, JSON.stringify( tree, null, '\t' ) + '\n' );
+// Minified, matching default-routes.json: the file ships in the npm tarball,
+// and pretty-printing it would be ~33% whitespace. Review regeneration diffs
+// via default-routes.json and the generated handler typings instead.
+fs.writeFileSync( treeOutputPath, JSON.stringify( tree ) + '\n' );
 
 fs.writeFileSync( typesOutputPath, generateHandlerTypes( tree ) );
 

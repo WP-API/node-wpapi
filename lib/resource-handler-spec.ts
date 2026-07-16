@@ -75,6 +75,10 @@ function assignSetterFnForNode( handler: HandlerSpec, node: RouteTreeNode ): voi
 /**
  * Walk the tree of a specific resource node to create the setter methods
  *
+ * build/scripts/precompute-default-routes.js mirrors this walk (including its
+ * first-wins name deduplication) to generate the default handler typings:
+ * keep the two in sync if the walk order or naming rules change.
+ *
  * The API we want to produce from the node tree looks like this:
  *
  *     wp.posts();                        /wp/v2/posts
