@@ -60,6 +60,17 @@ the exportless superagent stub (emits `export {}` — correct).
   currently has no production callers (dead since the Phase 2 transport
   rewrite) — flagged as removable dead code, left in place.
 
+### Post-merge fix: Node 22 CI failure (latent since Phase 2)
+
+Main's CI Node 22 leg had been red since the Phase 2 merge, unnoticed
+(local dev runs Node 24). Cause: `FormData#append( name, file, undefined )`
+with an explicit third argument coerces the filename to the string
+`"undefined"` on Node 18-22, clobbering a File attachment's own name;
+Node 24+ treats a trailing undefined as absent. Fixed in fetch-transport's
+`createUploadForm` by omitting the argument when there is no name override.
+Lesson: run the transport suite under the oldest CI Node before merging
+transport changes (`nvm exec 22 npx vitest run fetch/tests/unit`).
+
 ### Dependency notes
 
 - Added `@types/node@^20` (vitest 4's peer floor; the published runtime
