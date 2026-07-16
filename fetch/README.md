@@ -7,8 +7,8 @@ provides; the subpath remains as an alias for code written against the v2 alphas
 ## Installation & Usage
 
 Install `wpapi` using the command `npm install --save wpapi`. No separate fetch
-implementation is needed — the library uses the `fetch` global built into Node 18+,
-browsers and other modern JavaScript runtimes.
+implementation is needed — the library uses the `fetch` global built into Node.js
+(v24+), browsers and other modern JavaScript runtimes.
 
 ```js
 import WPAPI from 'wpapi/fetch';

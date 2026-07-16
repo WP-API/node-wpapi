@@ -2,7 +2,7 @@
 
 ## v2.0.0 [**unreleased**] _Second Toughest in the Infants_
 - **BREAKING**: "Node-style" error-first callbacks (_e.g._ `.get( ( err, data ) => {} )`) are no longer supported. All transport request methods return Promises.
-- **BREAKING**: The minimum supported Node.js version is now v18; Internet Explorer is no longer supported.
+- **BREAKING**: The minimum supported Node.js version is now v24; Internet Explorer is no longer supported.
 - **BREAKING**: HTTP requests are made with the native `fetch` API. The superagent transport and the `wpapi/superagent` entrypoint introduced in the v2 alphas are removed; the default `wpapi` export makes HTTP requests out of the box again, with no additional dependencies. `wpapi/fetch` remains as an alias for the default export.
 - **BREAKING**: Media uploads use native `FormData`/`Blob`. `.file()` accepts a file path (Node), a `Buffer` or `Blob` plus a file name, or a `File` object; streams are no longer supported. The multipart part's content type is no longer inferred from the file name (WordPress determines the type server-side from the name); pass a `Blob` or `File` with an explicit `type` to control it.
 - **BREAKING**: Autodiscovery now either succeeds or fails; a WPAPI instance configured with default routes will no longer be returned.

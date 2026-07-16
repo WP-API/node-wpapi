@@ -62,7 +62,7 @@ const WPAPI = require( 'wpapi' );
 import WPAPI from 'wpapi';
 ```
 
-HTTP requests are made with the `fetch` API built into Node 18+, browsers and other modern JavaScript runtimes, so no other dependencies are required. This library is designed to work in the browser as well, via a build system such as Vite or Webpack; just install the package and import it from your application code.
+HTTP requests are made with the `fetch` API built into Node.js (v24 or later is required), browsers and other modern JavaScript runtimes, so no other dependencies are required. This library is designed to work in the browser as well, via a build system such as Vite or Webpack; just install the package and import it from your application code.
 
 ### Download the UMD Bundle
 

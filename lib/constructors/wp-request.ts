@@ -626,9 +626,9 @@ class WPRequest {
 			}
 			// Uploads need a file name with an extension for WordPress to accept them, and
 			// raw data objects carry none of their own; require one rather than fail obscurely.
-			// A Blob is checked for a name property rather than a File instanceof because the
-			// File global does not exist on Node 18. (Blob's type has no `.name`, hence the
-			// cast: the check is a runtime duck-type test for a File masquerading as a Blob.)
+			// A Blob is checked for a name property rather than a File instanceof so that any
+			// Blob-like object carrying its own name is accepted, File instances included.
+			// (Blob's type has no `.name`, hence the cast for the duck-type test.)
 			if ( ! name && ( isBuffer || ( isBlob && typeof ( file as { name?: unknown } ).name !== 'string' ) ) ) {
 				throw new Error( '.file(): File name is a required argument when uploading a Buffer or Blob' );
 			}
