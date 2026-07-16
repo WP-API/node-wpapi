@@ -20,9 +20,10 @@ type EndpointFactory = import( './lib/types' ).EndpointFactory;
 
 import objectReduce = require( './lib/util/object-reduce' );
 
-// This JSON file provides enough data to create handler methods for all valid
-// API routes in WordPress 4.7
-import defaultRoutes = require( './lib/data/default-routes.json' );
+// The route tree for all valid default API routes, pre-parsed at build time
+// from lib/data/default-routes.json by build/scripts/precompute-default-routes.js
+// so that default-mode instances skip route parsing entirely.
+import defaultRouteTree = require( './lib/data/default-route-tree.json' );
 import routeTreeModule = require( './lib/route-tree' );
 import endpointFactoriesModule = require( './lib/endpoint-factories' );
 import registerRoute = require( './lib/wp-register-route' );
@@ -296,10 +297,15 @@ class WPAPI {
 		let endpointFactoriesByNamespace: Record<string, Record<string, EndpointFactory>>;
 
 		if ( ! routes ) {
-			// Auto-generate default endpoint factories if they are not already available
+			// Auto-generate default endpoint factories if they are not already
+			// available. The default route tree is pre-parsed at build time, so no
+			// route parsing happens here; only custom routes (below) are parsed at
+			// runtime. (Double-cast: the JSON module's inferred literal type cannot
+			// be checked against RouteTree's index-signature intersection directly.)
 			if ( ! defaultEndpointFactories ) {
-				routesByNamespace = buildRouteTree( defaultRoutes );
-				defaultEndpointFactories = generateEndpointFactories( routesByNamespace );
+				defaultEndpointFactories = generateEndpointFactories(
+					defaultRouteTree as unknown as RouteTree,
+				);
 			}
 			endpointFactoriesByNamespace = defaultEndpointFactories;
 		} else {
