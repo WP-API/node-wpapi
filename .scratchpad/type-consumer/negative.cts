@@ -4,3 +4,5 @@ const wp = new WPAPI( { endpoint: 'http://example.com/wp-json' } );
 wp.url( 'x' ).nonexistentMethod();
 const n: number = wp.url( 'x' ).toString();
 wp.url( 'x' ).auth( { username: 42 } );
+wp.posts().nonexistentMethod();
+wp.posts().sticky( 'yes' );

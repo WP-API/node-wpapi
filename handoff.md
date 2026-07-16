@@ -4,7 +4,58 @@ Living status doc for the node-wpapi modernization. See `modernization-plan.md`
 (vision) and `modernization-execution-plan.md` (phased plan). Trunk is `main`;
 each phase lands via a `--no-ff` merge.
 
-## Current state: Phase 3 complete (TypeScript migration)
+## Current state: Phase 4 complete (build-time route precompute)
+
+Default-mode WPAPI instances no longer parse routes at startup.
+`build/scripts/precompute-default-routes.js` (`npm run precompute-routes`)
+runs `route-tree.build` over `lib/data/default-routes.json` (still the
+human-editable source of truth) and commits two generated files:
+
+- **`lib/data/default-route-tree.json`** — the pre-parsed tree (minified,
+  like its sibling). `wpapi.ts`'s bootstrap feeds it straight into
+  `generateEndpointFactories`; `buildRouteTree` now runs only for custom
+  routes (`options.routes`, `.registerRoute()`, live bootstrap).
+- **`lib/data/default-route-handlers.ts`** — a type-only module declaring
+  each default handler factory and its request interface (path-part setters
+  plus mixin methods, all `this`-chaining). `interface WPAPI extends
+  DefaultRouteHandlers`, so `wp.posts()` etc. are real typed declarations;
+  the `[ routeHandler: string ]: any` index signature remains only for
+  runtime-registered handlers. `.namespace()` has typed overloads for the
+  default namespaces.
+
+What made this possible: route-tree nodes are now pure JSON data — the
+per-node `validate` closure was replaced by a `validatePattern` string
+(`''` = accept anything), with the validator function derived in
+`resource-handler-spec.ts`. Validation behavior is unchanged.
+
+Phase-4 facts worth knowing:
+
+- **Startup win (`.scratchpad/bench-startup.mjs`):** first default-mode
+  `new WPAPI()` median 1.230ms → 0.626ms cold; in-process bootstrap micro
+  0.348ms → 0.148ms. Module load time unchanged (~12ms).
+- **Generator design:** method NAMES are read off the actual generated
+  EndpointRequest prototypes (cannot drift from runtime; unclassifiable
+  names throw), signatures come from a hand-maintained map plus node data.
+  The generator mirrors resource-handler-spec's walk/dedup — sync comments
+  on both sides.
+- **Staleness gate:** CI regenerates both files and `git diff --exit-code`s
+  them. `update-default-routes-json` chains `precompute-routes`, so the
+  Phase 5 route refresh regenerates everything. Generated/data files are
+  `.prettierignore`d.
+- **dts-bundler trap (new):** `rolldown-plugin-dts` rewrites
+  `typeof import()` of an `export =` class into a synthetic namespace,
+  silently degrading dependent types to `any` in dist. Use
+  `import X = require( ... )` in type-only modules instead (as the
+  generated file does). The type-consumer negative checks now guard this:
+  `negative.cts` expects **5** errors (two new lines cover the typed
+  handler surface).
+- The precompute script loads TS source via `tests/helpers/ts-require-hook.js`
+  (same hook Vitest uses); CI runs it on every push so breakage is loud.
+- Node-24 unlocks (`File` checks, `fs.openAsBlob()` streaming uploads,
+  newer tsconfig target) were left untouched — nothing in this phase
+  touched the transport layer.
+
+## Previous state: Phase 3 (TypeScript migration)
 
 Every source file (`wpapi.ts`, `lib/**`, `fetch/**`, `superagent/**`) is now
 strict-mode TypeScript; `tsc --noEmit` is clean with `strict` + `checkJs` on.
@@ -128,10 +179,11 @@ npm run test:integration
   throws "Unterminated group" on routes whose named groups contain nested
   patterns. Default-mode instances are unaffected.
 
-## Next: Phase 4 — build-time route precompute
+## Next: Phase 5 — modern WP routes
 
-Add a build script that runs `route-tree.build` over `default-routes.json`
-and emits a pre-parsed tree/spec module; `wpapi.ts` bootstrap consumes it,
-skipping runtime parse. Benchmark startup before/after (`.scratchpad/`).
-This is also where richer per-route typings can be generated (the current
-`[ routeHandler: string ]: any` surface is the hook point).
+Point `build/scripts/update-default-routes-json.js` at wp-env and
+regenerate `default-routes.json` for current WP (block-types, templates,
+global-styles, navigation, etc.); `npm run update-default-routes-json`
+already re-runs the precompute afterward. Fix the route-tree parser's
+"Unterminated group" failure on nested named-group patterns (unskips the
+8 discover tests), add integration tests for a few new resources.

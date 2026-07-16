@@ -18,3 +18,17 @@ run();
 import WPAPIFetch = require( '../../dist/fetch.cjs' );
 const wpF = new WPAPIFetch( { endpoint: 'http://example.com/wp-json' } );
 console.log( wpF.media().toString() );
+
+// Generated default-route handler typings (Phase 4): mixins and path-part
+// setters chain with WPRequest methods, and namespace() is overloaded for
+// the default namespaces.
+const typedChain: string = wp.posts()
+	.categories( [ 1, 2 ] )
+	.sticky( true )
+	.id( 7 )
+	.toString();
+console.log( typedChain, wp.pages().parent( 3 ).revisions( 12 ) );
+console.log( wp.namespace( 'wp/v2' ).users().me() );
+console.log( wp.namespace( 'oembed/1.0' ).proxy().param( 'url', 'http://x' ) );
+// Handlers registered from custom route data still pass the index signature.
+console.log( wp.namespace( 'someplugin/v1' ).customResource() );

@@ -76,9 +76,9 @@ function reduceRouteComponents(
 
 	// Check whether we have a preexisting node at this level of the tree, and
 	// create a new level object if not. The component string is included so that
-	// validators can throw meaningful errors as appropriate. (`validate` is
-	// completed by the unconditional assignment below, so the fallback literal
-	// is cast rather than given a throwaway placeholder validator.)
+	// validators can throw meaningful errors as appropriate. (`validatePattern`
+	// is completed by the unconditional assignment below, so the fallback
+	// literal is cast rather than given a throwaway placeholder pattern.)
 	const currentLevel: RouteTreeNode = parentLevel[ levelKey ] || {
 		component: component,
 		namedGroup: namedGroup ? true : false,
@@ -92,19 +92,21 @@ function reduceRouteComponents(
 		currentLevel.names.push( levelName );
 	}
 
-	// A level's validate method is called to check whether a value being set
-	// on the request URL is of the proper type for the location in which it
-	// is specified. If a group pattern was found, the validator checks whether
-	// the input string exactly matches the group pattern.
-	const groupPatternRE = groupPattern === '' ?
-		// If groupPattern is an empty string, accept any input without validation
-		/.*/ :
-		// Otherwise, validate against the group pattern or the component string
-		new RegExp( groupPattern ? '^' + groupPattern + '$' : component, 'i' );
-
-	// Only one validate function is maintained for each node, because each node
+	// A level's validate pattern is the source of the (case-insensitive) RegExp
+	// used to check whether a value being set on the request URL is of the
+	// proper type for the location in which it is specified: the group pattern
+	// (anchored, for an exact match) if one was found, or else the component
+	// string. An empty pattern means "accept any input without validation"
+	// (the registerRoute case of a named group with no parameter validation).
+	// The pattern is stored as a string, not compiled here, so that route
+	// trees remain pure data and can be serialized at build time; the
+	// validator function is derived in lib/resource-handler-spec.ts.
+	//
+	// Only one validate pattern is maintained for each node, because each node
 	// is defined either by a string literal or by a specific regular expression.
-	currentLevel.validate = input => groupPatternRE.test( input );
+	currentLevel.validatePattern = groupPattern === '' ?
+		'' :
+		( groupPattern ? '^' + groupPattern + '$' : component );
 
 	// Check to see whether to expect more nodes within this branch of the tree,
 	if ( components[ idx + 1 ] ) {

@@ -21,6 +21,11 @@ jobs:
       - run: npm ci
       - run: npm run lint
       - run: npm run typecheck
+      # The precomputed route tree and handler typings are generated from
+      # default-routes.json and committed; fail if they are stale.
+      - run: |
+          npm run precompute-routes
+          git diff --exit-code lib/data/default-route-tree.json lib/data/default-route-handlers.ts
       - run: npm run build
       - run: npm run test:unit
       - if: matrix.node-version == 'latest'

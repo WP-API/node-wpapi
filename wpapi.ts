@@ -3,6 +3,8 @@ type HTTPTransport = import( './lib/types' ).HTTPTransport;
 type RouteDefinition = import( './lib/types' ).RouteDefinition;
 type RouteTree = import( './lib/types' ).RouteTree;
 type EndpointFactory = import( './lib/types' ).EndpointFactory;
+type DefaultRouteHandlers = import( './lib/data/default-route-handlers' ).DefaultRouteHandlers;
+type DefaultNamespaceHandlers = import( './lib/data/default-route-handlers' ).DefaultNamespaceHandlers;
 
 /**
  * A WP REST API client for Node.js
@@ -20,9 +22,10 @@ type EndpointFactory = import( './lib/types' ).EndpointFactory;
 
 import objectReduce = require( './lib/util/object-reduce' );
 
-// This JSON file provides enough data to create handler methods for all valid
-// API routes in WordPress 4.7
-import defaultRoutes = require( './lib/data/default-routes.json' );
+// The route tree for all valid default API routes, pre-parsed at build time
+// from lib/data/default-routes.json by build/scripts/precompute-default-routes.js
+// so that default-mode instances skip route parsing entirely.
+import defaultRouteTree = require( './lib/data/default-route-tree.json' );
 import routeTreeModule = require( './lib/route-tree' );
 import endpointFactoriesModule = require( './lib/endpoint-factories' );
 import registerRoute = require( './lib/wp-register-route' );
@@ -110,8 +113,11 @@ class WPAPI {
 	static transport?: HTTPTransport;
 
 	// Dynamically-attached route handler factories (`.posts`, `.pages`, etc),
-	// assigned by `.bootstrap()` for the default (wp/v2) namespace: this is
-	// the dynamic route-handler surface described in lib/types.ts.
+	// assigned by `.bootstrap()` for the default (wp/v2) namespace. The
+	// default-mode factories are declared explicitly by the generated
+	// DefaultRouteHandlers interface (merged below); this index signature
+	// remains for handlers added at runtime from non-default route data
+	// (`options.routes`, `.registerRoute()`, live-endpoint bootstrapping).
 	[ routeHandler: string ]: any; // eslint-disable-line @typescript-eslint/no-explicit-any
 
 	/**
@@ -296,10 +302,15 @@ class WPAPI {
 		let endpointFactoriesByNamespace: Record<string, Record<string, EndpointFactory>>;
 
 		if ( ! routes ) {
-			// Auto-generate default endpoint factories if they are not already available
+			// Auto-generate default endpoint factories if they are not already
+			// available. The default route tree is pre-parsed at build time, so no
+			// route parsing happens here; only custom routes (below) are parsed at
+			// runtime. (Double-cast: the JSON module's inferred literal type cannot
+			// be checked against RouteTree's index-signature intersection directly.)
 			if ( ! defaultEndpointFactories ) {
-				routesByNamespace = buildRouteTree( defaultRoutes );
-				defaultEndpointFactories = generateEndpointFactories( routesByNamespace );
+				defaultEndpointFactories = generateEndpointFactories(
+					defaultRouteTree as unknown as RouteTree,
+				);
 			}
 			endpointFactoriesByNamespace = defaultEndpointFactories;
 		} else {
@@ -361,6 +372,10 @@ class WPAPI {
 	 * @returns An object of route endpoint handler methods for the
 	 * routes within the specified namespace
 	 */
+	namespace<K extends keyof DefaultNamespaceHandlers>(
+		namespace: K
+	): NamespaceHandlers & DefaultNamespaceHandlers[ K ];
+	namespace( namespace: string ): NamespaceHandlers;
 	namespace( namespace: string ): NamespaceHandlers {
 		if ( ! this._ns[ namespace ] ) {
 			throw new Error( 'Error: namespace ' + namespace + ' is not recognized' );
@@ -412,11 +427,13 @@ class WPAPI {
 }
 
 // Globally-applicable methods aliased from elsewhere, rather than implemented as class
-// members: their signatures are declared here via declaration merging.
+// members: their signatures are declared here via declaration merging. The interface
+// also extends the generated DefaultRouteHandlers, which declares the default-mode
+// (wp/v2) handler factory methods `.bootstrap()` assigns onto the instance.
 // ===============================================================================================
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
-interface WPAPI {
+interface WPAPI extends DefaultRouteHandlers {
 
 	/**
 	 * Set the authentication to use for a WPAPI site handler instance. Accepts basic
