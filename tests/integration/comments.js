@@ -1,6 +1,7 @@
 'use strict';
 
-const WPRequest = require( '../../lib/constructors/wp-request.js' );
+const WPRequest = require( '../../lib/constructors/wp-request' );
+const { endpoint } = require( '../helpers/constants' );
 
 // Variable to use as our 'success token' in promise assertions
 const SUCCESS = 'success';
@@ -62,14 +63,13 @@ const getPostsAndAuthors = comments => comments
 	.map( comment => comment.post + comment.author_name );
 
 describe.each( [
-	[ 'wpapi/superagent', require( '../../superagent' ) ],
 	[ 'wpapi/fetch', require( '../../fetch' ) ],
 ] )( '%s: comments()', ( transportName, WPAPI ) => {
 	let wp;
 
 	beforeEach( () => {
 		wp = new WPAPI( {
-			endpoint: 'http://wpapi.local/wp-json',
+			endpoint: endpoint,
 		} );
 	} );
 
@@ -148,7 +148,7 @@ describe.each( [
 					expect( typeof posts._paging.next ).toBe( 'object' );
 					expect( posts._paging.next ).toBeInstanceOf( WPRequest );
 					expect( posts._paging.next._options.endpoint )
-						.toEqual( 'http://wpapi.local/wp-json/wp/v2/comments?page=2' );
+						.toEqual( `${ endpoint }/wp/v2/comments?page=2` );
 					// Get last page & ensure 'next' no longer appears
 					return wp.comments()
 						.page( posts._paging.totalPages )
@@ -190,7 +190,7 @@ describe.each( [
 							expect( typeof posts._paging.prev ).toBe( 'object' );
 							expect( posts._paging.prev ).toBeInstanceOf( WPRequest );
 							expect( posts._paging.prev._options.endpoint )
-								.toEqual( 'http://wpapi.local/wp-json/wp/v2/comments?page=1' );
+								.toEqual( `${ endpoint }/wp/v2/comments?page=1` );
 							return SUCCESS;
 						} );
 				} );

@@ -1,0 +1,15 @@
+{
+	"port": 2747,
+	"testsEnvironment": false,
+	"config": {
+		"SCRIPT_DEBUG": true,
+		"WP_DEBUG_DISPLAY": false,
+		"WP_DEBUG": true,
+		"WP_DEVELOPMENT_MODE": "plugin"
+	},
+	"plugins": [
+		".",
+		"https://downloads.wordpress.org/plugin/query-monitor.zip",
+		"https://github.com/WP-API/Basic-Auth/archive/refs/heads/master.zip"
+	]
+}

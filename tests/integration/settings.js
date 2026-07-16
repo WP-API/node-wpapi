@@ -1,12 +1,12 @@
 'use strict';
 
 const credentials = require( '../helpers/constants' ).credentials;
+const { endpoint } = require( '../helpers/constants' );
 
 // Variable to use as our "success token" in promise assertions
 const SUCCESS = 'success';
 
 describe.each( [
-	[ 'wpapi/superagent', require( '../../superagent' ) ],
 	[ 'wpapi/fetch', require( '../../fetch' ) ],
 ] )( '%s: settings()', ( transportName, WPAPI ) => {
 	let wp;
@@ -14,10 +14,10 @@ describe.each( [
 
 	beforeEach( () => {
 		wp = new WPAPI( {
-			endpoint: 'http://wpapi.local/wp-json',
+			endpoint: endpoint,
 		} );
 		authenticated = new WPAPI( {
-			endpoint: 'http://wpapi.local/wp-json',
+			endpoint: endpoint,
 		} ).auth( credentials );
 	} );
 
@@ -50,7 +50,12 @@ describe.each( [
 					'description',
 					'email',
 					'language',
+					'page_for_posts',
+					'page_on_front',
 					'posts_per_page',
+					'show_on_front',
+					'site_icon',
+					'site_logo',
 					'start_of_week',
 					'time_format',
 					'timezone',
@@ -60,8 +65,8 @@ describe.each( [
 				] );
 
 				// Spot check specific values
-				expect( settings.title ).toBe( 'WP-API Testbed' );
-				expect( settings.description ).toBe( 'Just another WordPress site' );
+				expect( settings.title ).toBe( 'node-wpapi' );
+				expect( settings.description ).toBe( '' );
 				expect( settings.posts_per_page ).toBe( 10 );
 
 				return SUCCESS;
@@ -73,7 +78,7 @@ describe.each( [
 		const prom = authenticated.settings()
 			.get()
 			.then( ( settings ) => {
-				expect( settings.description ).toBe( 'Just another WordPress site' );
+				expect( settings.description ).toBe( '' );
 				return authenticated.settings()
 					.update( {
 						description: 'It\'s amazing what you\'ll find face to face',
@@ -86,13 +91,13 @@ describe.each( [
 				// Reset to original value
 				return authenticated.settings()
 					.update( {
-						description: 'Just another WordPress site',
+						description: '',
 					} );
 			} )
 			// Request one final time to validate value has been set back
 			.then( () => authenticated.settings().get() )
 			.then( ( settings ) => {
-				expect( settings.description ).toBe( 'Just another WordPress site' );
+				expect( settings.description ).toBe( '' );
 				return SUCCESS;
 			} );
 		return expect( prom ).resolves.toBe( SUCCESS );

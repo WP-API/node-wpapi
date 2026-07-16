@@ -42,9 +42,9 @@ To get started, `npm install wpapi` or [download the browser build](https://wp-a
 
 ## Installation
 
-`node-wpapi` works both on the server or in the browser. Node.js version 8.6 or higher (or version 8.2.1 with the `--harmony` flag) is required, and the latest LTS release is recommended.
+`node-wpapi` works both on the server or in the browser. Node.js version 18 or higher is required, and the latest LTS release is recommended.
 
-In the browser `node-wpapi` officially supports the latest two versions of all evergreen browsers, and Internet Explorer 11.
+In the browser `node-wpapi` officially supports the latest two versions of all evergreen browsers.
 
 ### Install with NPM
 
@@ -54,46 +54,34 @@ To use the library from Node, install it with [npm](http://npmjs.org):
 npm install --save wpapi
 ```
 
-Then, within your application's script files, `require` the module to gain access to it. As `wpapi` is both a query builder and a transport layer (_i.e._ a tool for getting and sending HTTP requests), we leave it up to you as the author of your application whether you need both parts of this functionality. You may use `wpapi` with [superagent](https://www.npmjs.com/package/superagent) if you wish to send and receive HTTP requests using this library, but you may also use only the query builder part of the library if you intend to submit your HTTP requests with `fetch`, `axios` or other tools.
-
-To import only the query builder (without the `.get()`, `.create()`, `.delete()`, `.update()` or `.then()` chaining methods):
-
-```javascript
-var WPAPI = require( 'wpapi' );
-```
-
-To import the superagent bundle, which contains the full suite of HTTP interaction methods:
+Then, within your application's script files, `require` or `import` the module to gain access to it:
 
 ```js
-var WPAPI = require( 'wpapi/superagent' );
+const WPAPI = require( 'wpapi' );
+// or
+import WPAPI from 'wpapi';
 ```
 
-This library is designed to work in the browser as well, via a build system such as Browserify or Webpack; just install the package and `require( 'wpapi' )` (or `'wpapi/superagent'`) from your application code.
+HTTP requests are made with the `fetch` API built into Node.js (v24 or later is required), browsers and other modern JavaScript runtimes, so no other dependencies are required. This library is designed to work in the browser as well, via a build system such as Vite or Webpack; just install the package and import it from your application code.
 
 ### Download the UMD Bundle
 
 Alternatively, you may download a [ZIP archive of the bundled library code](https://wp-api.github.io/node-wpapi/wpapi.zip). These files are UMD modules, which may be included directly on a page using a regular `<script>` tag _or_ required via AMD or CommonJS module systems. In the absence of a module system, the UMD modules will export the browser global variable `WPAPI`, which can be used in place of `require( 'wpapi' )` to access the library from your code.
 
-At present this browser bundle tracks the `wpapi/superagent` module, and includes Superagent itself.
-
 ### Upgrading from v1
 
-### Require `wpapi/superagent`
+### Superagent removed
 
-Prior to version 2.0 (currently `alpha` status) this library shipped with built-in HTTP functionality using Superagent.
+Version 1 and the v2 alphas shipped with HTTP functionality built on [superagent](https://www.npmjs.com/package/superagent). As of version 2.0.0 the library uses the native `fetch` API instead, and the default `wpapi` export sends HTTP requests out of the box — no transport-specific entrypoint or extra install is needed.
 
-If you maintain an existing project which uses this library and wish to upgrade to v2, you may do so by manually installing Superagent:
-
-```sh
-npm i --save wpapi@alpha superagent
-```
-
-and then changing your `require` statements to use the `wpapi/superagent` entrypoint:
+If you adopted the `wpapi/superagent` entrypoint during the v2 alphas, change your `require` statements back to the package root:
 
 ```diff
---- const WPAPI = require( 'wpapi' );
-+++ const WPAPI = require( 'wpapi/superagent' );
+--- const WPAPI = require( 'wpapi/superagent' );
++++ const WPAPI = require( 'wpapi' );
 ```
+
+If you depended on superagent-specific behavior (proxies, retries, instrumentation), supply a [custom HTTP transport](#customizing-http-request-behavior).
 
 ### Use Promises instead of Callbacks
 
@@ -566,8 +554,8 @@ Files may be uploaded to the WordPress media library by creating a media record 
 The file to upload can be specified as
 
 - a `String` describing an image file path, _e.g._ `'/path/to/the/image.jpg'`
-- a `Buffer` with file content, _e.g._ `Buffer.from()` (or the result of a `readFile` call)
-- a file object from a `<input>` element, _e.g._ `document.getElementById( 'file-input' ).files[0]`
+- a `Buffer` or `Blob` with file content, _e.g._ `Buffer.from()` (or the result of a `readFile` call)
+- a `File` object, such as one from a `<input>` element, _e.g._ `document.getElementById( 'file-input' ).files[0]`
 
 The file is passed into the `.file()` method:
 
@@ -575,7 +563,7 @@ The file is passed into the `.file()` method:
 wp.media().file(content [, name])...
 ```
 
-The optional second string argument specifies the file name to use for the uploaded media. If the name argument is omitted `file()` will try to infer a filename from the provided file path. Note that when uploading a Buffer object `name` is a required argument, because no name can be automatically inferred from the buffer.
+The optional second string argument specifies the file name to use for the uploaded media. If the name argument is omitted `file()` will infer a filename from the provided file path or `File` object. Note that when uploading a `Buffer` or a plain `Blob` a `name` (including a file extension) is a required argument, because no name can be automatically inferred from raw data. WordPress determines the uploaded file's type from that name; to set an explicit MIME type on the request itself, pass a `Blob` or `File` constructed with a `type`.
 
 #### Adding Media to a Post
 
@@ -805,7 +793,7 @@ wp.posts().perPage( 5 ).offset( 10 )...
 
 ## Customizing HTTP Request Behavior
 
-By default `node-wpapi` uses the [superagent](https://www.npmjs.com/package/superagent) library internally to make HTTP requests against the API endpoints. Superagent is a flexible tool that works on both the client and the browser, but you may want to use a different HTTP library, or to get data from a cache when available instead of making an HTTP request. To facilitate this, `node-wpapi` lets you supply a `transport` object when instantiating a site client to specify custom functions to use for one (or all) of GET, POST, PUT, DELETE & HEAD requests.
+By default `node-wpapi` uses the native `fetch` API internally to make HTTP requests against the API endpoints, which works on both the server and in the browser. However, you may want to use a different HTTP library, or to get data from a cache when available instead of making an HTTP request. To facilitate this, `node-wpapi` lets you supply a `transport` object when instantiating a site client to specify custom functions to use for one (or all) of GET, POST, PUT, DELETE & HEAD requests.
 
 **This is advanced behavior; you will only need to utilize this functionality if your application has very specific HTTP handling or caching requirements.**
 
@@ -832,7 +820,7 @@ var site = new WPAPI({
       }
 
       // Delegate to default transport if no cached data was found
-      return WPAPI.transport.get( wpreq, cb ).then(function( result ) {
+      return WPAPI.transport.get( wpreq ).then(function( result ) {
         cache[ wpreq ] = result;
         return result;
       });
@@ -960,7 +948,7 @@ add_action( 'wp_enqueue_scripts', 'my_enqueue_scripts' );
 And then use this nonce when initializing the library:
 
 ```javascript
-var WPAPI = require( 'wpapi/superagent' );
+var WPAPI = require( 'wpapi' );
 var wp = new WPAPI({
     endpoint: window.WP_API_Settings.endpoint,
     nonce: window.WP_API_Settings.nonce
@@ -975,6 +963,24 @@ In addition to the above getting-started guide, we have automatically-generated 
 ## Issues
 
 If you identify any errors in this module, or have an idea for an improvement, please [open an issue](https://github.com/wp-api/node-wpapi/issues). We're excited to see what the community thinks of this project, and we would love your input!
+
+## Local Environment
+
+This project uses [wp-env](https://developer.wordpress.org/block-editor/reference-guides/packages/packages-env/) to run a lightweight, containerized WordPress instance at [localhost:2747](http://localhost:2747) (2747 is the [phoneword](https://en.wikipedia.org/wiki/Phoneword) equivalent for `apis`) for testing purposes. The default username for the localhost environment is `admin`, with the password `password`.
+
+These commands can be used to interact with the environment:
+
+Command | Purpose
+---- | ----
+`npm run env:start` | Start the local environment at http://localhost:2747
+`npm run env:stop` | Turn off the local environment
+`npm run env:cli -- wp ...` | Run WP-CLI commands within the environment
+`npm run env:logs` | Open (and tail) the error logs for the application<sup>&ddagger;</sup>
+`npm run env:db` | Open the database in the mysql command line
+`npm run env:destroy` | Fully destroy the local environment (deletes container database)
+
+<sup>&ddagger;</sup> This command deliberately filters out GET/OPTIONS/HEAD/POST/PUT access log entries
+
 
 ## Contributing
 

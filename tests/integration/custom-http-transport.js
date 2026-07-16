@@ -1,12 +1,12 @@
 'use strict';
 
 const credentials = require( '../helpers/constants' ).credentials;
+const { endpoint } = require( '../helpers/constants' );
 
 // Variable to use as our "success token" in promise assertions
 const SUCCESS = 'success';
 
 describe.each( [
-	[ 'wpapi/superagent', require( '../../superagent' ), require( '../../superagent/superagent-transport' ) ],
 	[ 'wpapi/fetch', require( '../../fetch' ), require( '../../fetch/fetch-transport' ) ],
 ] )( '%s: custom HTTP transport methods', ( transportName, WPAPI, httpTransport ) => {
 	let wp;
@@ -31,7 +31,7 @@ describe.each( [
 			} );
 		} );
 
-		return WPAPI.site( 'http://wpapi.local/wp-json' )
+		return WPAPI.site( endpoint )
 			.posts()
 			.perPage( 1 )
 			.then( ( posts ) => {
@@ -48,7 +48,7 @@ describe.each( [
 
 	it( 'can be defined to e.g. use a cache when available', () => {
 		wp = new WPAPI( {
-			endpoint: 'http://wpapi.local/wp-json',
+			endpoint: endpoint,
 			transport: {
 				get: cachingGet,
 			},
@@ -64,7 +64,7 @@ describe.each( [
 				expect( cachingGet ).toBeCalledTimes( 1 );
 				expect( httpTransport.get ).toHaveBeenCalledTimes( 1 );
 				expect( httpTransport.get ).toHaveBeenCalledWith( query1 );
-				expect( result ).toBe( cache[ 'http://wpapi.local/wp-json/wp/v2/posts/' + id ] );
+				expect( result ).toBe( cache[ `${ endpoint }/wp/v2/posts/` + id ] );
 			} )
 			.then( () => {
 				query2 = wp.posts().id( id );
@@ -75,7 +75,7 @@ describe.each( [
 				expect( httpTransport.get ).toHaveBeenCalledTimes( 1 );
 				expect( httpTransport.get ).toHaveBeenLastCalledWith( query1 );
 				expect( httpTransport.get.mock.calls[0][0] ).not.toBe( query2 );
-				expect( result ).toBe( cache[ 'http://wpapi.local/wp-json/wp/v2/posts/' + id ] );
+				expect( result ).toBe( cache[ `${ endpoint }/wp/v2/posts/` + id ] );
 				return SUCCESS;
 			} );
 
@@ -93,7 +93,7 @@ describe.each( [
 		};
 
 		wp = new WPAPI( {
-			endpoint: 'http://wpapi.local/wp-json',
+			endpoint: endpoint,
 			transport: {
 				// If .slug is used, auto-unwrap the returned array
 				get( wpreq ) {
@@ -129,7 +129,7 @@ describe.each( [
 		}
 
 		wp = new WPAPI( {
-			endpoint: 'http://wpapi.local/wp-json',
+			endpoint: endpoint,
 			transport: {
 				// Add collection helper methods to the returned arrays
 				get( wpreq, cb ) {
@@ -146,6 +146,7 @@ describe.each( [
 			.then( ( results ) => {
 				expect( results ).toBeInstanceOf( Collection );
 				expect( results.pluck( 'slug' ) ).toEqual( [
+					'scheduled',
 					'markup-html-tags-and-formatting',
 					'markup-image-alignment',
 					'markup-text-alignment',
@@ -155,7 +156,6 @@ describe.each( [
 					'template-featured-image-horizontal',
 					'template-more-tag',
 					'template-excerpt-defined',
-					'template-excerpt-generated',
 				] );
 				return SUCCESS;
 			} );

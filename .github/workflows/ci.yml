@@ -1,0 +1,97 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+
+jobs:
+  test:
+    name: Lint, typecheck, build & unit test (Node ${{ matrix.node-version }})
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [ 24, latest ]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: npm
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run typecheck
+      # The precomputed route tree and handler typings are generated from
+      # default-routes.json and committed; fail if they are stale.
+      - run: |
+          npm run precompute-routes
+          git diff --exit-code lib/data/default-route-tree.json lib/data/default-route-handlers.ts
+      - run: npm run build
+      - run: npm run test:unit
+      - if: matrix.node-version == 'latest'
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist
+          retention-days: 1
+
+  # Smokes the built artifact under a production-only install (no devDependencies),
+  # which the test job above cannot catch: it verifies dist/ is self-contained and
+  # requires nothing outside the declared runtime dependencies.
+  dist-smoke:
+    name: Published dist works on Node ${{ matrix.node-version }}
+    runs-on: ubuntu-latest
+    needs: test
+    strategy:
+      matrix:
+        node-version: [ 24 ]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: npm
+      - run: npm ci --omit=dev
+      - uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist
+      - run: |
+          node -e "
+            const WPAPI = require('./dist/index.cjs');
+            const wp = new WPAPI({ endpoint: 'http://localhost/wp-json' });
+            if (typeof wp.posts !== 'function') throw new Error('CJS entry did not bootstrap');
+            if (typeof WPAPI.transport.get !== 'function') throw new Error('CJS entry has no bound transport');
+          "
+          node --input-type=module -e "
+            import WPAPI from './dist/index.mjs';
+            const wp = new WPAPI({ endpoint: 'http://localhost/wp-json' });
+            if (typeof wp.posts !== 'function') throw new Error('ESM entry did not bootstrap');
+            if (typeof WPAPI.transport.get !== 'function') throw new Error('ESM entry has no bound transport');
+          "
+          node -e "
+            try { require('./dist/superagent.cjs'); }
+            catch (e) { if (/wpapi.superagent was removed/.test(e.message)) process.exit(0); throw e; }
+            throw new Error('superagent stub did not throw its migration error');
+          "
+
+  integration:
+    name: Integration tests (wp-env)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm run env:start
+      - run: npm run env:seed
+      - run: npm run test:integration
+      # `npm run env:logs` defaults to `--watch`, which never exits; pass
+      # `--no-watch` directly so this step prints once and completes.
+      - if: always()
+        run: npx @wordpress/env logs development --no-watch
+      - if: always()
+        run: npm run env:stop

@@ -1,6 +1,7 @@
 'use strict';
 
-const WPRequest = require( '../../lib/constructors/wp-request.js' );
+const WPRequest = require( '../../lib/constructors/wp-request' );
+const { endpoint } = require( '../helpers/constants' );
 
 // Inspecting the names of the returned terms is an easy way to validate
 // that the right page of results was returned
@@ -53,14 +54,13 @@ const expectedResults = {
 };
 
 describe.each( [
-	[ 'wpapi/superagent', require( '../../superagent' ) ],
 	[ 'wpapi/fetch', require( '../../fetch' ) ],
 ] )( '%s: tags()', ( transportName, WPAPI ) => {
 	let wp;
 
 	beforeEach( () => {
 		wp = new WPAPI( {
-			endpoint: 'http://wpapi.local/wp-json',
+			endpoint: endpoint,
 		} );
 	} );
 
@@ -129,7 +129,7 @@ describe.each( [
 					expect( typeof tags._paging.next ).toBe( 'object' );
 					expect( tags._paging.next ).toBeInstanceOf( WPRequest );
 					expect( tags._paging.next._options.endpoint )
-						.toEqual( 'http://wpapi.local/wp-json/wp/v2/tags?page=2' );
+						.toEqual( `${ endpoint }/wp/v2/tags?page=2` );
 					// Get last page & ensure "next" no longer appears
 					return wp.tags().page( tags._paging.totalPages )
 						.get()
@@ -170,7 +170,7 @@ describe.each( [
 							expect( typeof tags._paging.prev ).toBe( 'object' );
 							expect( tags._paging.prev ).toBeInstanceOf( WPRequest );
 							expect( tags._paging.prev._options.endpoint )
-								.toEqual( 'http://wpapi.local/wp-json/wp/v2/tags?page=1' );
+								.toEqual( `${ endpoint }/wp/v2/tags?page=1` );
 							return SUCCESS;
 						} );
 				} );

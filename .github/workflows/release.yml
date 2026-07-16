@@ -1,0 +1,30 @@
+name: Release
+
+# Scaffolded in Phase 1, replacing the local `release-npm` script; not yet
+# exercised until publishing resumes (requires an `NPM_TOKEN` secret).
+on:
+  release:
+    types: [ published ]
+
+jobs:
+  publish:
+    name: Build, test & publish to npm
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          # tsdown/rolldown require Node >=22.18 to run the build itself.
+          node-version: 22
+          cache: npm
+          registry-url: https://registry.npmjs.org
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run typecheck
+      - run: npm run build
+      - run: npm run test:unit
+      - run: npm publish --provenance --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

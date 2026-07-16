@@ -1,17 +1,18 @@
 'use strict';
 
+const { endpoint } = require( '../helpers/constants' );
+
 // Variable to use as our "success token" in promise assertions
 const SUCCESS = 'success';
 
 describe.each( [
-	[ 'wpapi/superagent', require( '../../superagent' ) ],
 	[ 'wpapi/fetch', require( '../../fetch' ) ],
 ] )( '%s: taxonomies()', ( transportName, WPAPI ) => {
 	let wp;
 
 	beforeEach( () => {
 		wp = new WPAPI( {
-			endpoint: 'http://wpapi.local/wp-json',
+			endpoint: endpoint,
 		} );
 	} );
 

@@ -107,8 +107,8 @@ describe( 'route-tree utility', () => {
 				expect( routeTree.namedGroup ).toBe( false );
 				expect( routeTree ).toHaveProperty( 'names' );
 				expect( routeTree.names ).toEqual( [ 'posts' ] );
-				expect( routeTree ).toHaveProperty( 'validate' );
-				expect( typeof routeTree.validate ).toBe( 'function' );
+				expect( routeTree ).toHaveProperty( 'validatePattern' );
+				expect( typeof routeTree.validatePattern ).toBe( 'string' );
 				expect( routeTree ).toHaveProperty( 'children' );
 				expect( typeof routeTree.children ).toBe( 'object' );
 			} );
