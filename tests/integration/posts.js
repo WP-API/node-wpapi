@@ -3,7 +3,7 @@
 const path = require( 'path' );
 const { endpoint } = require( '../helpers/constants' );
 
-const WPRequest = require( '../../lib/constructors/wp-request.js' );
+const WPRequest = require( '../../lib/constructors/wp-request' );
 
 // Inspecting the titles of the returned posts arrays is an easy way to
 // validate that the right page of results was returned

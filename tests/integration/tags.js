@@ -1,6 +1,6 @@
 'use strict';
 
-const WPRequest = require( '../../lib/constructors/wp-request.js' );
+const WPRequest = require( '../../lib/constructors/wp-request' );
 const { endpoint } = require( '../helpers/constants' );
 
 // Inspecting the names of the returned terms is an easy way to validate

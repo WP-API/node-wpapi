@@ -9,7 +9,10 @@ module.exports = defineConfig( {
 		// Integration tests hit a real, shared WP instance; give slower
 		// requests (e.g. media uploads) headroom beyond the 5s default.
 		testTimeout: 15000,
-		setupFiles: [ './tests/helpers/vitest-jest-compat.js' ],
+		setupFiles: [
+			'./tests/helpers/vitest-jest-compat.js',
+			'./tests/helpers/ts-require-hook.js',
+		],
 		include: [
 			'tests/**/*.js',
 			'fetch/tests/**/*.js',

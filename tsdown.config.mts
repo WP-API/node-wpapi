@@ -39,8 +39,8 @@ const browserEntry = ( name, input ) => ( {
 // `superagent` is a stub which throws a migration error; it remains an entry so
 // the package keeps exporting the wpapi/superagent subpath removed in 2.0.0.
 export default defineConfig( [
-	nodeEntry( 'index', 'fetch/index.js' ),
-	nodeEntry( 'fetch', 'fetch/index.js' ),
-	nodeEntry( 'superagent', 'superagent/index.js' ),
-	browserEntry( 'wpapi', 'fetch/index.js' ),
+	nodeEntry( 'index', 'fetch/index.ts' ),
+	nodeEntry( 'fetch', 'fetch/index.ts' ),
+	nodeEntry( 'superagent', 'superagent/index.ts' ),
+	browserEntry( 'wpapi', 'fetch/index.ts' ),
 ] );

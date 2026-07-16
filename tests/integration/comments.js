@@ -1,6 +1,6 @@
 'use strict';
 
-const WPRequest = require( '../../lib/constructors/wp-request.js' );
+const WPRequest = require( '../../lib/constructors/wp-request' );
 const { endpoint } = require( '../helpers/constants' );
 
 // Variable to use as our 'success token' in promise assertions

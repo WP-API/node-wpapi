@@ -60,6 +60,8 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.39.5",
+    "@types/node": "^20.19.43",
+    "@types/qs": "^6.15.1",
     "@vitest/coverage-v8": "^4.1.10",
     "combyne": "^2.0.0",
     "eslint": "^9.39.5",
