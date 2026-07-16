@@ -1,6 +1,7 @@
-# Route data: default-routes.json is machine-fetched from a live WP site and
-# default-route-tree.json is generated from it by build/scripts/
-# precompute-default-routes.js. Formatting either would break the CI
-# staleness check for the generated files.
+# Route data: default-routes.json is machine-fetched from a live WP site;
+# default-route-tree.json and default-route-handlers.ts are generated from it
+# by build/scripts/precompute-default-routes.js. Formatting any of these would
+# break the CI staleness check for the generated files.
 lib/data/default-routes.json
 lib/data/default-route-tree.json
+lib/data/default-route-handlers.ts
