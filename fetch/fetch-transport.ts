@@ -205,11 +205,18 @@ const createUploadForm = async (
 	}
 
 	const form = new FormData();
-	// An undefined name is treated as omitted: File attachments keep their own name.
+	// An undefined name must be genuinely omitted, not passed as an explicit third
+	// argument: FormData coerces a present-but-undefined filename to the string
+	// "undefined" on Node 18-22, clobbering a File attachment's own name. (Node 24+
+	// treats a trailing undefined as absent, which masked this in local dev.)
 	// Cast: by this point `file` is always a Blob at runtime (the `string` and
 	// `Buffer` cases above always reassign it to one), but TS can't prove the
 	// `globalThis.Buffer &&`-guarded branch always narrows away `Buffer`.
-	form.append( 'file', file as Blob, name );
+	if ( name === undefined ) {
+		form.append( 'file', file as Blob );
+	} else {
+		form.append( 'file', file as Blob, name );
+	}
 	// Cast: form field values are arbitrary caller-supplied data, but FormData's
 	// global (DOM) typing only accepts strings or Blobs.
 	Object.keys( data ).forEach( key => form.append( key, data[ key ] as string | Blob ) );
