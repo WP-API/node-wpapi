@@ -9,9 +9,7 @@ import WPRequest = require( './constructors/wp-request' );
 import mixins = require( './mixins' );
 import applyMixin = require( './util/apply-mixin' );
 
-// WPRequest's constructor options shape, inferred from its own JSDoc since the
-// module itself is still untyped @ts-nocheck JS.
-type WPRequestOptions = ConstructorParameters<typeof WPRequest>[ 0 ];
+type WPRequestOptions = import( './types' ).WPRequestOptions;
 
 /**
  * Create an endpoint request handler constructor for a specific resource tree
