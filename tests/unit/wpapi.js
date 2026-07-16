@@ -18,8 +18,9 @@ describe( 'WPAPI', () => {
 		it( 'enforces new', () => {
 			const site1 = new WPAPI( { endpoint: '/' } );
 			expect( site1 instanceof WPAPI ).toBe( true );
-			const site2 = WPAPI( { endpoint: '/' } );
-			expect( site2 instanceof WPAPI ).toBe( true );
+			expect( () => {
+				WPAPI( { endpoint: '/' } );
+			} ).toThrow();
 		} );
 
 		it( 'throws an error if no endpoint is provided', () => {

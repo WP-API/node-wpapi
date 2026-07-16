@@ -13,7 +13,6 @@
 		"strict": true
 	},
 	"include": [
-		"wpapi.js",
 		"wpapi.ts",
 		"lib/**/*.js",
 		"lib/**/*.ts",

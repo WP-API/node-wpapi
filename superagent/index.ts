@@ -1,5 +1,3 @@
-'use strict';
-
 // The superagent transport was removed in wpapi 2.0.0. This subpath remains only
 // to give upgrading consumers a clear error instead of a module-resolution failure.
 throw new Error(

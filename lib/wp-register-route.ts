@@ -1,11 +1,29 @@
-// @ts-nocheck -- pending Phase 3 TypeScript conversion.
-'use strict';
+type RouteDefinition = import( './types' ).RouteDefinition;
+type EndpointFactory = import( './types' ).EndpointFactory;
+type EndpointFactoryContext = import( './types' ).EndpointFactoryContext;
 
-const buildRouteTree = require( './route-tree' ).build;
-const generateEndpointFactories = require( './endpoint-factories' ).generate;
-const paramSetter = require( './util/parameter-setter' );
-const applyMixin = require( './util/apply-mixin' );
-const mixins = require( './mixins' );
+/**
+ * @module wp-register-route
+ */
+
+import buildRouteTreeModule = require( './route-tree' );
+import generateEndpointFactoriesModule = require( './endpoint-factories' );
+import paramSetter = require( './util/parameter-setter' );
+import applyMixin = require( './util/apply-mixin' );
+import mixins = require( './mixins' );
+
+const buildRouteTree = buildRouteTreeModule.build;
+const generateEndpointFactories = generateEndpointFactoriesModule.generate;
+
+/**
+ * Options accepted by registerRoute() to configure the generated endpoint
+ * request handler.
+ */
+interface RegisterRouteOptions {
+	mixins?: Record<string, unknown>;
+	methods?: string | string[];
+	params?: unknown[];
+}
 
 /**
  * Create and return a handler for an arbitrary WP REST API endpoint.
@@ -14,14 +32,14 @@ const mixins = require( './mixins' );
  * codebase:
  *
  * @memberof! WPAPI#
- * @param {string}   namespace         A namespace string, e.g. 'myplugin/v1'
- * @param {string}   restBase          A REST route string, e.g. '/author/(?P<id>\d+)'
- * @param {object}   [options]         An (optional) options object
- * @param {object}   [options.mixins]  A hash of functions to apply as mixins
- * @param {string[]} [options.methods] An array of methods to whitelist (on the leaf node only)
- * @returns {Function} An endpoint handler factory function for the specified route
+ * @param namespace          A namespace string, e.g. 'myplugin/v1'
+ * @param restBase           A REST route string, e.g. '/author/(?P<id>\d+)'
+ * @param [options]          An (optional) options object
+ * @param [options.mixins]   A hash of functions to apply as mixins
+ * @param [options.methods]  An array of methods to whitelist (on the leaf node only)
+ * @returns An endpoint handler factory function for the specified route
  */
-function registerRoute( namespace, restBase, options = {} ) {
+function registerRoute( namespace: string, restBase: string, options: RegisterRouteOptions = {} ): EndpointFactory {
 	// Support all methods until requested to do otherwise
 	let supportedMethods = [ 'head', 'get', 'patch', 'put', 'post', 'delete' ];
 
@@ -46,7 +64,7 @@ function registerRoute( namespace, restBase, options = {} ) {
 		// Route should always be joined to namespace with a single slash
 		.replace( /[\s/]*$/, '/' ) + restBase.replace( /^[\s/]*/, '' );
 
-	const routeObj = {};
+	const routeObj: Record<string, RouteDefinition> = {};
 	routeObj[ fullRoute ] = {
 		namespace: namespace,
 		methods: supportedMethods,
@@ -82,22 +100,26 @@ function registerRoute( namespace, restBase, options = {} ) {
 
 	// Set any explicitly-provided object mixins
 	if ( options && typeof options.mixins === 'object' ) {
+		// Reference locally so its non-optional type carries into the forEach closure below.
+		const mixinsOption = options.mixins;
 
 		// Set any specified mixin functions on the response
-		Object.keys( options.mixins ).forEach( ( key ) => {
-			applyMixin( EndpointRequest.prototype, key, options.mixins[ key ] );
+		Object.keys( mixinsOption ).forEach( ( key ) => {
+			applyMixin( EndpointRequest.prototype, key, mixinsOption[ key ] );
 		} );
 	}
 
-	function endpointFactory( options = {} ) {
+	// Cast to EndpointFactory because the function literal doesn't yet carry
+	// the `.Ctor` property assigned to it below.
+	const endpointFactory = function( this: EndpointFactoryContext, options: Record<string, unknown> = {} ) {
 		return new EndpointRequest( {
 			...options,
 			...( this ? this._options : {} ),
 		} );
-	}
+	} as EndpointFactory;
 	endpointFactory.Ctor = EndpointRequest;
 
 	return endpointFactory;
 }
 
-module.exports = registerRoute;
+export = registerRoute;
