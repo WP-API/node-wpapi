@@ -7,12 +7,16 @@
  * from lib/data/default-routes.json via the same pipeline that generates the
  * runtime handlers.
  *
- * This module is type-only: it has no runtime output.
+ * This module is only ever referenced from type positions: it has no runtime
+ * consumers. (The WPRequest import below uses the import-assignment form, the
+ * same pattern wpapi.ts uses, because the declaration bundler mis-resolves
+ * `typeof import()` references to an `export =` class into a synthetic
+ * namespace, silently degrading these interfaces' base type to `any`.)
  *
  * @module default-route-handlers
  */
 
-type WPRequest = InstanceType<typeof import( '../constructors/wp-request' )>;
+import WPRequest = require( '../constructors/wp-request' );
 
 /** Request handler for oembed/1.0/embed routes. */
 export type Oembed10EmbedRequest = WPRequest;
